@@ -3,6 +3,7 @@
 - **Change ID:** `bootstrap-dset-project-structure`
 - **Target package:** `methodology`
 - **Implementing PR:** [anatoly-m-maslennikov/dset-loops-framework#2](https://github.com/anatoly-m-maslennikov/dset-loops-framework/pull/2)
+- **Status:** archive candidate; baseline eval passed and current truth reconciled, final remote-head eval and readiness audit pending
 
 ## Problem
 
@@ -18,7 +19,7 @@ Create a minimal, scalable `dset/` root for one package named `methodology`; cap
 - One accepted package under `specs/packages/methodology/`.
 - Active and archive change roots.
 - Placeholder framework-owned template and schema roots.
-- One active bootstrap change that remains unarchived until its PR passes archive readiness.
+- One bootstrap change that remains active until its dated candidate is pushed, remotely evaluated, and finalized through archive readiness.
 
 ## Non-goals
 

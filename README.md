@@ -38,4 +38,4 @@ Each project that adopts DSET owns its project truth separately under its own `d
 
 ## Status
 
-The methodology is published and this repository now dogfoods the project contract under `dset/`. Reusable schemas, templates, validators, utilities, skills, fixtures, and migration guidance are still being operationalized through the TODO. The [bootstrap change](dset/changes/bootstrap-dset-project-structure/proposal.md) remains active until its PR, qualitative eval, reconciliation, and archive gates pass.
+The methodology is published and this repository now dogfoods the project contract under `dset/`. Reusable schemas, templates, validators, utilities, skills, fixtures, and migration guidance are still being operationalized through the TODO. The [bootstrap archive candidate](dset/changes/archive/2026-07-14-bootstrap-dset-project-structure/proposal.md) has passed its independent baseline eval and reconciled current truth; it remains incomplete until draft PR [anatoly-m-maslennikov/dset-loops-framework#2](https://github.com/anatoly-m-maslennikov/dset-loops-framework/pull/2) confirms the candidate head, fresh archive-layout evals pass, and final evidence is recorded.

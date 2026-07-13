@@ -19,7 +19,7 @@ Applicable. Folder discoverability and ownership clarity are qualitative even th
 | **BOOT-EVAL-001** | Findability | Every reviewer locates the correct path for all five cases without private instructions |
 | **BOOT-EVAL-002** | Ownership | No reviewer treats `changes/` as accepted truth or `methodology/` as duplicated project truth |
 | **BOOT-EVAL-003** | Proportionality | Reviewers find the one-package tree sufficient and do not require an empty global layer |
-| **BOOT-EVAL-004** | Resumability | An agent can identify completed work, pending PR/archive gates, and the next task from repository files alone |
+| **BOOT-EVAL-004** | Resumability | An agent can identify completed work, the current PR/archive state, and the next task from repository files alone |
 
 ## Evidence
 

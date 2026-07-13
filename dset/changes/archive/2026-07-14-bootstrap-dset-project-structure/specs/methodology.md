@@ -20,7 +20,7 @@ A standard active change must contain eight document artifacts—proposal, test 
 
 ## ADDED — BOOT-REQ-004 PR-safe archival
 
-The implementing PR must remain draft until fresh verification, current-truth reconciliation, and the applicable traceability and archive-readiness checks pass. With executable enforcement configured, its canonical command and generated traceability must pass. Under an explicit pending enforcement profile, verification must instead record the manual PR/link/archive audit and exact read-only checks without claiming unavailable CI or generation. Any later implementation/specification change invalidates prior archive readiness.
+The implementing PR must remain draft throughout a two-phase archive transaction. After fresh baseline verification and current-truth reconciliation, the change moves to an explicitly incomplete dated candidate and is pushed so remote checks can inspect the real PR head. An evidence-only commit records final proof and archived status after those checks pass. With executable enforcement configured, its canonical command and generated traceability must pass. Under an explicit pending enforcement profile, verification instead records the manual PR/link/archive audit and exact read-only checks without claiming unavailable CI or generation. Any later implementation/specification change invalidates prior archive readiness.
 
 **Scenario BOOT-SCN-004:** With `Implementing PR: pending`, the bootstrap change remains under active `changes/` and cannot appear under `archive/`.
 
