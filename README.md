@@ -32,6 +32,7 @@ Domain → Spec + Supportability + Test Plan + Eval Plan → Implement → Test 
 - [`methodology/06_External Grounding — LLM Power-User Practice.md`](methodology/06_External%20Grounding%20%E2%80%94%20LLM%20Power-User%20Practice.md) — provenance and external grounding.
 - [`methodology/TODO — Operationalize OpenSpec and Composable Engineering Skills.md`](methodology/TODO%20%E2%80%94%20Operationalize%20OpenSpec%20and%20Composable%20Engineering%20Skills.md) — implementation roadmap for DSET-owned change packages informed by OpenSpec and selected Matt Pocock workflow patterns.
 - [`dset/README.md`](dset/README.md) — this repository's accepted project truth, active changes, archive lifecycle, templates, and schemas.
+- [`.github/DELIVERY.md`](.github/DELIVERY.md) — owner-only `dev` updates and automated `dev → main` delivery policy.
 
 ## Source-of-truth model
 
