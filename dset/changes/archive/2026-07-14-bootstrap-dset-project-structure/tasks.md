@@ -6,6 +6,6 @@
 - [x] **BOOT-TASK-004:** Link `dset/` from the repository README and run fresh structural validation.
 - [x] **BOOT-TASK-005:** Open a draft PR and replace `Implementing PR: pending` with its repository-qualified identity and URL.
 - [x] **BOOT-TASK-006:** Complete independent qualitative folder-routing evaluation.
-- [ ] **BOOT-TASK-007:** After final review changes, rerun proof, reconcile accepted deltas, push the dated archive candidate, record final evidence, and pass archive-readiness checks.
+- [x] **BOOT-TASK-007:** After final review changes, rerun proof, reconcile accepted deltas, push the dated archive candidate, record final evidence, and pass archive-readiness checks.
 
-The change remains active while any task is unchecked. Any later implementation or specification edit reopens verification and archive readiness before merge.
+All bootstrap tasks are complete. Any later implementation or specification edit reopens verification and archive readiness before merge.

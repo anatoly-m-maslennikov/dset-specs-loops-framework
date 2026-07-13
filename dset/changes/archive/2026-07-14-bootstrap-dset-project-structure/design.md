@@ -25,7 +25,7 @@ dset/
 - `specs/global/` is absent until at least two packages create shared contracts, end-to-end journeys, or release gates.
 - `methodology/` remains the implementation/publication surface; `dset/specs/` owns accepted behavioral truth and links to that surface rather than copying the numbered documents.
 - The manifest is `0.1-draft` and reports pending enforcement honestly.
-- The bootstrap remains incomplete until the dated candidate on its draft PR passes the final remote-head and archive-readiness audit.
+- The bootstrap remained incomplete until the dated candidate on its draft PR passed the final remote-head and archive-readiness audit; it is now completed archive history.
 
 ## Future seams
 

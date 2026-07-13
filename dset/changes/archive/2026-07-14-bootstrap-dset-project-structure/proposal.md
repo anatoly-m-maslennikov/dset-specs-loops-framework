@@ -3,7 +3,7 @@
 - **Change ID:** `bootstrap-dset-project-structure`
 - **Target package:** `methodology`
 - **Implementing PR:** [anatoly-m-maslennikov/dset-loops-framework#2](https://github.com/anatoly-m-maslennikov/dset-loops-framework/pull/2)
-- **Status:** archive candidate; baseline eval passed and current truth reconciled, final remote-head eval and readiness audit pending
+- **Status:** archived 2026-07-14 after pushed-head evals and the pending-profile manual readiness audit
 
 ## Problem
 

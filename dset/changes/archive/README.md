@@ -6,6 +6,6 @@ Archival is a two-phase transaction inside the implementing draft PR. After base
 
 When the selected enforcement profile or canonical command is pending, the archived verification must record a manual PR/link/archive audit and the exact read-only checks. It must not claim that unavailable CI, validation, or traceability generation passed.
 
-## Candidates
+## Archived changes
 
-- [2026-07-14 — Bootstrap the DSET project structure](2026-07-14-bootstrap-dset-project-structure/proposal.md) — incomplete candidate in draft PR [anatoly-m-maslennikov/dset-loops-framework#2](https://github.com/anatoly-m-maslennikov/dset-loops-framework/pull/2); final remote-head evidence pending
+- [2026-07-14 — Bootstrap the DSET project structure](2026-07-14-bootstrap-dset-project-structure/proposal.md) — implementing PR [anatoly-m-maslennikov/dset-loops-framework#2](https://github.com/anatoly-m-maslennikov/dset-loops-framework/pull/2)
