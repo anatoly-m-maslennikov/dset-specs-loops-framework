@@ -18,6 +18,8 @@ This plan proves exact structural and terminology claims. Qualitative comprehens
 | **METH-TEST-010** | METH-REQ-009 | Parse the manifest; assert every package is unique and the global root matches current cross-package ownership | Canonical validator pending; current `yq` check is ad hoc |
 | **METH-TEST-011** | METH-REQ-010 | Assert a standard change has the eight named documents plus separate `specs/` and `proofs/` directories | Canonical validator pending; current tree check is ad hoc |
 | **METH-TEST-012** | METH-REQ-011 | Reject executable-enforcement claims while the selected profile or canonical command is pending | Canonical validator pending; current metadata review is manual |
+| **METH-TEST-013** | METH-REQ-012 | Assert the exact public display name, title, DSET expansion, repository slug, and active metadata identity | Canonical validator pending; current exact-string and remote checks are ad hoc |
+| **METH-TEST-014** | METH-REQ-013, METH-INV-007 | Validate representative supportability contracts for required evidence fields, correlation propagation, deploy/change identity, diagnostic permissions, redaction/access/retention/deletion behavior, volume/cardinality/sampling bounds, and resolvable runbook/incident links | Canonical validator pending; current scenario fixtures and review are manual |
 
 ## Regression policy
 

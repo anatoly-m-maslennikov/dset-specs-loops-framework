@@ -14,6 +14,7 @@
 | **Runtime risk profile** | Selection of recovery and operational semantics triggered by persistence, retry, concurrency, or external effects |
 | **Durability topology** | Selection of authoritative files, a local database, or external backing services based on deployment, write volume, and concurrency |
 | **Language profile** | Versioned mapping from the six neutral gate categories to language-native tools, scopes, thresholds, and exclusions |
+| **Production supportability contract** | Risk- and topology-scaled agreement for the evidence, correlation and deploy/change identity, safe diagnostics, data controls, runbook, recovery/escalation paths, and incident-to-fix traceability needed to investigate and repair production behavior |
 
 ## Invariants
 
@@ -23,3 +24,4 @@
 - **METH-INV-004:** Each durable concern has one authoritative owner; process memory and derived views are not independent truth.
 - **METH-INV-005:** Public methodology renders and navigates on GitHub without Obsidian-only links or callouts.
 - **METH-INV-006:** A change cannot alter accepted truth until its proof is fresh and the change is archived through its implementing PR.
+- **METH-INV-007:** Every production-bound tool has an explicit supportability contract scaled to its risk profile and topology; a non-production tool may mark it not applicable only with a reason.

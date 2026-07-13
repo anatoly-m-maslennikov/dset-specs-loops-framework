@@ -16,6 +16,8 @@ Use representative project scenarios covering:
 6. A deterministic parser defect.
 7. A variable LLM-output quality regression.
 8. A Python project and a JavaScript/TypeScript project selecting enforcement profiles.
+9. A production-bound local tool whose incident evidence stays in bounded local files.
+10. A distributed retryable service whose operator must trace a synthetic incident across effect boundaries and a deployment.
 
 ## Criteria and thresholds
 
@@ -26,6 +28,7 @@ Use representative project scenarios covering:
 | **METH-EVAL-003** | Runtime applicability | Reviewers select only the recovery, effect-safety, and durability mechanisms triggered by each scenario |
 | **METH-EVAL-004** | Implementation readiness | No scenario leaves a critical ownership, proof, or recovery decision implicit |
 | **METH-EVAL-005** | Public usability | A new reader can locate current truth, active changes, archive history, templates, schemas, and the governing methodology document without Obsidian or private context |
+| **METH-EVAL-006** | Diagnostic usefulness | For both supportability scenarios, an independent operator can use only synthetic redacted evidence and the runbook to diagnose the likely failure boundary, choose a safe containment/escalation/rollback action, and locate the governing requirement, change, PR, and fix record |
 
 ## Calibration and evidence
 

@@ -6,7 +6,7 @@ This package owns the accepted behavioral truth for the public DSET methodology.
 
 ## Boundary
 
-The package owns stage boundaries, terminology, applicability rules, proof separation, enforcement categories, portability rules, and external-grounding integration. It does not yet own executable schemas, validators, utilities, or skills; those become separate packages when implemented and independently meaningful.
+The package owns stage boundaries, terminology, applicability rules, proof separation, production supportability requirements, enforcement categories, portability rules, and external-grounding integration. It does not yet own executable schemas, validators, utilities, or skills; those become separate packages when implemented and independently meaningful.
 
 ## Current-truth files
 
