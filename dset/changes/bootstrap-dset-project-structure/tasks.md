@@ -5,7 +5,7 @@
 - [x] **BOOT-TASK-003:** Create the standard active change with eight documents, requirement deltas, and proof evidence.
 - [x] **BOOT-TASK-004:** Link `dset/` from the repository README and run fresh structural validation.
 - [x] **BOOT-TASK-005:** Open a draft PR and replace `Implementing PR: pending` with its repository-qualified identity and URL.
-- [ ] **BOOT-TASK-006:** Complete independent qualitative folder-routing evaluation.
+- [x] **BOOT-TASK-006:** Complete independent qualitative folder-routing evaluation.
 - [ ] **BOOT-TASK-007:** After final review changes, rerun proof, reconcile accepted deltas, archive in the PR, and pass archive-readiness checks.
 
 The change remains active while any task is unchecked.
