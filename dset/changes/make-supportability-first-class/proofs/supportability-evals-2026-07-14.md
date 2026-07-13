@@ -40,3 +40,5 @@ Times are manual reading estimates, not instrumented performance measurements.
 ## Disposition
 
 Pass: both independent reviewers met all five thresholds after the corrective fixture. The change remains active solely because the user requested a `dev` push without an implementing PR, and the archive contract requires that PR identity.
+
+**Later lifecycle update:** The statement above records the eval-time condition. Draft implementing [PR #3](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3) was created afterward; archive readiness is verified separately against its pushed candidate head.

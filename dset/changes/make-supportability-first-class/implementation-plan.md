@@ -21,4 +21,5 @@
 
 - Run structural and identity checks.
 - Run independent supportability evals with synthetic redacted incidents.
-- Record proof and verification; keep this change active because no implementing PR was opened by user request.
+- Record proof and verification in [PR #3](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3).
+- Move a dated archive candidate to the pushed draft PR, audit the real remote head, then finalize evidence before making the PR ready for automatic merge.

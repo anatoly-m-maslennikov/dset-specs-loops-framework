@@ -3,7 +3,7 @@
 - **Change ID:** `make-supportability-first-class`
 - **Target package:** `methodology`
 - **Implementing branch:** `dev`
-- **Implementing PR:** not opened by user request
+- **Implementing PR:** [anatoly-m-maslennikov/dset-specs-loops-framework#3](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3)
 - **Status:** active
 
 ## Problem
