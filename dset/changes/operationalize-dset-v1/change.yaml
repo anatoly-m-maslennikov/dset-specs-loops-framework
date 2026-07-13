@@ -1,0 +1,32 @@
+schema_version: 1.0-draft
+id: operationalize-dset-v1
+profile: standard
+status: proposed
+packages:
+  - methodology
+pull_request:
+  repository: anatoly-m-maslennikov/dset-specs-loops-framework
+  number: pending
+  url: pending
+requirements:
+  - DSET-V1-REQ-001
+  - DSET-V1-REQ-002
+  - DSET-V1-REQ-003
+  - DSET-V1-REQ-004
+  - DSET-V1-REQ-005
+  - DSET-V1-REQ-006
+tests:
+  - DSET-V1-TEST-001
+  - DSET-V1-TEST-002
+  - DSET-V1-TEST-003
+  - DSET-V1-TEST-004
+  - DSET-V1-TEST-005
+  - DSET-V1-TEST-006
+  - DSET-V1-TEST-007
+  - DSET-V1-TEST-008
+evals:
+  - DSET-V1-EVAL-001
+  - DSET-V1-EVAL-002
+  - DSET-V1-EVAL-003
+  - DSET-V1-EVAL-004
+adrs: []
