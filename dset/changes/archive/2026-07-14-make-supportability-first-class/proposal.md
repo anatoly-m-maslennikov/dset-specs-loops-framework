@@ -4,7 +4,7 @@
 - **Target package:** `methodology`
 - **Implementing branch:** `dev`
 - **Implementing PR:** [anatoly-m-maslennikov/dset-specs-loops-framework#3](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3)
-- **Status:** archive candidate; incomplete until the pushed PR head and dated layout pass final audit
+- **Status:** archive-ready 2026-07-14 after the pushed-head audit; PR #3 owns the eventual merge result
 
 ## Problem
 
