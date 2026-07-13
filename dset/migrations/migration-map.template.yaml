@@ -1,0 +1,14 @@
+schema_version: 1.0
+project: {{project_id}}
+target_root: dset
+sources:
+  - path: {{existing_artifact_root}}
+    concern: {{owned_concern}}
+    current_writer: {{writer}}
+    target: dset/specs/packages/{{package_id}}
+    disposition: pending
+    read_only_after_cutover: true
+cutover:
+  change_id: {{change_id}}
+  pull_request: pending
+  verification: pending
