@@ -3,7 +3,7 @@
   "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/schemas/project.schema.json",
   "title": "DSET project manifest",
   "type": "object",
-  "required": ["schema_version", "project", "supportability", "structure", "packages", "profiles", "change_contract", "canonical_command"],
+  "required": ["schema_version", "project", "supportability", "structure", "packages", "profiles", "change_contract", "verification", "canonical_command"],
   "properties": {
     "schema_version": {"pattern": "^1\\.0(?:-draft)?$"},
     "project": {
@@ -72,6 +72,18 @@
         "pull_request_required_before_archive": {"const": true},
         "archive_requires_fresh_verification": {"const": true},
         "keep_pull_request_draft_until_archive_ready": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "verification": {
+      "type": "object",
+      "required": ["commands"],
+      "properties": {
+        "commands": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        }
       },
       "additionalProperties": false
     },

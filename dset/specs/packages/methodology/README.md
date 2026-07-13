@@ -6,7 +6,7 @@ This package owns the accepted behavioral truth for the public DSET methodology.
 
 ## Boundary
 
-The package owns stage boundaries, terminology, applicability rules, proof separation, production supportability requirements, enforcement categories, portability rules, and external-grounding integration. It does not yet own executable schemas, validators, utilities, or skills; those become separate packages when implemented and independently meaningful.
+The package owns stage boundaries, terminology, applicability rules, proof separation, production supportability requirements, enforcement categories, portability rules, external-grounding integration, and the v1 executable contract. Schemas, templates, the CLI, fixtures, migration guidance, and focused skills are implementation surfaces of this package until external adoption gives one of them an independently versioned public boundary.
 
 ## Current-truth files
 
@@ -17,5 +17,6 @@ The package owns stage boundaries, terminology, applicability rules, proof separ
 | [contracts.md](contracts.md) | Public inputs, outputs, document map, and compatibility surface |
 | [test-plan.md](test-plan.md) | Deterministic proof obligations |
 | [eval-plan.md](eval-plan.md) | Qualitative usability and ambiguity evaluation |
+| [package.yaml](package.yaml) | Machine-readable package and proof-ID registry |
 
 Changes to this package enter through `dset/changes/<change-id>/specs/methodology.md` and become current truth only through verified archival.

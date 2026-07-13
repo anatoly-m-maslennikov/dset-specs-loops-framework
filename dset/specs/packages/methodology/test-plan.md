@@ -20,6 +20,12 @@ This plan proves exact structural and terminology claims. Qualitative comprehens
 | **METH-TEST-012** | METH-REQ-011 | Reject executable-enforcement claims while the selected profile or canonical command is pending | Canonical validator pending; current metadata review is manual |
 | **METH-TEST-013** | METH-REQ-012 | Assert the exact public display name, title, DSET expansion, repository slug, and active metadata identity | Canonical validator pending; current exact-string and remote checks are ad hoc |
 | **METH-TEST-014** | METH-REQ-013, METH-INV-007 | Validate representative supportability contracts for required evidence fields, correlation propagation, deploy/change identity, diagnostic permissions, redaction/access/retention/deletion behavior, volume/cardinality/sampling bounds, and resolvable runbook/incident links | Canonical validator pending; current scenario fixtures and review are manual |
+| **METH-TEST-015** | METH-REQ-014, METH-INV-008/009 | Assert the five CLI commands, read-only validation, stable diagnostics, explicit writes, and no-overwrite behavior | `python -m unittest tests.test_cli tests.test_scaffold_archive` |
+| **METH-TEST-016** | METH-REQ-015 | Materialize every fixture case and compare pass/fail results with expected diagnostic codes | `python -m unittest tests.test_fixtures` |
+| **METH-TEST-017** | METH-REQ-016 | Generate traceability twice, assert byte stability, verify freshness, and resolve the real archived/current change IDs and PR #7 | `python -m unittest tests.test_traceability` |
+| **METH-TEST-018** | METH-REQ-017 | Prove archive dry-run, readiness/PR/reconciliation gates, atomic move, and destination refusal | `python -m unittest tests.test_scaffold_archive` |
+| **METH-TEST-019** | METH-REQ-018, METH-INV-010 | Validate three skill packages, UI metadata, distinct trigger descriptions, and static cross-platform portability | Skill Creator `quick_validate.py` plus the repository skill audit |
+| **METH-TEST-020** | METH-REQ-019 | Parse the delivery workflow and runbook; prove stable policy/DSET check names and required authority/recovery fields | `python -m dset_toolchain check .` plus workflow assertions in CI |
 
 ## Regression policy
 

@@ -1,4 +1,4 @@
-schema_version: 1.0-draft
+schema_version: 1.0
 id: methodology
 status: active
 requirements:
@@ -15,6 +15,12 @@ requirements:
   - METH-REQ-011
   - METH-REQ-012
   - METH-REQ-013
+  - METH-REQ-014
+  - METH-REQ-015
+  - METH-REQ-016
+  - METH-REQ-017
+  - METH-REQ-018
+  - METH-REQ-019
 tests:
   - METH-TEST-001
   - METH-TEST-002
@@ -30,6 +36,12 @@ tests:
   - METH-TEST-012
   - METH-TEST-013
   - METH-TEST-014
+  - METH-TEST-015
+  - METH-TEST-016
+  - METH-TEST-017
+  - METH-TEST-018
+  - METH-TEST-019
+  - METH-TEST-020
 evals:
   - METH-EVAL-001
   - METH-EVAL-002
@@ -37,6 +49,10 @@ evals:
   - METH-EVAL-004
   - METH-EVAL-005
   - METH-EVAL-006
+  - METH-EVAL-007
+  - METH-EVAL-008
+  - METH-EVAL-009
+  - METH-EVAL-010
 artifacts:
   domain: domain.md
   spec: spec.md

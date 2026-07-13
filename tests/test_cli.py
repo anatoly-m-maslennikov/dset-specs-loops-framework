@@ -18,12 +18,12 @@ class CliTests(unittest.TestCase):
         self.assertEqual(result, 0)
         self.assertIn("operationalize-dset-v1", stream.getvalue())
 
-    def test_check_reports_pending_project_contract(self) -> None:
+    def test_check_passes_current_project_contract(self) -> None:
         stream = io.StringIO()
         with contextlib.redirect_stdout(stream):
             result = main(["check", str(ROOT)])
-        self.assertEqual(result, 1)
-        self.assertIn("DSET-E116", stream.getvalue())
+        self.assertEqual(result, 0)
+        self.assertIn("DSET validation passed", stream.getvalue())
 
 
 if __name__ == "__main__":
