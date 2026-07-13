@@ -1,0 +1,31 @@
+schema_version: 0.1-draft
+
+project:
+  id: dset-loops-framework
+  name: DSET Loops Framework
+  repository_role: framework-source-and-adopter
+
+structure:
+  mode: single-package
+  accepted_truth_root: specs/packages
+  active_changes_root: changes
+  archive_root: changes/archive
+  global_truth_root: null
+
+packages:
+  - id: methodology
+    path: specs/packages/methodology
+    status: active
+
+profiles:
+  runtime_risk: transient-local
+  durability_topology: local-files
+  enforcement: documentation-v1-pending
+
+change_contract:
+  change_id_format: kebab-case
+  pull_request_required_before_archive: true
+  archive_requires_fresh_verification: true
+  keep_pull_request_draft_until_archive_ready: true
+
+canonical_command: pending
