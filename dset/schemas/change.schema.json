@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/schemas/change.schema.json",
+  "title": "DSET change manifest",
+  "type": "object",
+  "required": ["schema_version", "id", "profile", "status", "packages", "pull_request", "requirements", "tests", "evals", "adrs"],
+  "properties": {
+    "schema_version": {"pattern": "^1\\.0(?:-draft)?$"},
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "profile": {"enum": ["small", "standard", "large", "defect", "adoption"]},
+    "status": {"enum": ["proposed", "in-progress", "failed", "verified", "archive-ready", "archived"]},
+    "packages": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+    "pull_request": {"$ref": "#/$defs/pr"},
+    "related_pull_requests": {"type": "array", "items": {"$ref": "#/$defs/related_pr"}},
+    "requirements": {"$ref": "#/$defs/ids"},
+    "tests": {"$ref": "#/$defs/ids"},
+    "evals": {"$ref": "#/$defs/ids"},
+    "adrs": {"$ref": "#/$defs/ids"},
+    "archive": {
+      "type": "object",
+      "required": ["date", "path"],
+      "properties": {
+        "date": {"type": "string", "format": "date"},
+        "path": {"type": "string", "pattern": "^dset/changes/archive/[0-9]{4}-[0-9]{2}-[0-9]{2}-"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)+$"}},
+    "pr": {
+      "type": "object",
+      "required": ["repository", "number", "url"],
+      "properties": {
+        "repository": {"type": "string", "pattern": "^[^/]+/[^/]+$"},
+        "number": {"oneOf": [{"type": "integer", "minimum": 1}, {"const": "pending"}]},
+        "url": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "related_pr": {
+      "type": "object",
+      "required": ["number", "role"],
+      "properties": {
+        "number": {"type": "integer", "minimum": 1},
+        "role": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

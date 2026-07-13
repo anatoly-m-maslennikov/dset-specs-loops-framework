@@ -1,0 +1,45 @@
+schema_version: 1.0-draft
+id: methodology
+status: active
+requirements:
+  - METH-REQ-001
+  - METH-REQ-002
+  - METH-REQ-003
+  - METH-REQ-004
+  - METH-REQ-005
+  - METH-REQ-006
+  - METH-REQ-007
+  - METH-REQ-008
+  - METH-REQ-009
+  - METH-REQ-010
+  - METH-REQ-011
+  - METH-REQ-012
+  - METH-REQ-013
+tests:
+  - METH-TEST-001
+  - METH-TEST-002
+  - METH-TEST-003
+  - METH-TEST-004
+  - METH-TEST-005
+  - METH-TEST-006
+  - METH-TEST-007
+  - METH-TEST-008
+  - METH-TEST-009
+  - METH-TEST-010
+  - METH-TEST-011
+  - METH-TEST-012
+  - METH-TEST-013
+  - METH-TEST-014
+evals:
+  - METH-EVAL-001
+  - METH-EVAL-002
+  - METH-EVAL-003
+  - METH-EVAL-004
+  - METH-EVAL-005
+  - METH-EVAL-006
+artifacts:
+  domain: domain.md
+  spec: spec.md
+  contracts: contracts.md
+  test_plan: test-plan.md
+  eval_plan: eval-plan.md

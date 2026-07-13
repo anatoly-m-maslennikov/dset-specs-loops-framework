@@ -1,0 +1,35 @@
+schema_version: 1.0
+id: make-supportability-first-class
+profile: standard
+status: archived
+packages:
+  - methodology
+pull_request:
+  repository: anatoly-m-maslennikov/dset-specs-loops-framework
+  number: 3
+  url: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3
+requirements:
+  - SUP-REQ-001
+  - SUP-REQ-002
+  - SUP-REQ-003
+  - SUP-REQ-004
+  - SUP-REQ-005
+  - SUP-REQ-006
+tests:
+  - SUP-TEST-001
+  - SUP-TEST-002
+  - SUP-TEST-003
+  - SUP-TEST-004
+  - SUP-TEST-005
+  - SUP-TEST-006
+  - SUP-TEST-007
+evals:
+  - SUP-EVAL-001
+  - SUP-EVAL-002
+  - SUP-EVAL-003
+  - SUP-EVAL-004
+  - SUP-EVAL-005
+adrs: []
+archive:
+  date: 2026-07-14
+  path: dset/changes/archive/2026-07-14-make-supportability-first-class
