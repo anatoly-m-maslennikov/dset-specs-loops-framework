@@ -28,13 +28,14 @@ Domain → Spec + Test Plan + Eval Plan → Implement → Test + Evaluate → Re
 - [`methodology/05_Layered Build Standard — DDD, TDD, Small Functions, Typed Gates.md`](methodology/05_Layered%20Build%20Standard%20%E2%80%94%20DDD%2C%20TDD%2C%20Small%20Functions%2C%20Typed%20Gates.md) — six language-neutral gate categories plus applied language profiles; Python v1 is active and JavaScript/TypeScript is pending evidence.
 - [`methodology/06_External Grounding — LLM Power-User Practice.md`](methodology/06_External%20Grounding%20%E2%80%94%20LLM%20Power-User%20Practice.md) — provenance and external grounding.
 - [`methodology/TODO — Operationalize OpenSpec and Composable Engineering Skills.md`](methodology/TODO%20%E2%80%94%20Operationalize%20OpenSpec%20and%20Composable%20Engineering%20Skills.md) — implementation roadmap for DSET-owned change packages informed by OpenSpec and selected Matt Pocock workflow patterns.
+- [`dset/README.md`](dset/README.md) — this repository's accepted project truth, active changes, archive lifecycle, templates, and schemas.
 
 ## Source-of-truth model
 
-This public repository is the canonical source for the complete DSET Loops Framework: methodology, documentation, schemas, templates, validators, utilities, skills, fixtures, and migration guidance. Installed or workspace-local copies are distributions of this repository, not independent editable sources.
+This public repository is the canonical source for DSET Loops and every released framework-owned methodology document, schema, template, validator, utility, skill, fixture, and migration guide. Installed or workspace-local copies are distributions of this repository, not independent editable sources.
 
 Each project that adopts DSET owns its project truth separately under its own `dset/` root. In an adopting project, `dset/specs/` contains accepted current truth and `dset/changes/` contains bounded work in progress. Framework truth never replaces project truth, and project artifacts do not become framework rules unless they are deliberately contributed here.
 
 ## Status
 
-The methodology is published; the reusable schemas, templates, validators, utilities, skills, fixtures, and migration guidance are still being operationalized through the TODO. This repository is already the canonical source while that implementation proceeds.
+The methodology is published and this repository now dogfoods the project contract under `dset/`. Reusable schemas, templates, validators, utilities, skills, fixtures, and migration guidance are still being operationalized through the TODO. The [bootstrap change](dset/changes/bootstrap-dset-project-structure/proposal.md) remains active until its PR, qualitative eval, reconciliation, and archive gates pass.
