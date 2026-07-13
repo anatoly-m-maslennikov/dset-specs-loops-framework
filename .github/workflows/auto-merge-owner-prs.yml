@@ -1,19 +1,51 @@
-name: Auto-merge owner PRs
+name: Enforce dev-to-main PR policy
 
 on:
   pull_request_target:
-    types: [opened, reopened, synchronize, ready_for_review]
+    branches: [main]
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+      - converted_to_draft
+      - edited
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: main-pr-policy-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
-  enable-auto-merge:
-    if: >-
-      github.event.pull_request.user.login == github.repository_owner &&
-      github.event.pull_request.draft == false
+  pr-policy:
+    name: PR policy
     runs-on: ubuntu-latest
+    steps:
+      - name: Require owner-authored same-repository dev to main
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          REPOSITORY: ${{ github.repository }}
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+        run: |
+          test "$BASE_REF" = "main"
+          test "$HEAD_REF" = "dev"
+          test "$HEAD_REPOSITORY" = "$REPOSITORY"
+          test "$PR_AUTHOR" = "$REPOSITORY_OWNER"
+
+  enable-auto-merge:
+    name: Enable auto-merge
+    needs: pr-policy
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Enable squash auto-merge
         env:
