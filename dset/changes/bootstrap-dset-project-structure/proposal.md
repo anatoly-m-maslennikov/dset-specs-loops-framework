@@ -2,7 +2,7 @@
 
 - **Change ID:** `bootstrap-dset-project-structure`
 - **Target package:** `methodology`
-- **Implementing PR:** pending
+- **Implementing PR:** [anatoly-m-maslennikov/dset-loops-framework#2](https://github.com/anatoly-m-maslennikov/dset-loops-framework/pull/2)
 
 ## Problem
 
