@@ -34,11 +34,11 @@ The methodology must define six neutral gate categories and keep concrete tools,
 
 ## METH-REQ-006 — Change history is PR-traceable without a future SHA
 
-The methodology must use a repository-qualified PR identity as the stable implementation link, archive inside that PR after fresh verification and current-truth reconciliation, and keep the PR draft until applicable traceability and archive-readiness checks pass. Missing PR identity keeps a change active; any later implementation or specification change invalidates prior readiness.
+The methodology must use a repository-qualified PR identity as the stable implementation link and keep the PR draft throughout archival. After fresh baseline verification and current-truth reconciliation, the change may move to a dated, explicitly incomplete archive candidate and be pushed so remote checks can inspect the real PR head. An evidence-only commit finalizes the archive after those checks pass. Missing PR identity keeps a change active; any later implementation or specification change invalidates prior readiness.
 
 **Scenario METH-SCN-007:** The archived change links to the PR that owns the code diff and eventual merge result without attempting to store a merge SHA before it exists.
 
-**Scenario METH-SCN-012:** A change with a pending PR identity cannot be archived, and a later implementation or specification edit requires verification and archive readiness to be refreshed.
+**Scenario METH-SCN-012:** A change with a pending PR identity cannot become an archive candidate. A pushed candidate remains unaccepted until final evidence is recorded, and a later implementation or specification edit requires verification and archive readiness to be refreshed.
 
 ## METH-REQ-007 — Public Markdown is portable
 

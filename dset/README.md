@@ -36,7 +36,8 @@ The project currently has one package, `methodology`. A `specs/global/` layer is
 2. Write requirements plus deterministic test proof and applicable eval proof before implementation.
 3. Open a draft PR and record its repository-qualified identity in the change.
 4. Implement and collect fresh verification evidence.
-5. Reconcile accepted deltas into `specs/`, move the change under `archive/`, refresh the applicable traceability evidence, and rerun checks inside the same PR.
-6. Keep the PR draft until archive readiness passes; then mark it ready and merge. With executable enforcement configured, run its canonical command and regenerate its traceability index. Under an explicit pending enforcement profile, record a manual PR/link/archive audit and the exact read-only checks without claiming that CI or generation ran.
+5. Reconcile accepted deltas into `specs/`, move the change under `archive/` as an explicitly labeled candidate, commit it, and push it to the still-draft PR so remote identity and archive-layout checks can inspect the real head.
+6. Evaluate the pushed candidate, refresh the applicable traceability evidence, record final proof, and mark the candidate complete in an evidence-only commit. With executable enforcement configured, run its canonical command and regenerate its traceability index. Under an explicit pending enforcement profile, record a manual PR/link/archive audit and exact read-only checks without claiming that CI or generation ran.
+7. Keep the PR draft until archive readiness passes; then mark it ready and merge.
 
-An incomplete or failed change remains active and never modifies accepted truth.
+An incomplete or failed change remains active and never modifies accepted truth. A dated candidate on a draft PR branch is not accepted archive history until its final evidence is recorded and the PR merges.
