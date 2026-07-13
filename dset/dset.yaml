@@ -1,9 +1,14 @@
 schema_version: 0.1-draft
 
 project:
-  id: dset-loops-framework
-  name: DSET Loops Framework
+  id: dset-specs-loops-framework
+  name: DSET Spec Loops
+  repository_slug: dset-specs-loops-framework
   repository_role: framework-source-and-adopter
+
+supportability:
+  status: not-applicable
+  reason: documentation-only framework repository with no deployed production runtime
 
 structure:
   mode: single-package

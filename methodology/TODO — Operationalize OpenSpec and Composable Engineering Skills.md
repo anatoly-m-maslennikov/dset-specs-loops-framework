@@ -1,6 +1,6 @@
 # TODO — Operationalize OpenSpec and Composable Engineering Skills
 
-**Outcome:** Make this public repository the canonical source for the complete DSET Loops Framework—methodology, documentation, schemas, templates, validators, utilities, skills, fixtures, and migration guidance. Operationalize the SPEC → TEST PLAN + EVAL PLAN → IMPL PLAN → CODE → GATES pipeline through a DSET-owned change package under `dset/`, borrowing useful OpenSpec concepts without installing a second methodology or duplicating rules already owned by 00–06.
+**Outcome:** Make this public repository the canonical source for the complete DSET Spec Loops framework—methodology, documentation, schemas, templates, validators, utilities, skills, fixtures, and migration guidance. Operationalize the SPEC → TEST PLAN + EVAL PLAN → IMPL PLAN → CODE → GATES pipeline through a DSET-owned change package under `dset/`, borrowing useful OpenSpec concepts without installing a second methodology or duplicating rules already owned by 00–06.
 
 **Sources:** [OpenSpec](https://github.com/Fission-AI/OpenSpec) and [Matt Pocock’s skills](https://github.com/mattpocock/skills).
 
@@ -257,14 +257,15 @@ packages/
 
 ### Framework namespace and naming contract
 
-- [ ] Adopt **`dset`** as the canonical machine namespace and **`dset-`** as the canonical human-visible prefix. Keep **DSET Loops Framework** as the display name and expand DSET as **Domain–Spec–Eval–Test**.
+- [x] Adopt **`dset`** as the canonical machine namespace and **`dset-`** as the canonical human-visible prefix. Use **DSET Spec Loops** as the display name, **DSET Spec Loops: A Production Vibecoding Framework** as the full title, and expand DSET as **Domain–Supportability–Evals–Tests**.
 - [ ] Do not use `dsetl-`: “loops” is part of the display/mental model, while adding `l` makes the namespace harder to pronounce and visually closer to the established SETL language family.
 - [ ] Reserve framework-owned names; do not prefix ordinary product features, domain packages, or application code merely because they use the framework.
 
 | Surface | Convention | Examples |
 |---|---|---|
-| Framework display name | `DSET Loops Framework` | README title, documentation title |
-| Short name | `DSET Loops` | prose, diagrams, discussion |
+| Framework display name | `DSET Spec Loops` | documentation title, prose, diagrams |
+| Full title | `DSET Spec Loops: A Production Vibecoding Framework` | README title, repository description |
+| Repository slug | `dset-specs-loops-framework` | GitHub repository, project manifest |
 | Machine namespace | `dset` | CLI, config root, schema IDs |
 | Skills | `dset-<workflow>` | `dset-grill`, `dset-diagnose`, `dset-prototype`, `dset-review` |
 | Framework-owned folders | `dset/` or `.dset/` by ownership | `dset/specs/`, `.dset/cache/` |

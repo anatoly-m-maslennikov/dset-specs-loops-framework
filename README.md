@@ -1,8 +1,10 @@
-# DSET Loops Framework
+# DSET Spec Loops: A Production Vibecoding Framework
 
 **A framework for production vibecoding.**
 
-DSET expands to **Domain–Spec–Eval–Test**.
+DSET expands to **Domain–Supportability–Evals–Tests**.
+
+“Spec” remains in the name because every iteration is a governed spec loop; it is not the `S` in DSET.
 
 The framework treats natural language as a high-leverage programming interface while keeping durable software grounded in explicit domain models, accepted behavioral specifications, deterministic tests, qualitative or probabilistic evals, implementation plans, and machine-verifiable gates.
 
@@ -32,10 +34,10 @@ Domain → Spec + Test Plan + Eval Plan → Implement → Test + Evaluate → Re
 
 ## Source-of-truth model
 
-This public repository is the canonical source for DSET Loops and every released framework-owned methodology document, schema, template, validator, utility, skill, fixture, and migration guide. Installed or workspace-local copies are distributions of this repository, not independent editable sources.
+This public repository is the canonical source for DSET Spec Loops and every released framework-owned methodology document, schema, template, validator, utility, skill, fixture, and migration guide. Installed or workspace-local copies are distributions of this repository, not independent editable sources.
 
 Each project that adopts DSET owns its project truth separately under its own `dset/` root. In an adopting project, `dset/specs/` contains accepted current truth and `dset/changes/` contains bounded work in progress. Framework truth never replaces project truth, and project artifacts do not become framework rules unless they are deliberately contributed here.
 
 ## Status
 
-The methodology is published and this repository now dogfoods the project contract under `dset/`. Reusable schemas, templates, validators, utilities, skills, fixtures, and migration guidance are still being operationalized through the TODO. The [bootstrap change](dset/changes/archive/2026-07-14-bootstrap-dset-project-structure/proposal.md) was archived in draft PR [anatoly-m-maslennikov/dset-loops-framework#2](https://github.com/anatoly-m-maslennikov/dset-loops-framework/pull/2) after independent qualitative evaluation, current-truth reconciliation, and the pending-profile manual archive audit.
+The methodology is published and this repository now dogfoods the project contract under `dset/`. Reusable schemas, templates, validators, utilities, skills, fixtures, and migration guidance are still being operationalized through the TODO. The [bootstrap change](dset/changes/archive/2026-07-14-bootstrap-dset-project-structure/proposal.md) was archived in draft PR [anatoly-m-maslennikov/dset-specs-loops-framework#2](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/2) after independent qualitative evaluation, current-truth reconciliation, and the pending-profile manual archive audit.

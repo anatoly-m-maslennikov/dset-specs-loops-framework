@@ -1,6 +1,6 @@
 # DSET project root
 
-This repository is both the public source of the DSET Loops Framework and an adopting DSET project. This directory contains this project's accepted truth and bounded changes; it does not duplicate the framework methodology under `methodology/`.
+This repository is both the public source of DSET Spec Loops and an adopting DSET project. This directory contains this project's accepted truth and bounded changes; it does not duplicate the framework methodology under `methodology/`.
 
 ## Current structure
 
