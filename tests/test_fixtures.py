@@ -4,6 +4,7 @@ import shutil
 import tempfile
 import unittest
 from pathlib import Path
+from typing import Any, TypedDict, cast
 
 from dset_toolchain.validation import validate_change
 from dset_toolchain.yaml_subset import dump, load
@@ -12,9 +13,21 @@ ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "dset" / "fixtures"
 
 
+class FixtureCase(TypedDict, total=False):
+    id: str
+    base: str
+    expected: str
+    status: str
+    pull_request_number: int
+    archive_date: str
+    remove: list[str]
+    rename: dict[str, str]
+
+
 class FixtureTests(unittest.TestCase):
     def test_fixture_matrix(self) -> None:
-        cases = load(FIXTURES / "cases.yaml")["cases"]
+        matrix = cast(dict[str, Any], load(FIXTURES / "cases.yaml"))
+        cases = cast(list[FixtureCase], matrix["cases"])
         for case in cases:
             with self.subTest(case=case["id"]), tempfile.TemporaryDirectory() as raw:
                 change = self._materialize(case, Path(raw))
@@ -35,21 +48,20 @@ class FixtureTests(unittest.TestCase):
                     self.assertTrue(codes)
                     self.assertEqual(codes[0], case["expected"])
 
-    def _materialize(self, case: dict, target: Path) -> Path:
+    def _materialize(self, case: FixtureCase, target: Path) -> Path:
         source = FIXTURES / "bases" / case["base"]
-        data = load(source / "change.yaml")
-        change = target / data["id"]
+        data = cast(dict[str, Any], load(source / "change.yaml"))
+        change = target / cast(str, data["id"])
         shutil.copytree(source, change)
         manifest = change / "change.yaml"
-        data = load(manifest)
+        data = cast(dict[str, Any], load(manifest))
         if "status" in case:
             data["status"] = case["status"]
         if "pull_request_number" in case:
             number = case["pull_request_number"]
-            data["pull_request"]["number"] = number
-            data["pull_request"]["url"] = (
-                f"https://github.com/example/project/pull/{number}"
-            )
+            pull_request = cast(dict[str, Any], data["pull_request"])
+            pull_request["number"] = number
+            pull_request["url"] = f"https://github.com/example/project/pull/{number}"
         if "archive_date" in case:
             date = case["archive_date"]
             data["archive"] = {

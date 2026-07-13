@@ -39,7 +39,7 @@ verification:
   commands:
     - uv run ruff format --check dset_toolchain tests
     - uv run ruff check dset_toolchain tests
-    - uv run mypy dset_toolchain
+    - uv run mypy dset_toolchain tests
     - "{python} -m unittest discover -s tests -v"
     - git diff --check
 

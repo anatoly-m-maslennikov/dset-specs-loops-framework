@@ -34,4 +34,4 @@ select = ["B", "E", "F", "I", "SIM", "UP"]
 [tool.mypy]
 python_version = "3.10"
 strict = true
-files = ["dset_toolchain"]
+files = ["dset_toolchain", "tests"]
