@@ -1,0 +1,4 @@
+interface:
+  display_name: "DSET Grill"
+  short_description: "Turn ambiguity into accepted domain decisions"
+  default_prompt: "Use $dset-grill to clarify this change before writing its specification."
