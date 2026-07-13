@@ -6,15 +6,16 @@ DSET expands to **Domain–Supportability–Evals–Tests**.
 
 “Spec” remains in the name because every iteration is a governed spec loop; it is not the `S` in DSET.
 
-The framework treats natural language as a high-leverage programming interface while keeping durable software grounded in explicit domain models, accepted behavioral specifications, deterministic tests, qualitative or probabilistic evals, implementation plans, and machine-verifiable gates.
+The framework treats natural language as a high-leverage programming interface while keeping durable software grounded in explicit domain models, accepted behavioral specifications, production supportability, deterministic tests, qualitative or probabilistic evals, implementation plans, and machine-verifiable gates.
 
 ## Core loop
 
 ```text
-Domain → Spec + Test Plan + Eval Plan → Implement → Test + Evaluate → Review → Reconcile Spec → Next Loop
+Domain → Spec + Supportability + Test Plan + Eval Plan → Implement → Test + Evaluate → Review → Reconcile Spec → Next Loop
 ```
 
 - **Domain** defines entities, language, states, invariants, and boundaries.
+- **Supportability** defines the risk-scaled production evidence, identity, diagnostics, data-safety controls, and runbook needed to investigate and fix real incidents.
 - **Spec** records accepted behavioral truth and change scope.
 - **Evals** assess probabilistic, qualitative, or LLM-mediated behavior.
 - **Tests** prove deterministic behavior.

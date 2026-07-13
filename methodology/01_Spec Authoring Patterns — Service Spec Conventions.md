@@ -1,6 +1,6 @@
 # 01_Spec Authoring Patterns — Service Spec Conventions
 
-**Thesis:** When you write the spec for a **deployed service**—including a stateless service whose durable state lives in backing systems—don't invent ad-hoc structure; reuse the named patterns below. The spec must declare both its runtime risk profile and its durability ownership per concern before it selects event sourcing, reconciliation, or durable execution. This is **stage 1** of [00_Tool Development Playbook](<00_Tool Development Playbook.md>): the spec comes first; its separate deterministic **test plan** and probabilistic/qualitative **eval plan** are authored with it per [02_Test and Eval Plan Patterns — Proof Artifact Conventions](<02_Test and Eval Plan Patterns — Proof Artifact Conventions.md>); and the code-side conventions live in [04_General Build Rules — Tool Code Conventions](<04_General Build Rules — Tool Code Conventions.md>). The catalog is §1, ordered by importance; the apply-it checklist is §2.
+**Thesis:** When you write the spec for a **deployed service**—including a stateless service whose durable state lives in backing systems—don't invent ad-hoc structure; reuse the named patterns below. The spec must declare its runtime risk profile, durability ownership per concern, and risk-scaled production supportability contract before it selects event sourcing, reconciliation, or durable execution. This is **stage 1** of [00_Tool Development Playbook](<00_Tool Development Playbook.md>): the spec comes first; its separate deterministic **test plan** and probabilistic/qualitative **eval plan** are authored with it per [02_Test and Eval Plan Patterns — Proof Artifact Conventions](<02_Test and Eval Plan Patterns — Proof Artifact Conventions.md>); and the code-side conventions live in [04_General Build Rules — Tool Code Conventions](<04_General Build Rules — Tool Code Conventions.md>). The catalog is §1, ordered by importance; the apply-it checklist is §2.
 
 ```mermaid
 graph TD
@@ -11,6 +11,7 @@ graph TD
     WHAT --> CTRL["Control plane<br/>modes · gate · roles"]
     WHAT --> DUR["Durability contract<br/>owner · backend · recovery"]
     DUR --> OPT["Conditional patterns<br/>event log · reconcile · workflow"]
+    WHAT --> SUPPORT["Supportability contract<br/>signals · identity · diagnostics · runbook"]
     WHAT --> TEST["Linked test plan + eval plan<br/>deterministic vs probabilistic"]
     WHAT --> REVIEW["Independent adversarial<br/>spec review"]
     style WHAT fill:#e3f2fd,stroke:#1565c0
@@ -50,6 +51,7 @@ graph TD
 | 18 | Review hygiene | **Validate the finished spec with an independent, adversarial reviewer** before calling it done | **independent / adversarial review**; spec **walkthrough** (Fagan inspection) |
 | 19 | Reading hygiene | **Progressive-disclosure formatting** — thesis + headings + one ordering ¶ visible; detail in GitHub-native collapsed details sections | **progressive disclosure** (popularized by Nielsen / NN/g, not coined by him); the KG **skim rule** |
 | 20 | Provenance | **Cite provenance** — link the schema, the prior-art SOPs, the source data the model was distilled from | **source attribution**; reuse over reinvention |
+| 21 | Runtime spine | Define the **production supportability contract** at the selected risk/profile level: incident triggers and service objectives; structured logs, traces, or local diagnostic records; correlation and deploy/change identity; safe read-only diagnostic commands and permissions; retention, redaction, access, deletion, volume, cardinality, and sampling bounds; runbook, escalation, rollback/kill-switch, and incident-to-requirement/PR/fix traceability. Telemetry is evidence, not a second business-state authority | **observability** + **operability** + incident-response **traceability**; profile-scaled and vendor-neutral |
 
 </details>
 
@@ -68,6 +70,7 @@ graph TD
 - [ ] **Inputs / outputs as first-class entity lists** — what the service reads and what it produces, each its own catalog (balance the two).
 - [ ] **Graduated autonomy** — a mode ladder by blast radius, safe default, hard kill-switch; tie every external write to a rung.
 - [ ] **Runtime profile + durability ownership table** — for every concern name the authority, backing system, write rate/volume, concurrency/writer model, reload semantics, and recovery proof. Process memory is never the sole durable authority.
+- [ ] **Production supportability contract** — name the incident triggers/objectives, required signals, correlation and deploy/change identity, safe diagnostic commands and permissions, retention/redaction/access/deletion and volume/cardinality/sampling bounds, runbook/escalation/rollback path, and incident-to-requirement/PR/fix links. Mark it not applicable only for a non-production tool and record why.
 - [ ] **Event log only when required** — if audit/history/replay is a requirement, define its authority, ordering/version semantics, retention, projection rules, and recovery proof; otherwise use the selected store's ordinary transactional model.
 - [ ] **Receiving-side idempotency boundary** — specify the key's exact components, retention window, owner, and atomic check/write operation. Delivery remains at-least-once; deduplication or an idempotent receiver produces effectively-once effects only within that declared boundary.
 - [ ] **Conditional scheduler / control loop** — when work discovery, desired/observed convergence, or external recovery requires it, specify what finds, runs, and recovers work, plus the repeat-safe watermark and concurrency boundary. Mark it not applicable for ordinary request/transaction flows.

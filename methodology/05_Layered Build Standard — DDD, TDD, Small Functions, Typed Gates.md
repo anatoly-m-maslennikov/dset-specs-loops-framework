@@ -101,7 +101,7 @@ The project profile maps these logical layers to real paths and checks forbidden
 | **Lint / static analysis** | Catch undefined/unused symbols, bug-prone constructs, unsafe patterns, and complexity drift | Tool and rule set, warning policy, autofix policy, generated/vendor exclusions |
 | **Secret hygiene** | Keep credentials out of source, logs, durable state, fixtures, prompts, and domain logic | Scanner, ignore/example policy, redaction tests, environment-access boundary, false-positive process |
 
-Applicable supplemental gates remain separate from the six universal categories: an LLM-facing tool adds an injection canary and applicable offline/live evals; a high-risk tool adds the safety and approval evidence selected by its runtime risk profile.
+Applicable supplemental gates remain separate from the six universal categories: an LLM-facing tool adds an injection canary and applicable offline/live evals; a high-risk tool adds the safety and approval evidence selected by its runtime risk profile; and a production-bound tool adds a supportability gate for its selected profile, including correlation and deploy/change identity, safe diagnostics, retention/redaction/access and volume bounds, runbook links, and incident traceability. Deterministic contract enforcement belongs in tests and gates; qualitative diagnostic usefulness remains an eval.
 
 </details>
 
@@ -186,7 +186,7 @@ With this seam, `ask_json(prompt, schema=Reminder)` retains `Reminder` at the ca
 4. Configure conformance scope, exclusions, thresholds, measurement semantics, and the non-growing legacy ratchet.
 5. Add the syntax-aware purity/layer check.
 6. Add typing/contracts, lint/static analysis, spec-sync, and secret-hygiene checks using the selected profile.
-7. Add the pinning-test rule, real-store smoke where serialization exists, property/invariant checks over the pure core, and an injection canary where untrusted text reaches an LLM.
+7. Add the pinning-test rule, real-store smoke where serialization exists, property/invariant checks over the pure core, an injection canary where untrusted text reaches an LLM, and the selected supplemental supportability gate for production-bound tools.
 8. Record red/green evidence for adoption and confirm that each gate fails for a representative violation.
 9. Prune stale agent guidance and publish the selected profile, layer map, and canonical command in the directory-scoped agent contract.
 10. Shrink the legacy baseline to empty; profile changes thereafter require versioned evidence rather than silent local weakening.

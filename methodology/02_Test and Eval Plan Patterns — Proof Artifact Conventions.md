@@ -50,6 +50,7 @@ graph TD
 | **Capture red/green evidence for test-driven changes** — the plan says where the failing output and passing output will be recorded, so tests prove intent rather than merely passing after the fact | **red-green-refactor** / strict TDD evidence (superpowers) |
 | **Verification-before-completion — evidence before claims** — before claiming a task is done, run a fresh full verification command, read its output and exit code, verify the claim, then state it with the evidence | **verification-before-completion** (superpowers) |
 | **Subagent review after each implementation task** — a fresh implementer per bounded task; after each task, a reviewer checks spec compliance and quality before the next task starts | **subagent-driven development** (superpowers) |
+| **Prove supportability in both artifacts without blending them** — deterministic tests validate telemetry contracts, propagation, safety, and bounds; qualitative evals measure whether an independent operator can diagnose, contain, escalate, and locate the governing change from realistic evidence | **observability contract testing** + **operability/incident-response evaluation** |
 
 </details>
 
@@ -83,9 +84,11 @@ graph TD
 - [ ] **Serialization smokes and properties** (`test-plan.md`) — real-store round-trips plus totality, idempotence, round-trip, and content-preservation properties.
 - [ ] **Regression policy** (`test-plan.md`) — every fixed bug ships a pinning test; refactors ship a differential proof.
 - [ ] **Machine gates** (`test-plan.md`) — name the selected language profile and its conformance, purity, spec-sync, typing/contracts, lint/static-analysis, and secret-hygiene commands per [05_Layered Build Standard — DDD, TDD, Small Functions, Typed Gates](<05_Layered Build Standard — DDD, TDD, Small Functions, Typed Gates.md>); add an injection canary when untrusted text reaches an LLM.
+- [ ] **Supportability contract tests** (`test-plan.md`, when production-bound) — validate required fields and schemas, correlation propagation, deploy/change identity, read-only diagnostic permissions, redaction/access/retention/deletion behavior, cardinality/volume/sampling bounds, and runbook/incident-link resolution.
 - [ ] **Eval dataset and criteria** (`eval-plan.md`) — representative and adversarial cases, task-specific assertions, rubrics, thresholds, and refresh policy.
 - [ ] **Evaluator calibration** (`eval-plan.md`) — human-labeled examples, disagreement policy, and refresh cadence for any LLM judge.
 - [ ] **Eval tiers and budget** (`eval-plan.md`) — offline/replay tier, live-model tier, cost budget, drift cadence, and accepted variance.
+- [ ] **Diagnostic-usefulness evaluation** (`eval-plan.md`, when production-bound) — give an independent operator a synthetic, redacted incident and evaluate whether the evidence supports diagnosis, containment, escalation or rollback, and traceability to the governing requirement, change, PR, and fix.
 - [ ] **Agent-runnable verification** (shared) — canonical command/check sequence with a readable pass/fail signal.
 - [ ] **Red/green evidence capture** (shared) — failing and passing evidence for each test-driven change.
 - [ ] **Verification-before-completion gate** (shared) — fresh full verification output and exit status before completion.
