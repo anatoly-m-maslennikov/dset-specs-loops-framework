@@ -39,6 +39,8 @@ openspec/
         ├── proposal.md                 # Why, scope, non-goals, risk
         ├── specs/                      # ADDED/MODIFIED/REMOVED requirements
         ├── eval-plan.md                # Proof designed with the spec, before code
+        ├── solution-landscape.md       # Capability gaps, candidates and adopt/adapt/build decision
+        ├── proofs/                     # Disposable framework/library proof-of-fit evidence
         ├── design.md                   # Technical design linking accepted ADRs
         ├── implementation-plan.md      # Ordered batches and rollout
         ├── tasks.md                    # Executable checklist
@@ -52,9 +54,69 @@ openspec/
 - [ ] Require `eval-plan.md` to distinguish deterministic checks, integration/E2E checks, and probabilistic/LLM evals where applicable.
 - [ ] Require `implementation-plan.md` to map every batch to requirement IDs and eval IDs.
 - [ ] Require `verification.md` to record fresh commands, exit status, redacted result summaries, evidence pointers, unresolved failures, and whether completion is accepted; do not persist secrets or sensitive full command output.
-- [ ] Require schema validation to prove the dependency graph: proposal → delta specs plus eval plan → design plus implementation plan → tasks → verification → archive.
+- [ ] Require schema validation to prove the dependency graph: proposal → delta specs plus eval plan → solution landscape plus proof-of-fit → ADR/design plus implementation plan → tasks → verification → archive.
 - [ ] Define the archive transaction: verify → reconcile deltas into `openspec/specs/` → preserve the completed change under `openspec/changes/archive/YYYY-MM-DD-<change-id>/` → run spec-sync/link checks.
 - [ ] Define failure behavior: an incomplete or failed change remains unarchived and its current-truth specs remain unchanged.
+
+### Solution Landscape and Reuse Gate
+
+- [ ] Add a mandatory **Solution Landscape and Reuse Gate** after domain, specification, and eval/test-plan readiness but before architecture selection, detailed design, and implementation planning.
+- [ ] State the governing rule: select frameworks, libraries, services, protocols, and reusable components by testing them against accepted requirements and proof—not by reshaping the domain around a fashionable tool.
+- [ ] Define the gate sequence as capability-gap map → ecosystem discovery → evidence-backed shortlist → proof-of-fit → adopt/adapt/build decision → ADR/design integration.
+- [ ] Derive a capability-gap map from requirement and eval IDs. For each capability, record required behavior, quality attributes, constraints, risk, whether it differentiates the product, and whether an existing component could own it.
+- [ ] Classify capabilities before searching: product-defining domain behavior should remain DSET-owned; commodity or infrastructural behavior should prefer reuse when a candidate satisfies the proof and operational constraints.
+- [ ] Search across appropriate solution types rather than libraries alone: frameworks, focused libraries, managed services, standards/protocols, platform-native capabilities, reference implementations, and a minimal custom implementation as the comparison baseline.
+- [ ] Record discovery provenance in `solution-landscape.md`: candidate name, source URL, exact version or commit evaluated, license, maintenance/release evidence, documentation used, known constraints, and the requirements/evals it claims to cover.
+- [ ] Require a comparison matrix that scores verified requirement coverage, quality-attribute fit, custom glue, architecture fit, testability, observability, reliability/recovery, performance, latency, cost, security, privacy/data ownership, deployment and operational burden, portability, ecosystem maturity, maintenance health, transitive dependency risk, license compatibility, lock-in, and exit cost.
+- [ ] Distinguish vendor claims from observed evidence. Mark every criterion as proven, partially proven, unproven, failed, or not applicable and attach an evidence pointer.
+- [ ] Shortlist only candidates with plausible hard-constraint coverage. Reject candidates early when licensing, security, data residency, platform support, architecture, or operational requirements are incompatible.
+- [ ] Build disposable proof-of-fit spikes under `proofs/<candidate>-fit/`; prohibit prototype code from entering production until it is deliberately redesigned, tested, and accepted through the normal implementation plan.
+- [ ] Run proof-of-fit candidates against representative scenarios from the existing eval/test plan, including happy paths, failure paths, restart/recovery, concurrency, boundary conditions, upgrade/migration behavior, and operational diagnostics.
+- [ ] Use the same acceptance thresholds for candidates and custom alternatives so the comparison cannot be biased by easier proof for the preferred option.
+- [ ] Measure the uncovered surface explicitly: missing requirements, adapter code, policy glue, persistence, migrations, operational tooling, extra tests, and long-term maintenance that DSET would still own after adoption.
+- [ ] Prefer the smallest stable component that owns a coherent problem. Do not adopt a broad framework merely because it covers the largest raw percentage of requirements if its coupling, glue, or operational cost is worse.
+- [ ] Define the decision outcomes:
+  - **Adopt** when the component satisfies the required proof with acceptable ownership, operational cost, and exit risk.
+  - **Adapt** when the component is useful but must sit behind a DSET-owned port, adapter, anti-corruption layer, or policy wrapper.
+  - **Build** when the capability differentiates the product, candidates fail hard requirements, or owning a minimal implementation is demonstrably cheaper and safer.
+  - **Defer** when evidence is insufficient and the capability is not yet required; record the trigger for reassessment.
+- [ ] Require selected external components to remain behind stable DSET-owned contracts where replacement cost or domain contamination is material; keep vendor/framework types out of the domain core.
+- [ ] Create an ADR for every material adoption decision, including selected version, evidence, rejected alternatives, trade-offs, integration boundary, data ownership, upgrade policy, failure/rollback plan, and exit/migration strategy.
+- [ ] Link the adoption ADR bidirectionally to requirement/eval IDs, `solution-landscape.md`, proof artifacts, design, implementation tasks, dependency manifests, and the final implementing commits.
+- [ ] Require dependency pinning and reproducible installation, plus checks for transitive licenses, known vulnerabilities, abandoned dependencies, unbounded telemetry, unexpected network access, and incompatible update behavior before acceptance.
+- [ ] Define upgrade handling as a new bounded change when behavior, contracts, data, security posture, licensing, or operational characteristics may change; rerun only the affected fit proofs and regression evals.
+- [ ] Require a replacement seam and exit test for high-lock-in components: demonstrate that DSET-owned domain behavior and accepted specs survive replacement of the external adapter.
+- [ ] Add an LLM-agent-workflow example: map requirements such as durable state, checkpointing, pause/resume, branching, human approval, retries/idempotency, concurrency, recovery, observability, and storage control; treat LangGraph as one candidate alongside focused libraries and a minimal custom state machine, then decide from proof-of-fit evidence.
+- [ ] Make completion of the gate explicit: no candidate advances into design or the implementation plan until hard constraints pass, open risks have owners, the decision ADR is accepted, and rejected or deferred alternatives are recorded.
+
+### ADR-to-implementation traceability
+
+- [ ] Give every ADR a stable ID such as `ADR-0042`; treat the ADR as the owner of the decision and rationale, not as a manually maintained ledger of every implementation commit.
+- [ ] Require meaningful implementation commits to reference the decision and change through structured Git trailers, for example `ADR: ADR-0042`, `DSET-Change: tmux-controls`, and, when useful, `Requirement: TMUX-REQ-07` or `Eval: TMUX-EVAL-03`.
+- [ ] Require an implemented ADR to record its related DSET change IDs plus the final pull request and merge or squash commit as implementation evidence; do not continually edit the ADR for every intermediate commit.
+- [ ] Define the canonical traceability chain as ADR → DSET change → requirements/evals → pull request → merge commit, with commit trailers providing direct implementation-to-decision links.
+- [ ] Define merge-strategy behavior: squash commits must retain the required trailers, merge commits must remain traceable to the pull request and change package, and rebases must not silently discard decision references.
+- [ ] Generate a committed `dset/traceability.yaml` or equivalent index from ADR metadata, change-package metadata, pull-request references, and Git trailers; do not make humans maintain a second traceability source of truth.
+- [ ] Keep the generated index reproducible and reviewable: stable ordering, no timestamps unless semantically required, and a clean regeneration check in CI.
+- [ ] Make CI reject references to missing ADRs, changes, requirements, evals, or evidence, and report accepted ADRs that claim implementation but have no final PR/commit evidence.
+- [ ] Do not use Git notes as the primary relationship store because they are not reliably transferred by ordinary clone, fetch, and push workflows.
+
+### Shift-left and Back-to-Left Repair Loop
+
+- [ ] Make **shift-left** and **back-to-left** complementary mandatory behaviors: design specs and proof before implementation, then trace every downstream defect back to the earliest defective decision or artifact before replaying the pipeline forward.
+- [ ] State the governing rule: every downstream defect triggers a backward provenance pass followed by a forward consistency replay.
+- [ ] Define the default repair sequence: reproduce with a failing regression test/eval → identify the first bad commit → follow commit/change/ADR/spec links → classify the earliest incorrect artifact → correct or supersede it → propagate the correction through specs, proof, code, verification, and archive.
+- [ ] Require `git bisect`, focused history analysis, or equivalent evidence to identify the first bad commit where feasible; do not treat the nearest `git blame` result or the bug-fix hunch as proven origin.
+- [ ] Classify each defect at least as an ADR/decision defect, spec ambiguity/defect, design defect, implementation drift, missing test/eval, missing verification gate, or external-assumption change.
+- [ ] Require an explicit disposition for every relevant upstream artifact: corrected, superseded, amended, or reviewed with no change and a recorded reason. Always inspect upstream; change it only when evidence shows that it contributed to the defect.
+- [ ] Preserve decision history: never silently rewrite an accepted ADR to make the past look correct. Add a dated correction/addendum or a superseding ADR, link both directions, and retain the original decision and its implementation evidence.
+- [ ] Keep accepted behavioral truth in the spec rather than the ADR. Propagate a corrected decision into current truth through a delta spec instead of copying or merging ADR prose directly into the spec.
+- [ ] Do not rewrite the introducing commit. Link the immutable history from the repair commit and traceability index using trailers such as `Bug: BUG-0123`, `Introduced-By: <sha>`, `ADR: ADR-0042`, `DSET-Change: <change-id>`, `Requirement: <id>`, and `Regression-Test: <id>`.
+- [ ] Extend the defect change package with structured root-cause data: first bad commit, classification, affected ADRs/specs, test/eval gap, correcting or superseding ADR, spec delta, fix commit, and final verification evidence.
+- [ ] Require the regression proof to fail against the defective revision and pass after the repair where reproducible; for probabilistic behavior, retain a failing baseline and demonstrate the accepted improvement threshold.
+- [ ] Allow emergency containment before the regression test only when operational urgency is recorded. The regression proof, backward provenance pass, upstream disposition, and forward replay must still complete before the change is closed.
+- [ ] Make defect closure require forward consistency: corrected ADR/design → delta spec → eval/test plan → regression proof → implementation → verification → reconciliation into accepted current truth.
+- [ ] Add the full causal chain to generated `dset/traceability.yaml` so a bug, introducing commit, decision, corrected spec, regression proof, and repair commit are discoverable in both directions.
 
 ## §2 | Define the large-project package tree
 
@@ -293,14 +355,27 @@ dset/
 ## §7 | Build the reusable assets
 
 - [ ] Create the approved change-package template in the canonical owned tooling location.
-- [ ] Create a validator that checks required artifacts, IDs, delta markers, links, task-to-requirement/eval mapping, archive readiness, and current-truth reconciliation.
+- [ ] Create a validator that checks required artifacts, IDs, delta markers, links, task-to-requirement/eval mapping, solution-landscape/proof/ADR traceability, ADR/commit/change traceability, Back-to-Left defect-loop completeness, archive readiness, and current-truth reconciliation.
 - [ ] Make the validator cross-platform and runnable through one canonical command.
 - [ ] Create only the three accepted focused skills from §5; keep each skill small, script-backed where useful, and explicit about trigger/stop conditions.
 - [ ] Install custom skills through the existing vault-to-runtime symlink workflow; never maintain copied canonical duplicates.
-- [ ] Add fixtures containing one small fix, one normal feature, one failed/unarchived change, and one archived change.
+- [ ] Add fixtures containing one small fix, one normal feature, one failed/unarchived change, one archived change, one external-framework adoption with competing proofs, and one defect traced to an introducing commit and superseded ADR.
 - [ ] Add a migration guide for repositories with existing specs and implementation-plan folders.
 
-## §8 | Acceptance criteria
+## §8 | Formalize third-party licensing and provenance
+
+- [ ] Keep DSET's original work under Apache-2.0 while preserving the original MIT copyright and permission notices for any copied or substantially adapted OpenSpec, Matt Pocock Skills, Superpowers, or BMAD material.
+- [ ] Add a root `THIRD_PARTY_NOTICES.md` that records, for every borrowed component: upstream project, author/copyright holder, source URL, exact commit or release, license, affected DSET files, what was adapted, and DSET modifications.
+- [ ] Add the applicable upstream license texts under `third_party/licenses/`, using stable names such as `openspec-MIT.txt`, `mattpocock-skills-MIT.txt`, `superpowers-MIT.txt`, and `bmad-method-MIT.txt`.
+- [ ] Add a short provenance header or adjacent README note to every copied or substantially adapted file; do not present third-party MIT material as exclusively Apache-2.0.
+- [ ] Preserve any upstream `NOTICE`, attribution, or contributor information required by the exact source version and inspect third-party subdirectories for separately licensed assets or dependencies before copying.
+- [ ] Prefer independently implementing ideas and workflow patterns in DSET terminology; when wording, templates, code, scripts, or skill files are copied substantially, treat them as licensed material and retain the MIT notice.
+- [ ] Keep trademarks separate from copyright licensing. In particular, follow BMAD's trademark policy: do not use BMAD names, confusing variants, logos, or branding as DSET product names and do not imply endorsement; allow only truthful source, inspiration, or compatibility references.
+- [ ] Define a pre-merge provenance check for borrowed material: verify source and version, record the applicable license, confirm required notices are present, check trademark-safe naming, and confirm that no source-specific exception was overlooked.
+- [ ] Add licensing/provenance checks to the repository validator where they can be deterministic, including required notice files and valid links from adapted components to `THIRD_PARTY_NOTICES.md`.
+- [ ] Have the final methodology review verify that every external influence is either independently re-expressed with provenance or distributed with its required license notices.
+
+## §9 | Acceptance criteria
 
 - [ ] The methodology remains understandable without installing OpenSpec or Matt Pocock’s skills.
 - [ ] One repo-local change folder contains intent, proof, design, execution, and verification without duplicating the same rule across artifacts.
@@ -308,25 +383,32 @@ dset/
 - [ ] Every package can be understood and verified as a bounded unit, while global E2E tests and evals prove cross-package behavior.
 - [ ] Framework-owned skills, commands, folders, files, CI gates, and environment variables follow the `dset` namespace contract without prefixing ordinary product/domain names.
 - [ ] Tests/evals are designed before implementation and remain independently reviewable.
+- [ ] Every material external-component decision is derived from requirement/eval IDs, supported by reproducible proof-of-fit evidence, recorded in an ADR, isolated behind an appropriate ownership boundary, and accompanied by an exit strategy.
 - [ ] Archiving is deterministic, preserves history, and cannot silently overwrite current truth after failed verification.
 - [ ] Every adopted skill fills a documented gap and has a distinct trigger, output, verification step, and stop condition.
 - [ ] Review effort scales with risk: gates/self-review for mechanical changes, one independent review for normal changes, and separate spec-compliance and code-quality reviews for high-risk changes.
 - [ ] Agents can resume an interrupted change from files alone without relying on chat history.
 - [ ] The canonical verification command detects malformed change packages and spec drift.
+- [ ] ADRs, DSET changes, requirements/evals, pull requests, and final commits form a bidirectionally discoverable traceability graph without manually listing every intermediate commit in ADRs.
+- [ ] Every closed defect demonstrates a regression proof, evidence-backed first-bad-commit disposition, upstream ADR/spec review, and forward propagation into accepted current truth; emergency containment cannot bypass eventual Back-to-Left completion.
 - [ ] The Claudian pilot demonstrates lower ambiguity and reliable recovery without unacceptable ceremony or context overhead.
 - [ ] Independent review finds no competing methodology, duplicate ownership, stale links, or tool-specific lock-in in 00–06.
+- [ ] Every copied or substantially adapted third-party component has traceable provenance and all required license, attribution, notice, and trademark safeguards.
 - [ ] After acceptance, move durable rules/assets to their owners and delete this TODO.
 
-## §9 | Final rollout order
+## §10 | Final rollout order
 
 1. Finalize the change-package contract.
 2. Finalize the large-project package tree, decomposition decision guide, global/package ownership rules, and `dset` namespace contract.
-3. Evaluate CLI versus vault-owned templates/scripts.
-4. Run the three Claudian pilots and exercise both package-local and global proof.
-5. Correct the contracts from pilot evidence.
-6. Adapt the three first-wave Matt Pocock workflow patterns and refine existing stages with the non-skill review/task/design ideas.
-7. Update only the owning 00–06 sections.
-8. Build validators, fixtures, and migration guidance.
-9. Run independent methodology and implementation reviews.
-10. Adopt as the default for qualifying changes.
-11. Delete this TODO after all durable outputs are linked from their canonical owners.
+3. Formalize and exercise the Solution Landscape and Reuse Gate with competing framework/library proofs.
+4. Evaluate CLI versus vault-owned templates/scripts through the same reuse gate.
+5. Run the three Claudian pilots and exercise both package-local and global proof.
+6. Correct the contracts from pilot evidence.
+7. Exercise and formalize the Shift-Left and Back-to-Left Repair Loop with an evidence-backed defect fixture.
+8. Adapt the three first-wave Matt Pocock workflow patterns and refine existing stages with the non-skill review/task/design ideas.
+9. Update only the owning 00–06 sections.
+10. Build validators, fixtures, and migration guidance.
+11. Add third-party notices, retained licenses, per-file provenance, and deterministic licensing checks.
+12. Run independent methodology, implementation, and licensing/provenance reviews.
+13. Adopt as the default for qualifying changes.
+14. Delete this TODO after all durable outputs are linked from their canonical owners.
