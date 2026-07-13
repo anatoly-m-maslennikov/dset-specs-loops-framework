@@ -1,0 +1,96 @@
+schema_version: 1.0
+repository: anatoly-m-maslennikov/dset-specs-loops-framework
+changes:
+  -
+    id: bootstrap-dset-project-structure
+    status: archived
+    path: dset/changes/archive/2026-07-14-bootstrap-dset-project-structure
+    packages:
+      - methodology
+    requirements:
+      - BOOT-REQ-001
+      - BOOT-REQ-002
+      - BOOT-REQ-003
+      - BOOT-REQ-004
+      - BOOT-REQ-005
+    tests:
+      - BOOT-TEST-001
+      - BOOT-TEST-002
+      - BOOT-TEST-003
+      - BOOT-TEST-004
+      - BOOT-TEST-005
+      - BOOT-TEST-006
+    evals:
+      - BOOT-EVAL-001
+      - BOOT-EVAL-002
+      - BOOT-EVAL-003
+      - BOOT-EVAL-004
+    adrs: []
+    pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/2
+    evidence:
+      - dset/changes/archive/2026-07-14-bootstrap-dset-project-structure/proofs/boot-evals-2026-07-14.md
+      - dset/changes/archive/2026-07-14-bootstrap-dset-project-structure/proofs/boot-evals-pushed-head-2026-07-14.md
+  -
+    id: make-supportability-first-class
+    status: archived
+    path: dset/changes/archive/2026-07-14-make-supportability-first-class
+    packages:
+      - methodology
+    requirements:
+      - SUP-REQ-001
+      - SUP-REQ-002
+      - SUP-REQ-003
+      - SUP-REQ-004
+      - SUP-REQ-005
+      - SUP-REQ-006
+    tests:
+      - SUP-TEST-001
+      - SUP-TEST-002
+      - SUP-TEST-003
+      - SUP-TEST-004
+      - SUP-TEST-005
+      - SUP-TEST-006
+      - SUP-TEST-007
+    evals:
+      - SUP-EVAL-001
+      - SUP-EVAL-002
+      - SUP-EVAL-003
+      - SUP-EVAL-004
+      - SUP-EVAL-005
+    adrs: []
+    pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3
+    evidence:
+      - dset/changes/archive/2026-07-14-make-supportability-first-class/proofs/archive-readiness-audit-2026-07-14.md
+      - dset/changes/archive/2026-07-14-make-supportability-first-class/proofs/deterministic-checks-2026-07-14.md
+      - dset/changes/archive/2026-07-14-make-supportability-first-class/proofs/supportability-evals-2026-07-14.md
+      - dset/changes/archive/2026-07-14-make-supportability-first-class/proofs/synthetic-incidents.md
+  -
+    id: operationalize-dset-v1
+    status: in-progress
+    path: dset/changes/operationalize-dset-v1
+    packages:
+      - methodology
+    requirements:
+      - DSET-V1-REQ-001
+      - DSET-V1-REQ-002
+      - DSET-V1-REQ-003
+      - DSET-V1-REQ-004
+      - DSET-V1-REQ-005
+      - DSET-V1-REQ-006
+    tests:
+      - DSET-V1-TEST-001
+      - DSET-V1-TEST-002
+      - DSET-V1-TEST-003
+      - DSET-V1-TEST-004
+      - DSET-V1-TEST-005
+      - DSET-V1-TEST-006
+      - DSET-V1-TEST-007
+      - DSET-V1-TEST-008
+    evals:
+      - DSET-V1-EVAL-001
+      - DSET-V1-EVAL-002
+      - DSET-V1-EVAL-003
+      - DSET-V1-EVAL-004
+    adrs: []
+    pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7
+    evidence: []
