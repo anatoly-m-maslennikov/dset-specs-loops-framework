@@ -56,6 +56,35 @@ openspec/
 - [ ] Define the archive transaction: verify → reconcile deltas into `openspec/specs/` → preserve the completed change under `openspec/changes/archive/YYYY-MM-DD-<change-id>/` → run spec-sync/link checks.
 - [ ] Define failure behavior: an incomplete or failed change remains unarchived and its current-truth specs remain unchanged.
 
+### ADR-to-implementation traceability
+
+- [ ] Give every ADR a stable ID such as `ADR-0042`; treat the ADR as the owner of the decision and rationale, not as a manually maintained ledger of every implementation commit.
+- [ ] Require meaningful implementation commits to reference the decision and change through structured Git trailers, for example `ADR: ADR-0042`, `DSET-Change: tmux-controls`, and, when useful, `Requirement: TMUX-REQ-07` or `Eval: TMUX-EVAL-03`.
+- [ ] Require an implemented ADR to record its related DSET change IDs plus the final pull request and merge or squash commit as implementation evidence; do not continually edit the ADR for every intermediate commit.
+- [ ] Define the canonical traceability chain as ADR → DSET change → requirements/evals → pull request → merge commit, with commit trailers providing direct implementation-to-decision links.
+- [ ] Define merge-strategy behavior: squash commits must retain the required trailers, merge commits must remain traceable to the pull request and change package, and rebases must not silently discard decision references.
+- [ ] Generate a committed `dset/traceability.yaml` or equivalent index from ADR metadata, change-package metadata, pull-request references, and Git trailers; do not make humans maintain a second traceability source of truth.
+- [ ] Keep the generated index reproducible and reviewable: stable ordering, no timestamps unless semantically required, and a clean regeneration check in CI.
+- [ ] Make CI reject references to missing ADRs, changes, requirements, evals, or evidence, and report accepted ADRs that claim implementation but have no final PR/commit evidence.
+- [ ] Do not use Git notes as the primary relationship store because they are not reliably transferred by ordinary clone, fetch, and push workflows.
+
+### Shift-left and Back-to-Left Repair Loop
+
+- [ ] Make **shift-left** and **back-to-left** complementary mandatory behaviors: design specs and proof before implementation, then trace every downstream defect back to the earliest defective decision or artifact before replaying the pipeline forward.
+- [ ] State the governing rule: every downstream defect triggers a backward provenance pass followed by a forward consistency replay.
+- [ ] Define the default repair sequence: reproduce with a failing regression test/eval → identify the first bad commit → follow commit/change/ADR/spec links → classify the earliest incorrect artifact → correct or supersede it → propagate the correction through specs, proof, code, verification, and archive.
+- [ ] Require `git bisect`, focused history analysis, or equivalent evidence to identify the first bad commit where feasible; do not treat the nearest `git blame` result or the bug-fix hunch as proven origin.
+- [ ] Classify each defect at least as an ADR/decision defect, spec ambiguity/defect, design defect, implementation drift, missing test/eval, missing verification gate, or external-assumption change.
+- [ ] Require an explicit disposition for every relevant upstream artifact: corrected, superseded, amended, or reviewed with no change and a recorded reason. Always inspect upstream; change it only when evidence shows that it contributed to the defect.
+- [ ] Preserve decision history: never silently rewrite an accepted ADR to make the past look correct. Add a dated correction/addendum or a superseding ADR, link both directions, and retain the original decision and its implementation evidence.
+- [ ] Keep accepted behavioral truth in the spec rather than the ADR. Propagate a corrected decision into current truth through a delta spec instead of copying or merging ADR prose directly into the spec.
+- [ ] Do not rewrite the introducing commit. Link the immutable history from the repair commit and traceability index using trailers such as `Bug: BUG-0123`, `Introduced-By: <sha>`, `ADR: ADR-0042`, `DSET-Change: <change-id>`, `Requirement: <id>`, and `Regression-Test: <id>`.
+- [ ] Extend the defect change package with structured root-cause data: first bad commit, classification, affected ADRs/specs, test/eval gap, correcting or superseding ADR, spec delta, fix commit, and final verification evidence.
+- [ ] Require the regression proof to fail against the defective revision and pass after the repair where reproducible; for probabilistic behavior, retain a failing baseline and demonstrate the accepted improvement threshold.
+- [ ] Allow emergency containment before the regression test only when operational urgency is recorded. The regression proof, backward provenance pass, upstream disposition, and forward replay must still complete before the change is closed.
+- [ ] Make defect closure require forward consistency: corrected ADR/design → delta spec → eval/test plan → regression proof → implementation → verification → reconciliation into accepted current truth.
+- [ ] Add the full causal chain to generated `dset/traceability.yaml` so a bug, introducing commit, decision, corrected spec, regression proof, and repair commit are discoverable in both directions.
+
 ## §2 | Define the large-project package tree
 
 - [ ] Make a package tree mandatory for a large project; do not use file count or lines of code as the primary threshold.
@@ -293,14 +322,27 @@ dset/
 ## §7 | Build the reusable assets
 
 - [ ] Create the approved change-package template in the canonical owned tooling location.
-- [ ] Create a validator that checks required artifacts, IDs, delta markers, links, task-to-requirement/eval mapping, archive readiness, and current-truth reconciliation.
+- [ ] Create a validator that checks required artifacts, IDs, delta markers, links, task-to-requirement/eval mapping, ADR/commit/change traceability, Back-to-Left defect-loop completeness, archive readiness, and current-truth reconciliation.
 - [ ] Make the validator cross-platform and runnable through one canonical command.
 - [ ] Create only the three accepted focused skills from §5; keep each skill small, script-backed where useful, and explicit about trigger/stop conditions.
 - [ ] Install custom skills through the existing vault-to-runtime symlink workflow; never maintain copied canonical duplicates.
-- [ ] Add fixtures containing one small fix, one normal feature, one failed/unarchived change, and one archived change.
+- [ ] Add fixtures containing one small fix, one normal feature, one failed/unarchived change, one archived change, and one defect traced to an introducing commit and superseded ADR.
 - [ ] Add a migration guide for repositories with existing specs and implementation-plan folders.
 
-## §8 | Acceptance criteria
+## §8 | Formalize third-party licensing and provenance
+
+- [ ] Keep DSET's original work under Apache-2.0 while preserving the original MIT copyright and permission notices for any copied or substantially adapted OpenSpec, Matt Pocock Skills, Superpowers, or BMAD material.
+- [ ] Add a root `THIRD_PARTY_NOTICES.md` that records, for every borrowed component: upstream project, author/copyright holder, source URL, exact commit or release, license, affected DSET files, what was adapted, and DSET modifications.
+- [ ] Add the applicable upstream license texts under `third_party/licenses/`, using stable names such as `openspec-MIT.txt`, `mattpocock-skills-MIT.txt`, `superpowers-MIT.txt`, and `bmad-method-MIT.txt`.
+- [ ] Add a short provenance header or adjacent README note to every copied or substantially adapted file; do not present third-party MIT material as exclusively Apache-2.0.
+- [ ] Preserve any upstream `NOTICE`, attribution, or contributor information required by the exact source version and inspect third-party subdirectories for separately licensed assets or dependencies before copying.
+- [ ] Prefer independently implementing ideas and workflow patterns in DSET terminology; when wording, templates, code, scripts, or skill files are copied substantially, treat them as licensed material and retain the MIT notice.
+- [ ] Keep trademarks separate from copyright licensing. In particular, follow BMAD's trademark policy: do not use BMAD names, confusing variants, logos, or branding as DSET product names and do not imply endorsement; allow only truthful source, inspiration, or compatibility references.
+- [ ] Define a pre-merge provenance check for borrowed material: verify source and version, record the applicable license, confirm required notices are present, check trademark-safe naming, and confirm that no source-specific exception was overlooked.
+- [ ] Add licensing/provenance checks to the repository validator where they can be deterministic, including required notice files and valid links from adapted components to `THIRD_PARTY_NOTICES.md`.
+- [ ] Have the final methodology review verify that every external influence is either independently re-expressed with provenance or distributed with its required license notices.
+
+## §9 | Acceptance criteria
 
 - [ ] The methodology remains understandable without installing OpenSpec or Matt Pocock’s skills.
 - [ ] One repo-local change folder contains intent, proof, design, execution, and verification without duplicating the same rule across artifacts.
@@ -313,20 +355,25 @@ dset/
 - [ ] Review effort scales with risk: gates/self-review for mechanical changes, one independent review for normal changes, and separate spec-compliance and code-quality reviews for high-risk changes.
 - [ ] Agents can resume an interrupted change from files alone without relying on chat history.
 - [ ] The canonical verification command detects malformed change packages and spec drift.
+- [ ] ADRs, DSET changes, requirements/evals, pull requests, and final commits form a bidirectionally discoverable traceability graph without manually listing every intermediate commit in ADRs.
+- [ ] Every closed defect demonstrates a regression proof, evidence-backed first-bad-commit disposition, upstream ADR/spec review, and forward propagation into accepted current truth; emergency containment cannot bypass eventual Back-to-Left completion.
 - [ ] The Claudian pilot demonstrates lower ambiguity and reliable recovery without unacceptable ceremony or context overhead.
 - [ ] Independent review finds no competing methodology, duplicate ownership, stale links, or tool-specific lock-in in 00–06.
+- [ ] Every copied or substantially adapted third-party component has traceable provenance and all required license, attribution, notice, and trademark safeguards.
 - [ ] After acceptance, move durable rules/assets to their owners and delete this TODO.
 
-## §9 | Final rollout order
+## §10 | Final rollout order
 
 1. Finalize the change-package contract.
 2. Finalize the large-project package tree, decomposition decision guide, global/package ownership rules, and `dset` namespace contract.
 3. Evaluate CLI versus vault-owned templates/scripts.
 4. Run the three Claudian pilots and exercise both package-local and global proof.
 5. Correct the contracts from pilot evidence.
-6. Adapt the three first-wave Matt Pocock workflow patterns and refine existing stages with the non-skill review/task/design ideas.
-7. Update only the owning 00–06 sections.
-8. Build validators, fixtures, and migration guidance.
-9. Run independent methodology and implementation reviews.
-10. Adopt as the default for qualifying changes.
-11. Delete this TODO after all durable outputs are linked from their canonical owners.
+6. Exercise and formalize the Shift-Left and Back-to-Left Repair Loop with an evidence-backed defect fixture.
+7. Adapt the three first-wave Matt Pocock workflow patterns and refine existing stages with the non-skill review/task/design ideas.
+8. Update only the owning 00–06 sections.
+9. Build validators, fixtures, and migration guidance.
+10. Add third-party notices, retained licenses, per-file provenance, and deterministic licensing checks.
+11. Run independent methodology, implementation, and licensing/provenance reviews.
+12. Adopt as the default for qualifying changes.
+13. Delete this TODO after all durable outputs are linked from their canonical owners.
