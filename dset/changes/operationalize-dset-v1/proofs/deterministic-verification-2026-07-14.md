@@ -6,7 +6,8 @@
 - Branch: `dev`
 - Verified pushed head: `114fc3c90d39e1273cbc8cafadd33c67057d5bad`
 - Implementing PR: [#7](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7)
-- Canonical command: `uv run dset verify .`
+- Canonical command: `python -m dset_toolchain verify .`
+- Locked repository entry point used for the captured run: `uv run dset verify .`
 
 ## Fresh deterministic results
 
@@ -42,6 +43,8 @@ The skill checks used the shared validator at `/Users/am/.codex/skills/.system/s
 ## Corrective loop observed during verification
 
 An expanded manual type check initially found that strict `mypy` coverage stopped at `dset_toolchain` and did not include `tests`. The test fixture annotations and configured type-check scope were corrected in commit `114fc3c`; the canonical gate then passed across all 18 Python source files. This proof records the corrected pushed head, not the earlier incomplete result.
+
+A later canonical invocation inside a restricted execution sandbox could not open the existing user-level uv cache and stopped at the first configured command. Re-running the same command with access to that already-installed cache passed. This was an evaluator-environment permission boundary, not a repository verification failure; the hosted CI run supplies independent repository-head evidence.
 
 ## Data handling
 

@@ -42,15 +42,17 @@ The project currently has one package, `methodology`. A `specs/global/` layer is
 | `history/` | GitHub-authoritative PR metadata snapshot used as bounded evidence |
 | `supportability/` | Production runbooks for this repository's hosted automation |
 
-## Canonical commands
+## Repository commands
 
 | Command | Behavior |
 |---|---|
 | `python -m dset_toolchain check .` | Read-only validation with stable diagnostics and no third-party runtime dependency |
-| `uv run dset verify .` | Locked Python gates, unit/fixture tests, Markdown checks, diff hygiene, and trace freshness |
+| `python -m dset_toolchain verify .` | Canonical aggregate: project-configured gates, unit/fixture tests, Markdown checks, diff hygiene, and trace freshness |
 | `uv run dset new <change-id> --package <package-id> --profile <profile>` | Create a non-overwriting active change from released templates |
 | `uv run dset trace .` | Print deterministic traceability; add `--write` to update or `--check` to compare |
 | `uv run dset archive <change-id>` | Print an archive dry-run; add `--execute` only after readiness gates pass |
+
+Inside this repository's locked development environment, `uv run dset verify .` invokes the same canonical aggregate through the installed console entry point.
 
 `small`, `standard`, `large`, `defect`, and `adoption` profiles select proportional artifacts. Every profile preserves separate deterministic test and probabilistic/qualitative eval plans; an eval plan may explicitly state not applicable.
 

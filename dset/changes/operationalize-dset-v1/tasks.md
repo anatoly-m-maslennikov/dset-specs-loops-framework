@@ -5,7 +5,7 @@
 - [x] **DSET-V1-TASK-003:** Establish third-party notices, exact revisions, retained licenses, and machine-readable provenance before skill adaptation.
 - [x] **DSET-V1-TASK-004:** Release versioned schemas, profile-aware templates, fixture matrix, package metadata, PR history, and migration guidance.
 - [x] **DSET-V1-TASK-005:** Implement and test `new`, `check`, `verify`, `trace`, and guarded `archive` commands.
-- [ ] **DSET-V1-TASK-006:** Backfill archive manifests and generate deterministic PR traceability.
+- [x] **DSET-V1-TASK-006:** Backfill archive manifests and generate deterministic PR traceability.
 - [x] **DSET-V1-TASK-007:** Create and validate the distinct, portable `dset-grill`, `dset-diagnose`, and `dset-prototype` skills.
 - [x] **DSET-V1-TASK-008:** Add pinned CI enforcement and the GitHub-authoritative delivery-automation supportability contract.
 - [x] **DSET-V1-TASK-009:** Reconcile accepted methodology truth, the v1 project manifest, package registry, and repository navigation.

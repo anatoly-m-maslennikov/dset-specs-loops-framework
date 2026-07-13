@@ -4,9 +4,16 @@ target_root: dset
 sources:
   - path: {{existing_artifact_root}}
     concern: {{owned_concern}}
+    owner: {{owner}}
     current_writer: {{writer}}
+    consumers:
+      - {{consumer}}
+    current_status: {{accepted_current_active_or_historical}}
     target: dset/specs/packages/{{package_id}}
+    target_artifacts:
+      - {{target_artifact}}
     disposition: pending
+    retention: {{retention_decision}}
     read_only_after_cutover: true
 cutover:
   change_id: {{change_id}}
