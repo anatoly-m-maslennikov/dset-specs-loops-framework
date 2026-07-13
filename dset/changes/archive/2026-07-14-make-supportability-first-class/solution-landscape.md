@@ -1,5 +1,7 @@
 # Solution landscape — Supportability
 
+> Archive candidate in [PR #3](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3).
+
 ## Candidates
 
 | Candidate | Fit | Decision |

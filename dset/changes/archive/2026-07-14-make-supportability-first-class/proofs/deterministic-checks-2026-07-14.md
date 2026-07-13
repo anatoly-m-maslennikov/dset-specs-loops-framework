@@ -1,5 +1,7 @@
 # Deterministic supportability checks — 2026-07-14
 
+> Baseline evidence carried into the dated archive candidate for [PR #3](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3).
+
 ## Scope
 
 Checks ran on `dev` after the identity, methodology, accepted-truth, and synthetic-fixture commits. The repository still declares `documentation-v1-pending`, so these are explicit ad hoc checks rather than a claim that the canonical validator exists.

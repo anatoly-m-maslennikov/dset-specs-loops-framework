@@ -1,5 +1,7 @@
 # Design — Supportability across spec loops
 
+> Archive candidate in [PR #3](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3).
+
 ## Public model
 
 - **DSET:** Domain–Supportability–Evals–Tests.

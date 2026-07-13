@@ -1,5 +1,7 @@
 # Methodology delta specification — Supportability
 
+> Archive candidate in [PR #3](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3); accepted truth is reconciled under `dset/specs/packages/methodology/`.
+
 ## MODIFIED — METH-REQ-001 One governed spec-loop pipeline
 
 The methodology must define one five-stage spec-loop pipeline while treating supportability as a cross-cutting production obligation from domain/spec through verification and repair. “Spec” names the governing loop artifact; “Supportability” is the `S` in DSET.

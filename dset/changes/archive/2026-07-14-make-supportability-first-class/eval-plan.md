@@ -1,5 +1,7 @@
 # Eval plan — Supportability usability
 
+> Archive candidate in [PR #3](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3).
+
 ## Applicability
 
 Applicable. Signal presence is deterministic, but whether a new operator can use bounded evidence to investigate a real incident is qualitative.

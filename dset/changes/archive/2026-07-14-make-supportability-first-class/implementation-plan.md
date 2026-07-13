@@ -1,5 +1,7 @@
 # Implementation plan — DSET Spec Loops supportability
 
+> Archive candidate in [PR #3](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3).
+
 ## Batch 1 — Identity and repository metadata
 
 - Rename the GitHub repository to `dset-specs-loops-framework`.

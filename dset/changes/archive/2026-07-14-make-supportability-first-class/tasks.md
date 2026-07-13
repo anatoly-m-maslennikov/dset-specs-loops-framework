@@ -1,5 +1,7 @@
 # Tasks — Make supportability first-class
 
+> Archive candidate in [PR #3](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3).
+
 - [x] **SUP-TASK-001:** Rename the remote repository and push the `dev` integration branch.
 - [x] **SUP-TASK-002:** Update active public identity and repository metadata.
 - [x] **SUP-TASK-003:** Add the supportability contract across methodology documents 00–05.

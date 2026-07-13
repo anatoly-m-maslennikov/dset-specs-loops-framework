@@ -1,5 +1,7 @@
 # Independent supportability evals — 2026-07-14
 
+> Baseline evidence carried into the dated archive candidate for [PR #3](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3).
+
 ## Review protocol
 
 Two independent subagents received the five cases and SUP-EVAL-001–005 without seeing each other's answers. They reviewed README, methodology 00–05, DSET metadata, accepted methodology truth, and the active change. Reviewers made no edits.

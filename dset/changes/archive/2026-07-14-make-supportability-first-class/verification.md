@@ -3,7 +3,8 @@
 - **Verified:** 2026-07-14 on implementation head `545be89`; final evidence recorded in the commit containing this file
 - **Implementing branch:** `dev`
 - **Implementing PR:** [anatoly-m-maslennikov/dset-specs-loops-framework#3](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3)
-- **Disposition:** active; implementation and proof pass, and archive-candidate verification is next
+- **Archive candidate:** `dset/changes/archive/2026-07-14-make-supportability-first-class/`
+- **Disposition:** incomplete archive candidate; final acceptance waits for a pushed-head audit and evidence-only completion commit
 
 ## Evidence
 
@@ -19,4 +20,4 @@
 | Deterministic proof | Pass: [deterministic-checks-2026-07-14.md](proofs/deterministic-checks-2026-07-14.md) |
 | Independent eval proof | Pass after one corrective loop: [supportability-evals-2026-07-14.md](proofs/supportability-evals-2026-07-14.md) |
 
-No archive or merge-readiness claim is made until the dated candidate is pushed and audited at the real PR head.
+This dated candidate is not accepted archive history until its real pushed PR head is audited and final evidence is committed.
