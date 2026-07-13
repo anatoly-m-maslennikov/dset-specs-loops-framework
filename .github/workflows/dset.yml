@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   validate:
-    name: validate
+    name: DSET / validate
     runs-on: ubuntu-latest
     steps:
       - name: Check out the tested commit
