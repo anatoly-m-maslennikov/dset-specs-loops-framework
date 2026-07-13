@@ -1,148 +1,196 @@
 # 05_Layered Build Standard — DDD, TDD, Small Functions, Typed Gates
 
-**Thesis:** Internal tools on this standard are built so that the NEXT editor — usually an LLM agent, sometimes a human in a hurry — can change them without breaking them. Four practices deliver that: a **pure domain core behind thin connectors** (DDD-lite), **test-first with pinning tests** (TDD as practiced, not as ritual), **small functions on narrow lines**, and **typed seams checked by mypy**. The unifying rule: *every convention is an executable test* — a rule that only lives in prose will drift; a rule that fails the suite cannot. Pattern names and their originators live in [[04_General Build Rules — Tool Code Conventions]] (code) and [[02_Eval and Test Plan Patterns — Test Plan Authoring Conventions]] (testing). Examples below are deliberately invented (a toy "SLA reminder bot"), not production code. In the pipeline ([[00_Tool Development Playbook]]) this is **stage 5** — the machine-enforcement layer over [[04_General Build Rules — Tool Code Conventions]]; eval/test-plan authoring is owned by [[02_Eval and Test Plan Patterns — Test Plan Authoring Conventions]] (§3 here is the day-to-day enforcement practice).
+**Thesis:** DSET defines a **language-neutral enforcement contract** and realizes it through **applied language profiles**. Every durable tool carries the same six gate categories—conformance, purity, spec-sync, typing/contracts, lint/static analysis, and secret hygiene—but each profile selects the language-native tools, file scopes, thresholds, exclusions, and migration ratchet. The first applied profile is Python. A JavaScript/TypeScript profile will be derived later from evidence in `obsidian-your-harness`; no guessed JS/TS thresholds are normative yet. The unifying rule is that every adopted convention must have an executable check: prose explains why, while the selected profile makes violations fail. Pattern names and origins live in [04_General Build Rules — Tool Code Conventions](<04_General Build Rules — Tool Code Conventions.md>), proof planning lives in [02_Test and Eval Plan Patterns — Proof Artifact Conventions](<02_Test and Eval Plan Patterns — Proof Artifact Conventions.md>), and this document is stage 5 of [00_Tool Development Playbook](<00_Tool Development Playbook.md>).
 
-
-¶0 **Boundary:** 05 owns enforcement: the tests, ratchets, type checks, canaries, and agent-facing files that make [[04_General Build Rules — Tool Code Conventions]] executable. It should not re-catalog 04 except where a gate needs exact structure.
+¶0 **Boundary:** Sections 1–5 define language-neutral rules. Section 6 owns applied language profiles. Sections 7–8 define agent ergonomics and adoption. A project selects one profile explicitly; it must not inherit Python tools or thresholds merely because Python is the first implemented profile.
 
 ```mermaid
 graph TD
-    RULES["Rules as TESTS<br/>conformance · purity ·<br/>spec-sync · mypy"] -.enforce.-> DOM
-    RULES -.enforce.-> ADP
-    RULES -.enforce.-> APP
-    DOM["domain/ — pure logic<br/>zero I/O, plain data in/out"]
-    ADP["adapters/ — one file per<br/>external system, atomic ops"] --> DOM
-    APP["app/ — orchestration only<br/>wires domain to adapters"] --> DOM
-    APP --> ADP
-    TDD["TDD loop: gate first →<br/>red → code → green →<br/>pinning test per bug"] -.drives.-> RULES
+    RULES["Language-neutral standard<br/>six gate categories"] --> PROFILE["Selected language profile<br/>tools · scopes · thresholds"]
+    PROFILE --> CHECK["One canonical check<br/>machine-readable pass/fail"]
+    CHECK -.red gate.-> CODE["Domain · adapters · app"]
+    CODE --> CHECK
+    PY["Python v1<br/>implemented"] --> PROFILE
+    TS["JS/TS<br/>pending harness evidence"] -.later.-> PROFILE
+    style RULES fill:#fff3e0,stroke:#ef6c00
+    style PROFILE fill:#e3f2fd,stroke:#1565c0
+    style PY fill:#e8f5e9,stroke:#2e7d32
 ```
 
 ---
 
-## §1 | Layering (DDD-lite): pure core, thin connectors
+## §1 | Language-neutral layering: pure core, thin connectors
 
-¶1 Every tool splits into three layers with one rule each; the split is enforced by an import-scanning test, not by convention. For the pattern origin of Functional Core/Imperative Shell, Ports & Adapters, and DI, see [[04_General Build Rules — Tool Code Conventions]] §1.
+¶1 Every tool separates policy from effects. Directory names may vary by ecosystem, but the ownership and dependency direction are invariant and must be enforced with the selected profile's syntax-aware dependency check.
 
-> [!example]- §1 — the layers, the rationale, an example
-> **The rule per layer:**
-> | Layer | Contains | The one rule |
-> |---|---|---|
-> | `domain/` | decisions, rendering, parsing, thresholds — *business logic* | **zero I/O**: no network, disk, DB, env, settings. Plain data in, plain data out. |
-> | `adapters/` | one module per external system (Jira, ClickHouse, filesystem, an LLM backend) | **atomic operations only**, wire-format ↔ domain mapping; mappers stay pure and unit-testable |
-> | `app/` | the workflow: which step runs when, events, retries | **orchestration only** — if a line makes a decision on plain data, it belongs in domain |
->
-> **Why:** an LLM agent (or analyst) fixing a business rule should never need creds, a DB, or network to test the fix. Purity makes 90% of the logic testable in microseconds, and testable logic is the only logic agents change safely. It also makes behavior questions grep-answerable: *"when do we escalate?"* has exactly one home.
->
-> **Invented example — SLA reminder bot.** Wrong (one file, mixed):
-> ```python
-> def remind(ticket_id):
->     t = jira.get(ticket_id)              # I/O
->     if hours_since(t.updated) > 24:      # decision
->         jira.comment(ticket_id, "ping")  # I/O
-> ```
-> Right (three homes):
-> ```python
-> # domain/reminders.py — pure, trivially testable
-> def needs_reminder(updated_hours_ago: float,
->                    sla_hours: float) -> bool:
->     return updated_hours_ago > sla_hours
->
-> # adapters/jira_api.py — atomic I/O only
-> def staleness_hours(ticket_id: str) -> float: ...
-> def post_ping(ticket_id: str) -> None: ...
->
-> # app/run.py — orchestration only
-> def remind(ticket_id: str) -> None:
->     if needs_reminder(staleness_hours(ticket_id), 24):
->         post_ping(ticket_id)
-> ```
-> **The enforcement** (the purity gate — real technique, toy names): an AST walk over `domain/*.py` asserting no import of `settings/adapters/app` — a layering violation is a red test in seconds, not a review comment three weeks later.
+<details>
 
-## §2 | Small functions, narrow lines — and why
+<summary>Layer contract</summary>
 
-¶1 Hard limits — every function body ≤25 lines, every line <70 characters, one statement per line — enforced by a ratcheted conformance test that new files are born under.
+| Logical layer | Contains | Required rule |
+|---|---|---|
+| **Domain/core** | Decisions, parsing, rendering, state transitions, thresholds, invariants | No direct network, disk, database, environment, UI, framework, or process I/O; plain domain values in and out |
+| **Ports/adapters** | External-system clients, persistence, filesystem, UI, model providers, wire-format mapping | Atomic boundary operations; translate external representations to and from domain values; no workflow ownership |
+| **Application/orchestration** | Use-case sequencing, transaction boundaries, retries, scheduling, mode gates | Coordinate domain and adapters; do not become a second home for domain decisions |
 
-> [!example]- §2 — rationale + the ratchet
-> **Rationale.** A 25-line function is the unit an LLM edits without collateral damage: it fits one screen and one diff hunk, its behavior is nameable (so the name can be honest), and an exact-match string edit on it is unambiguous. Narrow lines are the anti-cheat (no cramming three clauses into one line to "pass") and keep side-by-side diffs readable. Small functions also force the extraction of helpers whose NAMES document the code — which is why this standard needs almost no inline comments.
-> **The ratchet.** The conformance test walks every `*.py` in the package (tests included) and fails on any violation. Files that predate the rule sit in an explicit `PENDING` set that may only SHRINK — the test fails if a PENDING file becomes clean but stays listed, and new files are checked automatically. Adopting the standard on a legacy tool is therefore incremental *and* irreversible.
-> **Anti-patterns the gate rejects:** `if x: return y` one-liners, `a; b`, and nested `def`s used to smuggle a 60-line body inside a 25-line shell (nested lines count into the parent).
+The project profile maps these logical layers to real paths and checks forbidden dependency edges using a parser, compiler API, module-graph tool, or equivalent language-aware mechanism. Text search alone is insufficient where aliases, generated imports, or conditional imports can hide a violation.
 
-## §3 | TDD as practiced (not as ritual)
+</details>
 
-¶1 Five moves, in order of leverage: gate-first, pinning test per bug, differential proof for refactors, real-store smokes for storage code, and a property layer over the pure core.
+## §2 | Language-neutral conformance: bounded, readable change units
 
-> [!example]- §3 — the five moves
-> 1. **Gate first — red/green evidence.** Starting a standard-adoption or a refactor, write the RULE as a failing test before touching code; capture the red output (test fails for the right reason), then implement until green output (test passes). If you did not watch the test fail, you do not know whether it tests the right thing. The rule-test defines "done" mechanically before the code moves.
-> 2. **Pinning test per bug.** Every fixed bug ships, in the same change, a test that fails on the old code and passes on the fix. Example: a report tool read `result["note"]` — a key the producer never emitted, so a whole check silently always-failed; the fix came with a test that constructs the producer's real output and asserts the check can pass at all.
-> 3. **Differential proof for refactors.** Moving logic without changing behavior? Run old and new implementations on the same inputs and assert byte-identical output BEFORE deleting the old one.
-> 4. **Real-store smokes.** Mock-only test suites pass while production crashes. Anything that serializes (DB rows, checkpoints, event logs) gets one test against a REAL throwaway store (embedded ClickHouse in a tmp dir, SQLite file). This catches the common failure mode where an in-memory fake passes but the real persistence layer rejects serialization, locking, or schema details.
-> 5. **Property layer on the pure core.** Once domain functions are pure, hypothesis-style fuzzing is nearly free and finds the inputs no one hand-picks: assert *totality* (parsers never raise on arbitrary text), *idempotence* (redact(redact(x)) == redact(x)), *round-trips* (serialize→parse == identity), *content preservation* (a splitter never drops non-space text). Derandomize in CI so a found counterexample is a reproducible failure, not a flake.
+¶1 DSET requires bounded functions/modules and readable formatting, but it does not impose one universal line count or line length across languages. Each applied profile declares measurable thresholds appropriate to the language and formatter, plus a complexity ceiling where raw line count is a poor proxy.
 
-## §4 | Typed gates — mypy strict core, generic seams
+<details>
 
-¶1 mypy runs inside the test suite: strict on `domain/`, lenient on adapters (they talk to untyped externals); the highest-value typing work is making generic seams carry types to call sites.
+<summary>Required profile fields</summary>
 
-> [!example]- §4 — rationale + the seam pattern
-> **Why this matters more for LLM editors than humans:** the most common LLM error class is a confidently hallucinated attribute (`verdict.reasons` when the field is `verdict.remaining_questions`). With a typed seam that is a red check in seconds; untyped, it is a runtime crash on a real ticket.
-> **The seam pattern** — a function that returns "whatever schema you asked for" must SAY so, with overloads, so the type flows to the call site instead of decaying to a union:
-> ```python
-> S = TypeVar("S", bound=BaseModel)
->
-> @overload
-> def ask_json(prompt: str, schema: Type[S]) -> S:
->     ...
-> @overload
-> def ask_json(prompt: str, schema: None = None) -> dict:
->     ...
-> ```
-> Now `ask_json(p, schema=Reminder)` is a typed `Reminder` — `reminder.snooze_hours` typo → mypy error, not a 3 a.m. crash.
-> **Scope discipline:** strict flags (`disallow_untyped_defs`, `warn_return_any`, `strict_equality`) ONLY where the code is ours and pure; forcing strictness onto adapter code that wraps untyped SDKs produces `# type: ignore` noise that trains editors to ignore the checker.
+- **Scope:** source/test globs and explicit exclusions for generated, vendored, migration, fixture, and build-output files.
+- **Thresholds:** function size, module size if used, line width or formatter policy, nesting/cyclomatic/cognitive complexity where supported, and statement-density rules where relevant.
+- **Measurement semantics:** whether comments, blank lines, decorators, signatures, nested functions, generated code, and tests count.
+- **Ratchet:** existing violations live in a machine-readable baseline that may only shrink; new or newly-clean files must satisfy the profile.
+- **Override contract:** a threshold change is versioned and justified with evidence; projects do not silently weaken a gate locally.
 
-## §5 | Rules as tests — the full gate set
+</details>
 
-¶1 A tool on this standard carries five machine gates in its own suite; prose documents the WHY, gates enforce the WHAT.
+## §3 | Language-neutral TDD and proof practice
 
-> [!example]- §5 — the gates and what each catches
-> | Gate | Enforces | Catches |
-> |---|---|---|
-> | conformance | ≤25-line bodies, <70-char lines, one stmt/line, ratcheted PENDING | cramming, monster functions, regression of adopted files |
-> | purity (layer matrix) | `domain/` imports no I/O layer; adapters/providers never import `app/`; providers never import adapters | layering erosion — the #1 silent decay in shared codebases |
-> | spec-sync | declarative spec ⇄ runtime structure equality | docs-vs-code drift (the spec CANNOT quietly fall behind) |
-> | typing | mypy (strict core) in-suite | hallucinated attributes, Optional leaks, dead branches |
-> | lint | ruff (`F,E9,B,SIM`) in-suite | unused/undefined names, bug-prone patterns, complexity creep |
-> | secret hygiene | `.env*` ignored except examples, secret scanner / pre-commit, redaction tests, no env reads in `domain/` | leaked keys, creds in logs/WAL/status, pure code coupled to private runtime |
->
-> Plus, for LLM-calling tools specifically: an **injection canary** (a hostile input must stay inside its untrusted fence — deterministic, CI-safe) and **offline evals** as the free tier before token-costing live evals.
+¶1 The proof loop is independent of language and test runner.
 
-## §6 | Agent ergonomics — the standard serving its editors
+<details>
 
-¶1 The codebase is the primary interface for agents; six cheap artifacts make every future session start warm without drowning the agent in context.
+<summary>The five moves</summary>
 
-> [!example]- §6 — the six artifacts
-> - **Directory-scoped `CLAUDE.md`** (+ `AGENTS.md` symlink for Codex) inside the package: concise gate discipline, layer-placement table, safety invariants, test toolkit, and the after-a-change checklist. Auto-loaded — the operating knowledge travels WITH the code, not in a doc an agent must know to retrieve.
-> - **One canonical verification command** (`make check`, `uv run pytest`, `npm test`, or equivalent): the agent needs a deterministic pass/fail loop it can run before handing work back.
-> - **Context budget hygiene**: keep AGENTS/CLAUDE/skills short, scoped, and current; stale, contradictory, or repository-wide advice is a bug.
-> - **Workflow-bearing hooks / skills / subagents only**: use them when they enforce a real check, isolate a review, or run a deterministic workflow — not as a static dumping ground for prose.
-> - **Verification-before-completion discipline**: before claiming done, identify the command that proves it, run the full fresh command, read the output and exit code, then report the claim with that evidence. Agent success reports are inputs, not proof.
-> - **Subagent-driven review**: after each implementation task, a fresh reviewer checks spec compliance and quality before handoff; broad whole-branch review happens at the end. No human check-in between tasks unless blocked, ambiguous, or complete; never ignore a blocked status.
-> - **Thesis-style module docstrings** carrying the WHY + spec citations (`09 §4`, decision ids, session ids) — provenance an agent can follow instead of re-deriving intent.
-> - **Commit-after-each-edit, code separate from KG** — small atomic commits survive daemon churn and give the next session a readable ledger of what changed and why.
+1. **Gate first, with red/green evidence.** Add or expose the failing check before changing implementation; then make it pass.
+2. **Pinning test per bug.** Every fixed bug ships with proof that fails on the defective revision and passes on the fix.
+3. **Differential proof for behavior-preserving refactors.** Compare old and new behavior on the same inputs before deleting the old path.
+4. **Real-store smoke for serialization.** Exercise a disposable instance of the real storage technology; an in-memory fake is not enough.
+5. **Property/invariant layer over the pure core.** Check totality, idempotence, round trips, content preservation, and domain invariants with reproducible counterexamples.
 
-## §7 | Adoption checklist for a new or legacy tool
+</details>
 
-¶1 In order; each step is one commit.
+## §4 | Language-neutral typing and contract gates
 
-> [!example]- §7 — checklist
-> 1. Drop in the conformance test with `PENDING` = every currently-dirty file; suite green from day one.
-> 2. Carve `domain/` — move every plain-data decision behind pure functions; add the purity gate (architecture rule in [[04_General Build Rules — Tool Code Conventions]]).
-> 3. One adapter module per external system; mappers pure and unit-tested (adapter rule in [[04_General Build Rules — Tool Code Conventions]]).
-> 4. mypy.ini (strict core, lenient shell) + the in-suite mypy test; fix the seams with overloads first.
-> 5. Write the pinning-test habit into the tool's CLAUDE.md; add the canary if the tool feeds LLMs untrusted text.
-> 6. Add one canonical verification command (per [[04_General Build Rules — Tool Code Conventions]]) and put it in CLAUDE.md / AGENTS.md.
-> 7. Prune agent context: remove stale, conflicting, or irrelevant instructions; split large static guidance into focused skills only when the skill runs a real workflow.
-> 8. If the tool handles private data, untrusted content, and external communication, add least-privilege boundaries (per [[04_General Build Rules — Tool Code Conventions]]) plus an injection canary before live use.
-> 9. If the tool uses credentials, add the secret-hygiene gate: `.env*` ignored except examples, scanner/pre-commit, redaction tests, and no env reads from `domain/`.
-> 10. Pin the CI dependency set (a lock file) and add the property layer over the now-pure core.
-> 11. Shrink PENDING to empty; from then on the standard maintains itself.
+¶1 Every boundary that carries structured data needs an executable contract. A statically typed language profile uses its compiler/type checker; a dynamically typed profile may combine static annotations with runtime schemas and contract tests. The profile must state what is strict, what is intentionally looser at external adapters, and how suppressions are reviewed.
 
-*Provenance: distilled from repeated tool refactors and best-practice adoption work; pattern canon in [[04_General Build Rules — Tool Code Conventions]]; external grounding in [[06_External Grounding — LLM Power-User Practice]]. All §-examples are invented illustrations, not production code.*
+<details>
+
+<summary>Required typing/contract behavior</summary>
+
+- Domain-owned types flow through generic seams to call sites rather than degrading to an untyped map or universal value.
+- External payloads are parsed and validated at adapters before entering the domain.
+- Suppressions are narrow, explained, and machine-counted or otherwise prevented from silently growing.
+- Public interfaces and serialization formats have compatibility or schema tests in addition to local type checking.
+
+</details>
+
+## §5 | Language-neutral gate categories
+
+¶1 A conforming profile implements all six categories. “Typing” may be realized as compiler checks, static analysis, runtime schema validation, or a documented combination appropriate to the language; the category may not disappear merely because a particular tool lacks a type system.
+
+<details>
+
+<summary>The six gates</summary>
+
+| Gate category | Language-neutral contract | Profile must declare |
+|---|---|---|
+| **Conformance** | Keep change units bounded and readable; prevent new structural debt | Source scope, thresholds/formatter policy, complexity rules, exclusions, legacy baseline and ratchet behavior |
+| **Purity / layer matrix** | Enforce allowed dependency directions and keep effects out of the domain core | Logical-layer path mapping, forbidden edges, syntax/module-graph checker, generated-code treatment |
+| **Spec-sync** | Prove declarative specs/manifests and runtime structure agree where equality is promised | Compared artifacts, normalization rules, mismatch output, archive/current-truth checks |
+| **Typing / contracts** | Catch invalid data flow and interface drift before production | Compiler/checker/schema tools, strictness by layer, suppression policy, public-contract checks |
+| **Lint / static analysis** | Catch undefined/unused symbols, bug-prone constructs, unsafe patterns, and complexity drift | Tool and rule set, warning policy, autofix policy, generated/vendor exclusions |
+| **Secret hygiene** | Keep credentials out of source, logs, durable state, fixtures, prompts, and domain logic | Scanner, ignore/example policy, redaction tests, environment-access boundary, false-positive process |
+
+Applicable supplemental gates remain separate from the six universal categories: an LLM-facing tool adds an injection canary and applicable offline/live evals; a high-risk tool adds the safety and approval evidence selected by its runtime risk profile; and a production-bound tool adds a supportability gate for its selected profile, including correlation and deploy/change identity, safe diagnostics, retention/redaction/access and volume bounds, runbook links, and incident traceability. Deterministic contract enforcement belongs in tests and gates; qualitative diagnostic usefulness remains an eval.
+
+</details>
+
+## §6 | Applied language profiles
+
+¶1 An applied profile is versioned configuration, not illustrative prose. It must implement the §5 contract, expose one canonical verification command, and identify the profile version in the project or change package.
+
+### §6.1 | Python v1 — active
+
+¶1 Python v1 preserves the proven Python rules but scopes them explicitly to Python projects. These numbers and tools are not defaults for other languages.
+
+<details>
+
+<summary>Python v1 gate mapping</summary>
+
+| Gate | Python v1 applied rule |
+|---|---|
+| **Conformance** | Inspect `**/*.py` in source and tests, excluding explicitly listed generated/vendor/migration/build paths. Function bodies are at most **25 physical lines**, lines are under **70 characters**, and compound one-line or semicolon-packed statements are rejected. Decorators/signatures are excluded from the body count; comments, blank lines, and nested definitions inside the body count. Existing violations live in a `PENDING` baseline that may only shrink. |
+| **Purity / layer matrix** | A Python AST/import-graph check maps `domain/`, `adapters/`, and `app/`; `domain/` may not import I/O/framework/settings layers, adapters/providers may not import `app/`, and providers may not bypass their declared port. |
+| **Spec-sync** | A deterministic pytest check parses the declarative spec/manifest and compares normalized expected structure with the runtime registry; mismatch output names the missing, extra, or changed entity. |
+| **Typing / contracts** | `mypy` is strict for the owned domain/core and intentionally bounded at untyped external adapters. Structured external payloads are validated at the adapter boundary. Broad `Any` and unscoped `type: ignore` growth fail the gate. |
+| **Lint / static analysis** | `ruff` runs at least `F`, `E9`, `B`, and `SIM`; the project may add rules but may not remove the profile minimum without a versioned exception and evidence. |
+| **Secret hygiene** | A repository secret scanner/pre-commit check, `.env*` ignored except dummy examples, redaction tests, and an AST check preventing environment reads from `domain/`. |
+
+The canonical command may be `make check`, `uv run pytest`, or an equivalent project wrapper, but it must run or aggregate all six gates and return a reliable non-zero exit on failure.
+
+</details>
+
+<details>
+
+<summary>Python typed-seam example</summary>
+
+```python
+S = TypeVar("S", bound=BaseModel)
+
+@overload
+def ask_json(prompt: str, schema: Type[S]) -> S:
+    ...
+
+@overload
+def ask_json(prompt: str, schema: None = None) -> dict:
+    ...
+```
+With this seam, `ask_json(prompt, schema=Reminder)` retains `Reminder` at the call site, so an invented attribute fails type checking instead of failing in production.
+
+</details>
+
+### §6.2 | JavaScript/TypeScript — pending evidence
+
+¶1 No JavaScript/TypeScript tool choice or threshold is normative yet. The profile will be derived from the real architecture, package boundaries, scripts, compiler settings, lint rules, tests, and failure history of `obsidian-your-harness`. The resulting profile must fill the same six-row mapping as Python v1 and record which observed failures each gate prevents. Candidate tools may be evaluated, but their presence here would not make them a standard before that evidence pass.
+
+## §7 | Agent ergonomics
+
+¶1 The codebase is the primary interface for agents; these eight artifacts and practices are language-neutral.
+
+<details>
+
+<summary>The eight artifacts</summary>
+
+- **Directory-scoped agent contract:** concise `AGENTS.md`, `CLAUDE.md`, or ecosystem-equivalent guidance containing the selected profile/version, layer map, safety invariants, and after-change checklist.
+- **One canonical verification command:** a deterministic pass/fail loop that runs all selected gates.
+- **Context budget hygiene:** short, scoped, current instructions; stale or contradictory guidance is a defect.
+- **Workflow-bearing hooks, skills, or subagents only:** use them for executable workflows or isolated review, not as prose warehouses.
+- **Verification before completion:** run the fresh full command, inspect output and exit status, then report the evidence.
+- **Independent review at risk-appropriate boundaries:** check spec compliance and quality without making subagents mandatory for every trivial edit.
+- **Traceable module rationale:** concise module/package documentation points to governing requirement and decision IDs without duplicating the spec.
+- **Small atomic changes:** keep implementation, proof, and documentation changes traceable even when commit timing is controlled by the project workflow.
+
+</details>
+
+## §8 | Adoption checklist
+
+¶1 Adopt the language-neutral standard first, then instantiate the selected applied profile. Each migration step must leave the canonical verification command green or record the bounded legacy baseline responsible for an expected gate.
+
+<details>
+
+<summary>Checklist</summary>
+
+1. Declare the selected language profile and version; if none exists, author and validate one before claiming DSET conformance.
+2. Map real project paths to domain/core, ports/adapters, and application/orchestration; document justified deviations.
+3. Add one canonical command aggregating the six gate categories.
+4. Configure conformance scope, exclusions, thresholds, measurement semantics, and the non-growing legacy ratchet.
+5. Add the syntax-aware purity/layer check.
+6. Add typing/contracts, lint/static analysis, spec-sync, and secret-hygiene checks using the selected profile.
+7. Add the pinning-test rule, real-store smoke where serialization exists, property/invariant checks over the pure core, an injection canary where untrusted text reaches an LLM, and the selected supplemental supportability gate for production-bound tools.
+8. Record red/green evidence for adoption and confirm that each gate fails for a representative violation.
+9. Prune stale agent guidance and publish the selected profile, layer map, and canonical command in the directory-scoped agent contract.
+10. Shrink the legacy baseline to empty; profile changes thereafter require versioned evidence rather than silent local weakening.
+
+</details>
+
+*Provenance: the language-neutral categories are distilled from repeated tool refactors and best-practice adoption work; Python v1 carries forward the existing Python enforcement profile; pattern canon lives in [04_General Build Rules — Tool Code Conventions](<04_General Build Rules — Tool Code Conventions.md>), and external grounding lives in [06_External Grounding — LLM Power-User Practice](<06_External Grounding — LLM Power-User Practice.md>).*
