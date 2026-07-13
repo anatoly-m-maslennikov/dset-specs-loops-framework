@@ -1,6 +1,6 @@
 # Repository delivery policy
 
-This repository uses `dev` as its single integration branch and `main` as its automatically published branch.
+This operational document defines how the repository moves changes from `dev` to `main`. The framework overview and documentation map live in the root [README](../README.md).
 
 ## Rules
 
