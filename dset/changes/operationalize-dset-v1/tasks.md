@@ -7,6 +7,6 @@
 - [x] **DSET-V1-TASK-005:** Implement and test `new`, `check`, `verify`, `trace`, and guarded `archive` commands.
 - [ ] **DSET-V1-TASK-006:** Backfill archive manifests and generate deterministic PR traceability.
 - [x] **DSET-V1-TASK-007:** Create and validate the distinct, portable `dset-grill`, `dset-diagnose`, and `dset-prototype` skills.
-- [ ] **DSET-V1-TASK-008:** Add CI enforcement and the delivery-automation supportability contract.
-- [ ] **DSET-V1-TASK-009:** Reconcile accepted methodology truth, project configuration, navigation, and roadmap ownership.
+- [x] **DSET-V1-TASK-008:** Add pinned CI enforcement and the GitHub-authoritative delivery-automation supportability contract.
+- [x] **DSET-V1-TASK-009:** Reconcile accepted methodology truth, the v1 project manifest, package registry, and repository navigation.
 - [ ] **DSET-V1-TASK-010:** Run all deterministic checks and qualitative evals, record proof, archive the change, and complete the protected merge.

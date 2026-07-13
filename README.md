@@ -32,7 +32,27 @@ Domain → Spec + Supportability + Test Plan + Eval Plan → Implement → Test 
 - [`methodology/06_External Grounding — LLM Power-User Practice.md`](methodology/06_External%20Grounding%20%E2%80%94%20LLM%20Power-User%20Practice.md) — provenance and external grounding.
 - [`methodology/TODO — Operationalize OpenSpec and Composable Engineering Skills.md`](methodology/TODO%20%E2%80%94%20Operationalize%20OpenSpec%20and%20Composable%20Engineering%20Skills.md) — implementation roadmap for DSET-owned change packages informed by OpenSpec and selected Matt Pocock workflow patterns.
 - [`dset/README.md`](dset/README.md) — this repository's accepted project truth, active changes, archive lifecycle, templates, and schemas.
+- [`dset_toolchain/`](dset_toolchain/) — dependency-light Python implementation of the `dset` CLI.
+- [`skills/README.md`](skills/README.md) — focused pre-spec, diagnosis, and disposable-prototype workflows.
+- [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) — exact external provenance, reviewed revisions, and license boundaries.
 - [`.github/DELIVERY.md`](.github/DELIVERY.md) — owner-only `dev` updates and automated `dev → main` delivery policy.
+
+## Run DSET
+
+Read-only validation requires only Python 3.10 or newer:
+
+```bash
+python -m dset_toolchain check .
+```
+
+For this repository's complete locked Python profile:
+
+```bash
+uv sync --locked --dev
+uv run dset verify .
+```
+
+The CLI also provides `new`, `trace`, and guarded `archive` workflows. See the [project-root guide](dset/README.md) for lifecycle and command details.
 
 ## Source-of-truth model
 
@@ -42,4 +62,4 @@ Each project that adopts DSET owns its project truth separately under its own `d
 
 ## Status
 
-The methodology is published and this repository now dogfoods the project contract under `dset/`. Reusable schemas, templates, validators, utilities, skills, fixtures, and migration guidance are still being operationalized through the TODO. The [bootstrap structure](dset/changes/archive/2026-07-14-bootstrap-dset-project-structure/proposal.md) and [supportability contract](dset/changes/archive/2026-07-14-make-supportability-first-class/proposal.md) were reconciled and archived through merged PR [anatoly-m-maslennikov/dset-specs-loops-framework#3](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3) after independent evaluation and pushed-head archive audits.
+The methodology is published, the repository dogfoods its own project contract, and the executable DSET v1 toolchain is implemented under draft PR [#7](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7). Versioned schemas, profile-aware templates, fixtures, a dependency-light CLI, generated PR traceability, migration guidance, CI enforcement, and three focused skills are public in this repository. The [bootstrap structure](dset/changes/archive/2026-07-14-bootstrap-dset-project-structure/proposal.md) and [supportability contract](dset/changes/archive/2026-07-14-make-supportability-first-class/proposal.md) remain accepted archive history; external pilots and evidence-backed JavaScript/TypeScript profile work remain on the roadmap.
