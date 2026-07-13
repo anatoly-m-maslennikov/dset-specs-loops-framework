@@ -16,6 +16,6 @@ Each direct child except `archive/` is one bounded, active change. A standard ch
 └── verification.md
 ```
 
-The eight document artifacts are proposal, test plan, eval plan, solution landscape, design, implementation plan, tasks, and verification. `specs/` owns requirement deltas; `proofs/` owns disposable evidence rather than another narrative artifact.
+The eight document artifacts are proposal, test plan, eval plan, solution landscape, design, implementation plan, tasks, and verification. `specs/` owns requirement deltas; `proofs/` owns bounded, redacted evidence; `verification.md` owns conclusions and links to that evidence. Raw generated output remains ephemeral unless a concise excerpt is required to diagnose a failure.
 
-Active changes may contain implementation evidence but do not own accepted project truth. Failed or incomplete changes stay here. Do not move a change to `archive/` until its deltas are reconciled, verification is fresh, the implementing PR is recorded, and archive-readiness checks pass.
+Active changes may contain implementation evidence but do not own accepted project truth. Failed or incomplete changes stay here. Do not move a change to `archive/` until its deltas are reconciled, verification is fresh, the implementing PR is recorded, and applicable archive-readiness checks pass.

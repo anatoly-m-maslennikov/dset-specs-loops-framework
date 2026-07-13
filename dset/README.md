@@ -36,7 +36,7 @@ The project currently has one package, `methodology`. A `specs/global/` layer is
 2. Write requirements plus deterministic test proof and applicable eval proof before implementation.
 3. Open a draft PR and record its repository-qualified identity in the change.
 4. Implement and collect fresh verification evidence.
-5. Reconcile accepted deltas into `specs/`, move the change under `archive/`, regenerate traceability, and rerun checks inside the same PR.
-6. Keep the PR draft until archive-readiness checks pass; then mark it ready and merge.
+5. Reconcile accepted deltas into `specs/`, move the change under `archive/`, refresh the applicable traceability evidence, and rerun checks inside the same PR.
+6. Keep the PR draft until archive readiness passes; then mark it ready and merge. With executable enforcement configured, run its canonical command and regenerate its traceability index. Under an explicit pending enforcement profile, record a manual PR/link/archive audit and the exact read-only checks without claiming that CI or generation ran.
 
 An incomplete or failed change remains active and never modifies accepted truth.
