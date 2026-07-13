@@ -1,13 +1,13 @@
 schema_version: 1.0-draft
 id: operationalize-dset-v1
 profile: standard
-status: proposed
+status: in-progress
 packages:
   - methodology
 pull_request:
   repository: anatoly-m-maslennikov/dset-specs-loops-framework
-  number: pending
-  url: pending
+  number: 7
+  url: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7
 requirements:
   - DSET-V1-REQ-001
   - DSET-V1-REQ-002

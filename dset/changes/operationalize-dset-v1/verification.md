@@ -1,7 +1,7 @@
 # Verification — DSET v1
 
-- **Implementing PR:** pending
-- **Status:** implementation not started
+- **Implementing PR:** [anatoly-m-maslennikov/dset-specs-loops-framework#7](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7)
+- **Status:** implementation in progress; PR remains draft
 - **Canonical command:** pending until Batch 3
 
 ## Required evidence

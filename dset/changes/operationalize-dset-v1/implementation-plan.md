@@ -1,6 +1,6 @@
 # Implementation plan — DSET v1
 
-- **Implementing PR:** pending
+- **Implementing PR:** [anatoly-m-maslennikov/dset-specs-loops-framework#7](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7)
 
 ## Batch 1 — Change identity and provenance
 

@@ -2,8 +2,8 @@
 
 - **Change ID:** `operationalize-dset-v1`
 - **Target package:** `methodology`
-- **Implementing PR:** pending
-- **Status:** proposed
+- **Implementing PR:** [anatoly-m-maslennikov/dset-specs-loops-framework#7](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7)
+- **Status:** implementation in progress on a draft PR
 
 ## Problem
 

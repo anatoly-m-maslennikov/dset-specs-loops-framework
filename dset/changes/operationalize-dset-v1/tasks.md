@@ -1,7 +1,7 @@
 # Tasks — DSET v1
 
 - [x] **DSET-V1-TASK-001:** Define the bounded v1 requirements, tests, evals, design, and implementation plan.
-- [ ] **DSET-V1-TASK-002:** Push the first reviewable commit, open a draft PR, and record its repository-qualified identity.
+- [x] **DSET-V1-TASK-002:** Push the first reviewable commit, open draft PR [#7](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7), and record its repository-qualified identity.
 - [ ] **DSET-V1-TASK-003:** Establish third-party notices and provenance checks.
 - [ ] **DSET-V1-TASK-004:** Release versioned schemas, templates, fixtures, and migration guidance.
 - [ ] **DSET-V1-TASK-005:** Implement and test `new`, `check`, `verify`, `trace`, and guarded `archive` commands.
