@@ -34,12 +34,38 @@ The methodology must define six neutral gate categories and keep concrete tools,
 
 ## METH-REQ-006 — Change history is PR-traceable without a future SHA
 
-The methodology must use a repository-qualified PR identity as the stable implementation link, archive inside that PR after fresh verification, and keep the PR draft until archive readiness passes.
+The methodology must use a repository-qualified PR identity as the stable implementation link, archive inside that PR after fresh verification and current-truth reconciliation, and keep the PR draft until applicable traceability and archive-readiness checks pass. Missing PR identity keeps a change active; any later implementation or specification change invalidates prior readiness.
 
 **Scenario METH-SCN-007:** The archived change links to the PR that owns the code diff and eventual merge result without attempting to store a merge SHA before it exists.
+
+**Scenario METH-SCN-012:** A change with a pending PR identity cannot be archived, and a later implementation or specification edit requires verification and archive readiness to be refreshed.
 
 ## METH-REQ-007 — Public Markdown is portable
 
 Public methodology must use ordinary Markdown links and GitHub-native alerts or collapsed details sections.
 
 **Scenario METH-SCN-008:** A GitHub reader can navigate every local link and expand every collapsed section without an Obsidian renderer.
+
+## METH-REQ-008 — Project truth uses a visible root
+
+Committed project truth must live under the visible `dset/` root. Hidden `.dset/` is reserved for generated, local, cached, or other machine-owned state.
+
+**Scenario METH-SCN-009:** `dset/README.md` exposes accepted truth, active changes, archive history, templates, and schemas, while no committed project truth is owned by `.dset/`.
+
+## METH-REQ-009 — Package structure is proportional
+
+The project manifest must register each package exactly once and must omit or null the global-truth root until cross-package ownership exists.
+
+**Scenario METH-SCN-010:** A one-package project resolves `methodology` to `specs/packages/methodology` and reports `global_truth_root: null`.
+
+## METH-REQ-010 — Standard changes expose complete proof structure
+
+A standard change must contain exactly eight top-level document artifacts—proposal, test plan, eval plan, solution landscape, design, implementation plan, tasks, and verification—plus separate `specs/` and `proofs/` directories.
+
+**Scenario METH-SCN-011:** Structural inspection counts the eight documents separately from the requirement-delta and evidence directories.
+
+## METH-REQ-011 — Enforcement status is honest
+
+Public metadata must name the selected enforcement profile and canonical command and must use explicit pending values until the corresponding executable assets exist.
+
+**Scenario METH-SCN-013:** `documentation-v1-pending` and `canonical_command: pending` cannot be presented as an active executable gate.

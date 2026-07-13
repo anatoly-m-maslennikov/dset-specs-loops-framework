@@ -25,7 +25,7 @@ Use representative project scenarios covering:
 | **METH-EVAL-002** | Test/eval separation | No reviewer classifies deterministic correctness as an eval merely because it is automated |
 | **METH-EVAL-003** | Runtime applicability | Reviewers select only the recovery, effect-safety, and durability mechanisms triggered by each scenario |
 | **METH-EVAL-004** | Implementation readiness | No scenario leaves a critical ownership, proof, or recovery decision implicit |
-| **METH-EVAL-005** | Public usability | A new reader can locate current truth, active changes, and the governing methodology document without Obsidian or private context |
+| **METH-EVAL-005** | Public usability | A new reader can locate current truth, active changes, archive history, templates, schemas, and the governing methodology document without Obsidian or private context |
 
 ## Calibration and evidence
 
