@@ -5,11 +5,11 @@ description: Turn ambiguous product or domain intent into explicit DSET vocabula
 
 # DSET Grill
 
-Clarify the domain before implementation planning. Write durable conclusions into the active DSET change; do not leave load-bearing decisions only in chat.
+Clarify the domain before implementation planning. With explicit write authorization, write durable conclusions into the active DSET change; otherwise return a proposed artifact update and do not mutate the repository.
 
 ## Workflow
 
-1. Locate the repository's visible `dset/` root and current change. Read `proposal.md`, delta specs, package domain/spec/contracts, and linked ADRs. If no change exists, propose a change ID; create it only when the user authorizes writes.
+1. Locate the repository's visible `dset/` root and current change. Read `proposal.md`, delta specs, package domain/spec/contracts, and linked ADRs. Confirm write authorization before changing an existing artifact. If no change exists, propose a change ID; create it only when the user authorizes writes.
 2. Separate accepted facts, explicit decisions, assumptions, unknowns, and solution guesses. Do not turn existing code behavior into a requirement without product evidence.
 3. Establish ubiquitous language: actors, entities, value objects, states, transitions, invariants, commands, events, ownership boundaries, and terms that must not be conflated.
 4. Stress each rule with empty, boundary, concurrent, retry, partial-failure, permission, migration, rollback, and recovery cases that apply. Ask the smallest high-leverage question that resolves each real branch.
@@ -19,7 +19,7 @@ Clarify the domain before implementation planning. Write durable conclusions int
 
 ## Output contract
 
-Produce or update only the owning artifacts:
+When writes are authorized, produce or update only the owning artifacts:
 
 - `proposal.md`: problem, outcome, scope, non-goals, risk, unresolved decisions;
 - delta spec or package domain/spec: vocabulary, invariants, requirements, scenarios;

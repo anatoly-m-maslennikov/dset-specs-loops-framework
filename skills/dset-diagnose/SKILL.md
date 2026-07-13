@@ -1,6 +1,6 @@
 ---
 name: dset-diagnose
-description: Diagnose software or production failures through reproducible evidence, minimization, hypotheses, instrumentation, first-bad-commit analysis, and DSET Back-to-Left provenance. Use when the user asks to investigate, explain, triage, or find the cause of a defect, regression, failed gate, incident, or inconsistent behavior; diagnosis remains read-only unless the user separately authorizes a fix.
+description: Diagnose software or production failures through reproducible evidence, minimization, hypotheses, instrumentation, first-bad-commit analysis, and DSET Back-to-Left provenance. Use when the user asks to investigate, explain, triage, or find the cause of a defect, regression, failed gate, incident, or inconsistent behavior; diagnosis and reporting are read-only unless the user separately authorizes artifact edits or a fix.
 ---
 
 # DSET Diagnose
@@ -15,8 +15,8 @@ Find the earliest evidence-backed failure boundary and preserve a reproducible r
 4. Form competing falsifiable hypotheses. Gather the cheapest discriminating evidence using safe read-only diagnostics first; redact secrets and bound logs, cardinality, volume, and retention.
 5. Locate the first bad commit with `git bisect`, focused history, or equivalent evidence when feasible. Treat `git blame` and intuition as leads, not proof.
 6. Trace backward through commit, PR, DSET change, ADR/design, requirement, test/eval, and verification. Classify the earliest defective or missing artifact and give every relevant upstream artifact a disposition: correct, amend, supersede, or reviewed-no-change with reason.
-7. Add a regression test for exact behavior or a failing baseline plus threshold for probabilistic behavior. Demonstrate failure against the defective revision when reproducible.
-8. Record findings in a defect change's `root-cause.md`, proof artifacts, test/eval plan, and verification. Run `dset check` before handoff.
+7. Specify the regression test for exact behavior or the failing baseline plus threshold for probabilistic behavior. If the user authorized diagnostic artifact edits, add that proof and demonstrate failure against the defective revision when reproducible; otherwise report the proposed proof without writing it.
+8. If the user authorized diagnostic artifact edits, record findings in the defect change's `root-cause.md`, proof artifacts, test/eval plan, and verification, then run `dset check`. Without that authorization, return the same bounded findings in the diagnostic report only.
 
 ## Diagnostic report
 
@@ -24,4 +24,4 @@ Report symptom, reproduction, evidence, ruled-out hypotheses, likely or proven c
 
 ## Stop conditions
 
-Stop when evidence cannot distinguish the remaining hypotheses, required diagnostics exceed authorization, or reproduction risks production data or effects. Request the missing evidence or authority. Do not edit implementation code unless the user explicitly asks for the fix; if authorized, return to the earliest defective artifact and replay the DSET loop forward.
+Stop when evidence cannot distinguish the remaining hypotheses, required diagnostics exceed authorization, or reproduction risks production data or effects. Request the missing evidence or authority. Do not modify DSET artifacts without explicit write authorization, and do not edit implementation code unless the user explicitly asks for the fix. When a fix is authorized, return to the earliest defective artifact and replay the DSET loop forward.
