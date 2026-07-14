@@ -3,6 +3,7 @@ from __future__ import annotations
 import contextlib
 import hashlib
 import io
+import shutil
 import tempfile
 import unittest
 from pathlib import Path
@@ -67,6 +68,16 @@ class GovernanceTests(unittest.TestCase):
         self.assertIn('"workflow_id": "domain-grilling"', output)
         self.assertIn('"customization": "unmodified"', output)
 
+    def test_resolution_is_stable_and_read_only(self) -> None:
+        registry = self.root / "dset" / "governance.yaml"
+        before = hashlib.sha256(registry.read_bytes()).hexdigest()
+        first, first_diagnostics = resolve_workflow(self.root, "diagnosis")
+        second, second_diagnostics = resolve_workflow(self.root, "diagnosis")
+        self.assertEqual(first_diagnostics, [])
+        self.assertEqual(second_diagnostics, [])
+        self.assertEqual(first, second)
+        self.assertEqual(hashlib.sha256(registry.read_bytes()).hexdigest(), before)
+
     def test_registry_failure_codes_are_stable(self) -> None:
         cases = {
             "missing-registry": ("DSET-E130", self._remove_registry),
@@ -110,6 +121,67 @@ class GovernanceTests(unittest.TestCase):
         self.assertEqual(resolved["customization"], "custom")
         self.assertEqual(hashlib.sha256(wrapper.read_bytes()).hexdigest(), before)
         self.assertIn("Local output rule.", diff_governance(self.root, ROOT))
+
+    def test_materialized_rules_do_not_read_changed_source_template(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            source = Path(raw) / "framework"
+            source.mkdir()
+            for name in ("dset", "skills"):
+                source_path = ROOT / name
+                target_path = source / name
+                shutil.copytree(source_path, target_path)
+            target = Path(raw) / "materialized-adopter"
+            create_adopter(source, target)
+            template = (
+                source
+                / "dset"
+                / "templates"
+                / "governance"
+                / "core-v1"
+                / "domain-spec-authoring.md"
+            )
+            template.write_text("# Replaced source template\n", encoding="utf-8")
+            resolved, diagnostics = resolve_workflow(target, "domain-grilling")
+            self.assertEqual(diagnostics, [])
+            assert resolved is not None
+            local_rule = next(
+                item
+                for item in cast(list[dict[str, Any]], resolved["rules"])
+                if item["id"] == "DSET-RULE-DOMAIN-SPEC"
+            )
+            local = target / str(local_rule["path"])
+            self.assertIn("Establish ubiquitous language", local.read_text())
+            self.assertNotIn("Replaced source template", local.read_text())
+
+    def test_generated_wrappers_match_canonical_sources(self) -> None:
+        registry = cast(dict[str, Any], load(self.root / "dset" / "governance.yaml"))
+        for wrapper in cast(list[dict[str, Any]], registry["wrappers"]):
+            with self.subTest(workflow=wrapper["workflow"]):
+                generated = self.root / str(wrapper["path"])
+                canonical = ROOT / str(wrapper["path"])
+                self.assertEqual(generated.read_bytes(), canonical.read_bytes())
+                self.assertEqual(
+                    wrapper["sha256"],
+                    hashlib.sha256(canonical.read_bytes()).hexdigest(),
+                )
+
+    def test_justified_unselected_non_applicability_is_valid(self) -> None:
+        path, registry = self._registry(self.root)
+        rule = registry["rules"][-1]
+        rule["applicability"] = "not-applicable"
+        rule["reason"] = "prototype workflow is not selected in this fixture"
+        registry["workflows"] = [
+            workflow
+            for workflow in registry["workflows"]
+            if workflow["id"] != "prototyping"
+        ]
+        registry["wrappers"] = [
+            wrapper
+            for wrapper in registry["wrappers"]
+            if wrapper["workflow"] != "prototyping"
+        ]
+        path.write_text(dump(registry), encoding="utf-8")
+        self.assertEqual(validate_governance(self.root), [])
 
     def test_materialization_refuses_existing_destination(self) -> None:
         with self.assertRaises(FileExistsError):
