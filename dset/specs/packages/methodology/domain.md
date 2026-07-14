@@ -15,6 +15,10 @@
 | **Durability topology** | Selection of authoritative files, a local database, or external backing services based on deployment, write volume, and concurrency |
 | **Language profile** | Versioned mapping from the six neutral gate categories to language-native tools, scopes, thresholds, and exclusions |
 | **Production supportability contract** | Risk- and topology-scaled agreement for the evidence, correlation and deploy/change identity, safe diagnostics, data controls, runbook, recovery/escalation paths, and incident-to-fix traceability needed to investigate and repair production behavior |
+| **DSET toolchain** | The dependency-light CLI, schemas, templates, fixtures, traceability generator, migration guidance, CI gate, and focused skills that execute the accepted methodology contract |
+| **Diagnostic** | A stable code, artifact path, and actionable message emitted by a deterministic DSET gate |
+| **Traceability index** | A deterministic committed view from changes to packages, requirements, tests, evals, ADRs, evidence, and repository-qualified PRs; it is derived evidence rather than the owner of GitHub state or code diffs |
+| **Hosted delivery automation** | GitHub workflows and rulesets that govern the repository's production publication path and use GitHub PR/check/run/commit identities as authoritative operational evidence |
 
 ## Invariants
 
@@ -25,3 +29,6 @@
 - **METH-INV-005:** Public methodology renders and navigates on GitHub without Obsidian-only links or callouts.
 - **METH-INV-006:** A change cannot alter accepted truth until its proof is fresh and the change is archived through its implementing PR.
 - **METH-INV-007:** Every production-bound tool has an explicit supportability contract scaled to its risk profile and topology; a non-production tool may mark it not applicable only with a reason.
+- **METH-INV-008:** The canonical validator is read-only; scaffolding, trace updates, and archival require explicit write commands and never overwrite existing project truth.
+- **METH-INV-009:** Stable diagnostic codes and deterministic trace ordering are compatibility surfaces; explanatory prose may improve without changing their meaning.
+- **METH-INV-010:** Repository skills have distinct triggers and stop conditions and cannot replace the owning DSET specification, diagnosis authorization boundary, or implementation plan.

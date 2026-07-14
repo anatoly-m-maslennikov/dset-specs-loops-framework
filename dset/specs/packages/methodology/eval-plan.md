@@ -29,6 +29,10 @@ Use representative project scenarios covering:
 | **METH-EVAL-004** | Implementation readiness | No scenario leaves a critical ownership, proof, or recovery decision implicit |
 | **METH-EVAL-005** | Public usability | A new reader can locate current truth, active changes, archive history, templates, schemas, and the governing methodology document without Obsidian or private context |
 | **METH-EVAL-006** | Diagnostic usefulness | For both supportability scenarios, an independent operator can use only synthetic redacted evidence and the runbook to diagnose the likely failure boundary, choose a safe containment/escalation/rollback action, and locate the governing requirement, change, PR, and fix record |
+| **METH-EVAL-007** | File-only resumability | A fresh evaluator locates active status, next task, proof obligations, PR identity, and archive gates without session context |
+| **METH-EVAL-008** | CLI diagnostic usefulness | A contributor can correct a malformed fixture from the stable code, path, and message without reading validator source |
+| **METH-EVAL-009** | Skill routing | Ambiguous-domain, defect-investigation, and disposable-experiment prompts select the intended distinct skill and respect its stop condition |
+| **METH-EVAL-010** | Migration clarity | A repository with separate existing spec/test/eval/implementation roots reaches one writable `dset/` root without losing test/eval separation or current-truth ownership |
 
 ## Calibration and evidence
 

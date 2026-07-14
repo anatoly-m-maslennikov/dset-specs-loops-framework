@@ -4,14 +4,16 @@
 
 **Sources:** [OpenSpec](https://github.com/Fission-AI/OpenSpec) and [Matt Pocock’s skills](https://github.com/mattpocock/skills).
 
+**Implementation status (2026-07-14):** Checked items are implemented and verified by DSET change `operationalize-dset-v1` in [PR #7](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7). Unchecked items remain roadmap work; the v1 scope does not claim the external pilot, complete Solution Landscape and Back-to-Left enforcement, large-project hardening, or the evidence-derived JavaScript/TypeScript profile.
+
 ## §0 | Decisions to preserve
 
-- [ ] Keep this public repository as the sole editable source of framework truth; external frameworks inform it but do not govern it.
-- [ ] Keep all framework-owned methodology, documentation, schemas, templates, validators, utilities, skills, fixtures, and migration guidance public and versioned in this repository.
-- [ ] Keep the five-stage pipeline and the existing document ownership boundaries in 00–05.
-- [ ] Use a DSET-owned, OpenSpec-derived model for project-local change packaging and current-truth reconciliation, not OpenSpec as a replacement methodology.
-- [ ] Adapt selected Matt Pocock workflows into small repository-native skills only when each skill runs a distinct workflow.
-- [ ] Do not install BMAD or the complete Superpowers/Matt Pocock workflow stack as another orchestration layer.
+- [x] Keep this public repository as the sole editable source of framework truth; external frameworks inform it but do not govern it.
+- [x] Keep all framework-owned methodology, documentation, schemas, templates, validators, utilities, skills, fixtures, and migration guidance public and versioned in this repository.
+- [x] Keep the five-stage pipeline and the existing document ownership boundaries in 00–05.
+- [x] Use a DSET-owned, OpenSpec-derived model for project-local change packaging and current-truth reconciliation, not OpenSpec as a replacement methodology.
+- [x] Adapt selected Matt Pocock workflows into small repository-native skills only when each skill runs a distinct workflow.
+- [x] Do not install BMAD or the complete Superpowers/Matt Pocock workflow stack as another orchestration layer.
 - [ ] Require one pilot and evidence before making the new change package the default for all repositories.
 
 ### Source-of-truth ownership to formalize
@@ -27,11 +29,11 @@
 
 ## §1 | Define the repository change-package contract
 
-- [ ] Use `dset/` as the canonical project-local artifact root.
-- [ ] Define `dset/specs/` as accepted current truth and `dset/changes/<change-id>/` as bounded work in progress.
+- [x] Use `dset/` as the canonical project-local artifact root.
+- [x] Define `dset/specs/` as accepted current truth and `dset/changes/<change-id>/` as bounded work in progress.
 - [ ] Inventory each pilot repository’s existing spec roots before creating `dset/`; define an explicit migration or compatibility map and never leave two writable sources of truth for the same concern.
-- [ ] Define a stable lowercase kebab-case `<change-id>` convention.
-- [ ] Define the required artifact set:
+- [x] Define a stable lowercase kebab-case `<change-id>` convention.
+- [x] Define the required artifact set:
 
 ```text
 dset/
@@ -50,19 +52,19 @@ dset/
         └── verification.md             # Fresh commands, redacted summaries, evidence pointers
 ```
 
-- [ ] Define change-package profiles—small fix, standard change, large/cross-package change, defect repair, and external-component adoption—with an explicit required-artifact matrix. Minimum proposal/scope, deterministic acceptance proof, tasks, and verification survive every profile; an eval plan may be an explicit N/A only when no probabilistic or qualitative behavior exists.
+- [x] Define change-package profiles—small fix, standard change, large/cross-package change, defect repair, and external-component adoption—with an explicit required-artifact matrix. Minimum proposal/scope, deterministic acceptance proof, tasks, and verification survive every profile; an eval plan may be an explicit N/A only when no probabilistic or qualitative behavior exists.
 - [ ] Link the change-package profile to both of 04's selections: runtime risk determines required recovery/safety semantics, while deployment topology plus write volume/concurrency selects file-backed, local-database-backed, or external-backing-service durability. Require event sourcing, reconciliation, durable workflow execution, and observed-progress liveness only when their narrower triggers apply.
 - [ ] Require specs and implementation plans to carry a concern-scoped durability table covering authority, schema/format, writer model, refresh boundary, failure model, receiving-side idempotency boundary, and recovery proof; prohibit both durable state that exists only in process memory and duplicate writable authorities for the same concern.
-- [ ] Define artifact readiness gates rather than rigid waterfall phases: implementation may start only when requirements and proof are explicit, but any artifact may be corrected when new evidence appears.
-- [ ] Require each requirement to carry a stable ID and at least one scenario or acceptance check.
-- [ ] Require delta specs to mark requirements as `ADDED`, `MODIFIED`, or `REMOVED` and identify the current-truth target they affect.
-- [ ] Require `test-plan.md` to define deterministic unit, integration, end-to-end, property, regression, and machine-gate proof.
-- [ ] Require `eval-plan.md` to define probabilistic or qualitative datasets, criteria, rubrics, thresholds, calibration, drift cases, and budgets; allow an explicit not-applicable declaration when no such behavior exists.
-- [ ] Require `implementation-plan.md` to map every batch to requirement, test, and eval IDs as applicable.
-- [ ] Require `verification.md` to record fresh commands, exit status, redacted result summaries, evidence pointers, unresolved failures, and whether completion is accepted; do not persist secrets or sensitive full command output.
+- [x] Define artifact readiness gates rather than rigid waterfall phases: implementation may start only when requirements and proof are explicit, but any artifact may be corrected when new evidence appears.
+- [x] Require each requirement to carry a stable ID and at least one scenario or acceptance check.
+- [x] Require delta specs to mark requirements as `ADDED`, `MODIFIED`, or `REMOVED` and identify the current-truth target they affect.
+- [x] Require `test-plan.md` to define deterministic unit, integration, end-to-end, property, regression, and machine-gate proof.
+- [x] Require `eval-plan.md` to define probabilistic or qualitative datasets, criteria, rubrics, thresholds, calibration, drift cases, and budgets; allow an explicit not-applicable declaration when no such behavior exists.
+- [x] Require `implementation-plan.md` to map every batch to requirement, test, and eval IDs as applicable.
+- [x] Require `verification.md` to record fresh commands, exit status, redacted result summaries, evidence pointers, unresolved failures, and whether completion is accepted; do not persist secrets or sensitive full command output.
 - [ ] Require schema validation to prove the dependency graph: proposal → delta specs plus test plan and applicable eval plan → solution landscape plus proof-of-fit → ADR/design plus implementation plan → tasks → verification → archive.
-- [ ] Define the PR-centered archive transaction: open a draft PR early and record its repository-qualified PR ID → complete implementation and pre-merge verification → reconcile deltas into `dset/specs/` → move the completed change to `dset/changes/archive/YYYY-MM-DD-<change-id>/` inside the same PR → regenerate traceability from artifact metadata plus the PR → run spec-sync/link checks → merge. The archive records the stable PR ID, not a not-yet-existing merge SHA.
-- [ ] Define failure behavior: an incomplete or failed change remains unarchived and its current-truth specs remain unchanged.
+- [x] Define the PR-centered archive transaction: open a draft PR early and record its repository-qualified PR ID → complete implementation and pre-merge verification → reconcile deltas into `dset/specs/` → move the completed change to `dset/changes/archive/YYYY-MM-DD-<change-id>/` inside the same PR → regenerate traceability from artifact metadata plus the PR → run spec-sync/link checks → merge. The archive records the stable PR ID, not a not-yet-existing merge SHA.
+- [x] Define failure behavior: an incomplete or failed change remains unarchived and its current-truth specs remain unchanged.
 
 ### Solution Landscape and Reuse Gate
 
@@ -98,12 +100,12 @@ dset/
 ### ADR-to-implementation traceability
 
 - [ ] Give every ADR a stable ID such as `ADR-0042`; treat the ADR as the owner of the decision and rationale, not as a manually maintained ledger of every implementation commit.
-- [ ] Open a draft PR as soon as the branch contains its first reviewable commit so the stable repository-qualified PR ID exists before final ADR, task, verification, archive, and traceability updates.
-- [ ] Require ADRs, proposals, implementation plans, tasks, test/eval evidence, and verification records to reference that PR ID. Meaningful commits made after the PR exists may additionally use trailers such as `PR: owner/repo#123`, `ADR: ADR-0042`, `DSET-Change: tmux-controls`, `Requirement: TMUX-REQ-07`, `Test: TMUX-TEST-04`, or `Eval: TMUX-EVAL-03`; the first pre-PR commit is linked by PR membership and need not be rewritten.
-- [ ] Define the canonical traceability chain as ADR → DSET change → requirements plus test/eval evidence → repository-qualified PR ID. The PR is the implementation record: its files view owns the actual code modifications/additions, its checks own pre-merge evidence, and GitHub records the eventual merge or close result.
+- [x] Open a draft PR as soon as the branch contains its first reviewable commit so the stable repository-qualified PR ID exists before final ADR, task, verification, archive, and traceability updates.
+- [x] Require ADRs, proposals, implementation plans, tasks, test/eval evidence, and verification records to reference that PR ID. Meaningful commits made after the PR exists may additionally use trailers such as `PR: owner/repo#123`, `ADR: ADR-0042`, `DSET-Change: tmux-controls`, `Requirement: TMUX-REQ-07`, `Test: TMUX-TEST-04`, or `Eval: TMUX-EVAL-03`; the first pre-PR commit is linked by PR membership and need not be rewritten.
+- [x] Define the canonical traceability chain as ADR → DSET change → requirements plus test/eval evidence → repository-qualified PR ID. The PR is the implementation record: its files view owns the actual code modifications/additions, its checks own pre-merge evidence, and GitHub records the eventual merge or close result.
 - [ ] Define merge-strategy behavior around the PR identity: squash, merge, or rebase may change commit topology but must preserve the same linked PR and change-package references; no artifact inside the PR is required to predict the final merge SHA.
-- [ ] Generate a committed `dset/traceability.yaml` or equivalent index from ADR/change/evidence metadata and repository-qualified PR references; derive changed files and symbols from the PR rather than asking humans to maintain a duplicate code-file ledger.
-- [ ] Keep the generated index reproducible and reviewable: stable ordering, no timestamps unless semantically required, and a clean regeneration check in CI.
+- [x] Generate a committed `dset/traceability.yaml` or equivalent index from ADR/change/evidence metadata and repository-qualified PR references; derive changed files and symbols from the PR rather than asking humans to maintain a duplicate code-file ledger.
+- [x] Keep the generated index reproducible and reviewable: stable ordering, no timestamps unless semantically required, and a clean regeneration check in CI.
 - [ ] Make CI reject references to missing ADRs, changes, requirements, tests, evals, evidence, or PRs, and report accepted ADRs that claim implementation but have no repository-qualified PR evidence. Pre-merge CI validates PR existence and identity; post-merge reporting may verify its final state without creating a second archive commit.
 - [ ] Do not use Git notes as the primary relationship store because they are not reliably transferred by ordinary clone, fetch, and push workflows.
 
@@ -277,7 +279,7 @@ packages/
 | Change IDs | unprefixed kebab-case inside the namespace | `tmux-controls`, not `dset-tmux-controls` |
 | Package IDs | unprefixed domain/capability names | `conversation-history`, not `dset-conversation-history` |
 
-- [ ] Keep `dset/` as the visible artifact root regardless of whether any OpenSpec code or concepts are reused; reject tooling that requires a competing writable project-truth root.
+- [x] Keep `dset/` as the visible artifact root regardless of whether any OpenSpec code or concepts are reused; reject tooling that requires a competing writable project-truth root.
 
 ```text
 dset/
@@ -292,28 +294,28 @@ dset/
 └── local-overrides.yaml
 ```
 
-- [ ] Keep committed source-of-truth artifacts under visible `dset/`; reserve hidden `.dset/` for generated, local, cached, or machine-owned state.
-- [ ] Reject `openspec/specs/`, parallel spec roots, or compatibility mirrors as writable sources for the same project; migration inputs may remain read-only history only.
+- [x] Keep committed source-of-truth artifacts under visible `dset/`; reserve hidden `.dset/` for generated, local, cached, or machine-owned state.
+- [x] Reject `openspec/specs/`, parallel spec roots, or compatibility mirrors as writable sources for the same project; migration inputs may remain read-only history only.
 - [ ] Publish a reserved-name list and make the validator reject ambiguous framework-owned paths or mixed namespaces.
 
 ## §3 | Establish third-party licensing and provenance first
 
-- [ ] Keep DSET's original work under Apache-2.0 while preserving the original MIT copyright and permission notices for any copied or substantially adapted OpenSpec, Matt Pocock Skills, Superpowers, or BMAD material.
-- [ ] Add a root `THIRD_PARTY_NOTICES.md` before copying or substantially adapting external material; record upstream project, author/copyright holder, source URL, exact commit or release, license, affected DSET files, what was adapted, and DSET modifications.
-- [ ] Add applicable upstream license texts under `third_party/licenses/` before the corresponding material enters the repository.
-- [ ] Add a provenance header or adjacent README note to every copied or substantially adapted file; do not present third-party MIT material as exclusively Apache-2.0.
-- [ ] Preserve upstream `NOTICE`, attribution, contributor information, and separately licensed assets required by the exact source version.
-- [ ] Prefer independently implementing ideas and workflow patterns in DSET terminology; treat substantial wording, templates, code, scripts, or skill reuse as licensed material.
-- [ ] Keep trademarks separate from copyright licensing; use third-party names only for truthful source, inspiration, or compatibility references and never imply endorsement.
-- [ ] Define a pre-merge provenance check: verify source/version, record the license, confirm notices, check trademark-safe naming, and confirm no source-specific exception was overlooked.
-- [ ] Add deterministic notice/link checks to the minimum validator before the pilot and expand them as new third-party material is introduced.
+- [x] Keep DSET's original work under Apache-2.0 while preserving the original MIT copyright and permission notices for any copied or substantially adapted OpenSpec, Matt Pocock Skills, Superpowers, or BMAD material.
+- [x] Add a root `THIRD_PARTY_NOTICES.md` before copying or substantially adapting external material; record upstream project, author/copyright holder, source URL, exact commit or release, license, affected DSET files, what was adapted, and DSET modifications.
+- [x] Add applicable upstream license texts under `third_party/licenses/` before the corresponding material enters the repository.
+- [x] Add a provenance header or adjacent README note to every copied or substantially adapted file; do not present third-party MIT material as exclusively Apache-2.0.
+- [x] Preserve upstream `NOTICE`, attribution, contributor information, and separately licensed assets required by the exact source version.
+- [x] Prefer independently implementing ideas and workflow patterns in DSET terminology; treat substantial wording, templates, code, scripts, or skill reuse as licensed material.
+- [x] Keep trademarks separate from copyright licensing; use third-party names only for truthful source, inspiration, or compatibility references and never imply endorsement.
+- [x] Define a pre-merge provenance check: verify source/version, record the license, confirm notices, check trademark-safe naming, and confirm no source-specific exception was overlooked.
+- [x] Add deterministic notice/link checks to the minimum validator before the pilot and expand them as new third-party material is introduced.
 
 ## §4 | Build minimum tooling and decide OpenSpec CLI usage
 
-- [ ] Create the repository-owned `dset/` change-package template and schemas needed by the pilot.
-- [ ] Create a minimum validator for required artifacts, IDs, delta markers, test-plan/eval-plan separation, task-to-requirement/proof mapping, archive readiness, current-truth reconciliation, and licensing/provenance.
-- [ ] Expose the validator through one cross-platform canonical command and make the pilot use that command from its first change.
-- [ ] Add baseline fixtures for one small fix, one normal feature, one failed/unarchived change, and one archived change before the pilot.
+- [x] Create the repository-owned `dset/` change-package template and schemas needed by the pilot.
+- [ ] Create a minimum validator for required artifacts, IDs, delta markers, test-plan/eval-plan separation, task-to-requirement/proof mapping, archive readiness, current-truth reconciliation, and licensing/provenance. The v1 validator covers artifacts, IDs, test/eval separation, archive guards, and provenance; delta-marker and complete dependency-edge enforcement remain open.
+- [x] Expose the validator through one cross-platform canonical command and make this repository's dogfood change use that command.
+- [x] Add baseline fixtures for one small fix, one normal feature, one failed/unarchived change, and one archived change before the pilot.
 - [ ] Test the current OpenSpec CLI in a disposable repository, not first in a live project.
 - [ ] Check whether OpenSpec can operate on the canonical `dset/` contract without a competing writable root, unexpected rewrites, generated context bloat, or tool-specific assumptions.
 - [ ] Check whether custom schemas can require `test-plan.md`, `eval-plan.md`, `implementation-plan.md`, and `verification.md` without fighting upgrades.
@@ -337,9 +339,9 @@ dset/
 
 ### Adopt first
 
-- [ ] **`grill-with-docs` plus `domain-modeling` pattern** — create one repository-native pre-spec interview workflow that resolves ambiguous branches, sharpens ubiquitous language, stress-tests entities/invariants with edge cases, and records ADRs before a spec is accepted.
-- [ ] **`diagnosing-bugs` pattern** — create a disciplined reproduce → minimise → hypothesise → instrument → fix → regression-test workflow; diagnosis must remain separate from implementation authorization.
-- [ ] **`prototype` pattern** — define an explicitly disposable prototype lane for answering design questions; require a decision record before any prototype code is promoted.
+- [x] **`grill-with-docs` plus `domain-modeling` pattern** — create one repository-native pre-spec interview workflow that resolves ambiguous branches, sharpens ubiquitous language, stress-tests entities/invariants with edge cases, and records ADRs before a spec is accepted.
+- [x] **`diagnosing-bugs` pattern** — create a disciplined reproduce → minimise → hypothesise → instrument → fix → regression-test workflow; diagnosis must remain separate from implementation authorization.
+- [x] **`prototype` pattern** — define an explicitly disposable prototype lane for answering design questions; require a decision record before any prototype code is promoted.
 
 ### Refine existing stages after the pilot; do not create first-wave standalone skills
 
@@ -354,58 +356,58 @@ dset/
 
 ### Do not duplicate
 
-- [ ] Do not import `to-spec` as a second spec format; the DSET change package owns project-local specifications.
-- [ ] Do not import another generic `tdd` methodology; strengthen [02_Test and Eval Plan Patterns — Proof Artifact Conventions](<02_Test and Eval Plan Patterns — Proof Artifact Conventions.md>) and [05_Layered Build Standard — DDD, TDD, Small Functions, Typed Gates](<05_Layered Build Standard — DDD, TDD, Small Functions, Typed Gates.md>) with any missing executable details.
-- [ ] Do not import `implement` as a competing execution orchestrator; implementation follows the accepted change package and project-local agent contract.
-- [ ] Do not import generic `research` as a parallel system; any research workflow must write source-backed evidence into the DSET change package.
+- [x] Do not import `to-spec` as a second spec format; the DSET change package owns project-local specifications.
+- [x] Do not import another generic `tdd` methodology; strengthen [02_Test and Eval Plan Patterns — Proof Artifact Conventions](<02_Test and Eval Plan Patterns — Proof Artifact Conventions.md>) and [05_Layered Build Standard — DDD, TDD, Small Functions, Typed Gates](<05_Layered Build Standard — DDD, TDD, Small Functions, Typed Gates.md>) with any missing executable details.
+- [x] Do not import `implement` as a competing execution orchestrator; implementation follows the accepted change package and project-local agent contract.
+- [x] Do not import generic `research` as a parallel system; any research workflow must write source-backed evidence into the DSET change package.
 - [ ] Do not import `triage` until a real issue-tracker state-machine gap is demonstrated.
-- [ ] Do not copy third-party skills verbatim into the methodology. Extract the workflow, preserve provenance, adapt terminology, validate behavior, and keep this repository canonical.
+- [x] Do not copy third-party skills verbatim into the methodology. Extract the workflow, preserve provenance, adapt terminology, validate behavior, and keep this repository canonical.
 
 ## §7 | Map accepted changes back into 00–06
 
 - [ ] Update [00_Tool Development Playbook](<00_Tool Development Playbook.md>) only with the scale/routing rule: when a project-local change package is required and when a lightweight inline artifact is enough.
-- [ ] Update [01_Spec Authoring Patterns — Service Spec Conventions](<01_Spec Authoring Patterns — Service Spec Conventions.md>) with the final current-truth, delta-spec, requirement-ID, and scenario contract.
-- [ ] Update [02_Test and Eval Plan Patterns — Proof Artifact Conventions](<02_Test and Eval Plan Patterns — Proof Artifact Conventions.md>) with the final separate `test-plan.md`, `eval-plan.md`, and `verification.md` contracts, the diagnosis boundary, public-seam testing, independent expected-value oracles, and one vertical red/green slice per cycle.
+- [x] Update [01_Spec Authoring Patterns — Service Spec Conventions](<01_Spec Authoring Patterns — Service Spec Conventions.md>) with the final current-truth, delta-spec, requirement-ID, and scenario contract.
+- [x] Update [02_Test and Eval Plan Patterns — Proof Artifact Conventions](<02_Test and Eval Plan Patterns — Proof Artifact Conventions.md>) with the final separate `test-plan.md`, `eval-plan.md`, and `verification.md` contracts, the diagnosis boundary, public-seam testing, independent expected-value oracles, and one vertical red/green slice per cycle.
 - [ ] Update [03_Implementation Plan Patterns — Service Build Conventions](<03_Implementation Plan Patterns — Service Build Conventions.md>) with artifact readiness, batch mapping, archive transaction, failed-change behavior, and the deep-module design rubric.
 - [ ] Update [04_General Build Rules — Tool Code Conventions](<04_General Build Rules — Tool Code Conventions.md>) only if pilot evidence reveals a genuinely universal rule not already owned elsewhere.
-- [ ] Keep [05_Layered Build Standard — DDD, TDD, Small Functions, Typed Gates](<05_Layered Build Standard — DDD, TDD, Small Functions, Typed Gates.md>) language-neutral at the gate-category level and implement concrete tools, paths, exclusions, and thresholds through versioned language profiles; Python v1 is the first active profile.
+- [x] Keep [05_Layered Build Standard — DDD, TDD, Small Functions, Typed Gates](<05_Layered Build Standard — DDD, TDD, Small Functions, Typed Gates.md>) language-neutral at the gate-category level and implement concrete tools, paths, exclusions, and thresholds through versioned language profiles; Python v1 is the first active profile.
 - [ ] Derive the JavaScript/TypeScript profile from `obsidian-your-harness`: inventory its real compiler, linter, tests, package boundaries, scripts, and failure history; then map evidence-backed tools and thresholds to the same six categories without copying Python limits.
 - [ ] Update the build standard after the pilot with deterministic spec-sync/archive gates, public-seam TDD enforcement where feasible, and risk-scaled review without collapsing applied profile details back into the general rules.
 - [ ] Update [06_External Grounding — LLM Power-User Practice](<06_External Grounding — LLM Power-User Practice.md>) with Matt Pocock’s skills as provenance and refresh OpenSpec provenance after the pilot.
-- [ ] Keep detailed templates and executable workflows out of 00–06; place them in repository templates, scripts, utilities, or focused skills and link to them.
+- [x] Keep detailed templates and executable workflows out of 00–06; place them in repository templates, scripts, utilities, or focused skills and link to them.
 - [ ] Update [00_Tool Development Playbook](<00_Tool Development Playbook.md>)’s document map only if a permanent new governing document is truly required. This TODO is temporary and should not become stage 7.
 
 ## §8 | Harden reusable assets after the pilot
 
 - [ ] Harden the validator to cover solution-landscape/proof/ADR traceability, ADR/commit/change traceability, Back-to-Left completeness, package/global ownership, licensing, archive readiness, and current-truth reconciliation.
-- [ ] Keep the validator cross-platform and runnable through the same canonical command used by the pilot.
-- [ ] Create only the three accepted focused skills from §6; keep each small, script-backed where useful, and explicit about trigger, output, verification, and stop conditions.
-- [ ] Keep skill sources in this repository; runtime installations must point back to or be generated from versioned repository releases, never become independent canonical copies.
+- [x] Keep the validator cross-platform and runnable through the same canonical command used by this repository's dogfood change.
+- [x] Create only the three accepted focused skills from §6; keep each small, script-backed where useful, and explicit about trigger, output, verification, and stop conditions.
+- [x] Keep skill sources in this repository; runtime installations must point back to or be generated from versioned repository releases, never become independent canonical copies.
 - [ ] Add advanced fixtures for external-component adoption with competing proofs and a defect traced to an introducing commit and superseded ADR.
-- [ ] Add migration guidance for repositories with existing spec, test-plan, eval-plan, and implementation-plan folders.
+- [x] Add migration guidance for repositories with existing spec, test-plan, eval-plan, and implementation-plan folders.
 - [ ] Have final methodology, implementation, and licensing reviews verify that every external influence is either independently re-expressed with provenance or distributed with its required notices.
 
 ## §9 | Acceptance criteria
 
-- [ ] The methodology remains understandable without installing OpenSpec or Matt Pocock’s skills.
-- [ ] This public repository is the only editable source of framework truth and contains every released framework-owned methodology, document, schema, template, validator, utility, skill, fixture, and migration guide.
-- [ ] One repo-local change folder contains intent, proof, design, execution, and verification without duplicating the same rule across artifacts.
+- [x] The methodology remains understandable without installing OpenSpec or Matt Pocock’s skills.
+- [x] This public repository is the only editable source of framework truth and contains every released framework-owned methodology, document, schema, template, validator, utility, skill, fixture, and migration guide.
+- [x] One repo-local change folder contains intent, proof, design, execution, and verification without duplicating the same rule across artifacts.
 - [ ] Every large project has a justified package tree, explicit global artifacts, a dependency DAG, and no duplicated source of truth across global and package specs.
 - [ ] Every package can be understood and verified as a bounded unit, while global E2E tests and evals prove cross-package behavior.
-- [ ] Framework-owned skills, commands, folders, files, CI gates, and environment variables follow the `dset` namespace contract without prefixing ordinary product/domain names.
-- [ ] Tests and evals are designed before implementation in separate artifacts and remain independently reviewable; deterministic tests are never relabeled as evals.
+- [x] Framework-owned skills, commands, folders, files, CI gates, and environment variables follow the `dset` namespace contract without prefixing ordinary product/domain names.
+- [x] Tests and evals are designed before implementation in separate artifacts and remain independently reviewable; deterministic tests are never relabeled as evals.
 - [ ] Every material external-component decision is derived from requirement IDs plus relevant test and eval IDs, supported by reproducible proof-of-fit evidence, recorded in an ADR, isolated behind an appropriate ownership boundary, and accompanied by an exit strategy.
-- [ ] Archiving is deterministic, preserves history, and cannot silently overwrite current truth after failed verification.
-- [ ] Every adopted skill fills a documented gap and has a distinct trigger, output, verification step, and stop condition.
+- [x] Archiving is deterministic, preserves history, and cannot silently overwrite current truth after failed verification.
+- [x] Every adopted skill fills a documented gap and has a distinct trigger, output, verification step, and stop condition.
 - [ ] Review effort scales with risk: gates/self-review for mechanical changes, one independent review for normal changes, and separate spec-compliance and code-quality reviews for high-risk changes.
-- [ ] Agents can resume an interrupted change from files alone without relying on chat history.
-- [ ] The canonical verification command detects malformed change packages and spec drift.
+- [x] Agents can resume an interrupted change from files alone without relying on chat history.
+- [x] The canonical verification command detects malformed change packages and spec drift.
 - [ ] Every adopting project has exactly one writable `dset/` artifact root; validators reject competing project-truth roots.
-- [ ] ADRs, DSET changes, requirements, test/eval evidence, and repository-qualified PR IDs form a bidirectionally discoverable graph; each PR owns its actual code diff and eventual merge result without requiring artifacts in that PR to contain a future merge SHA.
+- [x] ADRs, DSET changes, requirements, test/eval evidence, and repository-qualified PR IDs form a bidirectionally discoverable graph; each PR owns its actual code diff and eventual merge result without requiring artifacts in that PR to contain a future merge SHA.
 - [ ] Every closed defect demonstrates a regression proof, evidence-backed first-bad-commit disposition, upstream ADR/spec review, and forward propagation into accepted current truth; emergency containment cannot bypass eventual Back-to-Left completion.
 - [ ] The Claudian pilot demonstrates lower ambiguity and reliable recovery without unacceptable ceremony or context overhead.
 - [ ] Independent review finds no competing methodology, duplicate ownership, stale links, or tool-specific lock-in in 00–06.
-- [ ] Every copied or substantially adapted third-party component has traceable provenance and all required license, attribution, notice, and trademark safeguards.
+- [x] Every copied or substantially adapted third-party component has traceable provenance and all required license, attribution, notice, and trademark safeguards.
 - [ ] After acceptance, move durable rules/assets to their owners and delete this TODO.
 
 ## §10 | Final rollout order

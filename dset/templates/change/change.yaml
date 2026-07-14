@@ -1,0 +1,14 @@
+schema_version: 1.0
+id: {{change_id}}
+profile: {{profile}}
+status: proposed
+packages:
+  - {{package_id}}
+pull_request:
+  repository: {{repository}}
+  number: pending
+  url: pending
+requirements: []
+tests: []
+evals: []
+adrs: []

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/schemas/package.schema.json",
+  "title": "DSET accepted package manifest",
+  "type": "object",
+  "required": ["schema_version", "id", "status", "requirements", "tests", "evals", "artifacts"],
+  "properties": {
+    "schema_version": {"pattern": "^1\\.0(?:-draft)?$"},
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "status": {"enum": ["active", "retired"]},
+    "requirements": {"$ref": "#/$defs/ids"},
+    "tests": {"$ref": "#/$defs/ids"},
+    "evals": {"$ref": "#/$defs/ids"},
+    "artifacts": {
+      "type": "object",
+      "required": ["domain", "spec", "contracts", "test_plan", "eval_plan"],
+      "properties": {
+        "domain": {"const": "domain.md"},
+        "spec": {"const": "spec.md"},
+        "contracts": {"const": "contracts.md"},
+        "test_plan": {"const": "test-plan.md"},
+        "eval_plan": {"const": "eval-plan.md"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)+$"}}
+  },
+  "additionalProperties": false
+}

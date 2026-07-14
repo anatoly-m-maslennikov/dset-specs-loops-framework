@@ -83,3 +83,39 @@ Every production-bound tool must define a supportability contract appropriate to
 **Scenario METH-SCN-015:** A production-bound local tool uses bounded structured local diagnostic records and run/build identity appropriate to its risk without being forced to deploy a tracing backend; a non-production one-shot tool records a justified not-applicable disposition.
 
 **Scenario METH-SCN-016:** A distributed, stateful, retryable, or high-risk service propagates correlation and deploy/change identity across relevant effect boundaries, provides safe bounded diagnostics and incident runbooks, and adds tracing, audited access, rollback, or stronger redaction when its topology and profile require them.
+
+## METH-REQ-014 — The canonical workflow is executable
+
+The framework must provide one cross-platform CLI with `new`, `check`, `verify`, `trace`, and guarded `archive` commands. `check` is dependency-light and read-only; every write is explicit and refuses an existing destination.
+
+**Scenario METH-SCN-017:** A contributor can run `python -m dset_toolchain check .` without installing OpenSpec or a second methodology and receives stable diagnostic codes for malformed artifacts.
+
+## METH-REQ-015 — Contracts ship with proof fixtures
+
+Versioned schemas, profile-aware templates, and valid/invalid fixtures must cover the project manifest, package truth, active and archived changes, separate test/eval artifacts, provenance, and traceability.
+
+**Scenario METH-SCN-018:** The fixture runner accepts small, standard, failed-active, and archived cases and rejects missing-test, merged-test/eval, and missing-PR archive cases with their expected codes.
+
+## METH-REQ-016 — Traceability is generated from durable identities
+
+`dset/traceability.yaml` must be generated in stable order from committed change manifests and repository-qualified PR references. It may cache evidence relationships but must not replace GitHub as owner of PR state, checks, diffs, or merge results.
+
+**Scenario METH-SCN-019:** Regeneration without source changes produces no diff, and every archived change resolves to the PR that owns its implementation history.
+
+## METH-REQ-017 — Archive writes are guarded
+
+Archive execution must require complete profile artifacts, fresh verification, accepted-truth reconciliation, an archive-ready status, a real PR identity, and a free dated destination. Dry-run is the default.
+
+**Scenario METH-SCN-020:** A proposed, failed, incomplete, PR-less, or colliding change remains active and no archive path is overwritten.
+
+## METH-REQ-018 — Workflow skills remain focused
+
+The framework must publish distinct portable skills for pre-spec domain grilling, evidence-first diagnosis, and disposable prototyping. Each owns one trigger/output/verification/stop boundary and writes durable conclusions back to the active DSET change.
+
+**Scenario METH-SCN-021:** A diagnosis request cannot silently authorize a fix, and prototype evidence cannot enter production without an accepted ADR/design and normal implementation proof.
+
+## METH-REQ-019 — Repository delivery is supportable
+
+The GitHub-hosted delivery path must document incident triggers, authoritative PR/check/run/ruleset/commit evidence, safe diagnostics, data controls, containment, recovery, escalation, and change-to-fix traceability. Hosted state remains authoritative; local files do not add a competing delivery-state store.
+
+**Scenario METH-SCN-022:** An operator can diagnose a blocked or incorrect `dev → main` delivery, contain it by preserving the draft/PR evidence, and recover without bypassing protected `main` or rewriting history.

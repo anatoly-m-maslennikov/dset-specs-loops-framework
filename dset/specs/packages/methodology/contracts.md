@@ -13,6 +13,21 @@
 - A repository navigation map in `README.md` and methodology document 00.
 - Accepted package truth under `dset/specs/`.
 - Bounded, PR-traceable changes under `dset/changes/`.
+- Versioned schemas, templates, fixtures, migration guidance, provenance, and generated traceability under `dset/`.
+- The `dset` CLI through `python -m dset_toolchain` and an installable console entry point.
+- Focused skill sources under `skills/dset-grill/`, `skills/dset-diagnose/`, and `skills/dset-prototype/`.
+
+## CLI compatibility surface
+
+| Command | Contract |
+|---|---|
+| `dset new` | Create a profile-aware active change without overwrite |
+| `dset check` | Read-only structural, ID, portability, provenance, and lifecycle validation |
+| `dset verify` | Run `check`, project-configured deterministic gates, and trace freshness |
+| `dset trace` | Print by default; write or compare only with explicit flags |
+| `dset archive` | Dry-run by default; execute only after archive readiness gates pass |
+
+Stable diagnostic codes, command names, schema version 1.0, and trace ordering are public compatibility surfaces. Human-readable messages and non-contractual examples may improve compatibly.
 
 ## Stable document map
 

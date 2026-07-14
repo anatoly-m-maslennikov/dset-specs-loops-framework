@@ -1,0 +1,15 @@
+schema_version: 1.0
+project_license: Apache-2.0
+sources:
+  - id: openspec
+    repository: https://github.com/Fission-AI/OpenSpec
+    revision: 0a99f410457271aa773d8b106f03f637f7c6b3c0
+    license: MIT
+    license_file: third_party/licenses/openspec-MIT.txt
+    use: independently-reexpressed-concepts
+  - id: mattpocock-skills
+    repository: https://github.com/mattpocock/skills
+    revision: 66898f60e8c744e269f8ce06c2b2b99ce7660d5f
+    license: MIT
+    license_file: third_party/licenses/mattpocock-skills-MIT.txt
+    use: independently-reexpressed-workflow-categories

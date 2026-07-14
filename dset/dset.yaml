@@ -1,4 +1,4 @@
-schema_version: 0.1-draft
+schema_version: 1.0
 
 project:
   id: dset-specs-loops-framework
@@ -7,8 +7,10 @@ project:
   repository_role: framework-source-and-adopter
 
 supportability:
-  status: not-applicable
-  reason: documentation-only framework repository with no deployed production runtime
+  status: applicable
+  reason: GitHub Actions and repository rules operate the production delivery path from dev to main
+  authority: github
+  runbook: supportability/delivery-runbook.md
 
 structure:
   mode: single-package
@@ -23,9 +25,9 @@ packages:
     status: active
 
 profiles:
-  runtime_risk: transient-local
-  durability_topology: local-files
-  enforcement: documentation-v1-pending
+  runtime_risk: low-risk-hosted-automation
+  durability_topology: external-platform
+  enforcement: python-v1
 
 change_contract:
   change_id_format: kebab-case
@@ -33,4 +35,12 @@ change_contract:
   archive_requires_fresh_verification: true
   keep_pull_request_draft_until_archive_ready: true
 
-canonical_command: pending
+verification:
+  commands:
+    - uv run ruff format --check dset_toolchain tests
+    - uv run ruff check dset_toolchain tests
+    - uv run mypy dset_toolchain tests
+    - "{python} -m unittest discover -s tests -v"
+    - git diff --check
+
+canonical_command: python -m dset_toolchain verify .

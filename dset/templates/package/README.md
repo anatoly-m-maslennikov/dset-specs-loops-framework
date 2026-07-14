@@ -1,0 +1,5 @@
+# {{title}} package
+
+**Package ID:** `{{package_id}}`
+
+Describe purpose, owner, boundary, dependencies, implementation surface, and supportability responsibility. Link rather than copy global or neighboring package truth.
