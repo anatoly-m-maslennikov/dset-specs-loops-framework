@@ -23,7 +23,7 @@
 ## Scope
 
 - Repository-local governance registry and deterministic resolver.
-- Thin versions of `dset-grill`, `dset-diagnose`, and `dset-prototype`.
+- Thin versions of `dset-clarify`, `dset-diagnose`, and `dset-prototype`.
 - Framework-owned governing-document templates and explicit materialization/migration behavior.
 - Released/candidate recursive self-hosting gates.
 - Evidence-derived TypeScript profile using the real Your Harness toolchain.
@@ -69,7 +69,7 @@ dset/
     ├── architecture.md
     ├── build-rules.md
     └── workflows/
-        ├── domain-grilling.md
+        ├── domain-clarification.md
         ├── diagnosis.md
         └── prototyping.md
 ```
@@ -78,9 +78,9 @@ The registry, not this example path, is the compatibility surface. A repository 
 
 ## §2 | Move rules out of skills
 
-- [x] **DSET-02-TASK-014:** Inventory every normative statement currently embedded in `skills/dset-grill/SKILL.md`, `skills/dset-diagnose/SKILL.md`, and `skills/dset-prototype/SKILL.md`.
+- [x] **DSET-02-TASK-014:** Inventory every normative statement formerly embedded in `skills/dset-grill/SKILL.md` (renamed `dset-clarify`), `skills/dset-diagnose/SKILL.md`, and `skills/dset-prototype/SKILL.md`.
 - [x] **DSET-02-TASK-015:** Assign each statement one governing owner: normative methodology/reference, behavioral specification, architecture, playbook/runbook, authorization contract, proof plan, or supportability rule.
-- [x] **DSET-02-TASK-016:** Move domain-grilling rules into repository-governed documents covering vocabulary, entities/value objects/actors, per-owned-entity lifecycles, invariants, boundary cases, decision routing, and test/eval separation.
+- [x] **DSET-02-TASK-016:** Move domain-clarification rules into repository-governed documents covering vocabulary, entities/value objects/actors, per-owned-entity lifecycles, invariants, boundary cases, decision routing, and test/eval separation.
 - [x] **DSET-02-TASK-017:** Move diagnosis rules into repository-governed documents covering reproduction, minimization, hypotheses, evidence, first-bad-change analysis, Back-to-Left provenance, regression proof, containment, authorization, and stop conditions.
 - [x] **DSET-02-TASK-018:** Move prototype rules into repository-governed documents covering hypothesis, timebox, representative cases, provenance/license, proof-of-fit, disposal, adopt/adapt/build/defer, promotion, and stop conditions.
 - [x] **DSET-02-TASK-019:** Reduce every skill to metadata/trigger, DSET-root discovery, workflow ID, resolver invocation, application instruction, output handoff, and fail-closed behavior.

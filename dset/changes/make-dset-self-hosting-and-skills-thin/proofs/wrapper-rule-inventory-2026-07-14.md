@@ -11,7 +11,7 @@ The inventory groups semantically equivalent statements so every normative
 statement in the three former skill bodies has one registered owner. Trigger
 metadata remains in the wrapper; substantive rules moved to the owners below.
 
-## `dset-grill`
+## Former `dset-grill` (`dset-clarify` in the 0.2 candidate)
 
 | Former statement group | Governing owner |
 |---|---|

@@ -269,7 +269,7 @@ packages/
 | Full title | `DSET Spec Loops: A Production Vibecoding Framework` | README title, repository description |
 | Repository slug | `dset-specs-loops-framework` | GitHub repository, project manifest |
 | Machine namespace | `dset` | CLI, config root, schema IDs |
-| Skills | `dset-<workflow>` | `dset-grill`, `dset-diagnose`, `dset-prototype`, `dset-review` |
+| Skills | `dset-<workflow>` | `dset-clarify`, `dset-diagnose`, `dset-prototype`, `dset-review` |
 | Framework-owned folders | `dset/` or `.dset/` by ownership | `dset/specs/`, `.dset/cache/` |
 | Framework-owned files | `dset[.<purpose>].<ext>` | `dset.toml`, `dset.schema.json` |
 | Commands | `dset <verb>` | `dset new`, `dset check`, `dset verify`, `dset archive` |

@@ -10,7 +10,7 @@ Skills own discovery, workflow identity, resolver invocation, rule-set reporting
 
 ## Start here
 
-- [`dset-grill`](dset-grill/SKILL.md) — resolve domain ambiguity and proof obligations before specification acceptance.
+- [`dset-clarify`](dset-clarify/SKILL.md) — resolve domain ambiguity and proof obligations before specification acceptance.
 - [`dset-diagnose`](dset-diagnose/SKILL.md) — investigate defects and incidents through evidence and Back-to-Left provenance without silently authorizing a fix.
 - [`dset-prototype`](dset-prototype/SKILL.md) — run bounded disposable design experiments and feed evidence into the Solution Landscape and ADR.
 

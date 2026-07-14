@@ -41,6 +41,10 @@ Never rename deterministic tests to evals because they are automated. Never copy
 
 Run `dset rules diff --source <new-framework-root>` to compare new templates with local governing documents. Review the output as a proposed delta, edit local owners deliberately, and run `dset rules refresh` to record customization status. Never copy the framework template over a materialized local file. If a destination, owner, profile, or proof gate conflicts, keep the existing owner writable and leave the migration active.
 
+## Candidate workflow rename
+
+The unreleased 0.2 candidate renamed `dset-grill` to `dset-clarify` and `domain-grilling` to `domain-clarification`. Replace the generated wrapper directory and registry workflow/path together, then run `dset rules check`. The deprecated workflow ID intentionally fails closed instead of acting as a hidden alias. Archived v1 evidence retains the former name.
+
 ## Recovery
 
 If verification fails, keep the migration change active and leave the previous accepted source writable. Do not partially switch writers. Correct the earliest mapping/spec defect, rerun proof, then perform the ownership cutover as one reviewed change.

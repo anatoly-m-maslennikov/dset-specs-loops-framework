@@ -22,7 +22,7 @@ Every selected normative rule must resolve to one editable governing document in
 
 A DSET skill may own trigger metadata, repository/root discovery, workflow identity, resolver invocation, rule-set reporting, output handoff, authorization boundaries, and stop behavior. It must not own substantive workflow, architecture, authoring, proof, threshold, safety, or supportability rules.
 
-**Scenario MDSHAST-SCN-004:** Static inspection finds a workflow ID and resolver handoff in a skill but no copied checklist, concrete threshold, or embedded fallback procedure.
+**Scenario MDSHAST-SCN-004:** Static inspection finds the `domain-clarification` workflow ID and resolver handoff in `dset-clarify` but no copied checklist, concrete threshold, or embedded fallback procedure.
 
 ## ADDED — MDSHAST-REQ-005 Unchanged wrappers apply changed local rules
 

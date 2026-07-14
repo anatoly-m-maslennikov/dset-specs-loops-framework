@@ -17,7 +17,7 @@
 - Bounded, PR-traceable changes under `dset/changes/`.
 - Versioned schemas, templates, fixtures, migration guidance, provenance, and generated traceability under `dset/`.
 - The `dset` CLI through `python -m dset_toolchain` and an installable console entry point.
-- Focused skill sources under `skills/dset-grill/`, `skills/dset-diagnose/`, and `skills/dset-prototype/`.
+- Focused skill sources under `skills/dset-clarify/`, `skills/dset-diagnose/`, and `skills/dset-prototype/`.
 
 ## CLI compatibility surface
 

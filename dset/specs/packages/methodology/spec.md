@@ -110,7 +110,7 @@ Archive execution must require complete profile artifacts, fresh verification, a
 
 ## METH-REQ-018 — Workflow skills remain focused
 
-The framework must publish distinct portable skills for pre-spec domain grilling, evidence-first diagnosis, and disposable prototyping. Each owns one trigger/output/verification/stop boundary and writes durable conclusions back to the active DSET change.
+The framework must publish distinct portable skills for pre-spec domain clarification, evidence-first diagnosis, and disposable prototyping. Each owns one trigger/output/verification/stop boundary and writes durable conclusions back to the active DSET change.
 
 **Scenario METH-SCN-021:** A diagnosis request cannot silently authorize a fix, and prototype evidence cannot enter production without an accepted ADR/design and normal implementation proof.
 

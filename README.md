@@ -37,7 +37,7 @@ Domain → Spec + Supportability + Test Plan + Eval Plan → Implement → Test 
 | Artifact governance | [Documentation architecture hub](documentation/README.md) | Artifact types, authoring rules, hubs, maintenance, and `documentation-v1` |
 | Project control plane | [DSET project hub](dset/README.md) | Accepted project truth, active/archive changes, schemas, templates, fixtures, traceability, migrations, and supportability |
 | Executable CLI | [`dset_toolchain/`](dset_toolchain/) | Dependency-light lifecycle, governance resolution/materialization, validation, traceability, archive, and bounded self-hosting |
-| Agent workflows | [Skills hub](skills/README.md) | Focused domain-grilling, diagnosis, and disposable-prototype workflows |
+| Agent workflows | [Skills hub](skills/README.md) | Focused domain-clarification, diagnosis, and disposable-prototype workflows |
 | Delivery and provenance | [Delivery policy](.github/DELIVERY.md) and [third-party notices](THIRD_PARTY_NOTICES.md) | Protected publication path and external-source/license boundaries |
 
 ## Run DSET
