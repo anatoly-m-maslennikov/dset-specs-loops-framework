@@ -36,6 +36,13 @@ requirements:
   - METH-REQ-032
   - METH-REQ-033
   - METH-REQ-034
+  - METH-REQ-035
+  - METH-REQ-036
+  - METH-REQ-037
+  - METH-REQ-038
+  - METH-REQ-039
+  - METH-REQ-040
+  - METH-REQ-041
 tests:
   - METH-TEST-001
   - METH-TEST-002
@@ -72,6 +79,13 @@ tests:
   - METH-TEST-033
   - METH-TEST-034
   - METH-TEST-035
+  - METH-TEST-036
+  - METH-TEST-037
+  - METH-TEST-038
+  - METH-TEST-039
+  - METH-TEST-040
+  - METH-TEST-041
+  - METH-TEST-042
 evals:
   - METH-EVAL-001
   - METH-EVAL-002
@@ -91,6 +105,10 @@ evals:
   - METH-EVAL-016
   - METH-EVAL-017
   - METH-EVAL-018
+  - METH-EVAL-019
+  - METH-EVAL-020
+  - METH-EVAL-021
+  - METH-EVAL-022
 artifacts:
   domain: domain.md
   spec: spec.md

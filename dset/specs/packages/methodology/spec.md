@@ -209,3 +209,45 @@ Exact resolver, ownership, path, identity, wrapper, and recursion behavior must 
 Every normative rule ID must resolve to exactly one editable governing document. Agent guidance, skills, templates, generated installations, indexes, summaries, and caches may link to that owner or reproduce derived metadata but must not become additional writable rule authorities.
 
 **Scenario METH-SCN-037:** The registry rejects two governing documents claiming the same rule ID and accepts multiple navigation or generated surfaces that point to the single owner without restating its normative text.
+
+## METH-REQ-035 — DSET exposes five core user-facing skills
+
+The core distribution must expose exactly five user-facing skills: `dset` for lifecycle orchestration and next-step routing; `dset-clarify` for unresolved domain/specification branches; `dset-diagnose` for evidence-first diagnosis; `dset-prototype` for bounded disposable experiments; and `dset-release` for the guarded release transaction. Initialization, decomposition, Solution Landscape work, ADR/spec/proof/implementation planning, implementation, verification, ticket handling, and next-step advice must remain governed `dset` modes or chained workflows rather than additional public skills.
+
+**Scenario METH-SCN-038:** A large feature request enters through `dset`; the local orchestration rules select decomposition or clarification first and invoke a specialist only when its distinct trigger applies.
+
+## METH-REQ-036 — The primary skill orchestrates local rules
+
+`dset` must discover current repository, project, package, feature, change, proof, and Git state; resolve the registered orchestration workflow; report its ruleset identity; select one bounded next action; and chain only registered workflows. It must not embed the substantive lifecycle or silently authorize writes, publication, external messages, or other consequential effects.
+
+**Scenario METH-SCN-039:** Byte-identical `dset` wrappers route two repositories differently because their project-owned rules and current artifacts differ, while both report the resolved local identities before acting.
+
+## METH-REQ-037 — Skill runs record bounded local evidence
+
+Every skill invocation must append one structured record under ignored machine-local `.dset/runs/`. The record must contain run identity, time, repository/change/package/feature scope, skill and workflow IDs, resolved ruleset identity, main parameters, named output artifacts, result, and next-step signals. It must exclude secrets, full prompts, private source content, and unnecessary raw logs. A run record may inform `dset` heuristics or incident investigation but cannot replace accepted specs, active changes, Git history, authoritative PR/check state, or proof promoted into the owning change.
+
+**Scenario METH-SCN-040:** A local log suggests verification is current, but Git shows later code changes; `dset` treats Git/change state as authoritative and recommends refreshed proof.
+
+## METH-REQ-038 — Every main PR has one pre-1.0 release transition
+
+The DSET product and distributable CLI package must share one SemVer-compatible `MAJOR.MINOR.PATCH[-PRERELEASE]` identity. The first policy-bearing release initializes `0.2.0`. Every later accepted `dev` to `main` PR must declare exactly one class: `normal` increments the pre-1.0 minor component and resets patch; `small` increments patch; `rc` advances `1.0.0-rc.N`; and `final` promotes the passing RC to `1.0.0`. Components are integers, not decimal fractions, and no normal or small transition may produce `1.0.0`.
+
+**Scenario METH-SCN-041:** `0.2.4` becomes `0.3.0` for a normal PR or `0.2.5` for a small PR; `0.9.0` becomes `0.10.0`, never `1.0.0`.
+
+## METH-REQ-039 — Release preparation precedes protected publication
+
+`dset-release` must resolve repository-local release, proof, artifact-maintenance, and supportability rules. The `dev` branch and implementing PR must own release class, target version, synchronized version surfaces, migration/release notes, and readiness evidence before merge. The protected `main` merge commit owns the immutable release identity; post-merge automation may create the matching tag and GitHub Release but must not add an unreviewed content commit or bypass the pull-request path.
+
+**Scenario METH-SCN-042:** A PR with mismatched product/package targets fails before merge; a passing merge is tagged at its exact merge commit without modifying `main` files afterward.
+
+## METH-REQ-040 — RC and final releases are fully working gates
+
+`1.0.0-rc.N` may begin only when the declared 1.0 scope is feature-complete, self-hosted, documented, supportable, migration-ready, green under every deterministic test and applicable eval, verified in required adopters or pilots, and free of known release-blocking defects. RC changes are limited to blocker corrections and validation evidence. `1.0.0` may publish only from a passing RC after final observation and distribution gates pass; time or accumulated pre-1.0 increments cannot replace proof.
+
+**Scenario METH-SCN-043:** A green candidate with one required pilot unfinished remains `0.y.z`; a fully working `1.0.0-rc.2` may promote to `1.0.0` only after final evidence passes and without adding features.
+
+## METH-REQ-041 — Product/package identity is coordinated
+
+The framework product version, CLI package version, release notes, Git tag, and GitHub Release must carry the same release identity. Schema, governance-profile, language-profile, artifact-profile, and template-format versions remain independent compatibility surfaces and change only when their own contracts change. Independent compatibility versions must never be presented as product maturity or 1.0 readiness.
+
+**Scenario METH-SCN-044:** Product/package `0.3.0` may validly use schema `1.0` and governance profile `core-v1@0.2`; neither compatibility version implies DSET 1.0 readiness.

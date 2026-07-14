@@ -30,9 +30,18 @@
 - Corrupt each bootstrap boundary and assert the earliest stable failure.
 - Run the same fixed point on the pushed PR head in hosted CI and preserve the shallow-checkout corrective loop.
 
+## Batch 4 — Skill topology and release-cycle contract — specification complete
+
+- Define the five-skill core surface and make `dset` the only general lifecycle/next-step entrypoint.
+- Define bounded ignored skill-run evidence and its non-authoritative relationship to repository/Git/hosted state.
+- Replace decimal version arithmetic with normal/small integer-component transitions and reserve `1.0.0-rc.N` plus `1.0.0` for fully working release gates.
+- Coordinate the product and CLI package release while retaining schema/profile/template compatibility versions independently.
+- Separate pre-merge release preparation from post-merge tag/GitHub Release publication.
+- Run three independent high-effort specification reviews, reconcile blocking findings, and preserve bounded evidence.
+
 ## Later batches
 
-Implement roadmap §§5–§10 for the TypeScript profile, owned Your Harness pilot, clean-room Claudian evaluation, complete tests/evals, and pinned distribution. Keep unfinished behavior out of public capability claims.
+Implement the Batch 4 orchestration/run/release mechanics and roadmap §§5–§10 for the TypeScript profile, owned Your Harness pilot, clean-room Claudian evaluation, complete tests/evals, and pinned distribution. Keep unfinished behavior out of public capability claims.
 
 ## Rollout and recovery
 

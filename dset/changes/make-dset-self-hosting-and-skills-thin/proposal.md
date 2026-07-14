@@ -8,11 +8,11 @@
 
 ## Problem
 
-DSET 0.2 must become self-hosting and let adopting repositories own their rules without turning skills, templates, installed copies, or agent memory into competing authorities. The roadmap states this intent, but accepted project truth does not yet define release applicability, bounded recursion, local rule ownership, wrapper limits, customization identity, or their proof boundaries precisely enough to govern implementation.
+DSET 0.2 must become self-hosting and let adopting repositories own their rules without turning skills, templates, installed copies, or agent memory into competing authorities. It also needs a small coherent skill surface and a release cycle that cannot reach `1.0.0` by arithmetic. The roadmap states the intent, but accepted project truth does not yet define release applicability, bounded recursion, local rule ownership, wrapper limits, orchestration, run evidence, version transitions, RC/final readiness, or their proof boundaries precisely enough to govern implementation.
 
 ## Outcome
 
-Implement the first bounded self-hosting fixed point: independent version semantics, repository-local rule authority, thin adaptive wrappers, explicit project-owned materialization/customization, and released-to-candidate-to-adopter validation. Keep deterministic tests and qualitative evals separate and retain later profile/pilot/release work as explicit open scope.
+Implement the first bounded self-hosting fixed point and finalize the next contracts: coordinated pre-1.0 product/package releases, repository-local rule authority, five thin adaptive wrappers, one primary lifecycle orchestrator, bounded local run evidence, and guarded release preparation/publication. Keep deterministic tests and qualitative evals separate and retain the TypeScript profile, pilots, distribution, and release mechanics as explicit open implementation scope.
 
 ## Scope
 
@@ -27,12 +27,17 @@ Implement the first bounded self-hosting fixed point: independent version semant
 - Thin canonical skills plus a complete former-rule ownership inventory.
 - Versioned `core-v1` governing-document templates, materialization, customization, migration, and update comparison.
 - Bounded released/candidate/framework/adopter self-hosting with failure-boundary tests.
+- Exactly five core user-facing skills, with `dset` as the primary orchestrator and `dset-release` as the explicit release boundary.
+- Machine-local bounded skill-run records that inform but never own next-step decisions.
+- A SemVer-compatible pre-1.0 transition policy for every `dev` to `main` PR.
+- Separate pre-merge preparation, post-merge publication, RC, and final-1.0 readiness contracts.
+- Coordinated product/package versions with independent schema/profile compatibility versions.
 
 ## Non-goals
 
 - TypeScript profile implementation or external pilots.
-- Claudian evaluation, pinned distribution, complete qualitative evals, or release/archive work.
-- Any claim that DSET 0.2 is adoption-ready before hosted fixed-point proof and the later roadmap gates pass.
+- Claudian evaluation, pinned distribution, complete qualitative evals, release automation, or archive work.
+- Any claim that `dset`, `dset-release`, run records, automated version transitions, or DSET 0.2 adoption readiness are implemented before their later deterministic/eval/hosted gates pass.
 
 ## Risk
 

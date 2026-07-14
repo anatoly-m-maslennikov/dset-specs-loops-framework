@@ -53,3 +53,45 @@ Exact resolver, ownership, path, identity, wrapper, and recursion behavior belon
 Each normative rule ID must resolve to exactly one editable governing document. Agent instructions, skills, templates, generated installations, indexes, summaries, and caches may point to or reproduce derived metadata about the owner but must never become additional writable rule authorities.
 
 **Scenario MDSHAST-SCN-009:** The registry rejects two governing documents claiming the same rule ID and accepts multiple navigation or generated surfaces that link to the single owner without restating its normative text.
+
+## ADDED — MDSHAST-REQ-010 The core user-facing skill surface stays small
+
+The core distribution must expose exactly five user-facing skills: `dset` for lifecycle orchestration and next-step routing; `dset-clarify` for unresolved domain/specification branches; `dset-diagnose` for evidence-first diagnosis; `dset-prototype` for bounded disposable experiments; and `dset-release` for the guarded release transaction. Initialization, decomposition, Solution Landscape work, ADR/spec/proof/implementation planning, implementation, verification, ticket handling, and next-step advice are governed `dset` modes or chained workflows rather than additional public skills.
+
+**Scenario MDSHAST-SCN-010:** An operator asks what to do next for a large feature; `dset` resolves the local orchestration rules, identifies whether decomposition, clarification, landscape work, proof planning, implementation, verification, or release is next, and invokes a specialist only when its trigger applies.
+
+## ADDED — MDSHAST-REQ-011 The primary skill orchestrates without becoming a rule owner
+
+`dset` must discover current project/change/package state, resolve the registered orchestration workflow, report the selected local ruleset, choose a bounded next action, and chain registered workflows. It must not embed lifecycle, authoring, proof, implementation, ticket, release, or supportability rules and must not silently authorize writes or external state changes.
+
+**Scenario MDSHAST-SCN-011:** The same `dset` wrapper routes two repositories differently because their registered local orchestration rules and current artifacts differ, while the wrapper bytes remain identical.
+
+## ADDED — MDSHAST-REQ-012 Skill runs leave bounded local operational evidence
+
+Every skill invocation must emit a bounded, structured, append-only run record under ignored machine-local `.dset/runs/` state. The record contains run identity, time, repository/change/package/feature scope, skill and workflow IDs, resolved ruleset identity, main parameters, named output artifacts, result, and next-step signals. It must exclude secrets, full prompts, private source content, and unnecessary raw logs. Local run records support heuristics and investigation but never replace accepted specs, active changes, Git history, PR/check state, or promoted proof evidence.
+
+**Scenario MDSHAST-SCN-012:** `dset` notices repeated implementation changes since the last proof run and recommends verification; it cites local run signals as advisory and confirms authoritative repository and Git state before acting.
+
+## ADDED — MDSHAST-REQ-013 Every pull request to main declares one version transition
+
+The DSET product and distributable CLI package use one SemVer-compatible `MAJOR.MINOR.PATCH[-PRERELEASE]` release identity. The first policy-bearing release initializes `0.2.0`. Thereafter every accepted `dev` to `main` pull request declares exactly one release class: `normal` increments the pre-1.0 minor component and resets patch; `small` increments patch; `rc` advances `1.0.0-rc.N`; and `final` promotes the verified release candidate to `1.0.0`. Version components are integers, so `0.9.0` advances normally to `0.10.0`; arithmetic must never promote a candidate to `1.0.0`.
+
+**Scenario MDSHAST-SCN-013:** From `0.2.4`, a normal PR targets `0.3.0` and a small PR targets `0.2.5`; from `0.9.0`, a normal PR targets `0.10.0`; none of these transitions may produce `1.0.0`.
+
+## ADDED — MDSHAST-REQ-014 Release preparation and publication have separate authorities
+
+`dset-release` must resolve repository-local release, proof, artifact-maintenance, and supportability rules before preparing a release. The `dev` branch and implementing PR own release classification, target version, synchronized version surfaces, migration/release notes, and readiness evidence before merge. Protected `main` and its merge commit own the immutable release identity; post-merge automation may create the matching tag and GitHub Release but must not add an unreviewed version commit or bypass the pull-request path.
+
+**Scenario MDSHAST-SCN-014:** A release PR fails when its declared target differs across the product manifest and package metadata. After a valid merge, automation tags that exact merge commit without modifying `main` content.
+
+## ADDED — MDSHAST-REQ-015 Release candidates and 1.0 are fully working gates
+
+`1.0.0-rc.N` may begin only after the declared 1.0 scope is feature-complete, self-hosted, documented, supportable, migration-ready, green under every deterministic test and applicable eval, verified in required adopters/pilots, and free of known release-blocking defects. An RC may receive only release-blocker fixes and validation evidence. `1.0.0` may publish only from a passing RC after its final observation and distribution gates pass; neither an elapsed schedule nor accumulated pre-1.0 increments can substitute for this proof.
+
+**Scenario MDSHAST-SCN-015:** A candidate with an unfinished TypeScript profile or required pilot remains on `0.y.z` even if every current test passes. A fully working `1.0.0-rc.2` with completed final evidence may promote to `1.0.0` without feature additions.
+
+## ADDED — MDSHAST-REQ-016 Product/package releases are coordinated while compatibility schemas remain independent
+
+The framework product version, CLI package version, release notes, tag, and GitHub Release must carry the same release identity. Schema, governance-profile, language-profile, artifact-profile, and template-format versions remain independent compatibility surfaces and change only when their own contracts change. Independent compatibility versions must never be presented as DSET product maturity or 1.0 readiness.
+
+**Scenario MDSHAST-SCN-016:** DSET `0.3.0` may continue to use project schema `1.0` and governance profile `core-v1@0.2`; package metadata and the product release still both report `0.3.0`.

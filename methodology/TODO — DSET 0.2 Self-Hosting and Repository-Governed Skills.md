@@ -4,7 +4,7 @@
 
 **Outcome:** Make DSET self-hosting before external adoption, make skills thin wrappers over repository-local governing documents, prove that unchanged skills follow changed local rules, and validate the design through the first owned TypeScript pilot in [obsidian-your-harness](https://github.com/anatoly-m-maslennikov/obsidian-your-harness).
 
-**Milestone label:** `0.2` is the requested framework roadmap label. It does not silently renumber the current CLI package or schema. Version reconciliation is an explicit release task below.
+**Release label:** `0.2.0` is the first coordinated DSET product and CLI-package release under the new policy. The unreleased independent package `1.0.0` candidate is superseded before merge. Schema, profile, and template-format versions remain independent compatibility identities rather than product-maturity claims.
 
 ## 0.2 invariants
 
@@ -17,8 +17,14 @@
 - **DSET-02-INV-007 — Honest customization:** A locally changed ruleset remains valid project truth but is identified as a local/custom profile rather than silently claiming byte-equivalence to an unchanged framework profile.
 - **DSET-02-INV-008 — Separate proof:** Deterministic resolver, structure, wrapper, and recursion checks remain tests; agent interpretation, rule-following, navigation, and diagnostic usefulness remain evals.
 - **DSET-02-INV-009 — One owner per rule:** Every normative rule ID has exactly one editable governing document. Agent guidance, skills, templates, generated installations, and summaries link to that owner and never become parallel writable rule stores.
+- **DSET-02-INV-010 — Small skill surface:** Core users see `dset`, `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release`; helper lifecycle operations remain modes or chained workflows.
+- **DSET-02-INV-011 — Primary orchestration:** `dset` selects bounded next actions from authoritative local state and registered local rules without embedding the lifecycle or authorizing effects silently.
+- **DSET-02-INV-012 — Investigable runs:** Every skill emits a bounded redacted local run record under ignored `.dset/runs/`; records support heuristics but never replace repository, Git, hosted, or promoted-proof authorities.
+- **DSET-02-INV-013 — One version transition per main PR:** After bootstrap `0.2.0`, every accepted `dev` to `main` PR declares exactly one normal, small, RC, or final product/package transition using integer components.
+- **DSET-02-INV-014 — Protected release transaction:** Release artifacts are prepared before merge; tags and GitHub Releases derive from the protected merge commit without post-merge content changes.
+- **DSET-02-INV-015 — Fully working 1.0 gate:** `1.0.0-rc.N` and `1.0.0` require complete scope, supportability, proof, pilots, distribution, and no known release blockers; arithmetic and schedules cannot promote them.
 
-**Contract status:** Defined as `METH-INV-013`–`METH-INV-021` and release-gated requirements `METH-REQ-026`–`METH-REQ-034` in the [accepted methodology package](../dset/specs/packages/methodology/README.md), with separate deterministic and qualitative proof mappings. Roadmap §§0–§4 are implemented and pass local plus hosted deterministic proof on draft PR #9. Qualitative evals, the TypeScript profile, external pilots, distribution, and release reconciliation remain open; DSET 0.2 is not yet an adoption-readiness claim.
+**Contract status:** Self-hosting and rule-ownership invariants are defined as `METH-INV-013`–`METH-INV-021` with requirements `METH-REQ-026`–`METH-REQ-034`. Skill topology and release-cycle invariants are defined as `METH-INV-022`–`METH-INV-027` with requirements `METH-REQ-035`–`METH-REQ-041`, each with separate deterministic and qualitative proof mappings. Roadmap §§0–§4 are implemented and pass local plus hosted deterministic proof on draft PR #9. The new skill/release mechanics, qualitative evals, TypeScript profile, external pilots, distribution, and final release reconciliation remain open; DSET 0.2 is not yet an adoption-readiness claim.
 
 ## Scope
 
@@ -42,7 +48,7 @@
 
 ## §0 | Resolve version and bootstrap semantics
 
-- [x] **DSET-02-TASK-001:** Decide and document whether `0.2` versions the methodology/framework milestone, the Python package, the schemas, or a coordinated release train; reconcile current public “v1” language without retroactively rewriting archived evidence.
+- [x] **DSET-02-TASK-001:** Establish coordinated DSET product/CLI-package `0.2.0`, keep schema/profile/template versions independent, supersede the unreleased package `1.0.0` candidate before merge, and preserve archived v1 evidence unchanged.
 - [x] **DSET-02-TASK-002:** Define the last-released-validator versus candidate-validator contract so a candidate is never its own only judge.
 - [x] **DSET-02-TASK-003:** Define the minimum non-project bootstrap protocol that wrappers may contain: locate the repository root, locate `dset/dset.yaml`, resolve the governance registry, and fail closed.
 - [x] **DSET-02-TASK-004:** Open one standard DSET change, `make-dset-self-hosting-and-skills-thin`, with separate requirements, test plan, eval plan, design, implementation batches, evidence, and PR identity.
@@ -174,18 +180,28 @@ The registry, not this example path, is the compatibility surface. A repository 
 
 ## §10 | Distribution and release
 
-- [ ] **DSET-02-TASK-066:** Publish one pinned install/run path for the DSET CLI that adopters can use without copying validator code.
-- [ ] **DSET-02-TASK-067:** Publish one canonical source for each thin skill plus generated installation mappings for supported runtimes.
-- [ ] **DSET-02-TASK-068:** Add compatibility and migration notes for registry, template, schema, diagnostic, and wrapper changes.
-- [ ] **DSET-02-TASK-069:** Run the complete deterministic plan and at least two independent reviewers across the qualitative eval plan; preserve failures and corrective loops.
-- [ ] **DSET-02-TASK-070:** Require green framework self-hosting and green Your Harness hosted verification before marking `typescript-v1`, thin skills, or DSET 0.2 ready.
-- [ ] **DSET-02-TASK-071:** Reconcile accepted methodology and artifact contracts, archive through the implementing PR, and publish the final version mapping, release notes, pinned distribution identity, and migration guide.
+- [ ] **DSET-02-TASK-066:** Implement the thin primary `dset` orchestration wrapper and registered local orchestration rules; keep initialization, decomposition, landscape/ADR/spec/proof/implementation planning, implementation, verification, tickets, and next-step guidance as modes or chained workflows.
+- [ ] **DSET-02-TASK-067:** Implement the thin `dset-release` wrapper and registered release rules; retain `dset-clarify`, `dset-diagnose`, and `dset-prototype` as the other specialist skills and reject helper-skill proliferation.
+- [ ] **DSET-02-TASK-068:** Add bounded redacted append-only `.dset/runs/` records, ignored by Git, with schema/retention rules and authoritative-state reconciliation for next-step heuristics.
+- [ ] **DSET-02-TASK-069:** Add the normal/small/RC/final transition matrix, exactly-one-class main-PR validation, coordinated product/package version surfaces, and independent schema/profile/template compatibility versions.
+- [ ] **DSET-02-TASK-070:** Add pre-merge release preparation and post-merge tag/GitHub Release publication from the protected merge commit without a post-merge content write.
+- [ ] **DSET-02-TASK-071:** Gate `1.0.0-rc.N` and `1.0.0` on fully working declared scope, self-hosting, documentation, supportability, migrations, deterministic tests, applicable evals, required pilots, distribution, and absence of known release blockers.
+- [ ] **DSET-02-TASK-072:** Publish one pinned install/run path for the DSET CLI that adopters can use without copying validator code.
+- [ ] **DSET-02-TASK-073:** Publish one canonical source for each thin skill plus generated installation mappings for supported runtimes.
+- [ ] **DSET-02-TASK-074:** Add compatibility and migration notes for registry, template, schema, diagnostic, wrapper, and release-policy changes.
+- [ ] **DSET-02-TASK-075:** Run the complete deterministic plan and at least two independent reviewers across the qualitative eval plan; preserve failures and corrective loops.
+- [ ] **DSET-02-TASK-076:** Require green framework self-hosting and green Your Harness hosted verification before marking `typescript-v1`, thin skills, or DSET 0.2 ready.
+- [ ] **DSET-02-TASK-077:** Reconcile accepted methodology and artifact contracts, archive through the implementing PR, and publish the final version mapping, release notes, pinned distribution identity, and migration guide.
 
 ## Definition of done
 
 - [ ] The released validator checks the candidate change, and the candidate checks both this repository and one generated adopter.
 - [ ] `dset/governance.yaml`, its schema, resolver commands, stable diagnostics, templates, and migrations are public and versioned.
 - [ ] All first-wave skills are thin wrappers; no substantive governing rule exists only or independently inside a skill.
+- [ ] The core distribution exposes exactly `dset`, `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release`; helper lifecycle actions remain modes or chained workflows.
+- [ ] Bounded redacted local run records support investigation and next-step heuristics without becoming project truth.
+- [ ] Every accepted `dev` to `main` PR carries exactly one valid version transition, and neither normal nor small progression can produce `1.0.0`.
+- [ ] Product/package RC and final releases satisfy the fully working gate and publish from the protected merge commit.
 - [ ] Two different project-local rulesets produce different compliant agent behavior through byte-identical wrappers.
 - [ ] Your Harness has one visible DSET root, one writable owner per concern, exact upstream provenance, a production supportability contract, and independent TypeScript/documentation profiles.
 - [ ] A real Your Harness change completes the full DSET loop with deterministic tests, applicable evals, hosted checks, accepted-truth reconciliation, PR traceability, and guarded archive.

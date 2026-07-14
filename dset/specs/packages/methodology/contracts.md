@@ -17,7 +17,18 @@
 - Bounded, PR-traceable changes under `dset/changes/`.
 - Versioned schemas, templates, fixtures, migration guidance, provenance, and generated traceability under `dset/`.
 - The `dset` CLI through `python -m dset_toolchain` and an installable console entry point.
-- Focused skill sources under `skills/dset-clarify/`, `skills/dset-diagnose/`, and `skills/dset-prototype/`.
+- Five core skill sources: primary `skills/dset/`; narrow `skills/dset-clarify/`, `skills/dset-diagnose/`, and `skills/dset-prototype/`; and guarded `skills/dset-release/`.
+- One coordinated DSET product/CLI-package release identity prepared through `dev` to `main`, with schema/profile/template compatibility versions tracked independently.
+
+## Skill compatibility surface
+
+`dset` is the primary operator entrypoint for initialization, decomposition, landscape/ADR/spec/proof/implementation planning, implementation, verification, tickets, and next-step routing through registered project-local workflows. `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release` remain explicit specialist triggers. Helper operations are modes or chained workflows, not additional public skill names.
+
+All five skills remain thin wrappers over the repository governance registry. Bounded local run records under `.dset/runs/` are operational evidence only and are excluded from committed project truth.
+
+## Release compatibility surface
+
+DSET versions use integer `MAJOR.MINOR.PATCH[-PRERELEASE]` components. The policy initializes product/package `0.2.0`; normal pre-1.0 PRs increment minor, small PRs increment patch, and `1.0.0-rc.N` plus `1.0.0` require explicit fully working gates. Product, package, release notes, tag, and GitHub Release stay synchronized. Schema, profile, and template-format versions remain independent compatibility surfaces.
 
 ## CLI compatibility surface
 

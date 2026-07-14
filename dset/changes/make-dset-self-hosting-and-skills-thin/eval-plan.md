@@ -12,10 +12,14 @@ Applicable. The invariant contract governs how agents discover, interpret, and f
 | `MDSHAST-EVAL-002` | A cold agent starts from a workflow request in a customized adopter | Navigation and ownership | Every reviewer reaches the registry, resolved local owner, and custom/source identity without treating a skill, template, summary, or cache as normative |
 | `MDSHAST-EVAL-003` | Each invalid-ownership fixture emits only its stable code, path, and actionable message | Diagnostic usefulness | Every reviewer identifies the blocking ownership defect and a safe correction without reading resolver source or inventing a fallback rule |
 | `MDSHAST-EVAL-004` | A wrapper cannot resolve its workflow because ownership is missing or incompatible | Fail-closed restraint | Every independent run stops before governed work, reports the unresolved state, and does not continue from embedded knowledge or remote framework prose |
+| `MDSHAST-EVAL-005` | A cold operator invokes `dset` at initialization, ambiguous design, active implementation, failed verification, and release-ready states | Orchestration usefulness | Every reviewer selects the same bounded next workflow, explains the authoritative evidence used, and does not invent a separate helper skill |
+| `MDSHAST-EVAL-006` | Run history shows heavy code change after stale proof, but the local log conflicts with current Git/change state | Heuristic restraint | Every reviewer treats the log as advisory, follows authoritative state, recommends refreshed proof, and does not report the log as project truth |
+| `MDSHAST-EVAL-007` | Representative normal, small, RC, and final PRs include documentation, compatible fixes, new capabilities, blockers, and migrations | Release classification | Every reviewer chooses the specified release class/target or stops on a material ambiguity; no reviewer promotes `1.0.0` by arithmetic |
+| `MDSHAST-EVAL-008` | A superficially green candidate still lacks one required pilot or has a known release blocker | Release restraint | Every reviewer refuses RC/final publication, identifies the unmet gate, and routes the correction through the owning change/proof artifact |
 
 ## Calibration and budget
 
-Use at least two independent reviewers or isolated agent runs per case. Preserve the wrapper hash, registry/ruleset identity, bounded prompts, decisions, and disagreements. Correct the earliest ambiguous governing artifact and rerun the failed case; do not average a blocking failure into a passing score.
+Use at least two independent reviewers or isolated agent runs per case. Release-cycle specification review must use at least three independent high-effort reviewers before the contract is marked finalized. Preserve the wrapper hash, registry/ruleset identity, bounded prompts, decisions, and disagreements. Correct the earliest ambiguous governing artifact and rerun the failed case; do not average a blocking failure into a passing score.
 
 ## Evidence
 

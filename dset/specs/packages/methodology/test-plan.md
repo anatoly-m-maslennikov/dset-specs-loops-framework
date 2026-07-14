@@ -41,6 +41,13 @@ This plan proves exact structural and terminology claims. Qualitative comprehens
 | **METH-TEST-033** | METH-REQ-032, METH-INV-019 | Assert a local normative edit changes ruleset status to custom while preserving source profile/version provenance | Governance customization test |
 | **METH-TEST-034** | METH-REQ-033, METH-INV-020 | Validate that exact governance checks are registered as tests while qualitative criteria remain in a separate eval plan and evidence stream | `python -m dset_toolchain check .` plus change-manifest assertions |
 | **METH-TEST-035** | METH-REQ-034, METH-INV-021 | Reject zero or multiple editable owners for a selected normative rule ID and reject normative rule bodies in declared derived surfaces | Governance ownership fixtures, thin-wrapper audit, and change rule inventory |
+| **METH-TEST-036** | METH-REQ-035, METH-INV-022 | Assert the core distribution declares exactly `dset`, `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release`, with no separate helper wrappers | Skill registry/package inventory test |
+| **METH-TEST-037** | METH-REQ-036, METH-INV-016/022 | Prove `dset` resolves locally, chains only registered workflows, remains thin, and preserves authorization boundaries | Governance orchestration fixtures plus Skill Creator validation |
+| **METH-TEST-038** | METH-REQ-037, METH-INV-023 | Validate the ignored local run-record schema, append-only behavior, bounded/redacted fields, and non-authoritative status | Run-record fixtures and repository ignore check |
+| **METH-TEST-039** | METH-REQ-038, METH-INV-024 | Exercise bootstrap, normal, small, RC, and final transition tables and reject missing/multiple classes, skipped bumps, decimal arithmetic, and automatic 1.0 promotion | Release-policy fixture matrix |
+| **METH-TEST-040** | METH-REQ-039, METH-INV-025 | Reject inconsistent pre-merge version surfaces and prove post-merge publication targets the protected merge commit without changing `main` content | Release manifest/CI fixtures and hosted workflow assertion |
+| **METH-TEST-041** | METH-REQ-040, METH-INV-026 | Reject RC/final transitions with incomplete scope, failed proof, missing pilot/distribution evidence, known blockers, or feature additions during RC | Release-readiness fixture matrix |
+| **METH-TEST-042** | METH-REQ-041, METH-INV-027 | Require one product/package/release identity while accepting independent schema/profile/template compatibility versions | Version-surface consistency fixtures |
 
 ## Regression policy
 

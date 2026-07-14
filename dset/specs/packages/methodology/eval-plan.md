@@ -25,6 +25,10 @@ Use representative project scenarios covering:
 15. A customized adopter in which a cold agent must distinguish the governing document from the wrapper, template, generated installation, summary, and cache.
 16. Invalid ownership fixtures that expose only a stable code, path, and actionable message to the evaluator.
 17. A wrapper invocation whose selected workflow cannot resolve because rule ownership is missing or profile-incompatible.
+18. A cold operator invoking `dset` during initialization, ambiguous design, active implementation, failed verification, and release readiness.
+19. Local skill-run history that conflicts with newer authoritative Git/change state.
+20. Representative normal, small, RC, and final PRs with mixed code, documentation, migrations, blockers, and proof state.
+21. A superficially green candidate that lacks one required pilot or retains a known release blocker.
 
 ## Criteria and thresholds
 
@@ -48,6 +52,10 @@ Use representative project scenarios covering:
 | **METH-EVAL-016** | Governance navigation | Every reviewer reaches the registry and single local governing owner and identifies custom/source provenance without treating a wrapper, template, generated installation, index, summary, or cache as normative |
 | **METH-EVAL-017** | Governance diagnostic usefulness | For every invalid-ownership case, reviewers identify the blocking defect and a safe local correction without reading resolver source or inventing a fallback rule |
 | **METH-EVAL-018** | Fail-closed wrapper restraint | Every independent run stops before governed work when ownership cannot resolve, reports the unresolved state, and does not continue from embedded knowledge or remote framework prose |
+| **METH-EVAL-019** | Primary orchestration usefulness | Every reviewer selects the same bounded next registered workflow for each lifecycle state, cites authoritative evidence, and does not invent a helper skill |
+| **METH-EVAL-020** | Heuristic restraint | Every reviewer treats local run records as advisory, follows newer authoritative state, and recommends the correct refreshed proof or workflow |
+| **METH-EVAL-021** | Release classification | Every reviewer selects the specified normal, small, RC, or final class and target or stops on material ambiguity; none promotes 1.0 arithmetically |
+| **METH-EVAL-022** | Release restraint | Every reviewer refuses RC/final publication when a required gate is absent, names the owning correction surface, and does not weaken the release threshold |
 
 ## Calibration and evidence
 
