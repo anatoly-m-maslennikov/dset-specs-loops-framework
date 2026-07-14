@@ -376,6 +376,7 @@ class GovernanceTests(unittest.TestCase):
             "DSET-CONTRACT-OPS-001",
             "ACME-STORY-SKILL-001",
             "ACME-OUTCOME-OPS-001",
+            "ACME-CHANGE-SKILL-001",
         ):
             self.assertIsNotNone(re.fullmatch(complete_pattern, valid))
         self.assertIsNotNone(

@@ -191,7 +191,7 @@ class RepositoryLayout:
         for root in roots:
             if not root.is_dir():
                 continue
-            if archived:
+            if archived or self.layered:
                 for path in root.iterdir():
                     manifest = path / "change.yaml"
                     if not path.is_dir() or not manifest.is_file():

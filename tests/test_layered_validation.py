@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import json
+import shutil
 import tempfile
 import unittest
 from pathlib import Path
 from typing import Any
 
 from dset_toolchain.layout import LAYERS
+from dset_toolchain.scaffold import create_change
 from dset_toolchain.traceability import build_traceability
 from dset_toolchain.validation import validate_change, validate_repository
 from dset_toolchain.yaml_subset import dump, load
@@ -74,7 +76,12 @@ class LayeredValidationTests(unittest.TestCase):
             "DSET-E148",
             {item.code for item in validate_change(self.root, first, archived=False)},
         )
-        self._write_change("ops", "layered-change", id_layer="OPS")
+        self._write_change(
+            "ops",
+            "layered-change",
+            id_layer="OPS",
+            stable_id="DSET-CHANGE-TOOL-099",
+        )
         self.assertIn(
             "DSET-E149", {item.code for item in validate_repository(self.root)}
         )
@@ -91,6 +98,19 @@ class LayeredValidationTests(unittest.TestCase):
         self.assertEqual(
             project["$defs"]["layered_structure"]["properties"]["layout"]["const"],
             "layered-v1",
+        )
+        change = json.loads(
+            (ROOT / "dset/schemas/change.schema.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(
+            change["$defs"]["workspace"]["properties"]["isolation"]["const"],
+            "branch-worktree",
+        )
+        self.assertEqual(
+            change["$defs"]["layered_release_declaration"]["properties"]["policy"][
+                "const"
+            ],
+            "dset/scopes/ops/governance/release.md",
         )
         self.assertEqual(
             set(fragment["required"]),
@@ -116,6 +136,88 @@ class LayeredValidationTests(unittest.TestCase):
         self.assertEqual(trace["schema_version"], "1.2")
         self.assertEqual(trace["changes"][0]["primary_layer"], "tool")
         self.assertEqual(trace["changes"][0]["affected_layers"], ["tool"])
+        self.assertEqual(trace["changes"][0]["slug"], "layered-change")
+        self.assertEqual(
+            trace["changes"][0]["workspace"]["isolation"], "branch-worktree"
+        )
+
+    def test_workspace_and_dependency_currentness_are_enforced(self) -> None:
+        change = self._write_change("tool", "layered-change")
+        path = change / "change.yaml"
+        data = load(path)
+        assert isinstance(data, dict)
+        data["dependencies"] = [
+            {
+                "change_id": "DSET-CHANGE-GOV-001",
+                "pull_request": {
+                    "repository": "example/project",
+                    "number": "pending",
+                    "url": "pending",
+                },
+                "required_commit": "pending",
+                "consumes": ["DSET-CONTRACT-GOV-001"],
+                "claim": "The governance contract exists.",
+                "use": "Validate the generated tool configuration.",
+                "evidence": "proofs/governance-dependency.md",
+                "checked_at": "2026-07-15",
+                "reopen_when": "The required commit changes.",
+                "status": "available",
+            }
+        ]
+        path.write_text(dump(data), encoding="utf-8")
+        self.assertIn(
+            "DSET-E153",
+            {item.code for item in validate_change(self.root, change, archived=False)},
+        )
+        data["dependencies"][0]["pull_request"] = {
+            "repository": "example/project",
+            "number": 7,
+            "url": "https://github.com/example/project/pull/7",
+        }
+        data["dependencies"][0]["required_commit"] = "a" * 40
+        path.write_text(dump(data), encoding="utf-8")
+        self.assertEqual(validate_change(self.root, change, archived=False), [])
+
+    def test_scaffold_allocates_stable_change_ids_separately_from_slugs(self) -> None:
+        target = self.scopes / "gov" / "templates" / "change"
+        shutil.copytree(ROOT / "dset/templates/change", target)
+
+        first = create_change(
+            self.root, "portable-cli", "sample", "small", layer="tool"
+        )
+        second = create_change(
+            self.root, "dependency-check", "sample", "small", layer="tool"
+        )
+
+        first_data = load(first / "change.yaml")
+        second_data = load(second / "change.yaml")
+        assert isinstance(first_data, dict)
+        assert isinstance(second_data, dict)
+        self.assertEqual(first_data["id"], "DSET-CHANGE-TOOL-001")
+        self.assertEqual(first_data["slug"], "portable-cli")
+        self.assertEqual(second_data["id"], "DSET-CHANGE-TOOL-002")
+        self.assertEqual(first_data["workspace"]["isolation"], "branch-worktree")
+
+    def test_workspace_branch_is_unique_only_while_changes_are_active(self) -> None:
+        first = self._write_change(
+            "tool", "first-change", stable_id="DSET-CHANGE-TOOL-101"
+        )
+        second = self._write_change(
+            "tool", "second-change", stable_id="DSET-CHANGE-TOOL-102"
+        )
+        second_data = load(second / "change.yaml")
+        assert isinstance(second_data, dict)
+        second_data["workspace"]["branch"] = "dset/first-change"
+        (second / "change.yaml").write_text(dump(second_data), encoding="utf-8")
+        self.assertIn(
+            "DSET-E154", {item.code for item in validate_repository(self.root)}
+        )
+
+        self._archive_synthetic(first, "2026-07-14", 11)
+        self._archive_synthetic(second, "2026-07-15", 12)
+        self.assertNotIn(
+            "DSET-E154", {item.code for item in validate_repository(self.root)}
+        )
 
     def _write_project(self) -> None:
         manifest: dict[str, Any] = {
@@ -146,7 +248,9 @@ class LayeredValidationTests(unittest.TestCase):
                 "delegation_budget": "medium",
             },
             "change_contract": {
-                "change_id_format": "kebab-case",
+                "change_id_format": "project-type-layer-sequence",
+                "change_slug_format": "kebab-case",
+                "workspace_default": "isolated-branch-worktree-pr",
                 "pull_request_required_before_archive": True,
                 "archive_requires_fresh_verification": True,
                 "keep_pull_request_draft_until_archive_ready": True,
@@ -225,26 +329,40 @@ class LayeredValidationTests(unittest.TestCase):
             (root / filename).write_text(content, encoding="utf-8")
 
     def _write_change(
-        self, layer: str, change_id: str, *, id_layer: str = "TOOL"
+        self,
+        layer: str,
+        change_slug: str,
+        *,
+        id_layer: str = "TOOL",
+        stable_id: str | None = None,
     ) -> Path:
-        root = self.scopes / layer / "changes" / change_id
+        root = self.scopes / layer / "changes" / change_slug
         (root / "specs").mkdir(parents=True)
         requirement = f"DSET-REQUIREMENT-{id_layer}-099"
         test = f"DSET-TEST-{id_layer}-099"
         data = {
             "schema_version": "1.2",
-            "id": change_id,
+            "id": stable_id or f"DSET-CHANGE-{id_layer}-099",
+            "slug": change_slug,
             "profile": "small",
             "status": "proposed",
             "primary_layer": layer,
             "affected_layers": [layer],
+            "workspace": {
+                "isolation": "branch-worktree",
+                "branch": f"dset/{change_slug}",
+                "base_ref": "main",
+                "base_commit": "pending",
+                "head_commit": "pending",
+            },
+            "dependencies": [],
             "packages": ["sample"],
             "pull_request": {
                 "repository": "example/project",
                 "number": "pending",
                 "url": "pending",
             },
-            "release": {"owner_change": change_id},
+            "release": {"owner_change": stable_id or f"DSET-CHANGE-{id_layer}-099"},
             "intake": [],
             "requirements": [requirement],
             "tests": [test],
@@ -261,6 +379,28 @@ class LayeredValidationTests(unittest.TestCase):
             "# Eval plan\n\nNot applicable to this fixture.\n", encoding="utf-8"
         )
         return root
+
+    def _archive_synthetic(self, change: Path, day: str, pr_number: int) -> None:
+        path = change / "change.yaml"
+        data = load(path)
+        assert isinstance(data, dict)
+        layer = str(data["primary_layer"])
+        destination = self.scopes / layer / "changes/archive" / f"{day}-{data['slug']}"
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        data["status"] = "archived"
+        data["pull_request"] = {
+            "repository": "example/project",
+            "number": pr_number,
+            "url": f"https://github.com/example/project/pull/{pr_number}",
+        }
+        data["workspace"]["base_commit"] = "a" * 40
+        data["workspace"]["head_commit"] = "b" * 40
+        data["archive"] = {
+            "date": day,
+            "path": destination.relative_to(self.root).as_posix(),
+        }
+        path.write_text(dump(data), encoding="utf-8")
+        change.replace(destination)
 
 
 if __name__ == "__main__":

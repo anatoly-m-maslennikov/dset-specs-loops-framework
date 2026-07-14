@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from datetime import date
 from pathlib import Path
 
@@ -13,7 +14,7 @@ def archive_plan(root: Path, change_id: str, archive_date: date) -> tuple[Path, 
     source = layout.find_change(change_id)
     layer = layout.change_layer(source)
     destination = layout.archive_change_root(layer) / (
-        f"{archive_date.isoformat()}-{change_id}"
+        f"{archive_date.isoformat()}-{source.name}"
     )
     if destination.exists():
         raise FileExistsError(f"archive destination exists: {destination}")
@@ -23,6 +24,14 @@ def archive_plan(root: Path, change_id: str, archive_date: date) -> tuple[Path, 
     pr = data.get("pull_request", {})
     if not isinstance(pr.get("number"), int):
         raise ValueError("archive requires a repository-qualified PR")
+    if layout.layered:
+        workspace = data.get("workspace", {})
+        if not isinstance(workspace, dict) or any(
+            not isinstance(workspace.get(field), str)
+            or re.fullmatch(r"[0-9a-f]{40}", workspace[field]) is None
+            for field in ("base_commit", "head_commit")
+        ):
+            raise ValueError("archive requires exact workspace base and head commits")
     diagnostics = validate_change(root, source, archived=False)
     if diagnostics:
         raise ValueError(diagnostics[0].render(root))

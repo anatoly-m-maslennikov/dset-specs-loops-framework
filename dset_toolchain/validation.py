@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+from datetime import date
 from pathlib import Path
 from typing import Any
 from urllib.parse import unquote
@@ -31,6 +32,7 @@ TRACE_TYPES = (
     "CONTRACT",
     "STORY",
     "OUTCOME",
+    "CHANGE",
 )
 LINK_PATTERN = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 CALLOUT_PATTERN = re.compile(r"^> \[!([^\]]+)\]", re.MULTILINE)
@@ -119,12 +121,15 @@ def validate_change(
     layered = layout.layered
     change_id = str(data.get("id", ""))
     folder_id = re.sub(r"^\d{4}-\d{2}-\d{2}-", "", change_dir.name)
-    if not CHANGE_PATTERN.fullmatch(change_id) or change_id != folder_id:
+    change_slug = str(data.get("slug", "")) if layered else change_id
+    if not CHANGE_PATTERN.fullmatch(change_slug) or change_slug != folder_id:
         diagnostics.append(
             _diag(
-                "DSET-E101",
+                "DSET-E151" if layered else "DSET-E101",
                 manifest_path,
-                "change ID must be kebab-case and match its directory",
+                "change slug must be kebab-case and match its directory"
+                if layered
+                else "change ID must be kebab-case and match its directory",
             )
         )
     profile = str(data.get("profile", ""))
@@ -191,6 +196,19 @@ def validate_change(
                         "archive path does not match the change directory",
                     )
                 )
+        if layered:
+            workspace = data.get("workspace")
+            if not isinstance(workspace, dict) or not all(
+                _is_exact_commit(workspace.get(field))
+                for field in ("base_commit", "head_commit")
+            ):
+                diagnostics.append(
+                    _diag(
+                        "DSET-E152",
+                        manifest_path,
+                        "archived workspace requires exact base and head commits",
+                    )
+                )
     return diagnostics
 
 
@@ -241,7 +259,19 @@ def _validate_project_manifest(
                 )
                 if not valid_packages:
                     break
-        if not valid_structure or not valid_packages:
+        expected_change_contract = {
+            "change_id_format": "project-type-layer-sequence",
+            "change_slug_format": "kebab-case",
+            "workspace_default": "isolated-branch-worktree-pr",
+            "pull_request_required_before_archive": True,
+            "archive_requires_fresh_verification": True,
+            "keep_pull_request_draft_until_archive_ready": True,
+        }
+        if (
+            not valid_structure
+            or not valid_packages
+            or data.get("change_contract") != expected_change_contract
+        ):
             diagnostics.append(
                 _diag(
                     "DSET-E143",
@@ -1238,6 +1268,44 @@ def _validate_layered_change(
     project_key = _manifest_project_key(project)
     if project_key is None:
         return diagnostics
+    change_id = data.get("id")
+    change_match = (
+        _trace_id_pattern(project_key, ("CHANGE",)).fullmatch(change_id)
+        if isinstance(change_id, str)
+        else None
+    )
+    if (
+        change_match is None
+        or change_match.group("layer") is None
+        or change_match.group("layer").lower() != primary
+    ):
+        diagnostics.append(
+            _diag(
+                "DSET-E151",
+                path,
+                "Change ID must be project-CHANGE-layer-sequence and match owner",
+            )
+        )
+    diagnostics.extend(_validate_workspace(path, data, archived=False))
+    diagnostics.extend(_validate_change_dependencies(path, data, project_key))
+    release = data.get("release")
+    if isinstance(release, dict):
+        policy = release.get("policy")
+        owner = release.get("owner_change")
+        if policy is not None and policy != "dset/scopes/ops/governance/release.md":
+            diagnostics.append(
+                _diag("DSET-E153", path, "schema 1.2 release policy path is invalid")
+            )
+        if owner is not None:
+            owner_match = (
+                _trace_id_pattern(project_key, ("CHANGE",)).fullmatch(owner)
+                if isinstance(owner, str)
+                else None
+            )
+            if owner_match is None or owner_match.group("layer") is None:
+                diagnostics.append(
+                    _diag("DSET-E153", path, "release owner_change must be stable")
+                )
     pattern = _trace_id_pattern(project_key, TRACE_TYPES)
     for group in (
         "requirements",
@@ -1276,10 +1344,13 @@ def _validate_change_uniqueness(layout: RepositoryLayout) -> list[Diagnostic]:
     if not layout.layered:
         return diagnostics
     owners: dict[str, Path] = {}
+    branches: dict[str, Path] = {}
+    pull_requests: dict[tuple[str, int], Path] = {}
     roots = (*layout.active_change_roots, *layout.archive_change_roots)
     for root in roots:
         if not root.is_dir():
             continue
+        archived_root = root in layout.archive_change_roots
         for change in sorted(root.iterdir()):
             manifest = change / "change.yaml"
             if not change.is_dir() or not manifest.is_file():
@@ -1302,7 +1373,188 @@ def _validate_change_uniqueness(layout: RepositoryLayout) -> list[Diagnostic]:
                 )
             else:
                 owners[identifier] = manifest
+            workspace = data.get("workspace") if isinstance(data, dict) else None
+            branch = workspace.get("branch") if isinstance(workspace, dict) else None
+            if not archived_root and isinstance(branch, str) and branch != "pending":
+                previous = branches.get(branch)
+                if previous is not None:
+                    diagnostics.append(
+                        _diag(
+                            "DSET-E154",
+                            manifest,
+                            f"workspace branch is also owned by {previous}",
+                        )
+                    )
+                else:
+                    branches[branch] = manifest
+            pr = data.get("pull_request") if isinstance(data, dict) else None
+            repository = pr.get("repository") if isinstance(pr, dict) else None
+            number = pr.get("number") if isinstance(pr, dict) else None
+            if isinstance(repository, str) and isinstance(number, int):
+                pr_key = (repository, number)
+                previous = pull_requests.get(pr_key)
+                if previous is not None:
+                    diagnostics.append(
+                        _diag(
+                            "DSET-E154",
+                            manifest,
+                            f"pull request is also owned by {previous}",
+                        )
+                    )
+                else:
+                    pull_requests[pr_key] = manifest
     return diagnostics
+
+
+def _validate_workspace(
+    path: Path, data: dict[str, Any], *, archived: bool
+) -> list[Diagnostic]:
+    workspace = data.get("workspace")
+    if not isinstance(workspace, dict):
+        return [_diag("DSET-E152", path, "workspace metadata is required")]
+    required = {"isolation", "branch", "base_ref", "base_commit", "head_commit"}
+    valid = (
+        set(workspace) == required
+        and workspace.get("isolation") == "branch-worktree"
+        and isinstance(workspace.get("branch"), str)
+        and bool(str(workspace.get("branch")).strip())
+        and isinstance(workspace.get("base_ref"), str)
+        and bool(str(workspace.get("base_ref")).strip())
+        and all(
+            _is_exact_commit(workspace.get(field))
+            or (not archived and workspace.get(field) == "pending")
+            for field in ("base_commit", "head_commit")
+        )
+    )
+    if not valid:
+        return [_diag("DSET-E152", path, "workspace metadata is inconsistent")]
+    release = data.get("release")
+    candidate = release.get("candidate_commit") if isinstance(release, dict) else None
+    head = workspace.get("head_commit")
+    if _is_exact_commit(candidate) and candidate != head:
+        return [
+            _diag(
+                "DSET-E152",
+                path,
+                "workspace head_commit must match the release candidate commit",
+            )
+        ]
+    return []
+
+
+def _validate_change_dependencies(
+    path: Path, data: dict[str, Any], project_key: str
+) -> list[Diagnostic]:
+    dependencies = data.get("dependencies")
+    if not isinstance(dependencies, list):
+        return [_diag("DSET-E153", path, "dependencies must be a list")]
+    diagnostics: list[Diagnostic] = []
+    seen: set[str] = set()
+    change_pattern = _trace_id_pattern(project_key, ("CHANGE",))
+    trace_pattern = _trace_id_pattern(project_key, TRACE_TYPES)
+    own_id = data.get("id")
+    required = {
+        "change_id",
+        "pull_request",
+        "required_commit",
+        "consumes",
+        "claim",
+        "use",
+        "evidence",
+        "checked_at",
+        "reopen_when",
+        "status",
+    }
+    statuses = {"planned", "available", "integrated", "blocked", "stale"}
+    for dependency in dependencies:
+        if not isinstance(dependency, dict) or set(dependency) != required:
+            diagnostics.append(
+                _diag("DSET-E153", path, "dependency record shape is inconsistent")
+            )
+            continue
+        dependency_id = dependency.get("change_id")
+        identifier_match = (
+            change_pattern.fullmatch(dependency_id)
+            if isinstance(dependency_id, str)
+            else None
+        )
+        consumes = dependency.get("consumes")
+        status = dependency.get("status")
+        pr = dependency.get("pull_request")
+        exact_status = status in {"available", "integrated"}
+        valid_pr = _valid_pull_request(pr, exact=exact_status)
+        valid = (
+            identifier_match is not None
+            and identifier_match.group("layer") is not None
+            and dependency_id != own_id
+            and dependency_id not in seen
+            and status in statuses
+            and valid_pr
+            and (
+                _is_exact_commit(dependency.get("required_commit"))
+                or (not exact_status and dependency.get("required_commit") == "pending")
+            )
+            and isinstance(consumes, list)
+            and bool(consumes)
+            and len(consumes) == len(set(consumes))
+            and all(
+                isinstance(identifier, str)
+                and trace_pattern.fullmatch(identifier) is not None
+                for identifier in consumes
+            )
+            and all(
+                isinstance(dependency.get(field), str)
+                and bool(str(dependency.get(field)).strip())
+                for field in ("claim", "use", "evidence", "reopen_when")
+            )
+            and _is_iso_date(dependency.get("checked_at"))
+        )
+        if not valid:
+            diagnostics.append(
+                _diag("DSET-E153", path, f"invalid dependency: {dependency_id}")
+            )
+        elif isinstance(dependency_id, str):
+            seen.add(dependency_id)
+    return diagnostics
+
+
+def _valid_pull_request(raw: Any, *, exact: bool) -> bool:
+    if not isinstance(raw, dict) or set(raw) != {"repository", "number", "url"}:
+        return False
+    repository = raw.get("repository")
+    number = raw.get("number")
+    url = raw.get("url")
+    if (
+        not isinstance(repository, str)
+        or re.fullmatch(r"[^/]+/[^/]+", repository) is None
+    ):
+        return False
+    if exact:
+        return (
+            isinstance(number, int)
+            and number >= 1
+            and isinstance(url, str)
+            and url.startswith("https://")
+            and url != "pending"
+        )
+    return (
+        ((isinstance(number, int) and number >= 1) or number == "pending")
+        and isinstance(url, str)
+        and bool(url)
+    )
+
+
+def _is_exact_commit(raw: Any) -> bool:
+    return isinstance(raw, str) and re.fullmatch(r"[0-9a-f]{40}", raw) is not None
+
+
+def _is_iso_date(raw: Any) -> bool:
+    if not isinstance(raw, str):
+        return False
+    try:
+        return date.fromisoformat(raw).isoformat() == raw
+    except ValueError:
+        return False
 
 
 def _validate_schemas(schema_paths: tuple[Path, ...]) -> list[Diagnostic]:

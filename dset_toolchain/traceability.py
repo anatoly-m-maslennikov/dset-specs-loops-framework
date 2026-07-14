@@ -54,8 +54,16 @@ def build_traceability(root: Path) -> dict[str, Any]:
             "evidence": evidence,
         }
         if layout.layered:
+            entry["slug"] = data.get("slug")
             entry["primary_layer"] = data.get("primary_layer")
             entry["affected_layers"] = sorted(data.get("affected_layers", []))
+            entry["workspace"] = data.get("workspace")
+            entry["dependencies"] = sorted(
+                data.get("dependencies", []),
+                key=lambda item: (
+                    str(item.get("change_id", "")) if isinstance(item, dict) else ""
+                ),
+            )
         changes.append(entry)
     changes.sort(key=lambda item: item["id"])
     return {

@@ -84,15 +84,7 @@
       "additionalProperties": false
     },
     "change_contract": {
-      "type": "object",
-      "required": ["change_id_format", "pull_request_required_before_archive", "archive_requires_fresh_verification", "keep_pull_request_draft_until_archive_ready"],
-      "properties": {
-        "change_id_format": {"const": "kebab-case"},
-        "pull_request_required_before_archive": {"const": true},
-        "archive_requires_fresh_verification": {"const": true},
-        "keep_pull_request_draft_until_archive_ready": {"const": true}
-      },
-      "additionalProperties": false
+      "type": "object"
     },
     "verification": {
       "type": "object",
@@ -117,13 +109,15 @@
           "structure": {"$ref": "#/$defs/layered_structure"},
           "packages": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/layered_package"}},
           "work_items": {"properties": {"registry": {"const": "dset/scopes/gov/intake.yaml"}}},
-          "profiles": {"required": ["delegation_budget"]}
+          "profiles": {"required": ["delegation_budget"]},
+          "change_contract": {"$ref": "#/$defs/layered_change_contract"}
         }
       },
       "else": {
         "properties": {
           "structure": {"$ref": "#/$defs/legacy_structure"},
-          "packages": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/legacy_package"}}
+          "packages": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/legacy_package"}},
+          "change_contract": {"$ref": "#/$defs/legacy_change_contract"}
         }
       }
     },
@@ -176,6 +170,30 @@
         "id": {"$ref": "#/$defs/kebab"},
         "status": {"enum": ["active", "retired"]},
         "layers": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/layer"}}
+      },
+      "additionalProperties": false
+    },
+    "legacy_change_contract": {
+      "type": "object",
+      "required": ["change_id_format", "pull_request_required_before_archive", "archive_requires_fresh_verification", "keep_pull_request_draft_until_archive_ready"],
+      "properties": {
+        "change_id_format": {"const": "kebab-case"},
+        "pull_request_required_before_archive": {"const": true},
+        "archive_requires_fresh_verification": {"const": true},
+        "keep_pull_request_draft_until_archive_ready": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "layered_change_contract": {
+      "type": "object",
+      "required": ["change_id_format", "change_slug_format", "workspace_default", "pull_request_required_before_archive", "archive_requires_fresh_verification", "keep_pull_request_draft_until_archive_ready"],
+      "properties": {
+        "change_id_format": {"const": "project-type-layer-sequence"},
+        "change_slug_format": {"const": "kebab-case"},
+        "workspace_default": {"const": "isolated-branch-worktree-pr"},
+        "pull_request_required_before_archive": {"const": true},
+        "archive_requires_fresh_verification": {"const": true},
+        "keep_pull_request_draft_until_archive_ready": {"const": true}
       },
       "additionalProperties": false
     },

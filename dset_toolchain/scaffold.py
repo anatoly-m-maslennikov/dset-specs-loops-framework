@@ -5,7 +5,7 @@ from pathlib import Path
 
 from .layout import discover_layout
 from .profiles import VALID_PROFILES, required_artifacts
-from .yaml_subset import load
+from .yaml_subset import dump, load
 
 TRACE_LAYERS = ("META", "GOV", "TOOL", "SKILL", "OPS")
 
@@ -17,12 +17,23 @@ def create_change(
     profile: str,
     title: str | None = None,
     layer: str | None = None,
+    stable_id: str | None = None,
 ) -> Path:
     if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", change_id):
         raise ValueError("change ID must be lowercase kebab-case")
     if profile not in VALID_PROFILES:
         raise ValueError(f"unknown profile: {profile}")
     layout = discover_layout(root)
+    if layout.layered and layer is None:
+        raise ValueError("schema 1.2 changes require an owning DSET layer")
+    canonical_id = change_id
+    if layout.layered:
+        canonical_id = stable_id or _next_change_id(root, str(layer))
+        expected = (
+            rf"{re.escape(_project_key(root))}-CHANGE-{str(layer).upper()}-[0-9]{{3,}}"
+        )
+        if re.fullmatch(expected, canonical_id) is None:
+            raise ValueError("stable Change ID must match its project and owning layer")
     destination = layout.active_change_root(layer) / change_id
     if destination.exists():
         raise FileExistsError(f"change already exists: {destination}")
@@ -31,7 +42,8 @@ def create_change(
     project_key = _project_key(root)
     id_layer = _id_layer(root, layer)
     replacements = {
-        "{{change_id}}": change_id,
+        "{{change_id}}": canonical_id,
+        "{{change_slug}}": change_id,
         "{{package_id}}": package_id,
         "{{profile}}": profile,
         "{{title}}": display_title,
@@ -59,6 +71,10 @@ def create_change(
             source = layout.find_template("change/proofs/candidate-fit/README.md")
             target = destination / "proofs" / "candidate-fit" / "README.md"
             _copy_template(source, target, replacements)
+        if layout.layered:
+            _materialize_layered_manifest(
+                destination, canonical_id, change_id, str(layer)
+            )
     except Exception:
         _remove_tree(destination)
         raise
@@ -105,6 +121,60 @@ def _id_layer(root: Path, layer: str | None) -> str:
 def _repository(root: Path) -> str:
     history = load(discover_layout(root).history_path)
     return str(history["repository"])
+
+
+def _next_change_id(root: Path, layer: str) -> str:
+    layout = discover_layout(root)
+    normalized = layer.upper()
+    if normalized not in TRACE_LAYERS:
+        raise ValueError(f"unknown ID layer: {layer}")
+    prefix = f"{_project_key(root)}-CHANGE-{normalized}-"
+    highest = 0
+    for change_root in (*layout.active_change_roots, *layout.archive_change_roots):
+        if not change_root.is_dir():
+            continue
+        for manifest in change_root.glob("*/change.yaml"):
+            data = load(manifest)
+            identifier = data.get("id") if isinstance(data, dict) else None
+            if isinstance(identifier, str) and identifier.startswith(prefix):
+                suffix = identifier.removeprefix(prefix)
+                if suffix.isdigit():
+                    highest = max(highest, int(suffix))
+    return f"{prefix}{highest + 1:03d}"
+
+
+def _materialize_layered_manifest(
+    destination: Path, stable_id: str, slug: str, layer: str
+) -> None:
+    path = destination / "change.yaml"
+    data = load(path)
+    if not isinstance(data, dict):
+        raise ValueError("change template root must be a mapping")
+    normalized = layer.lower()
+    data.update(
+        {
+            "schema_version": "1.2",
+            "id": stable_id,
+            "slug": slug,
+            "primary_layer": normalized,
+            "affected_layers": [normalized],
+            "workspace": {
+                "isolation": "branch-worktree",
+                "branch": f"dset/{slug}",
+                "base_ref": "pending",
+                "base_commit": "pending",
+                "head_commit": "pending",
+            },
+            "dependencies": [],
+        }
+    )
+    release = data.get("release")
+    if isinstance(release, dict):
+        if "policy" in release:
+            release["policy"] = "dset/scopes/ops/governance/release.md"
+        if "owner_change" in release:
+            release["owner_change"] = stable_id
+    path.write_text(dump(data), encoding="utf-8")
 
 
 def _remove_tree(path: Path) -> None:

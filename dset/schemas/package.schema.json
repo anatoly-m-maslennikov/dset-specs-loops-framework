@@ -30,7 +30,7 @@
     }
   },
   "$defs": {
-    "trace_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-(?:REQUIREMENT|SCENARIO|INVARIANT|TEST|EVAL|TASK|PROBLEM|OPPORTUNITY|QUESTION|DECISION|CONTRACT|STORY|OUTCOME)(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"},
+    "trace_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-(?:REQUIREMENT|SCENARIO|INVARIANT|TEST|EVAL|TASK|PROBLEM|OPPORTUNITY|QUESTION|DECISION|CONTRACT|STORY|OUTCOME|CHANGE)(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"},
     "requirement_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-REQUIREMENT(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}},
     "test_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-TEST(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}},
     "eval_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-EVAL(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}},
