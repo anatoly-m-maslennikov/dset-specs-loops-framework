@@ -94,7 +94,7 @@ changes:
       - MDSHAST-EVAL-003
       - MDSHAST-EVAL-004
     adrs: []
-    pull_request: pending
+    pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9
     evidence:
       - dset/changes/make-dset-self-hosting-and-skills-thin/proofs/invariant-contract-verification-2026-07-14.md
       - dset/changes/make-dset-self-hosting-and-skills-thin/proofs/local-fixed-point-2026-07-14.md
