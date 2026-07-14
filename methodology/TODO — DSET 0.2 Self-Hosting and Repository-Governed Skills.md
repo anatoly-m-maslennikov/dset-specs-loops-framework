@@ -18,7 +18,7 @@
 - **DSET-02-INV-008 — Separate proof:** Deterministic resolver, structure, wrapper, and recursion checks remain tests; agent interpretation, rule-following, navigation, and diagnostic usefulness remain evals.
 - **DSET-02-INV-009 — One owner per rule:** Every normative rule ID has exactly one editable governing document. Agent guidance, skills, templates, generated installations, and summaries link to that owner and never become parallel writable rule stores.
 
-**Contract status:** Defined as `METH-INV-013`–`METH-INV-021` and release-gated requirements `METH-REQ-026`–`METH-REQ-034` in the [accepted methodology package](../dset/specs/packages/methodology/README.md), with separate deterministic and qualitative proof mappings. Roadmap §§0–§4 are implemented on the active change branch and have local deterministic proof. Hosted fixed-point proof, qualitative evals, the TypeScript profile, external pilots, distribution, and release reconciliation remain open; DSET 0.2 is not yet an adoption-readiness claim.
+**Contract status:** Defined as `METH-INV-013`–`METH-INV-021` and release-gated requirements `METH-REQ-026`–`METH-REQ-034` in the [accepted methodology package](../dset/specs/packages/methodology/README.md), with separate deterministic and qualitative proof mappings. Roadmap §§0–§4 are implemented and pass local plus hosted deterministic proof on draft PR #9. Qualitative evals, the TypeScript profile, external pilots, distribution, and release reconciliation remain open; DSET 0.2 is not yet an adoption-readiness claim.
 
 ## Scope
 
@@ -108,7 +108,7 @@ The registry, not this example path, is the compatibility surface. A repository 
 - [x] **DSET-02-TASK-035:** Mutate one generated local rule while preserving the skill wrapper bytes; prove registry/check results change only because the local rule/profile identity changed.
 - [x] **DSET-02-TASK-036:** Corrupt each bootstrap boundary—manifest, registry, rule owner, path, dependency, wrapper identity, template, and candidate command—and prove the earliest stable failure.
 - [x] **DSET-02-TASK-037:** Define the recursion stop: the generated adopter may consume the candidate toolchain but does not regenerate the framework repository or recursively create another adopter.
-- [ ] **DSET-02-TASK-038:** Run the full fixed point in local verification and hosted CI before an external pilot may claim DSET 0.2 adoption readiness.
+- [x] **DSET-02-TASK-038:** Run the full fixed point in local verification and hosted CI before an external pilot may claim DSET 0.2 adoption readiness.
 
 ## §5 | Derive TypeScript v1 from Your Harness
 

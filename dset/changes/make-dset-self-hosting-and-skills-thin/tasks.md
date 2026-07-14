@@ -8,6 +8,6 @@
 - [x] **MDSHAST-TASK-006:** Implement roadmap §1 repository-local governance registry and resolver.
 - [x] **MDSHAST-TASK-007:** Implement roadmap §2 thin skills and record the former-rule ownership inventory.
 - [x] **MDSHAST-TASK-008:** Implement roadmap §3 project-owned materialization, customization, migration, and update comparison.
-- [ ] **MDSHAST-TASK-009:** Complete roadmap §4 hosted fixed-point proof after publishing the draft PR; local proof is complete.
+- [x] **MDSHAST-TASK-009:** Complete roadmap §4 hosted fixed-point proof after publishing the draft PR.
 - [ ] **MDSHAST-TASK-010:** Run roadmap §8 deterministic release tests and §9 independent qualitative evals after the remaining profiles/pilots are implemented.
 - [ ] **MDSHAST-TASK-011:** Implement roadmap §§5–§7 and §10, reconcile the completed change, and satisfy archive readiness.

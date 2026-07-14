@@ -23,12 +23,12 @@
 - Reduce the three skills to trigger/bootstrap/resolution/authorization/handoff wrappers.
 - Add versioned `core-v1` templates, explicit materialization, no-overwrite behavior, migration mapping, and generated-wrapper identity proof.
 
-## Batch 3 — Bounded self-hosting — local complete; hosted pending
+## Batch 3 — Bounded self-hosting — complete
 
 - Extract the pinned released validator from Git history and use it to check the candidate repository.
 - Use the candidate to check this repository, create and check one temporary adopter, mutate one local rule, preserve wrapper bytes, and stop recursion.
 - Corrupt each bootstrap boundary and assert the earliest stable failure.
-- Run the same fixed point on the pushed PR head in hosted CI before completing this batch.
+- Run the same fixed point on the pushed PR head in hosted CI and preserve the shallow-checkout corrective loop.
 
 ## Later batches
 

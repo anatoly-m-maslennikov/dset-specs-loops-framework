@@ -4,7 +4,7 @@
 - **Profile:** `standard`
 - **Target package:** `methodology`
 - **Implementing PR:** [anatoly-m-maslennikov/dset-specs-loops-framework#9](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9)
-- **Status:** in progress; roadmap §§0–§4 implemented locally, hosted proof pending
+- **Status:** in progress; roadmap §§0–§4 implemented and proven locally plus in hosted CI
 
 ## Problem
 
