@@ -8,15 +8,15 @@
 
 ## 0.2 invariants
 
-- **DSET-02-INV-001 — Framework first:** The DSET framework repository is the first complete adopter of every released framework capability.
+- **DSET-02-INV-001 — Framework first:** The DSET framework repository is the first complete adopter of every released capability applicable to its selected profiles. A profile-specific capability that is not applicable to the repository must pass through a versioned in-repository adopter fixture before any external pilot may depend on it.
 - **DSET-02-INV-002 — Bounded recursion:** Self-hosting is a terminating fixed point, not an unbounded directory recursion: the released validator checks the candidate change; the candidate checks this repository; the candidate creates and checks a temporary adopter.
 - **DSET-02-INV-003 — Local rule authority:** An adopting repository's governing documents are the sole editable owners of its selected rules. Framework templates seed those documents but stop being authoritative after materialization.
 - **DSET-02-INV-004 — Thin skills:** Skills own discovery and invocation only. They do not duplicate normative workflow, architecture, authoring, proof, threshold, or supportability rules.
 - **DSET-02-INV-005 — Same wrapper, new rules:** A user may change repository-local governing rules and the same unchanged skill wrappers must apply the new rules.
-- **DSET-02-INV-006 — Fail closed:** Missing, conflicting, cyclic, out-of-repository, or inapplicable rule ownership stops the workflow with a stable diagnostic.
+- **DSET-02-INV-006 — Fail closed:** Missing, conflicting, cyclic, out-of-repository, or incompatible selected rule ownership stops the workflow with a stable diagnostic. Explicitly justified non-applicability remains valid and must not be converted into a failure.
 - **DSET-02-INV-007 — Honest customization:** A locally changed ruleset remains valid project truth but is identified as a local/custom profile rather than silently claiming byte-equivalence to an unchanged framework profile.
 - **DSET-02-INV-008 — Separate proof:** Deterministic resolver, structure, wrapper, and recursion checks remain tests; agent interpretation, rule-following, navigation, and diagnostic usefulness remain evals.
-- **DSET-02-INV-009 — One owner per concern:** Agent guidance, skills, templates, generated installations, and summaries link to governing documents and never become parallel writable rule stores.
+- **DSET-02-INV-009 — One owner per rule:** Every normative rule ID has exactly one editable governing document. Agent guidance, skills, templates, generated installations, and summaries link to that owner and never become parallel writable rule stores.
 
 ## Scope
 
