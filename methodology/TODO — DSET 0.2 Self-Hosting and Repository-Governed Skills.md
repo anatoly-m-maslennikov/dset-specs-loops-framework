@@ -18,6 +18,8 @@
 - **DSET-02-INV-008 — Separate proof:** Deterministic resolver, structure, wrapper, and recursion checks remain tests; agent interpretation, rule-following, navigation, and diagnostic usefulness remain evals.
 - **DSET-02-INV-009 — One owner per rule:** Every normative rule ID has exactly one editable governing document. Agent guidance, skills, templates, generated installations, and summaries link to that owner and never become parallel writable rule stores.
 
+**Contract status:** Defined as `METH-INV-013`–`METH-INV-021` and release-gated requirements `METH-REQ-026`–`METH-REQ-034` in the [accepted methodology package](../dset/specs/packages/methodology/README.md), with separate deterministic and qualitative proof mappings. The [invariant-contract evidence](../dset/changes/make-dset-self-hosting-and-skills-thin/proofs/invariant-contract-verification-2026-07-14.md) verifies this definition only; the implementation tasks below remain open and are not DSET 0.2 capability claims.
+
 ## Scope
 
 - Repository-local governance registry and deterministic resolver.
