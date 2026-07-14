@@ -1,18 +1,18 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/schemas/version.schema.json",
-  "title": "DSET framework version contract",
+  "title": "DSET product version contract",
   "type": "object",
   "required": ["schema_version", "framework", "python_package", "schemas", "released_validator", "candidate_validator", "bootstrap"],
   "properties": {
     "schema_version": {"const": 1.0},
     "framework": {
       "type": "object",
-      "required": ["milestone", "status", "versioning"],
+      "required": ["version", "status", "versioning"],
       "properties": {
-        "milestone": {"const": "0.2"},
+        "version": {"$ref": "#/$defs/semver"},
         "status": {"enum": ["candidate", "released"]},
-        "versioning": {"const": "independent-framework-milestone"}
+        "versioning": {"const": "coordinated-product-package"}
       },
       "additionalProperties": false
     },
@@ -21,8 +21,8 @@
       "required": ["name", "version", "versioning"],
       "properties": {
         "name": {"const": "dset-spec-loops"},
-        "version": {"type": "string"},
-        "versioning": {"const": "independent"}
+        "version": {"$ref": "#/$defs/pep440"},
+        "versioning": {"const": "coordinated-product-package"}
       },
       "additionalProperties": false
     },
@@ -54,6 +54,14 @@
     }
   },
   "$defs": {
+    "semver": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-rc\\.[1-9][0-9]*)?$"
+    },
+    "pep440": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:rc[1-9][0-9]*)?$"
+    },
     "validator": {
       "type": "object",
       "required": ["identity", "commit", "command"],

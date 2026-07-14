@@ -1,0 +1,28 @@
+schema_version: 1.0
+default_profile: medium
+model_policy:
+  default: inherit-main-model-and-effort
+  attest: required-when-runtime-supports
+  unknown_for_required_gate: stop-for-decision
+profiles:
+  low:
+    target_subagents: 0
+    max_subagents: 1
+    max_depth: 1
+    max_rounds: 1
+  medium:
+    target_subagents: 2
+    max_subagents: 3
+    max_depth: 1
+    max_rounds: 2
+  high:
+    target_subagents: 4
+    max_subagents: 6
+    max_depth: 2
+    max_rounds: 3
+quality_floor:
+  preserve_requested_scope: true
+  preserve_required_tests: true
+  preserve_required_evals: true
+  preserve_safety_gates: true
+no_delegation_reason_required: true

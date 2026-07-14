@@ -110,7 +110,7 @@ Archive execution must require complete profile artifacts, fresh verification, a
 
 ## METH-REQ-018 — Workflow skills remain focused
 
-The framework must publish distinct portable skills for pre-spec domain clarification, evidence-first diagnosis, and disposable prototyping. Each owns one trigger/output/verification/stop boundary and writes durable conclusions back to the active DSET change.
+The framework must publish distinct portable skills for pre-spec domain clarification, evidence-first diagnosis, and disposable prototyping. Each owns one trigger/output/verification/stop boundary. It writes durable conclusions to the active DSET change only when artifact writes are authorized; otherwise it returns the same bounded handoff without modifying the repository.
 
 **Scenario METH-SCN-021:** A diagnosis request cannot silently authorize a fix, and prototype evidence cannot enter production without an accepted ADR/design and normal implementation proof.
 
@@ -212,42 +212,64 @@ Every normative rule ID must resolve to exactly one editable governing document.
 
 ## METH-REQ-035 — DSET exposes five core user-facing skills
 
-The core distribution must expose exactly five user-facing skills: `dset` for lifecycle orchestration and next-step routing; `dset-clarify` for unresolved domain/specification branches; `dset-diagnose` for evidence-first diagnosis; `dset-prototype` for bounded disposable experiments; and `dset-release` for the guarded release transaction. Initialization, decomposition, Solution Landscape work, ADR/spec/proof/implementation planning, implementation, verification, ticket handling, and next-step advice must remain governed `dset` modes or chained workflows rather than additional public skills.
+The release target must expose exactly five user-facing skills: `dset` for lifecycle orchestration and next-step routing; `dset-clarify` for unresolved domain/specification branches; `dset-diagnose` for evidence-first diagnosis; `dset-prototype` for bounded disposable experiments; and `dset-release` for the guarded release transaction. Initialization, decomposition, Solution Landscape work, ADR/spec/proof/implementation planning, implementation, verification, work-item handling, and next-step advice must remain governed `dset` modes or chained workflows rather than additional public skills. The project-owned `DSET-RULE-LIFECYCLE` rule defines pairwise trigger precedence, output, and stop boundaries.
 
 **Scenario METH-SCN-038:** A large feature request enters through `dset`; the local orchestration rules select decomposition or clarification first and invoke a specialist only when its distinct trigger applies.
 
 ## METH-REQ-036 — The primary skill orchestrates local rules
 
-`dset` must discover current repository, project, package, feature, change, proof, and Git state; resolve the registered orchestration workflow; report its ruleset identity; select one bounded next action; and chain only registered workflows. It must not embed the substantive lifecycle or silently authorize writes, publication, external messages, or other consequential effects.
+`dset` must resolve the `lifecycle-orchestration` workflow and stable modes `initialize`, `repair-governance`, `decompose`, `diagnose`, `clarify`, `landscape`, `decide`, `plan-proof`, `plan-implementation`, `implement`, `verify`, `triage-work`, `release`, and `complete`. `DSET-RULE-LIFECYCLE` owns their precedence, state-to-mode mapping, per-concern authority/freshness matrix, bounded chaining, and authorization stops. One invocation selects one mode by default and may cross at most two workflow transitions with an authoritative-state reread between them.
+
+Rootless `initialize` is a minimal distribution-owned exception because no local authority exists yet: explicit source/profile selection, exact preview, write authorization, no-overwrite materialization, validation, then stop. It cannot make project decisions or continue into governed work in the same invocation.
 
 **Scenario METH-SCN-039:** Byte-identical `dset` wrappers route two repositories differently because their project-owned rules and current artifacts differ, while both report the resolved local identities before acting.
 
 ## METH-REQ-037 — Skill runs record bounded local evidence
 
-Every skill invocation must append one structured record under ignored machine-local `.dset/runs/`. The record must contain run identity, time, repository/change/package/feature scope, skill and workflow IDs, resolved ruleset identity, main parameters, named output artifacts, result, and next-step signals. It must exclude secrets, full prompts, private source content, and unnecessary raw logs. A run record may inform `dset` heuristics or incident investigation but cannot replace accepted specs, active changes, Git history, authoritative PR/check state, or proof promoted into the owning change.
+The runtime adapter must follow `DSET-RULE-SKILL-RUNS` and the versioned skill-run schema. It atomically creates one immutable record per invocation, finalizes terminal status without editing another run, preserves interrupted temporary records as diagnosable evidence, enforces finite age/count/byte retention, and uses only allowlisted bounded/redacted fields. Before initialization, in read-only state, or when persistence fails, it emits the same record to the caller with `persistence: unavailable`; a risk/profile rule may require durable logging and stop a consequential action. Run records remain advisory and cannot replace accepted specs, active changes, Git/hosted state, or promoted proof.
 
 **Scenario METH-SCN-040:** A local log suggests verification is current, but Git shows later code changes; `dset` treats Git/change state as authoritative and recommends refreshed proof.
 
-## METH-REQ-038 — Every main PR has one pre-1.0 release transition
+## METH-REQ-038 — Every release PR has one deterministic transition
 
-The DSET product and distributable CLI package must share one SemVer-compatible `MAJOR.MINOR.PATCH[-PRERELEASE]` identity. The first policy-bearing release initializes `0.2.0`. Every later accepted `dev` to `main` PR must declare exactly one class: `normal` increments the pre-1.0 minor component and resets patch; `small` increments patch; `rc` advances `1.0.0-rc.N`; and `final` promotes the passing RC to `1.0.0`. Components are integers, not decimal fractions, and no normal or small transition may produce `1.0.0`.
+The DSET product and distributable CLI package must share one canonical SemVer identity. `DSET-RULE-RELEASE` owns classification and the complete allowed transition table: unversioned `bootstrap` to `0.2.0`; pre-1.0 `small` patch and `normal` minor; passing pre-1.0 `rc` to `1.0.0-rc.1`; RC correction to `rc.N+1`; passing RC `final` to `1.0.0`; and post-1.0 compatible `small`, capability `normal`, or incompatible `breaking` patch/minor/major transitions. Mixed changes take the highest-impact class; ambiguity stops. Components are integers, no normal/small transition produces 1.0, and a published RC never returns to a lower identity.
 
 **Scenario METH-SCN-041:** `0.2.4` becomes `0.3.0` for a normal PR or `0.2.5` for a small PR; `0.9.0` becomes `0.10.0`, never `1.0.0`.
 
-## METH-REQ-039 — Release preparation precedes protected publication
+## METH-REQ-039 — Release authority is configured and idempotent
 
-`dset-release` must resolve repository-local release, proof, artifact-maintenance, and supportability rules. The `dev` branch and implementing PR must own release class, target version, synchronized version surfaces, migration/release notes, and readiness evidence before merge. The protected `main` merge commit owns the immutable release identity; post-merge automation may create the matching tag and GitHub Release but must not add an unreviewed content commit or bypass the pull-request path.
+Each project must configure an integration branch, protected release branch, publisher, and tag pattern. One committed release declaration in the owning change is authoritative for class, protected-base identity, target, and readiness artifact; version files, package metadata, notes, PR text, tag, and publisher release are validated mirrors. Preparation reads the protected base once and is idempotent. Interactive `dset-release` prepares and verifies; only explicitly authorized post-merge automation publishes at the exact protected merge SHA. Retry creates only a missing tag/release, accepts already-matching objects, and stops on identity/SHA collision. Published tags are never retargeted or reused; a bad release is preserved/withdrawn and corrected by a higher version through a new PR, without a post-merge content commit.
 
 **Scenario METH-SCN-042:** A PR with mismatched product/package targets fails before merge; a passing merge is tagged at its exact merge commit without modifying `main` files afterward.
 
 ## METH-REQ-040 — RC and final releases are fully working gates
 
-`1.0.0-rc.N` may begin only when the declared 1.0 scope is feature-complete, self-hosted, documented, supportable, migration-ready, green under every deterministic test and applicable eval, verified in required adopters or pilots, and free of known release-blocking defects. RC changes are limited to blocker corrections and validation evidence. `1.0.0` may publish only from a passing RC after final observation and distribution gates pass; time or accumulated pre-1.0 increments cannot replace proof.
+`1.0.0-rc.N` may begin only when the declared 1.0 scope is feature-complete, self-hosted, documented, supportable, migration-ready, green under every deterministic test and applicable eval, verified in required adopters or pilots, and free of known release-blocking defects. The change's committed `verification.md`, anchored to the exact candidate SHA, owns applicable/not-applicable gate dispositions, evidence links, and the blocker register. Final promotion allows only release metadata/evidence-link updates; any substantive change requires `rc.N+1` and fresh proof. Time or accumulated increments cannot replace readiness.
 
 **Scenario METH-SCN-043:** A green candidate with one required pilot unfinished remains `0.y.z`; a fully working `1.0.0-rc.2` may promote to `1.0.0` only after final evidence passes and without adding features.
 
 ## METH-REQ-041 — Product/package identity is coordinated
 
-The framework product version, CLI package version, release notes, Git tag, and GitHub Release must carry the same release identity. Schema, governance-profile, language-profile, artifact-profile, and template-format versions remain independent compatibility surfaces and change only when their own contracts change. Independent compatibility versions must never be presented as product maturity or 1.0 readiness.
+The framework product version, CLI package version, release notes, Git tag, and publisher release must carry equivalent release identity. Product identity is canonical SemVer; Python serializes `1.0.0-rc.1` as PEP 440 `1.0.0rc1`, and no other mismatch is accepted. The default tag is `v<product-semver>`. Schema, governance-profile, language-profile, artifact-profile, and template-format versions remain independent compatibility surfaces and must never be presented as product maturity or 1.0 readiness.
 
 **Scenario METH-SCN-044:** Product/package `0.3.0` may validly use schema `1.0` and governance profile `core-v1@0.2`; neither compatibility version implies DSET 1.0 readiness.
+
+## METH-REQ-042 — Delegation inherits the main session by default
+
+Every subagent must request the main session's model family/version and reasoning-effort level by default. Before spawning, the runtime must discover whether it can request and attest those fields, then record requested/effective values as confirmed, runtime-default-unverified, or unsupported. A known override is reported before spawn. Unsupported or unverified inheritance stops when exact configuration is a proof/safety precondition; otherwise it may proceed only with visible uncertainty. No workflow may claim inheritance it cannot attest.
+
+**Scenario METH-SCN-045:** A main session at extra-high effort requests independent review; the default uses two or three extra-high reviewers on the same model. When that configuration is unavailable, DSET reports the constraint and follows an explicit project/operator decision rather than silently downgrading.
+
+## METH-REQ-043 — Budgets optimize expected outcome cost
+
+The project-owned budget policy and `DSET-RULE-DELEGATION-BUDGET` must propagate one bounded budget through the whole delegation tree. `low` permits zero or one unique subagent, depth one, and one round; default `medium` targets two and permits at most three, depth one, and two rounds; `high` targets four and permits at most six, depth two, and three rounds. Capacity may reduce actual breadth with a recorded reason. Budget never reduces accepted scope, required proof, or safety gates; insufficiency stops for a scope/budget decision.
+
+A model override requires dated task-relevant comparative evidence covering required quality, success/failure, tokens/prices when available, retries, steps, latency, review/rework, sample/harness, and limitations. Directly comparable measured cost may be compared; unlike metrics remain separate rather than receiving invented weights. Missing, stale, or incomparable evidence falls back to inherited model/effort. External single-agent benchmarks cannot justify multi-agent fan-out.
+
+**Scenario METH-SCN-046:** A lower-priced model uses more tokens and retries and completes fewer representative tasks; DSET does not classify it as cheaper for that work. A low budget reduces optional breadth, not committed scope or required proof.
+
+## METH-REQ-044 — Intake routing uses three queues
+
+`DSET-RULE-WORK-ITEMS` must expose only `problems`, `opportunities`, and `questions`. Problems cover bugs, gaps, debt, and risks; opportunities describe improvements when nothing is wrong; consequential questions close through ADRs. Accepted problems, opportunities, and decisions enter a DSET change, whose executable steps live in `tasks.md`. ADRs/decisions and changes are artifacts, while GitHub Issues and Jira/support tickets are external tracker representations rather than additional semantic types.
+
+**Scenario METH-SCN-047:** A production defect and a delivery risk become problems, optional release-note automation becomes an opportunity, and an unresolved API choice becomes a question linked to an ADR. Their accepted implementation steps appear only after a DSET change creates tasks.

@@ -12,7 +12,7 @@
 
 ## Batch 1 — Version, bootstrap, and governance — complete
 
-- Publish independent framework, Python-package, and schema version semantics without rewriting archived v1 evidence.
+- Publish coordinated product/Python-package version semantics plus independent schema compatibility without rewriting archived v1 evidence.
 - Select `core-v1` in the project manifest and materialize the framework repository's local governing documents.
 - Add the governance schema, stable diagnostics, root discovery, read-only workflow resolution, explicit customization refresh, and source-profile diff.
 - Make `dset check` and `dset verify` validate selected governance.
@@ -38,10 +38,12 @@
 - Coordinate the product and CLI package release while retaining schema/profile/template compatibility versions independently.
 - Separate pre-merge release preparation from post-merge tag/GitHub Release publication.
 - Run three independent high-effort specification reviews, reconcile blocking findings, and preserve bounded evidence.
+- Define default main-model/main-effort inheritance, medium useful fan-out, explicit override reporting, and outcome-cost-aware low/high budget behavior.
+- Define problem/opportunity/question intake, keep tasks inside changes, and retain the Action entity as a project open question pending ADR.
 
 ## Later batches
 
-Implement the Batch 4 orchestration/run/release mechanics and roadmap §§5–§10 for the TypeScript profile, owned Your Harness pilot, clean-room Claudian evaluation, complete tests/evals, and pinned distribution. Keep unfinished behavior out of public capability claims.
+Implement the Batch 4 orchestration/run/budget/release mechanics and roadmap §§5–§10 for the TypeScript profile, owned Your Harness pilot, clean-room Claudian evaluation, complete tests/evals, and pinned distribution. Keep unfinished behavior out of public capability claims.
 
 ## Rollout and recovery
 

@@ -12,7 +12,9 @@ This directory owns project configuration and DSET artifacts. It does not duplic
 
 - [Accepted methodology package](specs/packages/methodology/README.md) — current truth and proof contracts.
 - [Repository governance](governance/README.md) and [`governance.yaml`](governance.yaml) — project-owned rules, workflow resolution, customization provenance, and thin-wrapper identity.
-- [`version.yaml`](version.yaml) — independent framework milestone, Python package, schema, and released/candidate validator identities.
+- [`version.yaml`](version.yaml) — coordinated product/package candidate plus independent schema and released/candidate validator identities.
+- [`budget.yaml`](budget.yaml) — selected tree-wide delegation profile, model/effort inheritance, and quality floor.
+- [Project open questions](questions.md) — unresolved choices that require an ADR before accepted methodology changes.
 - [Changes](changes/README.md) — active proposed work; `changes/archive/` preserves completed PR-linked evidence.
 - [Templates](templates/README.md), [schemas](schemas/README.md), and [fixtures](fixtures/README.md) — reusable framework contracts and deterministic examples.
 - [Traceability](traceability.yaml) — generated change-to-proof-to-PR discovery index.
@@ -24,6 +26,8 @@ This directory owns project configuration and DSET artifacts. It does not duplic
 dset/
 ├── dset.yaml
 ├── version.yaml
+├── budget.yaml
+├── questions.md
 ├── governance.yaml
 ├── governance/
 ├── provenance.yaml
@@ -48,8 +52,10 @@ The project currently has one package, `methodology`. A `specs/global/` layer is
 
 | Path | Owns |
 |---|---|
-| `dset.yaml` | Project identity, package registry, and selected profiles |
-| `version.yaml` | DSET 0.2 framework milestone plus independent toolchain/schema and released/candidate validator identities |
+| `dset.yaml` | Project identity, package registry, selected profiles, and applied release topology |
+| `version.yaml` | Coordinated DSET product/toolchain candidate plus independent schema and released/candidate validator identities |
+| `budget.yaml` | Project-owned delegation budget and model/effort policy |
+| `questions.md` | Project-owned unresolved choices and their ADR resolution boundary |
 | `governance.yaml` | Deterministic workflow/rule ownership, dependency, provenance, customization, and wrapper identity metadata |
 | `governance/` | The repository's editable governing rule owners |
 | `provenance.yaml` | Exact third-party sources, revisions, licenses, and use boundaries |

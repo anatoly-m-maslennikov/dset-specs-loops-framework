@@ -3,7 +3,7 @@
   "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/schemas/project.schema.json",
   "title": "DSET project manifest",
   "type": "object",
-  "required": ["schema_version", "project", "supportability", "structure", "packages", "profiles", "change_contract", "verification", "canonical_command"],
+  "required": ["schema_version", "project", "supportability", "release", "structure", "packages", "profiles", "change_contract", "verification", "canonical_command"],
   "properties": {
     "schema_version": {"pattern": "^1\\.0(?:-draft)?$"},
     "project": {
@@ -25,6 +25,18 @@
         "reason": {"type": "string", "minLength": 1},
         "authority": {"type": "string", "minLength": 1},
         "runbook": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "release": {
+      "type": "object",
+      "required": ["status", "integration_branch", "protected_branch", "publisher", "tag_pattern"],
+      "properties": {
+        "status": {"enum": ["not-applicable", "applicable"]},
+        "integration_branch": {"type": "string", "minLength": 1},
+        "protected_branch": {"type": "string", "minLength": 1},
+        "publisher": {"type": "string", "minLength": 1},
+        "tag_pattern": {"type": "string", "pattern": "^v\\{product_version\\}$"}
       },
       "additionalProperties": false
     },
@@ -62,7 +74,8 @@
         "durability_topology": {"type": "string", "minLength": 1},
         "enforcement": {"type": "string", "minLength": 1},
         "artifact": {"type": ["string", "null"], "minLength": 1},
-        "repository_governance": {"type": ["string", "null"], "minLength": 1}
+        "repository_governance": {"type": ["string", "null"], "minLength": 1},
+        "delegation_budget": {"enum": ["low", "medium", "high"]}
       },
       "additionalProperties": false
     },

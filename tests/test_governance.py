@@ -192,14 +192,14 @@ class GovernanceTests(unittest.TestCase):
         with self.assertRaises(FileExistsError):
             materialize_governance(ROOT, self.root)
 
-    def test_version_semantics_remain_independent(self) -> None:
+    def test_product_and_package_versions_are_coordinated(self) -> None:
         stream = io.StringIO()
         with contextlib.redirect_stdout(stream):
             result = main(["version", str(ROOT)])
         self.assertEqual(result, 0)
         output = stream.getvalue()
-        self.assertIn("framework milestone: 0.2", output)
-        self.assertIn("python package: 1.0.0 (independent)", output)
+        self.assertIn("product: 0.2.0 (candidate, coordinated)", output)
+        self.assertIn("python package: 0.2.0 (coordinated)", output)
         self.assertIn("schemas: 1.0 (independent)", output)
 
     def test_wrappers_are_thin_and_registered(self) -> None:

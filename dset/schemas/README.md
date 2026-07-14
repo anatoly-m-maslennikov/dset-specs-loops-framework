@@ -12,6 +12,8 @@ Version 1.0 publishes machine-readable JSON Schemas for external tooling while t
 | [`pull-request-history.schema.json`](pull-request-history.schema.json) | GitHub-authoritative PR snapshot used as traceability evidence |
 | [`traceability.schema.json`](traceability.schema.json) | Deterministically generated change-to-proof-to-PR index |
 | [`governance.schema.json`](governance.schema.json) | Repository-local workflow/rule ownership, dependencies, applicability, provenance, customization, and wrapper identity |
-| [`version.schema.json`](version.schema.json) | Independent framework milestone, Python package, schema, and released/candidate validator identities |
+| [`version.schema.json`](version.schema.json) | Coordinated product/package identity, independent schema version, and released/candidate validator identities |
+| [`budget.schema.json`](budget.schema.json) | Tree-wide low/medium/high delegation bounds, inheritance policy, and quality floor |
+| [`skill-run.schema.json`](skill-run.schema.json) | Bounded redacted machine-local invocation evidence and model/budget attestation |
 
 JSON Schema validates data shape. The canonical `dset check` command additionally validates required directories/documents, governed artifact areas and hubs, repository-local rule ownership and wrapper identity, Markdown links and portability, ID references, archive gates, provenance files, competing roots, and generated-index freshness.

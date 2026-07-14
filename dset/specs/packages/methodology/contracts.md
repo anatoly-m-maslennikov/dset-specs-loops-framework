@@ -17,18 +17,22 @@
 - Bounded, PR-traceable changes under `dset/changes/`.
 - Versioned schemas, templates, fixtures, migration guidance, provenance, and generated traceability under `dset/`.
 - The `dset` CLI through `python -m dset_toolchain` and an installable console entry point.
-- Five core skill sources: primary `skills/dset/`; narrow `skills/dset-clarify/`, `skills/dset-diagnose/`, and `skills/dset-prototype/`; and guarded `skills/dset-release/`.
-- One coordinated DSET product/CLI-package release identity prepared through `dev` to `main`, with schema/profile/template compatibility versions tracked independently.
+- Three implemented specialist skill sources under `skills/`; the active DSET 0.2 change owns the unimplemented five-skill release target.
+- A coordinated DSET product/CLI-package release contract, with project-configured delivery and independent schema/profile/template compatibility versions.
 
-## Skill compatibility surface
+## Skill release target
 
-`dset` is the primary operator entrypoint for initialization, decomposition, landscape/ADR/spec/proof/implementation planning, implementation, verification, tickets, and next-step routing through registered project-local workflows. `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release` remain explicit specialist triggers. Helper operations are modes or chained workflows, not additional public skill names.
+`dset` is the primary operator entrypoint for initialization, decomposition, landscape/ADR/spec/proof/implementation planning, implementation, verification, work-item routing, and next-step advice through registered project-local workflows. `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release` are explicit specialist triggers. Helper operations are modes or chained workflows, not additional public skill names. Until `skills/dset/` and `skills/dset-release/` are implemented and proven, only the three specialist skills listed in [the skills hub](../../../../skills/README.md) are released.
 
-All five skills remain thin wrappers over the repository governance registry. Bounded local run records under `.dset/runs/` are operational evidence only and are excluded from committed project truth.
+All five target skills are thin wrappers over the repository governance registry. The registered `DSET-RULE-LIFECYCLE`, `DSET-RULE-SKILL-RUNS`, `DSET-RULE-RELEASE`, `DSET-RULE-DELEGATION-BUDGET`, and `DSET-RULE-WORK-ITEMS` documents own substantive behavior. Versioned bounded local run records under `.dset/runs/` are operational evidence only and are excluded from committed project truth.
+
+Subagents request the main session's model and reasoning effort by default and report effective attestation or uncertainty. Medium budget targets two and caps the whole tree at three unique subagents, depth one, and two rounds. Scope, proof, and safety are invariant; model overrides require dated task-relevant evidence and remain visible in run records.
+
+Intake routing uses only problems, opportunities, and questions. ADRs/decisions and DSET changes are artifacts; tasks live inside changes; GitHub Issues and Jira/support tickets are external representations.
 
 ## Release compatibility surface
 
-DSET versions use integer `MAJOR.MINOR.PATCH[-PRERELEASE]` components. The policy initializes product/package `0.2.0`; normal pre-1.0 PRs increment minor, small PRs increment patch, and `1.0.0-rc.N` plus `1.0.0` require explicit fully working gates. Product, package, release notes, tag, and GitHub Release stay synchronized. Schema, profile, and template-format versions remain independent compatibility surfaces.
+DSET versions use integer SemVer components. The complete transition table includes bootstrap, pre-1.0 normal/small, first/subsequent RC, final, and post-1.0 small/normal/breaking releases. Product/package identity is canonical SemVer with defined ecosystem serialization; tag and publisher release derive idempotently from the configured protected merge commit. Schema, profile, and template-format versions remain independent compatibility surfaces.
 
 ## CLI compatibility surface
 

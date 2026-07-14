@@ -29,9 +29,12 @@ Implement the first bounded self-hosting fixed point and finalize the next contr
 - Bounded released/candidate/framework/adopter self-hosting with failure-boundary tests.
 - Exactly five core user-facing skills, with `dset` as the primary orchestrator and `dset-release` as the explicit release boundary.
 - Machine-local bounded skill-run records that inform but never own next-step decisions.
-- A SemVer-compatible pre-1.0 transition policy for every `dev` to `main` PR.
+- A complete SemVer-compatible bootstrap, pre-1.0, RC/final, and post-1.0 transition policy for each configured release PR.
 - Separate pre-merge preparation, post-merge publication, RC, and final-1.0 readiness contracts.
 - Coordinated product/package versions with independent schema/profile compatibility versions.
+- Same-model/same-effort delegation by default, medium useful fan-out, and explicit deviation reporting.
+- Low/medium/high budget profiles based on expected completed-task cost rather than token price alone.
+- Problem/opportunity/question intake with tasks kept inside accepted changes and the possible Action entity tracked as a project open question.
 
 ## Non-goals
 

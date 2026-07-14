@@ -216,14 +216,20 @@ def _validate_version(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]:
     package = data.get("python_package", {})
     schemas = data.get("schemas", {})
     released = data.get("released_validator", {})
-    if not isinstance(framework, dict) or framework.get("milestone") != "0.2":
+    product_version = framework.get("version") if isinstance(framework, dict) else None
+    if (
+        not isinstance(framework, dict)
+        or not isinstance(product_version, str)
+        or _python_release_version(product_version) != __version__
+        or framework.get("versioning") != "coordinated-product-package"
+    ):
         diagnostics.append(
-            _diag("DSET-E124", path, "framework milestone must be explicit")
+            _diag("DSET-E124", path, "framework version contract is inconsistent")
         )
     if (
         not isinstance(package, dict)
         or package.get("version") != __version__
-        or package.get("versioning") != "independent"
+        or package.get("versioning") != "coordinated-product-package"
     ):
         diagnostics.append(
             _diag("DSET-E124", path, "Python package version contract is inconsistent")
@@ -242,6 +248,10 @@ def _validate_version(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]:
             _diag("DSET-E124", path, "released validator commit must be a full SHA")
         )
     return diagnostics
+
+
+def _python_release_version(product_version: str) -> str:
+    return product_version.replace("-rc.", "rc")
 
 
 def _validate_packages(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]:

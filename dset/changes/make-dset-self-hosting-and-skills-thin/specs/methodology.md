@@ -56,42 +56,60 @@ Each normative rule ID must resolve to exactly one editable governing document. 
 
 ## ADDED — MDSHAST-REQ-010 The core user-facing skill surface stays small
 
-The core distribution must expose exactly five user-facing skills: `dset` for lifecycle orchestration and next-step routing; `dset-clarify` for unresolved domain/specification branches; `dset-diagnose` for evidence-first diagnosis; `dset-prototype` for bounded disposable experiments; and `dset-release` for the guarded release transaction. Initialization, decomposition, Solution Landscape work, ADR/spec/proof/implementation planning, implementation, verification, ticket handling, and next-step advice are governed `dset` modes or chained workflows rather than additional public skills.
+The release target must expose exactly five user-facing skills: `dset` for lifecycle orchestration and next-step routing; `dset-clarify` for unresolved domain/specification branches; `dset-diagnose` for evidence-first diagnosis; `dset-prototype` for bounded disposable experiments; and `dset-release` for the guarded release transaction. Initialization, decomposition, Solution Landscape work, ADR/spec/proof/implementation planning, implementation, verification, work-item handling, and next-step advice are governed `dset` modes or chained workflows rather than additional public skills. Project-owned lifecycle rules define pairwise triggers, outputs, precedence, and stops.
 
 **Scenario MDSHAST-SCN-010:** An operator asks what to do next for a large feature; `dset` resolves the local orchestration rules, identifies whether decomposition, clarification, landscape work, proof planning, implementation, verification, or release is next, and invokes a specialist only when its trigger applies.
 
 ## ADDED — MDSHAST-REQ-011 The primary skill orchestrates without becoming a rule owner
 
-`dset` must discover current project/change/package state, resolve the registered orchestration workflow, report the selected local ruleset, choose a bounded next action, and chain registered workflows. It must not embed lifecycle, authoring, proof, implementation, ticket, release, or supportability rules and must not silently authorize writes or external state changes.
+`dset` must resolve the `lifecycle-orchestration` workflow and its stable initialization, repair, decomposition, diagnosis, clarification, landscape, decision, proof-plan, implementation-plan, implementation, verification, work-triage, release, and completion modes. `DSET-RULE-LIFECYCLE` owns deterministic precedence, per-concern authority/freshness, a two-transition chain cap with rereads, and authorization stops. Before a local root exists, `initialize` may only preview, explicitly authorize, materialize without overwrite, validate, and stop; it cannot perform governed project work.
 
 **Scenario MDSHAST-SCN-011:** The same `dset` wrapper routes two repositories differently because their registered local orchestration rules and current artifacts differ, while the wrapper bytes remain identical.
 
 ## ADDED — MDSHAST-REQ-012 Skill runs leave bounded local operational evidence
 
-Every skill invocation must emit a bounded, structured, append-only run record under ignored machine-local `.dset/runs/` state. The record contains run identity, time, repository/change/package/feature scope, skill and workflow IDs, resolved ruleset identity, main parameters, named output artifacts, result, and next-step signals. It must exclude secrets, full prompts, private source content, and unnecessary raw logs. Local run records support heuristics and investigation but never replace accepted specs, active changes, Git history, PR/check state, or promoted proof evidence.
+The runtime must follow `DSET-RULE-SKILL-RUNS` and the versioned run-record schema: one atomically created immutable record per invocation, explicit terminal/interrupted lifecycle, finite age/count/byte retention, bounded allowlisted fields, and no secrets, prompts, source content, or raw logs. Pre-init, read-only, or persistence-failed runs emit the same bounded record with persistence unavailable; risk/profile rules may stop consequential work that requires durable audit evidence. Records are advisory only.
 
 **Scenario MDSHAST-SCN-012:** `dset` notices repeated implementation changes since the last proof run and recommends verification; it cites local run signals as advisory and confirms authoritative repository and Git state before acting.
 
 ## ADDED — MDSHAST-REQ-013 Every pull request to main declares one version transition
 
-The DSET product and distributable CLI package use one SemVer-compatible `MAJOR.MINOR.PATCH[-PRERELEASE]` release identity. The first policy-bearing release initializes `0.2.0`. Thereafter every accepted `dev` to `main` pull request declares exactly one release class: `normal` increments the pre-1.0 minor component and resets patch; `small` increments patch; `rc` advances `1.0.0-rc.N`; and `final` promotes the verified release candidate to `1.0.0`. Version components are integers, so `0.9.0` advances normally to `0.10.0`; arithmetic must never promote a candidate to `1.0.0`.
+The DSET product and distributable CLI package use one canonical SemVer identity. `DSET-RULE-RELEASE` owns the complete table: unversioned bootstrap to `0.2.0`; pre-1.0 small patch/normal minor; passing pre-1.0 to `1.0.0-rc.1`; RC correction to `rc.N+1`; passing RC to `1.0.0`; and post-1.0 compatible small, capability normal, or incompatible breaking patch/minor/major transitions. Mixed scope takes the highest impact; ambiguity stops; a published RC never returns to a lower identity.
 
 **Scenario MDSHAST-SCN-013:** From `0.2.4`, a normal PR targets `0.3.0` and a small PR targets `0.2.5`; from `0.9.0`, a normal PR targets `0.10.0`; none of these transitions may produce `1.0.0`.
 
 ## ADDED — MDSHAST-REQ-014 Release preparation and publication have separate authorities
 
-`dset-release` must resolve repository-local release, proof, artifact-maintenance, and supportability rules before preparing a release. The `dev` branch and implementing PR own release classification, target version, synchronized version surfaces, migration/release notes, and readiness evidence before merge. Protected `main` and its merge commit own the immutable release identity; post-merge automation may create the matching tag and GitHub Release but must not add an unreviewed version commit or bypass the pull-request path.
+The project configures integration/release branches, publisher, and tag pattern. One committed change release declaration owns class/base/target/readiness; all version, package, note, PR, tag, and publisher surfaces are mirrors. Interactive `dset-release` prepares/verifies idempotently from the protected base; only authorized post-merge automation publishes at the exact merge SHA. Retry completes missing objects, accepts exact matches, and stops on collision; published tags are immutable, and corrections use a higher version through a new PR.
 
 **Scenario MDSHAST-SCN-014:** A release PR fails when its declared target differs across the product manifest and package metadata. After a valid merge, automation tags that exact merge commit without modifying `main` content.
 
 ## ADDED — MDSHAST-REQ-015 Release candidates and 1.0 are fully working gates
 
-`1.0.0-rc.N` may begin only after the declared 1.0 scope is feature-complete, self-hosted, documented, supportable, migration-ready, green under every deterministic test and applicable eval, verified in required adopters/pilots, and free of known release-blocking defects. An RC may receive only release-blocker fixes and validation evidence. `1.0.0` may publish only from a passing RC after its final observation and distribution gates pass; neither an elapsed schedule nor accumulated pre-1.0 increments can substitute for this proof.
+`1.0.0-rc.N` may begin only after the declared 1.0 scope is feature-complete, self-hosted, documented, supportable, migration-ready, green under every deterministic test and applicable eval, verified in required adopters/pilots, and free of known release blockers. Exact-SHA `verification.md` owns gate dispositions, evidence, and blockers. Final promotion permits only release metadata/evidence updates; substantive changes require `rc.N+1` and fresh proof.
 
 **Scenario MDSHAST-SCN-015:** A candidate with an unfinished TypeScript profile or required pilot remains on `0.y.z` even if every current test passes. A fully working `1.0.0-rc.2` with completed final evidence may promote to `1.0.0` without feature additions.
 
 ## ADDED — MDSHAST-REQ-016 Product/package releases are coordinated while compatibility schemas remain independent
 
-The framework product version, CLI package version, release notes, tag, and GitHub Release must carry the same release identity. Schema, governance-profile, language-profile, artifact-profile, and template-format versions remain independent compatibility surfaces and change only when their own contracts change. Independent compatibility versions must never be presented as DSET product maturity or 1.0 readiness.
+The product, CLI package, notes, tag, and publisher release must carry equivalent identity. Product SemVer is canonical; Python may serialize `1.0.0-rc.1` only as PEP 440 `1.0.0rc1`; the tag is `v<product-semver>`. Schema, profile, and template-format versions remain independent compatibility surfaces.
 
 **Scenario MDSHAST-SCN-016:** DSET `0.3.0` may continue to use project schema `1.0` and governance profile `core-v1@0.2`; package metadata and the product release still both report `0.3.0`.
+
+## ADDED — MDSHAST-REQ-017 Delegation inherits the main session by default
+
+Every subagent must request the main session's model family/version and reasoning-effort level by default. The runtime discovers request/attestation support and records requested/effective values as confirmed, runtime-default-unverified, or unsupported. Known overrides are reported before spawn. Unsupported/unverified identity stops when exact configuration is a proof or safety precondition; otherwise uncertainty remains visible.
+
+**Scenario MDSHAST-SCN-017:** A main session using model M at extra-high effort requests independent review; the default plan uses two or three M/extra-high reviewers. If the runtime cannot supply that configuration, the orchestrator reports the constraint and asks for or follows an explicit project policy rather than substituting a cheaper model silently.
+
+## ADDED — MDSHAST-REQ-018 Budget policy optimizes expected outcome cost
+
+One tree-wide project budget follows `DSET-RULE-DELEGATION-BUDGET`: low allows zero/one unique subagent, depth one, one round; default medium targets two and permits three, depth one, two rounds; high targets four and permits six, depth two, three rounds. Capacity reductions are recorded. Scope, required proof, and safety remain fixed; insufficiency stops. A model override requires dated task-relevant comparative quality/cost evidence with harness and limitations; missing/incomparable evidence preserves inherited model/effort, and single-agent benchmarks do not justify fan-out.
+
+**Scenario MDSHAST-SCN-018:** A lower-priced model consumes more tokens and retries and produces more failed work on a representative benchmark; DSET does not call it cheaper for that task. Low budget reduces optional breadth, not committed scope or required proof.
+
+## ADDED — MDSHAST-REQ-019 Intake routing stays at three queues
+
+`DSET-RULE-WORK-ITEMS` exposes only problems, opportunities, and questions. Problems cover bugs, gaps, debt, and risks; opportunities describe improvements when nothing is wrong; consequential questions close through ADRs. Accepted items/decisions enter a DSET change, and executable work lives in its `tasks.md`. ADRs/decisions and changes are artifacts; hosted tickets are representations.
+
+**Scenario MDSHAST-SCN-019:** A defect and delivery risk are problems, optional automation is an opportunity, and an unresolved product choice is a question; their implementation steps become tasks only inside an accepted change.

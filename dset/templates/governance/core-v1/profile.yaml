@@ -58,6 +58,62 @@ rules:
     depends_on:
       - DSET-RULE-ARCHITECTURE
   -
+    id: DSET-RULE-WORK-ITEMS
+    template: work-items.md
+    target: work-items.md
+    applicability: applicable
+    reason: Intake must distinguish problems, opportunities, questions, and change-owned tasks
+    depends_on:
+      - DSET-RULE-ARCHITECTURE
+  -
+    id: DSET-RULE-DELEGATION-BUDGET
+    template: delegation-budget.md
+    target: delegation-budget.md
+    applicability: applicable
+    reason: Delegation requires inherited model/effort, bounded tree budgets, and a fixed quality floor
+    depends_on:
+      - DSET-RULE-ARCHITECTURE
+  -
+    id: DSET-RULE-SKILL-RUNS
+    template: skill-runs.md
+    target: skill-runs.md
+    applicability: applicable
+    reason: Skill invocations require bounded redacted supportability evidence
+    depends_on:
+      - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-SUPPORTABILITY
+      - DSET-RULE-DELEGATION-BUDGET
+  -
+    id: DSET-RULE-RELEASE
+    template: release.md
+    target: release.md
+    applicability: applicable
+    reason: Release preparation and protected publication require one deterministic transaction
+    depends_on:
+      - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-BUILD
+      - DSET-RULE-TEST-PLAN
+      - DSET-RULE-EVAL-PLAN
+      - DSET-RULE-SUPPORTABILITY
+      - DSET-RULE-ARTIFACT-MAINTENANCE
+  -
+    id: DSET-RULE-LIFECYCLE
+    template: lifecycle-orchestration.md
+    target: lifecycle-orchestration.md
+    applicability: applicable
+    reason: The primary DSET entrypoint requires deterministic modes, precedence, authority, and stops
+    depends_on:
+      - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-DOMAIN-SPEC
+      - DSET-RULE-TEST-PLAN
+      - DSET-RULE-EVAL-PLAN
+      - DSET-RULE-SUPPORTABILITY
+      - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-WORK-ITEMS
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
+      - DSET-RULE-RELEASE
+  -
     id: DSET-RULE-DIAGNOSIS
     template: diagnosis.md
     target: diagnosis.md
@@ -82,6 +138,21 @@ rules:
       - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
 workflows:
+  -
+    id: lifecycle-orchestration
+    rules:
+      - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-BUILD
+      - DSET-RULE-DOMAIN-SPEC
+      - DSET-RULE-TEST-PLAN
+      - DSET-RULE-EVAL-PLAN
+      - DSET-RULE-SUPPORTABILITY
+      - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-WORK-ITEMS
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
+      - DSET-RULE-RELEASE
+      - DSET-RULE-LIFECYCLE
   -
     id: domain-clarification
     rules:
@@ -110,6 +181,25 @@ workflows:
       - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
       - DSET-RULE-PROTOTYPING
+  -
+    id: release
+    rules:
+      - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-BUILD
+      - DSET-RULE-DOMAIN-SPEC
+      - DSET-RULE-TEST-PLAN
+      - DSET-RULE-EVAL-PLAN
+      - DSET-RULE-SUPPORTABILITY
+      - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
+      - DSET-RULE-RELEASE
+  -
+    id: work-triage
+    rules:
+      - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-WORK-ITEMS
 wrappers:
   -
     workflow: domain-clarification

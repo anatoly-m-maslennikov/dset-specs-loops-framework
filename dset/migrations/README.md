@@ -1,6 +1,6 @@
 # Migrate an existing project to DSET 0.2 governance
 
-The migration goal is exactly one writable `dset/` project-truth root with one editable governing document per normative rule ID. Existing agent guidance, project rules, specs, test plans, eval plans, implementation plans, ADRs, runbooks, and evidence are inputs; they do not remain competing writable authorities. The framework milestone is 0.2 while the Python package and schemas retain independent v1 identities.
+The migration goal is exactly one writable `dset/` project-truth root with one editable governing document per normative rule ID. Existing agent guidance, project rules, specs, test plans, eval plans, implementation plans, ADRs, runbooks, and evidence are inputs; they do not remain competing writable authorities. The DSET product and Python package share candidate version `0.2.0`; schemas retain their independent v1 compatibility identity.
 
 ## 1. Inventory before writing
 

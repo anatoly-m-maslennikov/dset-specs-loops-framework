@@ -12,5 +12,7 @@
 - [ ] **MDSHAST-TASK-010:** Run roadmap §8 deterministic release tests and §9 independent qualitative evals after the remaining profiles/pilots are implemented.
 - [ ] **MDSHAST-TASK-011:** Implement roadmap §§5–§7 and §10, reconcile the completed change, and satisfy archive readiness.
 - [x] **MDSHAST-TASK-012:** Finalize the five-skill core topology, primary orchestration boundary, bounded run-record contract, version transition matrix, release transaction, and RC/final readiness requirements with separate tests and evals.
+- [x] **MDSHAST-TASK-015:** Define same-model/same-effort delegation inheritance, medium useful fan-out, explicit deviations, outcome-cost-aware model selection, and low/medium/high budget proof obligations.
+- [x] **MDSHAST-TASK-016:** Define problem/opportunity/question intake, keep tasks inside changes, and record the Action entity as project open question `MDSHAST-QUESTION-001`.
 - [ ] **MDSHAST-TASK-013:** Run three independent high-effort specification reviews, reconcile every blocking finding, and record the bounded review evidence.
 - [ ] **MDSHAST-TASK-014:** Implement `dset`, `dset-release`, local run records, release classification/version checks, synchronized version surfaces, and post-merge publication automation only after the specification review passes.

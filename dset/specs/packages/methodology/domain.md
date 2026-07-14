@@ -25,8 +25,13 @@
 | **Workflow wrapper** | A thin skill or runtime adapter that discovers the repository, invokes one registered workflow, reports the resolved ruleset, and hands off output without owning substantive rules |
 | **Lifecycle orchestrator** | The primary `dset` workflow wrapper that inspects authoritative project/change state, selects a bounded next action, and chains registered workflows without owning their rules |
 | **Skill-run record** | Bounded structured machine-local evidence of one invocation, stored under ignored `.dset/runs/` for investigation and heuristics without becoming project truth |
-| **Product release** | One coordinated DSET framework and distributable CLI-package identity prepared through a `dev` to `main` PR and published from its protected merge commit |
+| **Problem** | An observed bug, gap, or debt item that requires triage without implying its solution |
+| **Question** | An unresolved choice or uncertainty whose consequential resolution is recorded in an ADR |
+| **Opportunity** | A bounded improvement with expected value when no current problem exists |
+| **Product release** | One coordinated DSET framework and distributable CLI-package identity prepared through the configured integration-to-protected release PR and published from its protected merge commit |
 | **Release candidate** | A fully working `1.0.0-rc.N` build whose declared scope and required proof are complete and whose remaining work is release-blocker correction or final validation only |
+| **Delegation budget** | Project-owned policy for inherited model/effort, useful subagent fan-out, roles, rounds, context/evidence depth, tool/live-eval allowance, and stopping thresholds |
+| **Expected outcome cost** | Predicted completed-task cost across token price/volume, retries, agent/tool steps, latency, failure probability, review burden, and rework rather than token price alone |
 | **Ruleset identity** | Stable declaration of selected profile/version provenance and whether the materialized local rules remain equivalent or have become a valid custom project profile |
 | **Self-hosting gate** | Bounded release proof in which the last released validator checks the candidate change, the candidate checks this repository, and the candidate materializes and checks one non-recursive temporary adopter |
 | **Diagnostic** | A stable code, artifact path, and actionable message emitted by a deterministic DSET gate |
@@ -56,9 +61,12 @@
 - **METH-INV-019:** A locally changed ruleset remains valid project truth only under an explicit custom identity that retains its source profile/version provenance.
 - **METH-INV-020:** Exact governance and recursion behavior remains deterministic test proof; agent interpretation, rule-following, navigation, and diagnostic usefulness remain separate eval proof.
 - **METH-INV-021:** Every normative rule ID has exactly one editable governing document; skills, agent guidance, templates, generated installations, indexes, summaries, and caches never become parallel writable rule stores.
-- **METH-INV-022:** The core user-facing skill surface contains one primary `dset` orchestrator plus the narrow `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release` specialists; helper lifecycle actions remain modes or chained workflows.
-- **METH-INV-023:** Skill-run records are bounded, redacted, append-only local operational evidence and never override accepted artifacts, active changes, Git history, hosted state, or promoted proof.
-- **METH-INV-024:** After the initial `0.2.0` policy bootstrap, every accepted `dev` to `main` PR declares exactly one normal, small, RC, or final product/package version transition; integer-component progression never promotes `0.y.z` to `1.0.0` automatically.
-- **METH-INV-025:** Release artifacts are prepared and reviewed before merge; immutable tag and GitHub Release identity derive from the protected `main` merge commit without a post-merge content mutation.
+- **METH-INV-022:** The release-target user-facing skill surface contains one primary `dset` orchestrator plus the narrow `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release` specialists; helper lifecycle actions remain modes or chained workflows.
+- **METH-INV-023:** Skill-run records are schema-bounded, redacted, immutable local operational evidence with finite retention; unavailable persistence is explicit, and records never override accepted artifacts, active changes, Git history, hosted state, or promoted proof.
+- **METH-INV-024:** Every release PR has one committed bootstrap, normal, small, RC, final, or post-1.0 breaking transition selected by the complete state table; integer-component progression never promotes `0.y.z` to `1.0.0` automatically.
+- **METH-INV-025:** Release artifacts are prepared and reviewed before merge; immutable tag and publisher-release identity derive from the configured protected merge commit without a post-merge content mutation.
 - **METH-INV-026:** `1.0.0-rc.N` and `1.0.0` represent fully working, evidence-complete gates; schedules, accumulated version increments, or partial scope cannot substitute for readiness.
-- **METH-INV-027:** Product, CLI package, release notes, tag, and GitHub Release share one release identity, while schemas, profiles, and template formats retain independent compatibility versions.
+- **METH-INV-027:** Product, CLI package, release notes, tag, and publisher release share one canonical/equivalent release identity, while schemas, profiles, and template formats retain independent compatibility versions.
+- **METH-INV-028:** Subagents request the main session's model and reasoning effort by default; capability and effective configuration are attested when possible, and every uncertainty or deviation is explicit.
+- **METH-INV-029:** One tree-wide low/medium/high budget preserves requested scope, required proof, and safety while bounding unique agents, depth, and rounds; nominal token price alone never proves a cheaper plan.
+- **METH-INV-030:** Intake routes only to problems, opportunities, or questions; ADRs/decisions and changes are artifacts, tasks live inside changes, and external tickets are representations rather than semantic types.

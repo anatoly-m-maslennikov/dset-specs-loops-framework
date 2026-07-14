@@ -12,6 +12,13 @@ supportability:
   authority: github
   runbook: supportability/delivery-runbook.md
 
+release:
+  status: applicable
+  integration_branch: dev
+  protected_branch: main
+  publisher: github
+  tag_pattern: "v{product_version}"
+
 structure:
   mode: single-package
   accepted_truth_root: specs/packages
@@ -30,6 +37,7 @@ profiles:
   enforcement: python-v1
   artifact: documentation-v1
   repository_governance: core-v1
+  delegation_budget: medium
 
 change_contract:
   change_id_format: kebab-case

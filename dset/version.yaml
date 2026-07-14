@@ -1,12 +1,12 @@
 schema_version: 1.0
 framework:
-  milestone: "0.2"
+  version: "0.2.0"
   status: candidate
-  versioning: independent-framework-milestone
+  versioning: coordinated-product-package
 python_package:
   name: dset-spec-loops
-  version: "1.0.0"
-  versioning: independent
+  version: "0.2.0"
+  versioning: coordinated-product-package
 schemas:
   version: "1.0"
   versioning: independent

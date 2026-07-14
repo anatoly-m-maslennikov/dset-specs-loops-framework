@@ -208,8 +208,11 @@ def main(argv: list[str] | None = None) -> int:
                 framework = data["framework"]
                 toolchain = data["python_package"]
                 schemas = data["schemas"]
-                print(f"framework milestone: {framework['milestone']}")
-                print(f"python package: {toolchain['version']} (independent)")
+                print(
+                    f"product: {framework['version']} "
+                    f"({framework['status']}, coordinated)"
+                )
+                print(f"python package: {toolchain['version']} (coordinated)")
                 print(f"schemas: {schemas['version']} (independent)")
             return 0
     except DsetCommandError as error:

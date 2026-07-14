@@ -78,6 +78,16 @@ changes:
       - MDSHAST-REQ-007
       - MDSHAST-REQ-008
       - MDSHAST-REQ-009
+      - MDSHAST-REQ-010
+      - MDSHAST-REQ-011
+      - MDSHAST-REQ-012
+      - MDSHAST-REQ-013
+      - MDSHAST-REQ-014
+      - MDSHAST-REQ-015
+      - MDSHAST-REQ-016
+      - MDSHAST-REQ-017
+      - MDSHAST-REQ-018
+      - MDSHAST-REQ-019
     tests:
       - MDSHAST-TEST-001
       - MDSHAST-TEST-002
@@ -88,11 +98,28 @@ changes:
       - MDSHAST-TEST-007
       - MDSHAST-TEST-008
       - MDSHAST-TEST-009
+      - MDSHAST-TEST-010
+      - MDSHAST-TEST-011
+      - MDSHAST-TEST-012
+      - MDSHAST-TEST-013
+      - MDSHAST-TEST-014
+      - MDSHAST-TEST-015
+      - MDSHAST-TEST-016
+      - MDSHAST-TEST-017
+      - MDSHAST-TEST-018
+      - MDSHAST-TEST-019
     evals:
       - MDSHAST-EVAL-001
       - MDSHAST-EVAL-002
       - MDSHAST-EVAL-003
       - MDSHAST-EVAL-004
+      - MDSHAST-EVAL-005
+      - MDSHAST-EVAL-006
+      - MDSHAST-EVAL-007
+      - MDSHAST-EVAL-008
+      - MDSHAST-EVAL-009
+      - MDSHAST-EVAL-010
+      - MDSHAST-EVAL-011
     adrs: []
     pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9
     evidence:

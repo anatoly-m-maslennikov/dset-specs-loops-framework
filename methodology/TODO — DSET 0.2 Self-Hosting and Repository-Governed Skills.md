@@ -23,8 +23,10 @@
 - **DSET-02-INV-013 — One version transition per main PR:** After bootstrap `0.2.0`, every accepted `dev` to `main` PR declares exactly one normal, small, RC, or final product/package transition using integer components.
 - **DSET-02-INV-014 — Protected release transaction:** Release artifacts are prepared before merge; tags and GitHub Releases derive from the protected merge commit without post-merge content changes.
 - **DSET-02-INV-015 — Fully working 1.0 gate:** `1.0.0-rc.N` and `1.0.0` require complete scope, supportability, proof, pilots, distribution, and no known release blockers; arithmetic and schedules cannot promote them.
+- **DSET-02-INV-016 — Main-session inheritance:** Subagents use the main session's model and reasoning effort by default; medium budget targets two or three useful agents and every deviation is explicit.
+- **DSET-02-INV-017 — Outcome-cost budgets:** Low/medium/high budgets vary useful fan-out, roles, rounds, context, evidence, and stopping thresholds before model quality; nominal token price alone never determines the cheaper plan.
 
-**Contract status:** Self-hosting and rule-ownership invariants are defined as `METH-INV-013`–`METH-INV-021` with requirements `METH-REQ-026`–`METH-REQ-034`. Skill topology and release-cycle invariants are defined as `METH-INV-022`–`METH-INV-027` with requirements `METH-REQ-035`–`METH-REQ-041`, each with separate deterministic and qualitative proof mappings. Roadmap §§0–§4 are implemented and pass local plus hosted deterministic proof on draft PR #9. The new skill/release mechanics, qualitative evals, TypeScript profile, external pilots, distribution, and final release reconciliation remain open; DSET 0.2 is not yet an adoption-readiness claim.
+**Contract status:** Self-hosting and rule-ownership invariants are defined as `METH-INV-013`–`METH-INV-021` with requirements `METH-REQ-026`–`METH-REQ-034`. Skill topology, release-cycle, and budget invariants are defined as `METH-INV-022`–`METH-INV-029` with requirements `METH-REQ-035`–`METH-REQ-043`, each with separate deterministic and qualitative proof mappings. Roadmap §§0–§4 are implemented and pass local plus hosted deterministic proof on draft PR #9. The new skill/budget/release mechanics, qualitative evals, TypeScript profile, external pilots, distribution, and final release reconciliation remain open; DSET 0.2 is not yet an adoption-readiness claim.
 
 ## Scope
 
@@ -186,6 +188,8 @@ The registry, not this example path, is the compatibility surface. A repository 
 - [ ] **DSET-02-TASK-069:** Add the normal/small/RC/final transition matrix, exactly-one-class main-PR validation, coordinated product/package version surfaces, and independent schema/profile/template compatibility versions.
 - [ ] **DSET-02-TASK-070:** Add pre-merge release preparation and post-merge tag/GitHub Release publication from the protected merge commit without a post-merge content write.
 - [ ] **DSET-02-TASK-071:** Gate `1.0.0-rc.N` and `1.0.0` on fully working declared scope, self-hosting, documentation, supportability, migrations, deterministic tests, applicable evals, required pilots, distribution, and absence of known release blockers.
+- [ ] **DSET-02-TASK-078:** Implement same-model/same-effort subagent inheritance, medium two-or-three-agent useful fan-out, explicit deviation reporting, and capacity-aware zero/fewer-agent behavior.
+- [ ] **DSET-02-TASK-079:** Implement low/medium/high outcome-cost budget profiles, run-record plan/actual metrics, and task-relevant model-comparison evidence without price-only downgrade heuristics.
 - [ ] **DSET-02-TASK-072:** Publish one pinned install/run path for the DSET CLI that adopters can use without copying validator code.
 - [ ] **DSET-02-TASK-073:** Publish one canonical source for each thin skill plus generated installation mappings for supported runtimes.
 - [ ] **DSET-02-TASK-074:** Add compatibility and migration notes for registry, template, schema, diagnostic, wrapper, and release-policy changes.
@@ -202,6 +206,7 @@ The registry, not this example path, is the compatibility surface. A repository 
 - [ ] Bounded redacted local run records support investigation and next-step heuristics without becoming project truth.
 - [ ] Every accepted `dev` to `main` PR carries exactly one valid version transition, and neither normal nor small progression can produce `1.0.0`.
 - [ ] Product/package RC and final releases satisfy the fully working gate and publish from the protected merge commit.
+- [ ] Subagents inherit the main model/effort by default; budget profiles vary useful fan-out/evidence first and record every model/effort deviation.
 - [ ] Two different project-local rulesets produce different compliant agent behavior through byte-identical wrappers.
 - [ ] Your Harness has one visible DSET root, one writable owner per concern, exact upstream provenance, a production supportability contract, and independent TypeScript/documentation profiles.
 - [ ] A real Your Harness change completes the full DSET loop with deterministic tests, applicable evals, hosted checks, accepted-truth reconciliation, PR traceability, and guarded archive.

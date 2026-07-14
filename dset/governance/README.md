@@ -19,5 +19,10 @@ This hub owns navigation only. `governance.yaml` owns machine-readable resolutio
 - [Prototyping](prototyping.md)
 - [Supportability](supportability.md)
 - [Artifact maintenance](artifact-maintenance.md)
+- [Lifecycle orchestration](lifecycle-orchestration.md)
+- [Skill-run records](skill-runs.md)
+- [Delegation budgets](delegation-budget.md)
+- [Release transaction](release.md)
+- [Problem, opportunity, and question intake](work-items.md)
 
 Use `dset rules check` to validate ownership and `dset rules resolve <workflow-id>` to obtain the ordered rule set. Use `dset rules refresh` only after an intentional local edit, and review `dset rules diff --source <framework-root>` before adopting later framework changes.
