@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This is the control-plane hub for the repository as an adopting DSET project. It routes to accepted truth, bounded changes, reusable contracts, generated traceability, migration guidance, and delivery supportability.
+This is the control-plane hub for the repository as an adopting DSET project. It routes to accepted truth, repository-local governance, bounded changes, reusable contracts, generated traceability, migration guidance, and delivery supportability.
 
 ## Boundaries
 
@@ -11,6 +11,8 @@ This directory owns project configuration and DSET artifacts. It does not duplic
 ## Start here
 
 - [Accepted methodology package](specs/packages/methodology/README.md) — current truth and proof contracts.
+- [Repository governance](governance/README.md) and [`governance.yaml`](governance.yaml) — project-owned rules, workflow resolution, customization provenance, and thin-wrapper identity.
+- [`version.yaml`](version.yaml) — independent framework milestone, Python package, schema, and released/candidate validator identities.
 - [Changes](changes/README.md) — active proposed work; `changes/archive/` preserves completed PR-linked evidence.
 - [Templates](templates/README.md), [schemas](schemas/README.md), and [fixtures](fixtures/README.md) — reusable framework contracts and deterministic examples.
 - [Traceability](traceability.yaml) — generated change-to-proof-to-PR discovery index.
@@ -21,6 +23,9 @@ This directory owns project configuration and DSET artifacts. It does not duplic
 ```text
 dset/
 ├── dset.yaml
+├── version.yaml
+├── governance.yaml
+├── governance/
 ├── provenance.yaml
 ├── traceability.yaml
 ├── specs/
@@ -44,6 +49,9 @@ The project currently has one package, `methodology`. A `specs/global/` layer is
 | Path | Owns |
 |---|---|
 | `dset.yaml` | Project identity, package registry, and selected profiles |
+| `version.yaml` | DSET 0.2 framework milestone plus independent toolchain/schema and released/candidate validator identities |
+| `governance.yaml` | Deterministic workflow/rule ownership, dependency, provenance, customization, and wrapper identity metadata |
+| `governance/` | The repository's editable governing rule owners |
 | `provenance.yaml` | Exact third-party sources, revisions, licenses, and use boundaries |
 | `traceability.yaml` | Generated deterministic change-to-proof-to-PR relationship view |
 | `specs/packages/methodology/` | Accepted current truth for the methodology package |
@@ -62,6 +70,12 @@ The project currently has one package, `methodology`. A `specs/global/` layer is
 |---|---|
 | `python -m dset_toolchain check .` | Read-only validation with stable diagnostics and no third-party runtime dependency |
 | `python -m dset_toolchain verify .` | Canonical aggregate: project-configured gates, unit/fixture tests, Markdown checks, diff hygiene, and trace freshness |
+| `python -m dset_toolchain rules check .` | Validate local profile identity, ownership, dependency order, paths, applicability, customization, and wrappers |
+| `python -m dset_toolchain rules resolve <workflow-id> . --format json` | Print the stable ordered repository-local rule set used by a thin wrapper |
+| `python -m dset_toolchain rules materialize <target> --source <framework-root>` | Copy selected defaults without overwriting and record template provenance |
+| `python -m dset_toolchain rules refresh .` | Explicitly record intentional local customization after a rule edit |
+| `python -m dset_toolchain rules diff . --source <framework-root>` | Produce a read-only proposed delta from framework templates to local rules |
+| `python -m dset_toolchain self-host .` | Run the bounded released-validator → candidate → repository/temporary-adopter fixed point |
 | `uv run dset new <change-id> --package <package-id> --profile <profile>` | Create a non-overwriting active change from released templates |
 | `uv run dset trace .` | Print deterministic traceability; add `--write` to update or `--check` to compare |
 | `uv run dset archive <change-id>` | Print an archive dry-run; add `--execute` only after readiness gates pass |

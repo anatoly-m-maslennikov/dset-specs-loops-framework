@@ -1,6 +1,48 @@
 schema_version: 1.0
 project: {{project_id}}
 target_root: dset
+surface_catalog:
+  -
+    type: agent-guidance
+    examples:
+      - AGENTS.md
+      - CLAUDE.md
+    target_kind: concise-wrapper-or-hub
+  -
+    type: project-rules
+    examples:
+      - architecture
+      - build
+      - authoring
+      - supportability
+    target_kind: registered-governing-document
+  -
+    type: accepted-specification
+    examples:
+      - domain
+      - behavior
+      - contracts
+    target_kind: accepted-package-truth
+  -
+    type: deterministic-proof
+    examples:
+      - test-plan
+      - regression-plan
+    target_kind: test-plan
+  -
+    type: qualitative-proof
+    examples:
+      - eval-plan
+      - rubric
+    target_kind: eval-plan
+  -
+    type: delivery-history
+    examples:
+      - implementation-plan
+      - ADR
+      - runbook
+      - evidence
+    target_kind: active-change-decision-runbook-or-read-only-history
 sources:
   - path: {{existing_artifact_root}}
     concern: {{owned_concern}}
