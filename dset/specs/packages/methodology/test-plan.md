@@ -26,6 +26,12 @@ This plan proves exact structural and terminology claims. Qualitative comprehens
 | **METH-TEST-018** | METH-REQ-017 | Prove archive dry-run, readiness/PR/reconciliation gates, atomic move, and destination refusal | `python -m unittest tests.test_scaffold_archive` |
 | **METH-TEST-019** | METH-REQ-018, METH-INV-010 | Validate three skill packages, UI metadata, distinct trigger descriptions, and static cross-platform portability | Skill Creator `quick_validate.py` plus the repository skill audit |
 | **METH-TEST-020** | METH-REQ-019 | Parse the delivery workflow and runbook; prove stable policy/DSET check names and required authority/recovery fields | `python -m dset_toolchain check .` plus workflow assertions in CI |
+| **METH-TEST-021** | METH-REQ-020 | Project configuration and schema accept separate implementation-language and artifact-profile fields without substitution | `python -m dset_toolchain check .` plus schema parsing |
+| **METH-TEST-022** | METH-REQ-021/024 | Accept unique valid governed areas and reject missing hubs, duplicate roots, unresolved parents, and parent cycles with stable diagnostics | `python -m unittest tests.test_artifact_profile` |
+| **METH-TEST-023** | METH-REQ-021/025 | Assert the root README links every registered top-level area hub and every hub contains Purpose, Boundaries, and Start here/Navigation | `python -m unittest tests.test_artifact_profile` |
+| **METH-TEST-024** | METH-REQ-022/023 | Assert the released artifact-type catalog and universal plus specification-specific authoring rules exist and remain linked from the documentation hub | `python -m dset_toolchain check .` plus artifact review |
+| **METH-TEST-025** | METH-REQ-024 | Parse `dset/artifacts.yaml` and its schema; prove diagnostics DSET-E120–123 through valid and invalid registry cases | `python -m unittest tests.test_artifact_profile` |
+| **METH-TEST-026** | METH-REQ-020–025, METH-INV-011/012 | Run the selected Python and documentation profiles together with portability, trace freshness, and diff hygiene | `uv run dset verify .` |
 
 ## Regression policy
 

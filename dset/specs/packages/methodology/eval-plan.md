@@ -18,6 +18,9 @@ Use representative project scenarios covering:
 8. A Python project and a JavaScript/TypeScript project selecting enforcement profiles.
 9. A production-bound local tool whose incident evidence stays in bounded local files.
 10. A distributed retryable service whose operator must trace a synthetic incident across effect boundaries and a deployment.
+11. A documentation-only repository selecting artifact governance without code enforcement.
+12. A mixed Python/TypeScript repository with methodology, architecture, runbooks, ADRs, and generated evidence.
+13. A mature repository whose root contains many files but only four stable governed areas.
 
 ## Criteria and thresholds
 
@@ -33,6 +36,10 @@ Use representative project scenarios covering:
 | **METH-EVAL-008** | CLI diagnostic usefulness | A contributor can correct a malformed fixture from the stable code, path, and message without reading validator source |
 | **METH-EVAL-009** | Skill routing | Ambiguous-domain, defect-investigation, and disposable-experiment prompts select the intended distinct skill and respect its stop condition |
 | **METH-EVAL-010** | Migration clarity | A repository with separate existing spec/test/eval/implementation roots reaches one writable `dset/` root without losing test/eval separation or current-truth ownership |
+| **METH-EVAL-011** | Helicopter navigation | A cold reader reaches the owner for methodology, artifact rules, project truth, and agent workflows from the root and area hubs without a filesystem scan |
+| **METH-EVAL-012** | Artifact ownership | Reviewers assign each sample document one primary type and owning question without creating duplicate normative authority |
+| **METH-EVAL-013** | Specification semantics | Reviewers identify what/why mixing, incomplete entity lifecycles, and definition-before-use violations while treating forward references only as connections |
+| **METH-EVAL-014** | Profile independence | Reviewers configure documentation-only, Python-plus-documentation, and future TypeScript-plus-documentation cases without treating documentation as a programming language |
 
 ## Calibration and evidence
 

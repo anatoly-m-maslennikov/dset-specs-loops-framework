@@ -10,7 +10,9 @@
 ## Outputs
 
 - A GitHub-portable public methodology under `methodology/`.
-- A repository navigation map in `README.md` and methodology document 00.
+- A repository navigation map in `README.md`, stable area hubs, and methodology document 00.
+- Artifact architecture, type, authoring, hub, maintenance, and rationale references under `documentation/`.
+- Independently selected implementation-language and artifact-governance profiles, including the `documentation-v1` registry under `dset/artifacts.yaml`.
 - Accepted package truth under `dset/specs/`.
 - Bounded, PR-traceable changes under `dset/changes/`.
 - Versioned schemas, templates, fixtures, migration guidance, provenance, and generated traceability under `dset/`.
@@ -22,7 +24,7 @@
 | Command | Contract |
 |---|---|
 | `dset new` | Create a profile-aware active change without overwrite |
-| `dset check` | Read-only structural, ID, portability, provenance, and lifecycle validation |
+| `dset check` | Read-only structural, artifact-area/hub, ID, portability, provenance, and lifecycle validation |
 | `dset verify` | Run `check`, project-configured deterministic gates, and trace freshness |
 | `dset trace` | Print by default; write or compare only with explicit flags |
 | `dset archive` | Dry-run by default; execute only after archive readiness gates pass |
@@ -40,6 +42,8 @@ Stable diagnostic codes, command names, schema version 1.0, and trace ordering a
 | `04` | General code/runtime pattern catalog, risk-scaled supportability, and applicability |
 | `05` | Six language-neutral enforcement categories, applied profiles, and supplemental risk-triggered gates |
 | `06` | External grounding and provenance map |
+
+The cross-cutting [documentation architecture](../../../../documentation/README.md) owns artifact types, authoring rules, hubs, maintenance, rationale, and applied artifact profiles. It is independent from the numbered implementation pipeline and is not a sixth stage or an implementation language.
 
 Numbered responsibilities are stable compatibility surfaces. A rename may improve the title, but moving responsibility between documents requires a delta spec, updated links, and explicit migration notes.
 
