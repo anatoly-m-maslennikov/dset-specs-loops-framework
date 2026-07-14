@@ -19,7 +19,7 @@ The evaluator found the current `in-progress` state and PR identity in `change.y
 
 For a failed `dset verify`, the evaluator located structural validation, ordered configured gates, stable diagnostic rendering, exact failed-command reporting through `DSET-E201`, and stale-trace reporting through `DSET-E111`. The safe recovery was to inspect read-only diagnostics, correct the bounded source failure, explicitly regenerate traceability only after review, and rerun the exact gate plus the aggregate.
 
-For blocked `dev → main` delivery, the evaluator correctly routed live authority to the GitHub PR, exact head, named check runs, ruleset, and eventual merge commit through the [delivery runbook](../../../supportability/delivery-runbook.md). The safe recovery preserves the draft PR evidence, fixes repository inputs on `dev`, reruns only demonstrably transient hosted failures, and never bypasses protected `main`.
+For blocked `dev → main` delivery, the evaluator correctly routed live authority to the GitHub PR, exact head, named check runs, ruleset, and eventual merge commit through the [delivery runbook](../../../../supportability/delivery-runbook.md). The safe recovery preserves the draft PR evidence, fixes repository inputs on `dev`, reruns only demonstrably transient hosted failures, and never bypasses protected `main`.
 
 Non-blocking observation: `DSET-E201` reports the exact child command and exit status but does not embed child stdout/stderr as structured JSON. Raw output remains deliberately transient; a concise operator-facing diagnostic-code catalogue is a possible later usability improvement.
 
@@ -39,7 +39,7 @@ Non-blocking observation: `dset-prototype` treats an explicit request to run the
 
 The evaluator produced one writable `dset/` target while mapping accepted domain/spec truth, deterministic test plans, qualitative/probabilistic eval plans, active implementation work, and completed history to distinct owners. Old roots become read-only only after verified archival and ownership cutover. Test/eval separation survived the mapping.
 
-The corrected [migration map template](../../../migrations/migration-map.template.yaml) now carries owner, writer, consumers, current status, target artifacts, disposition, retention, and read-only state. A mixed legacy root must use multiple source entries when active and completed artifacts need different dispositions; this is an authoring decision, not a second writable authority.
+The corrected [migration map template](../../../../migrations/migration-map.template.yaml) now carries owner, writer, consumers, current status, target artifacts, disposition, retention, and read-only state. A mixed legacy root must use multiple source entries when active and completed artifacts need different dispositions; this is an authoring decision, not a second writable authority.
 
 ## Disposition
 

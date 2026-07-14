@@ -1,7 +1,7 @@
 # Verification — DSET v1
 
 - **Implementing PR:** [anatoly-m-maslennikov/dset-specs-loops-framework#7](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7)
-- **Status:** archive-ready for the dated candidate move; final pushed-head evidence remains pending; PR remains draft
+- **Status:** dated archive candidate created by the guarded CLI; final pushed-head evidence remains pending; PR remains draft
 - **Canonical command:** `python -m dset_toolchain verify .`
 - **Locked repository entry point:** `uv run dset verify .`
 
@@ -23,4 +23,4 @@ Accepted-truth reconciliation: Pass
 
 Requirements DSET-V1-REQ-001–006 and their proof contracts are reconciled as METH-REQ-014–019 in `dset/specs/packages/methodology/`. Project identity, profiles, supportability ownership, package registry, public navigation, and delivery policy are consistent with the implementation. External pilots, the JavaScript/TypeScript applied profile, Solution Landscape hardening, and Back-to-Left fixtures remain roadmap work and are not claimed by this change.
 
-No completion or archive claim is made while pushed-head archive readiness remains pending.
+The directory move is an archive candidate on the still-draft PR, not accepted history. No completion claim is made while pushed-head archive readiness remains pending.

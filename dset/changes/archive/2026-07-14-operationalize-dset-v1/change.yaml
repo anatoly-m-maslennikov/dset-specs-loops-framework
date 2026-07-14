@@ -1,7 +1,7 @@
 schema_version: 1.0-draft
 id: operationalize-dset-v1
 profile: standard
-status: archive-ready
+status: archived
 packages:
   - methodology
 pull_request:
@@ -30,3 +30,6 @@ evals:
   - DSET-V1-EVAL-003
   - DSET-V1-EVAL-004
 adrs: []
+archive:
+  date: 2026-07-14
+  path: dset/changes/archive/2026-07-14-operationalize-dset-v1

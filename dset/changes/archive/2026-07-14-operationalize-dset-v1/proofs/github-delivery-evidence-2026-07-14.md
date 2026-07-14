@@ -9,7 +9,7 @@
 - State at evidence capture: open, mergeable, and draft
 - Pushed head: `114fc3c90d39e1273cbc8cafadd33c67057d5bad`
 
-GitHub is authoritative for PR state, changed files, checks, and the eventual merge result. The committed [PR history snapshot](../../../history/pull-requests.yaml) and [traceability index](../../../traceability.yaml) are reproducible discovery aids, not competing runtime authorities.
+GitHub is authoritative for PR state, changed files, checks, and the eventual merge result. The committed [PR history snapshot](../../../../history/pull-requests.yaml) and [traceability index](../../../../traceability.yaml) are reproducible discovery aids, not competing runtime authorities.
 
 ## Pushed-head checks
 
@@ -26,4 +26,4 @@ GitHub is authoritative for PR state, changed files, checks, and the eventual me
 
 ## Operational correlation and recovery
 
-An operator starts from PR #7, confirms its head SHA, opens the named check or workflow run, and compares the protected-main ruleset. Safe recovery changes repository inputs on `dev` and reruns the gates; it does not alter `main`, rewrite GitHub evidence, or treat the committed snapshot as live PR state. The complete diagnostic and containment path is documented in [the delivery runbook](../../../supportability/delivery-runbook.md).
+An operator starts from PR #7, confirms its head SHA, opens the named check or workflow run, and compares the protected-main ruleset. Safe recovery changes repository inputs on `dev` and reruns the gates; it does not alter `main`, rewrite GitHub evidence, or treat the committed snapshot as live PR state. The complete diagnostic and containment path is documented in [the delivery runbook](../../../../supportability/delivery-runbook.md).

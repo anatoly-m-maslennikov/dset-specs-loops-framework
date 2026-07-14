@@ -21,4 +21,4 @@
 
 ## Reuse decision
 
-Build the minimum CLI independently in DSET terminology using only Python's standard library. Publish JSON Schemas for interoperability, but keep the canonical validator self-contained. Record OpenSpec and workflow-skill projects as conceptual influences in [third-party notices](../../../THIRD_PARTY_NOTICES.md); do not copy code or prose. Re-evaluate external implementations only through a future proof-of-fit change with an exact version and license record.
+Build the minimum CLI independently in DSET terminology using only Python's standard library. Publish JSON Schemas for interoperability, but keep the canonical validator self-contained. Record OpenSpec and workflow-skill projects as conceptual influences in [third-party notices](../../../../THIRD_PARTY_NOTICES.md); do not copy code or prose. Re-evaluate external implementations only through a future proof-of-fit change with an exact version and license record.
