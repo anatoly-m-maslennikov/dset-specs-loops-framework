@@ -37,11 +37,11 @@ class GovernanceTests(unittest.TestCase):
 
     def test_valid_registry_resolves_stable_order(self) -> None:
         self.assertEqual(validate_governance(self.root), [])
-        resolved, diagnostics = resolve_workflow(self.root, "domain-grilling")
+        resolved, diagnostics = resolve_workflow(self.root, "domain-clarification")
         self.assertEqual(diagnostics, [])
         self.assertIsNotNone(resolved)
         assert resolved is not None
-        self.assertEqual(resolved["workflow_id"], "domain-grilling")
+        self.assertEqual(resolved["workflow_id"], "domain-clarification")
         self.assertEqual(resolved["customization"], "unmodified")
         self.assertGreater(len(cast(list[Any], resolved["rules"])), 3)
 
@@ -57,7 +57,7 @@ class GovernanceTests(unittest.TestCase):
                 [
                     "rules",
                     "resolve",
-                    "domain-grilling",
+                    "domain-clarification",
                     str(self.root),
                     "--format",
                     "json",
@@ -65,7 +65,7 @@ class GovernanceTests(unittest.TestCase):
             )
         self.assertEqual(result, 0)
         output = stream.getvalue()
-        self.assertIn('"workflow_id": "domain-grilling"', output)
+        self.assertIn('"workflow_id": "domain-clarification"', output)
         self.assertIn('"customization": "unmodified"', output)
 
     def test_resolution_is_stable_and_read_only(self) -> None:
@@ -102,8 +102,13 @@ class GovernanceTests(unittest.TestCase):
         self.assertIsNone(resolved)
         self.assertEqual([item.code for item in diagnostics], ["DSET-E136"])
 
+    def test_deprecated_grill_workflow_is_not_registered(self) -> None:
+        resolved, diagnostics = resolve_workflow(self.root, "domain-grilling")
+        self.assertIsNone(resolved)
+        self.assertEqual([item.code for item in diagnostics], ["DSET-E136"])
+
     def test_customization_changes_rules_not_wrapper(self) -> None:
-        wrapper = self.root / "skills" / "dset-grill" / "SKILL.md"
+        wrapper = self.root / "skills" / "dset-clarify" / "SKILL.md"
         before = hashlib.sha256(wrapper.read_bytes()).hexdigest()
         rule = self.root / "dset" / "governance" / "domain-spec-authoring.md"
         rule.write_text(
@@ -115,7 +120,7 @@ class GovernanceTests(unittest.TestCase):
         )
         refresh_customization(self.root)
         self.assertEqual(validate_governance(self.root), [])
-        resolved, diagnostics = resolve_workflow(self.root, "domain-grilling")
+        resolved, diagnostics = resolve_workflow(self.root, "domain-clarification")
         self.assertEqual(diagnostics, [])
         assert resolved is not None
         self.assertEqual(resolved["customization"], "custom")
@@ -141,7 +146,7 @@ class GovernanceTests(unittest.TestCase):
                 / "domain-spec-authoring.md"
             )
             template.write_text("# Replaced source template\n", encoding="utf-8")
-            resolved, diagnostics = resolve_workflow(target, "domain-grilling")
+            resolved, diagnostics = resolve_workflow(target, "domain-clarification")
             self.assertEqual(diagnostics, [])
             assert resolved is not None
             local_rule = next(
@@ -199,7 +204,7 @@ class GovernanceTests(unittest.TestCase):
 
     def test_wrappers_are_thin_and_registered(self) -> None:
         workflows = {
-            "domain-grilling": "dset-grill",
+            "domain-clarification": "dset-clarify",
             "diagnosis": "dset-diagnose",
             "prototyping": "dset-prototype",
         }
