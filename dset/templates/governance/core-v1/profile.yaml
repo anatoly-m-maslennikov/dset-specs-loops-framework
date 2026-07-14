@@ -83,7 +83,7 @@ rules:
       - DSET-RULE-ARTIFACT-MAINTENANCE
 workflows:
   -
-    id: domain-grilling
+    id: domain-clarification
     rules:
       - DSET-RULE-ARCHITECTURE
       - DSET-RULE-DOMAIN-SPEC
@@ -112,8 +112,8 @@ workflows:
       - DSET-RULE-PROTOTYPING
 wrappers:
   -
-    workflow: domain-grilling
-    path: skills/dset-grill/SKILL.md
+    workflow: domain-clarification
+    path: skills/dset-clarify/SKILL.md
   -
     workflow: diagnosis
     path: skills/dset-diagnose/SKILL.md

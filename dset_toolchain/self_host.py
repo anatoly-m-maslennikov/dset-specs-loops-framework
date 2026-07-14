@@ -61,7 +61,7 @@ def run_self_host(
         "DSET-E141",
         "candidate validator rejected the temporary adopter",
     )
-    resolved, diagnostics = resolve_workflow(adopter, "domain-grilling")
+    resolved, diagnostics = resolve_workflow(adopter, "domain-clarification")
     if diagnostics or resolved is None:
         raise DsetCommandError(
             "DSET-E141",
@@ -90,7 +90,7 @@ def run_self_host(
         "DSET-E141",
         "customized temporary adopter did not validate",
     )
-    customized, diagnostics = resolve_workflow(adopter, "domain-grilling")
+    customized, diagnostics = resolve_workflow(adopter, "domain-clarification")
     if diagnostics or customized is None:
         raise DsetCommandError(
             "DSET-E141", rule_path, "customized workflow did not resolve"

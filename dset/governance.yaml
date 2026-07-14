@@ -139,7 +139,7 @@ rules:
       sha256: 615532ee3e32137f63748c9a742c2d4cf39130c0a9dd824fb1006dadd7c39455
 workflows:
   -
-    id: domain-grilling
+    id: domain-clarification
     rules:
       - DSET-RULE-ARCHITECTURE
       - DSET-RULE-DOMAIN-SPEC
@@ -168,9 +168,9 @@ workflows:
       - DSET-RULE-PROTOTYPING
 wrappers:
   -
-    workflow: domain-grilling
-    path: skills/dset-grill/SKILL.md
-    sha256: 9a2c9814e8cde89a72fba935ce2e504ae3d145b0cf800f40cf31493519a8b9f8
+    workflow: domain-clarification
+    path: skills/dset-clarify/SKILL.md
+    sha256: 67fe30ceee969a912310158e5f487a18deb7ac1109d76521e5ce4ff5970b6764
   -
     workflow: diagnosis
     path: skills/dset-diagnose/SKILL.md
