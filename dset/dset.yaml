@@ -29,6 +29,7 @@ profiles:
   durability_topology: external-platform
   enforcement: python-v1
   artifact: documentation-v1
+  repository_governance: core-v1
 
 change_contract:
   change_id_format: kebab-case
