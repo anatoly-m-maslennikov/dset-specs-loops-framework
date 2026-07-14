@@ -63,6 +63,40 @@ changes:
       - dset/changes/archive/2026-07-14-bootstrap-dset-project-structure/proofs/boot-evals-2026-07-14.md
       - dset/changes/archive/2026-07-14-bootstrap-dset-project-structure/proofs/boot-evals-pushed-head-2026-07-14.md
   -
+    id: make-dset-self-hosting-and-skills-thin
+    status: in-progress
+    path: dset/changes/make-dset-self-hosting-and-skills-thin
+    packages:
+      - methodology
+    requirements:
+      - MDSHAST-REQ-001
+      - MDSHAST-REQ-002
+      - MDSHAST-REQ-003
+      - MDSHAST-REQ-004
+      - MDSHAST-REQ-005
+      - MDSHAST-REQ-006
+      - MDSHAST-REQ-007
+      - MDSHAST-REQ-008
+      - MDSHAST-REQ-009
+    tests:
+      - MDSHAST-TEST-001
+      - MDSHAST-TEST-002
+      - MDSHAST-TEST-003
+      - MDSHAST-TEST-004
+      - MDSHAST-TEST-005
+      - MDSHAST-TEST-006
+      - MDSHAST-TEST-007
+      - MDSHAST-TEST-008
+      - MDSHAST-TEST-009
+    evals:
+      - MDSHAST-EVAL-001
+      - MDSHAST-EVAL-002
+      - MDSHAST-EVAL-003
+      - MDSHAST-EVAL-004
+    adrs: []
+    pull_request: pending
+    evidence: []
+  -
     id: make-supportability-first-class
     status: archived
     path: dset/changes/archive/2026-07-14-make-supportability-first-class
