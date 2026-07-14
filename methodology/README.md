@@ -21,6 +21,7 @@ This area owns the reusable DSET delivery method. Project-specific accepted trut
 ## Cross-cutting navigation
 
 - [Documentation architecture](../documentation/README.md) — artifact profiles, types, authoring, hubs, and maintenance.
+- [DSET 0.2 roadmap](TODO%20%E2%80%94%20DSET%200.2%20Self-Hosting%20and%20Repository-Governed%20Skills.md) — self-hosting, repository-local governing rules, thin skills, a TypeScript profile, and the Your Harness pilot.
 - [Operationalization roadmap](TODO%20%E2%80%94%20Operationalize%20OpenSpec%20and%20Composable%20Engineering%20Skills.md) — unfinished framework work; unchecked items are not current capability claims.
 - [Accepted methodology package](../dset/specs/packages/methodology/README.md) — machine-traceable current project truth and proof contracts.
 
