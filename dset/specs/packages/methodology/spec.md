@@ -155,3 +155,57 @@ The `documentation-v1` profile must provide a machine-readable governed-area reg
 This public repository must activate `documentation-v1`, expose documentation and methodology hubs, register its stable governed areas, and keep current governance separate from archived change evidence.
 
 **Scenario METH-SCN-028:** The same canonical verification command validates Python v1 and documentation v1 without describing documentation as a programming language.
+
+## METH-REQ-026 — DSET 0.2 release is framework-first
+
+A DSET 0.2 capability must not be released until this repository adopts it under every applicable selected profile. When a profile-specific capability is not applicable to this repository, a versioned in-repository adopter fixture must pass before an external pilot may depend on it.
+
+**Scenario METH-SCN-029:** A TypeScript-only gate is not applied to Python sources, but its versioned adopter fixture passes before the gate is presented to Your Harness as released DSET behavior.
+
+## METH-REQ-027 — DSET 0.2 self-hosting is bounded
+
+The DSET 0.2 self-hosting gate must have exactly three bounded levels: the last released validator checks the candidate change, the candidate checks this repository, and the candidate materializes and checks one temporary adopter. The temporary adopter must not create another adopter or traverse unrelated nested DSET roots.
+
+**Scenario METH-SCN-030:** One release run records released-to-candidate, candidate-to-repository, and candidate-to-temporary-adopter results, then terminates at the declared fixed point.
+
+## METH-REQ-028 — DSET 0.2 rules are repository-owned
+
+Every selected normative rule must resolve to one editable governing document inside the adopting repository. A framework template may seed the document, but after materialization the local document is authoritative and the template remains provenance rather than a live fallback.
+
+**Scenario METH-SCN-031:** Editing the framework template after materialization does not change the adopter's resolved rules; editing its registered local governing document does.
+
+## METH-REQ-029 — DSET 0.2 skills are thin wrappers
+
+A DSET 0.2 skill may own trigger metadata, root discovery, workflow identity, resolver invocation, ruleset reporting, output handoff, authorization boundaries, and stop behavior. It must not own substantive workflow, architecture, authoring, proof, threshold, safety, or supportability rules.
+
+**Scenario METH-SCN-032:** Static inspection finds a workflow ID and resolver handoff in a skill but no copied checklist, concrete threshold, embedded fallback procedure, or substantive normative rule.
+
+## METH-REQ-030 — DSET 0.2 wrappers follow local changes
+
+A DSET 0.2 wrapper must consume the currently resolved repository-local rule set. Changing a registered local rule must affect the next invocation without changing the canonical wrapper.
+
+**Scenario METH-SCN-033:** Two adopters use the same wrapper hash but different registered output conventions; each invocation follows and reports its adopter's local rule identity.
+
+## METH-REQ-031 — DSET 0.2 fails closed on invalid selected ownership
+
+Missing, duplicate, cyclic, outside-root, or profile-incompatible selected rule ownership must stop before governed work and emit a stable diagnostic. A rule or profile explicitly marked not applicable with a valid reason must remain a successful disposition.
+
+**Scenario METH-SCN-034:** A selected rule outside the repository stops with its stable code and path, while an unselected TypeScript profile in a documentation-only adopter passes as justified not applicable.
+
+## METH-REQ-032 — DSET 0.2 identifies customization honestly
+
+A locally changed materialized ruleset remains valid project truth but must identify itself as local/custom and preserve source profile/version provenance. It must not claim equivalence to the unchanged framework profile.
+
+**Scenario METH-SCN-035:** Changing one normative local rule changes the resolved ruleset identity to custom while retaining the originating profile and version as provenance.
+
+## METH-REQ-033 — DSET 0.2 proof categories remain separate
+
+Exact resolver, ownership, path, identity, wrapper, and recursion behavior must be proven by deterministic tests. Agent interpretation, rule-following, navigation, and diagnostic usefulness must be proven by separate qualitative or probabilistic evals. Automation does not change the proof category.
+
+**Scenario METH-SCN-036:** A scripted assertion that a cycle emits one stable code remains a test; an automated agent run measuring whether the diagnostic enables a safe correction remains an eval.
+
+## METH-REQ-034 — DSET 0.2 gives every rule one owner
+
+Every normative rule ID must resolve to exactly one editable governing document. Agent guidance, skills, templates, generated installations, indexes, summaries, and caches may link to that owner or reproduce derived metadata but must not become additional writable rule authorities.
+
+**Scenario METH-SCN-037:** The registry rejects two governing documents claiming the same rule ID and accepts multiple navigation or generated surfaces that point to the single owner without restating its normative text.
