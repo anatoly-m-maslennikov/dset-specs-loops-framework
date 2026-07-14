@@ -1,7 +1,7 @@
 schema_version: 1.0
 id: add-artifact-governance-profile
 profile: standard
-status: archive-ready
+status: archived
 packages:
   - methodology
 pull_request:
@@ -28,3 +28,6 @@ evals:
   - ART-EVAL-003
   - ART-EVAL-004
 adrs: []
+archive:
+  date: 2026-07-14
+  path: dset/changes/archive/2026-07-14-add-artifact-governance-profile
