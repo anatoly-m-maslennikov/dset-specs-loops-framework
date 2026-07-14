@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/schemas/version.schema.json",
+  "title": "DSET framework version contract",
+  "type": "object",
+  "required": ["schema_version", "framework", "python_package", "schemas", "released_validator", "candidate_validator", "bootstrap"],
+  "properties": {
+    "schema_version": {"const": 1.0},
+    "framework": {
+      "type": "object",
+      "required": ["milestone", "status", "versioning"],
+      "properties": {
+        "milestone": {"const": "0.2"},
+        "status": {"enum": ["candidate", "released"]},
+        "versioning": {"const": "independent-framework-milestone"}
+      },
+      "additionalProperties": false
+    },
+    "python_package": {
+      "type": "object",
+      "required": ["name", "version", "versioning"],
+      "properties": {
+        "name": {"const": "dset-spec-loops"},
+        "version": {"type": "string"},
+        "versioning": {"const": "independent"}
+      },
+      "additionalProperties": false
+    },
+    "schemas": {
+      "type": "object",
+      "required": ["version", "versioning"],
+      "properties": {
+        "version": {"type": "string"},
+        "versioning": {"const": "independent"}
+      },
+      "additionalProperties": false
+    },
+    "released_validator": {"$ref": "#/$defs/validator"},
+    "candidate_validator": {
+      "type": "object",
+      "required": ["command"],
+      "properties": {"command": {"type": "string", "minLength": 1}},
+      "additionalProperties": false
+    },
+    "bootstrap": {
+      "type": "object",
+      "required": ["manifest", "governance_registry", "precedence"],
+      "properties": {
+        "manifest": {"const": "dset/dset.yaml"},
+        "governance_registry": {"const": "dset/governance.yaml"},
+        "precedence": {"const": "project-local-rule-then-selected-local-profile-then-failure"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "validator": {
+      "type": "object",
+      "required": ["identity", "commit", "command"],
+      "properties": {
+        "identity": {"type": "string", "minLength": 1},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "command": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
