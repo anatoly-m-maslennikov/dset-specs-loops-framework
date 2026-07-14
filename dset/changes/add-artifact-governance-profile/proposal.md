@@ -4,7 +4,7 @@
 - **Profile:** `standard`
 - **Target package:** `methodology`
 - **Implementing PR:** [anatoly-m-maslennikov/dset-specs-loops-framework#8](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/8)
-- **Status:** in progress
+- **Status:** archive ready; PR remains draft until the pushed archive candidate passes
 
 ## Problem
 

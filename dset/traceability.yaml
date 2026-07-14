@@ -3,7 +3,7 @@ repository: anatoly-m-maslennikov/dset-specs-loops-framework
 changes:
   -
     id: add-artifact-governance-profile
-    status: in-progress
+    status: archive-ready
     path: dset/changes/add-artifact-governance-profile
     packages:
       - methodology
@@ -30,6 +30,7 @@ changes:
     pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/8
     evidence:
       - dset/changes/add-artifact-governance-profile/proofs/deterministic-verification-2026-07-14.md
+      - dset/changes/add-artifact-governance-profile/proofs/github-delivery-evidence-2026-07-14.md
       - dset/changes/add-artifact-governance-profile/proofs/qualitative-evals-2026-07-14.md
   -
     id: bootstrap-dset-project-structure
