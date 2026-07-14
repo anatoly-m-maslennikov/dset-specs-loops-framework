@@ -10,6 +10,7 @@ from typing import Any, cast
 
 from dset_toolchain.adopter import create_adopter
 from dset_toolchain.cli import main
+from dset_toolchain.errors import DsetCommandError
 from dset_toolchain.governance import (
     diff_governance,
     find_repository,
@@ -18,6 +19,7 @@ from dset_toolchain.governance import (
     resolve_workflow,
     validate_governance,
 )
+from dset_toolchain.validation import validate_repository
 from dset_toolchain.yaml_subset import dump, load
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -112,6 +114,39 @@ class GovernanceTests(unittest.TestCase):
     def test_materialization_refuses_existing_destination(self) -> None:
         with self.assertRaises(FileExistsError):
             materialize_governance(ROOT, self.root)
+
+    def test_version_semantics_remain_independent(self) -> None:
+        stream = io.StringIO()
+        with contextlib.redirect_stdout(stream):
+            result = main(["version", str(ROOT)])
+        self.assertEqual(result, 0)
+        output = stream.getvalue()
+        self.assertIn("framework milestone: 0.2", output)
+        self.assertIn("python package: 1.0.0 (independent)", output)
+        self.assertIn("schemas: 1.0 (independent)", output)
+
+    def test_wrappers_are_thin_and_registered(self) -> None:
+        workflows = {
+            "domain-grilling": "dset-grill",
+            "diagnosis": "dset-diagnose",
+            "prototyping": "dset-prototype",
+        }
+        for workflow, skill in workflows.items():
+            with self.subTest(workflow=workflow):
+                path = ROOT / "skills" / skill / "SKILL.md"
+                text = path.read_text(encoding="utf-8")
+                self.assertLessEqual(len(text.splitlines()), 24)
+                self.assertIn(f"rules resolve {workflow}", text)
+                self.assertNotIn("## Workflow", text)
+                self.assertNotIn("git bisect", text)
+                self.assertNotIn("proofs/<candidate>-fit", text)
+
+    def test_manifest_and_template_boundaries_are_stable(self) -> None:
+        with self.assertRaises(DsetCommandError) as captured:
+            materialize_governance(ROOT, self.root, "missing-profile")
+        self.assertEqual(captured.exception.code, "DSET-E140")
+        (self.root / "dset" / "dset.yaml").unlink()
+        self.assertEqual(validate_repository(self.root)[0].code, "DSET-E001")
 
     @staticmethod
     def _registry(root: Path) -> tuple[Path, dict[str, Any]]:
