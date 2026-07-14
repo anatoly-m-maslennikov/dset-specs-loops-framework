@@ -397,7 +397,7 @@ dset/
 - [x] Framework-owned skills, commands, folders, files, CI gates, and environment variables follow the `dset` namespace contract without prefixing ordinary product/domain names.
 - [x] Tests and evals are designed before implementation in separate artifacts and remain independently reviewable; deterministic tests are never relabeled as evals.
 - [ ] Every material external-component decision is derived from requirement IDs plus relevant test and eval IDs, supported by reproducible proof-of-fit evidence, recorded in an ADR, isolated behind an appropriate ownership boundary, and accompanied by an exit strategy.
-- [ ] Archiving is deterministic, preserves history, and cannot silently overwrite current truth after failed verification.
+- [x] Archiving is deterministic, preserves history, and cannot silently overwrite current truth after failed verification.
 - [x] Every adopted skill fills a documented gap and has a distinct trigger, output, verification step, and stop condition.
 - [ ] Review effort scales with risk: gates/self-review for mechanical changes, one independent review for normal changes, and separate spec-compliance and code-quality reviews for high-risk changes.
 - [x] Agents can resume an interrupted change from files alone without relying on chat history.

@@ -94,6 +94,7 @@ changes:
     adrs: []
     pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7
     evidence:
+      - dset/changes/archive/2026-07-14-operationalize-dset-v1/proofs/archive-readiness-2026-07-14.md
       - dset/changes/archive/2026-07-14-operationalize-dset-v1/proofs/deterministic-verification-2026-07-14.md
       - dset/changes/archive/2026-07-14-operationalize-dset-v1/proofs/github-delivery-evidence-2026-07-14.md
       - dset/changes/archive/2026-07-14-operationalize-dset-v1/proofs/qualitative-evals-2026-07-14.md
