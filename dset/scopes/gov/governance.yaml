@@ -32,7 +32,7 @@ rules:
       profile: core-v1
       version: "0.2"
       template: dset/scopes/tool/templates/governance/core-v1/build-rules.md
-      sha256: 2a2bf284127e2afcfbf438979636758c4411e218d5f90e96f96df9e589444955
+      sha256: 1faf0275461d4c95c54f517cb75759292c8a42fd4134e44139b3e2c255b990cb
   -
     id: DSET-RULE-DOMAIN-SPEC
     layer: META
@@ -174,7 +174,7 @@ rules:
       profile: core-v1
       version: "0.2"
       template: dset/scopes/ops/templates/governance/core-v1/release.md
-      sha256: ef3b24b22f71cf48ca5d7149b45f18a4d91ca69033a9cb934794ea076fb20342
+      sha256: e2e95de10e2d780a2640a61f84a65479808e62da6261c492add4b2aed1403541
   -
     id: DSET-RULE-LIFECYCLE
     layer: SKILL

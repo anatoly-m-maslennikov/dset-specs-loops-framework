@@ -4,7 +4,7 @@
 
 ## Delivery topology
 
-- **Isolated branch-backed workspace/worktree:** pending
+- **Workspace mode (`integration-branch` default or optional `branch-worktree`):** pending
 - **Integration branch:** pending
 - **Release branch:** pending
 

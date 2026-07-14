@@ -8,12 +8,11 @@ manifest: schema 1.2 `dset/scopes/meta/dset.yaml` or the legacy central path.
 Generic DSET skills use configured roles, never hard-coded branch or forge
 names.
 
-Ordinary Change branch-backed workspaces/worktrees integrate through review PRs
-into the configured integration branch. The release PR then carries the reviewed
-integration state from that branch into the protected release branch. A project
-may declare one integration/release Change that operates directly on the
-integration branch; this exception does not create permanent per-layer branches
-or waive Change-specific proof.
+The base flow is local work on the configured integration branch, push to its
+remote counterpart, then open one integration-to-protected release PR. A Change
+may optionally use an isolated branch-backed workspace/worktree and review that
+branch into the integration branch first. Neither mode creates permanent
+per-layer branches or waives Change-specific proof.
 
 After this policy is active, every integration-to-protected release-branch PR
 is a release PR. Exactly one participating DSET Change is the release owner and

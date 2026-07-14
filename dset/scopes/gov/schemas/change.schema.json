@@ -69,7 +69,7 @@
       "type": "object",
       "required": ["isolation", "branch", "base_ref", "base_commit", "head_commit"],
       "properties": {
-        "isolation": {"const": "branch-worktree"},
+        "isolation": {"enum": ["integration-branch", "branch-worktree"]},
         "branch": {"type": "string", "minLength": 1},
         "base_ref": {"type": "string", "minLength": 1},
         "base_commit": {"$ref": "#/$defs/sha_or_pending"},

@@ -25,12 +25,14 @@ review depth; low risk does not erase the baseline.
 
 ## Change isolation and delivery
 
-Default to one Change per isolated branch-backed workspace/worktree and one
-review PR into the configured integration branch. Do not create permanent branches for DSET
-layers. One Change may cross multiple layers atomically; split it only when the
-parts are independently reviewable, verifiable, and mergeable without an
-invalid intermediate state.
+Default to local work on the configured integration branch, push that branch to
+its remote counterpart, then open the integration-to-protected release PR. A
+Change may instead select `branch-worktree` when parallelism, risk, or
+conflicting work needs an isolated branch-backed workspace/worktree; that branch
+reviews into the integration branch before release. Do not create permanent
+branches for DSET layers.
 
-A declared integration or release Change may operate directly on the configured
-integration branch when it owns that aggregate transaction. Otherwise, sharing
-a branch does not merge Change identities, proof, or authorization.
+Sharing the integration branch or release PR never merges Change identities,
+proof, scope, or authorization. One Change may cross multiple layers atomically;
+split it only when the parts are independently reviewable, verifiable, and
+mergeable without an invalid intermediate state.

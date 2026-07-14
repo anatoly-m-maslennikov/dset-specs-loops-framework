@@ -78,3 +78,17 @@ or specification prose alone do not satisfy this contract.
 resolve the committed workflow to the exact GitHub run and required check, verify
 that the checked SHA matches the PR head, and confirm that protected integration
 either accepted that evidence or blocked the merge without a bypass.
+
+## ADDED — DSET-CONTRACT-OPS-002 Integration-first delivery topology
+
+| Field | Value |
+|---|---|
+| Authority | Project release and Change contract in `dset/scopes/meta/dset.yaml` |
+| Source | Schema 1.2 project and Change workspace declarations |
+| Version or digest | `1.2` |
+| Direction | Local integration branch to remote integration branch to protected release PR; optional isolated Change branch/worktree to integration branch first |
+| Producer | Contributor or governed automation writing the declared Change workspace |
+| Consumer | Review, traceability, release preparation, hosted CI, and archival |
+| Conformance | Default `integration-branch`; optional explicit `branch-worktree`; configured branch roles; no permanent layer branches; separate Change identity, scope, authorization, and proof in either mode |
+| Compatibility | Archived branch-worktree Changes remain valid; changing configured branch roles or a Change's selected mode requires refreshed affected evidence |
+| Lifecycle | `active` |

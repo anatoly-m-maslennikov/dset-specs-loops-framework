@@ -159,3 +159,17 @@ data/tooling folder as separate Work Areas. Another repository declares only
 its root. DSET scopes both projects without inventing services, modules,
 features, or deployment semantics, and a resumed session follows the current
 declaration rather than a stale checkpoint hint.
+
+## ADDED — DSET-REQUIREMENT-OPS-012 Integration delivery is the default
+
+Every applicable DSET project must use its configured local integration branch,
+remote integration branch, and integration-to-protected release PR as the base
+delivery flow. A Change may opt into a separate branch-backed worktree when
+parallelism, risk, or conflicting work needs stronger isolation. That branch
+must integrate into the configured integration branch before release. Workspace
+mode never changes Change identity, scope, authorization, or proof ownership.
+
+**Scenario DSET-SCENARIO-OPS-013:** This repository works locally on `dev`,
+pushes remote `dev`, and opens PR `dev` to `main`. A parallel high-risk Change
+selects `branch-worktree`, reviews that branch into `dev`, and then participates
+in the same protected release flow without creating a permanent layer branch.

@@ -263,7 +263,7 @@ def _validate_project_manifest(
         expected_change_contract = {
             "change_id_format": "project-type-layer-sequence",
             "change_slug_format": "kebab-case",
-            "workspace_default": "isolated-branch-worktree-pr",
+            "workspace_default": "integration-branch",
             "pull_request_required_before_archive": True,
             "archive_requires_fresh_verification": True,
             "keep_pull_request_draft_until_archive_ready": True,
@@ -1508,8 +1508,16 @@ def _validate_change_uniqueness(layout: RepositoryLayout) -> list[Diagnostic]:
             else:
                 owners[identifier] = manifest
             workspace = data.get("workspace") if isinstance(data, dict) else None
+            isolation = (
+                workspace.get("isolation") if isinstance(workspace, dict) else None
+            )
             branch = workspace.get("branch") if isinstance(workspace, dict) else None
-            if not archived_root and isinstance(branch, str) and branch != "pending":
+            if (
+                not archived_root
+                and isolation == "branch-worktree"
+                and isinstance(branch, str)
+                and branch != "pending"
+            ):
                 previous = branches.get(branch)
                 if previous is not None:
                     diagnostics.append(
@@ -1524,7 +1532,11 @@ def _validate_change_uniqueness(layout: RepositoryLayout) -> list[Diagnostic]:
             pr = data.get("pull_request") if isinstance(data, dict) else None
             repository = pr.get("repository") if isinstance(pr, dict) else None
             number = pr.get("number") if isinstance(pr, dict) else None
-            if isinstance(repository, str) and isinstance(number, int):
+            if (
+                isolation == "branch-worktree"
+                and isinstance(repository, str)
+                and isinstance(number, int)
+            ):
                 pr_key = (repository, number)
                 previous = pull_requests.get(pr_key)
                 if previous is not None:
@@ -1549,7 +1561,7 @@ def _validate_workspace(
     required = {"isolation", "branch", "base_ref", "base_commit", "head_commit"}
     valid = (
         set(workspace) == required
-        and workspace.get("isolation") == "branch-worktree"
+        and workspace.get("isolation") in {"integration-branch", "branch-worktree"}
         and isinstance(workspace.get("branch"), str)
         and bool(str(workspace.get("branch")).strip())
         and isinstance(workspace.get("base_ref"), str)
@@ -1565,7 +1577,11 @@ def _validate_workspace(
     release = data.get("release")
     candidate = release.get("candidate_commit") if isinstance(release, dict) else None
     head = workspace.get("head_commit")
-    if _is_exact_commit(candidate) and candidate != head:
+    if (
+        data.get("status") in {"verified", "archive-ready", "archived"}
+        and _is_exact_commit(candidate)
+        and candidate != head
+    ):
         return [
             _diag(
                 "DSET-E152",

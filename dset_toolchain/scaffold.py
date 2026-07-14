@@ -20,6 +20,7 @@ def create_change(
     layer: str | None = None,
     stable_id: str | None = None,
     work_areas: Sequence[str] | None = None,
+    workspace_mode: str | None = None,
 ) -> Path:
     if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", change_id):
         raise ValueError("change ID must be lowercase kebab-case")
@@ -76,7 +77,13 @@ def create_change(
             _copy_template(source, target, replacements)
         if layout.layered:
             _materialize_layered_manifest(
-                destination, canonical_id, change_id, str(layer), change_target
+                root,
+                destination,
+                canonical_id,
+                change_id,
+                str(layer),
+                change_target,
+                workspace_mode,
             )
     except Exception:
         _remove_tree(destination)
@@ -183,17 +190,20 @@ def _next_change_id(root: Path, layer: str) -> str:
 
 
 def _materialize_layered_manifest(
+    root: Path,
     destination: Path,
     stable_id: str,
     slug: str,
     layer: str,
     target: dict[str, object] | None,
+    workspace_mode: str | None,
 ) -> None:
     path = destination / "change.yaml"
     data = load(path)
     if not isinstance(data, dict):
         raise ValueError("change template root must be a mapping")
     normalized = layer.lower()
+    workspace = _workspace_for_change(root, slug, workspace_mode)
     data.update(
         {
             "schema_version": "1.2",
@@ -202,13 +212,7 @@ def _materialize_layered_manifest(
             "primary_layer": normalized,
             "affected_layers": [normalized],
             "target": target,
-            "workspace": {
-                "isolation": "branch-worktree",
-                "branch": f"dset/{slug}",
-                "base_ref": "pending",
-                "base_commit": "pending",
-                "head_commit": "pending",
-            },
+            "workspace": workspace,
             "dependencies": [],
         }
     )
@@ -219,6 +223,41 @@ def _materialize_layered_manifest(
         if "owner_change" in release:
             release["owner_change"] = stable_id
     path.write_text(dump(data), encoding="utf-8")
+
+
+def _workspace_for_change(
+    root: Path, slug: str, requested_mode: str | None
+) -> dict[str, str]:
+    manifest = load(discover_layout(root).manifest_path)
+    if not isinstance(manifest, dict):
+        raise ValueError("project manifest must be a mapping")
+    change_contract = manifest.get("change_contract", {})
+    configured_mode = (
+        change_contract.get("workspace_default")
+        if isinstance(change_contract, dict)
+        else None
+    )
+    mode = requested_mode or configured_mode
+    if mode not in {"integration-branch", "branch-worktree"}:
+        raise ValueError("workspace mode must be integration-branch or branch-worktree")
+    release = manifest.get("release", {})
+    integration = (
+        release.get("integration_branch") if isinstance(release, dict) else None
+    )
+    protected = release.get("protected_branch") if isinstance(release, dict) else None
+    if not isinstance(integration, str) or not integration:
+        integration = "pending"
+    if not isinstance(protected, str) or not protected:
+        protected = "pending"
+    branch = integration if mode == "integration-branch" else f"dset/{slug}"
+    base_ref = protected if mode == "integration-branch" else integration
+    return {
+        "isolation": mode,
+        "branch": branch,
+        "base_ref": base_ref,
+        "base_commit": "pending",
+        "head_commit": "pending",
+    }
 
 
 def _remove_tree(path: Path) -> None:

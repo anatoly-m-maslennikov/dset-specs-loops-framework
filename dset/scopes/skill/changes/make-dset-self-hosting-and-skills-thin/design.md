@@ -32,12 +32,12 @@ evidence boundaries; Decisions remain separate records of choices and rationale.
 ## Change and delivery topology
 
 The repository configures `dev` as its integration branch and `main` as its
-protected release branch. Ordinary Changes use one isolated branch-backed
-workspace/worktree and one review PR into `dev`; the release PR carries
-`dev` into `main`. This active Change owns the aggregate integration and release
-transaction represented by PR #9, so it may operate directly on `dev`. That
-exception does not create permanent layer branches or combine unrelated Change
-proof.
+protected release branch. The default is local work on `dev`, a push to remote
+`dev`, then the release PR from `dev` to `main`. A Change may select an isolated
+branch/worktree and review it into `dev` first when parallelism or risk requires
+that boundary. This active Change uses the default integration-branch mode for
+PR #9. Neither mode creates permanent layer branches or combines unrelated
+Change proof.
 
 This Change crosses META, GOV, TOOL, SKILL, and OPS atomically because its
 authority, trace, wrapper, and delivery invariants would be invalid if merged as

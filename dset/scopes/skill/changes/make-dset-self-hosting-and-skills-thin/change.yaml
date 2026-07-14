@@ -11,7 +11,7 @@ affected_layers:
   - skill
   - ops
 workspace:
-  isolation: branch-worktree
+  isolation: integration-branch
   branch: dev
   base_ref: main
   base_commit: b874504c25e42329eae19ed14f2b50a3d922d64e
@@ -110,6 +110,7 @@ contracts:
   - DSET-CONTRACT-TOOL-001
   - DSET-CONTRACT-TOOL-002
   - DSET-CONTRACT-OPS-001
+  - DSET-CONTRACT-OPS-002
 requirements:
   - DSET-REQUIREMENT-META-011
   - DSET-REQUIREMENT-TOOL-006
@@ -132,6 +133,7 @@ requirements:
   - DSET-REQUIREMENT-SKILL-008
   - DSET-REQUIREMENT-SKILL-009
   - DSET-REQUIREMENT-GOV-011
+  - DSET-REQUIREMENT-OPS-012
 tests:
   - DSET-TEST-META-011
   - DSET-TEST-TOOL-009
@@ -159,6 +161,7 @@ tests:
   - DSET-TEST-TOOL-017
   - DSET-TEST-OPS-014
   - DSET-TEST-META-010
+  - DSET-TEST-OPS-015
 evals:
   - DSET-EVAL-META-009
   - DSET-EVAL-TOOL-001
@@ -178,4 +181,5 @@ evals:
   - DSET-EVAL-TOOL-006
   - DSET-EVAL-OPS-008
   - DSET-EVAL-META-008
+  - DSET-EVAL-OPS-009
 decisions: []

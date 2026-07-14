@@ -199,7 +199,7 @@
       "properties": {
         "change_id_format": {"const": "project-type-layer-sequence"},
         "change_slug_format": {"const": "kebab-case"},
-        "workspace_default": {"const": "isolated-branch-worktree-pr"},
+        "workspace_default": {"const": "integration-branch"},
         "pull_request_required_before_archive": {"const": true},
         "archive_requires_fresh_verification": {"const": true},
         "keep_pull_request_draft_until_archive_ready": {"const": true}

@@ -58,6 +58,12 @@ def build_parser() -> argparse.ArgumentParser:
     new.add_argument("--title")
     new.add_argument("--layer", choices=["META", "GOV", "TOOL", "SKILL", "OPS"])
     new.add_argument("--work-area", action="append", dest="work_areas", default=[])
+    new.add_argument(
+        "--workspace",
+        choices=["integration-branch", "branch-worktree"],
+        dest="workspace_mode",
+        help="override the project default; branch-worktree is optional isolation",
+    )
 
     trace = commands.add_parser("trace", help="generate PR traceability")
     _root_argument(trace)
@@ -129,6 +135,7 @@ def main(argv: list[str] | None = None) -> int:
                 args.title,
                 args.layer,
                 work_areas=args.work_areas,
+                workspace_mode=args.workspace_mode,
             )
             print(path.relative_to(root).as_posix())
             return 0

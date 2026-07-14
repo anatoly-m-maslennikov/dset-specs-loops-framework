@@ -220,8 +220,8 @@ class LayeredValidationTests(unittest.TestCase):
             )
         )
         self.assertEqual(
-            change["$defs"]["workspace"]["properties"]["isolation"]["const"],
-            "branch-worktree",
+            change["$defs"]["workspace"]["properties"]["isolation"]["enum"],
+            ["integration-branch", "branch-worktree"],
         )
         self.assertEqual(
             change["$defs"]["layered_release_declaration"]["properties"]["policy"][
@@ -331,7 +331,7 @@ class LayeredValidationTests(unittest.TestCase):
             {"repository": False, "work_areas": ["api", "web"]},
         )
         self.assertEqual(
-            trace["changes"][0]["workspace"]["isolation"], "branch-worktree"
+            trace["changes"][0]["workspace"]["isolation"], "integration-branch"
         )
 
     def test_workspace_and_dependency_currentness_are_enforced(self) -> None:
@@ -371,6 +371,37 @@ class LayeredValidationTests(unittest.TestCase):
         path.write_text(dump(data), encoding="utf-8")
         self.assertEqual(validate_change(self.root, change, archived=False), [])
 
+    def test_candidate_must_match_workspace_head_only_when_verified(self) -> None:
+        change = self._write_change("tool", "candidate-change")
+        path = change / "change.yaml"
+        data = load(path)
+        assert isinstance(data, dict)
+        data["workspace"]["head_commit"] = "a" * 40
+        data["release"] = {
+            "policy": "dset/scopes/ops/governance/release.md",
+            "class": "small",
+            "base": {
+                "ref": "main",
+                "commit": "b" * 40,
+                "version": "0.3.0",
+            },
+            "target": "0.3.1",
+            "readiness": "verification.md",
+            "candidate_commit": "c" * 40,
+        }
+        data["status"] = "in-progress"
+        path.write_text(dump(data), encoding="utf-8")
+        self.assertNotIn(
+            "DSET-E152",
+            {item.code for item in validate_change(self.root, change, archived=False)},
+        )
+        data["status"] = "verified"
+        path.write_text(dump(data), encoding="utf-8")
+        self.assertIn(
+            "DSET-E152",
+            {item.code for item in validate_change(self.root, change, archived=False)},
+        )
+
     def test_scaffold_allocates_stable_change_ids_separately_from_slugs(self) -> None:
         self._install_change_templates()
 
@@ -388,8 +419,24 @@ class LayeredValidationTests(unittest.TestCase):
         self.assertEqual(first_data["id"], "DSET-CHANGE-TOOL-001")
         self.assertEqual(first_data["slug"], "portable-cli")
         self.assertEqual(second_data["id"], "DSET-CHANGE-TOOL-002")
-        self.assertEqual(first_data["workspace"]["isolation"], "branch-worktree")
+        self.assertEqual(first_data["workspace"]["isolation"], "integration-branch")
+        self.assertEqual(first_data["workspace"]["branch"], "dev")
+        self.assertEqual(first_data["workspace"]["base_ref"], "main")
         self.assertEqual(first_data["target"], {"repository": True, "work_areas": []})
+
+        isolated = create_change(
+            self.root,
+            "isolated-change",
+            "sample",
+            "small",
+            layer="tool",
+            workspace_mode="branch-worktree",
+        )
+        isolated_data = load(isolated / "change.yaml")
+        assert isinstance(isolated_data, dict)
+        self.assertEqual(isolated_data["workspace"]["isolation"], "branch-worktree")
+        self.assertEqual(isolated_data["workspace"]["branch"], "dset/isolated-change")
+        self.assertEqual(isolated_data["workspace"]["base_ref"], "dev")
 
         targeted = create_change(
             self.root,
@@ -444,6 +491,8 @@ class LayeredValidationTests(unittest.TestCase):
                     "web",
                     "--work-area",
                     "api",
+                    "--workspace",
+                    "branch-worktree",
                 ]
             )
         self.assertEqual(result, 0)
@@ -454,6 +503,8 @@ class LayeredValidationTests(unittest.TestCase):
             data["target"],
             {"repository": False, "work_areas": ["api", "web"]},
         )
+        self.assertEqual(data["workspace"]["isolation"], "branch-worktree")
+        self.assertEqual(data["workspace"]["base_ref"], "dev")
 
     def test_workspace_branch_is_unique_only_while_changes_are_active(self) -> None:
         first = self._write_change(
@@ -462,9 +513,29 @@ class LayeredValidationTests(unittest.TestCase):
         second = self._write_change(
             "tool", "second-change", stable_id="DSET-CHANGE-TOOL-102"
         )
+        for change in (first, second):
+            data = load(change / "change.yaml")
+            assert isinstance(data, dict)
+            data["pull_request"] = {
+                "repository": "example/project",
+                "number": 13,
+                "url": "https://github.com/example/project/pull/13",
+            }
+            (change / "change.yaml").write_text(dump(data), encoding="utf-8")
+        self.assertNotIn(
+            "DSET-E154", {item.code for item in validate_repository(self.root)}
+        )
+        first_data = load(first / "change.yaml")
         second_data = load(second / "change.yaml")
+        assert isinstance(first_data, dict)
         assert isinstance(second_data, dict)
+        first_data["workspace"]["isolation"] = "branch-worktree"
+        first_data["workspace"]["branch"] = "dset/first-change"
+        first_data["workspace"]["base_ref"] = "dev"
+        (first / "change.yaml").write_text(dump(first_data), encoding="utf-8")
+        second_data["workspace"]["isolation"] = "branch-worktree"
         second_data["workspace"]["branch"] = "dset/first-change"
+        second_data["workspace"]["base_ref"] = "dev"
         (second / "change.yaml").write_text(dump(second_data), encoding="utf-8")
         self.assertIn(
             "DSET-E154", {item.code for item in validate_repository(self.root)}
@@ -492,7 +563,13 @@ class LayeredValidationTests(unittest.TestCase):
                 "authority": "fixture",
                 "runbook": "not-applicable",
             },
-            "release": {"status": "not-applicable", "reason": "fixture"},
+            "release": {
+                "status": "applicable",
+                "integration_branch": "dev",
+                "protected_branch": "main",
+                "publisher": "github",
+                "tag_pattern": "v{product_version}",
+            },
             "work_items": {"registry": "dset/scopes/gov/intake.yaml"},
             "structure": {"layout": "layered-v1"},
             "work_areas": [
@@ -512,7 +589,7 @@ class LayeredValidationTests(unittest.TestCase):
             "change_contract": {
                 "change_id_format": "project-type-layer-sequence",
                 "change_slug_format": "kebab-case",
-                "workspace_default": "isolated-branch-worktree-pr",
+                "workspace_default": "integration-branch",
                 "pull_request_required_before_archive": True,
                 "archive_requires_fresh_verification": True,
                 "keep_pull_request_draft_until_archive_ready": True,
@@ -602,8 +679,8 @@ class LayeredValidationTests(unittest.TestCase):
             "affected_layers": [layer],
             "target": target or {"repository": True, "work_areas": []},
             "workspace": {
-                "isolation": "branch-worktree",
-                "branch": f"dset/{change_slug}",
+                "isolation": "integration-branch",
+                "branch": "dev",
                 "base_ref": "main",
                 "base_commit": "pending",
                 "head_commit": "pending",
