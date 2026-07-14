@@ -5,10 +5,12 @@
   "type": "object",
   "required": ["schema_version", "id", "profile", "status", "packages", "pull_request", "requirements", "tests", "evals"],
   "properties": {
-    "schema_version": {"oneOf": [{"enum": [1.0, 1.1]}, {"type": "string", "pattern": "^1\\.(?:0|1)-draft$"}]},
+    "schema_version": {"oneOf": [{"enum": [1.0, 1.1]}, {"type": "string", "pattern": "^1\\.(?:0|1)-draft$"}, {"const": "1.2"}]},
     "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
     "profile": {"enum": ["small", "standard", "large", "defect", "adoption"]},
     "status": {"enum": ["proposed", "in-progress", "failed", "verified", "archive-ready", "archived"]},
+    "primary_layer": {"$ref": "#/$defs/layer"},
+    "affected_layers": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/layer"}},
     "packages": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
     "pull_request": {"$ref": "#/$defs/pr"},
     "release": {"$ref": "#/$defs/release"},
@@ -22,17 +24,10 @@
     "contracts": {"$ref": "#/$defs/contract_ids"},
     "stories": {"$ref": "#/$defs/story_ids"},
     "outcomes": {"$ref": "#/$defs/outcome_ids"},
-    "archive": {
-      "type": "object",
-      "required": ["date", "path"],
-      "properties": {
-        "date": {"type": "string", "format": "date"},
-        "path": {"type": "string", "pattern": "^dset/changes/archive/[0-9]{4}-[0-9]{2}-[0-9]{2}-"}
-      },
-      "additionalProperties": false
-    }
+    "archive": {"oneOf": [{"$ref": "#/$defs/legacy_archive"}, {"$ref": "#/$defs/layered_archive"}]}
   },
   "$defs": {
+    "layer": {"enum": ["meta", "gov", "tool", "skill", "ops"]},
     "trace_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-(?:REQUIREMENT|SCENARIO|INVARIANT|TEST|EVAL|TASK|PROBLEM|OPPORTUNITY|QUESTION|DECISION|CONTRACT|STORY|OUTCOME)(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"},
     "legacy_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)+$"}},
     "requirement_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-REQUIREMENT(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}},
@@ -101,6 +96,24 @@
     "semver": {
       "type": "string",
       "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-rc\\.[1-9][0-9]*)?$"
+    },
+    "legacy_archive": {
+      "type": "object",
+      "required": ["date", "path"],
+      "properties": {
+        "date": {"type": "string", "format": "date"},
+        "path": {"type": "string", "pattern": "^dset/changes/archive/[0-9]{4}-[0-9]{2}-[0-9]{2}-"}
+      },
+      "additionalProperties": false
+    },
+    "layered_archive": {
+      "type": "object",
+      "required": ["date", "path"],
+      "properties": {
+        "date": {"type": "string", "format": "date"},
+        "path": {"type": "string", "pattern": "^dset/scopes/(?:meta|gov|tool|skill|ops)/changes/archive/[0-9]{4}-[0-9]{2}-[0-9]{2}-"}
+      },
+      "additionalProperties": false
     }
   },
   "allOf": [
@@ -123,6 +136,16 @@
           "stories": {"$ref": "#/$defs/story_ids"},
           "outcomes": {"$ref": "#/$defs/outcome_ids"}
         }
+      }
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": "1.2"}}, "required": ["schema_version"]},
+      "then": {
+        "required": ["stories", "outcomes", "primary_layer", "affected_layers"],
+        "properties": {"archive": {"$ref": "#/$defs/layered_archive"}}
+      },
+      "else": {
+        "properties": {"archive": {"$ref": "#/$defs/legacy_archive"}}
       }
     }
   ],

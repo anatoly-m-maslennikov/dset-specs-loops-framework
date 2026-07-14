@@ -37,27 +37,29 @@ def build_traceability(root: Path) -> dict[str, Any]:
                 if item.is_file() and item.name != "README.md"
             ]
         pr = data.get("pull_request", {})
-        changes.append(
-            {
-                "id": data["id"],
-                "status": data["status"],
-                "path": path.relative_to(root).as_posix(),
-                "packages": sorted(data.get("packages", [])),
-                "requirements": sorted(data.get("requirements", [])),
-                "tests": sorted(data.get("tests", [])),
-                "evals": sorted(data.get("evals", [])),
-                "intake": sorted(data.get("intake", [])),
-                "decisions": sorted(data.get("decisions", data.get("adrs", []))),
-                "contracts": sorted(data.get("contracts", [])),
-                "stories": sorted(data.get("stories", [])),
-                "outcomes": sorted(data.get("outcomes", [])),
-                "pull_request": pr.get("url", "pending"),
-                "evidence": evidence,
-            }
-        )
+        entry = {
+            "id": data["id"],
+            "status": data["status"],
+            "path": path.relative_to(root).as_posix(),
+            "packages": sorted(data.get("packages", [])),
+            "requirements": sorted(data.get("requirements", [])),
+            "tests": sorted(data.get("tests", [])),
+            "evals": sorted(data.get("evals", [])),
+            "intake": sorted(data.get("intake", [])),
+            "decisions": sorted(data.get("decisions", data.get("adrs", []))),
+            "contracts": sorted(data.get("contracts", [])),
+            "stories": sorted(data.get("stories", [])),
+            "outcomes": sorted(data.get("outcomes", [])),
+            "pull_request": pr.get("url", "pending"),
+            "evidence": evidence,
+        }
+        if layout.layered:
+            entry["primary_layer"] = data.get("primary_layer")
+            entry["affected_layers"] = sorted(data.get("affected_layers", []))
+        changes.append(entry)
     changes.sort(key=lambda item: item["id"])
     return {
-        "schema_version": 1.1,
+        "schema_version": "1.2" if layout.layered else 1.1,
         "repository": history["repository"],
         "changes": changes,
     }

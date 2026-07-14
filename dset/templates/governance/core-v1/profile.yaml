@@ -4,6 +4,7 @@ version: "0.2"
 rules:
   -
     id: DSET-RULE-ARCHITECTURE
+    layer: GOV
     template: architecture.md
     target: architecture.md
     applicability: applicable
@@ -11,6 +12,7 @@ rules:
     depends_on: []
   -
     id: DSET-RULE-BUILD
+    layer: TOOL
     template: build-rules.md
     target: build-rules.md
     applicability: applicable
@@ -19,6 +21,7 @@ rules:
       - DSET-RULE-ARCHITECTURE
   -
     id: DSET-RULE-DOMAIN-SPEC
+    layer: META
     template: domain-spec-authoring.md
     target: domain-spec-authoring.md
     applicability: applicable
@@ -27,6 +30,7 @@ rules:
       - DSET-RULE-ARCHITECTURE
   -
     id: DSET-RULE-TEST-PLAN
+    layer: META
     template: test-planning.md
     target: test-planning.md
     applicability: applicable
@@ -35,6 +39,7 @@ rules:
       - DSET-RULE-DOMAIN-SPEC
   -
     id: DSET-RULE-EVAL-PLAN
+    layer: META
     template: eval-planning.md
     target: eval-planning.md
     applicability: applicable
@@ -43,6 +48,7 @@ rules:
       - DSET-RULE-DOMAIN-SPEC
   -
     id: DSET-RULE-SUPPORTABILITY
+    layer: OPS
     template: supportability.md
     target: supportability.md
     applicability: applicable
@@ -51,6 +57,7 @@ rules:
       - DSET-RULE-ARCHITECTURE
   -
     id: DSET-RULE-ARTIFACT-MAINTENANCE
+    layer: GOV
     template: artifact-maintenance.md
     target: artifact-maintenance.md
     applicability: applicable
@@ -59,6 +66,7 @@ rules:
       - DSET-RULE-ARCHITECTURE
   -
     id: DSET-RULE-WORK-ITEMS
+    layer: GOV
     template: work-items.md
     target: work-items.md
     applicability: applicable
@@ -67,6 +75,7 @@ rules:
       - DSET-RULE-ARCHITECTURE
   -
     id: DSET-RULE-DELEGATION-BUDGET
+    layer: SKILL
     template: delegation-budget.md
     target: delegation-budget.md
     applicability: applicable
@@ -75,6 +84,7 @@ rules:
       - DSET-RULE-ARCHITECTURE
   -
     id: DSET-RULE-SKILL-RUNS
+    layer: SKILL
     template: skill-runs.md
     target: skill-runs.md
     applicability: applicable
@@ -85,6 +95,7 @@ rules:
       - DSET-RULE-DELEGATION-BUDGET
   -
     id: DSET-RULE-RELEASE
+    layer: OPS
     template: release.md
     target: release.md
     applicability: applicable
@@ -98,6 +109,7 @@ rules:
       - DSET-RULE-ARTIFACT-MAINTENANCE
   -
     id: DSET-RULE-LIFECYCLE
+    layer: SKILL
     template: lifecycle-orchestration.md
     target: lifecycle-orchestration.md
     applicability: applicable
@@ -115,6 +127,7 @@ rules:
       - DSET-RULE-RELEASE
   -
     id: DSET-RULE-DIAGNOSIS
+    layer: SKILL
     template: diagnosis.md
     target: diagnosis.md
     applicability: applicable
@@ -127,6 +140,7 @@ rules:
       - DSET-RULE-ARTIFACT-MAINTENANCE
   -
     id: DSET-RULE-PROTOTYPING
+    layer: SKILL
     template: prototyping.md
     target: prototyping.md
     applicability: applicable

@@ -9,7 +9,7 @@ from typing import Any, cast
 
 from .diagnostics import Diagnostic
 from .errors import DsetCommandError
-from .layout import discover_layout, has_manifest
+from .layout import LAYERS, discover_layout, has_manifest
 from .yaml_subset import YamlSubsetError, dump, load
 
 RULE_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
@@ -17,6 +17,7 @@ WORKFLOW_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 CUSTOMIZATION = {"unmodified", "custom"}
 APPLICABILITY = {"applicable", "not-applicable"}
+RULE_LAYERS = {layer.upper() for layer in LAYERS}
 
 
 def find_repository(start: Path) -> Path:
@@ -71,6 +72,7 @@ def validate_governance_registry(
     expected_profile: str,
 ) -> list[Diagnostic]:
     root = root.resolve()
+    layout = discover_layout(root)
     diagnostics: list[Diagnostic] = []
     profile = data.get("profile")
     if not isinstance(profile, dict):
@@ -119,6 +121,11 @@ def validate_governance_registry(
             )
             continue
         by_id[rule_id] = rule
+        layer = rule.get("layer")
+        if layer not in RULE_LAYERS:
+            diagnostics.append(
+                _diag("DSET-E131", registry_path, f"invalid rule layer: {rule_id}")
+            )
         owner = rule.get("owner")
         if not isinstance(owner, str) or not owner.strip():
             diagnostics.append(
@@ -154,6 +161,18 @@ def validate_governance_registry(
                 _diag("DSET-E133", local, f"governing document is missing: {rule_id}")
             )
             continue
+        if layout.layered and layer in RULE_LAYERS:
+            expected_root = layout.layer_root(str(layer).lower()) / "governance"
+            try:
+                local.relative_to(expected_root)
+            except ValueError:
+                diagnostics.append(
+                    _diag(
+                        "DSET-E134",
+                        local,
+                        f"rule is outside its owning layer: {rule_id}/{layer}",
+                    )
+                )
         source = rule.get("source")
         source_sha = source.get("sha256") if isinstance(source, dict) else None
         if not isinstance(source_sha, str) or not SHA256_PATTERN.fullmatch(source_sha):
@@ -290,6 +309,7 @@ def resolve_workflow(
         rules.append(
             {
                 "id": rule_id,
+                "layer": rule["layer"],
                 "path": rule["path"],
                 "owner": rule["owner"],
                 "applicability": rule["applicability"],
@@ -341,11 +361,6 @@ def materialize_governance(
             / "profile.yaml",
             str(error),
         ) from error
-    profile_root = profile_path.parent
-    if not profile_path.is_file():
-        raise DsetCommandError(
-            "DSET-E140", profile_path, "governance profile template is missing"
-        )
     profile = cast(dict[str, Any], load(profile_path))
     project = cast(dict[str, Any], load(manifest))
     release = project.get("release", {})
@@ -357,25 +372,49 @@ def materialize_governance(
             "DSET-E140", profile_path, "governance profile identity mismatch"
         )
     registry_path = target_layout.governance_path
-    destination = target_layout.governance_root
-    if registry_path.exists() or destination.exists():
-        raise FileExistsError(f"governance destination already exists: {destination}")
     rules = cast(list[dict[str, Any]], profile.get("rules", []))
-    documents = [profile_root / "README.md"]
-    documents.extend(profile_root / str(item["template"]) for item in rules)
-    missing = [path for path in documents if not path.is_file()]
-    if missing:
-        raise DsetCommandError(
-            "DSET-E140", missing[0], "governance document template is missing"
-        )
+    profile_relative = Path("governance") / profile_id
+
+    def source_template(relative: Path) -> Path:
+        try:
+            return source_layout.find_template(relative)
+        except (FileNotFoundError, ValueError) as error:
+            raise DsetCommandError(
+                "DSET-E140", source_layout.template_roots[0] / relative, str(error)
+            ) from error
+
+    readme_template = source_template(profile_relative / "README.md")
+    templates: dict[str, Path] = {}
+    targets: dict[str, Path] = {}
+    governance_roots = {target_layout.governance_root}
+    for item in rules:
+        rule_id = str(item.get("id", ""))
+        layer = item.get("layer")
+        if layer not in RULE_LAYERS:
+            raise DsetCommandError(
+                "DSET-E140", profile_path, f"invalid rule layer: {rule_id}/{layer}"
+            )
+        templates[rule_id] = source_template(profile_relative / str(item["template"]))
+        destination = target_layout.governance_root
+        if target_layout.layered:
+            destination = target_layout.layer_root(str(layer).lower()) / "governance"
+            governance_roots.add(destination)
+        targets[rule_id] = destination / str(item["target"])
+    existing = [path for path in governance_roots if path.exists()]
+    if registry_path.exists() or existing:
+        occupied = registry_path if registry_path.exists() else sorted(existing)[0]
+        raise FileExistsError(f"governance destination already exists: {occupied}")
     copied_wrappers: list[Path] = []
-    destination.mkdir(parents=True)
+    for destination in sorted(governance_roots):
+        destination.mkdir(parents=True)
     try:
-        shutil.copyfile(profile_root / "README.md", destination / "README.md")
+        shutil.copyfile(readme_template, target_layout.governance_root / "README.md")
         rendered_rules: list[dict[str, Any]] = []
         for item in rules:
-            template = profile_root / str(item["template"])
-            target = destination / str(item["target"])
+            rule_id = str(item["id"])
+            template = templates[rule_id]
+            target = targets[rule_id]
+            target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(template, target)
             applicability = item.get("applicability", "applicable")
             reason = item.get("reason", "selected by the local profile")
@@ -391,7 +430,8 @@ def materialize_governance(
                 ]
             rendered_rules.append(
                 {
-                    "id": item["id"],
+                    "id": rule_id,
+                    "layer": item["layer"],
                     "path": target.relative_to(target_root).as_posix(),
                     "owner": "project",
                     "applicability": applicability,
@@ -451,8 +491,9 @@ def materialize_governance(
     except Exception:
         if registry_path.exists():
             registry_path.unlink()
-        if destination.exists():
-            shutil.rmtree(destination)
+        for destination in sorted(governance_roots, reverse=True):
+            if destination.exists():
+                shutil.rmtree(destination)
         for wrapper in copied_wrappers:
             if wrapper.exists():
                 shutil.rmtree(wrapper)

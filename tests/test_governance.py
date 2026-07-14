@@ -194,6 +194,105 @@ class GovernanceTests(unittest.TestCase):
         with self.assertRaises(FileExistsError):
             materialize_governance(ROOT, self.root)
 
+    def test_profile_assigns_every_rule_to_a_stable_layer(self) -> None:
+        profile = cast(
+            dict[str, Any],
+            load(
+                ROOT / "dset" / "templates" / "governance" / "core-v1" / "profile.yaml"
+            ),
+        )
+        actual = {item["id"]: item["layer"] for item in profile["rules"]}
+        self.assertEqual(
+            actual,
+            {
+                "DSET-RULE-ARCHITECTURE": "GOV",
+                "DSET-RULE-BUILD": "TOOL",
+                "DSET-RULE-DOMAIN-SPEC": "META",
+                "DSET-RULE-TEST-PLAN": "META",
+                "DSET-RULE-EVAL-PLAN": "META",
+                "DSET-RULE-SUPPORTABILITY": "OPS",
+                "DSET-RULE-ARTIFACT-MAINTENANCE": "GOV",
+                "DSET-RULE-WORK-ITEMS": "GOV",
+                "DSET-RULE-DELEGATION-BUDGET": "SKILL",
+                "DSET-RULE-SKILL-RUNS": "SKILL",
+                "DSET-RULE-RELEASE": "OPS",
+                "DSET-RULE-LIFECYCLE": "SKILL",
+                "DSET-RULE-DIAGNOSIS": "SKILL",
+                "DSET-RULE-PROTOTYPING": "SKILL",
+            },
+        )
+
+    def test_schema_12_materializes_rules_into_their_owning_layers(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw) / "layered-adopter"
+            self._make_layered_project(target)
+            registry_path = materialize_governance(ROOT, target)
+            self.assertEqual(
+                registry_path,
+                target / "dset" / "scopes" / "gov" / "governance.yaml",
+            )
+            registry = cast(dict[str, Any], load(registry_path))
+            for rule in cast(list[dict[str, Any]], registry["rules"]):
+                with self.subTest(rule=rule["id"]):
+                    expected_prefix = (
+                        Path("dset")
+                        / "scopes"
+                        / str(rule["layer"]).lower()
+                        / "governance"
+                    )
+                    self.assertEqual(Path(str(rule["path"])).parent, expected_prefix)
+                    self.assertTrue((target / str(rule["path"])).is_file())
+            self.assertTrue(
+                (
+                    target / "dset" / "scopes" / "gov" / "governance" / "README.md"
+                ).is_file()
+            )
+            self.assertEqual(validate_governance(target), [])
+
+    def test_layered_source_templates_are_resolved_across_all_roots(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            source = Path(raw) / "layered-framework"
+            target = Path(raw) / "layered-adopter"
+            self._make_layered_project(source)
+            self._make_layered_project(target)
+            canonical = ROOT / "dset" / "templates" / "governance" / "core-v1"
+            profile = cast(dict[str, Any], load(canonical / "profile.yaml"))
+            profile_root = (
+                source
+                / "dset"
+                / "scopes"
+                / "tool"
+                / "templates"
+                / "governance"
+                / "core-v1"
+            )
+            profile_root.mkdir(parents=True)
+            shutil.copyfile(canonical / "profile.yaml", profile_root / "profile.yaml")
+            shutil.copyfile(canonical / "README.md", profile_root / "README.md")
+            for rule in cast(list[dict[str, Any]], profile["rules"]):
+                distributed = (
+                    source
+                    / "dset"
+                    / "scopes"
+                    / str(rule["layer"]).lower()
+                    / "templates"
+                    / "governance"
+                    / "core-v1"
+                    / str(rule["template"])
+                )
+                distributed.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(canonical / str(rule["template"]), distributed)
+
+            registry_path = materialize_governance(source, target)
+            registry = cast(dict[str, Any], load(registry_path))
+            for rule in cast(list[dict[str, Any]], registry["rules"]):
+                with self.subTest(rule=rule["id"]):
+                    self.assertIn(
+                        f"dset/scopes/{str(rule['layer']).lower()}/templates/",
+                        rule["source"]["template"],
+                    )
+            self.assertEqual(validate_governance(target), [])
+
     def test_product_and_package_versions_are_coordinated(self) -> None:
         stream = io.StringIO()
         with contextlib.redirect_stdout(stream):
@@ -476,6 +575,21 @@ class GovernanceTests(unittest.TestCase):
         self.assertEqual(captured.exception.code, "DSET-E140")
         (self.root / "dset" / "dset.yaml").unlink()
         self.assertEqual(validate_repository(self.root)[0].code, "DSET-E001")
+
+    @staticmethod
+    def _make_layered_project(root: Path) -> None:
+        scopes = root / "dset" / "scopes"
+        for layer in ("meta", "gov", "tool", "skill", "ops"):
+            (scopes / layer).mkdir(parents=True)
+        (scopes / "meta" / "dset.yaml").write_text(
+            dump(
+                {
+                    "schema_version": "1.2",
+                    "profiles": {"repository_governance": "core-v1"},
+                }
+            ),
+            encoding="utf-8",
+        )
 
     @staticmethod
     def _registry(root: Path) -> tuple[Path, dict[str, Any]]:

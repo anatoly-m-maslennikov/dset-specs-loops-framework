@@ -34,9 +34,10 @@
   "$defs": {
     "rule": {
       "type": "object",
-      "required": ["id", "path", "owner", "applicability", "reason", "depends_on", "customization", "source"],
+      "required": ["id", "layer", "path", "owner", "applicability", "reason", "depends_on", "customization", "source"],
       "properties": {
         "id": {"type": "string", "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)+$"},
+        "layer": {"enum": ["META", "GOV", "TOOL", "SKILL", "OPS"]},
         "path": {"type": "string", "minLength": 1},
         "owner": {"type": "string", "minLength": 1},
         "applicability": {"enum": ["applicable", "not-applicable"]},

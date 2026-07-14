@@ -6,6 +6,7 @@ profile:
 rules:
   -
     id: DSET-RULE-ARCHITECTURE
+    layer: GOV
     path: dset/governance/architecture.md
     owner: project
     applicability: applicable
@@ -19,6 +20,7 @@ rules:
       sha256: 15f521d78463d93718ea873122786edd5fffaf639fb24eaed4ffc0ef4690ed59
   -
     id: DSET-RULE-BUILD
+    layer: TOOL
     path: dset/governance/build-rules.md
     owner: project
     applicability: applicable
@@ -33,6 +35,7 @@ rules:
       sha256: b2c8f31cab241fad46ab523b030ab1b5d9149f6ff88d6d36a157bf8639f4559e
   -
     id: DSET-RULE-DOMAIN-SPEC
+    layer: META
     path: dset/governance/domain-spec-authoring.md
     owner: project
     applicability: applicable
@@ -47,6 +50,7 @@ rules:
       sha256: a6cf20c4f12486c7980e06f902e2c1a59487d5ef4a343e6e3e9f9b4267565b3e
   -
     id: DSET-RULE-TEST-PLAN
+    layer: META
     path: dset/governance/test-planning.md
     owner: project
     applicability: applicable
@@ -61,6 +65,7 @@ rules:
       sha256: d35e335fffe73396cc29e7f3d5b268c8a44f249bb8a8426126b8ca15322884b4
   -
     id: DSET-RULE-EVAL-PLAN
+    layer: META
     path: dset/governance/eval-planning.md
     owner: project
     applicability: applicable
@@ -75,6 +80,7 @@ rules:
       sha256: 23549cb49b10d44f0b657859b33185cf73e40b46d30c5a1f35a1f1e9955b5cb8
   -
     id: DSET-RULE-SUPPORTABILITY
+    layer: OPS
     path: dset/governance/supportability.md
     owner: project
     applicability: applicable
@@ -89,6 +95,7 @@ rules:
       sha256: cf1e5c0dea9f1a1690cd962ffd6511fa7e2af6242e3d2340fe7daa603bd1c35f
   -
     id: DSET-RULE-ARTIFACT-MAINTENANCE
+    layer: GOV
     path: dset/governance/artifact-maintenance.md
     owner: project
     applicability: applicable
@@ -103,6 +110,7 @@ rules:
       sha256: 6ab16f37577813ec4aff9ecf2d1f5502a54767fc052c91f42e287e3d7d3b9c26
   -
     id: DSET-RULE-WORK-ITEMS
+    layer: GOV
     path: dset/governance/work-items.md
     owner: project
     applicability: applicable
@@ -117,6 +125,7 @@ rules:
       sha256: 8dde26de5be94ddc9440579c308b722dbabfd53c4d68e45bcbec694775b66ad4
   -
     id: DSET-RULE-DELEGATION-BUDGET
+    layer: SKILL
     path: dset/governance/delegation-budget.md
     owner: project
     applicability: applicable
@@ -131,6 +140,7 @@ rules:
       sha256: d7e679e859ae5b95f120b6c7489e3b272a89f81295f7ea4d9b53c8049322f3ce
   -
     id: DSET-RULE-SKILL-RUNS
+    layer: SKILL
     path: dset/governance/skill-runs.md
     owner: project
     applicability: applicable
@@ -147,6 +157,7 @@ rules:
       sha256: b64ff3952e07fa77f35a070927d3fd66c23d45d6d85e042a3ff4baa54b3b1c6d
   -
     id: DSET-RULE-RELEASE
+    layer: OPS
     path: dset/governance/release.md
     owner: project
     applicability: applicable
@@ -166,6 +177,7 @@ rules:
       sha256: 5ceec46d4c2cd17865e13dcc73ee7708e200b30c40eea5c2ac1fd0a65dee3304
   -
     id: DSET-RULE-LIFECYCLE
+    layer: SKILL
     path: dset/governance/lifecycle-orchestration.md
     owner: project
     applicability: applicable
@@ -189,6 +201,7 @@ rules:
       sha256: 69c356921ab25cc0426ae21bbee7ba2ac17cf3c44e2ebd2cc3bd1eebf30344fb
   -
     id: DSET-RULE-DIAGNOSIS
+    layer: SKILL
     path: dset/governance/diagnosis.md
     owner: project
     applicability: applicable
@@ -207,6 +220,7 @@ rules:
       sha256: 8f5e78a193298fb0e92b2a67891f005464a50760d84cf814dc3901ea30d122e2
   -
     id: DSET-RULE-PROTOTYPING
+    layer: SKILL
     path: dset/governance/prototyping.md
     owner: project
     applicability: applicable

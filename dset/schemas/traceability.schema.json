@@ -5,7 +5,7 @@
   "type": "object",
   "required": ["schema_version", "repository", "changes"],
   "properties": {
-    "schema_version": {"const": 1.1},
+    "schema_version": {"enum": [1.1, "1.2"]},
     "repository": {"type": "string"},
     "changes": {
       "type": "array",
@@ -16,6 +16,8 @@
           "id": {"type": "string"},
           "status": {"type": "string"},
           "path": {"type": "string"},
+          "primary_layer": {"enum": ["meta", "gov", "tool", "skill", "ops"]},
+          "affected_layers": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["meta", "gov", "tool", "skill", "ops"]}},
           "packages": {"type": "array", "items": {"type": "string"}},
           "requirements": {"type": "array", "items": {"type": "string"}},
           "tests": {"type": "array", "items": {"type": "string"}},
@@ -32,5 +34,24 @@
       }
     }
   },
+  "allOf": [
+    {
+      "if": {"properties": {"schema_version": {"const": "1.2"}}, "required": ["schema_version"]},
+      "then": {
+        "properties": {
+          "changes": {
+            "items": {"required": ["primary_layer", "affected_layers"]}
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "changes": {
+            "items": {"not": {"anyOf": [{"required": ["primary_layer"]}, {"required": ["affected_layers"]}]}}
+          }
+        }
+      }
+    }
+  ],
   "additionalProperties": false
 }
