@@ -96,3 +96,4 @@ changes:
     evidence:
       - dset/changes/operationalize-dset-v1/proofs/deterministic-verification-2026-07-14.md
       - dset/changes/operationalize-dset-v1/proofs/github-delivery-evidence-2026-07-14.md
+      - dset/changes/operationalize-dset-v1/proofs/qualitative-evals-2026-07-14.md
