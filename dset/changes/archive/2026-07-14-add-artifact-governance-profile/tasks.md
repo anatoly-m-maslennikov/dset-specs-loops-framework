@@ -7,4 +7,4 @@
 - [x] **ART-TASK-005:** Add the documentation-v1 configuration/schema, activate the orthogonal artifact profile, and implement stable validation diagnostics.
 - [x] **ART-TASK-006:** Add fixtures/tests for valid architecture, missing hubs, invalid parents/cycles, root navigation, and profile independence.
 - [x] **ART-TASK-007:** Reconcile accepted package truth and repository navigation without claiming unfinished JS/TS or advanced methodology work.
-- [ ] **ART-TASK-008:** Run deterministic checks and independent evals, record corrective loops, archive the change, and satisfy protected merge readiness.
+- [x] **ART-TASK-008:** Run deterministic checks and independent evals, record corrective loops, archive the change, and satisfy protected merge readiness.
