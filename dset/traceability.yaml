@@ -97,6 +97,7 @@ changes:
     pull_request: pending
     evidence:
       - dset/changes/make-dset-self-hosting-and-skills-thin/proofs/invariant-contract-verification-2026-07-14.md
+      - dset/changes/make-dset-self-hosting-and-skills-thin/proofs/local-fixed-point-2026-07-14.md
       - dset/changes/make-dset-self-hosting-and-skills-thin/proofs/wrapper-rule-inventory-2026-07-14.md
   -
     id: make-supportability-first-class
