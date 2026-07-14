@@ -11,6 +11,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class SelfHostTests(unittest.TestCase):
+    def test_hosted_workflow_fetches_released_validator_history(self) -> None:
+        workflow = (ROOT / ".github" / "workflows" / "dset.yml").read_text(
+            encoding="utf-8"
+        )
+        checkout = workflow.split("uses: actions/checkout@", maxsplit=1)[1]
+        checkout = checkout.split("- name: Set up Python", maxsplit=1)[0]
+        self.assertIn("fetch-depth: 0", checkout)
+
     def test_fixed_point_uses_released_and_candidate_validators(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             report = run_self_host(ROOT, Path(raw))
