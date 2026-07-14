@@ -3,21 +3,18 @@ from __future__ import annotations
 from datetime import date
 from pathlib import Path
 
+from .layout import discover_layout
 from .validation import validate_change
 from .yaml_subset import dump, load
 
 
 def archive_plan(root: Path, change_id: str, archive_date: date) -> tuple[Path, Path]:
-    source = root / "dset" / "changes" / change_id
-    destination = (
-        root
-        / "dset"
-        / "changes"
-        / "archive"
-        / f"{archive_date.isoformat()}-{change_id}"
+    layout = discover_layout(root)
+    source = layout.find_change(change_id)
+    layer = layout.change_layer(source)
+    destination = layout.archive_change_root(layer) / (
+        f"{archive_date.isoformat()}-{change_id}"
     )
-    if not source.is_dir():
-        raise FileNotFoundError(f"active change does not exist: {source}")
     if destination.exists():
         raise FileExistsError(f"archive destination exists: {destination}")
     data = load(source / "change.yaml")

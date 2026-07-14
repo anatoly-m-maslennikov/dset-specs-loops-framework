@@ -20,6 +20,7 @@ from .governance import (
     resolve_workflow,
     validate_governance,
 )
+from .layout import discover_layout
 from .scaffold import create_change
 from .self_host import run_self_host
 from .traceability import (
@@ -135,7 +136,8 @@ def main(argv: list[str] | None = None) -> int:
                 if trace_is_fresh(root):
                     print("DSET traceability is fresh")
                     return 0
-                print("DSET-E111 dset/traceability.yaml: traceability is stale")
+                path = discover_layout(root).traceability_path.relative_to(root)
+                print(f"DSET-E111 {path}: traceability is stale")
                 return 1
             if args.write:
                 path = write_traceability(root)
@@ -203,7 +205,7 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         if args.command == "version":
             root = _repository_root(args.root)
-            data = load(root / "dset" / "version.yaml")
+            data = load(discover_layout(root).version_path)
             if args.format == "json":
                 print(json.dumps(data, indent=2))
             else:

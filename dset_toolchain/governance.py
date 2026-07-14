@@ -9,6 +9,7 @@ from typing import Any, cast
 
 from .diagnostics import Diagnostic
 from .errors import DsetCommandError
+from .layout import discover_layout, has_manifest
 from .yaml_subset import YamlSubsetError, dump, load
 
 RULE_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
@@ -23,7 +24,7 @@ def find_repository(start: Path) -> Path:
     if current.is_file():
         current = current.parent
     for candidate in (current, *current.parents):
-        if (candidate / "dset" / "dset.yaml").is_file():
+        if has_manifest(candidate):
             return candidate
     raise FileNotFoundError(f"DSET project root not found from: {start}")
 
@@ -32,7 +33,8 @@ def validate_governance(
     root: Path, expected_profile: str | None = None
 ) -> list[Diagnostic]:
     root = root.resolve()
-    manifest_path = root / "dset" / "dset.yaml"
+    layout = discover_layout(root)
+    manifest_path = layout.manifest_path
     if expected_profile is None:
         try:
             manifest = load(manifest_path)
@@ -50,7 +52,7 @@ def validate_governance(
                 "repository-governance profile is not selected",
             )
         ]
-    registry_path = root / "dset" / "governance.yaml"
+    registry_path = layout.governance_path
     if not registry_path.is_file():
         return [_diag("DSET-E130", registry_path, "governance registry is missing")]
     try:
@@ -259,7 +261,7 @@ def resolve_workflow(
     diagnostics = validate_governance(root)
     if diagnostics:
         return None, diagnostics
-    path = root / "dset" / "governance.yaml"
+    path = discover_layout(root).governance_path
     data = cast(dict[str, Any], load(path))
     workflow = next(
         (
@@ -321,11 +323,25 @@ def materialize_governance(
 ) -> Path:
     source_root = source_root.resolve()
     target_root = target_root.resolve()
-    manifest = target_root / "dset" / "dset.yaml"
+    source_layout = discover_layout(source_root)
+    target_layout = discover_layout(target_root)
+    manifest = target_layout.manifest_path
     if not manifest.is_file():
         raise DsetCommandError("DSET-E001", manifest, "project manifest is missing")
-    profile_root = source_root / "dset" / "templates" / "governance" / profile_id
-    profile_path = profile_root / "profile.yaml"
+    try:
+        profile_path = source_layout.find_template(
+            Path("governance") / profile_id / "profile.yaml"
+        )
+    except (FileNotFoundError, ValueError) as error:
+        raise DsetCommandError(
+            "DSET-E140",
+            source_layout.template_roots[0]
+            / "governance"
+            / profile_id
+            / "profile.yaml",
+            str(error),
+        ) from error
+    profile_root = profile_path.parent
     if not profile_path.is_file():
         raise DsetCommandError(
             "DSET-E140", profile_path, "governance profile template is missing"
@@ -340,8 +356,8 @@ def materialize_governance(
         raise DsetCommandError(
             "DSET-E140", profile_path, "governance profile identity mismatch"
         )
-    registry_path = target_root / "dset" / "governance.yaml"
-    destination = target_root / "dset" / "governance"
+    registry_path = target_layout.governance_path
+    destination = target_layout.governance_root
     if registry_path.exists() or destination.exists():
         raise FileExistsError(f"governance destination already exists: {destination}")
     rules = cast(list[dict[str, Any]], profile.get("rules", []))
@@ -446,7 +462,7 @@ def materialize_governance(
 
 def refresh_customization(root: Path) -> Path:
     root = root.resolve()
-    path = root / "dset" / "governance.yaml"
+    path = discover_layout(root).governance_path
     data = cast(dict[str, Any], load(path))
     custom = False
     for rule in cast(list[dict[str, Any]], data.get("rules", [])):
@@ -468,7 +484,7 @@ def refresh_customization(root: Path) -> Path:
 def diff_governance(root: Path, source_root: Path) -> str:
     root = root.resolve()
     source_root = source_root.resolve()
-    data = cast(dict[str, Any], load(root / "dset" / "governance.yaml"))
+    data = cast(dict[str, Any], load(discover_layout(root).governance_path))
     output: list[str] = []
     for rule in cast(list[dict[str, Any]], data.get("rules", [])):
         source = cast(dict[str, Any], rule["source"])

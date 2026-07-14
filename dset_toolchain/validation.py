@@ -9,6 +9,7 @@ from urllib.parse import unquote
 from . import __version__
 from .diagnostics import Diagnostic
 from .governance import validate_governance
+from .layout import RepositoryLayout, discover_layout
 from .profiles import VALID_PROFILES, required_artifacts
 from .yaml_subset import YamlSubsetError, load
 
@@ -39,8 +40,11 @@ GITHUB_CALLOUTS = {"NOTE", "TIP", "IMPORTANT", "WARNING", "CAUTION"}
 def validate_repository(root: Path) -> list[Diagnostic]:
     root = root.resolve()
     diagnostics: list[Diagnostic] = []
-    dset_root = root / "dset"
-    manifest_path = dset_root / "dset.yaml"
+    try:
+        layout = discover_layout(root)
+    except ValueError as error:
+        return [_diag("DSET-E001", root / "dset", str(error))]
+    manifest_path = layout.manifest_path
     if not manifest_path.is_file():
         return [_diag("DSET-E001", manifest_path, "project manifest is missing")]
     if (root / ".dset" / "specs").exists() or (root / ".dset" / "changes").exists():
@@ -61,17 +65,24 @@ def validate_repository(root: Path) -> list[Diagnostic]:
             diagnostics.extend(
                 validate_governance(root, str(profiles["repository_governance"]))
             )
-        diagnostics.extend(_validate_version(root, manifest))
-    diagnostics.extend(_validate_schemas(dset_root / "schemas"))
+        diagnostics.extend(_validate_version(root, manifest, layout))
+    try:
+        schema_paths = tuple(layout.schema_paths())
+    except ValueError as error:
+        diagnostics.append(_diag("DSET-E118", layout.dset_root, str(error)))
+        schema_paths = ()
+    diagnostics.extend(_validate_schemas(schema_paths))
     diagnostics.extend(_validate_provenance(root))
     diagnostics.extend(_validate_packages(root, manifest or {}))
-    active = dset_root / "changes"
-    if active.is_dir():
+    for active in layout.active_change_roots:
+        if not active.is_dir():
+            continue
         for path in sorted(active.iterdir()):
             if path.is_dir() and path.name != "archive":
                 diagnostics.extend(validate_change(root, path, archived=False))
-    archive = active / "archive"
-    if archive.is_dir():
+    for archive in layout.archive_change_roots:
+        if not archive.is_dir():
+            continue
         for path in sorted(archive.iterdir()):
             if path.is_dir() and re.match(r"^\d{4}-\d{2}-\d{2}-", path.name):
                 diagnostics.extend(validate_change(root, path, archived=True))
@@ -371,10 +382,12 @@ def _validate_intake_registry(root: Path, manifest: dict[str, Any]) -> list[Diag
     return diagnostics
 
 
-def _validate_version(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]:
+def _validate_version(
+    root: Path, manifest: dict[str, Any], layout: RepositoryLayout
+) -> list[Diagnostic]:
     project = manifest.get("project", {})
     role = project.get("repository_role") if isinstance(project, dict) else None
-    path = root / "dset" / "version.yaml"
+    path = layout.version_path
     if role != "framework-source-and-adopter" and not path.exists():
         return []
     diagnostics: list[Diagnostic] = []
@@ -425,6 +438,7 @@ def _python_release_version(product_version: str) -> str:
 
 def _validate_packages(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
+    layout = discover_layout(root)
     project_key = _manifest_project_key(manifest)
     if project_key is None:
         return diagnostics
@@ -439,7 +453,7 @@ def _validate_packages(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]
     for package in manifest.get("packages", []):
         if not isinstance(package, dict):
             continue
-        base = root / "dset" / str(package.get("path", ""))
+        base = layout.resolve_dset_path(str(package.get("path", "")))
         package_manifest = base / "package.yaml"
         if not package_manifest.is_file():
             diagnostics.append(
@@ -540,7 +554,7 @@ def _validate_artifacts(
                 f"unsupported artifact profile: {profile}",
             )
         ]
-    registry_path = root / "dset" / "artifacts.yaml"
+    registry_path = discover_layout(root).artifact_registry_path
     if not registry_path.is_file():
         return [
             _diag(
@@ -818,7 +832,7 @@ def _validate_change_ids(
     diagnostics: list[Diagnostic] = []
     manifest_path = change_dir / "change.yaml"
     legacy = _is_legacy_change(data)
-    manifest = _safe_load(root / "dset" / "dset.yaml", diagnostics) or {}
+    manifest = _safe_load(discover_layout(root).manifest_path, diagnostics) or {}
     project_key = _manifest_project_key(manifest)
     if project_key is None:
         diagnostics.append(
@@ -950,7 +964,7 @@ def _validate_change_ids(
     if not isinstance(intake_ids, list):
         diagnostics.append(_diag("DSET-E106", manifest_path, "intake must be a list"))
     else:
-        registry_path = root / "dset" / "intake.yaml"
+        registry_path = discover_layout(root).intake_path
         if not intake_ids and not registry_path.is_file():
             return diagnostics
         registry = _safe_load(registry_path, diagnostics) or {}
@@ -971,9 +985,9 @@ def _validate_change_ids(
     return diagnostics
 
 
-def _validate_schemas(schema_root: Path) -> list[Diagnostic]:
+def _validate_schemas(schema_paths: tuple[Path, ...]) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
-    for path in sorted(schema_root.glob("*.json")):
+    for path in schema_paths:
         try:
             json.loads(path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as error:
@@ -982,7 +996,7 @@ def _validate_schemas(schema_root: Path) -> list[Diagnostic]:
 
 
 def _validate_provenance(root: Path) -> list[Diagnostic]:
-    path = root / "dset" / "provenance.yaml"
+    path = discover_layout(root).provenance_path
     diagnostics: list[Diagnostic] = []
     data = _safe_load(path, diagnostics)
     if not data:

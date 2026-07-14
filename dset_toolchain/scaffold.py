@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+from .layout import discover_layout
 from .profiles import VALID_PROFILES, required_artifacts
 from .yaml_subset import load
 
@@ -21,11 +22,11 @@ def create_change(
         raise ValueError("change ID must be lowercase kebab-case")
     if profile not in VALID_PROFILES:
         raise ValueError(f"unknown profile: {profile}")
-    destination = root / "dset" / "changes" / change_id
+    layout = discover_layout(root)
+    destination = layout.active_change_root(layer) / change_id
     if destination.exists():
         raise FileExistsError(f"change already exists: {destination}")
     files, directories = required_artifacts(root, profile)
-    templates = root / "dset" / "templates" / "change"
     display_title = title or change_id.replace("-", " ").title()
     project_key = _project_key(root)
     id_layer = _id_layer(root, layer)
@@ -43,19 +44,19 @@ def create_change(
         for directory in sorted(directories):
             (destination / directory).mkdir(parents=True, exist_ok=True)
         for relative in sorted(files):
-            source = templates / relative
+            source = layout.find_template(Path("change") / relative)
             target = destination / relative
             _copy_template(source, target, replacements)
         if "specs" in directories:
-            source = templates / "specs" / "package.md"
+            source = layout.find_template("change/specs/package.md")
             target = destination / "specs" / f"{package_id}.md"
             _copy_template(source, target, replacements)
         if "proofs" in directories:
-            source = templates / "proofs" / "README.md"
+            source = layout.find_template("change/proofs/README.md")
             target = destination / "proofs" / "README.md"
             _copy_template(source, target, replacements)
         if "proofs/candidate-fit" in directories:
-            source = templates / "proofs" / "candidate-fit" / "README.md"
+            source = layout.find_template("change/proofs/candidate-fit/README.md")
             target = destination / "proofs" / "candidate-fit" / "README.md"
             _copy_template(source, target, replacements)
     except Exception:
@@ -75,7 +76,7 @@ def _copy_template(source: Path, target: Path, replacements: dict[str, str]) -> 
 
 
 def _project_key(root: Path) -> str:
-    data = load(root / "dset" / "dset.yaml")
+    data = load(discover_layout(root).manifest_path)
     project = data.get("project", {}) if isinstance(data, dict) else {}
     key = project.get("key") if isinstance(project, dict) else None
     if not isinstance(key, str) or not re.fullmatch(r"[A-Z][A-Z0-9]*", key):
@@ -89,7 +90,7 @@ def _id_layer(root: Path, layer: str | None) -> str:
     normalized = layer.upper()
     if normalized not in TRACE_LAYERS:
         raise ValueError(f"unknown ID layer: {layer}")
-    data = load(root / "dset" / "intake.yaml")
+    data = load(discover_layout(root).intake_path)
     raw_scopes = data.get("scopes", []) if isinstance(data, dict) else []
     registered = {
         item.get("id_segment")
@@ -102,7 +103,7 @@ def _id_layer(root: Path, layer: str | None) -> str:
 
 
 def _repository(root: Path) -> str:
-    history = load(root / "dset" / "history" / "pull-requests.yaml")
+    history = load(discover_layout(root).history_path)
     return str(history["repository"])
 
 

@@ -3,22 +3,26 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from .layout import discover_layout
 from .yaml_subset import dump, load
 
 
 def build_traceability(root: Path) -> dict[str, Any]:
     root = root.resolve()
-    history = load(root / "dset" / "history" / "pull-requests.yaml")
+    layout = discover_layout(root)
+    history = load(layout.history_path)
     changes: list[dict[str, Any]] = []
-    change_root = root / "dset" / "changes"
-    candidates = [
-        path
-        for path in change_root.iterdir()
-        if path.is_dir() and path.name != "archive"
-    ]
-    archive = change_root / "archive"
-    if archive.is_dir():
-        candidates.extend(path for path in archive.iterdir() if path.is_dir())
+    candidates: list[Path] = []
+    for change_root in layout.active_change_roots:
+        if change_root.is_dir():
+            candidates.extend(
+                path
+                for path in change_root.iterdir()
+                if path.is_dir() and path.name != "archive"
+            )
+    for archive in layout.archive_change_roots:
+        if archive.is_dir():
+            candidates.extend(path for path in archive.iterdir() if path.is_dir())
     for path in sorted(candidates, key=lambda item: item.name):
         manifest = path / "change.yaml"
         if not manifest.is_file():
@@ -64,15 +68,16 @@ def rendered_traceability(root: Path) -> str:
 
 
 def trace_is_fresh(root: Path) -> bool:
-    path = root / "dset" / "traceability.yaml"
+    path = discover_layout(root).traceability_path
     return path.is_file() and path.read_text(encoding="utf-8") == rendered_traceability(
         root
     )
 
 
 def write_traceability(root: Path) -> Path:
-    path = root / "dset" / "traceability.yaml"
+    path = discover_layout(root).traceability_path
     content = rendered_traceability(root)
+    path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(".yaml.tmp")
     temporary.write_text(content, encoding="utf-8")
     temporary.replace(path)
