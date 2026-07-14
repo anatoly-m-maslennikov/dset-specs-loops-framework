@@ -1,0 +1,33 @@
+schema_version: 1.0
+id: add-artifact-governance-profile
+profile: standard
+status: archived
+packages:
+  - methodology
+pull_request:
+  repository: anatoly-m-maslennikov/dset-specs-loops-framework
+  number: 8
+  url: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/8
+requirements:
+  - ART-REQ-001
+  - ART-REQ-002
+  - ART-REQ-003
+  - ART-REQ-004
+  - ART-REQ-005
+  - ART-REQ-006
+tests:
+  - ART-TEST-001
+  - ART-TEST-002
+  - ART-TEST-003
+  - ART-TEST-004
+  - ART-TEST-005
+  - ART-TEST-006
+evals:
+  - ART-EVAL-001
+  - ART-EVAL-002
+  - ART-EVAL-003
+  - ART-EVAL-004
+adrs: []
+archive:
+  date: 2026-07-14
+  path: dset/changes/archive/2026-07-14-add-artifact-governance-profile

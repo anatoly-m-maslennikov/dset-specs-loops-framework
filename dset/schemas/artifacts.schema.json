@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/schemas/artifacts.schema.json",
+  "title": "DSET artifact registry",
+  "type": "object",
+  "required": ["schema_version", "profile", "root", "areas"],
+  "properties": {
+    "schema_version": {"const": 1.0},
+    "profile": {"const": "documentation-v1"},
+    "root": {"$ref": "#/$defs/root"},
+    "areas": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/area"}
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "common": {
+      "type": "object",
+      "required": ["id", "root", "hub", "owner", "purpose"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "root": {"type": "string", "minLength": 1},
+        "hub": {"type": "string", "minLength": 1},
+        "owner": {"type": "string", "minLength": 1},
+        "purpose": {"type": "string", "minLength": 1}
+      }
+    },
+    "root": {
+      "allOf": [
+        {"$ref": "#/$defs/common"}
+      ],
+      "unevaluatedProperties": false
+    },
+    "area": {
+      "allOf": [
+        {"$ref": "#/$defs/common"},
+        {
+          "type": "object",
+          "required": ["parent"],
+          "properties": {
+            "parent": {"$ref": "#/$defs/id"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    }
+  },
+  "additionalProperties": false
+}

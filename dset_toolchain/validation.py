@@ -35,6 +35,7 @@ def validate_repository(root: Path) -> list[Diagnostic]:
     manifest = _safe_load(manifest_path, diagnostics)
     if manifest:
         diagnostics.extend(_validate_project_manifest(root, manifest_path, manifest))
+        diagnostics.extend(_validate_artifacts(root, manifest_path, manifest))
     diagnostics.extend(_validate_schemas(dset_root / "schemas"))
     diagnostics.extend(_validate_provenance(root))
     diagnostics.extend(_validate_packages(root, manifest or {}))
@@ -211,6 +212,295 @@ def _validate_packages(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]
                     _diag("DSET-E117", path, "package artifact is missing")
                 )
     return diagnostics
+
+
+def _validate_artifacts(
+    root: Path, manifest_path: Path, manifest: dict[str, Any]
+) -> list[Diagnostic]:
+    profiles = manifest.get("profiles", {})
+    if not isinstance(profiles, dict):
+        return [_diag("DSET-E120", manifest_path, "profiles must be a mapping")]
+    profile = profiles.get("artifact")
+    if profile is None:
+        return []
+    if profile != "documentation-v1":
+        return [
+            _diag(
+                "DSET-E120",
+                manifest_path,
+                f"unsupported artifact profile: {profile}",
+            )
+        ]
+    registry_path = root / "dset" / "artifacts.yaml"
+    if not registry_path.is_file():
+        return [
+            _diag(
+                "DSET-E120",
+                registry_path,
+                "documentation-v1 requires an artifact registry",
+            )
+        ]
+    diagnostics: list[Diagnostic] = []
+    registry = _safe_load(registry_path, diagnostics)
+    if not registry:
+        return diagnostics
+    if registry.get("profile") != profile:
+        diagnostics.append(
+            _diag(
+                "DSET-E120",
+                registry_path,
+                "artifact registry profile does not match project profile",
+            )
+        )
+        return diagnostics
+    diagnostics.extend(validate_artifact_registry(root, registry_path, registry))
+    return diagnostics
+
+
+def validate_artifact_registry(
+    root: Path, registry_path: Path, data: dict[str, Any]
+) -> list[Diagnostic]:
+    """Validate the documentation-v1 authority and hub graph."""
+    root = root.resolve()
+    diagnostics: list[Diagnostic] = []
+    root_entry = data.get("root")
+    raw_areas = data.get("areas")
+    if not isinstance(root_entry, dict):
+        return [_diag("DSET-E121", registry_path, "root must be a mapping")]
+    if not isinstance(raw_areas, list) or not raw_areas:
+        return [_diag("DSET-E121", registry_path, "areas must be a non-empty list")]
+    areas = [item for item in raw_areas if isinstance(item, dict)]
+    if len(areas) != len(raw_areas):
+        diagnostics.append(
+            _diag("DSET-E121", registry_path, "every area must be a mapping")
+        )
+    entries = [root_entry, *areas]
+    diagnostics.extend(_validate_artifact_entries(root, registry_path, entries))
+    diagnostics.extend(_validate_artifact_parents(registry_path, root_entry, areas))
+    diagnostics.extend(_validate_artifact_hubs(root, registry_path, root_entry, areas))
+    return diagnostics
+
+
+def _validate_artifact_entries(
+    root: Path, registry_path: Path, entries: list[dict[str, Any]]
+) -> list[Diagnostic]:
+    diagnostics: list[Diagnostic] = []
+    seen_ids: set[str] = set()
+    seen_roots: set[Path] = set()
+    seen_hubs: set[Path] = set()
+    for entry in entries:
+        for field in ("id", "root", "hub", "owner", "purpose"):
+            value = entry.get(field)
+            if not isinstance(value, str) or not value.strip():
+                diagnostics.append(
+                    _diag(
+                        "DSET-E121",
+                        registry_path,
+                        f"artifact {field} must be a non-empty string",
+                    )
+                )
+        identifier = entry.get("id")
+        if not isinstance(identifier, str) or not CHANGE_PATTERN.fullmatch(identifier):
+            diagnostics.append(
+                _diag("DSET-E121", registry_path, f"invalid artifact ID: {identifier}")
+            )
+        elif identifier in seen_ids:
+            diagnostics.append(
+                _diag(
+                    "DSET-E121", registry_path, f"duplicate artifact ID: {identifier}"
+                )
+            )
+        else:
+            seen_ids.add(identifier)
+        area_root = _artifact_path(root, entry.get("root"))
+        hub = _artifact_path(root, entry.get("hub"))
+        if area_root is None:
+            diagnostics.append(
+                _diag(
+                    "DSET-E121",
+                    registry_path,
+                    f"invalid artifact root: {entry.get('root')}",
+                )
+            )
+        elif area_root in seen_roots:
+            diagnostics.append(
+                _diag(
+                    "DSET-E121",
+                    registry_path,
+                    f"duplicate artifact root: {entry.get('root')}",
+                )
+            )
+        else:
+            seen_roots.add(area_root)
+            if not area_root.is_dir():
+                diagnostics.append(
+                    _diag("DSET-E121", area_root, "artifact root does not exist")
+                )
+        if hub is None:
+            diagnostics.append(
+                _diag(
+                    "DSET-E121",
+                    registry_path,
+                    f"invalid artifact hub: {entry.get('hub')}",
+                )
+            )
+        elif hub in seen_hubs:
+            diagnostics.append(
+                _diag(
+                    "DSET-E121",
+                    registry_path,
+                    f"duplicate artifact hub: {entry.get('hub')}",
+                )
+            )
+        else:
+            seen_hubs.add(hub)
+            if not hub.is_file():
+                diagnostics.append(_diag("DSET-E121", hub, "artifact hub is missing"))
+        if area_root is not None and hub is not None:
+            try:
+                hub.relative_to(area_root)
+            except ValueError:
+                diagnostics.append(
+                    _diag(
+                        "DSET-E121", registry_path, "artifact hub is outside its root"
+                    )
+                )
+    return diagnostics
+
+
+def _validate_artifact_parents(
+    registry_path: Path,
+    root_entry: dict[str, Any],
+    areas: list[dict[str, Any]],
+) -> list[Diagnostic]:
+    diagnostics: list[Diagnostic] = []
+    root_id = root_entry.get("id")
+    if not isinstance(root_id, str):
+        return diagnostics
+    by_id = {
+        item["id"]: item
+        for item in [root_entry, *areas]
+        if isinstance(item.get("id"), str)
+    }
+    for area in areas:
+        identifier = area.get("id")
+        parent = area.get("parent")
+        if not isinstance(identifier, str):
+            continue
+        if not isinstance(parent, str) or parent not in by_id:
+            diagnostics.append(
+                _diag(
+                    "DSET-E122",
+                    registry_path,
+                    f"artifact {identifier} has an unresolved parent: {parent}",
+                )
+            )
+            continue
+        current = identifier
+        visited: set[str] = set()
+        while current != root_id:
+            if current in visited:
+                diagnostics.append(
+                    _diag(
+                        "DSET-E122",
+                        registry_path,
+                        f"artifact parent cycle includes: {identifier}",
+                    )
+                )
+                break
+            visited.add(current)
+            node = by_id.get(current)
+            next_parent = node.get("parent") if node is not None else None
+            if not isinstance(next_parent, str) or next_parent not in by_id:
+                diagnostics.append(
+                    _diag(
+                        "DSET-E122",
+                        registry_path,
+                        f"artifact parent chain does not reach root: {identifier}",
+                    )
+                )
+                break
+            current = next_parent
+    return diagnostics
+
+
+def _validate_artifact_hubs(
+    root: Path,
+    registry_path: Path,
+    root_entry: dict[str, Any],
+    areas: list[dict[str, Any]],
+) -> list[Diagnostic]:
+    diagnostics: list[Diagnostic] = []
+    root_id = root_entry.get("id")
+    for entry in [root_entry, *areas]:
+        hub = _artifact_path(root, entry.get("hub"))
+        if hub is None or not hub.is_file():
+            continue
+        headings = _level_two_headings(hub.read_text(encoding="utf-8"))
+        required = {"purpose", "boundaries"}
+        if not required.issubset(headings):
+            diagnostics.append(
+                _diag("DSET-E123", hub, "hub requires Purpose and Boundaries sections")
+            )
+        navigation = {"start here", "navigation"}
+        if entry is root_entry:
+            navigation.add("repository areas")
+        if headings.isdisjoint(navigation):
+            diagnostics.append(
+                _diag("DSET-E123", hub, "hub requires a navigation section")
+            )
+    root_hub = _artifact_path(root, root_entry.get("hub"))
+    if root_hub is None or not root_hub.is_file() or not isinstance(root_id, str):
+        return diagnostics
+    targets = _local_link_targets(root_hub)
+    for area in areas:
+        if area.get("parent") != root_id:
+            continue
+        hub = _artifact_path(root, area.get("hub"))
+        if hub is not None and hub not in targets:
+            diagnostics.append(
+                _diag(
+                    "DSET-E123",
+                    root_hub,
+                    f"root hub does not link top-level area: {area.get('id')}",
+                )
+            )
+    return diagnostics
+
+
+def _artifact_path(root: Path, raw: Any) -> Path | None:
+    if not isinstance(raw, str) or not raw or Path(raw).is_absolute():
+        return None
+    path = (root / unquote(raw)).resolve()
+    try:
+        path.relative_to(root)
+    except ValueError:
+        return None
+    return path
+
+
+def _level_two_headings(text: str) -> set[str]:
+    rendered = _without_code(text)
+    return {
+        match.strip().lower()
+        for match in re.findall(r"^##\s+(.+?)\s*$", rendered, flags=re.MULTILINE)
+    }
+
+
+def _local_link_targets(path: Path) -> set[Path]:
+    text = _without_code(path.read_text(encoding="utf-8"))
+    targets: set[Path] = set()
+    for raw_target in LINK_PATTERN.findall(text):
+        target = raw_target.strip()
+        if target.startswith("<") and target.endswith(">"):
+            target = target[1:-1]
+        target = target.split("#", 1)[0]
+        if not target or target.startswith(("http://", "https://", "mailto:")):
+            continue
+        if "{{" in target:
+            continue
+        targets.add((path.parent / unquote(target)).resolve())
+    return targets
 
 
 def _validate_change_ids(change_dir: Path, data: dict[str, Any]) -> list[Diagnostic]:

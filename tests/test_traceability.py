@@ -22,10 +22,16 @@ class TraceabilityTests(unittest.TestCase):
         self.assertIn("bootstrap-dset-project-structure", ids)
         self.assertIn("make-supportability-first-class", ids)
         self.assertIn("operationalize-dset-v1", ids)
-        current = next(
+        toolchain = next(
             item for item in trace["changes"] if item["id"] == "operationalize-dset-v1"
         )
-        self.assertTrue(current["pull_request"].endswith("/pull/7"))
+        self.assertTrue(toolchain["pull_request"].endswith("/pull/7"))
+        artifacts = next(
+            item
+            for item in trace["changes"]
+            if item["id"] == "add-artifact-governance-profile"
+        )
+        self.assertTrue(artifacts["pull_request"].endswith("/pull/8"))
 
     def test_write_is_stable_and_checkable(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

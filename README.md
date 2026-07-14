@@ -8,6 +8,14 @@ DSET expands to **Domain–Supportability–Evals–Tests**.
 
 The framework treats natural language as a high-leverage programming interface while keeping durable software grounded in explicit domain models, accepted behavioral specifications, production supportability, deterministic tests, qualitative or probabilistic evals, implementation plans, and machine-verifiable gates.
 
+## Purpose
+
+This repository is the public source for the DSET framework, executable toolchain, reusable artifact contracts, and focused agent workflows. It also dogfoods DSET as an adopting project.
+
+## Boundaries
+
+Framework rules and release assets live here. Each adopting repository owns its own behavioral truth and changes under its local `dset/` root. Installed skills, cached tooling, private working notes, and external project artifacts are not independent framework authorities.
+
 ## Core loop
 
 ```text
@@ -21,21 +29,16 @@ Domain → Spec + Supportability + Test Plan + Eval Plan → Implement → Test 
 - **Tests** prove deterministic behavior.
 - **Loops** deliver small vertical slices, use fresh evidence, and reconcile accepted results into current truth.
 
-## Repository contents
+## Repository areas
 
-- [`methodology/00_Tool Development Playbook.md`](methodology/00_Tool%20Development%20Playbook.md) — pipeline and document map.
-- [`methodology/01_Spec Authoring Patterns — Service Spec Conventions.md`](methodology/01_Spec%20Authoring%20Patterns%20%E2%80%94%20Service%20Spec%20Conventions.md) — domain and specification conventions.
-- [`methodology/02_Test and Eval Plan Patterns — Proof Artifact Conventions.md`](methodology/02_Test%20and%20Eval%20Plan%20Patterns%20%E2%80%94%20Proof%20Artifact%20Conventions.md) — separate deterministic test-plan and probabilistic/qualitative eval-plan conventions.
-- [`methodology/03_Implementation Plan Patterns — Service Build Conventions.md`](methodology/03_Implementation%20Plan%20Patterns%20%E2%80%94%20Service%20Build%20Conventions.md) — implementation and rollout planning.
-- [`methodology/04_General Build Rules — Tool Code Conventions.md`](methodology/04_General%20Build%20Rules%20%E2%80%94%20Tool%20Code%20Conventions.md) — general code and runtime rules.
-- [`methodology/05_Layered Build Standard — DDD, TDD, Small Functions, Typed Gates.md`](methodology/05_Layered%20Build%20Standard%20%E2%80%94%20DDD%2C%20TDD%2C%20Small%20Functions%2C%20Typed%20Gates.md) — six language-neutral gate categories plus applied language profiles; Python v1 is active and JavaScript/TypeScript is pending evidence.
-- [`methodology/06_External Grounding — LLM Power-User Practice.md`](methodology/06_External%20Grounding%20%E2%80%94%20LLM%20Power-User%20Practice.md) — provenance and external grounding.
-- [`methodology/TODO — Operationalize OpenSpec and Composable Engineering Skills.md`](methodology/TODO%20%E2%80%94%20Operationalize%20OpenSpec%20and%20Composable%20Engineering%20Skills.md) — implementation roadmap for DSET-owned change packages informed by OpenSpec and selected Matt Pocock workflow patterns.
-- [`dset/README.md`](dset/README.md) — this repository's accepted project truth, active changes, archive lifecycle, templates, and schemas.
-- [`dset_toolchain/`](dset_toolchain/) — dependency-light Python implementation of the `dset` CLI.
-- [`skills/README.md`](skills/README.md) — focused pre-spec, diagnosis, and disposable-prototype workflows.
-- [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) — exact external provenance, reviewed revisions, and license boundaries.
-- [`.github/DELIVERY.md`](.github/DELIVERY.md) — owner-only `dev` updates and automated `dev → main` delivery policy.
+| Area | Start here | Owns |
+|---|---|---|
+| Methodology | [Methodology hub](methodology/README.md) | Delivery stages, runtime/build rules, proof conventions, and external grounding |
+| Artifact governance | [Documentation architecture hub](documentation/README.md) | Artifact types, authoring rules, hubs, maintenance, and `documentation-v1` |
+| Project control plane | [DSET project hub](dset/README.md) | Accepted project truth, active/archive changes, schemas, templates, fixtures, traceability, migrations, and supportability |
+| Executable CLI | [`dset_toolchain/`](dset_toolchain/) | Dependency-light `new`, `check`, `verify`, `trace`, and guarded `archive` implementation |
+| Agent workflows | [Skills hub](skills/README.md) | Focused domain-grilling, diagnosis, and disposable-prototype workflows |
+| Delivery and provenance | [Delivery policy](.github/DELIVERY.md) and [third-party notices](THIRD_PARTY_NOTICES.md) | Protected publication path and external-source/license boundaries |
 
 ## Run DSET
 

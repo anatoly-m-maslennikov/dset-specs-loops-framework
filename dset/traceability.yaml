@@ -2,6 +2,38 @@ schema_version: 1.0
 repository: anatoly-m-maslennikov/dset-specs-loops-framework
 changes:
   -
+    id: add-artifact-governance-profile
+    status: archived
+    path: dset/changes/archive/2026-07-14-add-artifact-governance-profile
+    packages:
+      - methodology
+    requirements:
+      - ART-REQ-001
+      - ART-REQ-002
+      - ART-REQ-003
+      - ART-REQ-004
+      - ART-REQ-005
+      - ART-REQ-006
+    tests:
+      - ART-TEST-001
+      - ART-TEST-002
+      - ART-TEST-003
+      - ART-TEST-004
+      - ART-TEST-005
+      - ART-TEST-006
+    evals:
+      - ART-EVAL-001
+      - ART-EVAL-002
+      - ART-EVAL-003
+      - ART-EVAL-004
+    adrs: []
+    pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/8
+    evidence:
+      - dset/changes/archive/2026-07-14-add-artifact-governance-profile/proofs/archive-readiness-2026-07-14.md
+      - dset/changes/archive/2026-07-14-add-artifact-governance-profile/proofs/deterministic-verification-2026-07-14.md
+      - dset/changes/archive/2026-07-14-add-artifact-governance-profile/proofs/github-delivery-evidence-2026-07-14.md
+      - dset/changes/archive/2026-07-14-add-artifact-governance-profile/proofs/qualitative-evals-2026-07-14.md
+  -
     id: bootstrap-dset-project-structure
     status: archived
     path: dset/changes/archive/2026-07-14-bootstrap-dset-project-structure

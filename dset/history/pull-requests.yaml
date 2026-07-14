@@ -53,9 +53,17 @@ pull_requests:
     url: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/6
   - number: 7
     title: Operationalize the executable DSET v1 toolchain
+    state: merged
+    draft: false
+    base: main
+    head: dev
+    merge_commit: b874504c25e42329eae19ed14f2b50a3d922d64e
+    url: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7
+  - number: 8
+    title: Add artifact governance profiles
     state: open
     draft: true
     base: main
     head: dev
     merge_commit: null
-    url: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7
+    url: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/8
