@@ -28,7 +28,9 @@ changes:
       - ART-EVAL-004
     adrs: []
     pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/8
-    evidence: []
+    evidence:
+      - dset/changes/add-artifact-governance-profile/proofs/deterministic-verification-2026-07-14.md
+      - dset/changes/add-artifact-governance-profile/proofs/qualitative-evals-2026-07-14.md
   -
     id: bootstrap-dset-project-structure
     status: archived
