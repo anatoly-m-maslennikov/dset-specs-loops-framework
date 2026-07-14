@@ -8,7 +8,7 @@ State `Applicable` with cases, rubric, thresholds, calibration, and budget, or s
 
 | Eval ID | Case | Criterion | Threshold |
 |---|---|---|---|
-| `{{id_prefix}}-EVAL-001` | Define a variable or qualitative case | Define the rubric | Define acceptance |
+| `{{project_key}}-EVAL{{id_layer}}-001` | Define a variable or qualitative case | Define the rubric | Define acceptance |
 
 ## Evidence
 

@@ -1,3 +1,3 @@
 # Tasks — Standard fixture
 
-- [ ] **FEATURE-TASK-001:** Prove FEATURE-TEST-001 and FEATURE-EVAL-001.
+- [ ] **DSET-TASK-TOOL-001:** Prove DSET-TEST-TOOL-001 and DSET-EVAL-TOOL-001.

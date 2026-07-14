@@ -34,7 +34,10 @@ Implement the first bounded self-hosting fixed point and finalize the next contr
 - Coordinated product/package versions with independent schema/profile compatibility versions.
 - Same-model/same-effort delegation by default, medium useful fan-out, and explicit deviation reporting.
 - Low/medium/high budget profiles based on expected completed-task cost rather than token price alone.
-- Problem/opportunity/question intake with tasks kept inside accepted changes and the possible Action entity tracked as a project open question.
+- One project-owned problem/opportunity/question intake registry with stable layer IDs, Decision as the entity and Decision record as its canonical artifact, tasks kept inside accepted Changes, and the possible Action entity tracked only as a project open question.
+- Concrete conformance contracts for installable host-native skills, declared macOS/native-Windows/WSL/Linux applicability, dependency provenance and bounded exceptions, and real protected GitHub delivery evidence.
+- One measurable DSET 0.2 adoption-readiness Outcome with baseline, target, source/method, window, and proof links; features and task completion remain contributing outputs rather than the Outcome.
+- Six deferred product-practice Questions covering Journey, Actor/Persona, Hypothesis/Experiment, prioritization, feedback/analytics, and generated roadmap/release views, without introducing new artifact types or queues.
 
 ## Non-goals
 

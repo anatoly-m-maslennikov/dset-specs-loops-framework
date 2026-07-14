@@ -16,7 +16,7 @@ rules:
       profile: core-v1
       version: "0.2"
       template: dset/templates/governance/core-v1/architecture.md
-      sha256: 393963cdbec1b0b05902b8f5bababbc444fa8504ef15674d877216abc40e1e87
+      sha256: 15f521d78463d93718ea873122786edd5fffaf639fb24eaed4ffc0ef4690ed59
   -
     id: DSET-RULE-BUILD
     path: dset/governance/build-rules.md
@@ -44,7 +44,7 @@ rules:
       profile: core-v1
       version: "0.2"
       template: dset/templates/governance/core-v1/domain-spec-authoring.md
-      sha256: bfc4014d9f312710dd20f387a204aa42755132ff7ae6933983600eb29a1a96a6
+      sha256: a6cf20c4f12486c7980e06f902e2c1a59487d5ef4a343e6e3e9f9b4267565b3e
   -
     id: DSET-RULE-TEST-PLAN
     path: dset/governance/test-planning.md
@@ -114,7 +114,7 @@ rules:
       profile: core-v1
       version: "0.2"
       template: dset/templates/governance/core-v1/work-items.md
-      sha256: 69950d29832d5ba05272bf99fc3e344be91509fac958288d504179805ce4a8da
+      sha256: 8dde26de5be94ddc9440579c308b722dbabfd53c4d68e45bcbec694775b66ad4
   -
     id: DSET-RULE-DELEGATION-BUDGET
     path: dset/governance/delegation-budget.md
@@ -128,7 +128,7 @@ rules:
       profile: core-v1
       version: "0.2"
       template: dset/templates/governance/core-v1/delegation-budget.md
-      sha256: 7c582ac77a6396bdb3f9c7092d6ce6a719ccb2de38a7cbb58b1fb970f1ab31b8
+      sha256: d7e679e859ae5b95f120b6c7489e3b272a89f81295f7ea4d9b53c8049322f3ce
   -
     id: DSET-RULE-SKILL-RUNS
     path: dset/governance/skill-runs.md
@@ -163,7 +163,7 @@ rules:
       profile: core-v1
       version: "0.2"
       template: dset/templates/governance/core-v1/release.md
-      sha256: d4e46fb4ba80b79a9307f29defecd5ad7a75a84380c74b33c04139664167fff2
+      sha256: 5ceec46d4c2cd17865e13dcc73ee7708e200b30c40eea5c2ac1fd0a65dee3304
   -
     id: DSET-RULE-LIFECYCLE
     path: dset/governance/lifecycle-orchestration.md
@@ -186,7 +186,7 @@ rules:
       profile: core-v1
       version: "0.2"
       template: dset/templates/governance/core-v1/lifecycle-orchestration.md
-      sha256: d6d929cda3b4612bbf4543f42ee9a250239fd9838add6b9ab5a7b3fdcfe7be68
+      sha256: 69c356921ab25cc0426ae21bbee7ba2ac17cf3c44e2ebd2cc3bd1eebf30344fb
   -
     id: DSET-RULE-DIAGNOSIS
     path: dset/governance/diagnosis.md
@@ -298,4 +298,4 @@ wrappers:
   -
     workflow: prototyping
     path: skills/dset-prototype/SKILL.md
-    sha256: 701747279e91e1f119202fc9451adba6dfa1c6e4474540f8c0293abd38a70255
+    sha256: f87d0a07dd42a22f8c2c9185a29fcbd321938d8dcb82e402dd3f0aba1f0f36f3

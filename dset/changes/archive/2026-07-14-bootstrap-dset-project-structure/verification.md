@@ -12,9 +12,9 @@
 | Active change artifact set | Pass: eight top-level documents plus `specs/` and `proofs/` |
 | Accepted package shape | Pass: six methodology current-truth documents, one registered package, no premature global root |
 | Resolve local links and balance fences/details | Final pass: 32 Markdown files, 148 links, and 29 collapsed details blocks |
-| Independent qualitative folder-routing baseline | Pass: BOOT-EVAL-001 through BOOT-EVAL-004; see [baseline proof](proofs/boot-evals-2026-07-14.md) |
-| Independent pushed-head folder-routing eval | Pass: BOOT-EVAL-001 through BOOT-EVAL-004 against `02812a1`; see [final proof](proofs/boot-evals-pushed-head-2026-07-14.md) |
-| Current-truth reconciliation | Pass: BOOT-REQ-001 through BOOT-REQ-005 mapped into METH-REQ-006 and METH-REQ-008 through METH-REQ-011 with deterministic proof rows |
+| Independent qualitative folder-routing baseline | Pass: DSET-EVAL-GOV-001 through DSET-EVAL-GOV-004; see [baseline proof](proofs/boot-evals-2026-07-14.md) |
+| Independent pushed-head folder-routing eval | Pass: DSET-EVAL-GOV-001 through DSET-EVAL-GOV-004 against `02812a1`; see [final proof](proofs/boot-evals-pushed-head-2026-07-14.md) |
+| Current-truth reconciliation | Pass: DSET-REQUIREMENT-GOV-001 through DSET-REQUIREMENT-GOV-003 mapped into METH-REQ-006 and METH-REQ-008 through METH-REQ-011 with deterministic proof rows |
 | Enforcement availability | `documentation-v1-pending`; manual archive audit required; no CI, validator, or traceability-generation pass claimed |
 | Public terminology | Pass: no `exactly-once` claim in README or methodology |
 | Portable Markdown syntax | Pass: no Obsidian callout or wiki-link syntax in public/project Markdown |
@@ -27,11 +27,11 @@
 
 - PR identity: proposal, implementation plan, and verification all link repository-qualified PR #2.
 - Remote identity: local `HEAD`, remote branch, and live PR head all equaled evaluated candidate `02812a1`; the PR was open, draft, mergeable, and unmerged.
-- Reconciliation: BOOT-REQ-001 through BOOT-REQ-005 are represented in accepted methodology truth and deterministic proof rows.
+- Reconciliation: DSET-REQUIREMENT-GOV-001 through DSET-REQUIREMENT-GOV-003 are represented in accepted methodology truth and deterministic proof rows.
 - Structure: the dated change contains eight documents plus `specs/` and `proofs/`; no stale active directory or active-path link remains.
 - Project shape: `dset/dset.yaml` parses, registers one `methodology` package, and keeps `global_truth_root: null`.
 - Markdown: local links resolve, fences/details balance, and no wiki links or unsupported callouts exist.
 - Availability: `documentation-v1-pending` and `canonical_command: pending` are reported honestly; no CI, validator, or generated-traceability pass is claimed.
-- Tasks: BOOT-TASK-001 through BOOT-TASK-007 are complete.
+- Tasks: DSET-TASK-GOV-001 through DSET-TASK-OPS-002 are complete.
 
 No merge SHA is predicted; PR #2 owns the eventual merge result. Any later implementation or specification edit before merge invalidates this result.

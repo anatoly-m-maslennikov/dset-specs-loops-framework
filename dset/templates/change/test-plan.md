@@ -4,7 +4,7 @@ Deterministic tests prove exact behavior. Probabilistic or qualitative proof bel
 
 | Test ID | Requirement ID | Deterministic proof | Command or seam |
 |---|---|---|---|
-| `{{id_prefix}}-TEST-001` | `{{id_prefix}}-REQ-001` | Define one exact assertion | Pending |
+| `{{project_key}}-TEST{{id_layer}}-001` | `{{project_key}}-REQUIREMENT{{id_layer}}-001` | Define one exact assertion | Pending |
 
 ## Regression rule
 

@@ -331,6 +331,11 @@ def materialize_governance(
             "DSET-E140", profile_path, "governance profile template is missing"
         )
     profile = cast(dict[str, Any], load(profile_path))
+    project = cast(dict[str, Any], load(manifest))
+    release = project.get("release", {})
+    release_not_applicable = (
+        isinstance(release, dict) and release.get("status") == "not-applicable"
+    )
     if profile.get("id") != profile_id:
         raise DsetCommandError(
             "DSET-E140", profile_path, "governance profile identity mismatch"
@@ -356,14 +361,26 @@ def materialize_governance(
             template = profile_root / str(item["template"])
             target = destination / str(item["target"])
             shutil.copyfile(template, target)
+            applicability = item.get("applicability", "applicable")
+            reason = item.get("reason", "selected by the local profile")
+            if item["id"] == "DSET-RULE-RELEASE" and release_not_applicable:
+                applicability = "not-applicable"
+                reason = str(release.get("reason"))
+            dependencies = list(item.get("depends_on", []))
+            if release_not_applicable:
+                dependencies = [
+                    dependency
+                    for dependency in dependencies
+                    if dependency != "DSET-RULE-RELEASE"
+                ]
             rendered_rules.append(
                 {
                     "id": item["id"],
                     "path": target.relative_to(target_root).as_posix(),
                     "owner": "project",
-                    "applicability": item.get("applicability", "applicable"),
-                    "reason": item.get("reason", "selected by the local profile"),
-                    "depends_on": item.get("depends_on", []),
+                    "applicability": applicability,
+                    "reason": reason,
+                    "depends_on": dependencies,
                     "customization": "unmodified",
                     "source": {
                         "profile": profile_id,
@@ -391,6 +408,18 @@ def materialize_governance(
                         "sha256": _sha256(source),
                     }
                 )
+        rendered_workflows = []
+        for workflow in cast(list[dict[str, Any]], profile["workflows"]):
+            if release_not_applicable and workflow.get("id") == "release":
+                continue
+            rendered = dict(workflow)
+            if release_not_applicable:
+                rendered["rules"] = [
+                    rule
+                    for rule in cast(list[str], workflow.get("rules", []))
+                    if rule != "DSET-RULE-RELEASE"
+                ]
+            rendered_workflows.append(rendered)
         registry = {
             "schema_version": 1.0,
             "profile": {
@@ -399,7 +428,7 @@ def materialize_governance(
                 "customization": "unmodified",
             },
             "rules": rendered_rules,
-            "workflows": profile["workflows"],
+            "workflows": rendered_workflows,
             "wrappers": wrappers,
         }
         registry_path.write_text(dump(registry), encoding="utf-8")

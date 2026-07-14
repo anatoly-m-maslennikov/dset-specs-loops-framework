@@ -31,14 +31,14 @@ The skill checks used the shared validator at `/Users/am/.codex/skills/.system/s
 
 | Test ID | Evidence |
 |---|---|
-| DSET-V1-TEST-001 | CLI help plus successful `check` and `verify` |
-| DSET-V1-TEST-002 | `test_fixture_matrix` accepted all valid fixtures and rejected each invalid mutation with its expected stable diagnostic |
-| DSET-V1-TEST-003 | `test_new_creates_profile_without_overwrite` and the profile tests passed |
-| DSET-V1-TEST-004 | Both traceability tests passed; the aggregate gate confirmed the committed index is fresh |
-| DSET-V1-TEST-005 | `test_archive_is_dry_run_then_guarded_move` passed; the real change remains active until the archive-ready gate is recorded |
-| DSET-V1-TEST-006 | All three skill packages passed the standard skill validator |
-| DSET-V1-TEST-007 | The live required check named `DSET / validate` passed on the pushed head |
-| DSET-V1-TEST-008 | Repository contract validation checked portable alerts, wiki-link absence, and local Markdown targets; `git diff --check` passed |
+| DSET-TEST-TOOL-001 | CLI help plus successful `check` and `verify` |
+| DSET-TEST-TOOL-002 | `test_fixture_matrix` accepted all valid fixtures and rejected each invalid mutation with its expected stable diagnostic |
+| DSET-TEST-TOOL-003 | `test_new_creates_profile_without_overwrite` and the profile tests passed |
+| DSET-TEST-TOOL-004 | Both traceability tests passed; the aggregate gate confirmed the committed index is fresh |
+| DSET-TEST-TOOL-005 | `test_archive_is_dry_run_then_guarded_move` passed; the real change remains active until the archive-ready gate is recorded |
+| DSET-TEST-SKILL-001 | All three skill packages passed the standard skill validator |
+| DSET-TEST-OPS-007 | The live required check named `DSET / validate` passed on the pushed head |
+| DSET-TEST-GOV-006 | Repository contract validation checked portable alerts, wiki-link absence, and local Markdown targets; `git diff --check` passed |
 
 ## Corrective loop observed during verification
 

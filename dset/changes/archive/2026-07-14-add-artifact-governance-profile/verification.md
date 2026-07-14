@@ -9,7 +9,7 @@
 | Artifact architecture/schema | `dset check` plus unit cases | Pass at `c8e1e71` | [Deterministic verification](proofs/deterministic-verification-2026-07-14.md) |
 | Root and area navigation | DSET-E123 unit cases plus live registry validation | Pass at `c8e1e71` | [Deterministic verification](proofs/deterministic-verification-2026-07-14.md) |
 | Existing Python profile | `uv run dset verify .` | Pass at `c8e1e71` | [Deterministic verification](proofs/deterministic-verification-2026-07-14.md) |
-| Applicable evals | ART-EVAL-001–004 | Pass at corrected pushed head `174c10b` | [Qualitative evaluations](proofs/qualitative-evals-2026-07-14.md) |
+| Applicable evals | `DSET-EVAL-GOV-007..008`, `DSET-EVAL-META-002..003` | Pass at corrected pushed head `174c10b` | [Qualitative evaluations](proofs/qualitative-evals-2026-07-14.md) |
 | Supportability | Hosted `dev`, PR, and policy checks on `f38a102` | Pass | [GitHub delivery evidence](proofs/github-delivery-evidence-2026-07-14.md) |
 | Reconciliation/archive | Accepted-truth audit, guarded dry-run, dated move, trace refresh, and candidate-head checks | Pass at `57f4f4d` | [Archive readiness](proofs/archive-readiness-2026-07-14.md) |
 

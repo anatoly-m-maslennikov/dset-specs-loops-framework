@@ -5,27 +5,9 @@
   "type": "object",
   "required": ["schema_version", "framework", "python_package", "schemas", "released_validator", "candidate_validator", "bootstrap"],
   "properties": {
-    "schema_version": {"const": 1.0},
-    "framework": {
-      "type": "object",
-      "required": ["version", "status", "versioning"],
-      "properties": {
-        "version": {"$ref": "#/$defs/semver"},
-        "status": {"enum": ["candidate", "released"]},
-        "versioning": {"const": "coordinated-product-package"}
-      },
-      "additionalProperties": false
-    },
-    "python_package": {
-      "type": "object",
-      "required": ["name", "version", "versioning"],
-      "properties": {
-        "name": {"const": "dset-spec-loops"},
-        "version": {"$ref": "#/$defs/pep440"},
-        "versioning": {"const": "coordinated-product-package"}
-      },
-      "additionalProperties": false
-    },
+    "schema_version": {"enum": [1.0, 1.1]},
+    "framework": {"oneOf": [{"$ref": "#/$defs/legacy_framework"}, {"$ref": "#/$defs/current_framework"}]},
+    "python_package": {"oneOf": [{"$ref": "#/$defs/legacy_python_package"}, {"$ref": "#/$defs/current_python_package"}]},
     "schemas": {
       "type": "object",
       "required": ["version", "versioning"],
@@ -53,7 +35,53 @@
       "additionalProperties": false
     }
   },
+  "allOf": [
+    {
+      "if": {"properties": {"schema_version": {"const": 1.0}}},
+      "then": {"properties": {"framework": {"$ref": "#/$defs/legacy_framework"}, "python_package": {"$ref": "#/$defs/legacy_python_package"}}},
+      "else": {"properties": {"framework": {"$ref": "#/$defs/current_framework"}, "python_package": {"$ref": "#/$defs/current_python_package"}}}
+    }
+  ],
   "$defs": {
+    "legacy_framework": {
+      "type": "object",
+      "required": ["milestone", "status", "versioning"],
+      "properties": {
+        "milestone": {"const": "0.2"},
+        "status": {"enum": ["candidate", "released"]},
+        "versioning": {"const": "independent-framework-milestone"}
+      },
+      "additionalProperties": false
+    },
+    "current_framework": {
+      "type": "object",
+      "required": ["version", "versioning"],
+      "properties": {
+        "version": {"$ref": "#/$defs/semver"},
+        "versioning": {"const": "coordinated-product-package"}
+      },
+      "additionalProperties": false
+    },
+    "legacy_python_package": {
+      "type": "object",
+      "required": ["name", "version", "versioning"],
+      "properties": {
+        "name": {"const": "dset-spec-loops"},
+        "version": {"$ref": "#/$defs/pep440"},
+        "versioning": {"const": "independent"}
+      },
+      "additionalProperties": false
+    },
+    "current_python_package": {
+      "type": "object",
+      "required": ["name", "version", "versioning"],
+      "properties": {
+        "name": {"const": "dset-spec-loops"},
+        "version": {"$ref": "#/$defs/pep440"},
+        "versioning": {"const": "coordinated-product-package"}
+      },
+      "additionalProperties": false
+    },
     "semver": {
       "type": "string",
       "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-rc\\.[1-9][0-9]*)?$"

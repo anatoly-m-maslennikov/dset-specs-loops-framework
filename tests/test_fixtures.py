@@ -48,6 +48,30 @@ class FixtureTests(unittest.TestCase):
                     self.assertTrue(codes)
                     self.assertEqual(codes[0], case["expected"])
 
+    def test_legacy_adrs_field_is_accepted_only_for_schema_1_0(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw)
+            source = FIXTURES / "bases" / "small"
+            change = target / "fixture-small"
+            shutil.copytree(source, change)
+            manifest = change / "change.yaml"
+            data = cast(dict[str, Any], load(manifest))
+            data["schema_version"] = 1.0
+            for field in ("release", "intake", "decisions", "contracts"):
+                data.pop(field, None)
+            data["adrs"] = []
+            manifest.write_text(dump(data), encoding="utf-8")
+            self.assertEqual(validate_change(ROOT, change, archived=False), [])
+
+            data["schema_version"] = 1.1
+            data["decisions"] = []
+            data["contracts"] = []
+            manifest.write_text(dump(data), encoding="utf-8")
+            self.assertIn(
+                "DSET-E106",
+                {item.code for item in validate_change(ROOT, change, archived=False)},
+            )
+
     def _materialize(self, case: FixtureCase, target: Path) -> Path:
         source = FIXTURES / "bases" / case["base"]
         data = cast(dict[str, Any], load(source / "change.yaml"))

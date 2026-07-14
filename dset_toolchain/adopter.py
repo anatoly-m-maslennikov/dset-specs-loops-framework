@@ -41,8 +41,9 @@ def _write_adopter_files(source_root: Path, root: Path) -> None:
     (root / "skills").mkdir()
     shutil.copyfile(source_root / "skills" / "README.md", root / "skills" / "README.md")
     manifest = {
-        "schema_version": 1.0,
+        "schema_version": 1.1,
         "project": {
+            "key": "DSET",
             "id": "dset-temporary-adopter",
             "name": "DSET temporary adopter",
             "repository_slug": "dset-temporary-adopter",
@@ -54,6 +55,14 @@ def _write_adopter_files(source_root: Path, root: Path) -> None:
             "authority": "local-process",
             "runbook": "supportability/README.md",
         },
+        "release": {
+            "status": "not-applicable",
+            "reason": "ephemeral fixture has no protected publication path",
+        },
+        "work_items": {"registry": "dset/intake.yaml"},
+        "contracts": ["DSET-CONTRACT-001"],
+        "stories": [],
+        "outcomes": [],
         "structure": {
             "mode": "single-package",
             "accepted_truth_root": "specs/packages",
@@ -70,6 +79,7 @@ def _write_adopter_files(source_root: Path, root: Path) -> None:
             "enforcement": "none",
             "artifact": None,
             "repository_governance": "core-v1",
+            "delegation_budget": "medium",
         },
         "change_contract": {
             "change_id_format": "kebab-case",
@@ -81,6 +91,12 @@ def _write_adopter_files(source_root: Path, root: Path) -> None:
         "canonical_command": "python -m dset_toolchain check .",
     }
     (dset / "dset.yaml").write_text(dump(manifest), encoding="utf-8")
+    shutil.copyfile(
+        source_root / "dset" / "templates" / "budget.yaml", dset / "budget.yaml"
+    )
+    shutil.copyfile(
+        source_root / "dset" / "templates" / "intake.yaml", dset / "intake.yaml"
+    )
     (dset / "provenance.yaml").write_text(
         dump({"schema_version": 1.0, "sources": []}), encoding="utf-8"
     )
@@ -117,6 +133,8 @@ The temporary adopter never becomes framework truth.
 ## Start here
 
 - [Governance](governance/README.md)
+- [Project intake](intake.yaml)
+- [Delegation budget](budget.yaml)
 - [Accepted sample package](specs/packages/sample/README.md)
 - [Active changes](changes/README.md)
 - [Templates](templates/README.md)
@@ -152,6 +170,8 @@ No production behavior or external effects.
 - [Domain](domain.md)
 - [Specification](spec.md)
 - [Contracts](contracts.md)
+- [Stories](stories.md)
+- [Outcomes](outcomes.md)
 - [Test plan](test-plan.md)
 - [Eval plan](eval-plan.md)
 """,
@@ -161,15 +181,31 @@ No production behavior or external effects.
         package / "spec.md",
         """# Sample specification
 
-## ADOPT-REQ-001 — Validation is read-only
+## DSET-REQUIREMENT-001 — Validation is read-only
 
 The temporary adopter must pass DSET validation without external effects.
 """,
     )
-    _write(package / "contracts.md", "# Sample contracts\n\nNo external contract.\n")
+    _write(
+        package / "contracts.md",
+        "# Sample contracts\n\n"
+        "## DSET-CONTRACT-001 — Validator invocation boundary\n\n"
+        "The canonical validation command is the authoritative fixture boundary.\n",
+    )
+    _write(
+        package / "stories.md",
+        "# Sample stories\n\n"
+        "Not applicable: this infrastructure fixture has no meaningful actor story.\n",
+    )
+    _write(
+        package / "outcomes.md",
+        "# Sample outcomes\n\n"
+        "Not applicable: this fixture owns validation output, not a measurable "
+        "state change.\n",
+    )
     _write(
         package / "test-plan.md",
-        "# Sample deterministic test plan\n\n- **ADOPT-TEST-001:** Run `dset check`.\n",
+        "# Sample deterministic test plan\n\n- **DSET-TEST-001:** Run `dset check`.\n",
     )
     _write(
         package / "eval-plan.md",
@@ -179,13 +215,18 @@ The temporary adopter must pass DSET validation without external effects.
         "schema_version": 1.0,
         "id": "sample",
         "status": "active",
-        "requirements": ["ADOPT-REQ-001"],
-        "tests": ["ADOPT-TEST-001"],
+        "requirements": ["DSET-REQUIREMENT-001"],
+        "tests": ["DSET-TEST-001"],
         "evals": [],
+        "contracts": ["DSET-CONTRACT-001"],
+        "stories": [],
+        "outcomes": [],
         "artifacts": {
             "domain": "domain.md",
             "spec": "spec.md",
             "contracts": "contracts.md",
+            "stories": "stories.md",
+            "outcomes": "outcomes.md",
             "test_plan": "test-plan.md",
             "eval_plan": "eval-plan.md",
         },

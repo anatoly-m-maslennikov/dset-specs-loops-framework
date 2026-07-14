@@ -14,4 +14,4 @@
 
 ## Decision
 
-Record adopt, adapt, build, or defer only after comparable proof. Link material decisions to an ADR.
+Record adopt, adapt, build, or defer only after comparable proof. Link material choices to a Decision.

@@ -6,10 +6,10 @@ This evidence covers only the DSET 0.2 invariant-contract batch. It verifies sta
 
 ## Contract identity
 
-- Roadmap invariants: `DSET-02-INV-001`–`DSET-02-INV-009`
-- Candidate change requirements: `MDSHAST-REQ-001`–`MDSHAST-REQ-009`
-- Candidate deterministic proof: `MDSHAST-TEST-001`–`MDSHAST-TEST-009`
-- Candidate qualitative proof: `MDSHAST-EVAL-001`–`MDSHAST-EVAL-004`
+- Roadmap invariants: `DSET-INVARIANT-TOOL-001..002`, `DSET-INVARIANT-GOV-001..004`, `DSET-INVARIANT-SKILL-001..002`, and `DSET-INVARIANT-META-001`
+- Candidate change requirements: `DSET-REQUIREMENT-TOOL-006..007`, `DSET-REQUIREMENT-GOV-007..010`, `DSET-REQUIREMENT-SKILL-002..003`, and `DSET-REQUIREMENT-META-005`
+- Candidate deterministic proof: `DSET-TEST-TOOL-009..011`, `DSET-TEST-GOV-009..011`, `DSET-TEST-SKILL-002..003`, and `DSET-TEST-META-004`
+- Candidate qualitative proof: `DSET-EVAL-TOOL-001..002`, `DSET-EVAL-SKILL-002`, and `DSET-EVAL-GOV-009`
 - Candidate accepted invariants: `METH-INV-013`–`METH-INV-021`
 - Candidate accepted requirements: `METH-REQ-026`–`METH-REQ-034`
 - Candidate accepted deterministic proof: `METH-TEST-027`–`METH-TEST-035`
@@ -30,4 +30,4 @@ The first direct `uv run dset verify .` attempt could not use the sandbox-denied
 
 ## Disposition
 
-The invariant contract is internally consistent and ready to govern later 0.2 implementation batches. MDSHAST-TEST-001–007/009 and MDSHAST-EVAL-001–004 remain planned proof obligations and must not be marked passing until their corresponding mechanics and fixtures exist.
+The invariant contract is internally consistent and ready to govern later 0.2 implementation batches. `DSET-TEST-TOOL-009..011`, `DSET-TEST-GOV-009..011`, `DSET-TEST-SKILL-002..003`, `DSET-TEST-META-004`, `DSET-EVAL-TOOL-001..002`, `DSET-EVAL-SKILL-002`, and `DSET-EVAL-GOV-009` remain planned proof obligations and must not be marked passing until their corresponding mechanics and fixtures exist.

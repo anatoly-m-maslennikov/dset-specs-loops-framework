@@ -1,18 +1,24 @@
 # Tasks — Make DSET self-hosting and skills thin
 
-- [x] **MDSHAST-TASK-001:** Refine all nine roadmap invariants for profile applicability, justified non-applicability, and rule-ID ownership.
-- [x] **MDSHAST-TASK-002:** Add one candidate requirement/scenario and deterministic test mapping per invariant plus separate qualitative evals.
-- [x] **MDSHAST-TASK-003:** Reconcile the invariant contract into candidate accepted methodology truth and package registration.
-- [x] **MDSHAST-TASK-004:** Run the current structural checks, record bounded evidence, and confirm no planned 0.2 mechanics are claimed as implemented.
-- [x] **MDSHAST-TASK-005:** Implement roadmap §0 version and bootstrap semantics.
-- [x] **MDSHAST-TASK-006:** Implement roadmap §1 repository-local governance registry and resolver.
-- [x] **MDSHAST-TASK-007:** Implement roadmap §2 thin skills and record the former-rule ownership inventory.
-- [x] **MDSHAST-TASK-008:** Implement roadmap §3 project-owned materialization, customization, migration, and update comparison.
-- [x] **MDSHAST-TASK-009:** Complete roadmap §4 hosted fixed-point proof after publishing the draft PR.
-- [ ] **MDSHAST-TASK-010:** Run roadmap §8 deterministic release tests and §9 independent qualitative evals after the remaining profiles/pilots are implemented.
-- [ ] **MDSHAST-TASK-011:** Implement roadmap §§5–§7 and §10, reconcile the completed change, and satisfy archive readiness.
-- [x] **MDSHAST-TASK-012:** Finalize the five-skill core topology, primary orchestration boundary, bounded run-record contract, version transition matrix, release transaction, and RC/final readiness requirements with separate tests and evals.
-- [x] **MDSHAST-TASK-015:** Define same-model/same-effort delegation inheritance, medium useful fan-out, explicit deviations, outcome-cost-aware model selection, and low/medium/high budget proof obligations.
-- [x] **MDSHAST-TASK-016:** Define problem/opportunity/question intake, keep tasks inside changes, and record the Action entity as project open question `MDSHAST-QUESTION-001`.
-- [ ] **MDSHAST-TASK-013:** Run three independent high-effort specification reviews, reconcile every blocking finding, and record the bounded review evidence.
-- [ ] **MDSHAST-TASK-014:** Implement `dset`, `dset-release`, local run records, release classification/version checks, synchronized version surfaces, and post-merge publication automation only after the specification review passes.
+- [x] **DSET-TASK-META-006:** Refine all nine roadmap invariants for profile applicability, justified non-applicability, and rule-ID ownership.
+- [x] **DSET-TASK-META-007:** Add one candidate requirement/scenario and deterministic test mapping per invariant plus separate qualitative evals.
+- [x] **DSET-TASK-META-008:** Reconcile the invariant contract into candidate accepted methodology truth and package registration.
+- [x] **DSET-TASK-GOV-011:** Run the current structural checks, record bounded evidence, and confirm no planned 0.2 mechanics are claimed as implemented.
+- [x] **DSET-TASK-OPS-015:** Implement roadmap §0 version and bootstrap semantics.
+- [x] **DSET-TASK-GOV-012:** Implement roadmap §1 repository-local governance registry and resolver.
+- [x] **DSET-TASK-SKILL-002:** Implement roadmap §2 thin skills and record the former-rule ownership inventory.
+- [x] **DSET-TASK-TOOL-006:** Implement roadmap §3 project-owned materialization, customization, migration, and update comparison.
+- [x] **DSET-TASK-TOOL-007:** Complete roadmap §4 hosted fixed-point proof after publishing the draft PR.
+- [ ] **DSET-TASK-TOOL-008:** Run roadmap §8 deterministic release tests and §9 independent qualitative evals after the remaining profiles/pilots are implemented.
+- [ ] **DSET-TASK-TOOL-009:** Implement roadmap §§5–§7 and §10, reconcile the completed change, and satisfy archive readiness.
+- [x] **DSET-TASK-META-009:** Finalize the five-skill core topology, primary orchestration boundary, bounded run-record contract, version transition matrix, release transaction, and RC/final readiness requirements with separate tests and evals.
+- [x] **DSET-TASK-SKILL-003:** Define same-model/same-effort delegation inheritance, medium useful fan-out, explicit deviations, outcome-cost-aware model selection, and low/medium/high budget proof obligations.
+- [x] **DSET-TASK-GOV-013:** Define problem/opportunity/question intake, keep tasks inside changes, and record the Action entity as project open question `DSET-QUESTION-GOV-001`.
+- [ ] **DSET-TASK-META-010:** Run three independent high-effort specification reviews, reconcile every blocking finding, and record the bounded review evidence.
+- [ ] **DSET-TASK-TOOL-010:** Implement `dset`, `dset-release`, local run records, release classification/version checks, synchronized version surfaces, and post-merge publication automation only after the specification review passes.
+- [ ] **DSET-TASK-SKILL-020:** Implement and prove real host-native installation, discovery, load, invocation, handoff, and stop behavior for every declared agent host under `DSET-CONTRACT-SKILL-001`.
+- [ ] **DSET-TASK-TOOL-036:** Prove declared macOS, native Windows, WSL, and Linux applicability or explicitly narrow it before publication under `DSET-CONTRACT-TOOL-001`.
+- [ ] **DSET-TASK-TOOL-037:** Implement dependency allowlist/denylist, exact registry/version/license/provenance enforcement, lockfile authority, and expiring exceptions under `DSET-CONTRACT-TOOL-002`.
+- [ ] **DSET-TASK-OPS-025:** Capture real GitHub Actions run/check and protected-branch evidence for the actual implementing PR SHA under `DSET-CONTRACT-OPS-001`.
+- [x] **DSET-TASK-META-015:** Define Outcome as a measurable state change and record the evidence-backed DSET 0.2 adoption-readiness Outcome.
+- [x] **DSET-TASK-GOV-039:** Register Journey, Actor/Persona, Hypothesis/Experiment, prioritization, feedback/analytics, and generated roadmap/release views as deferred Questions without creating new artifact types or intake queues.

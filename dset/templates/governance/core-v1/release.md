@@ -7,8 +7,13 @@ branch, one forge publisher, and one exact tag pattern in `dset/dset.yaml`.
 Generic DSET skills use configured roles, never hard-coded branch or forge
 names.
 
-Each release PR has one committed release declaration in its DSET change
-manifest. It is the authority for class, base, target, and readiness identity;
+After this policy is active, every integration-to-protected release-branch PR
+is a release PR. Exactly one participating DSET Change is the release owner and
+contains the committed declaration; any other participating Changes contain
+only a `release.owner_change` reference to that owner. Omission, multiple
+declarations, and dangling/cyclic owner references fail preparation, so a
+multi-change PR cannot escape or duplicate the transition. The declaration is
+the authority for class, base, target, and readiness identity;
 package metadata, release notes, PR text, tag, and forge release are validated
 mirrors. The base is read exactly once from the protected branch version
 manifest. Re-running preparation must be idempotent and cannot bump the target
@@ -50,10 +55,15 @@ scope changes require a new `rc.N+1` candidate and fresh readiness evidence.
 
 ## Identity and publication
 
-Canonical product identity is SemVer. Python package metadata serializes
-`1.0.0-rc.1` as PEP 440 `1.0.0rc1`; validation treats only this defined mapping
-as equivalent. The tag is exactly `v<product-semver>` and the forge release uses
-the product SemVer.
+Canonical product identity is SemVer. Python package metadata serializes every
+`MAJOR.MINOR.PATCH-rc.N` as PEP 440 `MAJOR.MINOR.PATCHrcN`; validation treats
+only this general mapping as equivalent. The tag is produced by replacing the
+single `{product_version}` placeholder in the project-configured tag pattern;
+the forge release uses the canonical product SemVer.
+
+Committed version files express the prepared identity, not live publication
+status. Only the configured forge tag/release at the exact protected merge SHA
+proves that an identity is published.
 
 Post-merge publication is required at the exact protected-branch merge SHA. If
 tag/release already exist at that SHA with matching identity, retry succeeds. If

@@ -6,20 +6,20 @@
 
 - Open the draft PR and record its repository-qualified identity.
 - Define the artifact-profile schema, repository adoption shape, requirements, tests, evals, and public document tree.
-- IDs: ART-REQ-001–006; ART-TEST-001; ART-EVAL-004.
+- IDs: `DSET-REQUIREMENT-GOV-004..006`, `DSET-REQUIREMENT-META-003..004`, `DSET-REQUIREMENT-TOOL-005`; `DSET-TEST-GOV-007`; `DSET-EVAL-GOV-008`.
 
 ## Batch 2 — Public artifact architecture
 
 - Add the documentation and methodology hubs.
 - Add separate architecture, type, authoring, hub, applied-profile, maintenance, and rationale documents.
 - Rework the root README into an area-level helicopter view without removing access to current framework surfaces.
-- IDs: ART-REQ-002–004/006; ART-TEST-003/004; ART-EVAL-001–003.
+- IDs: `DSET-REQUIREMENT-GOV-005..006`, `DSET-REQUIREMENT-META-003..004`; `DSET-TEST-GOV-008`, `DSET-TEST-META-003`; `DSET-EVAL-GOV-007`, `DSET-EVAL-META-002..003`.
 
 ## Batch 3 — Executable profile
 
 - Add `dset/artifacts.yaml`, its JSON Schema, stable diagnostics, repository validation, and unit/fixture coverage.
 - Activate `documentation-v1` independently from `python-v1` in `dset/dset.yaml` and the project schema.
-- IDs: ART-REQ-001/002/005/006; ART-TEST-001/002/005.
+- IDs: `DSET-REQUIREMENT-GOV-004..006`, `DSET-REQUIREMENT-TOOL-005`; `DSET-TEST-GOV-007`, `DSET-TEST-TOOL-006..007`.
 
 ## Batch 4 — Reconciliation and evidence
 

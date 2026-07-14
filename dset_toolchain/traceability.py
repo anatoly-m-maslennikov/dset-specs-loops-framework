@@ -42,14 +42,18 @@ def build_traceability(root: Path) -> dict[str, Any]:
                 "requirements": sorted(data.get("requirements", [])),
                 "tests": sorted(data.get("tests", [])),
                 "evals": sorted(data.get("evals", [])),
-                "adrs": sorted(data.get("adrs", [])),
+                "intake": sorted(data.get("intake", [])),
+                "decisions": sorted(data.get("decisions", data.get("adrs", []))),
+                "contracts": sorted(data.get("contracts", [])),
+                "stories": sorted(data.get("stories", [])),
+                "outcomes": sorted(data.get("outcomes", [])),
                 "pull_request": pr.get("url", "pending"),
                 "evidence": evidence,
             }
         )
     changes.sort(key=lambda item: item["id"])
     return {
-        "schema_version": 1.0,
+        "schema_version": 1.1,
         "repository": history["repository"],
         "changes": changes,
     }

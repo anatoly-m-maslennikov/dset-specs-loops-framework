@@ -4,12 +4,14 @@ import shutil
 import tempfile
 import unittest
 from pathlib import Path
+from typing import Any, cast
 
 from dset_toolchain.traceability import (
     build_traceability,
     trace_is_fresh,
     write_traceability,
 )
+from dset_toolchain.yaml_subset import load
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -32,6 +34,38 @@ class TraceabilityTests(unittest.TestCase):
             if item["id"] == "add-artifact-governance-profile"
         )
         self.assertTrue(artifacts["pull_request"].endswith("/pull/8"))
+        current = next(
+            item
+            for item in trace["changes"]
+            if item["id"] == "make-dset-self-hosting-and-skills-thin"
+        )
+        active_manifest = cast(
+            dict[str, Any],
+            load(
+                ROOT
+                / "dset"
+                / "changes"
+                / "make-dset-self-hosting-and-skills-thin"
+                / "change.yaml"
+            ),
+        )
+        self.assertEqual(current["intake"], sorted(active_manifest["intake"]))
+        self.assertEqual(current["decisions"], [])
+        project = cast(dict[str, Any], load(ROOT / "dset" / "dset.yaml"))
+        self.assertEqual(current["contracts"], sorted(project["contracts"]))
+        self.assertEqual(current["stories"], sorted(active_manifest.get("stories", [])))
+        self.assertEqual(
+            current["outcomes"], sorted(active_manifest.get("outcomes", []))
+        )
+        self.assertTrue(
+            all(item["contracts"] == [] for item in trace["changes"] if item != current)
+        )
+        self.assertTrue(
+            all(item["stories"] == [] for item in trace["changes"] if item != current)
+        )
+        self.assertTrue(
+            all(item["outcomes"] == [] for item in trace["changes"] if item != current)
+        )
 
     def test_write_is_stable_and_checkable(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

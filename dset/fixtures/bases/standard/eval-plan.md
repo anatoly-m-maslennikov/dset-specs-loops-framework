@@ -2,4 +2,4 @@
 
 | Eval ID | Criterion | Threshold |
 |---|---|---|
-| **FEATURE-EVAL-001** | Message usefulness | A reviewer can take the correct next action |
+| **DSET-EVAL-TOOL-001** | Message usefulness | A reviewer can take the correct next action |

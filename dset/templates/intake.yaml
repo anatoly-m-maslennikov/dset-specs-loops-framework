@@ -1,0 +1,29 @@
+schema_version: 1.0
+scope_mode: multi-scope
+scopes:
+  - id: meta
+    id_segment: META
+    kind: layer
+    name: Project metadata and accepted truth
+    path: dset
+  - id: gov
+    id_segment: GOV
+    kind: layer
+    name: Governance and lifecycle policy
+    path: dset/governance
+  - id: tool
+    id_segment: TOOL
+    kind: layer
+    name: Executable toolchain
+    path: dset_toolchain
+  - id: skill
+    id_segment: SKILL
+    kind: layer
+    name: User-facing skills
+    path: skills
+  - id: ops
+    id_segment: OPS
+    kind: layer
+    name: Operations and supportability
+    path: dset/supportability
+items: []

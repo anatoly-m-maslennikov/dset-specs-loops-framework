@@ -6,16 +6,16 @@ Three independent agent reviewers received bounded, read-only cases. They used c
 
 | Eval ID | Initial result | Corrective loop | Final result |
 |---|---|---|---|
-| DSET-V1-EVAL-001 | Fail at `114fc3c`: active verification still called the canonical command pending and conflicted with current configuration | `4fe015d` made the canonical command explicit, distinguished the locked entry point, completed the traceability task, and refreshed gate status | Pass at `4fe015d` |
-| DSET-V1-EVAL-002 | Pass at `114fc3c` | No blocking correction | Pass |
-| DSET-V1-EVAL-003 | Fail at `114fc3c`: diagnosis declared a read-only boundary but later steps implied unconditional regression-proof and DSET-artifact writes | `c14826b` separated read-only reporting, authorized diagnostic-artifact writes, and separately authorized implementation fixes | Pass at `4fe015d` |
-| DSET-V1-EVAL-004 | Pass with a template-clarity improvement requested at `114fc3c` | `4fe015d` added owner, consumers, status, target artifacts, retention, and read-only cutover fields to the migration map | Pass at `4fe015d` |
+| DSET-EVAL-GOV-005 | Fail at `114fc3c`: active verification still called the canonical command pending and conflicted with current configuration | `4fe015d` made the canonical command explicit, distinguished the locked entry point, completed the traceability task, and refreshed gate status | Pass at `4fe015d` |
+| DSET-EVAL-OPS-005 | Pass at `114fc3c` | No blocking correction | Pass |
+| DSET-EVAL-SKILL-001 | Fail at `114fc3c`: diagnosis declared a read-only boundary but later steps implied unconditional regression-proof and DSET-artifact writes | `c14826b` separated read-only reporting, authorized diagnostic-artifact writes, and separately authorized implementation fixes | Pass at `4fe015d` |
+| DSET-EVAL-GOV-006 | Pass with a template-clarity improvement requested at `114fc3c` | `4fe015d` added owner, consumers, status, target artifacts, retention, and read-only cutover fields to the migration map | Pass at `4fe015d` |
 
-## DSET-V1-EVAL-001 — File-only resumability
+## DSET-EVAL-GOV-005 — File-only resumability
 
 The evaluator found the current `in-progress` state and PR identity in `change.yaml`, the sole remaining task in `tasks.md`, deterministic and qualitative proof obligations in the two proof plans, current gate state in `verification.md`, and the canonical command in `dset.yaml`, `dset/README.md`, and `verification.md`. Cold navigation took approximately two minutes. The initial contradictory handoff was a threshold failure; after correction, the evaluator reported no material contradiction.
 
-## DSET-V1-EVAL-002 — Diagnostics and delivery recovery
+## DSET-EVAL-OPS-005 — Diagnostics and delivery recovery
 
 For a failed `dset verify`, the evaluator located structural validation, ordered configured gates, stable diagnostic rendering, exact failed-command reporting through `DSET-E201`, and stale-trace reporting through `DSET-E111`. The safe recovery was to inspect read-only diagnostics, correct the bounded source failure, explicitly regenerate traceability only after review, and rerun the exact gate plus the aggregate.
 
@@ -23,7 +23,7 @@ For blocked `dev → main` delivery, the evaluator correctly routed live authori
 
 Non-blocking observation: `DSET-E201` reports the exact child command and exit status but does not embed child stdout/stderr as structured JSON. Raw output remains deliberately transient; a concise operator-facing diagnostic-code catalogue is a possible later usability improvement.
 
-## DSET-V1-EVAL-003 — Skill routing and authorization
+## DSET-EVAL-SKILL-001 — Skill routing and authorization
 
 All three prompts selected distinct skills after correction:
 
@@ -31,11 +31,11 @@ All three prompts selected distinct skills after correction:
 |---|---|---|
 | Ambiguous actors, states, ownership, and acceptance rules | `dset-grill` | Without write authorization, return proposed artifact changes; stop before solution/code while a material domain branch remains |
 | Explain a retry-related duplicate without fixing it | `dset-diagnose` | Diagnosis/reporting remain read-only; DSET-artifact writes and implementation fixes require separate explicit authorization |
-| Run a disposable comparison to answer one recovery question | `dset-prototype` | Evidence remains in the active proof surface; production code/current truth are excluded; promotion returns through ADR/design and normal proof |
+| Run a disposable comparison to answer one recovery question | `dset-prototype` | Evidence remains in the active proof surface; production code/current truth are excluded; promotion returns through a Decision/design and normal proof |
 
 Non-blocking observation: `dset-prototype` treats an explicit request to run the disposable experiment as authorization for bounded proof-directory writes. This is consistent with its trigger but differs from the explicit write-confirmation wording in the other two skills.
 
-## DSET-V1-EVAL-004 — One-root migration
+## DSET-EVAL-GOV-006 — One-root migration
 
 The evaluator produced one writable `dset/` target while mapping accepted domain/spec truth, deterministic test plans, qualitative/probabilistic eval plans, active implementation work, and completed history to distinct owners. Old roots become read-only only after verified archival and ownership cutover. Test/eval separation survived the mapping.
 

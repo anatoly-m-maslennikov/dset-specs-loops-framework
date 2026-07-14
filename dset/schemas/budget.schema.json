@@ -21,9 +21,9 @@
       "type": "object",
       "required": ["low", "medium", "high"],
       "properties": {
-        "low": {"$ref": "#/$defs/profile"},
-        "medium": {"$ref": "#/$defs/profile"},
-        "high": {"$ref": "#/$defs/profile"}
+        "low": {"$ref": "#/$defs/low_profile"},
+        "medium": {"$ref": "#/$defs/medium_profile"},
+        "high": {"$ref": "#/$defs/high_profile"}
       },
       "additionalProperties": false
     },
@@ -41,14 +41,36 @@
     "no_delegation_reason_required": {"const": true}
   },
   "$defs": {
-    "profile": {
+    "low_profile": {
       "type": "object",
       "required": ["target_subagents", "max_subagents", "max_depth", "max_rounds"],
       "properties": {
-        "target_subagents": {"type": "integer", "minimum": 0, "maximum": 6},
-        "max_subagents": {"type": "integer", "minimum": 0, "maximum": 6},
-        "max_depth": {"type": "integer", "minimum": 1, "maximum": 2},
-        "max_rounds": {"type": "integer", "minimum": 1, "maximum": 3}
+        "target_subagents": {"const": 0},
+        "max_subagents": {"const": 1},
+        "max_depth": {"const": 1},
+        "max_rounds": {"const": 1}
+      },
+      "additionalProperties": false
+    },
+    "medium_profile": {
+      "type": "object",
+      "required": ["target_subagents", "max_subagents", "max_depth", "max_rounds"],
+      "properties": {
+        "target_subagents": {"const": 2},
+        "max_subagents": {"const": 3},
+        "max_depth": {"const": 1},
+        "max_rounds": {"const": 2}
+      },
+      "additionalProperties": false
+    },
+    "high_profile": {
+      "type": "object",
+      "required": ["target_subagents", "max_subagents", "max_depth", "max_rounds"],
+      "properties": {
+        "target_subagents": {"const": 4},
+        "max_subagents": {"const": 6},
+        "max_depth": {"const": 2},
+        "max_rounds": {"const": 3}
       },
       "additionalProperties": false
     }

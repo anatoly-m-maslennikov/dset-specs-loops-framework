@@ -4,6 +4,10 @@
 
 This change implements the DSET 0.2 invariant contract through roadmap §4 and finalizes the skill/release contract for later implementation. The repository manifest selects one local governance profile; the registry owns resolution metadata; registered local documents own normative rules; wrappers own invocation only; templates remain provenance; the recursive runner stops after one temporary adopter; and release preparation cannot bypass protected delivery. The roadmap owns sequencing, accepted methodology owns the release contract, and this active change owns unaccepted mechanics and evidence.
 
+The concrete distribution/platform/dependency/hosted-delivery contracts are defined
+in [contracts.md](specs/contracts.md). They state observable compatibility and
+evidence boundaries; Decisions remain separate records of choices and rationale.
+
 ## State and durability
 
 | Concern | Authority | Writer model | Refresh boundary | Failure/recovery proof |
@@ -13,9 +17,13 @@ This change implements the DSET 0.2 invariant contract through roadmap §4 and f
 | Normative project rules | `dset/governance/*.md` | Owning project | Next resolution | Digest/customization and mutation proof |
 | Framework defaults | `dset/templates/governance/core-v1/` | Framework change | Explicit adopter comparison only | Template/schema tests |
 | Canonical wrappers | `skills/*/SKILL.md` plus registered digest | Framework change | Install/generation | Static thinness and generated-copy identity tests |
+| Host-native installations | Declared host package/install surface | Generated or linked from canonical wrapper source | Every supported-host release | Clean install, host discovery, invocation, handoff, and stop proof |
+| Platform support | Published applicability plus platform-native entry points | Tool release | Every supported-platform release | Native macOS/Windows/WSL/Linux jobs or explicit pre-write rejection |
+| Dependency set | Lockfile, allowlist/denylist, registry/license/provenance record, bounded exceptions | Reviewed dependency change | Resolution and publication | Lockfile/license/provenance enforcement and exception-expiry fixtures |
 | Released baseline | Commit in `dset/version.yaml` | Release process | Candidate self-host run | Extracted released-validator check |
 | Candidate and adopter | Current checkout and temporary directory | Candidate command | One bounded run | Self-host report and failure matrix |
 | Hosted PR/check state | GitHub | GitHub workflows/rulesets | Live query | Delivery runbook |
+| Protected delivery proof | GitHub workflow artifact, run/check identity, actual PR SHA, target ruleset | GitHub and protected integration | Every release PR head | Hosted run/check and protected-branch acceptance or block evidence |
 | Product/package release identity | Change release declaration; `dset/version.yaml` and package metadata are mirrors | Reviewed integration-to-protected release PR | Exactly once per accepted PR | Version transition and surface-consistency tests |
 | Local skill-run evidence | Ignored `.dset/runs/` records | Invoked skill/runtime | Every run; bounded retention | Schema/redaction tests and authoritative-state comparison |
 | Immutable published release | Configured protected merge commit, tag, and publisher release | Post-merge automation | Successful release PR merge | Tag/commit/release identity check and recovery runbook |
@@ -44,12 +52,19 @@ No adopter application runtime or production data is changed. The CLI reads repo
 - Inherit the main model and reasoning effort for subagents by default; use a medium two-or-three-agent fan-out only when the task benefits and runtime capacity permits.
 - Bound low/medium/high by tree-wide unique agents, depth, and rounds while preserving scope, proof, and safety. Permit model/effort changes only through explicit policy or task-relevant evidence and report every deviation.
 - Keep incomparable cost/quality metrics separate; never equate lower token price with lower task cost or use a single-agent benchmark to justify fan-out.
-- Route intake through problems, opportunities, and questions; put tasks inside changes and treat ADRs/changes as artifacts and hosted tickets as representations.
+- Route intake through the project-owned registry's problems, opportunities, and questions; treat Decision as the entity and Decision record as its canonical artifact, tasks as Change-owned work, and hosted tickets as representations.
+- Define Outcome as a measured state change with baseline, target, source/method, window, and related links or explicit dispositions; never use it as a synonym for a feature, output, milestone, or completed task.
+- Defer Journey, Actor/Persona, Hypothesis/Experiment, prioritization, feedback/analytics, and generated roadmap/release views as Questions only; do not create new artifact types or intake queues before Decisions standardize them.
+- Use canonical `DSET-<TYPE>-<LAYER>-<NNN>` IDs, where `TYPE` includes `REQUIREMENT`, `SCENARIO`, `INVARIANT`, `CONTRACT`, `TEST`, `EVAL`, `TASK`, `PROBLEM`, `OPPORTUNITY`, `QUESTION`, `DECISION`, `STORY`, and `OUTCOME`, and `LAYER` is one of `META`, `GOV`, `TOOL`, `SKILL`, or `OPS`; number every full artifact type independently within each layer.
 
 ## Open questions
 
-- [**MDSHAST-QUESTION-001 — First-class Action entity**](../../questions.md#mdshast-question-001--should-action-become-a-first-class-entity):
+- **DSET-QUESTION-GOV-001 — First-class Action entity** in [`dset/intake.yaml`](../../intake.yaml):
   Should a later DSET version promote Action into a first-class entity or intake
-  queue, or are tasks inside a change sufficient? Until an ADR resolves this,
+  queue, or are tasks inside a change sufficient? Until a Decision resolves this,
   Action is not part of the released ontology and executable work remains in
-  `tasks.md`.
+  `tasks.md`. This is a project question, not accepted methodology.
+- Six additional open Questions in [`dset/intake.yaml`](../../intake.yaml) defer
+  Journey, Actor/Persona, Hypothesis/Experiment, prioritization,
+  feedback/analytics, and generated roadmap/release views. They create no new
+  ontology or queue until a later Decision accepts one.

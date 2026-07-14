@@ -7,32 +7,32 @@
 - Create this change and push its first reviewable commit.
 - Open a draft `dev → main` PR and replace pending PR references.
 - Add third-party notices before adapting any external workflow ideas.
-- IDs: DSET-V1-REQ-003/005; TEST-004/006.
+- IDs: `DSET-REQUIREMENT-TOOL-003`, `DSET-REQUIREMENT-SKILL-001`; `DSET-TEST-TOOL-004`, `DSET-TEST-SKILL-001`.
 
 ## Batch 2 — Contracts and reusable artifacts
 
 - Release schemas, change/package templates, baseline fixtures, and migration guidance.
 - Backfill machine-readable manifests for the two archived session changes.
-- IDs: DSET-V1-REQ-002/003; TEST-002/003/004; EVAL-004.
+- IDs: `DSET-REQUIREMENT-TOOL-002..003`; `DSET-TEST-TOOL-002..004`; `DSET-EVAL-GOV-006`.
 
 ## Batch 3 — CLI and tests
 
 - Implement the standard-library parser, model, diagnostics, validation, trace generation, scaffolding, verification, and guarded archive operation.
 - Run unit tests and fixture tests on the repository.
-- IDs: DSET-V1-REQ-001–004; TEST-001–005.
+- IDs: `DSET-REQUIREMENT-TOOL-001..004`; `DSET-TEST-TOOL-001..005`.
 
 ## Batch 4 — Focused skills
 
 - Initialize and implement `dset-grill`, `dset-diagnose`, and `dset-prototype`.
 - Validate frontmatter, UI metadata, portability, triggers, outputs, verification, and stop conditions.
-- IDs: DSET-V1-REQ-005; TEST-006; EVAL-003.
+- IDs: `DSET-REQUIREMENT-SKILL-001`; `DSET-TEST-SKILL-001`; `DSET-EVAL-SKILL-001`.
 
 ## Batch 5 — Enforcement and current truth
 
 - Add the stable CI gate and update the protected-main required check after it passes on the draft PR.
 - Reconcile methodology requirements/test/eval plans and project configuration.
 - Update repository navigation and replace completed roadmap items with durable links.
-- IDs: DSET-V1-REQ-001–006; TEST-007/008; EVAL-001/002.
+- IDs: `DSET-REQUIREMENT-TOOL-001..004`, `DSET-REQUIREMENT-SKILL-001`, `DSET-REQUIREMENT-OPS-007`; `DSET-TEST-OPS-007`, `DSET-TEST-GOV-006`; `DSET-EVAL-GOV-005`, `DSET-EVAL-OPS-005`.
 
 ## Batch 6 — Evidence and archive
 

@@ -55,6 +55,7 @@ def build_parser() -> argparse.ArgumentParser:
         default="standard",
     )
     new.add_argument("--title")
+    new.add_argument("--layer", choices=["META", "GOV", "TOOL", "SKILL", "OPS"])
 
     trace = commands.add_parser("trace", help="generate PR traceability")
     _root_argument(trace)
@@ -124,6 +125,7 @@ def main(argv: list[str] | None = None) -> int:
                 args.package_id,
                 args.profile,
                 args.title,
+                args.layer,
             )
             print(path.relative_to(root).as_posix())
             return 0
@@ -208,10 +210,7 @@ def main(argv: list[str] | None = None) -> int:
                 framework = data["framework"]
                 toolchain = data["python_package"]
                 schemas = data["schemas"]
-                print(
-                    f"product: {framework['version']} "
-                    f"({framework['status']}, coordinated)"
-                )
+                print(f"product: {framework['version']} (coordinated)")
                 print(f"python package: {toolchain['version']} (coordinated)")
                 print(f"schemas: {schemas['version']} (independent)")
             return 0

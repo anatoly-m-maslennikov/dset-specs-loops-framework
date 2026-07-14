@@ -19,16 +19,87 @@
 - The `dset` CLI through `python -m dset_toolchain` and an installable console entry point.
 - Three implemented specialist skill sources under `skills/`; the active DSET 0.2 change owns the unimplemented five-skill release target.
 - A coordinated DSET product/CLI-package release contract, with project-configured delivery and independent schema/profile/template compatibility versions.
+- Active authoritative-boundary Contract records with explicit ownership, direction, conformance, compatibility, and lifecycle.
 
 ## Skill release target
 
-`dset` is the primary operator entrypoint for initialization, decomposition, landscape/ADR/spec/proof/implementation planning, implementation, verification, work-item routing, and next-step advice through registered project-local workflows. `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release` are explicit specialist triggers. Helper operations are modes or chained workflows, not additional public skill names. Until `skills/dset/` and `skills/dset-release/` are implemented and proven, only the three specialist skills listed in [the skills hub](../../../../skills/README.md) are released.
+`dset` is the primary operator entrypoint for initialization, decomposition, landscape/decision/spec/proof/implementation planning, implementation, verification, work-item routing, and next-step advice through registered project-local workflows. `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release` are explicit specialist triggers. Helper operations are modes or chained workflows, not additional public skill names. Until `skills/dset/` and `skills/dset-release/` are implemented and proven, only the three specialist skills listed in [the skills hub](../../../../skills/README.md) are released.
 
 All five target skills are thin wrappers over the repository governance registry. The registered `DSET-RULE-LIFECYCLE`, `DSET-RULE-SKILL-RUNS`, `DSET-RULE-RELEASE`, `DSET-RULE-DELEGATION-BUDGET`, and `DSET-RULE-WORK-ITEMS` documents own substantive behavior. Versioned bounded local run records under `.dset/runs/` are operational evidence only and are excluded from committed project truth.
 
 Subagents request the main session's model and reasoning effort by default and report effective attestation or uncertainty. Medium budget targets two and caps the whole tree at three unique subagents, depth one, and two rounds. Scope, proof, and safety are invariant; model overrides require dated task-relevant evidence and remain visible in run records.
 
-Intake routing uses only problems, opportunities, and questions. ADRs/decisions and DSET changes are artifacts; tasks live inside changes; GitHub Issues and Jira/support tickets are external representations.
+Intake routing uses only problems, opportunities, and questions in `dset/intake.yaml`. Decision is the durable entity and artifact and uses the full `DECISION` type. Decisions and DSET Changes are artifacts, tasks live inside Changes, and GitHub Issues and Jira/support tickets are external representations. IDs use the `DSET` project prefix: project-wide IDs omit the optional layer, while layer-owned IDs insert `META`, `GOV`, `TOOL`, `SKILL`, or `OPS` between the full type and sequence. Optional accepted Stories use the full `STORY` type, measurable intended effects use the full `OUTCOME` type, and authoritative boundaries use the full `CONTRACT` type.
+
+## Specification boundary surface
+
+A Story is optional accepted truth, not an intake queue. When present, `DSET-STORY-<NNN>` or `DSET-STORY-<LAYER>-<NNN>` records an actor or stakeholder, desired capability or outcome, value or purpose, and links to normative Requirements and applicable Scenarios. Absence is valid where no meaningful actor story exists. A Story never substitutes for a Requirement.
+
+Requirements own observable verifiable delivered behavior, results, and constraints; Scenarios own observable examples and edge cases. Decisions own consequential choices among alternatives with rationale, tradeoffs, and consequences, not every implementation detail. Design owns internal logic, implementation plans own build sequence, and Contracts own boundaries the project cannot choose or rewrite.
+
+An Outcome is a measurable change in user, business, operational, or system state, not a delivered output or feature. `DSET-OUTCOME-<NNN>` or `DSET-OUTCOME-<LAYER>-<NNN>` records baseline, target, observation method/source, evaluation window, originating Problem or Opportunity links, relevant Story links when present, and applicable Eval links. Requirements and their deterministic evidence prove delivered behavior; Outcome evidence shows whether that behavior had the intended effect. This model-only change defines the type without asserting a concrete Outcome.
+
+## Authoritative boundary contracts
+
+A Contract is not implementation advice. It is an authoritative boundary that implementation must satisfy without rewriting. Every Contract record names its authority, source, exactly one version or digest, direction, producer, consumer, conformance rule, compatibility rule, and lifecycle state. Lifecycle is `declared -> active -> superseded` or `declared -> active -> retired`; only the named authority may issue a superseding version. Ambiguity creates a Question, incompatibility creates a Problem, and a Decision cannot override an active Contract.
+
+### DSET-CONTRACT-SKILL-001 — Released skills are host-native
+
+| Field | Value |
+|---|---|
+| Authority | DSET maintainers |
+| Source | Official skill/package formats for every declared target host, each pinned by version or digest in release evidence |
+| Version or digest | `1.0` |
+| Direction | DSET release artifacts to declared host skill loaders |
+| Producer | DSET skill release workflow |
+| Consumer | Each declared target host, including Claude and Codex when claimed |
+| Conformance | Every released DSET skill is a real installable host-native skill, not descriptive Markdown alone; each target has artifact, install, load, and representative invoke proof |
+| Compatibility | The release declares a host matrix and passes every claimed target against its pinned format; unsupported targets are omitted rather than implied |
+| Lifecycle | `active` |
+
+### DSET-CONTRACT-TOOL-001 — Released utilities match declared platforms
+
+| Field | Value |
+|---|---|
+| Authority | DSET maintainers |
+| Source | Declared host/platform matrix and pinned runtime or host-format references |
+| Version or digest | `1.0` |
+| Direction | Released skill scripts and utilities to supported operating environments |
+| Producer | DSET tool and skill release workflows |
+| Consumer | Users on macOS, native Windows, WSL, and Linux |
+| Conformance | Each released utility installs and runs on every declared platform with path/shell portability proof, or declares narrower applicability before release with an honest reason |
+| Compatibility | Every matrix cell has executed proof or explicit honest `N/A`; generic Markdown validation is insufficient |
+| Lifecycle | `active` |
+
+### DSET-CONTRACT-TOOL-002 — Dependencies follow exact policy
+
+| Field | Value |
+|---|---|
+| Authority | DSET maintainers; exception authority must also be named in the applicable policy |
+| Source | Versioned dependency policy and pinned ecosystem, package, registry, license, and provenance sources |
+| Version or digest | `1.0` |
+| Direction | Dependency policy to implementation dependency selection and release proof |
+| Producer | DSET dependency-policy owner and release workflow |
+| Consumer | DSET implementations, contributors, package tooling, and release gates |
+| Conformance | Policy records exact ecosystem/package/registry/license/version allowlists and denylists, sources, rationale, enforcement command, and exception authority/expiry; proof covers lockfiles, dependency resolution, licenses, and provenance |
+| Compatibility | Every selected dependency is allowed and source-constrained; denied or expired-exception dependencies fail release |
+| Lifecycle | `active` |
+
+A mandated library is a Contract constraint, not a Decision. A consequential selection among alternatives that the Contract permits may be recorded as a Decision.
+
+### DSET-CONTRACT-OPS-001 — CI is hosted GitHub Actions evidence
+
+| Field | Value |
+|---|---|
+| Authority | DSET maintainers |
+| Source | GitHub Actions workflow syntax/event/permission contracts and repository protected-branch configuration, pinned by version or digest in release evidence |
+| Version or digest | `1.0` |
+| Direction | Repository workflow artifacts and PR-head commits to GitHub-hosted checks and protected integration |
+| Producer | `.github/workflows/` and GitHub Actions on the actual pull-request head |
+| Consumer | Contributors, reviewers, required-check rules, and protected-branch integration |
+| Conformance | Real workflow artifacts under `.github/workflows/` define valid syntax, events, least-required permissions, stable check names, artifact/log retention, exact-SHA correlation, failure visibility, and execution on the actual PR head |
+| Compatibility | Required hosted checks integrate with protected-branch policy and retain stable GitHub check/run evidence; local scripts and specification prose are inputs, not hosted-CI proof |
+| Lifecycle | `active` |
 
 ## Release compatibility surface
 

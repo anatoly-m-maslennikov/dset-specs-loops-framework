@@ -19,18 +19,20 @@ first applicable mode:
 5. `clarify`: an open domain or specification question blocks a decision.
 6. `landscape`: a consequential solution, dependency, framework, or language
    choice lacks comparable evidence.
-7. `decide`: a consequential resolved question lacks its ADR.
-8. `plan-proof`: accepted behavior lacks a complete test or applicable eval
+7. `prototype`: an explicitly requested bounded experiment is needed to compare
+   solution evidence.
+8. `decide`: a consequential resolved question lacks its Decision.
+9. `plan-proof`: accepted behavior lacks a complete test or applicable eval
    plan.
-9. `plan-implementation`: accepted behavior and proof exist but the build plan
+10. `plan-implementation`: accepted behavior and proof exist but the build plan
    is incomplete.
-10. `implement`: approved actions remain and their prerequisites are satisfied.
-11. `verify`: implementation or governing artifacts changed after the latest
+11. `implement`: approved tasks remain and their prerequisites are satisfied.
+12. `verify`: implementation or governing artifacts changed after the latest
     applicable proof.
-12. `triage-work`: a durable problem, opportunity, or question is
+13. `triage-work`: a durable problem, opportunity, or question is
     unclassified or lacks its owning change/tracker link.
-13. `release`: a verified change is ready for its guarded release transaction.
-14. `complete`: no earlier mode applies.
+14. `release`: a verified change is ready for its guarded release transaction.
+15. `complete`: no earlier mode applies.
 
 An explicit operator-selected mode may override precedence only when that mode
 is applicable and the override is recorded. Conflicting or insufficient state
@@ -81,8 +83,9 @@ or when the selected workflow reaches its own stop condition. Writes, external
 messages, publication, and other consequential effects require the same
 authorization they would require if invoked directly.
 
-`clarify`, `diagnose`, `prototype`, and `release` route to their registered
-specialist workflows. Other modes resolve the project-owned rules registered
+The exact specialist map is `clarify` → `domain-clarification`, `diagnose` →
+`diagnosis`, `prototype` → `prototyping`, `triage-work` → `work-triage`, and
+`release` → `release`. Other modes resolve the project-owned rules registered
 for that mode; a skill name is not synthesized for them.
 
 ## Rootless initialization exception
@@ -95,3 +98,10 @@ destination, materialize the local manifest/registry/governing documents,
 validate them, and stop. The next invocation must use the new local authority.
 The bootstrap transaction cannot make product decisions or continue into a
 second lifecycle mode.
+
+When a root exists but governance validation fails, the distribution command
+`dset rules check` may select `repair-governance` before local workflow
+resolution. This is a diagnostic-only exception: emit stable schema/ownership
+diagnostics and proposed local paths, then stop. It cannot resolve substantive
+rules from the invalid registry or write a repair without separate explicit
+authorization.

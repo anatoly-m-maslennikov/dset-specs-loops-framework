@@ -1,14 +1,13 @@
-schema_version: 1.0
+schema_version: 1.1
 framework:
   version: "0.2.0"
-  status: candidate
   versioning: coordinated-product-package
 python_package:
   name: dset-spec-loops
   version: "0.2.0"
   versioning: coordinated-product-package
 schemas:
-  version: "1.0"
+  version: "1.1"
   versioning: independent
 released_validator:
   identity: pre-0.2-v1-baseline

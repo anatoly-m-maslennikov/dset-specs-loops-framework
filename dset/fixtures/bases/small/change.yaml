@@ -1,4 +1,4 @@
-schema_version: 1.0
+schema_version: 1.1
 id: fixture-small
 profile: small
 status: proposed
@@ -8,9 +8,23 @@ pull_request:
   repository: example/project
   number: pending
   url: pending
+release:
+  policy: dset/governance/release.md
+  class: pending
+  base:
+    ref: pending
+    commit: pending
+    version: pending
+  target: pending
+  readiness: verification.md
+  candidate_commit: pending
+intake: []
 requirements:
-  - FIX-REQ-001
+  - DSET-REQUIREMENT-001
 tests:
-  - FIX-TEST-001
+  - DSET-TEST-001
 evals: []
-adrs: []
+decisions: []
+contracts: []
+stories: []
+outcomes: []

@@ -4,11 +4,11 @@
 
 | Capability | Requirement/test IDs | Needed behavior |
 |---|---|---|
-| Project/change validation | DSET-V1-REQ-001/002; TEST-001/002 | Cross-platform, deterministic, actionable diagnostics |
-| Scaffolding and archive safety | DSET-V1-REQ-001/004; TEST-003/005 | Explicit writes, no overwrite, lifecycle gates |
-| Traceability generation | DSET-V1-REQ-003; TEST-004 | Stable output from committed metadata and PR identity |
-| Agent workflows | DSET-V1-REQ-005; TEST-006; EVAL-003 | Three distinct, portable, concise skills |
-| Delivery diagnostics | DSET-V1-REQ-006; TEST-007; EVAL-002 | GitHub-hosted evidence and recovery routing |
+| Project/change validation | `DSET-REQUIREMENT-TOOL-001`, `DSET-REQUIREMENT-TOOL-002`; `DSET-TEST-TOOL-001`, `DSET-TEST-TOOL-002` | Cross-platform, deterministic, actionable diagnostics |
+| Scaffolding and archive safety | `DSET-REQUIREMENT-TOOL-001`, `DSET-REQUIREMENT-TOOL-004`; `DSET-TEST-TOOL-003`, `DSET-TEST-TOOL-005` | Explicit writes, no overwrite, lifecycle gates |
+| Traceability generation | `DSET-REQUIREMENT-TOOL-003`; `DSET-TEST-TOOL-004` | Stable output from committed metadata and PR identity |
+| Agent workflows | `DSET-REQUIREMENT-SKILL-001`; `DSET-TEST-SKILL-001`; `DSET-EVAL-SKILL-001` | Three distinct, portable, concise skills |
+| Delivery diagnostics | `DSET-REQUIREMENT-OPS-007`; `DSET-TEST-OPS-007`; `DSET-EVAL-OPS-005` | GitHub-hosted evidence and recovery routing |
 
 ## Candidates
 

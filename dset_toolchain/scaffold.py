@@ -4,6 +4,9 @@ import re
 from pathlib import Path
 
 from .profiles import VALID_PROFILES, required_artifacts
+from .yaml_subset import load
+
+TRACE_LAYERS = ("META", "GOV", "TOOL", "SKILL", "OPS")
 
 
 def create_change(
@@ -12,6 +15,7 @@ def create_change(
     package_id: str,
     profile: str,
     title: str | None = None,
+    layer: str | None = None,
 ) -> Path:
     if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", change_id):
         raise ValueError("change ID must be lowercase kebab-case")
@@ -23,12 +27,15 @@ def create_change(
     files, directories = required_artifacts(root, profile)
     templates = root / "dset" / "templates" / "change"
     display_title = title or change_id.replace("-", " ").title()
+    project_key = _project_key(root)
+    id_layer = _id_layer(root, layer)
     replacements = {
         "{{change_id}}": change_id,
         "{{package_id}}": package_id,
         "{{profile}}": profile,
         "{{title}}": display_title,
-        "{{id_prefix}}": _id_prefix(change_id),
+        "{{project_key}}": project_key,
+        "{{id_layer}}": id_layer,
         "{{repository}}": _repository(root),
     }
     destination.mkdir(parents=True)
@@ -67,17 +74,34 @@ def _copy_template(source: Path, target: Path, replacements: dict[str, str]) -> 
     target.write_text(text, encoding="utf-8")
 
 
-def _id_prefix(change_id: str) -> str:
-    parts = change_id.split("-")
-    prefix = "".join(part[0] for part in parts).upper()
-    if len(prefix) < 3:
-        prefix = "".join(parts).upper()[:8]
-    return prefix[:8]
+def _project_key(root: Path) -> str:
+    data = load(root / "dset" / "dset.yaml")
+    project = data.get("project", {}) if isinstance(data, dict) else {}
+    key = project.get("key") if isinstance(project, dict) else None
+    if not isinstance(key, str) or not re.fullmatch(r"[A-Z][A-Z0-9]*", key):
+        raise ValueError("project.key must be an uppercase ID segment")
+    return key
+
+
+def _id_layer(root: Path, layer: str | None) -> str:
+    if layer is None:
+        return ""
+    normalized = layer.upper()
+    if normalized not in TRACE_LAYERS:
+        raise ValueError(f"unknown ID layer: {layer}")
+    data = load(root / "dset" / "intake.yaml")
+    raw_scopes = data.get("scopes", []) if isinstance(data, dict) else []
+    registered = {
+        item.get("id_segment")
+        for item in raw_scopes
+        if isinstance(item, dict) and item.get("kind") == "layer"
+    }
+    if normalized not in registered:
+        raise ValueError(f"unregistered ID layer: {normalized}")
+    return f"-{normalized}"
 
 
 def _repository(root: Path) -> str:
-    from .yaml_subset import load
-
     history = load(root / "dset" / "history" / "pull-requests.yaml")
     return str(history["repository"])
 

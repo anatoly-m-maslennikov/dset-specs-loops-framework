@@ -43,7 +43,7 @@ Use `gh pr view`, `gh pr checks`, `gh run view`, and read-only ruleset/API queri
 - Never bypass protected `main`, force-push either protected branch, or weaken the author/head/base policy to unblock one delivery.
 - If auto-merge logic is defective, keep the PR draft, correct the workflow through the active DSET change, and require the policy and DSET checks on the corrected head.
 - If a ruleset is misconfigured, capture its ID and current JSON, apply the smallest owner-authorized correction, then validate with a draft `dev → main` PR before publication.
-- If a wrong merge reaches `main`, preserve the merge commit and use a reviewed revert PR. Do not rewrite public history.
+- If wrong content reaches `main`, preserve the merge commit and deliver inverse content changes through a reviewed `dev → main` corrective PR with a newly higher version. Do not restore an older version surface, rewrite history, or create a tag collision.
 - Publication retry is idempotent: accept an already-correct tag/Release pair, create only the missing object after partial failure, and make no content commit to `main`.
 - Stop on an existing tag or Release with a different identity or SHA. Never retarget, delete-and-reuse, or force-update a public release tag.
 - Preserve an incorrect published release as evidence and mark it withdrawn/deprecated when GitHub supports the required signal. Deliver a correction through a new `dev → main` PR with a higher version.

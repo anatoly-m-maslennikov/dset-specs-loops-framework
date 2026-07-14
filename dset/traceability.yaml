@@ -1,4 +1,4 @@
-schema_version: 1.0
+schema_version: 1.1
 repository: anatoly-m-maslennikov/dset-specs-loops-framework
 changes:
   -
@@ -8,25 +8,29 @@ changes:
     packages:
       - methodology
     requirements:
-      - ART-REQ-001
-      - ART-REQ-002
-      - ART-REQ-003
-      - ART-REQ-004
-      - ART-REQ-005
-      - ART-REQ-006
+      - DSET-REQUIREMENT-GOV-004
+      - DSET-REQUIREMENT-GOV-005
+      - DSET-REQUIREMENT-GOV-006
+      - DSET-REQUIREMENT-META-003
+      - DSET-REQUIREMENT-META-004
+      - DSET-REQUIREMENT-TOOL-005
     tests:
-      - ART-TEST-001
-      - ART-TEST-002
-      - ART-TEST-003
-      - ART-TEST-004
-      - ART-TEST-005
-      - ART-TEST-006
+      - DSET-TEST-GOV-007
+      - DSET-TEST-GOV-008
+      - DSET-TEST-META-003
+      - DSET-TEST-TOOL-006
+      - DSET-TEST-TOOL-007
+      - DSET-TEST-TOOL-008
     evals:
-      - ART-EVAL-001
-      - ART-EVAL-002
-      - ART-EVAL-003
-      - ART-EVAL-004
-    adrs: []
+      - DSET-EVAL-GOV-007
+      - DSET-EVAL-GOV-008
+      - DSET-EVAL-META-002
+      - DSET-EVAL-META-003
+    intake: []
+    decisions: []
+    contracts: []
+    stories: []
+    outcomes: []
     pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/8
     evidence:
       - dset/changes/archive/2026-07-14-add-artifact-governance-profile/proofs/archive-readiness-2026-07-14.md
@@ -40,24 +44,28 @@ changes:
     packages:
       - methodology
     requirements:
-      - BOOT-REQ-001
-      - BOOT-REQ-002
-      - BOOT-REQ-003
-      - BOOT-REQ-004
-      - BOOT-REQ-005
+      - DSET-REQUIREMENT-GOV-001
+      - DSET-REQUIREMENT-GOV-002
+      - DSET-REQUIREMENT-GOV-003
+      - DSET-REQUIREMENT-META-001
+      - DSET-REQUIREMENT-OPS-001
     tests:
-      - BOOT-TEST-001
-      - BOOT-TEST-002
-      - BOOT-TEST-003
-      - BOOT-TEST-004
-      - BOOT-TEST-005
-      - BOOT-TEST-006
+      - DSET-TEST-GOV-001
+      - DSET-TEST-GOV-002
+      - DSET-TEST-GOV-003
+      - DSET-TEST-GOV-004
+      - DSET-TEST-META-001
+      - DSET-TEST-OPS-001
     evals:
-      - BOOT-EVAL-001
-      - BOOT-EVAL-002
-      - BOOT-EVAL-003
-      - BOOT-EVAL-004
-    adrs: []
+      - DSET-EVAL-GOV-001
+      - DSET-EVAL-GOV-002
+      - DSET-EVAL-GOV-003
+      - DSET-EVAL-GOV-004
+    intake: []
+    decisions: []
+    contracts: []
+    stories: []
+    outcomes: []
     pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/2
     evidence:
       - dset/changes/archive/2026-07-14-bootstrap-dset-project-structure/proofs/boot-evals-2026-07-14.md
@@ -69,58 +77,84 @@ changes:
     packages:
       - methodology
     requirements:
-      - MDSHAST-REQ-001
-      - MDSHAST-REQ-002
-      - MDSHAST-REQ-003
-      - MDSHAST-REQ-004
-      - MDSHAST-REQ-005
-      - MDSHAST-REQ-006
-      - MDSHAST-REQ-007
-      - MDSHAST-REQ-008
-      - MDSHAST-REQ-009
-      - MDSHAST-REQ-010
-      - MDSHAST-REQ-011
-      - MDSHAST-REQ-012
-      - MDSHAST-REQ-013
-      - MDSHAST-REQ-014
-      - MDSHAST-REQ-015
-      - MDSHAST-REQ-016
-      - MDSHAST-REQ-017
-      - MDSHAST-REQ-018
-      - MDSHAST-REQ-019
+      - DSET-REQUIREMENT-GOV-007
+      - DSET-REQUIREMENT-GOV-008
+      - DSET-REQUIREMENT-GOV-009
+      - DSET-REQUIREMENT-GOV-010
+      - DSET-REQUIREMENT-GOV-011
+      - DSET-REQUIREMENT-META-005
+      - DSET-REQUIREMENT-OPS-008
+      - DSET-REQUIREMENT-OPS-009
+      - DSET-REQUIREMENT-OPS-010
+      - DSET-REQUIREMENT-OPS-011
+      - DSET-REQUIREMENT-SKILL-002
+      - DSET-REQUIREMENT-SKILL-003
+      - DSET-REQUIREMENT-SKILL-004
+      - DSET-REQUIREMENT-SKILL-005
+      - DSET-REQUIREMENT-SKILL-006
+      - DSET-REQUIREMENT-SKILL-007
+      - DSET-REQUIREMENT-SKILL-008
+      - DSET-REQUIREMENT-TOOL-006
+      - DSET-REQUIREMENT-TOOL-007
     tests:
-      - MDSHAST-TEST-001
-      - MDSHAST-TEST-002
-      - MDSHAST-TEST-003
-      - MDSHAST-TEST-004
-      - MDSHAST-TEST-005
-      - MDSHAST-TEST-006
-      - MDSHAST-TEST-007
-      - MDSHAST-TEST-008
-      - MDSHAST-TEST-009
-      - MDSHAST-TEST-010
-      - MDSHAST-TEST-011
-      - MDSHAST-TEST-012
-      - MDSHAST-TEST-013
-      - MDSHAST-TEST-014
-      - MDSHAST-TEST-015
-      - MDSHAST-TEST-016
-      - MDSHAST-TEST-017
-      - MDSHAST-TEST-018
-      - MDSHAST-TEST-019
+      - DSET-TEST-GOV-009
+      - DSET-TEST-GOV-010
+      - DSET-TEST-GOV-011
+      - DSET-TEST-GOV-012
+      - DSET-TEST-META-004
+      - DSET-TEST-META-010
+      - DSET-TEST-OPS-008
+      - DSET-TEST-OPS-009
+      - DSET-TEST-OPS-010
+      - DSET-TEST-OPS-011
+      - DSET-TEST-OPS-014
+      - DSET-TEST-SKILL-002
+      - DSET-TEST-SKILL-003
+      - DSET-TEST-SKILL-004
+      - DSET-TEST-SKILL-005
+      - DSET-TEST-SKILL-006
+      - DSET-TEST-SKILL-007
+      - DSET-TEST-SKILL-008
+      - DSET-TEST-SKILL-011
+      - DSET-TEST-TOOL-009
+      - DSET-TEST-TOOL-010
+      - DSET-TEST-TOOL-011
+      - DSET-TEST-TOOL-016
+      - DSET-TEST-TOOL-017
     evals:
-      - MDSHAST-EVAL-001
-      - MDSHAST-EVAL-002
-      - MDSHAST-EVAL-003
-      - MDSHAST-EVAL-004
-      - MDSHAST-EVAL-005
-      - MDSHAST-EVAL-006
-      - MDSHAST-EVAL-007
-      - MDSHAST-EVAL-008
-      - MDSHAST-EVAL-009
-      - MDSHAST-EVAL-010
-      - MDSHAST-EVAL-011
-    adrs: []
+      - DSET-EVAL-GOV-009
+      - DSET-EVAL-GOV-010
+      - DSET-EVAL-META-008
+      - DSET-EVAL-OPS-006
+      - DSET-EVAL-OPS-008
+      - DSET-EVAL-SKILL-002
+      - DSET-EVAL-SKILL-003
+      - DSET-EVAL-SKILL-004
+      - DSET-EVAL-SKILL-005
+      - DSET-EVAL-SKILL-006
+      - DSET-EVAL-SKILL-007
+      - DSET-EVAL-SKILL-009
+      - DSET-EVAL-TOOL-001
+      - DSET-EVAL-TOOL-002
+      - DSET-EVAL-TOOL-005
+      - DSET-EVAL-TOOL-006
+    intake:
+      - DSET-QUESTION-GOV-001
+      - DSET-QUESTION-GOV-002
+      - DSET-QUESTION-GOV-003
+      - DSET-QUESTION-META-001
+      - DSET-QUESTION-META-002
+      - DSET-QUESTION-META-003
+      - DSET-QUESTION-OPS-001
+    decisions: []
+    contracts:
+      - DSET-CONTRACT-OPS-001
+      - DSET-CONTRACT-SKILL-001
+      - DSET-CONTRACT-TOOL-001
+      - DSET-CONTRACT-TOOL-002
+    stories: []
+    outcomes:
+      - DSET-OUTCOME-META-001
     pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9
     evidence:
       - dset/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
@@ -135,27 +169,31 @@ changes:
     packages:
       - methodology
     requirements:
-      - SUP-REQ-001
-      - SUP-REQ-002
-      - SUP-REQ-003
-      - SUP-REQ-004
-      - SUP-REQ-005
-      - SUP-REQ-006
+      - DSET-REQUIREMENT-META-002
+      - DSET-REQUIREMENT-OPS-002
+      - DSET-REQUIREMENT-OPS-003
+      - DSET-REQUIREMENT-OPS-004
+      - DSET-REQUIREMENT-OPS-005
+      - DSET-REQUIREMENT-OPS-006
     tests:
-      - SUP-TEST-001
-      - SUP-TEST-002
-      - SUP-TEST-003
-      - SUP-TEST-004
-      - SUP-TEST-005
-      - SUP-TEST-006
-      - SUP-TEST-007
+      - DSET-TEST-GOV-005
+      - DSET-TEST-META-002
+      - DSET-TEST-OPS-002
+      - DSET-TEST-OPS-003
+      - DSET-TEST-OPS-004
+      - DSET-TEST-OPS-005
+      - DSET-TEST-OPS-006
     evals:
-      - SUP-EVAL-001
-      - SUP-EVAL-002
-      - SUP-EVAL-003
-      - SUP-EVAL-004
-      - SUP-EVAL-005
-    adrs: []
+      - DSET-EVAL-META-001
+      - DSET-EVAL-OPS-001
+      - DSET-EVAL-OPS-002
+      - DSET-EVAL-OPS-003
+      - DSET-EVAL-OPS-004
+    intake: []
+    decisions: []
+    contracts: []
+    stories: []
+    outcomes: []
     pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3
     evidence:
       - dset/changes/archive/2026-07-14-make-supportability-first-class/proofs/archive-readiness-audit-2026-07-14.md
@@ -169,27 +207,31 @@ changes:
     packages:
       - methodology
     requirements:
-      - DSET-V1-REQ-001
-      - DSET-V1-REQ-002
-      - DSET-V1-REQ-003
-      - DSET-V1-REQ-004
-      - DSET-V1-REQ-005
-      - DSET-V1-REQ-006
+      - DSET-REQUIREMENT-OPS-007
+      - DSET-REQUIREMENT-SKILL-001
+      - DSET-REQUIREMENT-TOOL-001
+      - DSET-REQUIREMENT-TOOL-002
+      - DSET-REQUIREMENT-TOOL-003
+      - DSET-REQUIREMENT-TOOL-004
     tests:
-      - DSET-V1-TEST-001
-      - DSET-V1-TEST-002
-      - DSET-V1-TEST-003
-      - DSET-V1-TEST-004
-      - DSET-V1-TEST-005
-      - DSET-V1-TEST-006
-      - DSET-V1-TEST-007
-      - DSET-V1-TEST-008
+      - DSET-TEST-GOV-006
+      - DSET-TEST-OPS-007
+      - DSET-TEST-SKILL-001
+      - DSET-TEST-TOOL-001
+      - DSET-TEST-TOOL-002
+      - DSET-TEST-TOOL-003
+      - DSET-TEST-TOOL-004
+      - DSET-TEST-TOOL-005
     evals:
-      - DSET-V1-EVAL-001
-      - DSET-V1-EVAL-002
-      - DSET-V1-EVAL-003
-      - DSET-V1-EVAL-004
-    adrs: []
+      - DSET-EVAL-GOV-005
+      - DSET-EVAL-GOV-006
+      - DSET-EVAL-OPS-005
+      - DSET-EVAL-SKILL-001
+    intake: []
+    decisions: []
+    contracts: []
+    stories: []
+    outcomes: []
     pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7
     evidence:
       - dset/changes/archive/2026-07-14-operationalize-dset-v1/proofs/archive-readiness-2026-07-14.md

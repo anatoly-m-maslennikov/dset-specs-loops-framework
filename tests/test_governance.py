@@ -3,6 +3,8 @@ from __future__ import annotations
 import contextlib
 import hashlib
 import io
+import json
+import re
 import shutil
 import tempfile
 import unittest
@@ -198,9 +200,259 @@ class GovernanceTests(unittest.TestCase):
             result = main(["version", str(ROOT)])
         self.assertEqual(result, 0)
         output = stream.getvalue()
-        self.assertIn("product: 0.2.0 (candidate, coordinated)", output)
+        self.assertIn("product: 0.2.0 (coordinated)", output)
         self.assertIn("python package: 0.2.0 (coordinated)", output)
-        self.assertIn("schemas: 1.0 (independent)", output)
+        self.assertIn("schemas: 1.1 (independent)", output)
+
+    def test_temporary_adopter_materializes_current_project_inputs(self) -> None:
+        manifest = cast(dict[str, Any], load(self.root / "dset" / "dset.yaml"))
+        self.assertEqual(manifest["schema_version"], 1.1)
+        self.assertEqual(manifest["project"]["key"], "DSET")
+        self.assertEqual(manifest["contracts"], ["DSET-CONTRACT-001"])
+        self.assertEqual(manifest["stories"], [])
+        self.assertEqual(manifest["outcomes"], [])
+        self.assertEqual(manifest["profiles"]["delegation_budget"], "medium")
+        self.assertEqual(manifest["release"]["status"], "not-applicable")
+        self.assertEqual(manifest["work_items"]["registry"], "dset/intake.yaml")
+        self.assertTrue((self.root / "dset" / "budget.yaml").is_file())
+        self.assertTrue((self.root / "dset" / "intake.yaml").is_file())
+        package = cast(
+            dict[str, Any],
+            load(self.root / "dset" / "specs" / "packages" / "sample" / "package.yaml"),
+        )
+        self.assertEqual(package["contracts"], ["DSET-CONTRACT-001"])
+        self.assertEqual(package["stories"], [])
+        self.assertEqual(package["outcomes"], [])
+        self.assertTrue(
+            (
+                self.root / "dset" / "specs" / "packages" / "sample" / "stories.md"
+            ).is_file()
+        )
+        self.assertTrue(
+            (
+                self.root / "dset" / "specs" / "packages" / "sample" / "outcomes.md"
+            ).is_file()
+        )
+        registry = cast(dict[str, Any], load(self.root / "dset" / "governance.yaml"))
+        release = next(
+            rule
+            for rule in cast(list[dict[str, Any]], registry["rules"])
+            if rule["id"] == "DSET-RULE-RELEASE"
+        )
+        self.assertEqual(release["applicability"], "not-applicable")
+        workflows = cast(list[dict[str, Any]], registry["workflows"])
+        self.assertNotIn("release", {item["id"] for item in workflows})
+        self.assertTrue(
+            all(
+                "DSET-RULE-RELEASE" not in cast(list[str], item["rules"])
+                for item in workflows
+            )
+        )
+
+    def test_current_schema_suite_preserves_legacy_change_shape(self) -> None:
+        change_schema = json.loads(
+            (ROOT / "dset" / "schemas" / "change.schema.json").read_text()
+        )
+        current = change_schema["allOf"][0]
+        self.assertEqual(current["then"]["required"], ["adrs"])
+        self.assertEqual(current["then"]["not"]["required"], ["decisions"])
+        self.assertEqual(
+            current["else"]["required"],
+            ["release", "intake", "decisions", "contracts"],
+        )
+        self.assertEqual(current["else"]["not"]["required"], ["adrs"])
+        release_variants = change_schema["$defs"]["release"]["oneOf"]
+        self.assertEqual(len(release_variants), 2)
+
+    def test_trace_id_schemas_are_type_first_and_layer_bounded(self) -> None:
+        change_schema = json.loads(
+            (ROOT / "dset" / "schemas" / "change.schema.json").read_text()
+        )
+        patterns = change_schema["$defs"]
+        complete_pattern = patterns["trace_id"]["pattern"]
+        for valid in (
+            "DSET-SCENARIO-META-001",
+            "DSET-INVARIANT-001",
+            "DSET-TASK-TOOL-001",
+            "DSET-CONTRACT-OPS-001",
+            "ACME-STORY-SKILL-001",
+            "ACME-OUTCOME-OPS-001",
+        ):
+            self.assertIsNotNone(re.fullmatch(complete_pattern, valid))
+        self.assertIsNotNone(
+            re.fullmatch(
+                patterns["requirement_ids"]["items"]["pattern"],
+                "DSET-REQUIREMENT-GOV-001",
+            )
+        )
+        self.assertIsNotNone(
+            re.fullmatch(
+                patterns["contract_ids"]["items"]["pattern"],
+                "ACME-CONTRACT-TOOL-002",
+            )
+        )
+        self.assertIsNotNone(
+            re.fullmatch(
+                patterns["story_ids"]["items"]["pattern"],
+                "ACME-STORY-SKILL-001",
+            )
+        )
+        self.assertIsNotNone(
+            re.fullmatch(
+                patterns["outcome_ids"]["items"]["pattern"],
+                "ACME-OUTCOME-OPS-001",
+            )
+        )
+        for invalid in (
+            "REQUIREMENT-DSET-GOV-001",
+            "DSET-REQ-GOV-001",
+            "DSET-REQUIREMENT-GLOBAL-001",
+            "DSET-ADR-GOV-001",
+        ):
+            self.assertIsNone(
+                re.fullmatch(patterns["requirement_ids"]["items"]["pattern"], invalid)
+            )
+
+    def test_validator_uses_the_manifest_project_key(self) -> None:
+        manifest_path = self.root / "dset" / "dset.yaml"
+        manifest = cast(dict[str, Any], load(manifest_path))
+        manifest["project"]["key"] = "ACME"
+        manifest["contracts"] = ["ACME-CONTRACT-001"]
+        manifest_path.write_text(dump(manifest), encoding="utf-8")
+
+        package_root = self.root / "dset" / "specs" / "packages" / "sample"
+        package_path = package_root / "package.yaml"
+        package = cast(dict[str, Any], load(package_path))
+        package["requirements"] = ["ACME-REQUIREMENT-001"]
+        package["tests"] = ["ACME-TEST-001"]
+        package["contracts"] = ["ACME-CONTRACT-001"]
+        package_path.write_text(dump(package), encoding="utf-8")
+        for filename in ("spec.md", "test-plan.md", "contracts.md"):
+            path = package_root / filename
+            path.write_text(
+                path.read_text(encoding="utf-8").replace("DSET-", "ACME-"),
+                encoding="utf-8",
+            )
+        self.assertEqual(validate_repository(self.root), [])
+
+    def test_intake_validator_enforces_type_and_registered_layer(self) -> None:
+        path = self.root / "dset" / "intake.yaml"
+        baseline = cast(dict[str, Any], load(path))
+        valid: dict[str, Any] = {
+            "id": "DSET-QUESTION-GOV-001",
+            "scope": "gov",
+            "type": "question",
+            "status": "open",
+            "title": "Choice",
+            "statement": "Which bounded option applies?",
+            "owner_change": None,
+            "decision": "pending",
+            "external_refs": [],
+        }
+        baseline["items"] = [valid]
+        path.write_text(dump(baseline), encoding="utf-8")
+        self.assertNotIn(
+            "DSET-E142", {item.code for item in validate_repository(self.root)}
+        )
+        invalid_cases = (
+            {**valid, "id": "DSET-PROBLEM-GOV-001"},
+            {**valid, "id": "DSET-QUESTION-GLOBAL-001"},
+            {**valid, "scope": "tool"},
+            {**valid, "decision": "DSET-DECISION-TOOL-001"},
+        )
+        for invalid in invalid_cases:
+            with self.subTest(identifier=invalid["id"], scope=invalid["scope"]):
+                baseline["items"] = [invalid]
+                path.write_text(dump(baseline), encoding="utf-8")
+                self.assertIn(
+                    "DSET-E142", {item.code for item in validate_repository(self.root)}
+                )
+
+    def test_contract_template_requires_real_host_and_ci_proof(self) -> None:
+        text = (ROOT / "dset" / "templates" / "package" / "contracts.md").read_text()
+        self.assertIn("Markdown validity is not host proof", text)
+        self.assertIn("allowlists, denylists, and enforcement metadata", text)
+        self.assertIn("real GitHub Actions workflow artifacts", text)
+        manifest = cast(dict[str, Any], load(ROOT / "dset" / "dset.yaml"))
+        self.assertEqual(
+            manifest["contracts"],
+            [
+                "DSET-CONTRACT-SKILL-001",
+                "DSET-CONTRACT-TOOL-001",
+                "DSET-CONTRACT-TOOL-002",
+                "DSET-CONTRACT-OPS-001",
+            ],
+        )
+
+    def test_story_and_outcome_templates_preserve_semantic_boundaries(self) -> None:
+        stories = (ROOT / "dset" / "templates" / "package" / "stories.md").read_text()
+        self.assertIn("Actor or stakeholder", stories)
+        self.assertIn("Desired capability or outcome", stories)
+        self.assertIn("Linked Requirements", stories)
+        self.assertIn("Linked Scenarios", stories)
+        self.assertIn("not an intake queue", stories)
+        self.assertIn("does not replace normative Requirements", stories)
+
+        outcomes = (ROOT / "dset" / "templates" / "package" / "outcomes.md").read_text()
+        self.assertIn("Baseline", outcomes)
+        self.assertIn("Target", outcomes)
+        self.assertIn("Observation method/source", outcomes)
+        self.assertIn("Evaluation window", outcomes)
+        self.assertIn("Linked Problems/Opportunities", outcomes)
+        self.assertIn("Linked Stories", outcomes)
+        self.assertIn("Linked Evals", outcomes)
+        self.assertIn("deliverable, or feature is not itself an Outcome", outcomes)
+
+    def test_story_and_outcome_records_require_structured_fields(self) -> None:
+        package_root = self.root / "dset" / "specs" / "packages" / "sample"
+        manifest_path = package_root / "package.yaml"
+        manifest = cast(dict[str, Any], load(manifest_path))
+        manifest["stories"] = ["DSET-STORY-001"]
+        manifest["outcomes"] = ["DSET-OUTCOME-001"]
+        manifest_path.write_text(dump(manifest), encoding="utf-8")
+        (package_root / "stories.md").write_text(
+            "# Stories\n\n## DSET-STORY-001 — Incomplete\n\nActor only.\n",
+            encoding="utf-8",
+        )
+        (package_root / "outcomes.md").write_text(
+            "# Outcomes\n\n## DSET-OUTCOME-001 — Incomplete\n\nTarget only.\n",
+            encoding="utf-8",
+        )
+        self.assertIn(
+            "DSET-E117", {item.code for item in validate_repository(self.root)}
+        )
+
+        (package_root / "stories.md").write_text(
+            """# Stories
+
+## DSET-STORY-001 — Contributor can validate
+
+- **Actor or stakeholder:** Contributor
+- **Desired capability or outcome:** Validate locally
+- **Value or purpose:** Catch errors early
+- **Linked Requirements:** DSET-REQUIREMENT-001
+- **Linked Scenarios:** Validation succeeds without external effects
+""",
+            encoding="utf-8",
+        )
+        (package_root / "outcomes.md").write_text(
+            """# Outcomes
+
+## DSET-OUTCOME-001 — Earlier feedback
+
+- **Baseline:** Errors are found after review.
+- **Target:** Errors are found before review.
+- **Observation method/source:** Review and local validation timestamps.
+- **Evaluation window:** The next ten changes.
+- **Linked Problems/Opportunities:** Local feedback opportunity.
+- **Linked Stories:** DSET-STORY-001.
+- **Linked Evals:** Review timing eval.
+""",
+            encoding="utf-8",
+        )
+        self.assertNotIn(
+            "DSET-E117", {item.code for item in validate_repository(self.root)}
+        )
 
     def test_wrappers_are_thin_and_registered(self) -> None:
         workflows = {

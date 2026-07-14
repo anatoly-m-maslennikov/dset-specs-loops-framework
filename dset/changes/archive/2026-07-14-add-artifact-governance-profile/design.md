@@ -26,11 +26,11 @@ The documentation area is a framework surface, not pipeline stage 7. `methodolog
 
 | Concern | Authority | Writer model | Refresh boundary | Failure/recovery proof |
 |---|---|---|---|---|
-| Artifact-profile selection | `dset/dset.yaml` | Reviewed repository change | Every validation run | ART-TEST-001 |
-| Governed area graph | `dset/artifacts.yaml` | Reviewed repository change | Every validation run | ART-TEST-002/003 |
-| Artifact-type rules | `documentation/` normative docs | Reviewed methodology change | When rules change | ART-TEST-004 + ART-EVAL-002/003 |
+| Artifact-profile selection | `dset/dset.yaml` | Reviewed repository change | Every validation run | DSET-TEST-GOV-007 |
+| Governed area graph | `dset/artifacts.yaml` | Reviewed repository change | Every validation run | `DSET-TEST-TOOL-006`, `DSET-TEST-GOV-008` |
+| Artifact-type rules | `documentation/` normative docs | Reviewed methodology change | When rules change | `DSET-TEST-META-003`, `DSET-EVAL-META-002`, `DSET-EVAL-META-003` |
 | Rationale | `documentation/rationale.md` | Reviewed methodology change | When reasoning changes | Link and navigation checks |
-| Runtime evidence | GitHub checks and archived DSET proof | GitHub plus evidence-only commits | Per PR head | ART-TEST-006 |
+| Runtime evidence | GitHub checks and archived DSET proof | GitHub plus evidence-only commits | Per PR head | DSET-TEST-TOOL-008 |
 
 ## Supportability
 
@@ -38,4 +38,4 @@ The implementation extends existing stable DSET diagnostics and hosted CI. It st
 
 ## Decisions
 
-No ADR is required unless implementation reveals a material compatibility decision. The change package owns the initial candidate comparison; accepted cross-cutting rules reconcile into package truth and public documentation.
+No Decision record is required unless implementation reveals a material compatibility decision. The change package owns the initial candidate comparison; accepted cross-cutting rules reconcile into package truth and public documentation.

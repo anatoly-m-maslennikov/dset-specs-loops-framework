@@ -4,17 +4,17 @@
 
 | Capability | Requirement/test/eval IDs | Hard constraints |
 |---|---|---|
-| Repository rule authority | MDSHAST-REQ/TEST-003, 009; EVAL-002 | Local paths, one editable owner per rule ID, no remote live authority |
-| Thin adaptive wrappers | MDSHAST-REQ/TEST-004, 005; EVAL-001, 004 | Same wrapper hash, no embedded normative fallback |
-| Bounded self-hosting | MDSHAST-REQ/TEST-001, 002 | Terminates, profile-aware, framework before external pilot |
-| Honest failure/customization | MDSHAST-REQ/TEST-006, 007; EVAL-003 | Stable diagnostics, justified non-applicability, explicit custom identity |
-| Separate proof | MDSHAST-REQ/TEST-008; all evals | Tests and evals remain different artifacts and evidence streams |
-| Small skill surface | MDSHAST-REQ/TEST-010, 011; EVAL-005 | One obvious entrypoint, narrow specialists, no helper-skill explosion |
-| Investigable next-step routing | MDSHAST-REQ/TEST-012; EVAL-006 | Bounded local evidence, redaction, no competing authority |
-| Predictable pre-1.0 releases | MDSHAST-REQ/TEST-013, 016; EVAL-007 | Integer version tuple, one bump per main PR, coordinated product/package identity |
-| Guarded RC/final publication | MDSHAST-REQ/TEST-014, 015; EVAL-008 | PR-only main updates, fully working RC, evidence-gated 1.0 |
-| Proportional delegation budget | MDSHAST-REQ/TEST-017, 018; EVAL-009, 010 | Main model/effort inheritance, useful medium fan-out, outcome cost rather than nominal price |
-| Unambiguous project intake | MDSHAST-REQ/TEST-019; EVAL-011 | Problems include risks; opportunities require no defect; questions lead to ADRs; tasks stay in changes |
+| Repository rule authority | `DSET-REQUIREMENT-GOV-007`, `DSET-REQUIREMENT-GOV-010`; `DSET-TEST-GOV-009`, `DSET-TEST-GOV-011`; `DSET-EVAL-TOOL-002` | Local paths, one editable owner per rule ID, no remote live authority |
+| Thin adaptive wrappers | `DSET-REQUIREMENT-SKILL-002`, `DSET-REQUIREMENT-SKILL-003`; `DSET-TEST-SKILL-002`, `DSET-TEST-SKILL-003`; `DSET-EVAL-SKILL-002`, `DSET-EVAL-GOV-009` | Same wrapper hash, no embedded normative fallback |
+| Bounded self-hosting | `DSET-REQUIREMENT-TOOL-006`, `DSET-REQUIREMENT-TOOL-007`; `DSET-TEST-TOOL-009`, `DSET-TEST-TOOL-010` | Terminates, profile-aware, framework before external pilot |
+| Honest failure/customization | `DSET-REQUIREMENT-GOV-008`, `DSET-REQUIREMENT-GOV-009`; `DSET-TEST-TOOL-011`, `DSET-TEST-GOV-010`; `DSET-EVAL-SKILL-003` | Stable diagnostics, justified non-applicability, explicit custom identity |
+| Separate proof | `DSET-REQUIREMENT-META-005`; `DSET-TEST-META-004`; all evals | Tests and evals remain different artifacts and evidence streams |
+| Small skill surface | `DSET-REQUIREMENT-SKILL-004`, `DSET-REQUIREMENT-SKILL-005`; `DSET-TEST-SKILL-004`, `DSET-TEST-SKILL-005`; `DSET-EVAL-SKILL-004` | One obvious entrypoint, narrow specialists, no helper-skill explosion |
+| Investigable next-step routing | `DSET-REQUIREMENT-SKILL-006`; `DSET-TEST-SKILL-006`; `DSET-EVAL-SKILL-005` | Bounded local evidence, redaction, no competing authority |
+| Predictable pre-1.0 releases | `DSET-REQUIREMENT-OPS-008`, `DSET-REQUIREMENT-OPS-011`; `DSET-TEST-OPS-008`, `DSET-TEST-OPS-011`; `DSET-EVAL-SKILL-006` | Integer version tuple, one bump per main PR, coordinated product/package identity |
+| Guarded RC/final publication | `DSET-REQUIREMENT-OPS-009`, `DSET-REQUIREMENT-OPS-010`; `DSET-TEST-OPS-009`, `DSET-TEST-OPS-010`; `DSET-EVAL-OPS-006` | PR-only main updates, fully working RC, evidence-gated 1.0 |
+| Proportional delegation budget | `DSET-REQUIREMENT-SKILL-007`, `DSET-REQUIREMENT-SKILL-008`; `DSET-TEST-SKILL-007`, `DSET-TEST-SKILL-008`; `DSET-EVAL-SKILL-006`, `DSET-EVAL-SKILL-007` | Main model/effort inheritance, useful medium fan-out, outcome cost rather than nominal price |
+| Unambiguous project intake | `DSET-REQUIREMENT-GOV-011`; `DSET-TEST-GOV-012`; `DSET-EVAL-GOV-010` | One registry; Problems include risks; Opportunities require no defect; Questions lead to Decisions; tasks stay in Changes; stable architectural layers own IDs |
 
 ## Candidates
 

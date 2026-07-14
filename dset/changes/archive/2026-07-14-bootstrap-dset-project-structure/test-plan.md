@@ -4,12 +4,12 @@
 
 | Test ID | Requirement | Proof |
 |---|---|---|
-| **BOOT-TEST-001** | BOOT-REQ-001 | Assert `dset/{README.md,dset.yaml,specs,changes,templates,schemas}` exists and no competing project-truth root is introduced |
-| **BOOT-TEST-002** | BOOT-REQ-002 | Parse `dset/dset.yaml`; assert one package named `methodology`, its path exists, mode is `single-package`, and global root is null |
-| **BOOT-TEST-003** | BOOT-REQ-003 | Assert this change contains the eight named Markdown documents plus `specs/` and `proofs/` |
-| **BOOT-TEST-004** | BOOT-REQ-004 | Assert PR is non-pending before archive; assert archive path/date and fresh verification after the last content change |
-| **BOOT-TEST-005** | BOOT-REQ-005 | Assert manifest values remain `documentation-v1-pending` and `canonical_command: pending` until executable assets land |
-| **BOOT-TEST-006** | All | Resolve local Markdown links, parse YAML, check balanced fences/details, and run `git diff --check` |
+| **DSET-TEST-GOV-001** | DSET-REQUIREMENT-GOV-001 | Assert `dset/{README.md,dset.yaml,specs,changes,templates,schemas}` exists and no competing project-truth root is introduced |
+| **DSET-TEST-GOV-002** | DSET-REQUIREMENT-GOV-002 | Parse `dset/dset.yaml`; assert one package named `methodology`, its path exists, mode is `single-package`, and global root is null |
+| **DSET-TEST-META-001** | DSET-REQUIREMENT-META-001 | Assert this change contains the eight named Markdown documents plus `specs/` and `proofs/` |
+| **DSET-TEST-OPS-001** | DSET-REQUIREMENT-OPS-001 | Assert PR is non-pending before archive; assert archive path/date and fresh verification after the last content change |
+| **DSET-TEST-GOV-003** | DSET-REQUIREMENT-GOV-003 | Assert manifest values remain `documentation-v1-pending` and `canonical_command: pending` until executable assets land |
+| **DSET-TEST-GOV-004** | All | Resolve local Markdown links, parse YAML, check balanced fences/details, and run `git diff --check` |
 
 ## Regression rule
 

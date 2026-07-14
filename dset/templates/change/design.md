@@ -2,7 +2,8 @@
 
 ## Boundaries
 
-Define domain ownership, interfaces, dependencies, and non-goals.
+Define domain ownership, interfaces, dependencies, non-goals, and internal HOW.
+Do not restate observable Requirements or externally authoritative Contracts.
 
 ## State and durability
 
@@ -16,4 +17,6 @@ Define risk-scaled evidence, correlation/deploy identity, safe diagnostics, data
 
 ## Decisions
 
-Link accepted ADRs and rejected alternatives.
+Link only consequential accepted choices among valid alternatives, including
+their rationale, trade-offs, and consequences. Do not create a Decision for
+every implementation detail or observable edge case.

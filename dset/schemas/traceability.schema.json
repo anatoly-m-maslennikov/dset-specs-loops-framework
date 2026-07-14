@@ -5,13 +5,13 @@
   "type": "object",
   "required": ["schema_version", "repository", "changes"],
   "properties": {
-    "schema_version": {"const": 1.0},
+    "schema_version": {"const": 1.1},
     "repository": {"type": "string"},
     "changes": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "status", "path", "packages", "requirements", "tests", "evals", "adrs", "pull_request", "evidence"],
+        "required": ["id", "status", "path", "packages", "requirements", "tests", "evals", "intake", "decisions", "contracts", "stories", "outcomes", "pull_request", "evidence"],
         "properties": {
           "id": {"type": "string"},
           "status": {"type": "string"},
@@ -20,7 +20,11 @@
           "requirements": {"type": "array", "items": {"type": "string"}},
           "tests": {"type": "array", "items": {"type": "string"}},
           "evals": {"type": "array", "items": {"type": "string"}},
-          "adrs": {"type": "array", "items": {"type": "string"}},
+          "intake": {"type": "array", "items": {"type": "string"}},
+          "decisions": {"type": "array", "items": {"type": "string"}},
+          "contracts": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-CONTRACT(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}},
+          "stories": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-STORY(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}},
+          "outcomes": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-OUTCOME(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}},
           "pull_request": {"type": "string", "format": "uri"},
           "evidence": {"type": "array", "items": {"type": "string"}}
         },

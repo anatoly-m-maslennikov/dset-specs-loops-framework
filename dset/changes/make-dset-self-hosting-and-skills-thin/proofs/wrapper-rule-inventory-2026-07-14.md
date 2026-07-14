@@ -19,7 +19,7 @@ metadata remains in the wrapper; substantive rules moved to the owners below.
 | Facts/decisions/assumptions/unknowns; vocabulary; actors; entities; value objects; ownership; lifecycle state machines; invariants; boundary cases; material questions; what/why separation; requirement/scenario IDs; stop before unresolved domain choices | `DSET-RULE-DOMAIN-SPEC` |
 | Exact proof belongs to deterministic tests | `DSET-RULE-TEST-PLAN` |
 | Variable or rubric-based proof belongs to evals | `DSET-RULE-EVAL-PLAN` |
-| Authorized artifact writes, ADR routing, single-owner output, and implementation handoff | `DSET-RULE-ARTIFACT-MAINTENANCE` |
+| Authorized artifact writes, Decision routing, single-owner output, and implementation handoff | `DSET-RULE-ARTIFACT-MAINTENANCE` |
 | Run the selected validation gate after authorized writes | `DSET-RULE-BUILD` |
 
 ## `dset-diagnose`
@@ -42,7 +42,7 @@ metadata remains in the wrapper; substantive rules moved to the owners below.
 | Exact candidate thresholds and cases | `DSET-RULE-TEST-PLAN` |
 | Variable or rubric-based candidate thresholds | `DSET-RULE-EVAL-PLAN` |
 | External access, data class, security/privacy, and operational evidence bounds | `DSET-RULE-SUPPORTABILITY` |
-| Bounded proof placement, solution/ADR links, quarantine/removal, and production handoff | `DSET-RULE-ARTIFACT-MAINTENANCE` |
+| Bounded proof placement, solution/Decision links, quarantine/removal, and production handoff | `DSET-RULE-ARTIFACT-MAINTENANCE` |
 
 ## Retained wrapper-owned fields
 
@@ -53,6 +53,6 @@ digests and deterministic tests reject drift from those canonical sources.
 
 ## Disposition
 
-Complete for roadmap tasks `DSET-02-TASK-014`–`DSET-02-TASK-023`. No former
+Complete for roadmap tasks `DSET-TASK-SKILL-005`–`DSET-TASK-SKILL-012`. No former
 substantive workflow statement remains authoritative in a skill, installed
 copy, template, or generated adopter wrapper.

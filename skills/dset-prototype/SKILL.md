@@ -1,6 +1,6 @@
 ---
 name: dset-prototype
-description: Run a bounded disposable experiment to answer a specific design, framework, library, protocol, performance, recovery, or integration question with comparable evidence. Use when uncertainty blocks a DSET Solution Landscape or ADR decision and production-quality implementation would be premature; never use the prototype as an unreviewed path into production.
+description: Run a bounded disposable experiment to answer a specific design, framework, library, protocol, performance, recovery, or integration question with comparable evidence. Use when uncertainty blocks a DSET Solution Landscape or Decision and production-quality implementation would be premature; never use the prototype as an unreviewed path into production.
 ---
 
 # DSET Prototype

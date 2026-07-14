@@ -29,12 +29,12 @@
 
 | Test ID | Evidence |
 |---|---|
-| ART-TEST-001 | `dset/dset.yaml` selects both profile axes; the project schema permits the optional artifact profile without replacing language enforcement |
-| ART-TEST-002 | Artifact-profile unit cases reject missing hubs, duplicate roots, unresolved parents, and parent cycles with DSET-E121/E122 |
-| ART-TEST-003 | Unit cases enforce required hub sections and root-to-top-level-area navigation with DSET-E123 |
-| ART-TEST-004 | The documentation hub links the published architecture, type catalog, universal/type-specific authoring rules, hub rules, maintenance procedure, and rationale |
-| ART-TEST-005 | The artifact registry and JSON Schema parse; `dset check` validates the active repository without writing |
-| ART-TEST-006 | The complete Python-format/lint/type/test profile, documentation profile, Markdown portability checks, trace freshness, and diff hygiene passed together |
+| DSET-TEST-GOV-007 | `dset/dset.yaml` selects both profile axes; the project schema permits the optional artifact profile without replacing language enforcement |
+| DSET-TEST-TOOL-006 | Artifact-profile unit cases reject missing hubs, duplicate roots, unresolved parents, and parent cycles with DSET-E121/E122 |
+| DSET-TEST-GOV-008 | Unit cases enforce required hub sections and root-to-top-level-area navigation with DSET-E123 |
+| DSET-TEST-META-003 | The documentation hub links the published architecture, type catalog, universal/type-specific authoring rules, hub rules, maintenance procedure, and rationale |
+| DSET-TEST-TOOL-007 | The artifact registry and JSON Schema parse; `dset check` validates the active repository without writing |
+| DSET-TEST-TOOL-008 | The complete Python-format/lint/type/test profile, documentation profile, Markdown portability checks, trace freshness, and diff hygiene passed together |
 
 ## Corrective loops
 

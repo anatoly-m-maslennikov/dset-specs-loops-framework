@@ -1,7 +1,8 @@
 # {{title}} specification
 
-## {{id_prefix}}-REQ-001 — Requirement title
+## {{project_key}}-REQUIREMENT{{id_layer}}-001 — Requirement title
 
-State one observable requirement.
+State one verifiable observable WHAT, outcome, or constraint. Keep internal HOW
+in Design and consequential alternative selection in a Decision.
 
-**Scenario {{id_prefix}}-SCN-001:** Given a precondition, when an action occurs, then an observable result follows.
+**Scenario {{project_key}}-SCENARIO{{id_layer}}-001:** Given a precondition or observable edge case, when an action occurs, then an observable result follows.

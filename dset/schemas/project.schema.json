@@ -3,13 +3,14 @@
   "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/schemas/project.schema.json",
   "title": "DSET project manifest",
   "type": "object",
-  "required": ["schema_version", "project", "supportability", "release", "structure", "packages", "profiles", "change_contract", "verification", "canonical_command"],
+  "required": ["schema_version", "project", "supportability", "structure", "packages", "profiles", "change_contract", "verification", "canonical_command"],
   "properties": {
-    "schema_version": {"pattern": "^1\\.0(?:-draft)?$"},
+    "schema_version": {"oneOf": [{"enum": [1.0, 1.1]}, {"type": "string", "pattern": "^1\\.(?:0|1)-draft$"}]},
     "project": {
       "type": "object",
-      "required": ["id", "name", "repository_slug", "repository_role"],
+      "required": ["key", "id", "name", "repository_slug", "repository_role"],
       "properties": {
+        "key": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*$"},
         "id": {"$ref": "#/$defs/kebab"},
         "name": {"type": "string", "minLength": 1},
         "repository_slug": {"$ref": "#/$defs/kebab"},
@@ -30,16 +31,35 @@
     },
     "release": {
       "type": "object",
-      "required": ["status", "integration_branch", "protected_branch", "publisher", "tag_pattern"],
+      "required": ["status"],
       "properties": {
         "status": {"enum": ["not-applicable", "applicable"]},
         "integration_branch": {"type": "string", "minLength": 1},
         "protected_branch": {"type": "string", "minLength": 1},
         "publisher": {"type": "string", "minLength": 1},
-        "tag_pattern": {"type": "string", "pattern": "^v\\{product_version\\}$"}
+        "tag_pattern": {"type": "string", "maxLength": 128, "pattern": "^[A-Za-z0-9._/-]*\\{product_version\\}[A-Za-z0-9._/-]*$"},
+        "reason": {"type": "string", "minLength": 1}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "applicable"}}},
+          "then": {"required": ["integration_branch", "protected_branch", "publisher", "tag_pattern"]},
+          "else": {"required": ["reason"]}
+        }
+      ],
+      "additionalProperties": false
+    },
+    "work_items": {
+      "type": "object",
+      "required": ["registry"],
+      "properties": {
+        "registry": {"const": "dset/intake.yaml"}
       },
       "additionalProperties": false
     },
+    "contracts": {"$ref": "#/$defs/contract_ids"},
+    "stories": {"$ref": "#/$defs/story_ids"},
+    "outcomes": {"$ref": "#/$defs/outcome_ids"},
     "structure": {
       "type": "object",
       "required": ["mode", "accepted_truth_root", "active_changes_root", "archive_root", "global_truth_root"],
@@ -104,8 +124,20 @@
     },
     "canonical_command": {"type": "string", "minLength": 1}
   },
+  "allOf": [
+    {
+      "if": {"properties": {"schema_version": {"enum": [1.1, "1.1-draft"]}}},
+      "then": {
+        "required": ["release", "work_items", "contracts"],
+        "properties": {"profiles": {"required": ["delegation_budget"]}}
+      }
+    }
+  ],
   "$defs": {
-    "kebab": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}
+    "kebab": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "contract_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-CONTRACT(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}},
+    "story_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-STORY(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}},
+    "outcome_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-OUTCOME(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}}
   },
   "additionalProperties": false
 }

@@ -39,7 +39,22 @@
 - Separate pre-merge release preparation from post-merge tag/GitHub Release publication.
 - Run three independent high-effort specification reviews, reconcile blocking findings, and preserve bounded evidence.
 - Define default main-model/main-effort inheritance, medium useful fan-out, explicit override reporting, and outcome-cost-aware low/high budget behavior.
-- Define problem/opportunity/question intake, keep tasks inside changes, and retain the Action entity as a project open question pending ADR.
+- Define one project-owned problem/opportunity/question registry, stable layer IDs, and Decision records; keep tasks inside Changes and retain the Action entity as a project open question pending Decision.
+
+## Batch 5 — Concrete conformance contracts — specification complete
+
+- Define `DSET-CONTRACT-SKILL-001` for real installable host-native skill artifacts and clean install/discovery/load/invocation proof on every declared agent host.
+- Define `DSET-CONTRACT-TOOL-001` for macOS, native Windows, WSL, and Linux behavior or explicitly narrower applicability proven before execution.
+- Define `DSET-CONTRACT-TOOL-002` for dependency allowlist/denylist, exact registry/version/license/provenance and lockfile authority, plus bounded authorized exceptions with expiry.
+- Define `DSET-CONTRACT-OPS-001` for real GitHub Actions workflow/run/check evidence bound to the actual implementing PR SHA and protected integration.
+- Keep these observable conformance boundaries separate from Decisions, which record choices and rationale.
+
+## Batch 6 — Outcome and deferred product practices — specification complete
+
+- Define Outcome as a measurable state change rather than an output, feature, milestone, or task completion.
+- Record one DSET 0.2 adoption-readiness Outcome with baseline, target, source/method, window, and related Problem, Opportunity, Story, and Eval dispositions.
+- Register Journey, Actor/Persona, Hypothesis/Experiment, prioritization, feedback/analytics, and generated roadmap/release views as concise open Questions only.
+- Preserve the three intake queues and defer every new artifact type until a later Decision.
 
 ## Later batches
 

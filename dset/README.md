@@ -14,10 +14,10 @@ This directory owns project configuration and DSET artifacts. It does not duplic
 - [Repository governance](governance/README.md) and [`governance.yaml`](governance.yaml) — project-owned rules, workflow resolution, customization provenance, and thin-wrapper identity.
 - [`version.yaml`](version.yaml) — coordinated product/package candidate plus independent schema and released/candidate validator identities.
 - [`budget.yaml`](budget.yaml) — selected tree-wide delegation profile, model/effort inheritance, and quality floor.
-- [Project open questions](questions.md) — unresolved choices that require an ADR before accepted methodology changes.
+- [`intake.yaml`](intake.yaml) — the project-owned Problem, Opportunity, and Question registry plus stable layer namespaces; Questions close through Decisions.
 - [Changes](changes/README.md) — active proposed work; `changes/archive/` preserves completed PR-linked evidence.
 - [Templates](templates/README.md), [schemas](schemas/README.md), and [fixtures](fixtures/README.md) — reusable framework contracts and deterministic examples.
-- [Traceability](traceability.yaml) — generated change-to-proof-to-PR discovery index.
+- [Traceability](traceability.yaml) — generated change-to-Story/Outcome/Contract-to-proof-to-PR discovery index.
 - [Migrations](migrations/README.md) and the [delivery runbook](supportability/delivery-runbook.md) — adoption guidance and production supportability.
 
 ## Current structure
@@ -27,7 +27,7 @@ dset/
 ├── dset.yaml
 ├── version.yaml
 ├── budget.yaml
-├── questions.md
+├── intake.yaml
 ├── governance.yaml
 ├── governance/
 ├── provenance.yaml
@@ -55,11 +55,11 @@ The project currently has one package, `methodology`. A `specs/global/` layer is
 | `dset.yaml` | Project identity, package registry, selected profiles, and applied release topology |
 | `version.yaml` | Coordinated DSET product/toolchain candidate plus independent schema and released/candidate validator identities |
 | `budget.yaml` | Project-owned delegation budget and model/effort policy |
-| `questions.md` | Project-owned unresolved choices and their ADR resolution boundary |
+| `intake.yaml` | Project-owned Problems, Opportunities, Questions, layer namespaces, and Decision links |
 | `governance.yaml` | Deterministic workflow/rule ownership, dependency, provenance, customization, and wrapper identity metadata |
 | `governance/` | The repository's editable governing rule owners |
 | `provenance.yaml` | Exact third-party sources, revisions, licenses, and use boundaries |
-| `traceability.yaml` | Generated deterministic change-to-proof-to-PR relationship view |
+| `traceability.yaml` | Generated deterministic change-to-Story/Outcome/Contract-to-proof-to-PR relationship view |
 | `specs/packages/methodology/` | Accepted current truth for the methodology package |
 | `changes/<change-id>/` | Unaccepted proposal, deltas, proof plans, design, tasks, and verification for one bounded change |
 | `changes/archive/` | Completed changes reconciled into current truth and archived through their implementing PR |
@@ -82,7 +82,7 @@ The project currently has one package, `methodology`. A `specs/global/` layer is
 | `python -m dset_toolchain rules refresh .` | Explicitly record intentional local customization after a rule edit |
 | `python -m dset_toolchain rules diff . --source <framework-root>` | Produce a read-only proposed delta from framework templates to local rules |
 | `python -m dset_toolchain self-host .` | Run the bounded released-validator → candidate → repository/temporary-adopter fixed point |
-| `uv run dset new <change-id> --package <package-id> --profile <profile>` | Create a non-overwriting active change from released templates |
+| `uv run dset new <change-id> --package <package-id> --profile <profile> [--layer <layer>]` | Create a non-overwriting active change from released templates using an optional registered layer |
 | `uv run dset trace .` | Print deterministic traceability; add `--write` to update or `--check` to compare |
 | `uv run dset archive <change-id>` | Print an archive dry-run; add `--execute` only after readiness gates pass |
 

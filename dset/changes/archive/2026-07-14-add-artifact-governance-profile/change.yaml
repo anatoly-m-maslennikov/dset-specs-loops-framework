@@ -9,24 +9,24 @@ pull_request:
   number: 8
   url: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/8
 requirements:
-  - ART-REQ-001
-  - ART-REQ-002
-  - ART-REQ-003
-  - ART-REQ-004
-  - ART-REQ-005
-  - ART-REQ-006
+  - DSET-REQUIREMENT-GOV-004
+  - DSET-REQUIREMENT-GOV-005
+  - DSET-REQUIREMENT-META-003
+  - DSET-REQUIREMENT-META-004
+  - DSET-REQUIREMENT-TOOL-005
+  - DSET-REQUIREMENT-GOV-006
 tests:
-  - ART-TEST-001
-  - ART-TEST-002
-  - ART-TEST-003
-  - ART-TEST-004
-  - ART-TEST-005
-  - ART-TEST-006
+  - DSET-TEST-GOV-007
+  - DSET-TEST-TOOL-006
+  - DSET-TEST-GOV-008
+  - DSET-TEST-META-003
+  - DSET-TEST-TOOL-007
+  - DSET-TEST-TOOL-008
 evals:
-  - ART-EVAL-001
-  - ART-EVAL-002
-  - ART-EVAL-003
-  - ART-EVAL-004
+  - DSET-EVAL-GOV-007
+  - DSET-EVAL-META-002
+  - DSET-EVAL-META-003
+  - DSET-EVAL-GOV-008
 adrs: []
 archive:
   date: 2026-07-14

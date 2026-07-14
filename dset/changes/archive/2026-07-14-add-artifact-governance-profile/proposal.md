@@ -8,7 +8,7 @@
 
 ## Problem
 
-Python and the planned JavaScript/TypeScript profiles govern implementation-language tooling. They do not govern the repository's other production surfaces: methodology, specifications, architecture, hubs, rationale, ADRs, playbooks, runbooks, skills, and evidence. Treating documentation as another language profile would collapse two independent concerns.
+Python and the planned JavaScript/TypeScript profiles govern implementation-language tooling. They do not govern the repository's other production surfaces: methodology, specifications, architecture, hubs, rationale, Decision records, playbooks, runbooks, skills, and evidence. Treating documentation as another language profile would collapse two independent concerns.
 
 The repository also lacks one artifact architecture that tells a reader which document types exist, what each type owns, where rationale and procedures belong, and which hub provides the helicopter view. The root README currently compensates by linking many leaf documents directly. Structural Markdown validation proves links exist, but not that documentation has one owner, one purpose, a navigable hierarchy, or the correct artifact type.
 
@@ -19,7 +19,7 @@ Add an orthogonal artifact-governance profile system and make `documentation-v1`
 ## Scope
 
 - Define runtime-risk, durability-topology, implementation-language, and artifact-governance selections as independent axes.
-- Define artifact types and their owning questions: hub, normative reference, specification, architecture, rationale, ADR, playbook/runbook, proof plan, evidence/changelog, and skill.
+- Define artifact types and their owning questions: hub, normative reference, specification, architecture, rationale, Decision record, playbook/runbook, proof plan, evidence/changelog, and skill.
 - Define universal and type-specific authoring rules, including what/why separation, domain entities and lifecycles before code, and definition-before-use ordering.
 - Add public documentation and methodology hubs for helicopter navigation.
 - Add a `documentation-v1` configuration, schema, validator diagnostics, fixtures/tests, and repository adoption.

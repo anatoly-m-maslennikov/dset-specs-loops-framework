@@ -11,9 +11,11 @@ Resolution precedence is project-local registered rule, then an explicitly selec
 ## Bootstrap
 
 These steps govern repository-rooted workflows. When no manifest exists, only
-the minimal `initialize` transaction defined by `DSET-RULE-LIFECYCLE` may run;
-it cannot pretend that a local registry already exists or continue into
-governed work.
+the distribution command `dset init` may run its minimal preview, explicit
+write-authorization, no-overwrite materialization, validation, and stop
+transaction. It cannot pretend that a local registry already exists or
+continue into governed work. `DSET-RULE-LIFECYCLE` governs later local routing,
+not the pre-root bootstrap command.
 
 1. Walk upward from the working path until `dset/dset.yaml` is found.
 2. Read the selected `repository_governance` profile.
