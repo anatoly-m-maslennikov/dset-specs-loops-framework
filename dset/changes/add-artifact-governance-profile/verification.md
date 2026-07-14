@@ -8,7 +8,7 @@
 | Artifact architecture/schema | `dset check` plus unit cases | Pass at `c8e1e71` | [Deterministic verification](proofs/deterministic-verification-2026-07-14.md) |
 | Root and area navigation | DSET-E123 unit cases plus live registry validation | Pass at `c8e1e71` | [Deterministic verification](proofs/deterministic-verification-2026-07-14.md) |
 | Existing Python profile | `uv run dset verify .` | Pass at `c8e1e71` | [Deterministic verification](proofs/deterministic-verification-2026-07-14.md) |
-| Applicable evals | ART-EVAL-001–004 | Independent reviews in progress | `proofs/` |
+| Applicable evals | ART-EVAL-001–004 | Pass at corrected pushed head `174c10b` | [Qualitative evaluations](proofs/qualitative-evals-2026-07-14.md) |
 | Supportability | Hosted PR/check/run evidence | Pending | Runbook/evidence |
 | Reconciliation/archive | Canonical verification and trace diff | Pending | `proofs/` |
 
