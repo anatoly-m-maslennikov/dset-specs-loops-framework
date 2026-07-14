@@ -1,13 +1,13 @@
 schema_version: 1.0
 id: add-artifact-governance-profile
 profile: standard
-status: proposed
+status: in-progress
 packages:
   - methodology
 pull_request:
   repository: anatoly-m-maslennikov/dset-specs-loops-framework
-  number: pending
-  url: pending
+  number: 8
+  url: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/8
 requirements:
   - ART-REQ-001
   - ART-REQ-002

@@ -3,7 +3,7 @@ repository: anatoly-m-maslennikov/dset-specs-loops-framework
 changes:
   -
     id: add-artifact-governance-profile
-    status: proposed
+    status: in-progress
     path: dset/changes/add-artifact-governance-profile
     packages:
       - methodology
@@ -27,7 +27,7 @@ changes:
       - ART-EVAL-003
       - ART-EVAL-004
     adrs: []
-    pull_request: pending
+    pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/8
     evidence: []
   -
     id: bootstrap-dset-project-structure

@@ -1,7 +1,7 @@
 # Verification — Add artifact governance profiles
 
-- **Implementing PR:** pending
-- **Status:** incomplete
+- **Implementing PR:** [anatoly-m-maslennikov/dset-specs-loops-framework#8](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/8)
+- **Status:** implementation in progress; PR remains draft
 
 | Gate | Command or method | Result | Evidence |
 |---|---|---|---|

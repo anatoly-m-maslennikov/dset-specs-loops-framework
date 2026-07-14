@@ -1,6 +1,6 @@
 # Implementation plan — Add artifact governance profiles
 
-- **Implementing PR:** pending
+- **Implementing PR:** [anatoly-m-maslennikov/dset-specs-loops-framework#8](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/8)
 
 ## Batch 1 — Identity and accepted shape
 

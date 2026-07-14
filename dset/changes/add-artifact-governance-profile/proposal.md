@@ -3,8 +3,8 @@
 - **Change ID:** `add-artifact-governance-profile`
 - **Profile:** `standard`
 - **Target package:** `methodology`
-- **Implementing PR:** pending
-- **Status:** proposed
+- **Implementing PR:** [anatoly-m-maslennikov/dset-specs-loops-framework#8](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/8)
+- **Status:** in progress
 
 ## Problem
 
