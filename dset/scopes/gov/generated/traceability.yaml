@@ -254,6 +254,7 @@ changes:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/hosted-fixed-point-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/invariant-contract-verification-2026-07-14.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/layered-work-area-verification-2026-07-15.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/local-fixed-point-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/wrapper-rule-inventory-2026-07-14.md
     slug: make-dset-self-hosting-and-skills-thin
@@ -272,7 +273,7 @@ changes:
       branch: dev
       base_ref: main
       base_commit: b874504c25e42329eae19ed14f2b50a3d922d64e
-      head_commit: pending
+      head_commit: c95b8b82e9d2cb57119025ab0d4a5f446032ce34
     dependencies:
       -
         change_id: DSET-CHANGE-GOV-001
