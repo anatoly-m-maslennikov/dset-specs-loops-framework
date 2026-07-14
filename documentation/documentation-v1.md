@@ -15,7 +15,7 @@ The profile governs declared areas, not every incidental Markdown file. Change p
 | Parent hierarchy | Exactly one root hub exists; each area parent resolves; parent chains terminate without cycles |
 | Hub shape | Each area hub contains Purpose, Boundaries, and Start here/Navigation sections |
 | Root navigation | The repository root hub links every registered top-level area hub |
-| Portability | Local Markdown links resolve; GitHub alert syntax is supported; wiki links and machine-local paths are rejected where governed |
+| Portability | Local Markdown links resolve; GitHub alert syntax is supported; wiki links are rejected |
 
 The canonical `dset check` reports stable path-oriented diagnostics and does not write. `dset verify` runs these gates together with the selected implementation-language profile and repository checks.
 

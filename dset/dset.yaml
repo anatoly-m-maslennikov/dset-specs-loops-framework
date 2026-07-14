@@ -28,6 +28,7 @@ profiles:
   runtime_risk: low-risk-hosted-automation
   durability_topology: external-platform
   enforcement: python-v1
+  artifact: documentation-v1
 
 change_contract:
   change_id_format: kebab-case
