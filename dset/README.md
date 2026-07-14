@@ -1,6 +1,20 @@
 # DSET project root
 
-This repository is both the public source of DSET Spec Loops and an adopting DSET project. This directory contains this project's accepted truth and bounded changes; it does not duplicate the framework methodology under `methodology/`.
+## Purpose
+
+This is the control-plane hub for the repository as an adopting DSET project. It routes to accepted truth, bounded changes, reusable contracts, generated traceability, migration guidance, and delivery supportability.
+
+## Boundaries
+
+This directory owns project configuration and DSET artifacts. It does not duplicate normative framework prose under `methodology/` or `documentation/`, the CLI implementation under `dset_toolchain/`, or live GitHub PR/check state.
+
+## Start here
+
+- `specs/packages/methodology/` — accepted current truth and proof contracts.
+- `changes/` — active proposed work; `changes/archive/` preserves completed PR-linked evidence.
+- `templates/`, `schemas/`, and `fixtures/` — reusable framework contracts and deterministic examples.
+- `traceability.yaml` — generated change-to-proof-to-PR discovery index.
+- `migrations/` and `supportability/` — adoption guidance and production delivery runbooks.
 
 ## Current structure
 
