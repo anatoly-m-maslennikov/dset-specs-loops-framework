@@ -29,6 +29,23 @@ evidence boundaries; Decisions remain separate records of choices and rationale.
 | Immutable published release | Configured protected merge commit, tag, and publisher release | Post-merge automation | Successful release PR merge | Tag/commit/release identity check and recovery runbook |
 | Delegation budget | Resolved project orchestration/budget rule plus current main-session configuration | Orchestrator; explicit operator override | Before each delegation batch | Plan/actual run records and task-relevant evals |
 
+## Change and delivery topology
+
+The repository configures `dev` as its integration branch and `main` as its
+protected release branch. Ordinary Changes use one isolated branch-backed
+workspace/worktree and one review PR into `dev`; the release PR carries
+`dev` into `main`. This active Change owns the aggregate integration and release
+transaction represented by PR #9, so it may operate directly on `dev`. That
+exception does not create permanent layer branches or combine unrelated Change
+proof.
+
+This Change crosses META, GOV, TOOL, SKILL, and OPS atomically because its
+authority, trace, wrapper, and delivery invariants would be invalid if merged as
+independent partial states. Later work should split only when each part is
+independently reviewable, verifiable, and mergeable. Cross-Change handoffs must
+name stable IDs, exact commits or versions, applicable Contracts, evidence
+locations, currentness, and reopen triggers.
+
 ## Supportability
 
 No adopter application runtime or production data is changed. The CLI reads repository files; only explicit materialize/refresh operations write, and the self-host adopter is temporary. Proposed local skill-run records are ignored, bounded, redacted operational evidence and never project truth. Failures identify the earliest stable boundary. Commit, PR, check, tag, release, and ruleset evidence is covered by the existing [delivery runbook](../../supportability/delivery-runbook.md). A misleading release claim is contained by keeping this change active and the PR draft until hosted proof, evals, pilots, and release work pass.

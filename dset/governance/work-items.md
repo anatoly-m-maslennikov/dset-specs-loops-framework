@@ -10,10 +10,21 @@ DSET exposes only three operator-facing queues:
 
 Debt is a problem subtype, not a synonym for a question. Use concern labels such
 as product, implementation, supportability, documentation, test, or eval.
+Keep the Problem form thin and scale it by risk. Every Problem needs an ID,
+concise statement, evidence or observation, impact, owner, and state. Add
+reproduction and severity for an observed defect; add likelihood, trigger, and
+mitigation for a possible future harm; add deeper analysis only when the
+selected risk profile or handoff requires it.
+
 Consequential questions close through a Decision. Decision is both the entity
 and durable artifact type. Accepted problems, opportunities, and Decisions
 enter a DSET Change. Their executable steps are tasks inside that change's
 `tasks.md`, not a fourth top-level queue.
+
+Resolving a Question is not complete when the Decision file alone is written.
+Discharge the Decision's normative consequences into canonical Requirements,
+Scenarios, Contracts, Design, proof plans, or operating rules, then link the
+closed Question and changed owners back to the Decision.
 
 A Requirement owns a verifiable observable WHAT, delivered result, or constraint;
 observable edge cases belong in Requirements and Scenarios. A Decision owns a

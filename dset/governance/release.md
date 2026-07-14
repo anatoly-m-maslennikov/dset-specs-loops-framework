@@ -7,6 +7,13 @@ branch, one forge publisher, and one exact tag pattern in `dset/dset.yaml`.
 Generic DSET skills use configured roles, never hard-coded branch or forge
 names.
 
+Ordinary Change branch-backed workspaces/worktrees integrate through review PRs
+into the configured integration branch. The release PR then carries the reviewed
+integration state from that branch into the protected release branch. A project
+may declare one integration/release Change that operates directly on the
+integration branch; this exception does not create permanent per-layer branches
+or waive Change-specific proof.
+
 After this policy is active, every integration-to-protected release-branch PR
 is a release PR. Exactly one participating DSET Change is the release owner and
 contains the committed declaration; any other participating Changes contain

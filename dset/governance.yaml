@@ -2,7 +2,7 @@ schema_version: 1.0
 profile:
   id: core-v1
   version: "0.2"
-  customization: custom
+  customization: unmodified
 rules:
   -
     id: DSET-RULE-ARCHITECTURE
@@ -17,7 +17,7 @@ rules:
       profile: core-v1
       version: "0.2"
       template: dset/templates/governance/core-v1/architecture.md
-      sha256: 15f521d78463d93718ea873122786edd5fffaf639fb24eaed4ffc0ef4690ed59
+      sha256: 5ea20a31a8e77380a46c56003f8bc49ad8b2ff7e882a06c3658baf0822b082ba
   -
     id: DSET-RULE-BUILD
     layer: TOOL
@@ -32,7 +32,7 @@ rules:
       profile: core-v1
       version: "0.2"
       template: dset/templates/governance/core-v1/build-rules.md
-      sha256: b2c8f31cab241fad46ab523b030ab1b5d9149f6ff88d6d36a157bf8639f4559e
+      sha256: 2a2bf284127e2afcfbf438979636758c4411e218d5f90e96f96df9e589444955
   -
     id: DSET-RULE-DOMAIN-SPEC
     layer: META
@@ -42,12 +42,12 @@ rules:
     reason: Domain decisions must precede implementation planning
     depends_on:
       - DSET-RULE-ARCHITECTURE
-    customization: custom
+    customization: unmodified
     source:
       profile: core-v1
       version: "0.2"
       template: dset/templates/governance/core-v1/domain-spec-authoring.md
-      sha256: a6cf20c4f12486c7980e06f902e2c1a59487d5ef4a343e6e3e9f9b4267565b3e
+      sha256: 320c808a833574582c57910be599a37533785419c0560399066dfe11d3e09007
   -
     id: DSET-RULE-TEST-PLAN
     layer: META
@@ -77,7 +77,7 @@ rules:
       profile: core-v1
       version: "0.2"
       template: dset/templates/governance/core-v1/eval-planning.md
-      sha256: 23549cb49b10d44f0b657859b33185cf73e40b46d30c5a1f35a1f1e9955b5cb8
+      sha256: 569a38f5974e39dc3bd8092c108b3c14213e646c31041a84fe56d1af25956b5a
   -
     id: DSET-RULE-SUPPORTABILITY
     layer: OPS
@@ -107,7 +107,7 @@ rules:
       profile: core-v1
       version: "0.2"
       template: dset/templates/governance/core-v1/artifact-maintenance.md
-      sha256: 6ab16f37577813ec4aff9ecf2d1f5502a54767fc052c91f42e287e3d7d3b9c26
+      sha256: c4ffbee6066014633642a8a1b371cf78073f59843f007832685d7ce6d2a5be1e
   -
     id: DSET-RULE-WORK-ITEMS
     layer: GOV
@@ -117,12 +117,12 @@ rules:
     reason: Intake must distinguish problems, opportunities, questions, and change-owned tasks
     depends_on:
       - DSET-RULE-ARCHITECTURE
-    customization: custom
+    customization: unmodified
     source:
       profile: core-v1
       version: "0.2"
       template: dset/templates/governance/core-v1/work-items.md
-      sha256: 8dde26de5be94ddc9440579c308b722dbabfd53c4d68e45bcbec694775b66ad4
+      sha256: 7b933bdc49ba9e7daec2ee2e4a8e996c52cf6b027fd19ef9d72d6efda18ce912
   -
     id: DSET-RULE-DELEGATION-BUDGET
     layer: SKILL
@@ -174,7 +174,7 @@ rules:
       profile: core-v1
       version: "0.2"
       template: dset/templates/governance/core-v1/release.md
-      sha256: 5ceec46d4c2cd17865e13dcc73ee7708e200b30c40eea5c2ac1fd0a65dee3304
+      sha256: cd7a81fd45834a78f72e2dbf4ba2d157d35bf1ecb98099689ec6ebc02fd038e9
   -
     id: DSET-RULE-LIFECYCLE
     layer: SKILL
@@ -198,7 +198,7 @@ rules:
       profile: core-v1
       version: "0.2"
       template: dset/templates/governance/core-v1/lifecycle-orchestration.md
-      sha256: 69c356921ab25cc0426ae21bbee7ba2ac17cf3c44e2ebd2cc3bd1eebf30344fb
+      sha256: f9a4602361a2fc7c43a9d5bebe778dae012a81f8050d0346358268c0d0d37e4c
   -
     id: DSET-RULE-DIAGNOSIS
     layer: SKILL
@@ -236,7 +236,7 @@ rules:
       profile: core-v1
       version: "0.2"
       template: dset/templates/governance/core-v1/prototyping.md
-      sha256: 615532ee3e32137f63748c9a742c2d4cf39130c0a9dd824fb1006dadd7c39455
+      sha256: c3cb7059d131acb077a6fa82b0b3a51d84c4d59c4ae5b4eb3c4c4ba00e05c8aa
 workflows:
   -
     id: lifecycle-orchestration

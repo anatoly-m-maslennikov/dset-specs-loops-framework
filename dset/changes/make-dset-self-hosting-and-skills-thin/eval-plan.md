@@ -4,6 +4,28 @@
 
 Applicable. The invariant contract governs how agents discover, interpret, and follow repository-local natural-language rules. Exact resolver and wrapper mechanics stay in [test-plan.md](test-plan.md); these evals measure whether the resulting workflow is understandable and correctly applied.
 
+## Comparison controls
+
+- **Comparator/baseline:** accepted package and registered local-rule behavior
+  at the candidate base commit, or an explicit case-specific baseline.
+- **Environment and versions:** record candidate commit, operating environment,
+  DSET/tool version, wrapper and ruleset identities, and effective
+  model/reviewer configuration for every run.
+- **Freshness window:** evidence is current only for those identities and must
+  be reopened when a named input, governing rule, fixture, or hosted state
+  changes.
+- **Budget:** use the declared delegation profile plus the case-specific limits
+  below; preserve actual run count, token/cost data when available, and elapsed
+  time without treating nominal token price as completed-task cost.
+- **Abstain/inconclusive:** stop and record `inconclusive` when evidence cannot
+  distinguish remaining outcomes, identities are unverified, or reviewers
+  disagree on a blocking criterion after one clarification/rerun. Never average
+  a blocking failure or abstention into a pass.
+
+Results remain criterion- and context-specific. This plan does not compute a
+universal winner score across rule following, usability, cost, restraint,
+platforms, or delivery contexts.
+
 ## Cases and thresholds
 
 | Eval ID | Case | Criterion | Threshold |

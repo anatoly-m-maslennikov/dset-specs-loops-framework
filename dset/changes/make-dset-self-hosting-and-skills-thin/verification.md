@@ -3,6 +3,15 @@
 - **Implementing PR:** [anatoly-m-maslennikov/dset-specs-loops-framework#9](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9)
 - **Status:** roadmap §§0–§4 pass; skill/release specification review, qualitative evals, and roadmap §§5–§10 remain pending
 
+## Proof record contract
+
+Every promoted proof below owns one bounded claim and intended use, names the
+exact evaluated commit or artifact versions, states whether it is current,
+links its evidence address, and declares the input change or hosted-state event
+that reopens it. Refresh only the smallest dependency closure affected by that
+trigger; an unrelated repository edit does not automatically invalidate every
+proof.
+
 | Gate | Command or method | Result | Evidence |
 |---|---|---|---|
 | Invariant contract | IDs, scenarios, proof-category separation, and accepted methodology mapping | Pass | [Invariant contract verification](proofs/invariant-contract-verification-2026-07-14.md) |

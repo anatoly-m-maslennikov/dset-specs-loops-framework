@@ -28,3 +28,19 @@ Explicit justified non-applicability is valid. Missing or invalid selected owner
 ## State boundaries
 
 The project manifest selects the profile; the registry owns resolution metadata; governing documents own rules; wrappers own invocation only; generated indexes and caches are derived. Writes that change customization status are explicit and never overwrite governing documents.
+
+## Public workflow contract
+
+Every public workflow declares three operator-visible boundaries: the trigger
+that makes it applicable, the first useful result it can return, and the
+stop/return condition beyond which it needs another workflow or new authority.
+Wrappers may expose these boundaries for discovery, but the registered local
+governing document owns their meaning.
+
+## Derived navigation
+
+Thin hubs and generated ID, relation, and term indexes may improve navigation.
+They are reproducible views over canonical artifacts, carry no independent
+authority, and must link back to stable IDs and owning sources. A stale or
+missing generated view cannot override or invalidate otherwise valid canonical
+truth.

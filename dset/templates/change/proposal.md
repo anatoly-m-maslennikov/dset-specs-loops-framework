@@ -8,7 +8,15 @@
 
 ## Problem
 
-Describe the observable problem and who is affected.
+- **Problem ID:** pending
+- **Statement:** Describe what is wrong or may cause harm.
+- **Evidence/observation:** Link the smallest useful evidence.
+- **Impact:** State who or what is affected.
+- **Owner and state:** pending
+
+For an observed defect, add reproduction and severity. For a possible future
+harm, add likelihood, trigger, and mitigation. Add further analysis only when
+the selected risk profile requires it.
 
 ## Outcome
 
@@ -24,4 +32,6 @@ Describe the accepted end state.
 
 ## Risk
 
-State runtime, data, security, rollout, and governance risk.
+Select and justify the review profile. State applicable runtime, data, security,
+rollout, and governance triggers; do not expand a low-risk Problem into a large
+form without a triggered need.

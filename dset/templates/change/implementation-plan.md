@@ -2,6 +2,16 @@
 
 - **Implementing PR:** pending
 
+## Delivery topology
+
+- **Isolated branch-backed workspace/worktree:** pending
+- **Integration branch:** pending
+- **Release branch:** pending
+
+Default to one Change and one review PR. The same Change may cross layers
+atomically; split only independently reviewable, verifiable, and mergeable
+parts. Do not create permanent layer branches.
+
 ## Batch 1 — Tracer slice
 
 - Map tasks to requirement, test, and applicable eval IDs.
@@ -12,3 +22,6 @@
 ## Rollout and recovery
 
 Define ordering, migration, feature controls, rollback, and proof refresh triggers.
+
+For a cross-Change dependency, hand off stable IDs, exact commits or versions,
+Contracts, evidence locations, currentness, and reopen triggers.

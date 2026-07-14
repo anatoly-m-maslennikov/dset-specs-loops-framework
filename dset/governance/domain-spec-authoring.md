@@ -11,7 +11,8 @@
 5. Ask only questions whose answers can materially change observable behavior, authority, proof, security, or rollout. Stop before guessing such a branch.
 6. Write each verifiable observable WHAT, delivered result, or constraint as a Requirement. Put observable edge cases in Requirements/Scenarios, consequential alternative selection and rationale in Decisions, internal HOW in Design, build order in the implementation plan, and externally authoritative boundaries in Contracts.
 7. Route exact proof to the deterministic test plan and variable or rubric-based proof to the eval plan.
+8. After a Decision resolves a Question, discharge every normative consequence into its canonical specification or plan owner and link the Decision as rationale. Do not require readers to reconstruct current behavior from a Decision log.
 
 ## Output
 
-Update only the owning proposal, domain/spec/contracts, separate proof plans, and linked decisions. Implementation begins only after unresolved material branches are closed or explicitly deferred.
+Update only the owning proposal, domain/spec/contracts, separate proof plans, and linked decisions. A Decision is complete only when its consequences are discharged and its Question is closed or explicitly deferred. Implementation begins only after unresolved material branches are closed or explicitly deferred.

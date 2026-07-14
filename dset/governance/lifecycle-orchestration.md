@@ -3,13 +3,15 @@
 ## Scope
 
 These rules own deterministic next-action routing for the primary `dset`
-workflow. They do not authorize the selected action or restate the rules of the
-workflow selected next.
+workflow. They recommend the next useful action from current evidence; they do
+not impose one universal end-to-end project order, authorize the selected
+action, or restate the rules of the workflow selected next.
 
-## Registered modes and precedence
+## Registered modes and recommendation precedence
 
-Evaluate authoritative repository and hosted state in this order and select the
-first applicable mode:
+Evaluate authoritative repository and hosted state in this order and recommend
+the first applicable mode. The ordering resolves competing next-action signals;
+it is not a requirement that every Change execute every mode in sequence:
 
 1. `initialize`: no valid DSET root exists.
 2. `repair-governance`: a DSET root exists but selected ownership is invalid.
@@ -34,13 +36,17 @@ first applicable mode:
 14. `release`: a verified change is ready for its guarded release transaction.
 15. `complete`: no earlier mode applies.
 
-An explicit operator-selected mode may override precedence only when that mode
-is applicable and the override is recorded. Conflicting or insufficient state
-stops with the unresolved evidence instead of guessing.
+An explicit operator-selected mode may override the recommendation only when
+that mode is applicable and the override is recorded. Conflicting or
+insufficient state stops with the unresolved evidence instead of guessing.
+
+Return the first useful result as soon as the selected mode reaches its declared
+output boundary. Report the recommended handoff separately; do not continue
+merely to advance through the mode list.
 
 ## Specialist boundaries
 
-| Entrypoint | Trigger and output | Stop boundary |
+| Entrypoint | Trigger and first useful result | Stop/return boundary |
 |---|---|---|
 | `dset` | Catch-all lifecycle request; returns one mode, its evidence, and the next authorized handoff | Does not perform a specialist workflow merely because it can name one |
 | `dset-clarify` | Explicit clarification request or blocking open question; returns decision-ready alternatives and remaining unknowns | Stops before choosing a consequential answer or implementing it |

@@ -8,10 +8,12 @@
 
 ## Candidates
 
-| Candidate/version | Source and license | Evidence | Decision |
-|---|---|---|---|
-| Minimal custom baseline | Repository | Pending | Compare |
+| Candidate/version | Source/license | Evaluation context | Evidence address/validity | Costs/failures | Freshness | Disposition |
+|---|---|---|---|---|---|---|
+| Minimal custom baseline | Repository/project license | Define environment and constraints | Link evidence and state what it supports | Record measured cost and observed failures | State observed-on/expiry/reopen trigger | Adopt, adapt, or reject |
 
 ## Decision
 
-Record adopt, adapt, build, or defer only after comparable proof. Link material choices to a Decision.
+Record adopt, adapt, or reject for the declared context only after comparable
+proof. Build or defer may be next actions, not candidate verdicts. Link material
+choices to a Decision and do not manufacture a universal winner score.

@@ -13,3 +13,9 @@ sources:
     license: MIT
     license_file: third_party/licenses/mattpocock-skills-MIT.txt
     use: independently-reexpressed-workflow-categories
+  - id: fpf
+    repository: https://github.com/ailev/FPF
+    revision: afa4936541774021c92adb97c3cbf787bf126062
+    license: no-license-declared-at-reviewed-revision
+    license_file: third_party/licenses/fpf-NO-LICENSE.txt
+    use: independently-reexpressed-concepts-only

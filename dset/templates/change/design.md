@@ -20,3 +20,7 @@ Define risk-scaled evidence, correlation/deploy identity, safe diagnostics, data
 Link only consequential accepted choices among valid alternatives, including
 their rationale, trade-offs, and consequences. Do not create a Decision for
 every implementation detail or observable edge case.
+
+For each accepted Decision, link the closed Question and the canonical
+Requirements, Scenarios, Contracts, Design sections, or proof plans into which
+its normative consequences were discharged.
