@@ -10,11 +10,11 @@ This directory owns project configuration and DSET artifacts. It does not duplic
 
 ## Start here
 
-- `specs/packages/methodology/` — accepted current truth and proof contracts.
-- `changes/` — active proposed work; `changes/archive/` preserves completed PR-linked evidence.
-- `templates/`, `schemas/`, and `fixtures/` — reusable framework contracts and deterministic examples.
-- `traceability.yaml` — generated change-to-proof-to-PR discovery index.
-- `migrations/` and `supportability/` — adoption guidance and production delivery runbooks.
+- [Accepted methodology package](specs/packages/methodology/README.md) — current truth and proof contracts.
+- [Changes](changes/README.md) — active proposed work; `changes/archive/` preserves completed PR-linked evidence.
+- [Templates](templates/README.md), [schemas](schemas/README.md), and [fixtures](fixtures/README.md) — reusable framework contracts and deterministic examples.
+- [Traceability](traceability.yaml) — generated change-to-proof-to-PR discovery index.
+- [Migrations](migrations/README.md) and the [delivery runbook](supportability/delivery-runbook.md) — adoption guidance and production supportability.
 
 ## Current structure
 

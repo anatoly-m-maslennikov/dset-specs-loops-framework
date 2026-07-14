@@ -14,14 +14,15 @@
 ## Specifications
 
 - Split the specification into the **what** and the **why**. The spec owns clean observable behavior; rationale or ADRs own motivation, alternatives, and trade-offs.
-- Model the service or capability as **domain entities plus per-entity lifecycle state machines** before describing code or orchestration.
+- Model the service or capability as **domain entities plus per-entity lifecycle state machines** before describing code or orchestration. Classify value objects, reference vocabulary, and external actors separately; do not invent entity lifecycles for concepts the system does not own.
+- Give every owned entity with transitions a lifecycle state machine. For an owned entity with no meaningful transition, state its single stable state or record why lifecycle is not applicable.
 - Order sections so each entity is **defined using only entities above it**. A forward section reference is a connection, not a definition.
 - Define ownership and authority for state, inputs, outputs, effects, retries, idempotency boundaries, and recovery when applicable.
 - Give every requirement a stable ID and scenario or acceptance check.
 - Keep implementation mechanisms out unless they constrain observable behavior, compatibility, safety, ownership, or operations.
 - Design deterministic tests and applicable qualitative/probabilistic evals in separate artifacts before implementation.
 
-When two entities are mutually related, define each independently first using shared earlier vocabulary, then describe the bidirectional connection in a later relationship section. Do not make either definition depend on an undefined future entity.
+When two entities are mutually related, define each independently first using shared earlier vocabulary, then describe the bidirectional connection in a later relationship section. Do not make either definition depend on an undefined future entity. As a review test, remove the forward sentence: if the current entity's identity or invariant becomes incomprehensible, the sentence was a disguised definition rather than a connection.
 
 ## Normative methodology and reference docs
 

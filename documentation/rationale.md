@@ -6,17 +6,17 @@ Programming-language profiles enforce code with language-native compilers, type 
 
 ## Why hubs stay thin
 
-Repositories with many files need a helicopter view, but exhaustive hand-maintained indexes become stale and bury ownership. Root and area hubs should route readers to stable owners. Machine-readable area configuration and link validation provide structural completeness; the hub body remains curated for human orientation.
+Repositories with many files need a helicopter view, but exhaustive hand-maintained indexes become stale and bury ownership. The [hub rules](hub-rules.md) require root and area hubs to route readers to stable owners. Machine-readable area configuration and link validation provide structural completeness; the hub body remains curated for human orientation.
 
 ## Why what, why, how, and history separate
 
-Normative rules change when accepted behavior changes. Rationale changes when the explanation or trade-off understanding changes. Procedures change when an operation changes. Evidence and changelogs are historical observations. Combining them makes a document hard to review and encourages a historical explanation or one-time command to become accidental current truth.
+Normative rules change when accepted behavior changes. Rationale changes when the explanation or trade-off understanding changes. Procedures change when an operation changes. Evidence and changelogs are historical observations. The [artifact-type catalog](artifact-types.md) assigns each of these a separate owning question. Combining them makes a document hard to review and encourages a historical explanation or one-time command to become accidental current truth.
 
 The separation is not absolute isolation. The artifacts link bidirectionally where useful, but only one owns each concern.
 
 ## Why semantic ordering matters
 
-A reader or agent should be able to build the domain model incrementally. When an entity definition depends on a later undefined entity, a forward link provides navigation but not meaning. Defining entities from earlier vocabulary, then describing later connections, produces specifications that can guide implementation and proof without hidden context.
+A reader or agent should be able to build the domain model incrementally. The [specification authoring rules](authoring-rules.md#specifications) require definitions to use earlier vocabulary. When an entity definition depends on a later undefined entity, a forward link provides navigation but not meaning. Defining entities first and then describing later connections produces specifications that can guide implementation and proof without hidden context.
 
 ## Why some gates remain evals
 
