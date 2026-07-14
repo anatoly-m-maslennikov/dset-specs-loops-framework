@@ -93,6 +93,7 @@ release:
   readiness: verification.md
   candidate_commit: pending
 intake:
+  - DSET-PROBLEM-TOOL-001
   - DSET-QUESTION-GOV-001
   - DSET-QUESTION-META-001
   - DSET-QUESTION-META-002

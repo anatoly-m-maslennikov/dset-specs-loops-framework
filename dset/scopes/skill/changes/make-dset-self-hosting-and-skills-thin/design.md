@@ -58,7 +58,7 @@ No adopter application runtime or production data is changed. The CLI reads repo
 - Treat explicit justified non-applicability as valid; fail closed only for invalid or incompatible selected ownership.
 - Keep exact behavior in tests and agent interpretation/usefulness in evals.
 - Replace the incomplete `0.2.0` development target and unreleased independent Python-package `1.0.0` candidate with the coordinated DSET/product package release `0.3.0`; retain schema/profile/template versions as independent compatibility identities and leave archived v1 evidence unchanged.
-- Use the pre-0.3 commit recorded in `dset/scopes/meta/version.yaml` as the released validator baseline.
+- Use the exact schema 1.2 migration commit recorded in `dset/scopes/meta/version.yaml` as a temporary fixed-point baseline. It is explicitly not a released-validator substitute: `DSET-PROBLEM-TOOL-001` remains open until a published compatible validator checks a later candidate or an accepted compatibility proof closes the gap.
 - Use one registry with local paths and source digests; never read a template as live fallback.
 - Treat explicit `rules refresh` as acknowledgement of intentional local customization.
 - Use generated adopter copies to prove runtime-wrapper distribution identity without making installed copies rule owners.

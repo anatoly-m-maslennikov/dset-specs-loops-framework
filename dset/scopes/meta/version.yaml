@@ -10,8 +10,8 @@ schemas:
   version: "1.2"
   versioning: independent
 released_validator:
-  identity: pre-0.3-v1-baseline
-  commit: a95bf7c576c8fcdfdf0565466aaca5ee1fe86157
+  identity: 0.3-layered-migration-baseline-not-release
+  commit: 0a5e6c91e3628582d0aad8ba307554b91b1ae802
   command: python -m dset_toolchain check
 candidate_validator:
   command: python -m dset_toolchain check
