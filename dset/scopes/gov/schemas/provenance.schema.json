@@ -18,10 +18,28 @@
           "revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
           "license": {"type": "string"},
           "license_file": {"type": "string"},
-          "use": {"type": "string"}
+          "use": {"type": "string"},
+          "mappings": {
+            "type": "array",
+            "items": {"$ref": "#/$defs/mapping"}
+          }
         },
         "additionalProperties": false
       }
+    }
+  },
+  "$defs": {
+    "mapping": {
+      "type": "object",
+      "required": ["pattern", "source", "source_lines", "dset_surface", "disposition"],
+      "properties": {
+        "pattern": {"type": "string", "minLength": 1},
+        "source": {"type": "string", "minLength": 1},
+        "source_lines": {"type": "string", "pattern": "^[0-9,-]+$"},
+        "dset_surface": {"type": "string", "minLength": 1},
+        "disposition": {"enum": ["adopted", "adapted", "rejected"]}
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false

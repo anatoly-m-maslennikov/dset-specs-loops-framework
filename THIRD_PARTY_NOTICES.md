@@ -33,8 +33,8 @@ Matt Pocock's name and marks belong to their owner. References describe provenan
 ## Conductor
 
 - **Sources reviewed:** [Git worktrees](https://www.conductor.build/docs/concepts/git-worktrees), [workspaces and branches](https://www.conductor.build/docs/concepts/workspaces-and-branches), and [parallel agents](https://www.conductor.build/docs/concepts/parallel-agents), observed 2026-07-15.
-- **DSET surface:** the default one Change to one isolated branch-backed workspace/worktree and review-PR rule.
-- **Use:** DSET independently defines its own Change identity, proof, dependency handoff, integration-branch exception, and release semantics. No Conductor text, code, or product artifact is copied.
+- **DSET surface:** the optional one Change to one isolated branch-backed workspace/worktree mode.
+- **Use:** DSET independently defines its own Change identity, proof, dependency handoff, default integration-branch flow, optional worktree isolation, and release semantics. No Conductor text, code, or product artifact is copied.
 
 ## Contribution rule
 

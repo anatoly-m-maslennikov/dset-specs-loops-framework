@@ -24,16 +24,39 @@ canonical Requirements, Scenarios, Contracts, Design, proof plans, or operating
 rules; link those edits and the closed Question back to the Decision. Keep the
 Decision as the durable rationale, alternatives, trade-offs, and consequences.
 
+A Decision records status and decision date, its evidence basis, superseded and
+successor Decisions, confirmation or violation evidence, and the condition that
+reopens it. Counter-evidence may withdraw a Decision's current authority without
+deleting its history or the evidence that once supported it. Supersession creates
+an explicit successor link; it never silently rewrites the earlier Decision.
+
 ## Proof and derived-view maintenance
 
-Promoted proof records the claim proved, intended use, exact commit or artifact
-version, currentness status, evidence location, and reopen trigger. When an
-input changes, refresh the smallest dependency closure that can make the claim
-current; do not rerun unrelated proof merely because it shares a repository.
+Promoted proof supports one named claim for one intended use. It records the
+producer or performed work, method and setup, applicable repository/version/
+environment/assumption context, observation time or validity window, exact
+commit or artifact version, evidence location and polarity, currentness status,
+and reopen trigger. A failed or unsupported attempted use remains `uncertain` or
+`pending`; it is not converted into a positive conclusion. Contrary evidence or
+a changed input is a defeater that makes only the affected claim closure stale.
+Refresh that smallest closure; do not rerun unrelated proof merely because it
+shares a repository.
 
 Generated hubs and ID, relation, or term indexes are thin non-authoritative
-views. Regenerate only the affected closure, retain stable links to canonical
-owners, and report staleness rather than treating a generated view as truth.
+views. A reliance-bearing view states the structure it captures, what it omits,
+its permitted and prohibited uses, its canonical return path, and its
+currentness. Regenerate only the affected closure, retain stable links to
+canonical owners, and report staleness rather than treating a generated view as
+truth.
+
+## Artifact threshold
+
+Ordinary reversible work may return a bounded result without opening a committed
+Change. Work becomes reliance-bearing and requires durable DSET artifacts when
+it changes accepted truth, crosses authorization or ownership boundaries,
+requires coordination, audit, delayed reuse, rollback, or release evidence, or
+would be unsafe to reconstruct from a session. Ignored run records may support
+investigation but never replace those artifacts.
 
 ## Cross-Change handoff
 

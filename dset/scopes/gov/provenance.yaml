@@ -19,3 +19,34 @@ sources:
     license: no-license-declared-at-reviewed-revision
     license_file: third_party/licenses/fpf-NO-LICENSE.txt
     use: independently-reexpressed-concepts-only
+    mappings:
+      - pattern: FPF-A.10
+        source: FPF-Spec/A_Kernel Architecture Cluster/10_Evidence Graph Referring- Claim-Bound Evidence and Provenance Graph/00_A.10 - Evidence Graph Referring- Claim-Bound Evidence and Provenance Graph.md
+        source_lines: 32-44,77-101,117-138
+        dset_surface: dset/scopes/gov/governance/artifact-maintenance.md
+        disposition: adapted
+      - pattern: FPF-A.16.02
+        source: FPF-Spec/A_Kernel Architecture Cluster/16_Language-State Move Coordination/03_A.16.02 - Reopen - SketchBackoff - Respecify.md
+        source_lines: 42-80,163-183
+        dset_surface: dset/scopes/gov/templates/change/adoption-decision.md
+        disposition: adapted
+      - pattern: FPF-A.19.CPM
+        source: FPF-Spec/A_Kernel Architecture Cluster/19_CharacteristicSpace & Dynamics Hook (A.CHR-SPACE)/11_A.19.CPM - Unified Comparison Mechanism (CPM).md
+        source_lines: 43-57,71-96,109-121
+        dset_surface: dset/scopes/gov/templates/change/solution-landscape.md
+        disposition: adapted
+      - pattern: FPF-C.32.ADR
+        source: FPF-Spec/C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/09_C.32.ADR - Architecture Decision Record Projection.md
+        source_lines: 47-104,145-169
+        dset_surface: dset/scopes/gov/governance/artifact-maintenance.md
+        disposition: adapted
+      - pattern: FPF-E.17
+        source: FPF-Spec/E_The FPF Constitution and Authoring Guides/16_17_Multi-View Publication Kit/03_E.17 - Multi-View Publication Kit.md
+        source_lines: 29-39
+        dset_surface: dset/scopes/gov/governance/artifact-maintenance.md
+        disposition: adapted
+      - pattern: FPF-E.19
+        source: FPF-Spec/E_The FPF Constitution and Authoring Guides/18_19_Pattern Quality Gates- Review and Refresh Profiles/00_E.19 - Pattern Quality Gates- Review and Refresh Profiles.md
+        source_lines: 84-90,120-124,174-201
+        dset_surface: dset/scopes/tool/governance/build-rules.md
+        disposition: adapted

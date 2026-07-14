@@ -1,6 +1,9 @@
 # Proof evidence — {{title}}
 
 Store bounded, redacted evidence and disposable proof-of-fit outputs here. Each
-promoted proof names the claim, intended use, exact commit or artifact version,
-currentness, evidence address, and reopen trigger. Keep raw generated logs
-ephemeral unless a concise excerpt is required to diagnose failure.
+promoted proof supports one claim for one intended use and records producer or
+performed work, method/setup, repository/version/environment/assumption context,
+observation time or validity window, exact commit or artifact version, evidence
+address and polarity, currentness, reopen trigger, and unsupported attempted
+uses. Keep raw generated logs ephemeral unless a concise excerpt is required to
+diagnose failure.

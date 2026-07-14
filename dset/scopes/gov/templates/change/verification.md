@@ -10,8 +10,10 @@
 | Supportability | Pending | Pending | Runbook/evidence |
 | Reconciliation/archive | `dset verify` | Pending | Traceability/index diff |
 
-For each promoted proof, record the claim, intended use, exact commit or
-artifact version, currentness, evidence address, reopen trigger, fresh commands,
-exit status, bounded summaries, unresolved failures, and completion
-disposition. Refresh the smallest affected dependency closure. Never persist
-secrets or sensitive raw output.
+For each promoted proof, record one claim and intended use; producer or
+performed work; method/setup; repository, version, environment, assumptions,
+and observation window; exact commit or artifact version; evidence address and
+polarity; currentness and reopen trigger; fresh commands, exit status, bounded
+summaries, unresolved or unsupported uses, and completion disposition. Refresh
+the smallest affected dependency closure. Never persist secrets or sensitive
+raw output.

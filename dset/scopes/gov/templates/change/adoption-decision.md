@@ -2,15 +2,26 @@
 
 - **Decision ID:** `{{project_key}}-DECISION{{id_layer}}-001`
 - **Status:** proposed
+- **Decision date:** pending
+- **Supersedes:** none
+- **Superseded by:** none
 - **Selected candidate/version:** pending
 
-Record the consequential choice among valid alternatives, rationale, trade-offs,
-consequences, linked requirements/proof, license/provenance, rejected
-alternatives, integration boundary, data ownership, upgrade/rollback policy,
-lock-in, replacement seam, and exit test. Keep observable edge cases in
-Requirements/Scenarios and internal implementation detail in Design.
+Record the consequential choice among valid alternatives, the decision basis,
+rationale, trade-offs, consequences, linked requirements/proof,
+license/provenance, rejected or currently incomparable alternatives, affected
+structure, integration boundary, data ownership, implementation feasibility,
+upgrade/rollback policy, lock-in, replacement seam, confirmation/violation
+evidence, reopen condition, and exit test. Require a candidate comparison only
+when a genuine consequential choice exists; do not manufacture alternatives for
+an externally fixed Contract or ordinary implementation detail. Keep observable
+edge cases in Requirements/Scenarios and internal detail in Design.
 
 Before marking the Decision accepted, discharge its normative consequences into
 the owning canonical specs, Contracts, Design, and proof plans; link those edits
 and the resolved Question here. This artifact retains rationale rather than
 becoming a parallel specification.
+
+When counter-evidence invalidates the basis, mark the Decision reopened or
+superseded, retain its earlier evidence and rationale, and link the successor.
+Never silently edit history to make the old Decision appear current.
