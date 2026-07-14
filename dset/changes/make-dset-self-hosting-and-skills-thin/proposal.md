@@ -3,7 +3,7 @@
 - **Change ID:** `make-dset-self-hosting-and-skills-thin`
 - **Profile:** `standard`
 - **Target package:** `methodology`
-- **Implementing PR:** pending
+- **Implementing PR:** [anatoly-m-maslennikov/dset-specs-loops-framework#9](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9)
 - **Status:** in progress; roadmap §§0–§4 implemented locally, hosted proof pending
 
 ## Problem

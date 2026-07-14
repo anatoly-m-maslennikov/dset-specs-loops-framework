@@ -1,6 +1,6 @@
 # Implementation plan — Make DSET self-hosting and skills thin
 
-- **Implementing PR:** pending
+- **Implementing PR:** [anatoly-m-maslennikov/dset-specs-loops-framework#9](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9)
 
 ## Batch 0 — Invariant contract — complete
 

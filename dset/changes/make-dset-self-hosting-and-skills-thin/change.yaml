@@ -6,8 +6,8 @@ packages:
   - methodology
 pull_request:
   repository: anatoly-m-maslennikov/dset-specs-loops-framework
-  number: pending
-  url: pending
+  number: 9
+  url: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9
 requirements:
   - MDSHAST-REQ-001
   - MDSHAST-REQ-002

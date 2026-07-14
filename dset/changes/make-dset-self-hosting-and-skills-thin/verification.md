@@ -1,6 +1,6 @@
 # Verification — Make DSET self-hosting and skills thin
 
-- **Implementing PR:** pending
+- **Implementing PR:** [anatoly-m-maslennikov/dset-specs-loops-framework#9](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9)
 - **Status:** roadmap §§0–§3 and local §4 fixed point pass; hosted §4 proof and later roadmap work pending
 
 | Gate | Command or method | Result | Evidence |

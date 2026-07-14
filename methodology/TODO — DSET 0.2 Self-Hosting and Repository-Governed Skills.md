@@ -45,7 +45,7 @@
 - [x] **DSET-02-TASK-001:** Decide and document whether `0.2` versions the methodology/framework milestone, the Python package, the schemas, or a coordinated release train; reconcile current public “v1” language without retroactively rewriting archived evidence.
 - [x] **DSET-02-TASK-002:** Define the last-released-validator versus candidate-validator contract so a candidate is never its own only judge.
 - [x] **DSET-02-TASK-003:** Define the minimum non-project bootstrap protocol that wrappers may contain: locate the repository root, locate `dset/dset.yaml`, resolve the governance registry, and fail closed.
-- [ ] **DSET-02-TASK-004:** Open one standard DSET change, `make-dset-self-hosting-and-skills-thin`, with separate requirements, test plan, eval plan, design, implementation batches, evidence, and PR identity.
+- [x] **DSET-02-TASK-004:** Open one standard DSET change, `make-dset-self-hosting-and-skills-thin`, with separate requirements, test plan, eval plan, design, implementation batches, evidence, and PR identity.
 
 ## §1 | Add the repository-local governance registry
 
