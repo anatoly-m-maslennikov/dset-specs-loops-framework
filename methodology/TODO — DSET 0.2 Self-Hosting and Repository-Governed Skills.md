@@ -18,7 +18,7 @@
 - **DSET-02-INV-008 — Separate proof:** Deterministic resolver, structure, wrapper, and recursion checks remain tests; agent interpretation, rule-following, navigation, and diagnostic usefulness remain evals.
 - **DSET-02-INV-009 — One owner per rule:** Every normative rule ID has exactly one editable governing document. Agent guidance, skills, templates, generated installations, and summaries link to that owner and never become parallel writable rule stores.
 
-**Contract status:** Defined as `METH-INV-013`–`METH-INV-021` and release-gated requirements `METH-REQ-026`–`METH-REQ-034` in the [accepted methodology package](../dset/specs/packages/methodology/README.md), with separate deterministic and qualitative proof mappings. The [invariant-contract evidence](../dset/changes/make-dset-self-hosting-and-skills-thin/proofs/invariant-contract-verification-2026-07-14.md) verifies this definition only; the implementation tasks below remain open and are not DSET 0.2 capability claims.
+**Contract status:** Defined as `METH-INV-013`–`METH-INV-021` and release-gated requirements `METH-REQ-026`–`METH-REQ-034` in the [accepted methodology package](../dset/specs/packages/methodology/README.md), with separate deterministic and qualitative proof mappings. Roadmap §§0–§4 are implemented on the active change branch and have local deterministic proof. Hosted fixed-point proof, qualitative evals, the TypeScript profile, external pilots, distribution, and release reconciliation remain open; DSET 0.2 is not yet an adoption-readiness claim.
 
 ## Scope
 
@@ -42,22 +42,22 @@
 
 ## §0 | Resolve version and bootstrap semantics
 
-- [ ] **DSET-02-TASK-001:** Decide and document whether `0.2` versions the methodology/framework milestone, the Python package, the schemas, or a coordinated release train; reconcile current public “v1” language without retroactively rewriting archived evidence.
-- [ ] **DSET-02-TASK-002:** Define the last-released-validator versus candidate-validator contract so a candidate is never its own only judge.
-- [ ] **DSET-02-TASK-003:** Define the minimum non-project bootstrap protocol that wrappers may contain: locate the repository root, locate `dset/dset.yaml`, resolve the governance registry, and fail closed.
+- [x] **DSET-02-TASK-001:** Decide and document whether `0.2` versions the methodology/framework milestone, the Python package, the schemas, or a coordinated release train; reconcile current public “v1” language without retroactively rewriting archived evidence.
+- [x] **DSET-02-TASK-002:** Define the last-released-validator versus candidate-validator contract so a candidate is never its own only judge.
+- [x] **DSET-02-TASK-003:** Define the minimum non-project bootstrap protocol that wrappers may contain: locate the repository root, locate `dset/dset.yaml`, resolve the governance registry, and fail closed.
 - [ ] **DSET-02-TASK-004:** Open one standard DSET change, `make-dset-self-hosting-and-skills-thin`, with separate requirements, test plan, eval plan, design, implementation batches, evidence, and PR identity.
 
 ## §1 | Add the repository-local governance registry
 
-- [ ] **DSET-02-TASK-005:** Define `dset/governance.yaml` as the machine-readable resolver surface; it points to governing documents but does not restate their rules.
-- [ ] **DSET-02-TASK-006:** Publish a JSON Schema covering registry version, workflow IDs, rule IDs, one owner per rule, ordered dependencies, applicability, local path, source profile/version, and customization status.
-- [ ] **DSET-02-TASK-007:** Require every normative path to remain inside the repository. External sources may supply provenance or rationale but cannot be a live writable project-rule owner.
-- [ ] **DSET-02-TASK-008:** Define deterministic precedence without implicit fallback: project-local accepted rule → explicitly selected local profile → failure. A wrapper must not silently fall back to embedded prose or a remote framework checkout.
-- [ ] **DSET-02-TASK-009:** Add `dset rules resolve <workflow-id>` to print the stable ordered governing-document set without writing.
-- [ ] **DSET-02-TASK-010:** Add `dset rules check` to validate identity, path containment, existence, ownership uniqueness, dependency ordering, cycles, applicability, and profile/customization metadata.
-- [ ] **DSET-02-TASK-011:** Emit stable diagnostics for missing registry, missing owner, duplicate owner, missing document, outside-root path, cycle, unknown workflow, and incompatible profile.
-- [ ] **DSET-02-TASK-012:** Make `dset check` and `dset verify` run the governance resolver whenever a project selects repository-governed skills.
-- [ ] **DSET-02-TASK-013:** Add a thin governance hub explaining purpose, boundaries, rule owners, workflow routes, customization, and migration without duplicating the registered rules.
+- [x] **DSET-02-TASK-005:** Define `dset/governance.yaml` as the machine-readable resolver surface; it points to governing documents but does not restate their rules.
+- [x] **DSET-02-TASK-006:** Publish a JSON Schema covering registry version, workflow IDs, rule IDs, one owner per rule, ordered dependencies, applicability, local path, source profile/version, and customization status.
+- [x] **DSET-02-TASK-007:** Require every normative path to remain inside the repository. External sources may supply provenance or rationale but cannot be a live writable project-rule owner.
+- [x] **DSET-02-TASK-008:** Define deterministic precedence without implicit fallback: project-local accepted rule → explicitly selected local profile → failure. A wrapper must not silently fall back to embedded prose or a remote framework checkout.
+- [x] **DSET-02-TASK-009:** Add `dset rules resolve <workflow-id>` to print the stable ordered governing-document set without writing.
+- [x] **DSET-02-TASK-010:** Add `dset rules check` to validate identity, path containment, existence, ownership uniqueness, dependency ordering, cycles, applicability, and profile/customization metadata.
+- [x] **DSET-02-TASK-011:** Emit stable diagnostics for missing registry, missing owner, duplicate owner, missing document, outside-root path, cycle, unknown workflow, and incompatible profile.
+- [x] **DSET-02-TASK-012:** Make `dset check` and `dset verify` run the governance resolver whenever a project selects repository-governed skills.
+- [x] **DSET-02-TASK-013:** Add a thin governance hub explaining purpose, boundaries, rule owners, workflow routes, customization, and migration without duplicating the registered rules.
 
 ### Proposed local shape
 
@@ -78,36 +78,36 @@ The registry, not this example path, is the compatibility surface. A repository 
 
 ## §2 | Move rules out of skills
 
-- [ ] **DSET-02-TASK-014:** Inventory every normative statement currently embedded in `skills/dset-grill/SKILL.md`, `skills/dset-diagnose/SKILL.md`, and `skills/dset-prototype/SKILL.md`.
-- [ ] **DSET-02-TASK-015:** Assign each statement one governing owner: normative methodology/reference, behavioral specification, architecture, playbook/runbook, authorization contract, proof plan, or supportability rule.
-- [ ] **DSET-02-TASK-016:** Move domain-grilling rules into repository-governed documents covering vocabulary, entities/value objects/actors, per-owned-entity lifecycles, invariants, boundary cases, decision routing, and test/eval separation.
-- [ ] **DSET-02-TASK-017:** Move diagnosis rules into repository-governed documents covering reproduction, minimization, hypotheses, evidence, first-bad-change analysis, Back-to-Left provenance, regression proof, containment, authorization, and stop conditions.
-- [ ] **DSET-02-TASK-018:** Move prototype rules into repository-governed documents covering hypothesis, timebox, representative cases, provenance/license, proof-of-fit, disposal, adopt/adapt/build/defer, promotion, and stop conditions.
-- [ ] **DSET-02-TASK-019:** Reduce every skill to metadata/trigger, DSET-root discovery, workflow ID, resolver invocation, application instruction, output handoff, and fail-closed behavior.
-- [ ] **DSET-02-TASK-020:** Remove concrete thresholds, file inventories, workflow steps, domain rules, architecture rules, and copied safety/supportability prose from skill bodies.
-- [ ] **DSET-02-TASK-021:** Update the artifact-type contract: a skill invokes a governed workflow; it does not own that workflow's substantive rules.
-- [ ] **DSET-02-TASK-022:** Require wrapper output to identify the resolved workflow ID, rule IDs, document paths, profile/customization identity, and unresolved conflicts before acting.
-- [ ] **DSET-02-TASK-023:** Validate that installed/generated Claude, Codex, and other runtime copies match the canonical framework wrapper source and are never edited as rule owners.
+- [x] **DSET-02-TASK-014:** Inventory every normative statement currently embedded in `skills/dset-grill/SKILL.md`, `skills/dset-diagnose/SKILL.md`, and `skills/dset-prototype/SKILL.md`.
+- [x] **DSET-02-TASK-015:** Assign each statement one governing owner: normative methodology/reference, behavioral specification, architecture, playbook/runbook, authorization contract, proof plan, or supportability rule.
+- [x] **DSET-02-TASK-016:** Move domain-grilling rules into repository-governed documents covering vocabulary, entities/value objects/actors, per-owned-entity lifecycles, invariants, boundary cases, decision routing, and test/eval separation.
+- [x] **DSET-02-TASK-017:** Move diagnosis rules into repository-governed documents covering reproduction, minimization, hypotheses, evidence, first-bad-change analysis, Back-to-Left provenance, regression proof, containment, authorization, and stop conditions.
+- [x] **DSET-02-TASK-018:** Move prototype rules into repository-governed documents covering hypothesis, timebox, representative cases, provenance/license, proof-of-fit, disposal, adopt/adapt/build/defer, promotion, and stop conditions.
+- [x] **DSET-02-TASK-019:** Reduce every skill to metadata/trigger, DSET-root discovery, workflow ID, resolver invocation, application instruction, output handoff, and fail-closed behavior.
+- [x] **DSET-02-TASK-020:** Remove concrete thresholds, file inventories, workflow steps, domain rules, architecture rules, and copied safety/supportability prose from skill bodies.
+- [x] **DSET-02-TASK-021:** Update the artifact-type contract: a skill invokes a governed workflow; it does not own that workflow's substantive rules.
+- [x] **DSET-02-TASK-022:** Require wrapper output to identify the resolved workflow ID, rule IDs, document paths, profile/customization identity, and unresolved conflicts before acting.
+- [x] **DSET-02-TASK-023:** Validate that installed/generated Claude, Codex, and other runtime copies match the canonical framework wrapper source and are never edited as rule owners.
 
 ## §3 | Materialize project-owned rules from templates
 
-- [ ] **DSET-02-TASK-024:** Add versioned governing-document templates for architecture, build rules, domain/spec authoring, deterministic proof, qualitative/probabilistic evals, diagnosis, prototyping, supportability, and artifact maintenance.
-- [ ] **DSET-02-TASK-025:** Add an explicit adoption/materialization command or documented transaction that copies selected defaults into the adopting repository, records source version/provenance, and refuses existing destinations.
-- [ ] **DSET-02-TASK-026:** State that materialized documents become project-owned truth immediately; later framework releases provide reviewed migrations/deltas, never invisible overwrites.
-- [ ] **DSET-02-TASK-027:** Record local customization status and origin without treating the original template as a second current owner.
-- [ ] **DSET-02-TASK-028:** Provide a migration map for existing `AGENTS.md`, `CLAUDE.md`, project rules, specs, test plans, eval plans, implementation plans, ADRs, runbooks, and evidence.
-- [ ] **DSET-02-TASK-029:** Require old rule surfaces to become concise hubs/pointers, read-only history, or removed artifacts after verified cutover; never leave both old and new locations writable.
-- [ ] **DSET-02-TASK-030:** Add update guidance that compares framework changes against local rules and produces an explicit proposed delta rather than replacing customized files.
+- [x] **DSET-02-TASK-024:** Add versioned governing-document templates for architecture, build rules, domain/spec authoring, deterministic proof, qualitative/probabilistic evals, diagnosis, prototyping, supportability, and artifact maintenance.
+- [x] **DSET-02-TASK-025:** Add an explicit adoption/materialization command or documented transaction that copies selected defaults into the adopting repository, records source version/provenance, and refuses existing destinations.
+- [x] **DSET-02-TASK-026:** State that materialized documents become project-owned truth immediately; later framework releases provide reviewed migrations/deltas, never invisible overwrites.
+- [x] **DSET-02-TASK-027:** Record local customization status and origin without treating the original template as a second current owner.
+- [x] **DSET-02-TASK-028:** Provide a migration map for existing `AGENTS.md`, `CLAUDE.md`, project rules, specs, test plans, eval plans, implementation plans, ADRs, runbooks, and evidence.
+- [x] **DSET-02-TASK-029:** Require old rule surfaces to become concise hubs/pointers, read-only history, or removed artifacts after verified cutover; never leave both old and new locations writable.
+- [x] **DSET-02-TASK-030:** Add update guidance that compares framework changes against local rules and produces an explicit proposed delta rather than replacing customized files.
 
 ## §4 | Prove bounded recursive self-hosting
 
-- [ ] **DSET-02-TASK-031:** Make the last released DSET version validate the active change that modifies the candidate toolchain and governing contracts.
-- [ ] **DSET-02-TASK-032:** Make the candidate validate this framework repository's methodology, documentation, governance registry, project truth, templates, skills, CLI, schemas, fixtures, traceability, and supportability.
-- [ ] **DSET-02-TASK-033:** Scaffold a complete temporary adopter from released templates during tests without using private paths or machine-global state.
-- [ ] **DSET-02-TASK-034:** Make the same candidate validate the generated adopter with the same public command and schemas.
-- [ ] **DSET-02-TASK-035:** Mutate one generated local rule while preserving the skill wrapper bytes; prove registry/check results change only because the local rule/profile identity changed.
-- [ ] **DSET-02-TASK-036:** Corrupt each bootstrap boundary—manifest, registry, rule owner, path, dependency, wrapper identity, template, and candidate command—and prove the earliest stable failure.
-- [ ] **DSET-02-TASK-037:** Define the recursion stop: the generated adopter may consume the candidate toolchain but does not regenerate the framework repository or recursively create another adopter.
+- [x] **DSET-02-TASK-031:** Make the last released DSET version validate the active change that modifies the candidate toolchain and governing contracts.
+- [x] **DSET-02-TASK-032:** Make the candidate validate this framework repository's methodology, documentation, governance registry, project truth, templates, skills, CLI, schemas, fixtures, traceability, and supportability.
+- [x] **DSET-02-TASK-033:** Scaffold a complete temporary adopter from released templates during tests without using private paths or machine-global state.
+- [x] **DSET-02-TASK-034:** Make the same candidate validate the generated adopter with the same public command and schemas.
+- [x] **DSET-02-TASK-035:** Mutate one generated local rule while preserving the skill wrapper bytes; prove registry/check results change only because the local rule/profile identity changed.
+- [x] **DSET-02-TASK-036:** Corrupt each bootstrap boundary—manifest, registry, rule owner, path, dependency, wrapper identity, template, and candidate command—and prove the earliest stable failure.
+- [x] **DSET-02-TASK-037:** Define the recursion stop: the generated adopter may consume the candidate toolchain but does not regenerate the framework repository or recursively create another adopter.
 - [ ] **DSET-02-TASK-038:** Run the full fixed point in local verification and hosted CI before an external pilot may claim DSET 0.2 adoption readiness.
 
 ## §5 | Derive TypeScript v1 from Your Harness

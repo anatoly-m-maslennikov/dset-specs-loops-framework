@@ -17,8 +17,8 @@
 | Normative rules embedded in each skill | Existing skill pattern; repository-owned | Current skills require inventory | Reject: creates parallel owners and wrapper drift |
 | Remote framework documents as live authority | Public repository; project license | Architectural comparison | Reject: breaks offline/local customization and project ownership |
 | Generated local copies with silent framework fallback | Custom | Failure-mode analysis | Reject: makes authority depend on hidden precedence |
-| Registry-resolved local governing documents plus thin wrappers | Custom, based on existing DSET schemas/CLI | Planned tests and evals in this change | Build in later batches |
+| Registry-resolved local governing documents plus thin wrappers | Custom, based on existing DSET schemas/CLI | Implemented governance, wrapper, materialization, and self-host tests | **Selected and implemented for §§0–§4** |
 
 ## Decision
 
-Build the deterministic local registry/resolver and adapt current skills into thin wrappers in later batches. This batch selects only invariant boundaries already directed by the roadmap; implementation choices such as registry schema fields, hashing, materialization format, and runtime adapters remain open and must pass their own solution/reuse gate.
+Use a YAML registry validated by a published JSON Schema, repository-relative owner paths, SHA-256 provenance/customization identity, explicit materialize/refresh/diff commands, and canonical wrapper digests. Use the pinned released validator plus the candidate CLI for the fixed-depth self-host sequence. These choices are implemented for §§0–§4; TypeScript adapters, external pilot integration, and distribution remain separate later decisions.

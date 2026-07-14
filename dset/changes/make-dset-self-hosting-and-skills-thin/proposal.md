@@ -4,7 +4,7 @@
 - **Profile:** `standard`
 - **Target package:** `methodology`
 - **Implementing PR:** pending
-- **Status:** in progress; invariant-contract batch
+- **Status:** in progress; roadmap §§0–§4 implemented locally, hosted proof pending
 
 ## Problem
 
@@ -12,7 +12,7 @@ DSET 0.2 must become self-hosting and let adopting repositories own their rules 
 
 ## Outcome
 
-Define nine release invariants as observable requirements with stable scenarios and separate deterministic and qualitative proof mappings. Reconcile the invariant contract into candidate accepted methodology truth without claiming that the resolver, materializer, thin wrappers, or recursive gate are already implemented.
+Implement the first bounded self-hosting fixed point: independent version semantics, repository-local rule authority, thin adaptive wrappers, explicit project-owned materialization/customization, and released-to-candidate-to-adopter validation. Keep deterministic tests and qualitative evals separate and retain later profile/pilot/release work as explicit open scope.
 
 ## Scope
 
@@ -23,15 +23,17 @@ Define nine release invariants as observable requirements with stable scenarios 
 - Honest custom-profile identity.
 - Separate deterministic tests and qualitative evals.
 - Candidate accepted-truth IDs and package registration for the contract.
+- Governance registry/schema/resolver, stable diagnostics, and aggregate validation.
+- Thin canonical skills plus a complete former-rule ownership inventory.
+- Versioned `core-v1` governing-document templates, materialization, customization, migration, and update comparison.
+- Bounded released/candidate/framework/adopter self-hosting with failure-boundary tests.
 
 ## Non-goals
 
-- Governance registry/schema/resolver implementation.
-- Skill refactoring or installation changes.
-- Template materialization and migration commands.
-- Recursive execution, TypeScript profile implementation, or external pilots.
-- Any DSET 0.2 capability or release-readiness claim.
+- TypeScript profile implementation or external pilots.
+- Claudian evaluation, pinned distribution, complete qualitative evals, or release/archive work.
+- Any claim that DSET 0.2 is adoption-ready before hosted fixed-point proof and the later roadmap gates pass.
 
 ## Risk
 
-No runtime or production-data behavior changes in this batch. Governance risk is medium because ambiguous invariants could either permit parallel rule stores or make profile-specific self-hosting impossible. Stable IDs, one-to-one scenarios, explicit non-goals, and proof-category separation contain that risk. Repository delivery remains governed by the existing supportability runbook.
+No adopter runtime or production-data behavior changes. Governance risk is medium: a faulty resolver, duplicate owner, silent template fallback, or recursive runner could misdirect agents. Stable diagnostics, local path containment, source digests, no-overwrite transactions, fixed-depth execution, explicit non-goals, and separate proof categories contain that risk. Repository delivery remains governed by the existing supportability runbook.
