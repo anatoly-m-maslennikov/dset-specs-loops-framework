@@ -6,7 +6,7 @@
 
 **Release label:** `0.3.0` is the first coordinated DSET product and CLI-package release under the new policy. The earlier incomplete `0.2.0` development target and unreleased independent package `1.0.0` candidate are superseded before merge. Schema, profile, and template-format versions remain independent compatibility identities rather than product-maturity claims.
 
-## 0.2 invariants
+## DSET 0.3 invariants
 
 - **DSET-INVARIANT-TOOL-001 — Framework first:** The DSET framework repository is the first complete adopter of every released capability applicable to its selected profiles. A profile-specific capability that is not applicable to the repository must pass through a versioned in-repository adopter fixture before any external pilot may depend on it.
 - **DSET-INVARIANT-TOOL-002 — Bounded recursion:** Self-hosting is a terminating fixed point, not an unbounded directory recursion: the released validator checks the candidate change; the candidate checks this repository; the candidate creates and checks a temporary adopter.
@@ -26,7 +26,17 @@
 - **DSET-INVARIANT-SKILL-006 — Main-session inheritance:** Subagents use the main session's model and reasoning effort by default; medium budget targets two or three useful agents and every deviation is explicit.
 - **DSET-INVARIANT-SKILL-007 — Outcome-cost budgets:** Low/medium/high budgets vary useful fan-out, roles, rounds, context, evidence, and stopping thresholds before model quality; nominal token price alone never determines the cheaper plan.
 
-**Contract status:** Self-hosting and rule-ownership invariants are defined as `METH-INV-013`–`METH-INV-021` with requirements `METH-REQ-026`–`METH-REQ-034`. Skill topology, release-cycle, and budget invariants are defined as `METH-INV-022`–`METH-INV-029` with requirements `METH-REQ-035`–`METH-REQ-043`, each with separate deterministic and qualitative proof mappings. Roadmap §§0–§4 are implemented and pass local plus hosted deterministic proof on draft PR #9. The new skill/budget/session/release mechanics, qualitative evals, TypeScript profile, external pilots, distribution, and final release reconciliation remain open; DSET 0.3 is not yet an adoption-readiness claim.
+**Contract status:** Current accepted invariants are owned by
+`DSET-INVARIANT-OPS-002..006`, `DSET-INVARIANT-TOOL-003`,
+`DSET-INVARIANT-GOV-006..011`, `DSET-INVARIANT-META-004..008`, and
+`DSET-INVARIANT-SKILL-002..008`; their layer-owned Requirement, Test, and Eval
+plans are the authoritative mappings. Candidate-to-repository and
+candidate-to-adopter deterministic proof passes locally, while the pinned
+pre-transition validator is an explicit degraded bootstrap result and the
+current branch lacks exact-head hosted proof. The new skill/run/session/release
+runtime, qualitative evals, TypeScript profile, external pilots, distribution,
+and final release reconciliation remain open; DSET 0.3 is not yet an
+adoption-readiness claim.
 
 **Measured outcome:** [`DSET-OUTCOME-META-001`](../dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/outcomes.md) defines adoption readiness as a baseline-to-target state change proven by test, eval, hosted, pilot, and blocker evidence. Completing features or roadmap tasks alone does not satisfy it.
 

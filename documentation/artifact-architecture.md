@@ -21,7 +21,7 @@ A project selects each applicable axis explicitly. Selecting `documentation-v1` 
 repository root hub
 └── governed area hub
     └── owning artifact
-        ├── linked rationale or ADR
+        ├── linked rationale or Decision
         ├── linked playbook/runbook
         └── linked proof/evidence
 ```

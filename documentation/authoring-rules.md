@@ -13,7 +13,7 @@
 
 ## Specifications
 
-- Split the specification into the **what** and the **why**. The spec owns clean observable behavior; rationale or ADRs own motivation, alternatives, and trade-offs.
+- Split the specification into the **what** and the **why**. The spec owns clean observable behavior; rationale or Decisions own motivation, alternatives, and trade-offs.
 - Model the service or capability as **domain entities plus per-entity lifecycle state machines** before describing code or orchestration. Classify value objects, reference vocabulary, and external actors separately; do not invent entity lifecycles for concepts the system does not own.
 - Give every owned entity with transitions a lifecycle state machine. For an owned entity with no meaningful transition, state its single stable state or record why lifecycle is not applicable.
 - Order sections so each entity is **defined using only entities above it**. A forward section reference is a connection, not a definition.
@@ -36,15 +36,15 @@ When two entities are mutually related, define each independently first using sh
 
 - State goals, boundaries, components, ownership, dependency direction, and prohibited coupling.
 - Separate accepted structural constraints from candidate designs and implementation batches.
-- Link material decisions to ADRs and behavioral constraints to specifications.
+- Link material choices to Decisions and behavioral constraints to specifications.
 - Use diagrams only when relationships are harder to understand linearly.
 
-## Rationale and ADRs
+## Rationale and Decisions
 
 - Rationale explains forces and trade-offs behind active normative truth; it links back without restating the full rule.
-- An ADR records a material decision in context, including rejected alternatives and consequences.
+- A Decision records a material choice in context, including rejected alternatives and consequences.
 - Do not silently rewrite accepted decision history. Supersede or amend it and preserve both directions.
-- Neither rationale nor ADR prose becomes behavioral truth until a spec owns the accepted behavior.
+- Neither rationale nor Decision prose becomes behavioral truth until a spec owns the accepted behavior.
 
 ## Hubs
 

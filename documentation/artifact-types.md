@@ -11,7 +11,7 @@ Every governed artifact has one primary type and one owning question. Split a fi
 | Behavioral specification | What observable behavior, entities, states, constraints, and non-goals are accepted? | Domain vocabulary, requirements, scenarios, lifecycle state machines, authority boundaries | Implementation sequence, tool preference, unaccepted rationale |
 | Architecture | How are stable components/artifacts arranged, owned, and constrained? | Goals, boundaries, components, dependencies, authority, constraints, decision links | Product requirements, step-by-step operations, decision history copies |
 | Rationale | Why does an active rule or structure exist? | Forces, trade-offs, rejected shapes, consequences, link to normative owner | New normative requirements or procedures hidden in explanatory prose |
-| ADR | Which material decision was accepted in a specific context? | Context, decision, alternatives, consequences, status, implementation links | Accepted behavioral truth or an implementation file ledger |
+| Decision | Which material decision was accepted in a specific context? | Context, decision, alternatives, consequences, status, implementation links | Accepted behavioral truth or an implementation file ledger |
 | Playbook/runbook | How is a repeatable change or operational response performed? | Trigger, preconditions, ordered steps, checks, failure/rollback path, stop conditions | General rationale, duplicated normative rules, historical audit output |
 | Test plan | Which deterministic claims must be proven exactly? | Test IDs, requirement mapping, seams, cases, commands, pass criteria | Probabilistic rubrics or implementation results |
 | Eval plan | Which variable or qualitative behavior must be judged? | Dataset/cases, rubric, thresholds, calibration, budgets, drift policy | Deterministic checks relabeled as evals |
@@ -25,7 +25,7 @@ Ask these questions in order:
 1. Is the file a navigation front door? Use a hub.
 2. Is it current reusable truth or accepted behavior? Use a normative reference or specification.
 3. Is it stable structural design? Use architecture and link material decisions.
-4. Is it explaining why? Use rationale or an ADR when a specific decision is being recorded.
+4. Is it explaining why? Use rationale or a Decision when a specific choice is being recorded.
 5. Is it telling an operator or contributor how to act? Use a playbook/runbook.
 6. Is it defining proof before implementation? Use a test or eval plan.
 7. Is it recording an observation or past change? Use evidence/changelog.

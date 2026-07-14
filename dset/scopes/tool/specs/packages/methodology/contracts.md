@@ -10,7 +10,12 @@
 | `dset trace` | Print by default; write or compare only with explicit flags |
 | `dset archive` | Dry-run by default; execute only after archive readiness gates pass |
 
-Stable diagnostic codes, command names, schema version 1.0, and trace ordering are public compatibility surfaces. Human-readable messages and non-contractual examples may improve compatibly.
+Stable diagnostic codes, command names, declared schema layouts, and trace
+ordering are public compatibility surfaces. The version contract names schema
+1.2 as current while the validator preserves explicit schema 1.0 and 1.1
+compatibility branches. A future schema requires a migration path and may not
+silently reinterpret an older layout. Human-readable messages and
+non-contractual examples may improve compatibly.
 
 ### DSET-CONTRACT-TOOL-001 — Released utilities match declared platforms
 

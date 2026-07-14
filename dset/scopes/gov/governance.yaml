@@ -198,7 +198,7 @@ rules:
       profile: core-v1
       version: "0.2"
       template: dset/scopes/skill/templates/governance/core-v1/lifecycle-orchestration.md
-      sha256: 1c575aa74bc20dff765a0722fd08f27381817145cc7f77496d1787fc30bae728
+      sha256: 734f166adbb9f1d42320c449b0fb0ab3a13ffd845064a8a8dc0f6d0005ecd1a7
   -
     id: DSET-RULE-DIAGNOSIS
     layer: SKILL

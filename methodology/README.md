@@ -28,7 +28,7 @@ architecture](../documentation/README.md).
 
 - [Documentation architecture](../documentation/README.md) — artifact profiles, types, authoring, hubs, and maintenance.
 - [DSET 0.3 roadmap](TODO%20%E2%80%94%20DSET%200.3%20Self-Hosting%20and%20Repository-Governed%20Skills.md) — self-hosting, repository-local governing rules, thin skills, a TypeScript profile, and the Your Harness pilot.
-- [Operationalization roadmap](TODO%20%E2%80%94%20Operationalize%20OpenSpec%20and%20Composable%20Engineering%20Skills.md) — unfinished framework work; unchecked items are not current capability claims.
+- [Superseded operationalization roadmap](TODO%20%E2%80%94%20Operationalize%20OpenSpec%20and%20Composable%20Engineering%20Skills.md) — historical pointer only; current work lives in the DSET 0.3 roadmap and project intake.
 - [Accepted methodology package fragments](../dset/README.md#start-here) — machine-traceable current project truth and proof contracts distributed across the five layer owners.
 
 The numbered documents remain stable responsibility owners. The documentation architecture is cross-cutting and is not pipeline stage 7.

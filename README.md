@@ -18,6 +18,10 @@ Framework rules and release assets live here. Each adopting repository owns its 
 
 ## Core loop
 
+This is an ownership and readiness view, not a mandatory execution order. Work
+may revisit, parallelize, or skip non-applicable activities while each concern
+still returns to its one authoritative artifact and proof owner.
+
 ```text
 Domain → Spec + Supportability + Test Plan + Eval Plan → Implement → Test + Evaluate → Review → Reconcile Spec → Next Loop
 ```

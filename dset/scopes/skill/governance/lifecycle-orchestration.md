@@ -9,9 +9,11 @@ action, or restate the rules of the workflow selected next.
 
 ## Registered modes and recommendation precedence
 
-Evaluate authoritative repository and hosted state in this order and recommend
-the first applicable mode. The ordering resolves competing next-action signals;
-it is not a requirement that every Change execute every mode in sequence:
+Evaluate authoritative repository and hosted state, compute the applicable
+mode set, then recommend one mode with its evidence and rationale. The order
+below resolves direct conflicts, but admissible modes and genuine partial or
+unordered dependencies remain visible; applicability alone is not a
+recommendation and every Change need not execute every mode in sequence:
 
 1. `initialize`: no valid DSET root exists.
 2. `repair-governance`: a DSET root exists but selected ownership is invalid.
