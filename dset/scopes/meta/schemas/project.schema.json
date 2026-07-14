@@ -214,11 +214,10 @@
     },
     "work_area": {
       "type": "object",
-      "required": ["id", "path", "kind"],
+      "required": ["id", "path"],
       "properties": {
         "id": {"$ref": "#/$defs/kebab"},
-        "path": {"$ref": "#/$defs/repository_relative_path"},
-        "kind": {"$ref": "#/$defs/kebab"}
+        "path": {"$ref": "#/$defs/repository_relative_path"}
       },
       "additionalProperties": false
     },

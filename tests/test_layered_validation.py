@@ -49,20 +49,19 @@ class LayeredValidationTests(unittest.TestCase):
         invalid_cases = (
             [valid[0], {**valid[1], "id": valid[0]["id"]}],
             [valid[0], {**valid[1], "path": valid[0]["path"]}],
-            [{"id": "absolute", "path": "/tmp", "kind": "service"}],
-            [{"id": "drive", "path": "C:/src", "kind": "service"}],
-            [{"id": "escape", "path": "../outside", "kind": "service"}],
-            [{"id": "missing", "path": "src/missing", "kind": "service"}],
+            [{"id": "absolute", "path": "/tmp"}],
+            [{"id": "drive", "path": "C:/src"}],
+            [{"id": "escape", "path": "../outside"}],
+            [{"id": "missing", "path": "src/missing"}],
             [
                 {
                     "id": "not-directory",
                     "path": "src/not-directory",
-                    "kind": "service",
                 }
             ],
-            [{"id": "windows", "path": "src\\api", "kind": "service"}],
-            [{"id": "dot", "path": "src/./api", "kind": "service"}],
-            [{"id": "empty", "path": "src//api", "kind": "service"}],
+            [{"id": "windows", "path": "src\\api"}],
+            [{"id": "dot", "path": "src/./api"}],
+            [{"id": "empty", "path": "src//api"}],
         )
         for work_areas in invalid_cases:
             with self.subTest(work_areas=work_areas):
@@ -286,7 +285,7 @@ class LayeredValidationTests(unittest.TestCase):
         self.assertTrue(project["$defs"]["work_areas"]["uniqueItems"])
         self.assertEqual(
             set(project["$defs"]["work_area"]["required"]),
-            {"id", "path", "kind"},
+            {"id", "path"},
         )
         path_pattern = project["$defs"]["repository_relative_path"]["pattern"]
         for valid in ("src", "apps/web-ui", "docs/Product Notes"):
@@ -497,9 +496,9 @@ class LayeredValidationTests(unittest.TestCase):
             "work_items": {"registry": "dset/scopes/gov/intake.yaml"},
             "structure": {"layout": "layered-v1"},
             "work_areas": [
-                {"id": "api", "path": "src/api", "kind": "service"},
-                {"id": "web", "path": "src/web", "kind": "application"},
-                {"id": "worker", "path": "src/worker", "kind": "service"},
+                {"id": "api", "path": "src/api"},
+                {"id": "web", "path": "src/web"},
+                {"id": "worker", "path": "src/worker"},
             ],
             "packages": [
                 {"id": "sample", "status": "active", "layers": ["meta", "tool"]}

@@ -29,25 +29,18 @@ structure:
 work_areas:
   - id: methodology
     path: methodology
-    kind: methodology
   - id: documentation
     path: documentation
-    kind: documentation
   - id: project-control
     path: dset
-    kind: governance
   - id: toolchain
     path: dset_toolchain
-    kind: local-tool
   - id: skills
     path: skills
-    kind: agent-skills
   - id: tests
     path: tests
-    kind: tests
   - id: delivery
     path: .github
-    kind: hosted-automation
 
 packages:
   - id: methodology

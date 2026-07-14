@@ -346,17 +346,14 @@ def _validate_work_areas(
     raw_paths: set[str] = set()
     resolved_paths: set[Path] = set()
     for raw_item in raw_work_areas if isinstance(raw_work_areas, list) else []:
-        if not isinstance(raw_item, dict) or set(raw_item) != {"id", "path", "kind"}:
+        if not isinstance(raw_item, dict) or set(raw_item) != {"id", "path"}:
             valid = False
             continue
         identifier = raw_item.get("id")
-        kind = raw_item.get("kind")
         relative = raw_item.get("path")
         if (
             not isinstance(identifier, str)
             or CHANGE_PATTERN.fullmatch(identifier) is None
-            or not isinstance(kind, str)
-            or CHANGE_PATTERN.fullmatch(kind) is None
             or not isinstance(relative, str)
         ):
             valid = False
