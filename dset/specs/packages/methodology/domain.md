@@ -5,10 +5,10 @@
 | Entity | Definition |
 |---|---|
 | **Framework truth** | Released DSET methodology and framework-owned assets in this public repository |
-| **Project truth** | Accepted Stories, Outcomes, Requirements, Scenarios, Contracts, and proof plans owned by one adopting project's `dset/specs/` |
+| **Project truth** | Accepted User Stories, Outcomes, Requirements, Scenarios, Contracts, and proof plans owned by one adopting project's `dset/specs/` |
 | **Package** | A cohesive capability with one vocabulary, specification, public contract, deterministic test plan, and applicable eval plan |
 | **Change** | One bounded unit of unaccepted intent and evidence under `dset/changes/<change-id>/` |
-| **Story** | Optional accepted truth that names an actor or stakeholder, a desired capability or outcome, its value or purpose, and links to the Requirements and Scenarios that make it normative and verifiable |
+| **User Story** | Optional accepted truth that names an actor or stakeholder, a desired capability or outcome, its value or purpose, and links to the Requirements and Scenarios that make it normative and verifiable; its ID token is `STORY` |
 | **Outcome** | A measurable change in user, business, operational, or system state, recorded with a baseline, target, observation method/source, evaluation window, and trace links; it is not a delivered output or feature |
 | **Requirement** | A stable-ID statement of observable, verifiable delivered behavior, result, or constraint with at least one scenario or acceptance check |
 | **Scenario** | An observable example or edge case that makes Requirement behavior concrete without prescribing internal logic |
@@ -43,7 +43,7 @@
 | **Ruleset identity** | Stable declaration of selected profile/version provenance and whether the materialized local rules remain equivalent or have become a valid custom project profile |
 | **Self-hosting gate** | Bounded release proof in which the last released validator checks the candidate change, the candidate checks this repository, and the candidate materializes and checks one non-recursive temporary adopter |
 | **Diagnostic** | A stable code, artifact path, and actionable message emitted by a deterministic DSET gate |
-| **Traceability index** | A deterministic committed view from changes to intake, packages, Stories, Outcomes, Requirements, tests, evals, Contracts, Decisions, evidence, and repository-qualified PRs; it is derived evidence rather than the owner of GitHub state or code diffs |
+| **Traceability index** | A deterministic committed view from changes to intake, packages, User Stories, Outcomes, Requirements, tests, evals, Contracts, Decisions, evidence, and repository-qualified PRs; it is derived evidence rather than the owner of GitHub state or code diffs |
 | **Hosted delivery automation** | GitHub workflows and rulesets that govern the repository's production publication path and use GitHub PR/check/run/commit identities as authoritative operational evidence |
 
 ## Invariants
@@ -80,5 +80,5 @@
 - **DSET-INVARIANT-GOV-010:** Intake routes only to problems, opportunities, or questions; Decisions and Changes are artifacts, Decision is both the entity and durable artifact, tasks live inside Changes, and external tickets are representations rather than semantic types.
 - **DSET-INVARIANT-GOV-011:** All accepted IDs use the `DSET` project prefix and a full type; project-wide IDs omit the layer, layer-owned IDs include `META`, `GOV`, `TOOL`, `SKILL`, or `OPS`, and numbering is independent per type within each project-wide or layer sequence.
 - **DSET-INVARIANT-META-005:** An active Contract remains the authoritative implementation boundary until its named authority issues a superseding version or retires it. Implementation and Decisions cannot rewrite it: ambiguity becomes a Question, incompatibility becomes a Problem, and lifecycle is limited to `declared -> active -> superseded` or `declared -> active -> retired`.
-- **DSET-INVARIANT-META-006:** A Story is optional accepted truth and never an intake queue or a substitute for a normative verifiable Requirement. Stories own actor, desired outcome, and value context; Requirements own observable verifiable delivered behavior, results, and constraints; Scenarios own observable examples and edge cases; Decisions own consequential choices among alternatives; Design owns internal logic; implementation plans own build sequence; and Contracts own non-choosable boundaries.
+- **DSET-INVARIANT-META-006:** A User Story is optional accepted truth and never an intake queue or a substitute for a normative verifiable Requirement. User Stories own actor, desired outcome, and value context; Requirements own observable verifiable delivered behavior, results, and constraints; Scenarios own observable examples and edge cases; Decisions own consequential choices among alternatives; Design owns internal logic; implementation plans own build sequence; and Contracts own non-choosable boundaries.
 - **DSET-INVARIANT-META-007:** An Outcome is accepted truth, not an intake item, and owns a measurable change in user, business, operational, or system state without relabeling a delivered output or feature as impact. Requirements define delivered behavior; Outcome evidence, evaluated against a recorded baseline, target, observation method/source, and window, shows whether that behavior had the intended effect.

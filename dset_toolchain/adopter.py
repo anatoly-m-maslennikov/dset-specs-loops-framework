@@ -170,7 +170,7 @@ No production behavior or external effects.
 - [Domain](domain.md)
 - [Specification](spec.md)
 - [Contracts](contracts.md)
-- [Stories](stories.md)
+- [User Stories](stories.md)
 - [Outcomes](outcomes.md)
 - [Test plan](test-plan.md)
 - [Eval plan](eval-plan.md)

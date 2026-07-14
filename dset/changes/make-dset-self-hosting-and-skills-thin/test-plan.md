@@ -27,7 +27,7 @@ Deterministic tests prove exact behavior. Probabilistic or qualitative proof bel
 | `DSET-TEST-TOOL-016` | `DSET-CONTRACT-TOOL-001` | Exercise path, process, shell, encoding, temporary-file, write-safety, and exit-status behavior on macOS, native Windows, WSL, and Linux, or prove explicit narrower applicability before execution | Platform-native CI/fixture matrix |
 | `DSET-TEST-TOOL-017` | `DSET-CONTRACT-TOOL-002` | Enforce package/version/registry allowlists and denylists, lockfile authority, retained compatible licenses, provenance, and exception authority/scope/expiry | Dependency, lockfile, license, provenance, and expired-exception fixtures |
 | `DSET-TEST-OPS-014` | `DSET-CONTRACT-OPS-001` | Bind the committed workflow, GitHub run/check, repository, PR, actual head SHA, protected target, ruleset/required-check state, and merge-or-block disposition | Hosted GitHub evidence for the implementing PR SHA; local mocks are insufficient |
-| `DSET-TEST-META-010` | `DSET-OUTCOME-META-001` | Require baseline, target, source/method, window, and linked or explicitly inapplicable Problem, Opportunity, Story, and Eval fields; reject feature-, output-, milestone-, or task-only Outcomes | Outcome validation and traceability fixtures |
+| `DSET-TEST-META-010` | `DSET-OUTCOME-META-001` | Require baseline, target, source/method, window, and linked or explicitly inapplicable Problem, Opportunity, User Story, and Eval fields; reject feature-, output-, milestone-, or task-only Outcomes | Outcome validation and traceability fixtures |
 
 ## Regression rule
 

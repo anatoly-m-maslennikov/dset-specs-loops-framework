@@ -10,7 +10,7 @@ system state. An output, deliverable, or feature is not itself an Outcome.
 - **Observation method/source:** Name the method and authoritative data source.
 - **Evaluation window:** State when the change will be evaluated.
 - **Linked Problems/Opportunities:** Link the motivating intake items.
-- **Linked Stories:** Link actor/stakeholder intent when meaningful.
+- **Linked User Stories:** Link actor/stakeholder intent when meaningful.
 - **Linked Evals:** Link the evaluation that determines attainment.
 
 If no measurable state change is owned, remove the example and leave

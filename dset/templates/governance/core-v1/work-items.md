@@ -15,7 +15,7 @@ and durable artifact type. Accepted problems, opportunities, and Decisions
 enter a DSET Change. Their executable steps are tasks inside that change's
 `tasks.md`, not a fourth top-level queue.
 
-A Requirement owns a verifiable observable WHAT, outcome, or constraint;
+A Requirement owns a verifiable observable WHAT, delivered result, or constraint;
 observable edge cases belong in Requirements and Scenarios. A Decision owns a
 consequential choice among valid alternatives plus rationale, trade-offs, and
 consequences. It may constrain HOW, but it is not a ledger for every internal
@@ -23,15 +23,15 @@ detail or edge case. Internal details belong in Design, build order belongs in
 the implementation plan, and an externally authoritative boundary remains a
 Contract rather than a Decision.
 
-A Story records who wants what and why: a meaningful actor or stakeholder, the
+A User Story records who wants what and why: a meaningful actor or stakeholder, the
 desired capability or outcome, its value or purpose, and links to owning
-Requirements and Scenarios. Stories are optional, traceable entities; they are
+Requirements and Scenarios. User Stories are optional, traceable entities; they are
 not a fourth intake queue and never substitute for a Requirement.
 
 An Outcome records a measurable change in user, business, operational, or
 system state, never merely an output, deliverable, or feature. Each Outcome
 states a baseline, target, observation method and source, evaluation window,
-and links to motivating Problems or Opportunities, relevant Stories, and the
+and links to motivating Problems or Opportunities, relevant User Stories, and the
 Evals that determine attainment.
 
 `dset/intake.yaml` is the one project-owned intake registry. `project.key` in

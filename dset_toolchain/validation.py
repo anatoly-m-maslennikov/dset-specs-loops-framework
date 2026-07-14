@@ -1126,7 +1126,10 @@ def _missing_semantic_fields(
                 "| problem |",
                 "| opportunity |",
             ),
-            "Story links/disposition": ("linked stories", "| stories |"),
+            "User Story links/disposition": (
+                "linked user stories",
+                "| user stories |",
+            ),
             "Eval links": ("linked evals", "| evals |"),
         }
     else:

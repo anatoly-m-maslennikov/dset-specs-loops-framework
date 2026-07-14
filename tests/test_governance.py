@@ -399,7 +399,7 @@ class GovernanceTests(unittest.TestCase):
         self.assertIn("Observation method/source", outcomes)
         self.assertIn("Evaluation window", outcomes)
         self.assertIn("Linked Problems/Opportunities", outcomes)
-        self.assertIn("Linked Stories", outcomes)
+        self.assertIn("Linked User Stories", outcomes)
         self.assertIn("Linked Evals", outcomes)
         self.assertIn("deliverable, or feature is not itself an Outcome", outcomes)
 
@@ -411,7 +411,7 @@ class GovernanceTests(unittest.TestCase):
         manifest["outcomes"] = ["DSET-OUTCOME-001"]
         manifest_path.write_text(dump(manifest), encoding="utf-8")
         (package_root / "stories.md").write_text(
-            "# Stories\n\n## DSET-STORY-001 — Incomplete\n\nActor only.\n",
+            "# User Stories\n\n## DSET-STORY-001 — Incomplete\n\nActor only.\n",
             encoding="utf-8",
         )
         (package_root / "outcomes.md").write_text(
@@ -423,7 +423,7 @@ class GovernanceTests(unittest.TestCase):
         )
 
         (package_root / "stories.md").write_text(
-            """# Stories
+            """# User Stories
 
 ## DSET-STORY-001 — Contributor can validate
 
@@ -445,7 +445,7 @@ class GovernanceTests(unittest.TestCase):
 - **Observation method/source:** Review and local validation timestamps.
 - **Evaluation window:** The next ten changes.
 - **Linked Problems/Opportunities:** Local feedback opportunity.
-- **Linked Stories:** DSET-STORY-001.
+- **Linked User Stories:** DSET-STORY-001.
 - **Linked Evals:** Review timing eval.
 """,
             encoding="utf-8",

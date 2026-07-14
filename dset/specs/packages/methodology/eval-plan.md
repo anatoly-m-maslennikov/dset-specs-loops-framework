@@ -33,7 +33,7 @@ Use representative project scenarios covering:
 23. Low, medium, and high budget requests for trivial, parallelizable, high-risk, and evaluator-sensitive work.
 24. A mixed backlog containing defects, debt, unresolved choices, executable work, Decisions, Changes, GitHub Issues, and Jira tickets.
 25. Ambiguous and incompatible authoritative boundaries covering a host-native skill format, platform claim, dependency mandate, and hosted-CI claim.
-26. Mixed statements that could be Stories, Requirements, Scenarios, Decisions, Design, implementation-plan steps, or Contracts, plus a package with no meaningful actor story.
+26. Mixed statements that could be User Stories, Requirements, Scenarios, Decisions, Design, implementation-plan steps, or Contracts, plus a package with no meaningful User Story.
 27. Mixed feature/output and measurable-state-change claims with complete, missing, weak, or mismatched baselines, targets, observation sources, and evaluation windows.
 
 ## Criteria and thresholds
@@ -67,7 +67,7 @@ Use representative project scenarios covering:
 | **DSET-EVAL-GOV-010** | Intake clarity | Every reviewer classifies intake consistently using only problems, opportunities, and questions, while placing tasks inside Changes, treating Decision as both the entity and durable artifact, and treating hosted tickets as representations |
 | **DSET-EVAL-GOV-011** | ID grammar | Reviewers use the `DSET` project prefix and full type, omit the layer for project-wide IDs, include the semantic layer for layer-owned IDs, use full `DECISION`, and never derive identity from directories |
 | **DSET-EVAL-META-006** | Contract restraint | Every reviewer preserves the authoritative boundary, routes ambiguity to a Question and demonstrated incompatibility to a Problem, refuses Decision-based overrides, distinguishes a mandated dependency from a Decision while permitting consequential choices among allowed alternatives, identifies the authority required for supersession, and rejects prose-only host/platform/CI assurance as proof |
-| **DSET-EVAL-META-007** | Story and specification boundaries | Every reviewer consistently distinguishes optional actor/value context from normative verifiable behavior, observable edge cases, consequential choices, internal logic, build sequence, and non-choosable boundaries; no reviewer creates a Story intake queue, substitutes a Story for a Requirement, labels every implementation detail a Decision, or invents a Story where no meaningful actor perspective exists |
+| **DSET-EVAL-META-007** | User Story and specification boundaries | Every reviewer consistently distinguishes optional actor/value context from normative verifiable behavior, observable edge cases, consequential choices, internal logic, build sequence, and non-choosable boundaries; no reviewer creates a User Story intake queue, substitutes a User Story for a Requirement, labels every implementation detail a Decision, or invents a User Story where no meaningful actor perspective exists |
 | **DSET-EVAL-META-008** | Outcome validity | Every reviewer distinguishes a delivered output or feature from a measurable user/business/operational/system state change, rejects Outcome claims with an unusable baseline, target, observation method/source, or evaluation window, and keeps Requirement-delivery evidence separate from evidence of intended effect |
 
 ## Calibration and evidence

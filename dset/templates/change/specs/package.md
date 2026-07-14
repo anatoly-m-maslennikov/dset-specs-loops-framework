@@ -2,7 +2,7 @@
 
 ## ADDED — {{project_key}}-REQUIREMENT{{id_layer}}-001 Requirement title
 
-State one verifiable observable WHAT, outcome, or constraint. Keep internal HOW
+State one verifiable observable WHAT, delivered result, or constraint. Keep internal HOW
 in Design and consequential alternative selection in a Decision.
 
 **Scenario {{project_key}}-SCENARIO{{id_layer}}-001:** Given a precondition or observable edge case, when an action occurs, then an observable result follows.
@@ -11,7 +11,7 @@ in Design and consequential alternative selection in a Decision.
 
 Define the authoritative boundary and its explicit supersession authority.
 
-## OPTIONAL — {{project_key}}-STORY{{id_layer}}-001 Story title
+## OPTIONAL — {{project_key}}-STORY{{id_layer}}-001 User Story title
 
 - **Actor or stakeholder:** Name the meaningful actor or stakeholder.
 - **Desired capability or outcome:** State what they want.
@@ -19,7 +19,7 @@ Define the authoritative boundary and its explicit supersession authority.
 - **Linked Requirements:** Link the normative, verifiable WHAT.
 - **Linked Scenarios:** Link observable behavior examples.
 
-Omit the Story when there is no meaningful actor intent. A Story is not an
+Omit the User Story when there is no meaningful actor intent. A User Story is not an
 intake queue and does not substitute for a Requirement.
 
 ## OPTIONAL — {{project_key}}-OUTCOME{{id_layer}}-001 Outcome title
@@ -32,5 +32,5 @@ not describe an output, deliverable, or feature as though it were an Outcome.
 - **Observation method/source:** Name the method and authoritative data source.
 - **Evaluation window:** State when the change will be evaluated.
 - **Linked Problems/Opportunities:** Link the motivating intake items.
-- **Linked Stories:** Link actor/stakeholder intent when meaningful.
+- **Linked User Stories:** Link actor/stakeholder intent when meaningful.
 - **Linked Evals:** Link the evaluation that determines attainment.

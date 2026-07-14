@@ -52,7 +52,7 @@
 ## Batch 6 — Outcome and deferred product practices — specification complete
 
 - Define Outcome as a measurable state change rather than an output, feature, milestone, or task completion.
-- Record one DSET 0.2 adoption-readiness Outcome with baseline, target, source/method, window, and related Problem, Opportunity, Story, and Eval dispositions.
+- Record one DSET 0.2 adoption-readiness Outcome with baseline, target, source/method, window, and related Problem, Opportunity, User Story, and Eval dispositions.
 - Register Journey, Actor/Persona, Hypothesis/Experiment, prioritization, feedback/analytics, and generated roadmap/release views as concise open Questions only.
 - Preserve the three intake queues and defer every new artifact type until a later Decision.
 

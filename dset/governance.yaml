@@ -2,7 +2,7 @@ schema_version: 1.0
 profile:
   id: core-v1
   version: "0.2"
-  customization: unmodified
+  customization: custom
 rules:
   -
     id: DSET-RULE-ARCHITECTURE
@@ -39,7 +39,7 @@ rules:
     reason: Domain decisions must precede implementation planning
     depends_on:
       - DSET-RULE-ARCHITECTURE
-    customization: unmodified
+    customization: custom
     source:
       profile: core-v1
       version: "0.2"
@@ -109,7 +109,7 @@ rules:
     reason: Intake must distinguish problems, opportunities, questions, and change-owned tasks
     depends_on:
       - DSET-RULE-ARCHITECTURE
-    customization: unmodified
+    customization: custom
     source:
       profile: core-v1
       version: "0.2"

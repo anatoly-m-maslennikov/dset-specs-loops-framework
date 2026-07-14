@@ -3,7 +3,7 @@
 An Outcome is a measurable state change, not a feature, output, milestone, or
 task completion. It records a baseline, target, measurement source and method,
 measurement window, and links or explicit dispositions for related Problems,
-Opportunities, Stories, and Evals.
+Opportunities, User Stories, and Evals.
 
 ## ADDED — DSET-OUTCOME-META-001 DSET 0.2 reaches evidence-backed adoption readiness
 
@@ -15,7 +15,7 @@ Opportunities, Stories, and Evals.
 | Window | From the recorded PR #9 base commit through the exact candidate commit proposed for DSET 0.2 release and archive. |
 | Problem | [The active change problem](../proposal.md#problem) defines the authority drift and incomplete-contract state this Outcome changes. |
 | Opportunity | [The DSET 0.2 roadmap](../../../../methodology/TODO%20%E2%80%94%20DSET%200.2%20Self-Hosting%20and%20Repository-Governed%20Skills.md) defines the opportunity to become a self-hosted, adoptable framework. |
-| Stories | Not applicable: framework conformance has no meaningful actor/value Story, so no Story is invented. |
+| User Stories | Not applicable: framework conformance has no meaningful actor/value User Story, so no User Story is invented. |
 | Evals | `DSET-EVAL-SKILL-009`, `DSET-EVAL-TOOL-005`, `DSET-EVAL-TOOL-006`, `DSET-EVAL-OPS-008`, and `DSET-EVAL-META-008`. |
 
 The target is deliberately stronger than shipping files or completing roadmap

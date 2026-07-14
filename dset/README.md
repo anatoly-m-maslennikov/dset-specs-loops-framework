@@ -17,7 +17,7 @@ This directory owns project configuration and DSET artifacts. It does not duplic
 - [`intake.yaml`](intake.yaml) — the project-owned Problem, Opportunity, and Question registry plus stable layer namespaces; Questions close through Decisions.
 - [Changes](changes/README.md) — active proposed work; `changes/archive/` preserves completed PR-linked evidence.
 - [Templates](templates/README.md), [schemas](schemas/README.md), and [fixtures](fixtures/README.md) — reusable framework contracts and deterministic examples.
-- [Traceability](traceability.yaml) — generated change-to-Story/Outcome/Contract-to-proof-to-PR discovery index.
+- [Traceability](traceability.yaml) — generated change-to-User-Story/Outcome/Contract-to-proof-to-PR discovery index.
 - [Migrations](migrations/README.md) and the [delivery runbook](supportability/delivery-runbook.md) — adoption guidance and production supportability.
 
 ## Current structure
@@ -59,7 +59,7 @@ The project currently has one package, `methodology`. A `specs/global/` layer is
 | `governance.yaml` | Deterministic workflow/rule ownership, dependency, provenance, customization, and wrapper identity metadata |
 | `governance/` | The repository's editable governing rule owners |
 | `provenance.yaml` | Exact third-party sources, revisions, licenses, and use boundaries |
-| `traceability.yaml` | Generated deterministic change-to-Story/Outcome/Contract-to-proof-to-PR relationship view |
+| `traceability.yaml` | Generated deterministic change-to-User-Story/Outcome/Contract-to-proof-to-PR relationship view |
 | `specs/packages/methodology/` | Accepted current truth for the methodology package |
 | `changes/<change-id>/` | Unaccepted proposal, deltas, proof plans, design, tasks, and verification for one bounded change |
 | `changes/archive/` | Completed changes reconciled into current truth and archived through their implementing PR |
