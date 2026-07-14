@@ -22,19 +22,23 @@ class SelfHostTests(unittest.TestCase):
         self.assertTrue(report["recursion_stopped"])
 
     def test_bad_released_ref_fails_at_first_boundary(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
-            with self.assertRaises(DsetCommandError) as captured:
-                run_self_host(ROOT, Path(raw), released_ref="0" * 40)
+        with (
+            tempfile.TemporaryDirectory() as raw,
+            self.assertRaises(DsetCommandError) as captured,
+        ):
+            run_self_host(ROOT, Path(raw), released_ref="0" * 40)
         self.assertEqual(captured.exception.code, "DSET-E140")
 
     def test_bad_candidate_command_fails_before_adopter(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
-            with self.assertRaises(DsetCommandError) as captured:
-                run_self_host(
-                    ROOT,
-                    Path(raw),
-                    candidate_command=["missing-dset-candidate"],
-                )
+        with (
+            tempfile.TemporaryDirectory() as raw,
+            self.assertRaises(DsetCommandError) as captured,
+        ):
+            run_self_host(
+                ROOT,
+                Path(raw),
+                candidate_command=["missing-dset-candidate"],
+            )
         self.assertEqual(captured.exception.code, "DSET-E141")
 
 
