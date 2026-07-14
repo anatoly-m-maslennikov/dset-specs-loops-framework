@@ -6,6 +6,12 @@
 
 **Implementation status (2026-07-14):** Checked items are implemented and verified by DSET change `operationalize-dset-v1` in [PR #7](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7). Unchecked items remain roadmap work; the v1 scope does not claim the external pilot, complete Solution Landscape and Back-to-Left enforcement, large-project hardening, or the evidence-derived JavaScript/TypeScript profile.
 
+> [!NOTE]
+> Paths and ADR terminology in completed sections below record the historical
+> schema 1.0/1.1 contract delivered by PR #7. Current schema 1.2 repositories
+> use layer-owned paths under `dset/scopes/` and the `Decision` artifact name;
+> unchecked work must follow the current [DSET project hub](../dset/README.md).
+
 ## §0 | Decisions to preserve
 
 - [x] Keep this public repository as the sole editable source of framework truth; external frameworks inform it but do not govern it.

@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/scopes/skill/schemas/session-checkpoint.schema.json",
+  "title": "DSET local session checkpoint",
+  "type": "object",
+  "required": ["schema_version", "session_id", "sequence", "updated_at", "status", "persistence", "public_entrypoint", "root_run_id", "latest_run_id", "scope", "objective", "ruleset_identity", "completed", "pending", "authorization", "touched_paths", "authority_snapshot", "next"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "session_id": {"$ref": "#/$defs/id"},
+    "sequence": {"type": "integer", "minimum": 0},
+    "updated_at": {"type": "string", "format": "date-time", "maxLength": 40},
+    "status": {"enum": ["active", "paused", "completed", "stopped"]},
+    "persistence": {"enum": ["persisted", "unavailable"]},
+    "public_entrypoint": {"enum": ["dset", "dset-clarify", "dset-diagnose", "dset-prototype", "dset-release"]},
+    "root_run_id": {"$ref": "#/$defs/id"},
+    "latest_run_id": {"$ref": "#/$defs/id"},
+    "scope": {"$ref": "#/$defs/scope"},
+    "objective": {"type": "string", "minLength": 1, "maxLength": 1024},
+    "ruleset_identity": {"oneOf": [{"$ref": "#/$defs/id"}, {"type": "null"}]},
+    "completed": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {"$ref": "#/$defs/work_pointer"}
+    },
+    "pending": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {"$ref": "#/$defs/work_pointer"}
+    },
+    "authorization": {
+      "type": "object",
+      "required": ["class", "state"],
+      "properties": {
+        "class": {"enum": ["read-only", "repository-write", "external-write", "publication", "unknown"]},
+        "state": {"enum": ["granted", "not-granted", "consumed", "unknown"]}
+      },
+      "additionalProperties": false
+    },
+    "touched_paths": {
+      "type": "array",
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/relative_path"}
+    },
+    "authority_snapshot": {
+      "type": "object",
+      "required": ["git_commit", "working_tree_digest", "change_manifest", "proof_ids", "hosted_refs"],
+      "properties": {
+        "git_commit": {"oneOf": [{"type": "string", "pattern": "^[0-9a-f]{40}$"}, {"type": "null"}]},
+        "working_tree_digest": {"oneOf": [{"type": "string", "pattern": "^[0-9a-f]{64}$"}, {"type": "null"}]},
+        "change_manifest": {"oneOf": [{"$ref": "#/$defs/relative_path"}, {"type": "null"}]},
+        "proof_ids": {"type": "array", "maxItems": 32, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+        "hosted_refs": {"type": "array", "maxItems": 16, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}}
+      },
+      "additionalProperties": false
+    },
+    "next": {
+      "type": "object",
+      "required": ["mode", "reason_code", "requires_authorization"],
+      "properties": {
+        "mode": {"enum": ["initialize", "repair-governance", "decompose", "diagnose", "clarify", "landscape", "prototype", "decide", "plan-proof", "plan-implementation", "implement", "verify", "triage-work", "release", "complete"]},
+        "reason_code": {"$ref": "#/$defs/id"},
+        "requires_authorization": {"enum": ["none", "repository-write", "external-write", "publication"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+    "nullable_scope": {"oneOf": [{"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$"}, {"type": "null"}]},
+    "relative_path": {"type": "string", "maxLength": 512, "pattern": "^(?!/)(?!.*\\.\\./)[A-Za-z0-9._-]+(?:/[A-Za-z0-9._-]+)*$"},
+    "scope": {
+      "type": "object",
+      "required": ["repository", "workspace", "project", "package", "change", "target"],
+      "properties": {
+        "repository": {"$ref": "#/$defs/nullable_scope"},
+        "workspace": {"$ref": "#/$defs/nullable_scope"},
+        "project": {"$ref": "#/$defs/nullable_scope"},
+        "package": {"$ref": "#/$defs/nullable_scope"},
+        "change": {"$ref": "#/$defs/nullable_scope"},
+        "target": {"$ref": "#/$defs/target"}
+      },
+      "additionalProperties": false
+    },
+    "target": {
+      "type": "object",
+      "required": ["repository", "work_areas"],
+      "properties": {
+        "repository": {"type": "boolean"},
+        "work_areas": {"type": "array", "maxItems": 32, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}}
+      },
+      "oneOf": [
+        {"properties": {"repository": {"const": true}, "work_areas": {"maxItems": 0}}},
+        {"properties": {"repository": {"const": false}, "work_areas": {"minItems": 1}}}
+      ],
+      "additionalProperties": false
+    },
+    "work_pointer": {
+      "type": "object",
+      "required": ["kind", "id", "path"],
+      "properties": {
+        "kind": {"enum": ["artifact", "workflow", "proof", "diagnostic", "handoff"]},
+        "id": {"oneOf": [{"$ref": "#/$defs/id"}, {"type": "null"}]},
+        "path": {"oneOf": [{"$ref": "#/$defs/relative_path"}, {"type": "null"}]}
+      },
+      "anyOf": [
+        {"properties": {"id": {"$ref": "#/$defs/id"}}},
+        {"properties": {"path": {"$ref": "#/$defs/relative_path"}}}
+      ],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

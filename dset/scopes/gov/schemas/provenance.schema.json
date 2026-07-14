@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/scopes/gov/schemas/provenance.schema.json",
+  "title": "DSET provenance manifest",
+  "type": "object",
+  "required": ["schema_version", "project_license", "sources"],
+  "properties": {
+    "schema_version": {"const": 1.0},
+    "project_license": {"const": "Apache-2.0"},
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "repository", "revision", "license", "license_file", "use"],
+        "properties": {
+          "id": {"type": "string"},
+          "repository": {"type": "string", "format": "uri"},
+          "revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+          "license": {"type": "string"},
+          "license_file": {"type": "string"},
+          "use": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

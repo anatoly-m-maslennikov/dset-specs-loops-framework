@@ -1,0 +1,390 @@
+schema_version: "1.2"
+repository: anatoly-m-maslennikov/dset-specs-loops-framework
+changes:
+  -
+    id: DSET-CHANGE-GOV-001
+    status: archived
+    path: dset/scopes/gov/changes/archive/2026-07-14-bootstrap-dset-project-structure
+    packages:
+      - methodology
+    requirements:
+      - DSET-REQUIREMENT-GOV-001
+      - DSET-REQUIREMENT-GOV-002
+      - DSET-REQUIREMENT-GOV-003
+      - DSET-REQUIREMENT-META-001
+      - DSET-REQUIREMENT-OPS-001
+    tests:
+      - DSET-TEST-GOV-001
+      - DSET-TEST-GOV-002
+      - DSET-TEST-GOV-003
+      - DSET-TEST-GOV-004
+      - DSET-TEST-META-001
+      - DSET-TEST-OPS-001
+    evals:
+      - DSET-EVAL-GOV-001
+      - DSET-EVAL-GOV-002
+      - DSET-EVAL-GOV-003
+      - DSET-EVAL-GOV-004
+    intake: []
+    decisions: []
+    contracts: []
+    stories: []
+    outcomes: []
+    pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/2
+    evidence:
+      - dset/scopes/gov/changes/archive/2026-07-14-bootstrap-dset-project-structure/proofs/boot-evals-2026-07-14.md
+      - dset/scopes/gov/changes/archive/2026-07-14-bootstrap-dset-project-structure/proofs/boot-evals-pushed-head-2026-07-14.md
+    slug: bootstrap-dset-project-structure
+    primary_layer: gov
+    affected_layers:
+      - gov
+      - meta
+      - ops
+    target:
+      repository: true
+      work_areas: []
+    workspace:
+      isolation: branch-worktree
+      branch: codex/dset-project-structure
+      base_ref: main
+      base_commit: 67fd0dd124fab3309e70790cc62d803ee7718159
+      head_commit: 92340e57e508bf896a00dc75a2efb46b6ad680e3
+    dependencies: []
+  -
+    id: DSET-CHANGE-GOV-002
+    status: archived
+    path: dset/scopes/gov/changes/archive/2026-07-14-add-artifact-governance-profile
+    packages:
+      - methodology
+    requirements:
+      - DSET-REQUIREMENT-GOV-004
+      - DSET-REQUIREMENT-GOV-005
+      - DSET-REQUIREMENT-GOV-006
+      - DSET-REQUIREMENT-META-003
+      - DSET-REQUIREMENT-META-004
+      - DSET-REQUIREMENT-TOOL-005
+    tests:
+      - DSET-TEST-GOV-007
+      - DSET-TEST-GOV-008
+      - DSET-TEST-META-003
+      - DSET-TEST-TOOL-006
+      - DSET-TEST-TOOL-007
+      - DSET-TEST-TOOL-008
+    evals:
+      - DSET-EVAL-GOV-007
+      - DSET-EVAL-GOV-008
+      - DSET-EVAL-META-002
+      - DSET-EVAL-META-003
+    intake: []
+    decisions: []
+    contracts: []
+    stories: []
+    outcomes: []
+    pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/8
+    evidence:
+      - dset/scopes/gov/changes/archive/2026-07-14-add-artifact-governance-profile/proofs/archive-readiness-2026-07-14.md
+      - dset/scopes/gov/changes/archive/2026-07-14-add-artifact-governance-profile/proofs/deterministic-verification-2026-07-14.md
+      - dset/scopes/gov/changes/archive/2026-07-14-add-artifact-governance-profile/proofs/github-delivery-evidence-2026-07-14.md
+      - dset/scopes/gov/changes/archive/2026-07-14-add-artifact-governance-profile/proofs/qualitative-evals-2026-07-14.md
+    slug: add-artifact-governance-profile
+    primary_layer: gov
+    affected_layers:
+      - gov
+      - meta
+      - tool
+    target:
+      repository: true
+      work_areas: []
+    workspace:
+      isolation: branch-worktree
+      branch: dev
+      base_ref: main
+      base_commit: b874504c25e42329eae19ed14f2b50a3d922d64e
+      head_commit: 8a0cb000cb0dd74be3e29af6eb00724efc1e01af
+    dependencies: []
+  -
+    id: DSET-CHANGE-OPS-001
+    status: archived
+    path: dset/scopes/ops/changes/archive/2026-07-14-make-supportability-first-class
+    packages:
+      - methodology
+    requirements:
+      - DSET-REQUIREMENT-META-002
+      - DSET-REQUIREMENT-OPS-002
+      - DSET-REQUIREMENT-OPS-003
+      - DSET-REQUIREMENT-OPS-004
+      - DSET-REQUIREMENT-OPS-005
+      - DSET-REQUIREMENT-OPS-006
+    tests:
+      - DSET-TEST-GOV-005
+      - DSET-TEST-META-002
+      - DSET-TEST-OPS-002
+      - DSET-TEST-OPS-003
+      - DSET-TEST-OPS-004
+      - DSET-TEST-OPS-005
+      - DSET-TEST-OPS-006
+    evals:
+      - DSET-EVAL-META-001
+      - DSET-EVAL-OPS-001
+      - DSET-EVAL-OPS-002
+      - DSET-EVAL-OPS-003
+      - DSET-EVAL-OPS-004
+    intake: []
+    decisions: []
+    contracts: []
+    stories: []
+    outcomes: []
+    pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3
+    evidence:
+      - dset/scopes/ops/changes/archive/2026-07-14-make-supportability-first-class/proofs/archive-readiness-audit-2026-07-14.md
+      - dset/scopes/ops/changes/archive/2026-07-14-make-supportability-first-class/proofs/deterministic-checks-2026-07-14.md
+      - dset/scopes/ops/changes/archive/2026-07-14-make-supportability-first-class/proofs/supportability-evals-2026-07-14.md
+      - dset/scopes/ops/changes/archive/2026-07-14-make-supportability-first-class/proofs/synthetic-incidents.md
+    slug: make-supportability-first-class
+    primary_layer: ops
+    affected_layers:
+      - gov
+      - meta
+      - ops
+    target:
+      repository: true
+      work_areas: []
+    workspace:
+      isolation: branch-worktree
+      branch: dev
+      base_ref: main
+      base_commit: 92340e57e508bf896a00dc75a2efb46b6ad680e3
+      head_commit: 636b2d3ae845f320cf4454c5b83903b5e00b68a9
+    dependencies: []
+  -
+    id: DSET-CHANGE-SKILL-001
+    status: in-progress
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin
+    packages:
+      - methodology
+    requirements:
+      - DSET-REQUIREMENT-GOV-007
+      - DSET-REQUIREMENT-GOV-008
+      - DSET-REQUIREMENT-GOV-009
+      - DSET-REQUIREMENT-GOV-010
+      - DSET-REQUIREMENT-GOV-011
+      - DSET-REQUIREMENT-META-005
+      - DSET-REQUIREMENT-META-011
+      - DSET-REQUIREMENT-OPS-008
+      - DSET-REQUIREMENT-OPS-009
+      - DSET-REQUIREMENT-OPS-010
+      - DSET-REQUIREMENT-OPS-011
+      - DSET-REQUIREMENT-SKILL-002
+      - DSET-REQUIREMENT-SKILL-003
+      - DSET-REQUIREMENT-SKILL-004
+      - DSET-REQUIREMENT-SKILL-005
+      - DSET-REQUIREMENT-SKILL-006
+      - DSET-REQUIREMENT-SKILL-007
+      - DSET-REQUIREMENT-SKILL-008
+      - DSET-REQUIREMENT-SKILL-009
+      - DSET-REQUIREMENT-TOOL-006
+      - DSET-REQUIREMENT-TOOL-007
+    tests:
+      - DSET-TEST-GOV-009
+      - DSET-TEST-GOV-010
+      - DSET-TEST-GOV-011
+      - DSET-TEST-GOV-012
+      - DSET-TEST-META-004
+      - DSET-TEST-META-010
+      - DSET-TEST-META-011
+      - DSET-TEST-OPS-008
+      - DSET-TEST-OPS-009
+      - DSET-TEST-OPS-010
+      - DSET-TEST-OPS-011
+      - DSET-TEST-OPS-014
+      - DSET-TEST-SKILL-002
+      - DSET-TEST-SKILL-003
+      - DSET-TEST-SKILL-004
+      - DSET-TEST-SKILL-005
+      - DSET-TEST-SKILL-006
+      - DSET-TEST-SKILL-007
+      - DSET-TEST-SKILL-008
+      - DSET-TEST-SKILL-009
+      - DSET-TEST-SKILL-011
+      - DSET-TEST-TOOL-009
+      - DSET-TEST-TOOL-010
+      - DSET-TEST-TOOL-011
+      - DSET-TEST-TOOL-016
+      - DSET-TEST-TOOL-017
+    evals:
+      - DSET-EVAL-GOV-009
+      - DSET-EVAL-GOV-010
+      - DSET-EVAL-META-008
+      - DSET-EVAL-META-009
+      - DSET-EVAL-OPS-006
+      - DSET-EVAL-OPS-008
+      - DSET-EVAL-SKILL-002
+      - DSET-EVAL-SKILL-003
+      - DSET-EVAL-SKILL-004
+      - DSET-EVAL-SKILL-005
+      - DSET-EVAL-SKILL-006
+      - DSET-EVAL-SKILL-007
+      - DSET-EVAL-SKILL-008
+      - DSET-EVAL-SKILL-009
+      - DSET-EVAL-TOOL-001
+      - DSET-EVAL-TOOL-002
+      - DSET-EVAL-TOOL-005
+      - DSET-EVAL-TOOL-006
+    intake:
+      - DSET-QUESTION-GOV-001
+      - DSET-QUESTION-GOV-002
+      - DSET-QUESTION-GOV-003
+      - DSET-QUESTION-META-001
+      - DSET-QUESTION-META-002
+      - DSET-QUESTION-META-003
+      - DSET-QUESTION-OPS-001
+    decisions: []
+    contracts:
+      - DSET-CONTRACT-META-001
+      - DSET-CONTRACT-OPS-001
+      - DSET-CONTRACT-SKILL-001
+      - DSET-CONTRACT-TOOL-001
+      - DSET-CONTRACT-TOOL-002
+    stories: []
+    outcomes:
+      - DSET-OUTCOME-META-001
+    pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9
+    evidence:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/hosted-fixed-point-2026-07-14.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/invariant-contract-verification-2026-07-14.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/local-fixed-point-2026-07-14.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/wrapper-rule-inventory-2026-07-14.md
+    slug: make-dset-self-hosting-and-skills-thin
+    primary_layer: skill
+    affected_layers:
+      - gov
+      - meta
+      - ops
+      - skill
+      - tool
+    target:
+      repository: true
+      work_areas: []
+    workspace:
+      isolation: branch-worktree
+      branch: dev
+      base_ref: main
+      base_commit: b874504c25e42329eae19ed14f2b50a3d922d64e
+      head_commit: pending
+    dependencies:
+      -
+        change_id: DSET-CHANGE-GOV-001
+        pull_request:
+          repository: anatoly-m-maslennikov/dset-specs-loops-framework
+          number: 2
+          url: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/2
+        required_commit: 92340e57e508bf896a00dc75a2efb46b6ad680e3
+        consumes:
+          - DSET-REQUIREMENT-GOV-001
+        claim: The visible DSET control plane and PR-traceable Change lifecycle exist.
+        use: Provide the repository foundation for the current self-hosting Change.
+        evidence: dset/scopes/gov/changes/archive/2026-07-14-bootstrap-dset-project-structure/proofs/boot-evals-pushed-head-2026-07-14.md
+        checked_at: 2026-07-15
+        reopen_when: The control-plane ownership or archive contract changes.
+        status: integrated
+      -
+        change_id: DSET-CHANGE-GOV-002
+        pull_request:
+          repository: anatoly-m-maslennikov/dset-specs-loops-framework
+          number: 8
+          url: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/8
+        required_commit: 8a0cb000cb0dd74be3e29af6eb00724efc1e01af
+        consumes:
+          - DSET-REQUIREMENT-GOV-009
+        claim: Documentation has explicit artifact ownership and hub governance.
+        use: Constrain the layered repository and generated navigation surfaces.
+        evidence: dset/scopes/gov/changes/archive/2026-07-14-add-artifact-governance-profile/proofs/deterministic-verification-2026-07-14.md
+        checked_at: 2026-07-15
+        reopen_when: The artifact profile or layer ownership model changes.
+        status: integrated
+      -
+        change_id: DSET-CHANGE-OPS-001
+        pull_request:
+          repository: anatoly-m-maslennikov/dset-specs-loops-framework
+          number: 3
+          url: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3
+        required_commit: 636b2d3ae845f320cf4454c5b83903b5e00b68a9
+        consumes:
+          - DSET-REQUIREMENT-OPS-002
+        claim: Production supportability is an explicit risk-scaled contract.
+        use: Govern hosted delivery and investigation evidence for this Change.
+        evidence: dset/scopes/ops/changes/archive/2026-07-14-make-supportability-first-class/proofs/supportability-evals-2026-07-14.md
+        checked_at: 2026-07-15
+        reopen_when: The supportability or hosted-delivery boundary changes.
+        status: integrated
+      -
+        change_id: DSET-CHANGE-TOOL-001
+        pull_request:
+          repository: anatoly-m-maslennikov/dset-specs-loops-framework
+          number: 7
+          url: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7
+        required_commit: c9d29f102df2966af926af2dc9919ea17d049efb
+        consumes:
+          - DSET-REQUIREMENT-TOOL-001
+        claim: The executable DSET validator, scaffolder, trace, and archive gates exist.
+        use: Supply the released baseline implemented and extended by this Change.
+        evidence: dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/proofs/deterministic-verification-2026-07-14.md
+        checked_at: 2026-07-15
+        reopen_when: The CLI compatibility surface or released baseline changes.
+        status: integrated
+  -
+    id: DSET-CHANGE-TOOL-001
+    status: archived
+    path: dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1
+    packages:
+      - methodology
+    requirements:
+      - DSET-REQUIREMENT-OPS-007
+      - DSET-REQUIREMENT-SKILL-001
+      - DSET-REQUIREMENT-TOOL-001
+      - DSET-REQUIREMENT-TOOL-002
+      - DSET-REQUIREMENT-TOOL-003
+      - DSET-REQUIREMENT-TOOL-004
+    tests:
+      - DSET-TEST-GOV-006
+      - DSET-TEST-OPS-007
+      - DSET-TEST-SKILL-001
+      - DSET-TEST-TOOL-001
+      - DSET-TEST-TOOL-002
+      - DSET-TEST-TOOL-003
+      - DSET-TEST-TOOL-004
+      - DSET-TEST-TOOL-005
+    evals:
+      - DSET-EVAL-GOV-005
+      - DSET-EVAL-GOV-006
+      - DSET-EVAL-OPS-005
+      - DSET-EVAL-SKILL-001
+    intake: []
+    decisions: []
+    contracts: []
+    stories: []
+    outcomes: []
+    pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7
+    evidence:
+      - dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/proofs/archive-readiness-2026-07-14.md
+      - dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/proofs/deterministic-verification-2026-07-14.md
+      - dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/proofs/github-delivery-evidence-2026-07-14.md
+      - dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/proofs/qualitative-evals-2026-07-14.md
+    slug: operationalize-dset-v1
+    primary_layer: tool
+    affected_layers:
+      - gov
+      - ops
+      - skill
+      - tool
+    target:
+      repository: true
+      work_areas: []
+    workspace:
+      isolation: branch-worktree
+      branch: dev
+      base_ref: main
+      base_commit: f340e28316aa92341784ce8e1a853039abf5acc6
+      head_commit: c9d29f102df2966af926af2dc9919ea17d049efb
+    dependencies: []

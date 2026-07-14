@@ -6,7 +6,13 @@ This is the helicopter-view entry point for the DSET Spec Loops methodology. It 
 
 ## Boundaries
 
-This area owns the reusable DSET delivery method. Project-specific accepted truth belongs under that project's `dset/specs/`; active implementation evidence belongs in `dset/changes/`; artifact architecture and authoring rules belong in the [documentation architecture](../documentation/README.md).
+This area owns the reusable DSET delivery method. In current schema 1.2
+projects, project-specific accepted truth belongs under
+`dset/scopes/<layer>/specs/` and active implementation evidence belongs under
+the Change's `dset/scopes/<primary-layer>/changes/` root. Central `dset/specs/`
+and `dset/changes/` paths describe legacy schema 1.0/1.1 projects. Artifact
+architecture and authoring rules belong in the [documentation
+architecture](../documentation/README.md).
 
 ## Start here
 
@@ -21,8 +27,8 @@ This area owns the reusable DSET delivery method. Project-specific accepted trut
 ## Cross-cutting navigation
 
 - [Documentation architecture](../documentation/README.md) — artifact profiles, types, authoring, hubs, and maintenance.
-- [DSET 0.2 roadmap](TODO%20%E2%80%94%20DSET%200.2%20Self-Hosting%20and%20Repository-Governed%20Skills.md) — self-hosting, repository-local governing rules, thin skills, a TypeScript profile, and the Your Harness pilot.
+- [DSET 0.3 roadmap](TODO%20%E2%80%94%20DSET%200.3%20Self-Hosting%20and%20Repository-Governed%20Skills.md) — self-hosting, repository-local governing rules, thin skills, a TypeScript profile, and the Your Harness pilot.
 - [Operationalization roadmap](TODO%20%E2%80%94%20Operationalize%20OpenSpec%20and%20Composable%20Engineering%20Skills.md) — unfinished framework work; unchecked items are not current capability claims.
-- [Accepted methodology package](../dset/specs/packages/methodology/README.md) — machine-traceable current project truth and proof contracts.
+- [Accepted methodology package fragments](../dset/README.md#start-here) — machine-traceable current project truth and proof contracts distributed across the five layer owners.
 
 The numbered documents remain stable responsibility owners. The documentation architecture is cross-cutting and is not pipeline stage 7.

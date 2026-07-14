@@ -61,8 +61,21 @@ The CLI also provides `rules check`, `rules resolve`, `rules materialize`, `rule
 
 This public repository is the canonical source for DSET Spec Loops and every released framework-owned methodology document, schema, template, validator, utility, skill, fixture, and migration guide. Installed or workspace-local copies are distributions of this repository, not independent editable sources.
 
-Each project that adopts DSET owns its project truth separately under its own `dset/` root. In an adopting project, `dset/specs/` contains accepted current truth and `dset/changes/` contains bounded work in progress. Framework truth never replaces project truth, and project artifacts do not become framework rules unless they are deliberately contributed here.
+Each project that adopts DSET owns its project truth separately under its own
+`dset/` root. In the current schema 1.2 layout,
+`dset/scopes/<layer>/specs/` contains accepted layer-owned truth and
+`dset/scopes/<primary-layer>/changes/` contains bounded work in progress. The
+central `dset/specs/` and `dset/changes/` paths remain compatibility surfaces for
+legacy schema 1.0/1.1 projects only. Framework truth never replaces project
+truth, and project artifacts do not become framework rules unless they are
+deliberately contributed here.
+
+Schema 1.2 supports simple repositories and monorepos through neutral Work
+Areas: declared repository-relative folders containing any code, deployable,
+local, documentation, methodology, data, test, automation, or mixed content.
+Every Change and workflow may target the whole repository or one or more Work
+Areas without treating those folders as features, modules, or services.
 
 ## Status
 
-The methodology is published, the repository dogfoods its own project contract, and the executable schema/toolchain v1 contract was implemented and verified through PR [#7](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7). The coordinated DSET product/Python-package `0.2.0` release is now an active candidate: repository-local governance, thin wrappers, project-owned materialization, and the bounded self-hosting fixed point pass locally and in hosted CI on draft PR [#9](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9). Independent qualitative evals, the two target skill wrappers, run/release automation, the evidence-derived JavaScript/TypeScript profile, external pilots, pinned distribution, and final release reconciliation remain open; `0.2.0` is not yet an adoption-readiness claim.
+The methodology is published, the repository dogfoods its own project contract, and the executable schema/toolchain v1 contract was implemented and verified through PR [#7](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7). The coordinated DSET product/Python-package `0.3.0` release is now an active candidate: repository-local governance, thin wrappers, project-owned materialization, and the bounded self-hosting fixed point pass locally and in hosted CI on draft PR [#9](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9). Independent qualitative evals, the two target skill wrappers, run/session/release automation, the evidence-derived JavaScript/TypeScript profile, external pilots, pinned distribution, and final release reconciliation remain open; `0.3.0` is not yet an adoption-readiness claim.

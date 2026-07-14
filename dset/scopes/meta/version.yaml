@@ -1,0 +1,21 @@
+schema_version: 1.1
+framework:
+  version: "0.3.0"
+  versioning: coordinated-product-package
+python_package:
+  name: dset-spec-loops
+  version: "0.3.0"
+  versioning: coordinated-product-package
+schemas:
+  version: "1.2"
+  versioning: independent
+released_validator:
+  identity: pre-0.3-v1-baseline
+  commit: a95bf7c576c8fcdfdf0565466aaca5ee1fe86157
+  command: python -m dset_toolchain check
+candidate_validator:
+  command: python -m dset_toolchain check
+bootstrap:
+  manifest: dset/scopes/meta/dset.yaml
+  governance_registry: dset/scopes/gov/governance.yaml
+  precedence: project-local-rule-then-selected-local-profile-then-failure

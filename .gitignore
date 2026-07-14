@@ -208,6 +208,7 @@ tempCodeRunnerFile.py
 
 # DSET machine-local operational evidence
 .dset/runs/
+.dset/sessions/
 
 # PyPI configuration file
 .pypirc

@@ -1,13 +1,17 @@
 from __future__ import annotations
 
+import contextlib
+import io
 import json
+import re
 import shutil
 import tempfile
 import unittest
 from pathlib import Path
 from typing import Any
 
-from dset_toolchain.layout import LAYERS
+from dset_toolchain.cli import main
+from dset_toolchain.layout import LAYERS, discover_layout
 from dset_toolchain.scaffold import create_change
 from dset_toolchain.traceability import build_traceability
 from dset_toolchain.validation import validate_change, validate_repository
@@ -23,6 +27,8 @@ class LayeredValidationTests(unittest.TestCase):
         self.scopes = self.root / "dset" / "scopes"
         for layer in LAYERS:
             (self.scopes / layer).mkdir(parents=True)
+        for work_area in ("api", "web", "worker"):
+            (self.root / "src" / work_area).mkdir(parents=True)
         self._write_project()
         self._write_control_files()
         self._write_fragment("meta", "DSET-REQUIREMENT-001", "DSET-TEST-001")
@@ -33,6 +39,114 @@ class LayeredValidationTests(unittest.TestCase):
 
     def test_valid_layered_repository(self) -> None:
         self.assertEqual(validate_repository(self.root), [])
+
+    def test_work_area_registry_requires_unique_safe_existing_directories(self) -> None:
+        path = self.scopes / "meta" / "dset.yaml"
+        baseline = load(path)
+        assert isinstance(baseline, dict)
+        valid = baseline["work_areas"]
+        (self.root / "src" / "not-directory").write_text("fixture\n", encoding="utf-8")
+        invalid_cases = (
+            [valid[0], {**valid[1], "id": valid[0]["id"]}],
+            [valid[0], {**valid[1], "path": valid[0]["path"]}],
+            [{"id": "absolute", "path": "/tmp", "kind": "service"}],
+            [{"id": "drive", "path": "C:/src", "kind": "service"}],
+            [{"id": "escape", "path": "../outside", "kind": "service"}],
+            [{"id": "missing", "path": "src/missing", "kind": "service"}],
+            [
+                {
+                    "id": "not-directory",
+                    "path": "src/not-directory",
+                    "kind": "service",
+                }
+            ],
+            [{"id": "windows", "path": "src\\api", "kind": "service"}],
+            [{"id": "dot", "path": "src/./api", "kind": "service"}],
+            [{"id": "empty", "path": "src//api", "kind": "service"}],
+        )
+        for work_areas in invalid_cases:
+            with self.subTest(work_areas=work_areas):
+                manifest = dict(baseline)
+                manifest["work_areas"] = work_areas
+                path.write_text(dump(manifest), encoding="utf-8")
+                self.assertIn(
+                    "DSET-E143", {item.code for item in validate_repository(self.root)}
+                )
+        path.write_text(dump(baseline), encoding="utf-8")
+        self.assertEqual(validate_repository(self.root), [])
+
+    def test_intake_derives_layers_and_requires_stable_owner_change(self) -> None:
+        path = self.scopes / "gov" / "intake.yaml"
+        valid: dict[str, Any] = {
+            "id": "DSET-QUESTION-GOV-001",
+            "scope": "gov",
+            "type": "question",
+            "status": "open",
+            "title": "Choice",
+            "statement": "Which bounded option applies?",
+            "owner_change": "DSET-CHANGE-GOV-001",
+            "decision": "pending",
+            "external_refs": [],
+        }
+        baseline: dict[str, Any] = {"schema_version": "1.1", "items": [valid]}
+        path.write_text(dump(baseline), encoding="utf-8")
+        self.assertNotIn(
+            "DSET-E142", {item.code for item in validate_repository(self.root)}
+        )
+
+        invalid_cases = (
+            {**baseline, "scope_mode": "multi-scope", "scopes": []},
+            {**baseline, "schema_version": 1.0},
+            {**baseline, "items": [{**valid, "id": "DSET-PROBLEM-GOV-001"}]},
+            {**baseline, "items": [{**valid, "scope": "tool"}]},
+            {
+                **baseline,
+                "items": [{**valid, "owner_change": "legacy-change-slug"}],
+            },
+            {
+                **baseline,
+                "items": [{**valid, "decision": "DSET-DECISION-TOOL-001"}],
+            },
+        )
+        for invalid in invalid_cases:
+            with self.subTest(intake=invalid):
+                path.write_text(dump(invalid), encoding="utf-8")
+                self.assertIn(
+                    "DSET-E142", {item.code for item in validate_repository(self.root)}
+                )
+
+    def test_change_target_is_repository_or_declared_work_areas(self) -> None:
+        change = self._write_change("tool", "targeted-change")
+        path = change / "change.yaml"
+        data = load(path)
+        assert isinstance(data, dict)
+        self.assertEqual(data["target"], {"repository": True, "work_areas": []})
+        self.assertEqual(validate_change(self.root, change, archived=False), [])
+
+        valid_target = {"repository": False, "work_areas": ["api", "web"]}
+        data["target"] = valid_target
+        path.write_text(dump(data), encoding="utf-8")
+        self.assertEqual(validate_change(self.root, change, archived=False), [])
+
+        invalid_targets = (
+            {"repository": False, "work_areas": ["unknown"]},
+            {"repository": True, "work_areas": ["api"]},
+            {"repository": False, "work_areas": []},
+            {"repository": False, "work_areas": ["api", "api"]},
+            {"repository": True},
+            None,
+        )
+        for target in invalid_targets:
+            with self.subTest(target=target):
+                data["target"] = target
+                path.write_text(dump(data), encoding="utf-8")
+                self.assertIn(
+                    "DSET-E148",
+                    {
+                        item.code
+                        for item in validate_change(self.root, change, archived=False)
+                    },
+                )
 
     def test_fragment_ownership_and_cross_fragment_uniqueness(self) -> None:
         path = self._fragment_path("tool")
@@ -88,10 +202,12 @@ class LayeredValidationTests(unittest.TestCase):
 
     def test_schema_1_2_shapes_are_explicit(self) -> None:
         project = json.loads(
-            (ROOT / "dset/schemas/project.schema.json").read_text(encoding="utf-8")
+            (ROOT / "dset/scopes/meta/schemas/project.schema.json").read_text(
+                encoding="utf-8"
+            )
         )
         fragment = json.loads(
-            (ROOT / "dset/schemas/package-fragment.schema.json").read_text(
+            (ROOT / "dset/scopes/meta/schemas/package-fragment.schema.json").read_text(
                 encoding="utf-8"
             )
         )
@@ -100,7 +216,9 @@ class LayeredValidationTests(unittest.TestCase):
             "layered-v1",
         )
         change = json.loads(
-            (ROOT / "dset/schemas/change.schema.json").read_text(encoding="utf-8")
+            (ROOT / "dset/scopes/gov/schemas/change.schema.json").read_text(
+                encoding="utf-8"
+            )
         )
         self.assertEqual(
             change["$defs"]["workspace"]["properties"]["isolation"]["const"],
@@ -111,6 +229,11 @@ class LayeredValidationTests(unittest.TestCase):
                 "const"
             ],
             "dset/scopes/ops/governance/release.md",
+        )
+        forbidden = project["allOf"][0]["then"]["not"]["anyOf"]
+        self.assertEqual(
+            {item["required"][0] for item in forbidden},
+            {"contracts", "stories", "outcomes"},
         )
         self.assertEqual(
             set(fragment["required"]),
@@ -128,8 +251,75 @@ class LayeredValidationTests(unittest.TestCase):
             },
         )
 
+    def test_distributed_schema_ids_match_layer_owned_paths(self) -> None:
+        base = (
+            "https://raw.githubusercontent.com/anatoly-m-maslennikov/"
+            "dset-specs-loops-framework/main/"
+        )
+        for path in sorted((ROOT / "dset/scopes").glob("*/schemas/*.json")):
+            with self.subTest(schema=path.name):
+                schema = json.loads(path.read_text(encoding="utf-8"))
+                self.assertEqual(
+                    schema["$id"], base + path.relative_to(ROOT).as_posix()
+                )
+
+    def test_schema_1_2_work_area_contract_has_two_target_modes(self) -> None:
+        project = json.loads(
+            (ROOT / "dset/scopes/meta/schemas/project.schema.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        change = json.loads(
+            (ROOT / "dset/scopes/gov/schemas/change.schema.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        traceability = json.loads(
+            (ROOT / "dset/scopes/tool/schemas/traceability.schema.json").read_text(
+                encoding="utf-8"
+            )
+        )
+
+        self.assertIn("work_areas", project["allOf"][0]["then"]["required"])
+        self.assertEqual(project["allOf"][0]["else"]["not"]["required"], ["work_areas"])
+        self.assertNotIn("minItems", project["$defs"]["work_areas"])
+        self.assertTrue(project["$defs"]["work_areas"]["uniqueItems"])
+        self.assertEqual(
+            set(project["$defs"]["work_area"]["required"]),
+            {"id", "path", "kind"},
+        )
+        path_pattern = project["$defs"]["repository_relative_path"]["pattern"]
+        for valid in ("src", "apps/web-ui", "docs/Product Notes"):
+            self.assertIsNotNone(re.fullmatch(path_pattern, valid))
+        for invalid in ("/src", "../src", "apps/../src", "apps//src", "C:/src"):
+            self.assertIsNone(re.fullmatch(path_pattern, invalid))
+
+        self.assertIn("target", change["allOf"][1]["then"]["required"])
+        legacy_only = change["allOf"][1]["else"]["not"]["anyOf"]
+        self.assertIn({"required": ["target"]}, legacy_only)
+        target = change["$defs"]["target"]
+        self.assertEqual(len(target["oneOf"]), 2)
+        repository_mode, work_area_mode = target["oneOf"]
+        self.assertTrue(repository_mode["properties"]["repository"]["const"])
+        self.assertEqual(repository_mode["properties"]["work_areas"]["maxItems"], 0)
+        self.assertFalse(work_area_mode["properties"]["repository"]["const"])
+        self.assertEqual(work_area_mode["properties"]["work_areas"]["minItems"], 1)
+        trace_current = traceability["allOf"][0]["then"]["properties"]["changes"][
+            "items"
+        ]
+        self.assertIn("target", trace_current["required"])
+        trace_legacy = traceability["allOf"][0]["else"]["properties"]["changes"][
+            "items"
+        ]["not"]["anyOf"]
+        self.assertIn({"required": ["target"]}, trace_legacy)
+        self.assertEqual(traceability["$defs"]["target"]["oneOf"], target["oneOf"])
+
     def test_layered_traceability_carries_change_layers(self) -> None:
-        self._write_change("tool", "layered-change")
+        self._write_change(
+            "tool",
+            "layered-change",
+            target={"repository": False, "work_areas": ["web", "api"]},
+        )
 
         trace = build_traceability(self.root)
 
@@ -137,6 +327,10 @@ class LayeredValidationTests(unittest.TestCase):
         self.assertEqual(trace["changes"][0]["primary_layer"], "tool")
         self.assertEqual(trace["changes"][0]["affected_layers"], ["tool"])
         self.assertEqual(trace["changes"][0]["slug"], "layered-change")
+        self.assertEqual(
+            trace["changes"][0]["target"],
+            {"repository": False, "work_areas": ["api", "web"]},
+        )
         self.assertEqual(
             trace["changes"][0]["workspace"]["isolation"], "branch-worktree"
         )
@@ -179,8 +373,7 @@ class LayeredValidationTests(unittest.TestCase):
         self.assertEqual(validate_change(self.root, change, archived=False), [])
 
     def test_scaffold_allocates_stable_change_ids_separately_from_slugs(self) -> None:
-        target = self.scopes / "gov" / "templates" / "change"
-        shutil.copytree(ROOT / "dset/templates/change", target)
+        self._install_change_templates()
 
         first = create_change(
             self.root, "portable-cli", "sample", "small", layer="tool"
@@ -197,6 +390,71 @@ class LayeredValidationTests(unittest.TestCase):
         self.assertEqual(first_data["slug"], "portable-cli")
         self.assertEqual(second_data["id"], "DSET-CHANGE-TOOL-002")
         self.assertEqual(first_data["workspace"]["isolation"], "branch-worktree")
+        self.assertEqual(first_data["target"], {"repository": True, "work_areas": []})
+
+        targeted = create_change(
+            self.root,
+            "targeted-change",
+            "sample",
+            "small",
+            layer="tool",
+            work_areas=["web", "api"],
+        )
+        targeted_data = load(targeted / "change.yaml")
+        assert isinstance(targeted_data, dict)
+        self.assertEqual(
+            targeted_data["target"],
+            {"repository": False, "work_areas": ["api", "web"]},
+        )
+        with self.assertRaisesRegex(ValueError, "undeclared work-area"):
+            create_change(
+                self.root,
+                "unknown-target",
+                "sample",
+                "small",
+                layer="tool",
+                work_areas=["unknown"],
+            )
+        with self.assertRaisesRegex(ValueError, "must be unique"):
+            create_change(
+                self.root,
+                "duplicate-target",
+                "sample",
+                "small",
+                layer="tool",
+                work_areas=["api", "api"],
+            )
+
+    def test_cli_new_accepts_repeatable_work_area_targets(self) -> None:
+        self._install_change_templates()
+        stream = io.StringIO()
+        with contextlib.redirect_stdout(stream):
+            result = main(
+                [
+                    "new",
+                    "cli-targeted-change",
+                    "--root",
+                    str(self.root),
+                    "--package",
+                    "sample",
+                    "--profile",
+                    "small",
+                    "--layer",
+                    "TOOL",
+                    "--work-area",
+                    "web",
+                    "--work-area",
+                    "api",
+                ]
+            )
+        self.assertEqual(result, 0)
+        change = self.scopes / "tool" / "changes" / "cli-targeted-change"
+        data = load(change / "change.yaml")
+        assert isinstance(data, dict)
+        self.assertEqual(
+            data["target"],
+            {"repository": False, "work_areas": ["api", "web"]},
+        )
 
     def test_workspace_branch_is_unique_only_while_changes_are_active(self) -> None:
         first = self._write_change(
@@ -238,6 +496,11 @@ class LayeredValidationTests(unittest.TestCase):
             "release": {"status": "not-applicable", "reason": "fixture"},
             "work_items": {"registry": "dset/scopes/gov/intake.yaml"},
             "structure": {"layout": "layered-v1"},
+            "work_areas": [
+                {"id": "api", "path": "src/api", "kind": "service"},
+                {"id": "web", "path": "src/web", "kind": "application"},
+                {"id": "worker", "path": "src/worker", "kind": "service"},
+            ],
             "packages": [
                 {"id": "sample", "status": "active", "layers": ["meta", "tool"]}
             ],
@@ -263,19 +526,8 @@ class LayeredValidationTests(unittest.TestCase):
         )
 
     def _write_control_files(self) -> None:
-        scopes = [
-            {"id": layer, "kind": "layer", "id_segment": layer.upper()}
-            for layer in LAYERS
-        ]
         (self.scopes / "gov" / "intake.yaml").write_text(
-            dump(
-                {
-                    "schema_version": 1.0,
-                    "scope_mode": "multi-scope",
-                    "scopes": scopes,
-                    "items": [],
-                }
-            ),
+            dump({"schema_version": "1.1", "items": []}),
             encoding="utf-8",
         )
         (self.scopes / "gov" / "provenance.yaml").write_text(
@@ -335,6 +587,7 @@ class LayeredValidationTests(unittest.TestCase):
         *,
         id_layer: str = "TOOL",
         stable_id: str | None = None,
+        target: dict[str, object] | None = None,
     ) -> Path:
         root = self.scopes / layer / "changes" / change_slug
         (root / "specs").mkdir(parents=True)
@@ -348,6 +601,7 @@ class LayeredValidationTests(unittest.TestCase):
             "status": "proposed",
             "primary_layer": layer,
             "affected_layers": [layer],
+            "target": target or {"repository": True, "work_areas": []},
             "workspace": {
                 "isolation": "branch-worktree",
                 "branch": f"dset/{change_slug}",
@@ -379,6 +633,11 @@ class LayeredValidationTests(unittest.TestCase):
             "# Eval plan\n\nNot applicable to this fixture.\n", encoding="utf-8"
         )
         return root
+
+    def _install_change_templates(self) -> None:
+        target = self.scopes / "gov" / "templates" / "change"
+        source = discover_layout(ROOT).find_template("change/change.yaml").parent
+        shutil.copytree(source, target)
 
     def _archive_synthetic(self, change: Path, day: str, pr_number: int) -> None:
         path = change / "change.yaml"

@@ -3,6 +3,7 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
+from dset_toolchain.layout import discover_layout
 from dset_toolchain.yaml_subset import dump, load, loads
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -10,8 +11,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class YamlSubsetTests(unittest.TestCase):
     def test_parses_repository_manifests(self) -> None:
-        provenance = load(ROOT / "dset" / "provenance.yaml")
-        cases = load(ROOT / "dset" / "fixtures" / "cases.yaml")
+        layout = discover_layout(ROOT)
+        provenance = load(layout.provenance_path)
+        cases = load(layout.fixtures_root / "cases.yaml")
         self.assertEqual(provenance["project_license"], "Apache-2.0")
         self.assertEqual(cases["cases"][0]["id"], "valid-small-fix")
 

@@ -15,8 +15,10 @@ Skills own discovery, workflow identity, resolver invocation, rule-set reporting
 - [`dset-prototype`](dset-prototype/SKILL.md) — run bounded disposable design experiments and feed evidence into the Solution Landscape and Decision.
 
 These three specialists are the currently implemented skill surface. The active
-DSET 0.2 change specifies, but does not yet release, the primary `dset`
-orchestrator and guarded `dset-release` specialist. No README or accepted
+DSET 0.3 Change specifies, but does not yet release, the primary `dset`
+orchestrator and guarded `dset-release` specialist. The primary orchestrator
+also owns the internal session checkpoint/resume capability; it is not a sixth
+public skill. No README or accepted
 contract should present those two source directories as implemented before
 their wrappers, registry entries, tests, and evals pass.
 

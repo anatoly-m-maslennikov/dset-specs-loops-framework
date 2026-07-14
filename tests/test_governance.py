@@ -22,10 +22,17 @@ from dset_toolchain.governance import (
     resolve_workflow,
     validate_governance,
 )
+from dset_toolchain.layout import discover_layout
 from dset_toolchain.validation import validate_repository
 from dset_toolchain.yaml_subset import dump, load
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def _framework_schema(name: str) -> Path:
+    return next(
+        path for path in discover_layout(ROOT).schema_paths() if path.name == name
+    )
 
 
 class GovernanceTests(unittest.TestCase):
@@ -139,13 +146,8 @@ class GovernanceTests(unittest.TestCase):
                 shutil.copytree(source_path, target_path)
             target = Path(raw) / "materialized-adopter"
             create_adopter(source, target)
-            template = (
-                source
-                / "dset"
-                / "templates"
-                / "governance"
-                / "core-v1"
-                / "domain-spec-authoring.md"
+            template = discover_layout(source).find_template(
+                "governance/core-v1/domain-spec-authoring.md"
             )
             template.write_text("# Replaced source template\n", encoding="utf-8")
             resolved, diagnostics = resolve_workflow(target, "domain-clarification")
@@ -198,7 +200,7 @@ class GovernanceTests(unittest.TestCase):
         profile = cast(
             dict[str, Any],
             load(
-                ROOT / "dset" / "templates" / "governance" / "core-v1" / "profile.yaml"
+                discover_layout(ROOT).find_template("governance/core-v1/profile.yaml")
             ),
         )
         actual = {item["id"]: item["layer"] for item in profile["rules"]}
@@ -255,8 +257,9 @@ class GovernanceTests(unittest.TestCase):
             target = Path(raw) / "layered-adopter"
             self._make_layered_project(source)
             self._make_layered_project(target)
-            canonical = ROOT / "dset" / "templates" / "governance" / "core-v1"
-            profile = cast(dict[str, Any], load(canonical / "profile.yaml"))
+            layout = discover_layout(ROOT)
+            profile_path = layout.find_template("governance/core-v1/profile.yaml")
+            profile = cast(dict[str, Any], load(profile_path))
             profile_root = (
                 source
                 / "dset"
@@ -267,8 +270,11 @@ class GovernanceTests(unittest.TestCase):
                 / "core-v1"
             )
             profile_root.mkdir(parents=True)
-            shutil.copyfile(canonical / "profile.yaml", profile_root / "profile.yaml")
-            shutil.copyfile(canonical / "README.md", profile_root / "README.md")
+            shutil.copyfile(profile_path, profile_root / "profile.yaml")
+            shutil.copyfile(
+                layout.find_template("governance/core-v1/README.md"),
+                profile_root / "README.md",
+            )
             for rule in cast(list[dict[str, Any]], profile["rules"]):
                 distributed = (
                     source
@@ -281,7 +287,10 @@ class GovernanceTests(unittest.TestCase):
                     / str(rule["template"])
                 )
                 distributed.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copyfile(canonical / str(rule["template"]), distributed)
+                shutil.copyfile(
+                    layout.find_template(f"governance/core-v1/{rule['template']}"),
+                    distributed,
+                )
 
             registry_path = materialize_governance(source, target)
             registry = cast(dict[str, Any], load(registry_path))
@@ -299,9 +308,9 @@ class GovernanceTests(unittest.TestCase):
             result = main(["version", str(ROOT)])
         self.assertEqual(result, 0)
         output = stream.getvalue()
-        self.assertIn("product: 0.2.0 (coordinated)", output)
-        self.assertIn("python package: 0.2.0 (coordinated)", output)
-        self.assertIn("schemas: 1.1 (independent)", output)
+        self.assertIn("product: 0.3.0 (coordinated)", output)
+        self.assertIn("python package: 0.3.0 (coordinated)", output)
+        self.assertIn("schemas: 1.2 (independent)", output)
 
     def test_temporary_adopter_materializes_current_project_inputs(self) -> None:
         manifest = cast(dict[str, Any], load(self.root / "dset" / "dset.yaml"))
@@ -349,9 +358,7 @@ class GovernanceTests(unittest.TestCase):
         )
 
     def test_current_schema_suite_preserves_legacy_change_shape(self) -> None:
-        change_schema = json.loads(
-            (ROOT / "dset" / "schemas" / "change.schema.json").read_text()
-        )
+        change_schema = json.loads(_framework_schema("change.schema.json").read_text())
         current = change_schema["allOf"][0]
         self.assertEqual(current["then"]["required"], ["adrs"])
         self.assertEqual(current["then"]["not"]["required"], ["decisions"])
@@ -364,9 +371,7 @@ class GovernanceTests(unittest.TestCase):
         self.assertEqual(len(release_variants), 2)
 
     def test_trace_id_schemas_are_type_first_and_layer_bounded(self) -> None:
-        change_schema = json.loads(
-            (ROOT / "dset" / "schemas" / "change.schema.json").read_text()
-        )
+        change_schema = json.loads(_framework_schema("change.schema.json").read_text())
         patterns = change_schema["$defs"]
         complete_pattern = patterns["trace_id"]["pattern"]
         for valid in (
@@ -435,7 +440,7 @@ class GovernanceTests(unittest.TestCase):
             )
         self.assertEqual(validate_repository(self.root), [])
 
-    def test_intake_validator_enforces_type_and_registered_layer(self) -> None:
+    def test_legacy_intake_enforces_type_and_registered_layer(self) -> None:
         path = self.root / "dset" / "intake.yaml"
         baseline = cast(dict[str, Any], load(path))
         valid: dict[str, Any] = {
@@ -469,23 +474,30 @@ class GovernanceTests(unittest.TestCase):
                 )
 
     def test_contract_template_requires_real_host_and_ci_proof(self) -> None:
-        text = (ROOT / "dset" / "templates" / "package" / "contracts.md").read_text()
+        layout = discover_layout(ROOT)
+        text = layout.find_template("package/contracts.md").read_text()
         self.assertIn("Markdown validity is not host proof", text)
         self.assertIn("allowlists, denylists, and enforcement metadata", text)
         self.assertIn("real GitHub Actions workflow artifacts", text)
-        manifest = cast(dict[str, Any], load(ROOT / "dset" / "dset.yaml"))
+        contract_ids = sorted(
+            identifier
+            for path in layout.package_fragments()
+            for identifier in cast(dict[str, Any], load(path))["contracts"]
+        )
         self.assertEqual(
-            manifest["contracts"],
+            contract_ids,
             [
+                "DSET-CONTRACT-META-001",
+                "DSET-CONTRACT-OPS-001",
                 "DSET-CONTRACT-SKILL-001",
                 "DSET-CONTRACT-TOOL-001",
                 "DSET-CONTRACT-TOOL-002",
-                "DSET-CONTRACT-OPS-001",
             ],
         )
 
     def test_story_and_outcome_templates_preserve_semantic_boundaries(self) -> None:
-        stories = (ROOT / "dset" / "templates" / "package" / "stories.md").read_text()
+        layout = discover_layout(ROOT)
+        stories = layout.find_template("package/stories.md").read_text()
         self.assertIn("Actor or stakeholder", stories)
         self.assertIn("Desired capability or outcome", stories)
         self.assertIn("Linked Requirements", stories)
@@ -493,7 +505,7 @@ class GovernanceTests(unittest.TestCase):
         self.assertIn("not an intake queue", stories)
         self.assertIn("does not replace normative Requirements", stories)
 
-        outcomes = (ROOT / "dset" / "templates" / "package" / "outcomes.md").read_text()
+        outcomes = layout.find_template("package/outcomes.md").read_text()
         self.assertIn("Baseline", outcomes)
         self.assertIn("Target", outcomes)
         self.assertIn("Observation method/source", outcomes)

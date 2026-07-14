@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/scopes/meta/schemas/project.schema.json",
+  "title": "DSET project manifest",
+  "type": "object",
+  "required": ["schema_version", "project", "supportability", "structure", "packages", "profiles", "change_contract", "verification", "canonical_command"],
+  "properties": {
+    "schema_version": {"oneOf": [{"enum": [1.0, 1.1]}, {"type": "string", "pattern": "^1\\.(?:0|1)-draft$"}, {"const": "1.2"}]},
+    "project": {
+      "type": "object",
+      "required": ["key", "id", "name", "repository_slug", "repository_role"],
+      "properties": {
+        "key": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*$"},
+        "id": {"$ref": "#/$defs/kebab"},
+        "name": {"type": "string", "minLength": 1},
+        "repository_slug": {"$ref": "#/$defs/kebab"},
+        "repository_role": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "supportability": {
+      "type": "object",
+      "required": ["status", "reason", "authority", "runbook"],
+      "properties": {
+        "status": {"enum": ["not-applicable", "applicable"]},
+        "reason": {"type": "string", "minLength": 1},
+        "authority": {"type": "string", "minLength": 1},
+        "runbook": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "release": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": {"enum": ["not-applicable", "applicable"]},
+        "integration_branch": {"type": "string", "minLength": 1},
+        "protected_branch": {"type": "string", "minLength": 1},
+        "publisher": {"type": "string", "minLength": 1},
+        "tag_pattern": {"type": "string", "maxLength": 128, "pattern": "^[A-Za-z0-9._/-]*\\{product_version\\}[A-Za-z0-9._/-]*$"},
+        "reason": {"type": "string", "minLength": 1}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "applicable"}}},
+          "then": {"required": ["integration_branch", "protected_branch", "publisher", "tag_pattern"]},
+          "else": {"required": ["reason"]}
+        }
+      ],
+      "additionalProperties": false
+    },
+    "work_items": {
+      "type": "object",
+      "required": ["registry"],
+      "properties": {
+        "registry": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "contracts": {"$ref": "#/$defs/contract_ids"},
+    "stories": {"$ref": "#/$defs/story_ids"},
+    "outcomes": {"$ref": "#/$defs/outcome_ids"},
+    "work_areas": {"$ref": "#/$defs/work_areas"},
+    "structure": {
+      "type": "object"
+    },
+    "packages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object"
+      }
+    },
+    "profiles": {
+      "type": "object",
+      "required": ["runtime_risk", "durability_topology", "enforcement"],
+      "properties": {
+        "runtime_risk": {"type": "string", "minLength": 1},
+        "durability_topology": {"type": "string", "minLength": 1},
+        "enforcement": {"type": "string", "minLength": 1},
+        "artifact": {"type": ["string", "null"], "minLength": 1},
+        "repository_governance": {"type": ["string", "null"], "minLength": 1},
+        "delegation_budget": {"enum": ["low", "medium", "high"]}
+      },
+      "additionalProperties": false
+    },
+    "change_contract": {
+      "type": "object"
+    },
+    "verification": {
+      "type": "object",
+      "required": ["commands"],
+      "properties": {
+        "commands": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        }
+      },
+      "additionalProperties": false
+    },
+    "canonical_command": {"type": "string", "minLength": 1}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"schema_version": {"const": "1.2"}}, "required": ["schema_version"]},
+      "then": {
+        "required": ["release", "work_items", "work_areas"],
+        "not": {
+          "anyOf": [
+            {"required": ["contracts"]},
+            {"required": ["stories"]},
+            {"required": ["outcomes"]}
+          ]
+        },
+        "properties": {
+          "structure": {"$ref": "#/$defs/layered_structure"},
+          "packages": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/layered_package"}},
+          "work_items": {"properties": {"registry": {"const": "dset/scopes/gov/intake.yaml"}}},
+          "profiles": {"required": ["delegation_budget"]},
+          "change_contract": {"$ref": "#/$defs/layered_change_contract"}
+        }
+      },
+      "else": {
+        "not": {"required": ["work_areas"]},
+        "properties": {
+          "structure": {"$ref": "#/$defs/legacy_structure"},
+          "packages": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/legacy_package"}},
+          "change_contract": {"$ref": "#/$defs/legacy_change_contract"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"schema_version": {"enum": [1.1, "1.1-draft"]}}},
+      "then": {
+        "required": ["release", "work_items", "contracts"],
+        "properties": {
+          "profiles": {"required": ["delegation_budget"]},
+          "work_items": {"properties": {"registry": {"const": "dset/intake.yaml"}}}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "kebab": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "layer": {"enum": ["meta", "gov", "tool", "skill", "ops"]},
+    "legacy_structure": {
+      "type": "object",
+      "required": ["mode", "accepted_truth_root", "active_changes_root", "archive_root", "global_truth_root"],
+      "properties": {
+        "mode": {"enum": ["single-package", "multi-package"]},
+        "accepted_truth_root": {"type": "string"},
+        "active_changes_root": {"type": "string"},
+        "archive_root": {"type": "string"},
+        "global_truth_root": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "layered_structure": {
+      "type": "object",
+      "required": ["layout"],
+      "properties": {"layout": {"const": "layered-v1"}},
+      "additionalProperties": false
+    },
+    "legacy_package": {
+      "type": "object",
+      "required": ["id", "path", "status"],
+      "properties": {
+        "id": {"$ref": "#/$defs/kebab"},
+        "path": {"type": "string"},
+        "status": {"enum": ["active", "retired"]}
+      },
+      "additionalProperties": false
+    },
+    "layered_package": {
+      "type": "object",
+      "required": ["id", "status", "layers"],
+      "properties": {
+        "id": {"$ref": "#/$defs/kebab"},
+        "status": {"enum": ["active", "retired"]},
+        "layers": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/layer"}}
+      },
+      "additionalProperties": false
+    },
+    "legacy_change_contract": {
+      "type": "object",
+      "required": ["change_id_format", "pull_request_required_before_archive", "archive_requires_fresh_verification", "keep_pull_request_draft_until_archive_ready"],
+      "properties": {
+        "change_id_format": {"const": "kebab-case"},
+        "pull_request_required_before_archive": {"const": true},
+        "archive_requires_fresh_verification": {"const": true},
+        "keep_pull_request_draft_until_archive_ready": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "layered_change_contract": {
+      "type": "object",
+      "required": ["change_id_format", "change_slug_format", "workspace_default", "pull_request_required_before_archive", "archive_requires_fresh_verification", "keep_pull_request_draft_until_archive_ready"],
+      "properties": {
+        "change_id_format": {"const": "project-type-layer-sequence"},
+        "change_slug_format": {"const": "kebab-case"},
+        "workspace_default": {"const": "isolated-branch-worktree-pr"},
+        "pull_request_required_before_archive": {"const": true},
+        "archive_requires_fresh_verification": {"const": true},
+        "keep_pull_request_draft_until_archive_ready": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "work_areas": {
+      "$comment": "Each id and path must also be unique across the array; repository validation enforces property-level uniqueness.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/work_area"}
+    },
+    "work_area": {
+      "type": "object",
+      "required": ["id", "path", "kind"],
+      "properties": {
+        "id": {"$ref": "#/$defs/kebab"},
+        "path": {"$ref": "#/$defs/repository_relative_path"},
+        "kind": {"$ref": "#/$defs/kebab"}
+      },
+      "additionalProperties": false
+    },
+    "repository_relative_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?![A-Za-z]:)(?!.*\\\\)(?!.*//)(?!\\.{1,2}(?:/|$))(?!.*[/]\\.{1,2}(?:/|$))[^/]+(?:/[^/]+)*$"
+    },
+    "contract_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-CONTRACT(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}},
+    "story_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-STORY(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}},
+    "outcome_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-OUTCOME(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}}
+  },
+  "additionalProperties": false
+}

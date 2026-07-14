@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/scopes/tool/schemas/traceability.schema.json",
+  "title": "DSET traceability index",
+  "type": "object",
+  "required": ["schema_version", "repository", "changes"],
+  "properties": {
+    "schema_version": {"enum": [1.1, "1.2"]},
+    "repository": {"type": "string"},
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "status", "path", "packages", "requirements", "tests", "evals", "intake", "decisions", "contracts", "stories", "outcomes", "pull_request", "evidence"],
+        "properties": {
+          "id": {"type": "string"},
+          "slug": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+          "status": {"type": "string"},
+          "path": {"type": "string"},
+          "primary_layer": {"enum": ["meta", "gov", "tool", "skill", "ops"]},
+          "affected_layers": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["meta", "gov", "tool", "skill", "ops"]}},
+          "workspace": {"$ref": "#/$defs/workspace"},
+          "dependencies": {"type": "array", "items": {"$ref": "#/$defs/dependency"}},
+          "target": {"$ref": "#/$defs/target"},
+          "packages": {"type": "array", "items": {"type": "string"}},
+          "requirements": {"type": "array", "items": {"type": "string"}},
+          "tests": {"type": "array", "items": {"type": "string"}},
+          "evals": {"type": "array", "items": {"type": "string"}},
+          "intake": {"type": "array", "items": {"type": "string"}},
+          "decisions": {"type": "array", "items": {"type": "string"}},
+          "contracts": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-CONTRACT(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}},
+          "stories": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-STORY(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}},
+          "outcomes": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-OUTCOME(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}},
+          "pull_request": {"type": "string", "format": "uri"},
+          "evidence": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"schema_version": {"const": "1.2"}}, "required": ["schema_version"]},
+      "then": {
+        "properties": {
+          "changes": {
+            "items": {
+              "required": ["slug", "primary_layer", "affected_layers", "workspace", "dependencies", "target"],
+              "properties": {"id": {"$ref": "#/$defs/change_id"}}
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "changes": {
+            "items": {"not": {"anyOf": [{"required": ["slug"]}, {"required": ["primary_layer"]}, {"required": ["affected_layers"]}, {"required": ["workspace"]}, {"required": ["dependencies"]}, {"required": ["target"]}]}}
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "change_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-CHANGE-(?:META|GOV|TOOL|SKILL|OPS)-[0-9]{3,}$"},
+    "trace_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-(?:REQUIREMENT|SCENARIO|INVARIANT|TEST|EVAL|TASK|PROBLEM|OPPORTUNITY|QUESTION|DECISION|CONTRACT|STORY|OUTCOME|CHANGE)(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"},
+    "sha_or_pending": {"oneOf": [{"type": "string", "pattern": "^[0-9a-f]{40}$"}, {"const": "pending"}]},
+    "pull_request": {
+      "type": "object",
+      "required": ["repository", "number", "url"],
+      "properties": {
+        "repository": {"type": "string", "pattern": "^[^/]+/[^/]+$"},
+        "number": {"oneOf": [{"type": "integer", "minimum": 1}, {"const": "pending"}]},
+        "url": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "workspace": {
+      "type": "object",
+      "required": ["isolation", "branch", "base_ref", "base_commit", "head_commit"],
+      "properties": {
+        "isolation": {"const": "branch-worktree"},
+        "branch": {"type": "string", "minLength": 1},
+        "base_ref": {"type": "string", "minLength": 1},
+        "base_commit": {"$ref": "#/$defs/sha_or_pending"},
+        "head_commit": {"$ref": "#/$defs/sha_or_pending"}
+      },
+      "additionalProperties": false
+    },
+    "target": {
+      "type": "object",
+      "required": ["repository", "work_areas"],
+      "properties": {
+        "repository": {"type": "boolean"},
+        "work_areas": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}}
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "repository": {"const": true},
+            "work_areas": {"maxItems": 0}
+          }
+        },
+        {
+          "properties": {
+            "repository": {"const": false},
+            "work_areas": {"minItems": 1}
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "dependency": {
+      "type": "object",
+      "required": ["change_id", "pull_request", "required_commit", "consumes", "claim", "use", "evidence", "checked_at", "reopen_when", "status"],
+      "properties": {
+        "change_id": {"$ref": "#/$defs/change_id"},
+        "pull_request": {"$ref": "#/$defs/pull_request"},
+        "required_commit": {"$ref": "#/$defs/sha_or_pending"},
+        "consumes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/trace_id"}},
+        "claim": {"type": "string", "minLength": 1},
+        "use": {"type": "string", "minLength": 1},
+        "evidence": {"type": "string", "minLength": 1},
+        "checked_at": {"type": "string", "format": "date"},
+        "reopen_when": {"type": "string", "minLength": 1},
+        "status": {"enum": ["planned", "available", "integrated", "blocked", "stale"]}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"enum": ["available", "integrated"]}}, "required": ["status"]},
+          "then": {
+            "properties": {
+              "pull_request": {
+                "properties": {
+                  "number": {"type": "integer", "minimum": 1},
+                  "url": {"type": "string", "format": "uri", "pattern": "^https://"}
+                }
+              },
+              "required_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

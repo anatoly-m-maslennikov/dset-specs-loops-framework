@@ -1,0 +1,37 @@
+# Verification — Make DSET self-hosting and skills thin
+
+- **Implementing PR:** [anatoly-m-maslennikov/dset-specs-loops-framework#9](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9)
+- **Status:** roadmap §§0–§4 pass; skill/release specification review, qualitative evals, and roadmap §§5–§10 remain pending
+
+## Proof record contract
+
+Every promoted proof below owns one bounded claim and intended use, names the
+exact evaluated commit or artifact versions, states whether it is current,
+links its evidence address, and declares the input change or hosted-state event
+that reopens it. Refresh only the smallest dependency closure affected by that
+trigger; an unrelated repository edit does not automatically invalidate every
+proof.
+
+| Gate | Command or method | Result | Evidence |
+|---|---|---|---|
+| Invariant contract | IDs, scenarios, proof-category separation, and accepted methodology mapping | Pass | [Invariant contract verification](proofs/invariant-contract-verification-2026-07-14.md) |
+| Rule migration | Pre-refactor skill bodies mapped to one registered owner; current wrappers retain only allowed fields | Pass | [Wrapper rule inventory](proofs/wrapper-rule-inventory-2026-07-14.md) |
+| `DSET-TEST-TOOL-009..011`, `DSET-TEST-GOV-009..011`, `DSET-TEST-SKILL-002..003`, `DSET-TEST-META-004` | Ruff, mypy, 37 unit/fixture tests, governance failure matrix, generated-wrapper identity, local fixed point, `dset check`, canonical `dset verify`, and diff hygiene | Pass locally | [Local fixed-point proof](proofs/local-fixed-point-2026-07-14.md) and [clarify rename verification](proofs/clarify-rename-verification-2026-07-14.md) |
+| Hosted fixed point | Same pushed `dev`/PR head through GitHub checks | Pass after a recorded shallow-checkout corrective loop | [Hosted fixed-point proof](proofs/hosted-fixed-point-2026-07-14.md) |
+| `DSET-REQUIREMENT-SKILL-004..006`, `DSET-REQUIREMENT-OPS-008..011`; corresponding `DSET-TEST-*` IDs | Five-skill topology, orchestration, run records, version transitions, release transaction, RC/final gate, and version-surface coordination | Specification drafted; implementation proof pending | [Delta specification](specs/methodology.md) and [test plan](test-plan.md) |
+| `DSET-EVAL-SKILL-003..005`, `DSET-EVAL-OPS-006` | Orchestration usefulness, heuristic restraint, release classification, and release restraint | Three-reviewer specification pass pending; runtime eval remains pending | [Eval plan](eval-plan.md) |
+| `DSET-REQUIREMENT-SKILL-007..008`, `DSET-TEST-SKILL-007..008`, `DSET-EVAL-SKILL-006..007` | Main-session inheritance, proportional fan-out, explicit deviations, and expected-outcome-cost budgeting | Specification drafted; implementation/runtime eval pending | [Delta specification](specs/methodology.md), [test plan](test-plan.md), and [eval plan](eval-plan.md) |
+| `DSET-REQUIREMENT-SKILL-009`, `DSET-TEST-SKILL-009`, `DSET-EVAL-SKILL-008` | Linked internal workflow runs and bounded checkpoint recovery across context compaction | Governance and schemas drafted; runtime implementation and resume eval pending | [Skill-run rules](../../governance/skill-runs.md), [delta specification](specs/methodology.md), [test plan](test-plan.md), and [eval plan](eval-plan.md) |
+| `DSET-REQUIREMENT-GOV-011`, `DSET-TEST-GOV-012`, `DSET-EVAL-GOV-010` | Project intake, Decision records, layer IDs, and external-tracker separation | Specification and registry drafted; routing/ID fixtures pending | [Project intake](../../../gov/intake.yaml), [work-item rules](../../../gov/governance/work-items.md), and [delta specification](specs/methodology.md) |
+| `DSET-CONTRACT-SKILL-001`, `DSET-TEST-SKILL-011`, `DSET-EVAL-SKILL-009` | Real host-native skill installation, discovery, load, invocation, handoff, and stop behavior | Contract drafted; declared-host implementation and proof pending | [Contract delta](specs/contracts.md) |
+| `DSET-CONTRACT-TOOL-001`, `DSET-TEST-TOOL-016`, `DSET-EVAL-TOOL-005` | macOS, native Windows, WSL, and Linux utility compatibility or explicit narrower applicability | Contract drafted; platform-native proof pending | [Contract delta](specs/contracts.md) |
+| `DSET-CONTRACT-TOOL-002`, `DSET-TEST-TOOL-017`, `DSET-EVAL-TOOL-006` | Dependency registry/version/license/provenance, lockfile, allow/deny, and exception enforcement | Contract drafted; dependency enforcement proof pending | [Contract delta](specs/contracts.md) |
+| `DSET-CONTRACT-OPS-001`, `DSET-TEST-OPS-014`, `DSET-EVAL-OPS-008` | Real GitHub workflow/run/check evidence on the actual PR SHA with protected integration | Contract drafted; exact-SHA hosted proof pending | [Contract delta](specs/contracts.md) and [delivery runbook](../../../ops/supportability/delivery-runbook.md) |
+| `DSET-OUTCOME-META-001`, `DSET-TEST-META-010`, `DSET-EVAL-META-008` | DSET 0.3 adoption readiness as a measurable state change with complete measurement and relationship fields | Outcome specified; target measurement and deterministic/qualitative proof pending | [Outcome delta](specs/outcomes.md), [test plan](test-plan.md), and [eval plan](eval-plan.md) |
+| `DSET-REQUIREMENT-META-011`, `DSET-INVARIANT-META-008`, `DSET-CONTRACT-META-001`, `DSET-TEST-META-011`, `DSET-EVAL-META-009` | Repository-level or one-or-many repository-relative Work Area boundaries across local, deployable, library, documentation, methodology, data, and mixed content; session continuity references but does not own the boundary | Contract, declaration/session schemas, runtime validation, scaffolding, trace propagation, and deterministic fixtures implemented; end-to-end session resume and qualitative eval pending | [Methodology delta](specs/methodology.md), [contract delta](specs/contracts.md), [test plan](test-plan.md), and [eval plan](eval-plan.md) |
+| `DSET-QUESTION-META-001..003`, `DSET-QUESTION-GOV-002..003`, `DSET-QUESTION-OPS-001` | Deferred product-practice standardization without new ontology or queues | Questions registered; Decisions intentionally pending | [Project intake](../../../gov/intake.yaml) |
+| `DSET-EVAL-TOOL-001..002`, `DSET-EVAL-SKILL-002`, `DSET-EVAL-GOV-009` | Independent local-rule following, navigation, diagnostic-usefulness, and fail-closed restraint reviews | Pending; remains separate from tests | [Eval plan](eval-plan.md) |
+| Supportability | Existing repository delivery contract | Applicable; no adopter runtime or production data changed | [Delivery runbook](../../../ops/supportability/delivery-runbook.md) |
+| Reconciliation/archive | Accepted invariant/test mappings updated; current change remains active | Not archive-ready until later roadmap, eval, hosted, reconciliation, and release gates pass | [Tasks](tasks.md) |
+
+Record fresh commands, exit status, bounded summaries, unresolved failures, and the completion disposition. Never persist secrets or sensitive raw output.

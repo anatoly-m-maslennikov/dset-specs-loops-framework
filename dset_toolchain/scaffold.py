@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Sequence
 from pathlib import Path
 
 from .layout import discover_layout
@@ -18,6 +19,7 @@ def create_change(
     title: str | None = None,
     layer: str | None = None,
     stable_id: str | None = None,
+    work_areas: Sequence[str] | None = None,
 ) -> Path:
     if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", change_id):
         raise ValueError("change ID must be lowercase kebab-case")
@@ -26,6 +28,7 @@ def create_change(
     layout = discover_layout(root)
     if layout.layered and layer is None:
         raise ValueError("schema 1.2 changes require an owning DSET layer")
+    change_target = _change_target(root, work_areas)
     canonical_id = change_id
     if layout.layered:
         canonical_id = stable_id or _next_change_id(root, str(layer))
@@ -73,7 +76,7 @@ def create_change(
             _copy_template(source, target, replacements)
         if layout.layered:
             _materialize_layered_manifest(
-                destination, canonical_id, change_id, str(layer)
+                destination, canonical_id, change_id, str(layer), change_target
             )
     except Exception:
         _remove_tree(destination)
@@ -106,7 +109,10 @@ def _id_layer(root: Path, layer: str | None) -> str:
     normalized = layer.upper()
     if normalized not in TRACE_LAYERS:
         raise ValueError(f"unknown ID layer: {layer}")
-    data = load(discover_layout(root).intake_path)
+    layout = discover_layout(root)
+    if layout.layered:
+        return f"-{normalized}"
+    data = load(layout.intake_path)
     raw_scopes = data.get("scopes", []) if isinstance(data, dict) else []
     registered = {
         item.get("id_segment")
@@ -121,6 +127,39 @@ def _id_layer(root: Path, layer: str | None) -> str:
 def _repository(root: Path) -> str:
     history = load(discover_layout(root).history_path)
     return str(history["repository"])
+
+
+def _change_target(
+    root: Path, work_areas: Sequence[str] | None
+) -> dict[str, object] | None:
+    layout = discover_layout(root)
+    requested = list(work_areas or ())
+    if not layout.layered:
+        if requested:
+            raise ValueError("work-area targets require schema 1.2")
+        return None
+    if any(
+        not isinstance(identifier, str)
+        or re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", identifier) is None
+        for identifier in requested
+    ):
+        raise ValueError("work-area targets must be kebab-case IDs")
+    if len(requested) != len(set(requested)):
+        raise ValueError("work-area targets must be unique")
+    manifest = load(layout.manifest_path)
+    if not isinstance(manifest, dict):
+        raise ValueError("project manifest must be a mapping")
+    raw_declared = manifest.get("work_areas", [])
+    declared = {
+        item.get("id")
+        for item in (raw_declared if isinstance(raw_declared, list) else [])
+        if isinstance(item, dict) and isinstance(item.get("id"), str)
+    }
+    unknown = sorted(set(requested) - declared)
+    if unknown:
+        raise ValueError(f"undeclared work-area target: {', '.join(unknown)}")
+    selected = sorted(requested)
+    return {"repository": not selected, "work_areas": selected}
 
 
 def _next_change_id(root: Path, layer: str) -> str:
@@ -144,7 +183,11 @@ def _next_change_id(root: Path, layer: str) -> str:
 
 
 def _materialize_layered_manifest(
-    destination: Path, stable_id: str, slug: str, layer: str
+    destination: Path,
+    stable_id: str,
+    slug: str,
+    layer: str,
+    target: dict[str, object] | None,
 ) -> None:
     path = destination / "change.yaml"
     data = load(path)
@@ -158,6 +201,7 @@ def _materialize_layered_manifest(
             "slug": slug,
             "primary_layer": normalized,
             "affected_layers": [normalized],
+            "target": target,
             "workspace": {
                 "isolation": "branch-worktree",
                 "branch": f"dset/{slug}",

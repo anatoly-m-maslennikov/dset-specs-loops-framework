@@ -242,6 +242,7 @@ def _validate_project_manifest(
     if str(data.get("schema_version")) == "1.2":
         structure = data.get("structure")
         valid_structure = structure == {"layout": "layered-v1"}
+        diagnostics.extend(_validate_work_areas(root, path, data.get("work_areas")))
         valid_packages = isinstance(packages, list) and bool(packages)
         if valid_packages:
             for item in packages:
@@ -337,6 +338,70 @@ def _validate_project_manifest(
     return diagnostics
 
 
+def _validate_work_areas(
+    root: Path, manifest_path: Path, raw_work_areas: object
+) -> list[Diagnostic]:
+    valid = isinstance(raw_work_areas, list)
+    identifiers: set[str] = set()
+    raw_paths: set[str] = set()
+    resolved_paths: set[Path] = set()
+    for raw_item in raw_work_areas if isinstance(raw_work_areas, list) else []:
+        if not isinstance(raw_item, dict) or set(raw_item) != {"id", "path", "kind"}:
+            valid = False
+            continue
+        identifier = raw_item.get("id")
+        kind = raw_item.get("kind")
+        relative = raw_item.get("path")
+        if (
+            not isinstance(identifier, str)
+            or CHANGE_PATTERN.fullmatch(identifier) is None
+            or not isinstance(kind, str)
+            or CHANGE_PATTERN.fullmatch(kind) is None
+            or not isinstance(relative, str)
+        ):
+            valid = False
+            continue
+        resolved = _safe_repository_directory(root, relative)
+        if (
+            identifier in identifiers
+            or relative in raw_paths
+            or resolved is None
+            or resolved in resolved_paths
+        ):
+            valid = False
+        identifiers.add(identifier)
+        raw_paths.add(relative)
+        if resolved is not None:
+            resolved_paths.add(resolved)
+    if valid:
+        return []
+    return [
+        _diag(
+            "DSET-E143",
+            manifest_path,
+            "work areas require unique kebab-case IDs and safe unique existing "
+            "repository-relative directory paths",
+        )
+    ]
+
+
+def _safe_repository_directory(root: Path, relative: str) -> Path | None:
+    if (
+        not relative
+        or "\\" in relative
+        or re.match(r"^[A-Za-z]:", relative)
+        or any(part in {"", ".", ".."} for part in relative.split("/"))
+    ):
+        return None
+    candidate = root.joinpath(*relative.split("/"))
+    try:
+        resolved = candidate.resolve()
+        resolved.relative_to(root.resolve())
+    except (OSError, ValueError):
+        return None
+    return resolved if candidate.is_dir() else None
+
+
 def _validate_intake_registry(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]:
     work_items = manifest.get("work_items", {})
     relative = work_items.get("registry") if isinstance(work_items, dict) else None
@@ -352,47 +417,62 @@ def _validate_intake_registry(root: Path, manifest: dict[str, Any]) -> list[Diag
     project_key = _manifest_project_key(manifest)
     if project_key is None:
         return diagnostics
-    if data.get("scope_mode") != "multi-scope":
-        diagnostics.append(
-            _diag("DSET-E142", path, "intake must use the registered layer scopes")
-        )
-    raw_scopes = data.get("scopes")
-    if not isinstance(raw_scopes, list):
-        diagnostics.append(_diag("DSET-E142", path, "scopes must be a list"))
-        return diagnostics
-    scopes: dict[str, str] = {}
-    seen_segments: set[str] = set()
-    for raw_scope in raw_scopes:
-        if not isinstance(raw_scope, dict):
-            diagnostics.append(
-                _diag("DSET-E142", path, "every scope must be a mapping")
-            )
-            continue
-        scope_id = raw_scope.get("id")
-        segment = raw_scope.get("id_segment")
-        if (
-            not isinstance(scope_id, str)
-            or not isinstance(segment, str)
-            or segment not in TRACE_LAYERS
-            or raw_scope.get("kind") != "layer"
-            or scope_id != segment.lower()
-            or scope_id in scopes
-            or segment in seen_segments
+    layered = str(manifest.get("schema_version")) == "1.2"
+    scopes: dict[str, str]
+    if layered:
+        scopes = {segment.lower(): segment for segment in TRACE_LAYERS}
+        if data.get("schema_version") != "1.1" or any(
+            key in data for key in ("scope_mode", "scopes")
         ):
             diagnostics.append(
-                _diag("DSET-E142", path, f"invalid layer scope: {scope_id}")
+                _diag(
+                    "DSET-E142",
+                    path,
+                    "layered intake derives the fixed layers and cannot redefine them",
+                )
             )
-            continue
-        scopes[scope_id] = segment
-        seen_segments.add(segment)
-    if seen_segments != set(TRACE_LAYERS):
-        diagnostics.append(
-            _diag(
-                "DSET-E142",
-                path,
-                "intake must register META, GOV, TOOL, SKILL, and OPS exactly once",
+    else:
+        if data.get("scope_mode") != "multi-scope":
+            diagnostics.append(
+                _diag("DSET-E142", path, "intake must use registered layer scopes")
             )
-        )
+        raw_scopes = data.get("scopes")
+        if not isinstance(raw_scopes, list):
+            diagnostics.append(_diag("DSET-E142", path, "scopes must be a list"))
+            return diagnostics
+        scopes = {}
+        seen_segments: set[str] = set()
+        for raw_scope in raw_scopes:
+            if not isinstance(raw_scope, dict):
+                diagnostics.append(
+                    _diag("DSET-E142", path, "every scope must be a mapping")
+                )
+                continue
+            scope_id = raw_scope.get("id")
+            segment = raw_scope.get("id_segment")
+            if (
+                not isinstance(scope_id, str)
+                or not isinstance(segment, str)
+                or segment not in TRACE_LAYERS
+                or raw_scope.get("kind") != "layer"
+                or scope_id != segment.lower()
+                or scope_id in scopes
+                or segment in seen_segments
+            ):
+                diagnostics.append(
+                    _diag("DSET-E142", path, f"invalid layer scope: {scope_id}")
+                )
+                continue
+            scopes[scope_id] = segment
+            seen_segments.add(segment)
+        if seen_segments != set(TRACE_LAYERS):
+            diagnostics.append(
+                _diag(
+                    "DSET-E142",
+                    path,
+                    "intake must register META, GOV, TOOL, SKILL, and OPS exactly once",
+                )
+            )
     raw_items = data.get("items")
     if not isinstance(raw_items, list):
         diagnostics.append(_diag("DSET-E142", path, "items must be a list"))
@@ -432,6 +512,21 @@ def _validate_intake_registry(root: Path, manifest: dict[str, Any]) -> list[Diag
         elif isinstance(identifier, str):
             seen_ids.add(identifier)
         decision = raw_item.get("decision")
+        owner_change = raw_item.get("owner_change")
+        if layered and owner_change not in (None, "pending"):
+            owner_match = (
+                _trace_id_pattern(project_key, ("CHANGE",)).fullmatch(owner_change)
+                if isinstance(owner_change, str)
+                else None
+            )
+            if owner_match is None or owner_match.group("layer") is None:
+                diagnostics.append(
+                    _diag(
+                        "DSET-E142",
+                        path,
+                        f"invalid owner Change identity: {owner_change}",
+                    )
+                )
         if decision in (None, "pending"):
             continue
         decision_match = (
@@ -487,7 +582,7 @@ def _validate_version(
         )
     if (
         not isinstance(schemas, dict)
-        or schemas.get("version") != "1.1"
+        or schemas.get("version") != "1.2"
         or schemas.get("versioning") != "independent"
     ):
         diagnostics.append(
@@ -1231,6 +1326,8 @@ def _validate_layered_change(
 ) -> list[Diagnostic]:
     path = change_dir / "change.yaml"
     diagnostics: list[Diagnostic] = []
+    project = _safe_load(layout.manifest_path, diagnostics) or {}
+    diagnostics.extend(_validate_change_target(path, data.get("target"), project))
     primary = data.get("primary_layer")
     affected = data.get("affected_layers")
     try:
@@ -1264,7 +1361,6 @@ def _validate_layered_change(
             diagnostics.append(
                 _diag("DSET-E148", path, f"schema 1.2 requires {group} as a list")
             )
-    project = _safe_load(layout.manifest_path, diagnostics) or {}
     project_key = _manifest_project_key(project)
     if project_key is None:
         return diagnostics
@@ -1337,6 +1433,47 @@ def _validate_layered_change(
                     )
                 )
     return diagnostics
+
+
+def _validate_change_target(
+    path: Path, raw_target: object, project: dict[str, Any]
+) -> list[Diagnostic]:
+    raw_declared = project.get("work_areas", [])
+    declared = {
+        item.get("id")
+        for item in (raw_declared if isinstance(raw_declared, list) else [])
+        if isinstance(item, dict) and isinstance(item.get("id"), str)
+    }
+    valid = isinstance(raw_target, dict) and set(raw_target) == {
+        "repository",
+        "work_areas",
+    }
+    repository = raw_target.get("repository") if isinstance(raw_target, dict) else None
+    work_areas = raw_target.get("work_areas") if isinstance(raw_target, dict) else None
+    valid = (
+        valid
+        and isinstance(repository, bool)
+        and isinstance(work_areas, list)
+        and len(work_areas)
+        == len({item for item in work_areas if isinstance(item, str)})
+        and all(
+            isinstance(item, str)
+            and CHANGE_PATTERN.fullmatch(item) is not None
+            and item in declared
+            for item in work_areas
+        )
+        and ((repository and not work_areas) or (not repository and bool(work_areas)))
+    )
+    if valid:
+        return []
+    return [
+        _diag(
+            "DSET-E148",
+            path,
+            "change target must select the repository or one or more declared "
+            "work-area IDs",
+        )
+    ]
 
 
 def _validate_change_uniqueness(layout: RepositoryLayout) -> list[Diagnostic]:

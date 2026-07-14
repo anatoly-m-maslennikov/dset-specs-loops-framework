@@ -57,6 +57,20 @@ def build_traceability(root: Path) -> dict[str, Any]:
             entry["slug"] = data.get("slug")
             entry["primary_layer"] = data.get("primary_layer")
             entry["affected_layers"] = sorted(data.get("affected_layers", []))
+            target = data.get("target")
+            if isinstance(target, dict):
+                work_areas = target.get("work_areas")
+                entry["target"] = {
+                    "repository": target.get("repository"),
+                    "work_areas": (
+                        sorted(work_areas)
+                        if isinstance(work_areas, list)
+                        and all(isinstance(item, str) for item in work_areas)
+                        else work_areas
+                    ),
+                }
+            else:
+                entry["target"] = target
             entry["workspace"] = data.get("workspace")
             entry["dependencies"] = sorted(
                 data.get("dependencies", []),

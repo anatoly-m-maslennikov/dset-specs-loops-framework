@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/scopes/gov/schemas/intake.schema.json",
+  "title": "DSET project intake registry",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": ["schema_version", "scope_mode", "scopes", "items"],
+      "properties": {
+        "schema_version": {"const": 1.0},
+        "scope_mode": {"const": "multi-scope"},
+        "scopes": {"type": "array", "minItems": 5, "maxItems": 5, "uniqueItems": true, "items": {"$ref": "#/$defs/scope"}},
+        "items": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/legacy_item"}}
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": ["schema_version", "items"],
+      "properties": {
+        "schema_version": {"const": "1.1"},
+        "items": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/layered_item"}}
+      },
+      "additionalProperties": false
+    }
+  ],
+  "$defs": {
+    "scope": {
+      "type": "object",
+      "required": ["id", "id_segment", "kind", "name"],
+      "properties": {
+        "id": {"enum": ["meta", "gov", "tool", "skill", "ops"]},
+        "id_segment": {"enum": ["META", "GOV", "TOOL", "SKILL", "OPS"]},
+        "kind": {"const": "layer"},
+        "name": {"type": "string", "minLength": 1},
+        "path": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "legacy_item": {
+      "type": "object",
+      "required": ["id", "scope", "type", "status", "title", "statement", "owner_change", "decision"],
+      "properties": {
+        "id": {"$ref": "#/$defs/intake_id"},
+        "scope": {"$ref": "#/$defs/layer"},
+        "type": {"enum": ["problem", "opportunity", "question"]},
+        "status": {"enum": ["open", "accepted", "resolved", "closed"]},
+        "title": {"type": "string", "minLength": 1},
+        "statement": {"type": "string", "minLength": 1},
+        "owner_change": {"oneOf": [{"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}, {"const": "pending"}, {"type": "null"}]},
+        "decision": {"$ref": "#/$defs/decision"},
+        "external_refs": {"$ref": "#/$defs/external_refs"}
+      },
+      "additionalProperties": false
+    },
+    "layered_item": {
+      "type": "object",
+      "required": ["id", "scope", "type", "status", "title", "statement", "owner_change", "decision"],
+      "properties": {
+        "id": {"$ref": "#/$defs/intake_id"},
+        "scope": {"$ref": "#/$defs/layer"},
+        "type": {"enum": ["problem", "opportunity", "question"]},
+        "status": {"enum": ["open", "accepted", "resolved", "closed"]},
+        "title": {"type": "string", "minLength": 1},
+        "statement": {"type": "string", "minLength": 1},
+        "owner_change": {"oneOf": [{"type": "string", "pattern": "^[A-Z][A-Z0-9]*-CHANGE-(?:META|GOV|TOOL|SKILL|OPS)-[0-9]{3,}$"}, {"const": "pending"}, {"type": "null"}]},
+        "decision": {"$ref": "#/$defs/decision"},
+        "external_refs": {"$ref": "#/$defs/external_refs"}
+      },
+      "additionalProperties": false
+    },
+    "layer": {"enum": ["meta", "gov", "tool", "skill", "ops"]},
+    "intake_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-(?:PROBLEM|OPPORTUNITY|QUESTION)(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"},
+    "decision": {"oneOf": [{"type": "string", "pattern": "^[A-Z][A-Z0-9]*-DECISION(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}, {"const": "pending"}, {"type": "null"}]},
+    "external_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+  }
+}
