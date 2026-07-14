@@ -95,7 +95,8 @@ changes:
       - MDSHAST-EVAL-004
     adrs: []
     pull_request: pending
-    evidence: []
+    evidence:
+      - dset/changes/make-dset-self-hosting-and-skills-thin/proofs/invariant-contract-verification-2026-07-14.md
   -
     id: make-supportability-first-class
     status: archived
