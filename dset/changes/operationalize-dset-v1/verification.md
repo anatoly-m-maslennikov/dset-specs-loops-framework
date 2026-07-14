@@ -1,7 +1,7 @@
 # Verification — DSET v1
 
 - **Implementing PR:** [anatoly-m-maslennikov/dset-specs-loops-framework#7](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7)
-- **Status:** deterministic and qualitative gates pass; archive preparation in progress; PR remains draft
+- **Status:** archive-ready for the dated candidate move; final pushed-head evidence remains pending; PR remains draft
 - **Canonical command:** `python -m dset_toolchain verify .`
 - **Locked repository entry point:** `uv run dset verify .`
 

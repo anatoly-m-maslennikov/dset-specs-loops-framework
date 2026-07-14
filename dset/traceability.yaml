@@ -66,7 +66,7 @@ changes:
       - dset/changes/archive/2026-07-14-make-supportability-first-class/proofs/synthetic-incidents.md
   -
     id: operationalize-dset-v1
-    status: in-progress
+    status: archive-ready
     path: dset/changes/operationalize-dset-v1
     packages:
       - methodology

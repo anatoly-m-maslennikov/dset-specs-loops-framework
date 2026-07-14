@@ -1,7 +1,7 @@
 schema_version: 1.0-draft
 id: operationalize-dset-v1
 profile: standard
-status: in-progress
+status: archive-ready
 packages:
   - methodology
 pull_request:
