@@ -119,8 +119,15 @@
       "properties": {
         "identity": {"type": "string", "minLength": 1},
         "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
-        "command": {"type": "string", "minLength": 1}
+        "command": {"type": "string", "minLength": 1},
+        "assurance": {"enum": ["published-release", "bootstrap-transition"]}
       },
+      "allOf": [
+        {
+          "if": {"properties": {"identity": {"pattern": "not-release$"}}, "required": ["identity"]},
+          "then": {"required": ["assurance"], "properties": {"assurance": {"const": "bootstrap-transition"}}}
+        }
+      ],
       "additionalProperties": false
     }
   },

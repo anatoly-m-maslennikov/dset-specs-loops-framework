@@ -116,14 +116,14 @@ paths; schema 1.2 assigns each governing document to its semantic layer.
 
 ## §4 | Prove bounded recursive self-hosting
 
-- [x] **DSET-TASK-TOOL-018:** Make the last released DSET version validate the active change that modifies the candidate toolchain and governing contracts.
+- [ ] **DSET-TASK-TOOL-018:** Close the degraded bootstrap transition by making a published schema-1.2-compatible DSET validator validate a later candidate; until then preserve the exact pre-transition rejection and never call it a pass.
 - [x] **DSET-TASK-TOOL-019:** Make the candidate validate this framework repository's methodology, documentation, governance registry, project truth, templates, skills, CLI, schemas, fixtures, traceability, and supportability.
 - [x] **DSET-TASK-TOOL-020:** Scaffold a complete temporary adopter from released templates during tests without using private paths or machine-global state.
 - [x] **DSET-TASK-TOOL-021:** Make the same candidate validate the generated adopter with the same public command and schemas.
 - [x] **DSET-TASK-TOOL-022:** Mutate one generated local rule while preserving the skill wrapper bytes; prove registry/check results change only because the local rule/profile identity changed.
 - [x] **DSET-TASK-TOOL-023:** Corrupt each bootstrap boundary—manifest, registry, rule owner, path, dependency, wrapper identity, template, and candidate command—and prove the earliest stable failure.
 - [x] **DSET-TASK-TOOL-024:** Define the recursion stop: the generated adopter may consume the candidate toolchain but does not regenerate the framework repository or recursively create another adopter.
-- [x] **DSET-TASK-TOOL-025:** Run the full fixed point in local verification and hosted CI before an external pilot may claim DSET 0.3 adoption readiness.
+- [ ] **DSET-TASK-TOOL-025:** Rerun the bounded candidate/repository/adopter proof on the exact pushed PR head in hosted CI; the recorded older head is not current release evidence.
 
 ## §5 | Derive TypeScript v1 from Your Harness
 

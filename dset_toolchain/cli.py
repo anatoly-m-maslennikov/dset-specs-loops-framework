@@ -205,7 +205,9 @@ def main(argv: list[str] | None = None) -> int:
                     root, args.work_dir, released_ref=args.released_ref
                 )
             else:
-                with tempfile.TemporaryDirectory() as raw:
+                with tempfile.TemporaryDirectory(
+                    prefix="dset-self-host-", dir=_self_host_temp_parent(root)
+                ) as raw:
                     report = run_self_host(
                         root, Path(raw), released_ref=args.released_ref
                     )
@@ -236,6 +238,16 @@ def main(argv: list[str] | None = None) -> int:
 
 def _root_argument(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("root", nargs="?", type=Path)
+
+
+def _self_host_temp_parent(root: Path) -> str | None:
+    system_temp = Path(tempfile.gettempdir()).resolve()
+    repository = root.resolve()
+    try:
+        system_temp.relative_to(repository)
+    except ValueError:
+        return None
+    return str(repository.parent)
 
 
 def _repository_root(raw: Path | None) -> Path:

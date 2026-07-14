@@ -78,4 +78,16 @@ Areas without treating those folders as features, modules, or services.
 
 ## Status
 
-The methodology is published, the repository dogfoods its own project contract, and the executable schema/toolchain v1 contract was implemented and verified through PR [#7](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7). The coordinated DSET product/Python-package `0.3.0` release is now an active candidate: repository-local governance, thin wrappers, project-owned materialization, and the bounded self-hosting fixed point pass locally and in hosted CI on draft PR [#9](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9). Independent qualitative evals, the two target skill wrappers, run/session/release automation, the evidence-derived JavaScript/TypeScript profile, external pilots, pinned distribution, and final release reconciliation remain open; `0.3.0` is not yet an adoption-readiness claim.
+The methodology is published, the repository dogfoods its own project contract,
+and the executable schema/toolchain v1 contract was implemented through PR
+[#7](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7).
+The coordinated DSET 0.3 product/Python-package release remains an active
+candidate on draft PR
+[#9](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9):
+the candidate validates this repository and one bounded temporary adopter, while
+the pinned pre-transition validator records an explicit degraded bootstrap
+incompatibility instead of a false pass. Current exact-head hosted proof,
+independent qualitative evals, two target skill wrappers, run/session/release
+automation, the JavaScript/TypeScript profile, external pilots, pinned
+distribution, and final reconciliation remain open; DSET 0.3 is not yet an
+adoption-readiness claim.

@@ -20,6 +20,15 @@ Archive execution must require complete profile artifacts, fresh verification, a
 
 ## DSET-REQUIREMENT-TOOL-004 — DSET 0.3 self-hosting is bounded
 
-The DSET 0.3 self-hosting gate must have exactly three bounded levels: the last released validator checks the candidate change, the candidate checks this repository, and the candidate materializes and checks one temporary adopter. The temporary adopter must not create another adopter or traverse unrelated nested DSET roots.
+The DSET 0.3 self-hosting gate must have exactly three bounded levels: the last
+released validator checks the candidate change; the candidate checks this
+repository; and the candidate materializes and checks one temporary adopter.
+During a declared bootstrap transition, an incompatible pre-transition
+validator records its exact rejection as degraded assurance rather than a pass;
+the candidate and temporary adopter still must pass. The temporary adopter must
+not create another adopter or traverse unrelated nested DSET roots.
 
-**Scenario DSET-SCENARIO-TOOL-004:** One release run records released-to-candidate, candidate-to-repository, and candidate-to-temporary-adopter results, then terminates at the declared fixed point.
+**Scenario DSET-SCENARIO-TOOL-004:** One release run records released-to-candidate
+as pass or an explicitly declared bootstrap-transition rejection, requires
+candidate-to-repository and candidate-to-temporary-adopter to pass, then
+terminates at the declared fixed point.

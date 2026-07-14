@@ -1,7 +1,11 @@
 from __future__ import annotations
 
+import os
+import subprocess
+import sys
 import tempfile
 import unittest
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from dset_toolchain.errors import DsetCommandError
@@ -22,7 +26,10 @@ class SelfHostTests(unittest.TestCase):
     def test_fixed_point_uses_released_and_candidate_validators(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             report = run_self_host(ROOT, Path(raw))
-        self.assertEqual(report["released_validator"], "pass")
+        self.assertEqual(report["released_validator"], "bootstrap-transition")
+        self.assertIn(
+            "released validator rejected", report["released_validator_diagnostic"]
+        )
         self.assertEqual(report["candidate_repository"], "pass")
         self.assertEqual(report["temporary_adopter"], "pass")
         self.assertEqual(report["customization"], "custom")
@@ -48,6 +55,26 @@ class SelfHostTests(unittest.TestCase):
                 candidate_command=["missing-dset-candidate"],
             )
         self.assertEqual(captured.exception.code, "DSET-E141")
+
+    def test_parallel_cli_runs_keep_temporary_adopters_outside_repository(self) -> None:
+        environment = dict(os.environ)
+        environment["TMPDIR"] = str(ROOT)
+        command = [sys.executable, "-m", "dset_toolchain", "self-host", str(ROOT)]
+
+        def execute() -> subprocess.CompletedProcess[str]:
+            return subprocess.run(
+                command,
+                cwd=ROOT,
+                env=environment,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            results = list(executor.map(lambda _: execute(), range(2)))
+        for result in results:
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
 
 if __name__ == "__main__":

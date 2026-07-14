@@ -23,12 +23,15 @@
 - Reduce the three skills to trigger/bootstrap/resolution/authorization/handoff wrappers.
 - Add versioned `core-v1` templates, explicit materialization, no-overwrite behavior, migration mapping, and generated-wrapper identity proof.
 
-## Batch 3 — Bounded self-hosting — complete
+## Batch 3 — Bounded self-hosting — degraded bootstrap transition
 
-- Extract the pinned released validator from Git history and use it to check the candidate repository.
+- Extract the pinned pre-transition validator from Git history and record its
+  schema 1.2 rejection as degraded bootstrap assurance rather than a pass.
 - Use the candidate to check this repository, create and check one temporary adopter, mutate one local rule, preserve wrapper bytes, and stop recursion.
 - Corrupt each bootstrap boundary and assert the earliest stable failure.
-- Run the same fixed point on the pushed PR head in hosted CI and preserve the shallow-checkout corrective loop.
+- Keep candidate-to-repository and candidate-to-adopter proof mandatory, isolate
+  temporary work outside the repository, and rerun exact-head hosted proof after
+  the current branch is pushed.
 
 ## Batch 4 — Skill topology and release-cycle contract — specification complete
 

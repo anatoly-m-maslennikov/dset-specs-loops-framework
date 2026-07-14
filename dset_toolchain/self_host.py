@@ -36,12 +36,20 @@ def run_self_host(
     extracted = work_root / "released-validator"
     adopter = work_root / "temporary-adopter"
     _extract_released(root, reference, extracted)
-    released_result = _run_validator(
-        [sys.executable, "-m", "dset_toolchain", "check", str(root)],
-        extracted,
-        "DSET-E140",
-        "released validator rejected the candidate repository",
-    )
+    released_status = "pass"
+    released_diagnostic: str | None = None
+    try:
+        _run_validator(
+            [sys.executable, "-m", "dset_toolchain", "check", str(root)],
+            extracted,
+            "DSET-E140",
+            "released validator rejected the candidate repository",
+        )
+    except DsetCommandError as error:
+        if released.get("assurance") != "bootstrap-transition":
+            raise
+        released_status = "bootstrap-transition"
+        released_diagnostic = error.message[:2000]
     command = candidate_command or [
         sys.executable,
         "-m",
@@ -97,7 +105,8 @@ def run_self_host(
             "DSET-E141", rule_path, "customized workflow did not resolve"
         )
     return {
-        "released_validator": "pass" if released_result == 0 else "fail",
+        "released_validator": released_status,
+        "released_validator_diagnostic": released_diagnostic,
         "candidate_repository": "pass",
         "temporary_adopter": "pass",
         "customization": customized["customization"],

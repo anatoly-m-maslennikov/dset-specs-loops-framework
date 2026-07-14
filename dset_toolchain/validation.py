@@ -590,6 +590,13 @@ def _validate_version(
         diagnostics.append(
             _diag("DSET-E124", path, "released validator commit must be a full SHA")
         )
+    if data.get("schema_version") != "1.2" or released.get("assurance") not in {
+        "published-release",
+        "bootstrap-transition",
+    }:
+        diagnostics.append(
+            _diag("DSET-E124", path, "validator assurance contract is inconsistent")
+        )
     return diagnostics
 
 

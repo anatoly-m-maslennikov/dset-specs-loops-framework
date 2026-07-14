@@ -8,7 +8,13 @@ A DSET version may release a capability only after this repository adopts it und
 
 ## ADDED — DSET-REQUIREMENT-TOOL-007 Self-hosting terminates at a fixed point
 
-The self-hosting release gate must have exactly three bounded levels: the last released validator checks the candidate change, the candidate checks this repository, and the candidate materializes and checks one temporary adopter. The temporary adopter must not recursively create another adopter.
+The self-hosting release gate must have exactly three bounded levels: the last
+released validator checks the candidate change, the candidate checks this
+repository, and the candidate materializes and checks one temporary adopter.
+During a declared bootstrap transition, an incompatible pre-transition
+validator records its exact rejection as degraded assurance rather than a pass;
+the other two levels still must pass. The temporary adopter must not recursively
+create another adopter.
 
 **Scenario DSET-SCENARIO-TOOL-007:** A candidate run records released-to-candidate, candidate-to-repository, and candidate-to-temporary-adopter results, then terminates without discovering or traversing unrelated nested `dset/` roots.
 

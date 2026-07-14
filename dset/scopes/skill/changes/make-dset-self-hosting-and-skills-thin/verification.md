@@ -1,7 +1,7 @@
 # Verification — Make DSET self-hosting and skills thin
 
 - **Implementing PR:** [anatoly-m-maslennikov/dset-specs-loops-framework#9](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9)
-- **Status:** roadmap §§0–§4 pass; skill/release specification review, qualitative evals, and roadmap §§5–§10 remain pending
+- **Status:** candidate/repository/adopter checks pass locally; released-validator assurance is a declared degraded bootstrap transition; current hosted proof, skill/release implementation, qualitative evals, and roadmap §§5–§10 remain pending
 
 ## Proof record contract
 
@@ -17,7 +17,7 @@ proof.
 | Invariant contract | IDs, scenarios, proof-category separation, and accepted methodology mapping | Pass | [Invariant contract verification](proofs/invariant-contract-verification-2026-07-14.md) |
 | Rule migration | Pre-refactor skill bodies mapped to one registered owner; current wrappers retain only allowed fields | Pass | [Wrapper rule inventory](proofs/wrapper-rule-inventory-2026-07-14.md) |
 | `DSET-TEST-TOOL-009..011`, `DSET-TEST-GOV-009..011`, `DSET-TEST-SKILL-002..003`, `DSET-TEST-META-004` | Ruff, mypy, 37 unit/fixture tests, governance failure matrix, generated-wrapper identity, local fixed point, `dset check`, canonical `dset verify`, and diff hygiene | Pass locally | [Local fixed-point proof](proofs/local-fixed-point-2026-07-14.md) and [clarify rename verification](proofs/clarify-rename-verification-2026-07-14.md) |
-| Hosted fixed point | Same pushed `dev`/PR head through GitHub checks | Pass after a recorded shallow-checkout corrective loop | [Hosted fixed-point proof](proofs/hosted-fixed-point-2026-07-14.md) |
+| Hosted fixed point | Same pushed `dev`/PR head through GitHub checks | Historical pass only; current branch head is not pushed or re-evaluated | [Hosted fixed-point proof](proofs/hosted-fixed-point-2026-07-14.md) |
 | `DSET-REQUIREMENT-SKILL-004..006`, `DSET-REQUIREMENT-OPS-008..011`; corresponding `DSET-TEST-*` IDs | Five-skill topology, orchestration, run records, version transitions, release transaction, RC/final gate, and version-surface coordination | Specification drafted; implementation proof pending | [Delta specification](specs/methodology.md) and [test plan](test-plan.md) |
 | `DSET-EVAL-SKILL-003..005`, `DSET-EVAL-OPS-006` | Orchestration usefulness, heuristic restraint, release classification, and release restraint | Three-reviewer specification pass pending; runtime eval remains pending | [Eval plan](eval-plan.md) |
 | `DSET-REQUIREMENT-SKILL-007..008`, `DSET-TEST-SKILL-007..008`, `DSET-EVAL-SKILL-006..007` | Main-session inheritance, proportional fan-out, explicit deviations, and expected-outcome-cost budgeting | Specification drafted; implementation/runtime eval pending | [Delta specification](specs/methodology.md), [test plan](test-plan.md), and [eval plan](eval-plan.md) |
