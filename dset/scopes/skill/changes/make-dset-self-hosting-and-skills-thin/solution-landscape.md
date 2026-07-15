@@ -4,18 +4,18 @@
 
 | Capability | Requirement/test/eval IDs | Hard constraints |
 |---|---|---|
-| Repository rule authority | `DSET-REQUIREMENT-GOV-007`, `DSET-REQUIREMENT-GOV-010`; `DSET-TEST-GOV-009`, `DSET-TEST-GOV-011`; `DSET-EVAL-TOOL-002` | Local paths, one editable owner per rule ID, no remote live authority |
+| Repository rule authority | `DSET-REQUIREMENT-GOV-014`, `DSET-REQUIREMENT-GOV-017`; `DSET-TEST-GOV-014`, `DSET-TEST-GOV-017`; `DSET-EVAL-GOV-007` | Local paths, one editable owner per rule ID, no remote live authority |
 | Thin adaptive wrappers | `DSET-REQUIREMENT-SKILL-002`, `DSET-REQUIREMENT-SKILL-003`; `DSET-TEST-SKILL-002`, `DSET-TEST-SKILL-003`; `DSET-EVAL-SKILL-002`, `DSET-EVAL-GOV-009` | Same wrapper hash, no embedded normative fallback |
-| Bounded self-hosting | `DSET-REQUIREMENT-TOOL-006`, `DSET-REQUIREMENT-TOOL-007`; `DSET-TEST-TOOL-009`, `DSET-TEST-TOOL-010` | Terminates, profile-aware, framework before external pilot |
-| Honest failure/customization | `DSET-REQUIREMENT-GOV-008`, `DSET-REQUIREMENT-GOV-009`; `DSET-TEST-TOOL-011`, `DSET-TEST-GOV-010`; `DSET-EVAL-SKILL-003` | Stable diagnostics, justified non-applicability, explicit custom identity |
-| Separate proof | `DSET-REQUIREMENT-META-005`; `DSET-TEST-META-004`; all evals | Tests and evals remain different artifacts and evidence streams |
+| Bounded self-hosting | `DSET-REQUIREMENT-OPS-003`, `DSET-REQUIREMENT-TOOL-004`; `DSET-TEST-OPS-003`, `DSET-TEST-TOOL-005` | Terminates, profile-aware, framework before external pilot |
+| Honest failure/customization | `DSET-REQUIREMENT-GOV-015..016`; `DSET-TEST-GOV-015..016`; `DSET-EVAL-GOV-008..009` | Stable diagnostics, justified non-applicability, explicit custom identity |
+| Separate proof | `DSET-REQUIREMENT-META-007`; `DSET-TEST-META-007`; all evals | Tests and evals remain different artifacts and evidence streams |
 | Small skill surface | `DSET-REQUIREMENT-SKILL-004`, `DSET-REQUIREMENT-SKILL-005`; `DSET-TEST-SKILL-004`, `DSET-TEST-SKILL-005`; `DSET-EVAL-SKILL-004` | One obvious entrypoint, narrow specialists, no helper-skill explosion |
 | Investigable next-step routing | `DSET-REQUIREMENT-SKILL-006`; `DSET-TEST-SKILL-006`; `DSET-EVAL-SKILL-005` | Bounded local evidence, redaction, no competing authority |
-| Predictable pre-1.0 releases | `DSET-REQUIREMENT-OPS-008`, `DSET-REQUIREMENT-OPS-011`; `DSET-TEST-OPS-008`, `DSET-TEST-OPS-011`; `DSET-EVAL-SKILL-006` | Integer version tuple, one bump per main PR, coordinated product/package identity |
-| Guarded RC/final publication | `DSET-REQUIREMENT-OPS-009`, `DSET-REQUIREMENT-OPS-010`; `DSET-TEST-OPS-009`, `DSET-TEST-OPS-010`; `DSET-EVAL-OPS-006` | PR-only main updates, fully working RC, evidence-gated 1.0 |
-| Proportional delegation budget | `DSET-REQUIREMENT-SKILL-007`, `DSET-REQUIREMENT-SKILL-008`; `DSET-TEST-SKILL-007`, `DSET-TEST-SKILL-008`; `DSET-EVAL-SKILL-006`, `DSET-EVAL-SKILL-007` | Main model/effort inheritance, useful medium fan-out, outcome cost rather than nominal price |
+| Predictable pre-1.0 releases | `DSET-REQUIREMENT-OPS-004`, `DSET-REQUIREMENT-OPS-007`; `DSET-TEST-OPS-004`, `DSET-TEST-OPS-007`; `DSET-EVAL-OPS-002` | Integer version tuple, one bump per main PR, coordinated product/package identity |
+| Guarded RC/final publication | `DSET-REQUIREMENT-OPS-005..006`; `DSET-TEST-OPS-005..006`; `DSET-EVAL-OPS-003` | PR-only main updates, fully working RC, evidence-gated 1.0 |
+| Proportional delegation budget | `DSET-REQUIREMENT-SKILL-007..008`; `DSET-TEST-SKILL-007..008`; `DSET-EVAL-SKILL-005..006` | Main model/effort inheritance, useful medium fan-out, outcome cost rather than nominal price |
 | Session continuity | `DSET-REQUIREMENT-SKILL-009`; `DSET-TEST-SKILL-009`; `DSET-EVAL-SKILL-008` | One public entrypoint, linked internal runs, bounded checkpoint recovery after compaction, and authoritative-state refresh |
-| Unambiguous project intake | `DSET-REQUIREMENT-GOV-011`; `DSET-TEST-GOV-012`; `DSET-EVAL-GOV-010` | One registry; Problems include risks; Opportunities require no defect; Questions lead to Decisions; tasks stay in Changes; stable architectural layers own IDs |
+| Unambiguous project intake | `DSET-REQUIREMENT-GOV-018..019`; `DSET-TEST-GOV-018..019`; `DSET-EVAL-GOV-010..011` | One registry; Problems include risks; Opportunities require no defect; Questions lead to Decisions; tasks stay in Changes; stable architectural layers own IDs |
 
 ## Candidates
 

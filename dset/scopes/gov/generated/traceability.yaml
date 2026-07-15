@@ -163,17 +163,19 @@ changes:
     packages:
       - methodology
     requirements:
-      - DSET-REQUIREMENT-GOV-007
-      - DSET-REQUIREMENT-GOV-008
-      - DSET-REQUIREMENT-GOV-009
-      - DSET-REQUIREMENT-GOV-010
-      - DSET-REQUIREMENT-GOV-011
-      - DSET-REQUIREMENT-META-005
+      - DSET-REQUIREMENT-GOV-014
+      - DSET-REQUIREMENT-GOV-015
+      - DSET-REQUIREMENT-GOV-016
+      - DSET-REQUIREMENT-GOV-017
+      - DSET-REQUIREMENT-GOV-018
+      - DSET-REQUIREMENT-GOV-019
+      - DSET-REQUIREMENT-META-007
       - DSET-REQUIREMENT-META-011
-      - DSET-REQUIREMENT-OPS-008
-      - DSET-REQUIREMENT-OPS-009
-      - DSET-REQUIREMENT-OPS-010
-      - DSET-REQUIREMENT-OPS-011
+      - DSET-REQUIREMENT-OPS-003
+      - DSET-REQUIREMENT-OPS-004
+      - DSET-REQUIREMENT-OPS-005
+      - DSET-REQUIREMENT-OPS-006
+      - DSET-REQUIREMENT-OPS-007
       - DSET-REQUIREMENT-OPS-012
       - DSET-REQUIREMENT-SKILL-002
       - DSET-REQUIREMENT-SKILL-003
@@ -183,20 +185,22 @@ changes:
       - DSET-REQUIREMENT-SKILL-007
       - DSET-REQUIREMENT-SKILL-008
       - DSET-REQUIREMENT-SKILL-009
-      - DSET-REQUIREMENT-TOOL-006
-      - DSET-REQUIREMENT-TOOL-007
+      - DSET-REQUIREMENT-TOOL-004
     tests:
-      - DSET-TEST-GOV-009
-      - DSET-TEST-GOV-010
-      - DSET-TEST-GOV-011
-      - DSET-TEST-GOV-012
-      - DSET-TEST-META-004
+      - DSET-TEST-GOV-014
+      - DSET-TEST-GOV-015
+      - DSET-TEST-GOV-016
+      - DSET-TEST-GOV-017
+      - DSET-TEST-GOV-018
+      - DSET-TEST-GOV-019
+      - DSET-TEST-META-007
       - DSET-TEST-META-010
       - DSET-TEST-META-011
-      - DSET-TEST-OPS-008
-      - DSET-TEST-OPS-009
-      - DSET-TEST-OPS-010
-      - DSET-TEST-OPS-011
+      - DSET-TEST-OPS-003
+      - DSET-TEST-OPS-004
+      - DSET-TEST-OPS-005
+      - DSET-TEST-OPS-006
+      - DSET-TEST-OPS-007
       - DSET-TEST-OPS-014
       - DSET-TEST-OPS-015
       - DSET-TEST-SKILL-002
@@ -208,17 +212,19 @@ changes:
       - DSET-TEST-SKILL-008
       - DSET-TEST-SKILL-009
       - DSET-TEST-SKILL-011
-      - DSET-TEST-TOOL-009
-      - DSET-TEST-TOOL-010
-      - DSET-TEST-TOOL-011
+      - DSET-TEST-TOOL-005
       - DSET-TEST-TOOL-016
       - DSET-TEST-TOOL-017
     evals:
+      - DSET-EVAL-GOV-007
+      - DSET-EVAL-GOV-008
       - DSET-EVAL-GOV-009
       - DSET-EVAL-GOV-010
+      - DSET-EVAL-GOV-011
       - DSET-EVAL-META-008
       - DSET-EVAL-META-009
-      - DSET-EVAL-OPS-006
+      - DSET-EVAL-OPS-002
+      - DSET-EVAL-OPS-003
       - DSET-EVAL-OPS-008
       - DSET-EVAL-OPS-009
       - DSET-EVAL-SKILL-002
@@ -226,11 +232,8 @@ changes:
       - DSET-EVAL-SKILL-004
       - DSET-EVAL-SKILL-005
       - DSET-EVAL-SKILL-006
-      - DSET-EVAL-SKILL-007
       - DSET-EVAL-SKILL-008
       - DSET-EVAL-SKILL-009
-      - DSET-EVAL-TOOL-001
-      - DSET-EVAL-TOOL-002
       - DSET-EVAL-TOOL-005
       - DSET-EVAL-TOOL-006
     intake:
@@ -259,8 +262,7 @@ changes:
       - DSET-CONTRACT-TOOL-001
       - DSET-CONTRACT-TOOL-002
     stories: []
-    outcomes:
-      - DSET-OUTCOME-META-001
+    outcomes: []
     pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9
     evidence:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md

@@ -106,11 +106,11 @@ items:
   - id: DSET-PROBLEM-GOV-001
     scope: gov
     type: problem
-    status: open
+    status: resolved
     title: Active deltas and accepted truth reuse IDs inconsistently
-    statement: The active 0.3 Change retains pre-layer requirement IDs whose current accepted owners now use the same IDs for different semantics. This prevents reliable traceability until every active delta is reconciled to one stable current ID or explicitly removed as already accepted.
+    statement: The active 0.3 Change formerly retained pre-layer IDs whose accepted owners now used those IDs differently. The live delta, manifest, proof plans, solution landscape, and verification now reference the current accepted layer-owned IDs and retain only genuinely unaccepted deltas.
     owner_change: DSET-CHANGE-SKILL-001
-    decision: pending
+    decision: null
     external_refs:
       - https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9
   - id: DSET-QUESTION-META-004
