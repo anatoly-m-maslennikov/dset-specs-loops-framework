@@ -70,6 +70,21 @@
 - Keep the independent qualitative eval pending until the runtime session
   resume capability can exercise stale-scope re-resolution end to end.
 
+## Batch 8 — Provenance and artifact authority — specification complete
+
+- Define evergreen, transactional, and implementation artifact classes in GOV
+  governance.
+- Require transactional artifacts, including Decisions, Problems,
+  Opportunities, Questions, proofs, runs, sessions, and release evidence, to
+  compile accepted consequences into current evergreen truth before
+  implementation relies on them.
+- Require commits that change evergreen truth or implementation artifacts to
+  cite the Decision they implement, or the authorizing Problem, Opportunity,
+  Question, or Change when no Decision is required.
+- Add `llm_session_ids` provenance to active Change manifests and Decision
+  templates so atomic artifacts can point back to the sessions that created or
+  materially revised them.
+
 ## Later batches
 
 Implement the Batch 4 orchestration/run/budget/release mechanics and roadmap §§5–§10 for the TypeScript profile, owned Your Harness pilot, clean-room Claudian evaluation, complete tests/evals, and pinned distribution. Keep unfinished behavior out of public capability claims.

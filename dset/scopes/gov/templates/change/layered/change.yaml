@@ -13,6 +13,7 @@ workspace:
   base_commit: pending
   head_commit: pending
 dependencies: []
+llm_session_ids: []
 target:
   repository: true
   work_areas: []
@@ -44,4 +45,3 @@ contracts:
   - {{project_key}}-CONTRACT{{id_layer}}-001
 stories: []
 outcomes: []
-

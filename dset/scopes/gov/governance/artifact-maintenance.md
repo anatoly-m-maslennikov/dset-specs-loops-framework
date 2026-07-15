@@ -11,12 +11,15 @@ Every normative rule ID has one editable governing document. Hubs navigate, wrap
 - Confirm authorization before editing existing project artifacts.
 - Write each conclusion to its owning accepted package, active change, decision, runbook, proof plan, or evidence artifact.
 - Keep deterministic tests and qualitative/probabilistic evals separate.
+- Classify each durable artifact as evergreen, transactional, or implementation
+  layer. Do not let an implementation file or transactional record become a
+  hidden substitute for current evergreen truth.
 - Materialized rules become project-owned immediately. Later framework releases provide an explicit comparison and proposed delta, never an invisible overwrite.
 - Record intentional local customization with `dset rules refresh`, retaining the source profile, version, template path, and digest as provenance.
 - During migration, map every old rule/spec/plan/decision/runbook/evidence surface and make the old writer a concise pointer, read-only history, verified archive, or remove it only after cutover proof.
 - Refuse an existing destination and keep the previous owner writable when validation fails.
 
-## Decision discharge
+## Transactional discharge
 
 A resolved consequential Question produces a Decision, but the Decision is not
 a second specification. Discharge its normative consequences into the owning
@@ -24,11 +27,32 @@ canonical Requirements, Scenarios, Contracts, Design, proof plans, or operating
 rules; link those edits and the closed Question back to the Decision. Keep the
 Decision as the durable rationale, alternatives, trade-offs, and consequences.
 
+Problems, Opportunities, Questions, evidence records, and other transactional
+artifacts follow the same compile-down rule. Their accepted consequences must
+enter current evergreen specs, implementation plans, test plans, eval plans,
+contracts, runbooks, or governance before they govern implementation. Closing a
+transactional artifact without compiling its accepted consequences leaves the
+work incomplete.
+
 A Decision records status and decision date, its evidence basis, superseded and
 successor Decisions, confirmation or violation evidence, and the condition that
 reopens it. Counter-evidence may withdraw a Decision's current authority without
 deleting its history or the evidence that once supported it. Supersession creates
 an explicit successor link; it never silently rewrites the earlier Decision.
+
+## Commit and session provenance
+
+Every commit that changes evergreen truth or implementation artifacts must name
+the Decision or Decisions it implements in the commit body, for example
+`Implements: DSET-DECISION-GOV-001`. If a small fix has no accepted Decision,
+the commit must name the governing Problem, Opportunity, Question, or Change
+that authorized it and explain why no Decision was required.
+
+Every newly created or materially changed atomic artifact records its LLM
+session provenance when an LLM helped produce it. Use `llm_session_ids` with
+stable host-prefixed IDs such as `codex:<session-id>`. Session provenance is
+not authority by itself; it lets a reviewer find the working context that
+created, reviewed, or materially revised the artifact.
 
 ## Proof and derived-view maintenance
 

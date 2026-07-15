@@ -15,6 +15,7 @@ Applicable qualitative and probabilistic proof is layer-owned. The representativ
 | **DSET-EVAL-GOV-009** | Fail-closed wrapper restraint | Every independent run stops before governed work when ownership cannot resolve, reports the unresolved state, and does not continue from embedded knowledge or remote framework prose |
 | **DSET-EVAL-GOV-010** | Intake clarity | Every reviewer classifies intake consistently using only problems, opportunities, and questions, while placing tasks inside Changes, treating Decision as both the entity and durable artifact, and treating hosted tickets as representations |
 | **DSET-EVAL-GOV-011** | ID grammar | Reviewers use the `DSET` project prefix and full type, omit the layer for project-wide IDs, include the semantic layer for layer-owned IDs, use full `DECISION`, and never derive identity from directories |
+| **DSET-EVAL-GOV-012** | Compile-down clarity | Reviewers can distinguish evergreen, transactional, and implementation artifacts; identify which evergreen owner received a transactional artifact's accepted consequence; and reject an implementation-only change that leaves current truth stale |
 
 ## Calibration and evidence
 

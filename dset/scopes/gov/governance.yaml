@@ -12,7 +12,7 @@ rules:
     applicability: applicable
     reason: Every governed workflow requires explicit authority and bootstrap boundaries
     depends_on: []
-    customization: unmodified
+    customization: custom
     source:
       profile: core-v1
       version: "0.2"
@@ -117,7 +117,7 @@ rules:
     reason: Intake must distinguish problems, opportunities, questions, and change-owned tasks
     depends_on:
       - DSET-RULE-ARCHITECTURE
-    customization: unmodified
+    customization: custom
     source:
       profile: core-v1
       version: "0.2"

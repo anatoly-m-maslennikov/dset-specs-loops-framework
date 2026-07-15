@@ -23,6 +23,9 @@ This fragment owns exact deterministic proof for its listed IDs. Shared package 
 | **DSET-TEST-GOV-017** | DSET-REQUIREMENT-GOV-017, DSET-INVARIANT-GOV-009 | Reject zero or multiple editable owners for a selected normative rule ID and reject normative rule bodies in declared derived surfaces | Governance ownership fixtures, thin-wrapper audit, and change rule inventory |
 | **DSET-TEST-GOV-018** | DSET-REQUIREMENT-GOV-018, DSET-INVARIANT-GOV-010 | Classify representative defects, gaps, debt, risks, optional improvements, uncertainties, tasks, Decisions, Changes, GitHub Issues, and Jira tickets as problems/opportunities/questions or non-intake artifacts/representations | Work-routing fixture matrix |
 | **DSET-TEST-GOV-019** | DSET-REQUIREMENT-GOV-019, DSET-INVARIANT-GOV-011 | Validate the one-owner intake registry, the `DSET` project prefix, full types, optional semantic layer, project-wide layer omission, full `DECISION` IDs, and independent per-type/layer numbering | Intake schema and ID-grammar fixture matrix |
+| **DSET-TEST-GOV-020** | DSET-REQUIREMENT-GOV-020 | Verify artifact-governance docs define evergreen, transactional, and implementation-layer authority classes without making generated views authoritative | Documentation/gov link and text audit |
+| **DSET-TEST-GOV-021** | DSET-REQUIREMENT-GOV-021 | Verify every accepted Decision added by this Change names the evergreen artifacts that compile its normative consequences | Change artifact audit |
+| **DSET-TEST-GOV-022** | DSET-REQUIREMENT-GOV-022 | Verify the active Change and new atomic artifacts carry `llm_session_ids`, and the implementing commit body names the Decision it implements | Change manifest/schema audit plus commit-message review |
 
 ## Regression policy
 

@@ -115,3 +115,21 @@ Every normative rule ID must resolve to exactly one editable governing document.
 The project prefix is `DSET`. Project-wide IDs use `DSET-<FULL-TYPE>-<NNN>`; layer-owned IDs use `DSET-<FULL-TYPE>-<LAYER>-<NNN>`, where `<LAYER>` is `META`, `GOV`, `TOOL`, `SKILL`, or `OPS`. Accepted methodology uses the full types `STORY`, `OUTCOME`, `REQUIREMENT`, `SCENARIO`, `INVARIANT`, `TEST`, and `EVAL`; intake, resolution, and authoritative-boundary artifacts use `PROBLEM`, `OPPORTUNITY`, `QUESTION`, `DECISION`, and `CONTRACT`. Numbering is independent per full type within the project-wide sequence or semantic layer. No alternate global prefix is used, and directory moves do not rename IDs.
 
 **Scenario DSET-SCENARIO-GOV-020:** A project-wide question uses `DSET-QUESTION-001`; layer-owned accepted truth uses IDs such as `DSET-STORY-SKILL-001`, `DSET-OUTCOME-OPS-001`, `DSET-REQUIREMENT-GOV-001`, and `DSET-TEST-GOV-001`; a durable resolution uses `DSET-DECISION-001`. Directory-only refactors do not rename these identities.
+
+## DSET-REQUIREMENT-GOV-020 — Artifacts declare evergreen, transactional, or implementation authority
+
+DSET must distinguish evergreen current-truth artifacts, transactional atomic artifacts, and implementation-layer artifacts. Evergreen artifacts are updatable accepted truth such as specs, implementation plans, test plans, eval plans, contracts, runbooks, and governing rules. Transactional artifacts preserve bounded choices, questions, observations, evidence, and work history such as Decisions, Problems, Opportunities, Questions, proofs, Changes, releases, sessions, and runs. Implementation artifacts are code, tests, eval prompts/datasets, CI workflows, scripts, generated runtime assets, and configuration examples.
+
+**Scenario DSET-SCENARIO-GOV-021:** A Decision and a Problem explain why behavior changes, the spec and plans own the current behavior and proof obligations, and the code/tests/eval prompts implement those owners without becoming a competing specification.
+
+## DSET-REQUIREMENT-GOV-021 — Transactional artifacts compile into evergreen truth
+
+Accepted Decisions, Problems, Opportunities, Questions, proofs, and other transactional artifacts must discharge their current behavioral consequences into the owning evergreen specs, plans, contracts, runbooks, or governing rules before they authorize implementation. Transactional artifacts remain provenance and rationale; generated traceability may show the relationship but cannot replace the evergreen owner.
+
+**Scenario DSET-SCENARIO-GOV-022:** A resolved Question produces a Decision, the Decision updates the relevant spec and proof plans, the implementation cites that Decision, and review rejects a code-only change that leaves the evergreen spec stale.
+
+## DSET-REQUIREMENT-GOV-022 — Commits and atomic artifacts retain provenance
+
+Every commit that changes evergreen truth or implementation artifacts must name the Decision or Decisions it implements in its commit message body. If no Decision is required, the commit must name the authorizing Problem, Opportunity, Question, or Change. Each newly created or materially changed atomic artifact records `llm_session_ids` when an LLM helped produce it, using stable host-prefixed session IDs.
+
+**Scenario DSET-SCENARIO-GOV-023:** A commit body contains `Implements: DSET-DECISION-GOV-001`, and the created Decision artifact records the Codex session IDs that produced or materially revised it.

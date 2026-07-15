@@ -35,6 +35,29 @@ Explicit justified non-applicability is valid. Missing or invalid selected owner
 
 The project manifest selects the profile; the registry owns resolution metadata; governing documents own rules; wrappers own invocation only; generated indexes and caches are derived. Writes that change customization status are explicit and never overwrite governing documents.
 
+## Artifact classes
+
+DSET separates three authority classes:
+
+- **Evergreen artifacts** are updatable current truth. Specs, implementation
+  plans, deterministic test plans, eval plans, architecture, contracts,
+  runbooks, and governing rules may change in place through a bounded Change.
+  They state the current accepted version.
+- **Transactional artifacts** record bounded facts, choices, observations, or
+  questions in time. Decisions, Problems, Opportunities, Questions, proof
+  records, session/run records, release evidence, and Change records are not
+  edited into a new truth shape silently; they are resolved, superseded,
+  archived, or linked forward.
+- **Implementation artifacts** are the executable or concrete delivery layer:
+  code, tests, eval prompts/datasets, CI workflows, scripts, generated runtime
+  assets, and configuration examples. They implement evergreen truth and cite
+  the transactional artifacts that authorized or constrained the work.
+
+Transactional artifacts influence current behavior only after their accepted
+consequences are compiled into the owning evergreen artifact. A generated view
+may summarize that relationship, but the evergreen owner remains the current
+truth and the transactional artifact remains provenance.
+
 ## Public workflow contract
 
 Every public workflow declares three operator-visible boundaries: the trigger
