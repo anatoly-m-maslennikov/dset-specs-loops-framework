@@ -1,7 +1,21 @@
-schema_version: 1.1
+schema_version: "1.2"
 id: {{change_id}}
+slug: {{change_slug}}
 profile: {{profile}}
 status: proposed
+primary_layer: {{layer}}
+affected_layers:
+  - {{layer}}
+workspace:
+  isolation: integration-branch
+  branch: pending
+  base_ref: pending
+  base_commit: pending
+  head_commit: pending
+dependencies: []
+target:
+  repository: true
+  work_areas: []
 packages:
   - {{package_id}}
 pull_request:
@@ -30,3 +44,4 @@ contracts:
   - {{project_key}}-CONTRACT{{id_layer}}-001
 stories: []
 outcomes: []
+

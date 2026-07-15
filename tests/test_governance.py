@@ -635,6 +635,32 @@ class GovernanceTests(unittest.TestCase):
         self.assertNotIn("**Adopt", active_candidates)
         self.assertNotIn("**Reject", active_candidates)
 
+    def test_distributed_manifest_templates_are_schema_specific(self) -> None:
+        layout = discover_layout(ROOT)
+        legacy_change = cast(
+            dict[str, Any], load(layout.find_template("change/legacy/change.yaml"))
+        )
+        layered_change = cast(
+            dict[str, Any], load(layout.find_template("change/layered/change.yaml"))
+        )
+        legacy_package = cast(
+            dict[str, Any], load(layout.find_template("package/legacy/package.yaml"))
+        )
+        layered_package = cast(
+            dict[str, Any], load(layout.find_template("package/layered/package.yaml"))
+        )
+
+        self.assertEqual(legacy_change["schema_version"], 1.1)
+        self.assertEqual(legacy_change["release"]["policy"], "pending")
+        self.assertEqual(layered_change["schema_version"], "1.2")
+        self.assertEqual(
+            layered_change["release"]["policy"],
+            "dset/scopes/ops/governance/release.md",
+        )
+        self.assertEqual(legacy_package["schema_version"], 1.0)
+        self.assertEqual(layered_package["schema_version"], "1.2")
+        self.assertIn("layer", layered_package)
+
     def test_fpf_provenance_bounds_each_adaptation(self) -> None:
         provenance = cast(
             dict[str, Any], load(ROOT / "dset/scopes/gov/provenance.yaml")

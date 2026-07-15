@@ -712,7 +712,9 @@ class LayeredValidationTests(unittest.TestCase):
 
     def _install_change_templates(self) -> None:
         target = self.scopes / "gov" / "templates" / "change"
-        source = discover_layout(ROOT).find_template("change/change.yaml").parent
+        source = (
+            discover_layout(ROOT).find_template("change/layered/change.yaml").parents[1]
+        )
         shutil.copytree(source, target)
 
     def _archive_synthetic(self, change: Path, day: str, pr_number: int) -> None:

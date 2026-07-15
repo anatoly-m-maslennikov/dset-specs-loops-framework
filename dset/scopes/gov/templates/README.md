@@ -1,7 +1,11 @@
 # GOV templates
 
-- [Change templates](change/), including the neutral
-  [Decision lifecycle template](change/decision.md)
+- [Change templates](change/), with explicit
+  [legacy schema 1.1](change/legacy/change.yaml) and
+  [layered schema 1.2](change/layered/change.yaml) manifests plus the neutral
+  [Decision lifecycle template](change/decision.md). The scaffolder selects the
+  manifest family from the discovered repository layout; neither seed is a
+  schema-neutral current manifest.
 - [Governance profile and GOV rule templates](governance/core-v1/README.md)
 - [Intake template](intake.yaml)
 - [Change profiles](profiles.yaml)

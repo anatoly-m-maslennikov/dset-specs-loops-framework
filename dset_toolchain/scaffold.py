@@ -53,6 +53,7 @@ def create_change(
         "{{title}}": display_title,
         "{{project_key}}": project_key,
         "{{id_layer}}": id_layer,
+        "{{layer}}": str(layer).lower() if layer is not None else "",
         "{{repository}}": _repository(root),
     }
     destination.mkdir(parents=True)
@@ -60,7 +61,11 @@ def create_change(
         for directory in sorted(directories):
             (destination / directory).mkdir(parents=True, exist_ok=True)
         for relative in sorted(files):
-            source = layout.find_template(Path("change") / relative)
+            template_relative = Path("change") / relative
+            if relative == "change.yaml":
+                template_family = "layered" if layout.layered else "legacy"
+                template_relative = Path("change") / template_family / relative
+            source = layout.find_template(template_relative)
             target = destination / relative
             _copy_template(source, target, replacements)
         if "specs" in directories:

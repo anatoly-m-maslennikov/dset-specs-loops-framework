@@ -169,3 +169,13 @@ items:
     decision: DSET-DECISION-SKILL-001
     external_refs:
       - https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9
+  - id: DSET-PROBLEM-TOOL-003
+    scope: tool
+    type: problem
+    status: resolved
+    title: Distributed manifest templates obscured schema ownership
+    statement: Change and package manifest seeds formerly exposed legacy shapes as unsuffixed current templates, and the legacy Change seed referenced a layered release-policy path. Legacy and layered template families are now explicit, hubs label their compatibility, and scaffolding selects by discovered repository layout.
+    owner_change: DSET-CHANGE-SKILL-001
+    decision: null
+    external_refs:
+      - https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9

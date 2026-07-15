@@ -1,6 +1,6 @@
-schema_version: 1.0
-id: {{package_id}}
-status: active
+schema_version: "1.2"
+package_id: {{package_id}}
+layer: {{layer}}
 requirements:
   - {{project_key}}-REQUIREMENT{{id_layer}}-001
 tests:
@@ -12,6 +12,7 @@ contracts:
 stories: []
 outcomes: []
 artifacts:
+  hub: README.md
   domain: domain.md
   spec: spec.md
   contracts: contracts.md
@@ -19,3 +20,4 @@ artifacts:
   outcomes: outcomes.md
   test_plan: test-plan.md
   eval_plan: eval-plan.md
+
