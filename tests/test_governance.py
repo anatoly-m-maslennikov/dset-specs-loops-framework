@@ -90,6 +90,22 @@ class GovernanceTests(unittest.TestCase):
         output = stream.getvalue()
         self.assertIn('"workflow_id": "domain-clarification"', output)
         self.assertIn('"customization": "unmodified"', output)
+        self.assertIn('"status": "unavailable"', output)
+        self.assertIn("DSET-CONFLICT-RESOLUTION-UNAVAILABLE", output)
+
+    def test_empty_conflicts_do_not_claim_resolution_coverage(self) -> None:
+        resolved, diagnostics = resolve_workflow(self.root, "diagnosis")
+        self.assertEqual(diagnostics, [])
+        assert resolved is not None
+        self.assertEqual(resolved["conflicts"], [])
+        self.assertEqual(
+            resolved["conflict_resolution"],
+            {
+                "status": "unavailable",
+                "coverage": [],
+                "reason_code": "DSET-CONFLICT-RESOLUTION-UNAVAILABLE",
+            },
+        )
 
     def test_resolution_is_stable_and_read_only(self) -> None:
         registry = self.root / "dset" / "governance.yaml"

@@ -340,6 +340,11 @@ def resolve_workflow(
             "rules": rules,
             "wrapper": wrapper,
             "conflicts": [],
+            "conflict_resolution": {
+                "status": "unavailable",
+                "coverage": [],
+                "reason_code": "DSET-CONFLICT-RESOLUTION-UNAVAILABLE",
+            },
         },
         [],
     )
