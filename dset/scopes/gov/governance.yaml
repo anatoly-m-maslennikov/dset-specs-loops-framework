@@ -321,6 +321,73 @@ workflows:
       - DSET-RULE-ARCHITECTURE
       - DSET-RULE-ARTIFACT-MAINTENANCE
       - DSET-RULE-WORK-ITEMS
+  -
+    id: decompose
+    rules:
+      - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-DOMAIN-SPEC
+      - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-WORK-ITEMS
+  -
+    id: landscape
+    rules:
+      - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-DOMAIN-SPEC
+      - DSET-RULE-TEST-PLAN
+      - DSET-RULE-EVAL-PLAN
+      - DSET-RULE-ARTIFACT-MAINTENANCE
+  -
+    id: decide
+    rules:
+      - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-DOMAIN-SPEC
+      - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-WORK-ITEMS
+  -
+    id: plan-proof
+    rules:
+      - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-DOMAIN-SPEC
+      - DSET-RULE-TEST-PLAN
+      - DSET-RULE-EVAL-PLAN
+      - DSET-RULE-ARTIFACT-MAINTENANCE
+  -
+    id: plan-implementation
+    rules:
+      - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-BUILD
+      - DSET-RULE-DOMAIN-SPEC
+      - DSET-RULE-TEST-PLAN
+      - DSET-RULE-EVAL-PLAN
+      - DSET-RULE-SUPPORTABILITY
+      - DSET-RULE-ARTIFACT-MAINTENANCE
+  -
+    id: implement
+    rules:
+      - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-BUILD
+      - DSET-RULE-DOMAIN-SPEC
+      - DSET-RULE-TEST-PLAN
+      - DSET-RULE-EVAL-PLAN
+      - DSET-RULE-SUPPORTABILITY
+      - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-WORK-ITEMS
+  -
+    id: verify
+    rules:
+      - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-BUILD
+      - DSET-RULE-DOMAIN-SPEC
+      - DSET-RULE-TEST-PLAN
+      - DSET-RULE-EVAL-PLAN
+      - DSET-RULE-SUPPORTABILITY
+      - DSET-RULE-ARTIFACT-MAINTENANCE
+  -
+    id: complete
+    rules:
+      - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-WORK-ITEMS
 wrappers:
   -
     workflow: lifecycle-orchestration
