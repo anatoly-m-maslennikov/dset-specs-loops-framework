@@ -33,9 +33,10 @@
   temporary work outside the repository, and rerun exact-head hosted proof after
   the current branch is pushed.
 
-## Batch 4 — Skill topology and release-cycle contract — specification complete
+## Batch 4 — Skill topology and release-cycle contract — source wrappers complete; runtime pending
 
 - Define the five-skill core surface and make `dset` the only general lifecycle/next-step entrypoint.
+- Implement and register all five thin source packages, including applicability-aware adopter materialization and recursive wrapper-identity proof.
 - Define bounded ignored skill-run evidence and its non-authoritative relationship to repository/Git/hosted state.
 - Replace decimal version arithmetic with normal/small integer-component transitions and reserve `1.0.0-rc.N` plus `1.0.0` for fully working release gates.
 - Coordinate the product and CLI package release while retaining schema/profile/template compatibility versions independently.
@@ -106,7 +107,7 @@
 
 ## Later batches
 
-Implement the Batch 4 orchestration/run/budget/release mechanics and roadmap §§5–§10 for the TypeScript profile, owned Your Harness pilot, clean-room Claudian evaluation, complete tests/evals, and pinned distribution. Keep unfinished behavior out of public capability claims.
+Implement the remaining Batch 4 runtime adapter, run/checkpoint persistence, executable release/version mechanics, and publication automation plus roadmap §§5–§10 for the TypeScript profile, owned Your Harness pilot, clean-room Claudian evaluation, complete tests/evals, and pinned distribution. Keep unfinished behavior out of public capability claims.
 
 ## Rollout and recovery
 

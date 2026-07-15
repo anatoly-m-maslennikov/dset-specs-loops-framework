@@ -288,6 +288,7 @@ changes:
     pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9
     evidence:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/five-skill-source-verification-2026-07-16.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-governance-constitution-review-2026-07-16.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-principles-audit-2026-07-15.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-principles-reaudit-2026-07-15.md
