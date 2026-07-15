@@ -312,7 +312,9 @@ class GovernanceTests(unittest.TestCase):
         self.assertIn("python package: 0.3.1 (coordinated)", output)
         self.assertIn("schemas: 1.2 (independent)", output)
 
-    def test_bootstrap_release_target_is_explicit_not_framework_hard_coded(self) -> None:
+    def test_bootstrap_release_target_is_explicit_not_framework_hard_coded(
+        self,
+    ) -> None:
         release = (ROOT / "dset/scopes/ops/governance/release.md").read_text(
             encoding="utf-8"
         )
