@@ -5,17 +5,17 @@ description: Prepare or verify a governed DSET release transaction and, only wit
 
 # DSET Release
 
-This thin wrapper invokes the registered `release` workflow. Repository-local governing documents own all substantive release behavior; this wrapper supplies no release engine or publisher.
+This is the thin wrapper for `release`; resolved repository-local documents own substantive behavior, and the wrapper supplies no release engine or publisher.
 
-## Resolve and prepare
+## Resolve
 
-1. Locate the repository root by walking upward to schema 1.2 `dset/scopes/meta/dset.yaml` or legacy `dset/dset.yaml`; stop if neither or both authorities exist.
-2. Run `dset rules resolve release --format json` or `python -m dset_toolchain rules resolve release --format json`.
-3. Stop on any nonzero result. Never fall back to this wrapper, memory, templates, or remote framework prose.
-4. Report the workflow ID, profile/version, registry and ruleset identities, customization, ordered rule IDs/paths, wrapper identity, and conflicts.
-5. Through the available runtime adapter and resolved `DSET-RULE-SKILL-RUNS`, join a matching explicit session or start a bounded one; report session/run/persistence identity and obey its stop behavior when continuity is unavailable.
-6. Read and apply the resolved documents in order. Prepare or verify only actions already authorized by them, refreshing Git, proof, and configured-forge state when those owners control the result.
+1. Walk upward from the target for exactly one schema 1.2 `dset/scopes/meta/dset.yaml` or legacy `dset/dset.yaml`; stop on competing authorities. With no root, return a `$dset` `initialize` handoff and stop.
+2. Select exactly one available resolver entrypoint before invocation: the `dset` executable, otherwise the active Python interpreter with the installed `dset_toolchain` module; stop if neither exists. Never retry the alternate after a nonzero result.
+3. Run the selected entrypoint with `rules resolve release --format json`; stop on a nonzero result without fallback to the wrapper, memory, installed templates, or remote framework prose.
+4. Report workflow, profile/version, customization, wrapper and ordered rule identities, conflicts, and `conflict_resolution` coverage. Empty `conflicts` is unassured when coverage is absent or unavailable.
+5. Read the returned rule documents in order before using session/runtime behavior. Stop on unresolved conflicts or when selected rules require unavailable conflict coverage.
+6. Use the installed distribution runtime adapter only when exposed; otherwise return `persistence: unavailable` and obey the resolved stop behavior.
 
 ## Stop and hand off
 
-Stop on any mismatch, missing gate, identity collision, ambiguity, or newly required authority. Return prepared/verified state, diagnostics, session ID, and the next handoff. Publication requires separate explicit authority; never infer it from preparation, verification, or a release request, and never claim absent automation completed it.
+Prepare or verify only already-authorized actions. Route any authorized write through the resolved artifact owner and maintenance disposition; never edit an emitted atomic artifact. Return diagnostics, prepared/verified state, and available session identity. Publication requires separate explicit authority; stop on any mismatch, missing gate, collision, ambiguity, or new authority, and never claim absent automation completed it.

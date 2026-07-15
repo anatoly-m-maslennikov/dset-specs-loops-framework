@@ -5,17 +5,17 @@ description: Turn ambiguous product or domain intent into decision-ready DSET vo
 
 # DSET Clarify
 
-This is the thin wrapper for the registered `domain-clarification` workflow. Repository-local governing documents own every substantive rule.
+This is the thin wrapper for `domain-clarification`; resolved repository-local documents own substantive behavior.
 
-## Resolve and clarify
+## Resolve
 
-1. Locate the repository root by walking upward to `dset/scopes/meta/dset.yaml` for schema 1.2 or legacy `dset/dset.yaml` for schema 1.0/1.1; stop if both authorities exist.
-2. Run `dset rules resolve domain-clarification --format json` or `python -m dset_toolchain rules resolve domain-clarification --format json`.
-3. Stop on any nonzero result. Never fall back to this wrapper, agent memory, an installed template, or remote framework prose.
-4. Before governed work, report the resolved workflow ID, profile/version, customization identity, ordered rule IDs and paths, wrapper identity, and conflicts.
-5. Through the repository-registered `DSET-RULE-SKILL-RUNS`, join a compatible explicit session or start a bounded one, record this invocation, and report its session ID; follow its stop behavior when continuity is unavailable.
-6. Read and apply the resolved governing documents in their returned order.
+1. Walk upward from the target for exactly one schema 1.2 `dset/scopes/meta/dset.yaml` or legacy `dset/dset.yaml`; stop on competing authorities. With no root, return a `$dset` `initialize` handoff and stop.
+2. Select exactly one available resolver entrypoint before invocation: the `dset` executable, otherwise the active Python interpreter with the installed `dset_toolchain` module; stop if neither exists. Never retry the alternate after a nonzero result.
+3. Run the selected entrypoint with `rules resolve domain-clarification --format json`; stop on a nonzero result without fallback to the wrapper, memory, installed templates, or remote framework prose.
+4. Report workflow, profile/version, customization, wrapper and ordered rule identities, conflicts, and `conflict_resolution` coverage. Empty `conflicts` is unassured when coverage is absent or unavailable.
+5. Read the returned rule documents in order before using session/runtime behavior. Stop on unresolved conflicts or when selected rules require unavailable conflict coverage.
+6. Use the installed distribution runtime adapter only when exposed; otherwise return `persistence: unavailable` and obey the resolved stop behavior.
 
 ## Handoff
 
-Return decision-ready alternatives and remaining unknowns under this wrapper's registered specialist boundary. Write conclusions only to resolved owning artifacts when authorized; otherwise return a proposed update. Update session continuity, recommend the next handoff, and stop before consequential selection or implementation.
+Return decision-ready alternatives and remaining unknowns. Route any authorized write through the resolved artifact owner and maintenance disposition; never edit an emitted atomic artifact. Return the session identity when available, recommend the next handoff, and stop before consequential selection or implementation.
