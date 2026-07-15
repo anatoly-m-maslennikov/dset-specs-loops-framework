@@ -50,8 +50,12 @@ every row links back to a canonical artifact or an explicit unknown.
 
 ## DSET-REQUIREMENT-TOOL-019 — Priority conflict resolution is deterministic
 
-The toolchain must evaluate registered conflicts between any governed artifact
-types. It first resolves each artifact's role and classifies the conflict.
+The toolchain must evaluate candidate incompatibilities between any governed
+artifact types. It first resolves each artifact's semantic type and role
+independently from the workflow that discovered it, then distinguishes genuine
+Conflicts from drift, assurance changes, nonconformance, and evidence
+adjudication. Only verified incompatible applicable claims over the same scope,
+concern, and effective time emit a first-class immutable Conflict atom.
 Immutable external authority wins over mutable project truth. Mutually
 unsatisfiable immutable obligations stop with an explicit non-compliance state;
 priority may order remediation but cannot make either obligation satisfied.
@@ -79,11 +83,18 @@ content digest is unchanged, moves it only to the artifact type's `archive/`
 subfolder, updates canonical ID lookup, and rejects partial-absorption moves,
 content edits, broken references, or deletion.
 
+Every emitted Conflict begins open. A deterministic disposition appends a
+lifecycle event linking its resolution record and durable resolving artifacts;
+an unresolved or unsatisfiable Conflict remains open and blocking. Neither the
+Conflict nor its source claims are edited. Non-Conflict dispositions keep their
+own typed evidence or Problem/Question paths and do not emit a false Conflict.
+
 Equal, unknown, cyclically inherited, or incomparable priorities must stop with
 the artifact IDs, values, sources, context, and safe next action. Every automatic
-resolution is a derived transactional record containing those same inputs, both
-artifact roles, the conflict class, disposition or selected claim, governing
-profile edition, and invalidation trigger. Atomic sources are never rewritten;
+resolution is a derived transactional record and Conflict lifecycle event
+containing those same inputs, both artifact roles, the conflict class,
+disposition or selected claim, governing profile edition, and invalidation
+trigger. Atomic sources are never rewritten;
 an authorized compiler may update only declared evergreen projections.
 Reprioritization or input changes invalidate the affected resolution and health
 projection.

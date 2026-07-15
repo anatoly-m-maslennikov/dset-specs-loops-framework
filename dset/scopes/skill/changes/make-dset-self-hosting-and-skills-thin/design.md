@@ -69,10 +69,10 @@ No adopter application runtime or production data is changed. The CLI reads repo
 - Inherit the main model and reasoning effort for subagents by default; use a medium two-or-three-agent fan-out only when the task benefits and runtime capacity permits.
 - Bound low/medium/high by tree-wide unique agents, depth, and rounds while preserving scope, proof, and safety. Permit model/effort changes only through explicit policy or task-relevant evidence and report every deviation.
 - Keep incomparable cost/quality metrics separate; never equate lower token price with lower task cost or use a single-agent benchmark to justify fan-out.
-- Route intake through the project-owned registry's problems, opportunities, and questions; treat Decision as the entity and Decision record as its canonical artifact, tasks as Change-owned work, and hosted tickets as representations.
+- Route intake through the project-owned registry's problems, opportunities, and questions; keep open Conflicts in a separate governed register/view; determine every type from semantic content and authority/lifecycle role rather than workflow; treat Decision as the entity and Decision record as its canonical artifact, tasks as Change-owned work, and hosted tickets as representations.
 - Define Outcome as a measured state change with baseline, target, source/method, window, and related links or explicit dispositions; never use it as a synonym for a feature, output, milestone, or completed task.
 - Defer Journey, Actor/Persona, Hypothesis/Experiment, prioritization, feedback/analytics, and generated roadmap/release views as Questions only; do not create new artifact types or intake queues before Decisions standardize them.
-- Use canonical `DSET-<TYPE>-<LAYER>-<NNN>` IDs, where `TYPE` includes `REQUIREMENT`, `SCENARIO`, `INVARIANT`, `CONTRACT`, `TEST`, `EVAL`, `TASK`, `PROBLEM`, `OPPORTUNITY`, `QUESTION`, `DECISION`, `STORY`, and `OUTCOME`, and `LAYER` is one of `META`, `GOV`, `TOOL`, `SKILL`, or `OPS`; number every full artifact type independently within each layer.
+- Use canonical `DSET-<TYPE>-<LAYER>-<NNN>` IDs, where `TYPE` includes `REQUIREMENT`, `SCENARIO`, `INVARIANT`, `CONTRACT`, `TEST`, `EVAL`, `TASK`, `PROBLEM`, `OPPORTUNITY`, `QUESTION`, `CONFLICT`, `DECISION`, `STORY`, and `OUTCOME`, and `LAYER` is one of `META`, `GOV`, `TOOL`, `SKILL`, or `OPS`; number every full artifact type independently within each layer.
 
 ## Open questions
 

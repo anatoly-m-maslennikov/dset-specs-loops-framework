@@ -121,7 +121,7 @@ rules:
     path: dset/scopes/gov/governance/work-items.md
     owner: project
     applicability: applicable
-    reason: Intake must distinguish problems, opportunities, questions, and change-owned tasks
+    reason: Semantic routing must distinguish problems, opportunities, questions, conflicts, and change-owned tasks independently of workflow
     depends_on:
       - DSET-RULE-ARCHITECTURE
     precedence_over: []
@@ -130,7 +130,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/gov/templates/governance/core-v1/work-items.md
-      sha256: 04b50a3eff27403b1ef345070c1c803e7b0c2de32840636509685f8bdc2cf288
+      sha256: b71f87f9cb72d0abb037c944cf929a96cf2be77673946cc28565ed1b0a6d4c56
   -
     id: DSET-RULE-DELEGATION-BUDGET
     layer: SKILL

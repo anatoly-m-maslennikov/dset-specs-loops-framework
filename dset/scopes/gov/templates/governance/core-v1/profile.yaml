@@ -77,7 +77,7 @@ rules:
     template: work-items.md
     target: work-items.md
     applicability: applicable
-    reason: Intake must distinguish problems, opportunities, questions, and change-owned tasks
+    reason: Semantic routing must distinguish problems, opportunities, questions, conflicts, and change-owned tasks independently of workflow
     depends_on:
       - DSET-RULE-ARCHITECTURE
     precedence_over: []

@@ -28,6 +28,10 @@ Durable content has one of four roles:
 - an **implementation artifact** is code, configuration, tests, eval prompts,
   or another delivered executable surface.
 
+Role and primary type come from semantic content, the owning question, and
+authority/lifecycle position. Workflow, queue, skill, tool, host, filename,
+folder, and intended next action are routing metadata and never define type.
+
 An active applicable source atom wins when its evergreen projection is stale.
 The drift must be routed for recompilation; implementation and evidence cannot
 silently redefine either authority.

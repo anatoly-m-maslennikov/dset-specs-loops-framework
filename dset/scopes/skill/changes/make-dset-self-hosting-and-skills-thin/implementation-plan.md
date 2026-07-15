@@ -58,7 +58,9 @@
 - Define Outcome as a measurable state change rather than an output, feature, milestone, or task completion.
 - Record one DSET 0.3 adoption-readiness Outcome with baseline, target, source/method, window, and related Problem, Opportunity, User Story, and Eval dispositions.
 - Register Journey, Actor/Persona, Hypothesis/Experiment, prioritization, feedback/analytics, and generated roadmap/release views as concise open Questions only.
-- Preserve the three intake queues and defer every new artifact type until a later Decision.
+- Preserve the three intake queues; add Conflict only under
+  `DSET-DECISION-GOV-005`, keep its open register/view separate, and classify
+  every artifact by semantics rather than workflow.
 
 ## Batch 7 — Work Area Contract — deterministic implementation complete
 

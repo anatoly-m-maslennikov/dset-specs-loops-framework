@@ -4,12 +4,15 @@
 
 1. Start with the answer, rule, contract, or decision; context follows only when it helps application.
 2. Give each file one primary question, type, owner, and authority boundary.
-3. State scope, non-goals, applicability, and failure behavior where ambiguity would change implementation or operations.
-4. Link to another owner instead of copying its rule. Summaries are navigation aids and must identify the authoritative source.
-5. Keep current truth separate from proposed changes, rationale, procedures, and historical evidence.
-6. Use GitHub-portable Markdown and resolving relative links. Avoid private paths, editor-specific links, and hidden context.
-7. Order content for top-to-bottom comprehension. Define terms before relying on them.
-8. Prefer a small table, checklist, or example only when it makes the owning rule easier to apply.
+3. Determine type from semantic content, the owning question, and authority or
+   lifecycle role—not from a workflow, queue, skill, tool, host, filename,
+   folder, or intended next action.
+4. State scope, non-goals, applicability, and failure behavior where ambiguity would change implementation or operations.
+5. Link to another owner instead of copying its rule. Summaries are navigation aids and must identify the authoritative source.
+6. Keep current truth separate from proposed changes, rationale, procedures, and historical evidence.
+7. Use GitHub-portable Markdown and resolving relative links. Avoid private paths, editor-specific links, and hidden context.
+8. Order content for top-to-bottom comprehension. Define terms before relying on them.
+9. Prefer a small table, checklist, or example only when it makes the owning rule easier to apply.
 
 ## Specifications
 

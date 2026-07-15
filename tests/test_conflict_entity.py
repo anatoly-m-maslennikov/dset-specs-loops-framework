@@ -1,0 +1,77 @@
+from __future__ import annotations
+
+import unittest
+from pathlib import Path
+
+from dset_toolchain.yaml_subset import load
+
+ROOT = Path(__file__).resolve().parents[1]
+GOV_PACKAGE = ROOT / "dset" / "scopes" / "gov" / "specs" / "packages" / "methodology"
+CHANGE = (
+    ROOT
+    / "dset"
+    / "scopes"
+    / "skill"
+    / "changes"
+    / "make-dset-self-hosting-and-skills-thin"
+)
+
+
+class ConflictEntityTests(unittest.TestCase):
+    def test_accepted_truth_distinguishes_three_semantic_conditions(self) -> None:
+        domain = (GOV_PACKAGE / "domain.md").read_text(encoding="utf-8")
+        spec = (GOV_PACKAGE / "spec.md").read_text(encoding="utf-8")
+        self.assertIn("**Problem**", domain)
+        self.assertIn("**Question**", domain)
+        self.assertIn("**Conflict**", domain)
+        self.assertIn("DSET-INVARIANT-GOV-017", domain)
+        self.assertIn("DSET-REQUIREMENT-GOV-027", spec)
+        self.assertIn("incompatible applicable claims as a Conflict", spec)
+
+    def test_type_is_never_defined_by_workflow_or_location(self) -> None:
+        artifacts = (ROOT / "documentation" / "artifact-types.md").read_text(
+            encoding="utf-8"
+        )
+        authoring = (ROOT / "documentation" / "authoring-rules.md").read_text(
+            encoding="utf-8"
+        )
+        rules = (
+            ROOT / "dset" / "scopes" / "gov" / "governance" / "work-items.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn("never by workflow", artifacts)
+        self.assertIn("not from a workflow", authoring)
+        self.assertIn("Type follows the semantic condition", rules)
+        self.assertIn("cannot retype an artifact", rules)
+
+    def test_conflict_proof_ids_are_registered(self) -> None:
+        package = load(GOV_PACKAGE / "package.yaml")
+        assert isinstance(package, dict)
+        self.assertIn("DSET-REQUIREMENT-GOV-027", package["requirements"])
+        self.assertIn("DSET-TEST-GOV-027", package["tests"])
+        self.assertIn("DSET-EVAL-GOV-017", package["evals"])
+
+    def test_absorbing_decision_preserves_immutable_predecessor(self) -> None:
+        predecessor = CHANGE / "decision-DSET-DECISION-GOV-004.md"
+        successor = CHANGE / "decision-DSET-DECISION-GOV-005.md"
+        self.assertTrue(predecessor.is_file())
+        text = successor.read_text(encoding="utf-8")
+        self.assertIn("**Absorbs:** `DSET-DECISION-GOV-004` in full", text)
+        self.assertIn("workflow never defines artifact type", text)
+
+    def test_live_and_template_work_item_rules_match(self) -> None:
+        live = ROOT / "dset" / "scopes" / "gov" / "governance" / "work-items.md"
+        template = (
+            ROOT
+            / "dset"
+            / "scopes"
+            / "gov"
+            / "templates"
+            / "governance"
+            / "core-v1"
+            / "work-items.md"
+        )
+        self.assertEqual(live.read_bytes(), template.read_bytes())
+
+
+if __name__ == "__main__":
+    unittest.main()
