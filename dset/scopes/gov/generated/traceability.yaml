@@ -266,10 +266,12 @@ changes:
     pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9
     evidence:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-principles-audit-2026-07-15.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/hosted-fixed-point-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/invariant-contract-verification-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/layered-work-area-verification-2026-07-15.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/local-fixed-point-2026-07-14.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/schema-self-application-audit-2026-07-15.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/wrapper-rule-inventory-2026-07-14.md
     slug: make-dset-self-hosting-and-skills-thin
     primary_layer: skill
