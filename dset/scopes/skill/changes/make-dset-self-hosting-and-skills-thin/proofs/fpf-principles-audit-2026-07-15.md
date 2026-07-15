@@ -18,8 +18,10 @@
   `8d24d36507357e1831eb4fcdf47e1eb1cf712dc3`, schema 1.2, repository-level
   Change scope, observed 2026-07-15.
 - **Evidence polarity:** Supporting evidence plus explicit remaining limits.
-- **Currentness:** Current for the audited governance/code surfaces; this
-  proof-only record and generated-trace refresh do not change those inputs.
+- **Currentness:** Historical and superseded. The follow-up review found that
+  the active Solution Landscape still mixed comparison with selection and that
+  the neutral Decision lifecycle was not self-applied. See the corrective
+  [FPF principle re-audit](fpf-principles-reaudit-2026-07-15.md).
 - **Reopen when:** The reviewed FPF revision, DSET evidence/Decision rules,
   provenance mapping, Work Area semantics, comparison template, or derived-view
   contract changes.
@@ -62,9 +64,10 @@ concept source, not a rule owner.
 - Registered unresolved evidence-context, Work Area tag, typed-relation, and
   Decision-schema choices as Questions rather than silently adding ontology.
 
-## Remaining disposition
+## Historical disposition
 
 `DSET-QUESTION-META-004..005` and `DSET-QUESTION-GOV-004..005` remain open in
 the project intake registry. Until Decisions resolve them, DSET has no new
 evidence-context entity, Work Area tag model, typed-edge registry, or
-schema-enforced Decision record.
+schema-enforced Decision record. Do not use this first review's Pass wording as
+current evidence; the re-audit owns the corrected disposition.

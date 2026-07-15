@@ -270,6 +270,7 @@ changes:
     evidence:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-principles-audit-2026-07-15.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-principles-reaudit-2026-07-15.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/hosted-fixed-point-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/invariant-contract-verification-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/layered-work-area-verification-2026-07-15.md
