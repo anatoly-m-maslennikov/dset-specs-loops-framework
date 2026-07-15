@@ -3,10 +3,11 @@
   "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/scopes/skill/schemas/skill-run.schema.json",
   "title": "DSET local skill-run record",
   "type": "object",
-  "required": ["schema_version", "session_id", "run_id", "root_run_id", "parent_run_id", "invocation_source", "checkpoint", "started_at", "finished_at", "status", "persistence", "scope", "skill_id", "workflow_id", "mode_id", "ruleset_identity", "parameters", "outputs", "diagnostics", "next_signals", "budget"],
+  "required": ["schema_version", "session_id", "llm_session_ids", "run_id", "root_run_id", "parent_run_id", "invocation_source", "checkpoint", "started_at", "finished_at", "status", "persistence", "scope", "skill_id", "workflow_id", "mode_id", "ruleset_identity", "parameters", "outputs", "diagnostics", "next_signals", "budget"],
   "properties": {
-    "schema_version": {"const": "1.1"},
+    "schema_version": {"const": "1.2"},
     "session_id": {"$ref": "#/$defs/id"},
+    "llm_session_ids": {"type": "array", "maxItems": 8, "uniqueItems": true, "items": {"$ref": "#/$defs/llm_session_id"}},
     "run_id": {"$ref": "#/$defs/id"},
     "root_run_id": {"$ref": "#/$defs/id"},
     "parent_run_id": {"oneOf": [{"$ref": "#/$defs/id"}, {"type": "null"}]},
@@ -101,6 +102,7 @@
   ],
   "$defs": {
     "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+    "llm_session_id": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$", "maxLength": 160},
     "nullable_id": {"oneOf": [{"$ref": "#/$defs/id"}, {"type": "null"}]},
     "nullable_scope": {"oneOf": [{"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$"}, {"type": "null"}]},
     "target": {

@@ -489,9 +489,7 @@ def materialize_governance(
                 ]
             rendered_workflows.append(rendered)
         registry = {
-            "schema_version": profile.get(
-                "schema_version", GOVERNANCE_SCHEMA_VERSION
-            ),
+            "schema_version": profile.get("schema_version", GOVERNANCE_SCHEMA_VERSION),
             "profile": {
                 "id": profile_id,
                 "version": str(profile["version"]),

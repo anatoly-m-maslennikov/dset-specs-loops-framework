@@ -3,10 +3,11 @@
   "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/scopes/skill/schemas/session-checkpoint.schema.json",
   "title": "DSET local session checkpoint",
   "type": "object",
-  "required": ["schema_version", "session_id", "sequence", "updated_at", "status", "persistence", "public_entrypoint", "root_run_id", "latest_run_id", "scope", "objective", "ruleset_identity", "completed", "pending", "authorization", "touched_paths", "authority_snapshot", "next"],
+  "required": ["schema_version", "session_id", "llm_session_ids", "sequence", "updated_at", "status", "persistence", "public_entrypoint", "root_run_id", "latest_run_id", "scope", "objective", "ruleset_identity", "completed", "pending", "authorization", "touched_paths", "authority_snapshot", "next"],
   "properties": {
-    "schema_version": {"const": "1.0"},
+    "schema_version": {"const": "1.1"},
     "session_id": {"$ref": "#/$defs/id"},
+    "llm_session_ids": {"type": "array", "maxItems": 8, "uniqueItems": true, "items": {"$ref": "#/$defs/llm_session_id"}},
     "sequence": {"type": "integer", "minimum": 0},
     "updated_at": {"type": "string", "format": "date-time", "maxLength": 40},
     "status": {"enum": ["active", "paused", "completed", "stopped"]},
@@ -67,6 +68,7 @@
   },
   "$defs": {
     "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+    "llm_session_id": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$", "maxLength": 160},
     "nullable_scope": {"oneOf": [{"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$"}, {"type": "null"}]},
     "relative_path": {"type": "string", "maxLength": 512, "pattern": "^(?!/)(?!.*\\.\\./)[A-Za-z0-9._-]+(?:/[A-Za-z0-9._-]+)*$"},
     "scope": {

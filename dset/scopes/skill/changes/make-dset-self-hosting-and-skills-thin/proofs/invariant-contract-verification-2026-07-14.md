@@ -1,5 +1,8 @@
 # Invariant contract verification — 2026-07-14
 
+- **LLM session IDs:**
+  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
+
 > [!NOTE]
 > Historical proof only. This record evaluated the pre-layer DSET 0.2 contract
 > at commit `b84c23bdbc642508a142b8f7469de4cd08b94573`. Its `METH-*` candidate

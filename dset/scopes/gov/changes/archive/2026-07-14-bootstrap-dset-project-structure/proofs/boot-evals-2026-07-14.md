@@ -1,5 +1,8 @@
 # Independent bootstrap-eval baseline — 2026-07-14
 
+- **LLM session IDs:**
+  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
+
 This report records the pre-reconciliation, pre-archive baseline. It is historical evidence, not the current completion status. The archive-layout rerun is recorded separately after reconciliation and the dated move.
 
 ## Protocol

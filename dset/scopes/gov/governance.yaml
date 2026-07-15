@@ -114,7 +114,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/gov/templates/governance/core-v1/artifact-maintenance.md
-      sha256: c561640040d9ace910d1f38969652408a5f7542a22f6e1c53c3cb66407870357
+      sha256: c13818c34412038e4a404a4c30fc07a0efd083263f2d2f10e3d0d4a015307262
   -
     id: DSET-RULE-WORK-ITEMS
     layer: GOV
@@ -164,7 +164,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/skill/templates/governance/core-v1/skill-runs.md
-      sha256: 29e360d80257697d3b21db0701350c6f0ca33e6b18490313bccaa1c1800c64de
+      sha256: db465736e5cc42c616d8341ad76dd2fa625ee59c9f9a41cc98e5bdaf56b14e1b
   -
     id: DSET-RULE-RELEASE
     layer: OPS

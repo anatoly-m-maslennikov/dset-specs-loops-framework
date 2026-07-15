@@ -48,11 +48,18 @@ the Decision or Decisions it implements in the commit body, for example
 the commit must name the governing Problem, Opportunity, Question, or Change
 that authorized it and explain why no Decision was required.
 
-Every newly created or materially changed atomic artifact records its LLM
-session provenance when an LLM helped produce it. Use `llm_session_ids` with
-stable host-prefixed IDs such as `codex:<session-id>`. Session provenance is
+Every newly created or materially changed atomic artifact has an explicit LLM
+session-provenance field. Use unique `llm_session_ids` with stable
+host-prefixed IDs such as `codex:<session-id>` when an LLM created or materially
+revised the artifact; use an explicit empty list or `none` for human-only work.
+Missing provenance is not equivalent to human-only work. Session provenance is
 not authority by itself; it lets a reviewer find the working context that
 created, reviewed, or materially revised the artifact.
+
+Current Change manifests, intake items, Decisions, promoted proofs, local
+skill-run records, and session checkpoints are atomic artifacts. Their schemas,
+templates, or validators must enforce the explicit provenance shape before a
+repository claims this rule is implemented.
 
 ## Proof and derived-view maintenance
 

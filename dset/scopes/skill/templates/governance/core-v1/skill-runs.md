@@ -47,12 +47,16 @@ changes, Git/PR/check state, and promoted proof remain authoritative.
 One operator-visible DSET invocation starts or joins one bounded session. The
 public entrypoint is recorded once; automatically chained skills, governed
 workflows invoked directly by the model, and delegated runs remain children of
-that session. They share a `session_id` and identify their parent/root runs, so
-internal chaining does not create extra user-facing skills or lose provenance.
+that session. They share a DSET `session_id`, identify their parent/root runs,
+and record the host-prefixed `llm_session_ids` that materially contributed. An
+empty list means no LLM contributed; it does not mean provenance is unknown.
+Internal chaining therefore does not create extra user-facing skills or lose
+either DSET session continuity or host-session provenance.
 
 The runtime atomically maintains one replaceable checkpoint per session under
-ignored `.dset/sessions/<session-id>.json`. A checkpoint contains a bounded
-objective summary, current project/package/Change and repository-or-Work-Area target, resolved ruleset,
+ignored `.dset/sessions/<session-id>.json`. A checkpoint contains the same
+bounded `llm_session_ids`, a bounded objective summary, current
+project/package/Change and repository-or-Work-Area target, resolved ruleset,
 completed and pending stable IDs or artifact paths, authorization state, the
 last authoritative-state snapshot, and the next recommended handoff. It must
 not contain full prompts, source content, arbitrary tool output, credentials,

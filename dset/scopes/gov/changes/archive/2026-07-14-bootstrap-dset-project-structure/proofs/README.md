@@ -5,4 +5,7 @@ No disposable implementation spike is required. This change is proven by filesys
 - [Independent bootstrap-eval baseline — 2026-07-14](boot-evals-2026-07-14.md)
 - [Independent pushed-head bootstrap-eval results — 2026-07-14](boot-evals-pushed-head-2026-07-14.md)
 
-The verification summary remains in `verification.md`; generated full command output should remain ephemeral unless a concise redacted excerpt is needed to diagnose failure.
+Every promoted proof records LLM session IDs or explicit `none` for human-only
+work. The verification summary remains in `verification.md`; generated full
+command output should remain ephemeral unless a concise redacted excerpt is
+needed to diagnose failure.

@@ -1,5 +1,8 @@
 # FPF principle audit — 2026-07-15
 
+- **LLM session IDs:**
+  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
+
 ## Proof identity
 
 - **Claim:** DSET independently applies a bounded set of useful FPF reasoning

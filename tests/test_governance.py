@@ -46,9 +46,7 @@ class GovernanceTests(unittest.TestCase):
 
     def test_valid_registry_resolves_stable_order(self) -> None:
         self.assertEqual(validate_governance(self.root), [])
-        registry = cast(
-            dict[str, Any], load(self.root / "dset" / "governance.yaml")
-        )
+        registry = cast(dict[str, Any], load(self.root / "dset" / "governance.yaml"))
         self.assertEqual(registry["schema_version"], 1.1)
         self.assertTrue(
             all(
@@ -399,11 +397,16 @@ class GovernanceTests(unittest.TestCase):
         self.assertEqual(current["then"]["not"]["required"], ["decisions"])
         self.assertEqual(
             current["else"]["required"],
-            ["release", "intake", "decisions", "contracts"],
+            ["release", "intake", "decisions", "contracts", "llm_session_ids"],
         )
         self.assertEqual(current["else"]["not"]["required"], ["adrs"])
         release_variants = change_schema["$defs"]["release"]["oneOf"]
         self.assertEqual(len(release_variants), 2)
+        intake_schema = json.loads(_framework_schema("intake.schema.json").read_text())
+        for item_name in ("legacy_item", "layered_item"):
+            self.assertIn(
+                "llm_session_ids", intake_schema["$defs"][item_name]["required"]
+            )
 
     def test_trace_id_schemas_are_type_first_and_layer_bounded(self) -> None:
         change_schema = json.loads(_framework_schema("change.schema.json").read_text())
@@ -487,6 +490,7 @@ class GovernanceTests(unittest.TestCase):
             "statement": "Which bounded option applies?",
             "owner_change": None,
             "decision": "pending",
+            "llm_session_ids": [],
             "external_refs": [],
         }
         baseline["items"] = [valid]

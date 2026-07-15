@@ -39,7 +39,7 @@
     },
     "legacy_item": {
       "type": "object",
-      "required": ["id", "scope", "type", "status", "title", "statement", "owner_change", "decision"],
+      "required": ["id", "scope", "type", "status", "title", "statement", "owner_change", "decision", "llm_session_ids"],
       "properties": {
         "id": {"$ref": "#/$defs/intake_id"},
         "scope": {"$ref": "#/$defs/layer"},
@@ -49,13 +49,14 @@
         "statement": {"type": "string", "minLength": 1},
         "owner_change": {"oneOf": [{"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}, {"const": "pending"}, {"type": "null"}]},
         "decision": {"$ref": "#/$defs/decision"},
+        "llm_session_ids": {"$ref": "#/$defs/llm_session_ids"},
         "external_refs": {"$ref": "#/$defs/external_refs"}
       },
       "additionalProperties": false
     },
     "layered_item": {
       "type": "object",
-      "required": ["id", "scope", "type", "status", "title", "statement", "owner_change", "decision"],
+      "required": ["id", "scope", "type", "status", "title", "statement", "owner_change", "decision", "llm_session_ids"],
       "properties": {
         "id": {"$ref": "#/$defs/intake_id"},
         "scope": {"$ref": "#/$defs/layer"},
@@ -65,6 +66,7 @@
         "statement": {"type": "string", "minLength": 1},
         "owner_change": {"oneOf": [{"type": "string", "pattern": "^[A-Z][A-Z0-9]*-CHANGE-(?:META|GOV|TOOL|SKILL|OPS)-[0-9]{3,}$"}, {"const": "pending"}, {"type": "null"}]},
         "decision": {"$ref": "#/$defs/decision"},
+        "llm_session_ids": {"$ref": "#/$defs/llm_session_ids"},
         "external_refs": {"$ref": "#/$defs/external_refs"}
       },
       "additionalProperties": false
@@ -72,6 +74,7 @@
     "layer": {"enum": ["meta", "gov", "tool", "skill", "ops"]},
     "intake_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-(?:PROBLEM|OPPORTUNITY|QUESTION)(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"},
     "decision": {"oneOf": [{"type": "string", "pattern": "^[A-Z][A-Z0-9]*-DECISION(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}, {"const": "pending"}, {"type": "null"}]},
+    "llm_session_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$"}},
     "external_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
   }
 }

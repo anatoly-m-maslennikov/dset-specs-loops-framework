@@ -1,5 +1,8 @@
 # Qualitative evaluations — 2026-07-14
 
+- **LLM session IDs:**
+  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
+
 ## Method
 
 Three independent agent reviewers received bounded, read-only cases and used only committed public repository files. They did not edit files or contact GitHub. One reviewer evaluated cold navigation and profile independence, one evaluated artifact classification and authority, and one evaluated specification dependency ordering. Reviewer observations were corrected in commit `174c10b` and the affected cases were assigned back to the same reviewers.

@@ -1,5 +1,8 @@
 # Wrapper rule inventory — 2026-07-14
 
+- **LLM session IDs:**
+  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
+
 ## Subject
 
 - Pre-refactor wrapper tree: `3b47daffca4c4cfae51d0bf9eb0509cd95280eb7`

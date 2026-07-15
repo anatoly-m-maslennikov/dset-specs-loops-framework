@@ -1,5 +1,8 @@
 # Deterministic supportability checks — 2026-07-14
 
+- **LLM session IDs:**
+  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
+
 > Baseline evidence carried into the dated archive candidate for [PR #3](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3).
 
 ## Scope

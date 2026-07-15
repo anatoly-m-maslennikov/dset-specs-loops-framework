@@ -15,6 +15,8 @@ workspace:
   base_commit: b874504c25e42329eae19ed14f2b50a3d922d64e
   head_commit: 8a0cb000cb0dd74be3e29af6eb00724efc1e01af
 dependencies: []
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
 target:
   repository: true
   work_areas: []

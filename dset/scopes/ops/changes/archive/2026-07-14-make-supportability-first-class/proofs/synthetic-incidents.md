@@ -1,5 +1,8 @@
 # Synthetic incident fixtures
 
+- **LLM session IDs:**
+  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
+
 > Redacted synthetic fixtures carried into the dated archive candidate for [PR #3](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3).
 
 All names, identifiers, commands, payloads, repositories, people, and records below are fictional. The fixtures contain no production data, secrets, credentials, personal data, or working external links. Repository-qualified PR IDs are deliberately synthetic records used to evaluate traversal; they are not the implementing PR for this DSET change.

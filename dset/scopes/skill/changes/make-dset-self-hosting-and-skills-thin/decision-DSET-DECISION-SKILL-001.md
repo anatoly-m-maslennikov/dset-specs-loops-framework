@@ -6,6 +6,8 @@
 - **Resolves Question:** `DSET-QUESTION-SKILL-001`
 - **Supersedes:** none
 - **Superseded by:** none
+- **LLM session IDs:**
+  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
 - **Selected option:** Repository-owned rules, thin five-skill topology,
   bounded self-hosting, SemVer-compatible release classes, and evidence-based
   delegation budgets
@@ -65,4 +67,3 @@ higher nominal model cost when cheaper-token alternatives use more work.
   authority that depended on them.
 - **Successor or retirement:** none; any supersession must name the successor or
   explicitly record retirement with `no successor`.
-

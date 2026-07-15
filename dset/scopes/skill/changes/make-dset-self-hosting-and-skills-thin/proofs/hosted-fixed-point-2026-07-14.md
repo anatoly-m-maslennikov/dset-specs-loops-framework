@@ -1,5 +1,8 @@
 # Hosted fixed-point proof — 2026-07-14
 
+- **LLM session IDs:**
+  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
+
 ## Subject
 
 - Draft PR: [#9](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9)

@@ -241,7 +241,7 @@
         "not": {"required": ["decisions"]}
       },
       "else": {
-        "required": ["release", "intake", "decisions", "contracts"],
+        "required": ["release", "intake", "decisions", "contracts", "llm_session_ids"],
         "not": {"required": ["adrs"]},
         "properties": {
           "requirements": {"$ref": "#/$defs/requirement_ids"},

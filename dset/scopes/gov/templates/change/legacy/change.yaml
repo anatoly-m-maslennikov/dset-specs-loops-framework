@@ -8,6 +8,7 @@ pull_request:
   repository: {{repository}}
   number: pending
   url: pending
+llm_session_ids: []
 release:
   policy: pending
   class: pending
@@ -30,4 +31,3 @@ contracts:
   - {{project_key}}-CONTRACT{{id_layer}}-001
 stories: []
 outcomes: []
-

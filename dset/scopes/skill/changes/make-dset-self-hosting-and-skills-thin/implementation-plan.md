@@ -70,7 +70,7 @@
 - Keep the independent qualitative eval pending until the runtime session
   resume capability can exercise stale-scope re-resolution end to end.
 
-## Batch 8 — Provenance and artifact authority — specification complete
+## Batch 8 — Provenance and artifact authority — deterministic implementation complete
 
 - Define evergreen, transactional, and implementation artifact classes in GOV
   governance.
@@ -81,9 +81,14 @@
 - Require commits that change evergreen truth or implementation artifacts to
   cite the Decision they implement, or the authorizing Problem, Opportunity,
   Question, or Change when no Decision is required.
-- Add `llm_session_ids` provenance to active Change manifests and Decision
-  templates so atomic artifacts can point back to the sessions that created or
-  materially revised them.
+- Require explicit `llm_session_ids` provenance, or an explicit human-only
+  disposition, across Change manifests, intake items, Decisions, promoted
+  proofs, skill-run records, and session checkpoints.
+- Enforce current Change/intake/Decision/proof records with stable
+  `DSET-E155`, version and test run/checkpoint schemas, and backfill this
+  repository's transactional artifacts with the material-review session.
+- Preserve host-prefixed IDs as YAML scalar list values and cover the parser,
+  schemas, templates, validators, current repository, and generated adopter.
 
 ## Batch 9 — Governance constitution — complete
 

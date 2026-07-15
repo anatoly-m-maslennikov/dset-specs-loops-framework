@@ -1,5 +1,8 @@
 # Qualitative evaluations — 2026-07-14
 
+- **LLM session IDs:**
+  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
+
 ## Evaluation method
 
 Three independent agent reviewers received bounded, read-only cases. They used committed repository files without session context and were told not to edit the repository or contact GitHub. One reviewer evaluated file-only resumability, one evaluated failure diagnosis and delivery recovery, and one evaluated skill routing plus one-root migration. Initial failures were corrected in normal commits and assigned back to the same reviewer for re-evaluation.

@@ -1,3 +1,6 @@
 # Proof evidence — Make DSET self-hosting and skills thin
 
-Store bounded, redacted evidence and disposable proof-of-fit outputs here. Keep raw generated logs ephemeral unless a concise excerpt is required to diagnose failure.
+Store bounded, redacted evidence and disposable proof-of-fit outputs here. Each
+promoted proof records LLM session IDs or explicit `none` for human-only work.
+Keep raw generated logs ephemeral unless a concise excerpt is required to
+diagnose failure.

@@ -27,6 +27,14 @@ class YamlSubsetTests(unittest.TestCase):
         }
         self.assertEqual(loads(dump(value)), value)
 
+    def test_host_prefixed_ids_round_trip_as_list_scalars(self) -> None:
+        value = {
+            "llm_session_ids": ["codex:session-001", "claude:session-002"],
+            "external_refs": ["https://example.com/evidence"],
+        }
+
+        self.assertEqual(loads(dump(value)), value)
+
 
 if __name__ == "__main__":
     unittest.main()

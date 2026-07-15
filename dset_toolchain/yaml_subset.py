@@ -33,7 +33,7 @@ def loads(text: str) -> Any:
                 parent.append(child)
                 stack.append((indent, child))
                 continue
-            if ":" in rest:
+            if _is_inline_mapping(rest):
                 key, raw = _split_mapping(rest, line_number)
                 item: dict[str, Any] = {}
                 parent.append(item)
@@ -95,6 +95,13 @@ def _split_mapping(content: str, line_number: int) -> tuple[str, str]:
     if not key:
         raise _error(line_number, "mapping key is empty")
     return key, raw.strip()
+
+
+def _is_inline_mapping(value: str) -> bool:
+    return (
+        not value.startswith(('"', "'"))
+        and re.match(r"^[^:]+:(?:\s|$)", value) is not None
+    )
 
 
 def _parse_scalar(raw: str) -> Any:

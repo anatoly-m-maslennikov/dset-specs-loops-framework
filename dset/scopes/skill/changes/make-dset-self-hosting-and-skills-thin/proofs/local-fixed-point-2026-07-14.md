@@ -1,5 +1,8 @@
 # Local fixed-point proof — 2026-07-14
 
+- **LLM session IDs:**
+  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
+
 ## Subject
 
 - Branch: `dev`

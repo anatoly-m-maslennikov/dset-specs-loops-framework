@@ -37,6 +37,11 @@ TRACE_TYPES = (
 LINK_PATTERN = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 CALLOUT_PATTERN = re.compile(r"^> \[!([^\]]+)\]", re.MULTILINE)
 GITHUB_CALLOUTS = {"NOTE", "TIP", "IMPORTANT", "WARNING", "CAUTION"}
+LLM_SESSION_ID_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
+LLM_SESSION_FIELD_PATTERN = re.compile(
+    r"^\s*(?:-\s*)?\*\*LLM session IDs?:\*\*\s*(.*)$",
+    re.IGNORECASE,
+)
 
 
 def validate_repository(root: Path) -> list[Diagnostic]:
@@ -153,6 +158,18 @@ def validate_change(
             diagnostics.append(
                 _diag("DSET-E104", path, "required artifact directory is missing")
             )
+    if not _is_legacy_change(data) and not _valid_llm_session_ids(
+        data.get("llm_session_ids")
+    ):
+        diagnostics.append(
+            _diag(
+                "DSET-E155",
+                manifest_path,
+                "current Change manifests require unique host-prefixed "
+                "llm_session_ids; use an empty list for human-only work",
+            )
+        )
+    diagnostics.extend(_validate_atomic_markdown_provenance(change_dir))
     diagnostics.extend(_validate_change_ids(root, change_dir, data))
     if layered:
         diagnostics.extend(_validate_layered_change(layout, change_dir, data))
@@ -508,6 +525,15 @@ def _validate_intake_registry(root: Path, manifest: dict[str, Any]) -> list[Diag
             )
         elif isinstance(identifier, str):
             seen_ids.add(identifier)
+        if not _valid_llm_session_ids(raw_item.get("llm_session_ids")):
+            diagnostics.append(
+                _diag(
+                    "DSET-E155",
+                    path,
+                    f"intake item {identifier} requires unique host-prefixed "
+                    "llm_session_ids; use an empty list for human-only work",
+                )
+            )
         decision = raw_item.get("decision")
         owner_change = raw_item.get("owner_change")
         if layered and owner_change not in (None, "pending"):
@@ -541,6 +567,58 @@ def _validate_intake_registry(root: Path, manifest: dict[str, Any]) -> list[Diag
                 _diag("DSET-E142", path, f"invalid Decision identity: {decision}")
             )
     return diagnostics
+
+
+def _valid_llm_session_ids(value: object) -> bool:
+    if not isinstance(value, list):
+        return False
+    if any(
+        not isinstance(identifier, str)
+        or LLM_SESSION_ID_PATTERN.fullmatch(identifier) is None
+        for identifier in value
+    ):
+        return False
+    return len(value) == len(set(value))
+
+
+def _markdown_has_session_provenance(path: Path) -> bool:
+    lines = path.read_text(encoding="utf-8").splitlines()
+    for index, line in enumerate(lines):
+        match = LLM_SESSION_FIELD_PATTERN.fullmatch(line)
+        if match is None:
+            continue
+        block = [match.group(1)]
+        for following in lines[index + 1 :]:
+            if following.startswith("##"):
+                break
+            if following and not following.startswith((" ", "-", "`")):
+                break
+            block.append(following)
+        value = "\n".join(block)
+        if re.search(r"\bnone\b", value, flags=re.IGNORECASE):
+            return True
+        return any(
+            LLM_SESSION_ID_PATTERN.fullmatch(candidate) is not None
+            for candidate in re.findall(r"`([^`]+)`", value)
+        )
+    return False
+
+
+def _validate_atomic_markdown_provenance(change_dir: Path) -> list[Diagnostic]:
+    paths = list(change_dir.glob("decision-*.md"))
+    proofs = change_dir / "proofs"
+    if proofs.is_dir():
+        paths.extend(path for path in proofs.glob("*.md") if path.name != "README.md")
+    return [
+        _diag(
+            "DSET-E155",
+            path,
+            "Decision and promoted proof records require an LLM session IDs "
+            "field with host-prefixed IDs or explicit none",
+        )
+        for path in sorted(paths)
+        if not _markdown_has_session_provenance(path)
+    ]
 
 
 def _validate_version(

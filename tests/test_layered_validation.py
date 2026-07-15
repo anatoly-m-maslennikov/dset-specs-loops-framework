@@ -85,6 +85,7 @@ class LayeredValidationTests(unittest.TestCase):
             "statement": "Which bounded option applies?",
             "owner_change": "DSET-CHANGE-GOV-001",
             "decision": "pending",
+            "llm_session_ids": [],
             "external_refs": [],
         }
         baseline: dict[str, Any] = {"schema_version": "1.1", "items": [valid]}
@@ -113,6 +114,67 @@ class LayeredValidationTests(unittest.TestCase):
                 self.assertIn(
                     "DSET-E142", {item.code for item in validate_repository(self.root)}
                 )
+
+    def test_atomic_artifacts_require_explicit_session_provenance(self) -> None:
+        intake_path = self.scopes / "gov" / "intake.yaml"
+        item: dict[str, Any] = {
+            "id": "DSET-QUESTION-GOV-001",
+            "scope": "gov",
+            "type": "question",
+            "status": "open",
+            "title": "Choice",
+            "statement": "Which bounded option applies?",
+            "owner_change": "DSET-CHANGE-GOV-001",
+            "decision": "pending",
+            "external_refs": [],
+        }
+        intake_path.write_text(
+            dump({"schema_version": "1.1", "items": [item]}), encoding="utf-8"
+        )
+        self.assertIn(
+            "DSET-E155", {item.code for item in validate_repository(self.root)}
+        )
+        item["llm_session_ids"] = []
+        intake_path.write_text(
+            dump({"schema_version": "1.1", "items": [item]}), encoding="utf-8"
+        )
+
+        change = self._write_change("gov", "session-provenance", id_layer="GOV")
+        manifest_path = change / "change.yaml"
+        manifest = load(manifest_path)
+        assert isinstance(manifest, dict)
+        manifest.pop("llm_session_ids")
+        manifest_path.write_text(dump(manifest), encoding="utf-8")
+        self.assertIn(
+            "DSET-E155",
+            {item.code for item in validate_change(self.root, change, archived=False)},
+        )
+        manifest["llm_session_ids"] = ["missing-host-prefix"]
+        manifest_path.write_text(dump(manifest), encoding="utf-8")
+        self.assertIn(
+            "DSET-E155",
+            {item.code for item in validate_change(self.root, change, archived=False)},
+        )
+        manifest["llm_session_ids"] = []
+        manifest_path.write_text(dump(manifest), encoding="utf-8")
+
+        decision = change / "decision-DSET-DECISION-GOV-099.md"
+        decision.write_text("# Decision\n", encoding="utf-8")
+        proof = change / "proofs" / "bounded-proof.md"
+        proof.parent.mkdir()
+        proof.write_text("# Proof\n", encoding="utf-8")
+        self.assertIn(
+            "DSET-E155",
+            {item.code for item in validate_change(self.root, change, archived=False)},
+        )
+        for path, title in ((decision, "Decision"), (proof, "Proof")):
+            path.write_text(
+                f"# {title}\n\n- **LLM session IDs:** none\n", encoding="utf-8"
+            )
+        self.assertNotIn(
+            "DSET-E155",
+            {item.code for item in validate_change(self.root, change, archived=False)},
+        )
 
     def test_change_target_is_repository_or_declared_work_areas(self) -> None:
         change = self._write_change("tool", "targeted-change")
@@ -686,6 +748,7 @@ class LayeredValidationTests(unittest.TestCase):
                 "head_commit": "pending",
             },
             "dependencies": [],
+            "llm_session_ids": [],
             "packages": ["sample"],
             "pull_request": {
                 "repository": "example/project",

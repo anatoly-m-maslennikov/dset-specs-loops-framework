@@ -8,6 +8,7 @@ pull_request:
   repository: example/project
   number: pending
   url: pending
+llm_session_ids: []
 release:
   policy: dset/governance/release.md
   class: pending

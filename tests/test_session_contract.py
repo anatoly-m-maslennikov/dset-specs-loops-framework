@@ -16,10 +16,11 @@ class SessionContractTests(unittest.TestCase):
             )
         )
 
-        self.assertEqual(schema["properties"]["schema_version"]["const"], "1.1")
+        self.assertEqual(schema["properties"]["schema_version"]["const"], "1.2")
         self.assertTrue(
             {
                 "session_id",
+                "llm_session_ids",
                 "root_run_id",
                 "parent_run_id",
                 "invocation_source",
@@ -37,6 +38,10 @@ class SessionContractTests(unittest.TestCase):
             },
         )
         self.assertIn("target", schema["properties"]["scope"]["required"])
+        self.assertEqual(
+            schema["properties"]["llm_session_ids"]["items"]["$ref"],
+            "#/$defs/llm_session_id",
+        )
 
     def test_checkpoint_is_bounded_and_points_back_to_authority(self) -> None:
         schema = json.loads(
@@ -49,6 +54,8 @@ class SessionContractTests(unittest.TestCase):
         self.assertEqual(schema["properties"]["completed"]["maxItems"], 64)
         self.assertEqual(schema["properties"]["pending"]["maxItems"], 32)
         self.assertEqual(schema["properties"]["touched_paths"]["maxItems"], 64)
+        self.assertEqual(schema["properties"]["schema_version"]["const"], "1.1")
+        self.assertIn("llm_session_ids", schema["required"])
         self.assertIn("authority_snapshot", schema["required"])
         self.assertIn("next", schema["required"])
         self.assertIn("target", schema["$defs"]["scope"]["required"])

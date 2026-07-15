@@ -1,5 +1,8 @@
 # Layered Work Area verification — 2026-07-15
 
+- **LLM session IDs:**
+  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
+
 > [!NOTE]
 > Historical proof only. The evaluated `0.3.0` candidate predates the 0.3.1
 > version correction, neutral Work Area schema update, workspace-mode changes,

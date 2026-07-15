@@ -1,5 +1,8 @@
 # Local candidate gate — 2026-07-15
 
+- **LLM session IDs:**
+  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
+
 ## Proof identity
 
 - **Claim:** Candidate `4c08e748ebfca7534e9de285512896e3efe5366d`

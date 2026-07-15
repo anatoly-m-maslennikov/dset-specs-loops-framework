@@ -1,5 +1,8 @@
 # Independent pushed-head bootstrap-eval results — 2026-07-14
 
+- **LLM session IDs:**
+  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
+
 ## Protocol
 
 Four read-only subagent evaluations ran against archive-candidate commit `02812a11ac00609b3219f5acbe57ffd5467975d9`. Before scoring, reviewers independently confirmed that local `HEAD`, the remote `codex/dset-project-structure` branch, and live draft PR [anatoly-m-maslennikov/dset-loops-framework#2](https://github.com/anatoly-m-maslennikov/dset-loops-framework/pull/2) all pointed to that exact commit. The worktree was clean. Reviewers used repository files rather than chat history and made no edits.

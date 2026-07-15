@@ -130,9 +130,9 @@ Accepted Decisions, Problems, Opportunities, Questions, proofs, and other transa
 
 ## DSET-REQUIREMENT-GOV-022 — Commits and atomic artifacts retain provenance
 
-Every commit that changes evergreen truth or implementation artifacts must name the Decision or Decisions it implements in its commit message body. If no Decision is required, the commit must name the authorizing Problem, Opportunity, Question, or Change. Each newly created or materially changed atomic artifact records `llm_session_ids` when an LLM helped produce it, using stable host-prefixed session IDs.
+Every commit that changes evergreen truth or implementation artifacts must name the Decision or Decisions it implements in its commit message body. If no Decision is required, the commit must name the authorizing Problem, Opportunity, Question, or Change. Each newly created or materially changed atomic artifact has an explicit session-provenance field: unique stable host-prefixed `llm_session_ids` when an LLM helped produce it, or an explicit empty list/`none` for human-only work. Missing provenance is invalid. This applies to Changes, intake items, Decisions, promoted proofs, skill-run records, and session checkpoints without making provenance authoritative.
 
-**Scenario DSET-SCENARIO-GOV-023:** A commit body contains `Implements: DSET-DECISION-GOV-001`, and the created Decision artifact records the Codex session IDs that produced or materially revised it.
+**Scenario DSET-SCENARIO-GOV-023:** A commit body contains `Implements: DSET-DECISION-GOV-001`; the created Decision, Change, intake item, proof, run, and checkpoint shapes record the Codex session IDs that produced or materially revised them; and a human-only fixture passes only with explicit empty provenance.
 
 ## DSET-REQUIREMENT-GOV-023 — Rule authority and assurance are explicit
 

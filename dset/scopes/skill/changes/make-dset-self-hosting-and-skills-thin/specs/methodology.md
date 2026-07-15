@@ -75,8 +75,11 @@ change that leaves the spec stale.
 
 Commits that change evergreen truth or implementation artifacts must cite the
 Decision they implement, or the authorizing Problem, Opportunity, Question, or
-Change when no Decision is required. Atomic artifacts record `llm_session_ids`
-when an LLM helped create or materially revise them.
+Change when no Decision is required. Atomic artifacts expose explicit unique
+host-prefixed `llm_session_ids` when an LLM helped create or materially revise
+them, or an explicit empty/`none` disposition for human-only work. Missing
+provenance is invalid. The rule applies to Changes, intake items, Decisions,
+promoted proofs, skill-run records, and session checkpoints.
 
 **Scenario DSET-SCENARIO-GOV-023:** A commit body contains
 `Implements: DSET-DECISION-GOV-001`, and the Decision artifact records the
