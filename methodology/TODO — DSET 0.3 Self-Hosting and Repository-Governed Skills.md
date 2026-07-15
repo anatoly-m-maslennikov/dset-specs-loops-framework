@@ -173,29 +173,29 @@ paths; schema 1.2 assigns each governing document to its semantic layer.
 
 ## §8 | Deterministic test plan
 
-- [ ] **DSET-TEST-GOV-013 — Registry shape:** Valid registries parse; missing versions, workflow IDs, rule IDs, owners, paths, dependencies, or customization metadata fail with stable diagnostics.
-- [ ] **DSET-TEST-GOV-014 — Authority graph:** Duplicate owners, cycles, unknown dependencies, and outside-root paths fail deterministically.
-- [ ] **DSET-TEST-TOOL-012 — Stable resolution:** Repeated resolution produces byte-stable ordered output and performs no writes.
-- [ ] **DSET-TEST-SKILL-009 — Thin wrappers:** Released skills contain only the allowed bootstrap/wrapper fields and resolve every referenced workflow.
-- [ ] **DSET-TEST-SKILL-010 — Distribution identity:** Generated/installed wrapper files match the canonical source for every supported runtime.
-- [ ] **DSET-TEST-GOV-015 — Local mutation:** Changing a materialized rule leaves wrapper hashes unchanged, changes profile/customization evidence, and keeps deterministic registry validation coherent.
-- [ ] **DSET-TEST-TOOL-013 — Recursive fixed point:** Released validator → candidate repository → generated adopter → candidate validation passes in the bounded sequence.
-- [ ] **DSET-TEST-TOOL-014 — Recursive failures:** Each corrupted bootstrap boundary fails at the expected stable diagnostic without falling back to embedded or remote rules.
-- [ ] **DSET-TEST-TOOL-015 — TypeScript profile:** Typecheck, lint, unit/integration tests, production build, layer rules, schemas/contracts, secret hygiene, lockfile, DSET checks, trace freshness, and diff hygiene run through one canonical command.
-- [ ] **DSET-TEST-GOV-016 — Migration ownership:** The Your Harness migration leaves exactly one writable owner for every accepted rule, spec, test plan, eval plan, implementation change, and evidence concern.
-- [ ] **DSET-TEST-OPS-012 — Provenance/supportability:** Exact upstream provenance/license and the required production supportability fields resolve and validate.
-- [ ] **DSET-TEST-OPS-013 — Lifecycle:** The pilot completes a real PR-linked DSET change and guarded archive without predicting a future merge SHA.
+Accepted deterministic claims and their current automation are owned by the
+layer plans under `dset/scopes/*/specs/packages/methodology/test-plan.md`. This
+roadmap does not redeclare their IDs or assertions. The active Change selects
+and executes its applicable set in its separate
+[test plan](../dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/test-plan.md).
+
+The implemented §0–§4 subset has current local proof. Remaining platform,
+release, hosted, TypeScript, migration, pilot, and distribution tests stay open
+through `DSET-TASK-TOOL-008..009`, `DSET-TASK-SKILL-020`,
+`DSET-TASK-TOOL-036..037`, and `DSET-TASK-OPS-025` in the active Change; an
+unchecked roadmap item never becomes a competing Test definition.
 
 ## §9 | Qualitative eval plan
 
-- [ ] **DSET-EVAL-SKILL-008 — Rule propagation:** Give two repositories the same wrapper and different local rules; independent agents must follow the applicable local rule without skill edits or framework-repository access.
-- [ ] **DSET-EVAL-GOV-011 — Cold resolution:** A cold agent locates the DSET root, registry, governing documents, accepted truth, active change, proof obligations, and canonical command without session memory.
-- [ ] **DSET-EVAL-GOV-012 — No hidden fallback:** Remove or conflict a governing rule; the agent must stop and report the resolver failure rather than apply remembered or embedded methodology.
-- [ ] **DSET-EVAL-GOV-013 — Rule ownership:** Reviewers distinguish framework template origin, project-local current rule, skill wrapper, agent hub, rationale, procedure, and historical evidence without creating duplicate authority.
-- [ ] **DSET-EVAL-GOV-014 — Migration clarity:** A reviewer can classify and migrate the existing Your Harness specs, test plan, eval plans, implementation phases, and agent guidance without losing history or leaving two writable roots.
-- [ ] **DSET-EVAL-TOOL-003 — TypeScript applicability:** Reviewers apply only evidence-backed TypeScript gates and do not inherit Python tools or thresholds.
-- [ ] **DSET-EVAL-OPS-007 — Production diagnosis:** An independent operator diagnoses and contains a synthetic provider/plugin/storage incident using bounded redacted evidence and the project supportability runbook.
-- [ ] **DSET-EVAL-TOOL-004 — Clean-room portability:** A cold upstream Claudian fixture can adopt the templates and resolver without Your Harness-only paths, rules, or private context leaking into it.
+Accepted qualitative criteria are owned by the layer plans under
+`dset/scopes/*/specs/packages/methodology/eval-plan.md`. The active Change owns
+only execution and evidence for its selected set in its separate
+[eval plan](../dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/eval-plan.md).
+
+Independent rule-following, navigation, diagnostic, platform, release,
+TypeScript, migration, supportability, pilot, and clean-room reviews remain
+pending where the active verification matrix says so. They are eval work, not
+duplicate roadmap-owned Eval entities and not deterministic test substitutes.
 
 ## §10 | Distribution and release
 

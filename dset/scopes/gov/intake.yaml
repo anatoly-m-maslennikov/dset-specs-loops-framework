@@ -149,3 +149,13 @@ items:
     owner_change: DSET-CHANGE-SKILL-001
     decision: pending
     external_refs: []
+  - id: DSET-PROBLEM-GOV-002
+    scope: gov
+    type: problem
+    status: resolved
+    title: Roadmap redeclared accepted Test and Eval IDs
+    statement: The active roadmap formerly assigned already-owned Test and Eval IDs to different assertions, creating duplicate semantic owners. Sections 8 and 9 now link to the layer-owned proof plans and the active Change execution plans without redefining those entities.
+    owner_change: DSET-CHANGE-SKILL-001
+    decision: null
+    external_refs:
+      - https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9
