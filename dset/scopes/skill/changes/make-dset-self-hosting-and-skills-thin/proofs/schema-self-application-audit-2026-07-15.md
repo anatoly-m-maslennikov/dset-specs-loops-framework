@@ -18,8 +18,9 @@
   `8d24d36507357e1831eb4fcdf47e1eb1cf712dc3`, local branch `dev`, schema 1.2,
   product/package target 0.3.1, observed 2026-07-15.
 - **Evidence polarity:** Supporting evidence and blocking gaps.
-- **Currentness:** Current for the audited local surfaces; hosted state is
-  explicitly stale because this branch is ahead of remote `dev`.
+- **Currentness:** Historical and superseded after template, Decision,
+  proof-currentness, intake, validation, and test changes. See the replacement
+  [schema and self-application re-audit](schema-self-application-reaudit-2026-07-15.md).
 - **Reopen when:** Any live schema/path/ID/Decision terminology, version,
   workspace mode, adopter, skill runtime, trace generator, or hosted PR head
   changes.

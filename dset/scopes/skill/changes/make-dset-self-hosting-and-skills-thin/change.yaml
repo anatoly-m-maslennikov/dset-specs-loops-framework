@@ -91,7 +91,7 @@ release:
     version: unversioned
   target: 0.3.1
   readiness: verification.md
-  candidate_commit: 4c08e748ebfca7534e9de285512896e3efe5366d
+  candidate_commit: a6738bfed4c222f8e984d615a20be4a6e0d56767
 intake:
   - DSET-PROBLEM-TOOL-001
   - DSET-QUESTION-GOV-001
