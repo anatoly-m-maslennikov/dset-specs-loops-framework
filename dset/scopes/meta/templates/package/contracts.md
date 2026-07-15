@@ -4,9 +4,11 @@
 
 Define the authoritative external or internal boundary: DDL, CSV/XLSX shape,
 OpenAPI, message schema, or another concrete interface. Record inputs, outputs,
-compatibility, error behavior, authority, and supersession rules. Implementation
-conforms to this contract and cannot rewrite it unless its authority explicitly
-supersedes it.
+compatibility, error behavior, authority, and lifecycle rules. Implementation
+conforms to this immutable Contract atom and cannot rewrite it. Record
+`priority`, creation state, and `absorbs`. Only the named authority may emit an
+absorbing successor or append-only retirement event; current state and reverse
+links are derived.
 
 For skill-host contracts, prove native load, install, and invocation in every
 declared Claude, Codex, or other host; Markdown validity is not host proof. For

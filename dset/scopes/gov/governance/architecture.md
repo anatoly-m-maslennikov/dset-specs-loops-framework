@@ -8,19 +8,27 @@ The adopting repository's discovered project manifest selects a local governance
 profile. Schema 1.2 owns that manifest at `dset/scopes/meta/dset.yaml` and the
 governance registry at `dset/scopes/gov/governance.yaml`; legacy schema 1.0/1.1
 owns the compatible central paths. The discovered registry maps workflow and
-rule IDs to exactly one editable governing document inside the repository. A
-materialized document is project truth immediately; its source template and
-version remain provenance only.
+rule IDs to exactly one compiled governing document and its active atomic
+sources inside the repository. An active source atom is authority; the
+materialized document is its current projection only while compilation is
+current. Framework template and version remain provenance only.
 
-Resolution precedence is project-local registered rule, then an explicitly selected local profile, then failure. Never fall back to wrapper prose, agent memory, a generated cache, an installed copy, or remote framework text.
+Resolution precedence is project-local active source atom, then its current
+compiled governing document, then an explicitly selected local profile, then
+failure. A source/projection mismatch selects the source, marks the projection
+stale, and blocks reliance until recompilation. Never fall back to wrapper
+prose, agent memory, a generated cache, an installed copy, or remote framework
+text.
 
 ## Rule authority and assurance
 
 Governance separates authority from assurance. A normative rule governs only
-when the current repository-local registry resolves it to one applicable,
-editable governing document and validates its dependency and precedence
-closure. The registered layer and path bound its scope; the selected profile
-version and customization state identify its current edition.
+when the current repository-local registry resolves its accepted, active,
+applicable atomic sources and one compiled governing document and validates the
+dependency and precedence closure. The registered layer and path bound its
+scope; the selected profile version and customization state identify its
+current edition. An atomic source/document mismatch makes the document stale;
+the atom remains authoritative while the relying gate stops for recompilation.
 
 `depends_on` declares prerequisites required to interpret or execute a rule.
 `precedence_over` declares only how an explicit conflict between rules is
@@ -29,9 +37,9 @@ every rule declares both fields even when the lists are empty. Registry order
 is not precedence. If selected rules conflict and no declared precedence path
 resolves the conflict, governed work stops rather than choosing implicitly.
 
-Decisions and provenance authorize and explain change. Tests, evals, reviews,
-and evidence assess reliance claims. None becomes rule authority merely by
-existing or passing. Missing or stale assurance leaves the affected claim
+Active Decisions authorize and explain change. Provenance identifies origin but
+does not authorize. Tests, evals, reviews, and evidence assess reliance claims.
+None becomes rule authority merely by existing or passing. Missing or stale assurance leaves the affected claim
 pending or stale and blocks the relying gate; it does not silently erase an
 otherwise valid rule. `DSET-RULE-ARTIFACT-MAINTENANCE` governs transactional
 discharge and risk-proportionate proof with explicit reopen conditions.
@@ -55,30 +63,36 @@ Explicit justified non-applicability is valid. Missing or invalid selected owner
 
 ## State boundaries
 
-The project manifest selects the profile; the registry owns resolution metadata; governing documents own rules; wrappers own invocation only; generated indexes and caches are derived. Writes that change customization status are explicit and never overwrite governing documents.
+The project manifest selects the profile; the registry owns resolution
+metadata; active atoms own normative claims; governing documents own compiled
+presentation; wrappers own invocation only; generated indexes and caches are
+derived. Writes that change customization status are explicit and never mutate
+atoms.
 
-## Artifact classes
+## Artifact roles
 
-DSET separates three authority classes:
+DSET separates four roles:
 
-- **Evergreen artifacts** are updatable current truth. Specs, implementation
-  plans, deterministic test plans, eval plans, architecture, contracts,
-  runbooks, and governing rules may change in place through a bounded Change.
-  They state the current accepted version.
-- **Transactional artifacts** record bounded facts, choices, observations, or
-  questions in time. Decisions, Problems, Opportunities, Questions, proof
-  records, session/run records, release evidence, and Change records are not
-  edited into a new truth shape silently; they are resolved, superseded,
-  archived, or linked forward.
-- **Implementation artifacts** are the executable or concrete delivery layer:
-  code, tests, eval prompts/datasets, CI workflows, scripts, generated runtime
-  assets, and configuration examples. They implement evergreen truth and cite
-  the transactional artifacts that authorized or constrained the work.
+- **Atomic authority sources** are accepted, active, applicable Requirements,
+  Contracts, Decisions, and other registered normative atoms. Atoms are
+  immutable. Later state is an append-only lifecycle event; replacement is a
+  successor atom with an explicit acyclic `absorbs` relation.
+- **Evergreen compiled projections** are updatable current views such as specs,
+  implementation plans, deterministic test plans, eval plans, architecture,
+  runbooks, and governing rules. They are compiled from active source atoms and
+  become stale when they disagree with one.
+- **Transactional context and evidence** record Problems, Opportunities,
+  Questions, proofs, sessions/runs, releases, and Changes. They route work or
+  assess claims without becoming normative authority merely by existing.
+- **Implementation artifacts** are code, tests, eval prompts/datasets, CI
+  workflows, scripts, generated runtime assets, and configuration examples.
+  They implement atomic sources through their compiled projections.
 
-Transactional artifacts influence current behavior only after their accepted
-consequences are compiled into the owning evergreen artifact. A generated view
-may summarize that relationship, but the evergreen owner remains the current
-truth and the transactional artifact remains provenance.
+An active atom wins over a stale compiled projection. An absorbing successor
+wins over absorbed predecessors by explicit lifecycle relation, never by age.
+A fully retired atom may move byte-for-byte to its type's `archive/` subfolder
+with stable ID, digest, and lookup. Generated views may summarize these
+relationships but never become authority.
 
 ## Public workflow contract
 

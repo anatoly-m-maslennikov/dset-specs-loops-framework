@@ -4,8 +4,9 @@
 - **Status:** proposed
 - **Decision date:** pending
 - **Resolves Question:** pending
-- **Supersedes:** none
-- **Superseded by:** none
+- **Absorbs:** none
+- **Replaces claims:** none
+- **Priority:** unknown
 - **Selected option:** pending
 - **LLM session IDs:** pending
 
@@ -30,19 +31,21 @@ replacement seam, and the canonical Requirements, Contracts, Design, proof
 plans, and operating rules updated by the Decision. Those owners carry
 normative truth; this record retains rationale.
 
-Name the evergreen artifacts that were updated to compile this Decision into
-current truth. A Decision that has not discharged its accepted consequences is
-not complete.
+Name the evergreen projections compiled from this Decision. The accepted,
+active Decision remains the atomic authority source; a projection that differs
+from it is stale.
 
-## Lifecycle evidence
+## Lifecycle policy at emission
 
-- **Confirmation evidence:** pending
-- **Violation or counter-evidence:** none observed
+- **Expected confirmation evidence:** pending
+- **Known counter-evidence:** none observed
 - **Reopen when:** pending
 - **If reopened, retain:** prior evidence, rationale, and still-valid constraints
 - **If reopened, withdraw:** invalid assumptions and authority that depended on them
-- **Successor or retirement:** pending; explicitly record `no successor` when retired
+- **Retirement condition:** pending
 
-Never silently edit accepted history. Reopen or supersede the Decision, preserve
-both directions, update affected downstream owners, and name the successor or
-explicit retirement without successor.
+This emitted Decision atom is immutable. Later acceptance, rejection,
+confirmation, counter-evidence, reopening, withdrawal, or retirement is a new
+append-only lifecycle event. A replacement Decision points backward with
+`Absorbs`; reverse links and current status are derived. A fully retired
+Decision may move byte-for-byte to `archive/` with stable ID, digest, and lookup.

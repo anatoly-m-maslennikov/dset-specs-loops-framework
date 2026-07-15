@@ -33,7 +33,7 @@ as pass or an explicitly declared bootstrap-transition rejection, requires
 candidate-to-repository and candidate-to-temporary-adopter to pass, then
 terminates at the declared fixed point.
 
-## DSET-REQUIREMENT-TOOL-005 — Project health has a portable deterministic renderer
+## DSET-REQUIREMENT-TOOL-018 — Project health has a portable deterministic renderer
 
 The toolchain must compute the project-health model from discovered canonical
 artifacts, registry ownership, traceability, Git identities, and current proof
@@ -43,7 +43,58 @@ and a check mode detects staleness. Repository, layer, package, and Work Area
 drill-downs use the same source model. A later local or hosted dashboard may
 render that model but cannot introduce private health state or new authority.
 
-**Scenario DSET-SCENARIO-TOOL-005:** Two runs over unchanged inputs produce the
+**Scenario DSET-SCENARIO-TOOL-018:** Two runs over unchanged inputs produce the
 same Markdown bytes. A changed Requirement makes check mode report the view
 stale, explicit refresh updates only the generated health destination, and
 every row links back to a canonical artifact or an explicit unknown.
+
+## DSET-REQUIREMENT-TOOL-019 — Priority conflict resolution is deterministic
+
+The toolchain must evaluate registered conflicts between any governed artifact
+types. It first resolves each artifact's role and classifies the conflict.
+Immutable external authority wins over mutable project truth. Mutually
+unsatisfiable immutable obligations stop with an explicit non-compliance state;
+priority may order remediation but cannot make either obligation satisfied.
+
+For a comparable policy conflict whose governing profile permits selection,
+the resolver applies explicit artifact-specific precedence, then the selected
+profile's effective priority order. A strictly higher comparable priority
+selects the effective conflicting claim without invalidating the other artifact
+outside that context.
+
+Other classes produce deterministic dispositions rather than artificial
+winners: an active atomic source beats its stale compiled projection and routes
+recompilation; an absorbing atom beats absorbed predecessors; authority/
+evidence conflicts update assurance and affected gates; implementation/
+authority conflicts create a conformance Problem; evidence/evidence conflicts
+apply the registered proof plan and quality/freshness rules or stop for
+adjudication; generated/canonical conflicts mark generated output stale; and
+implementation conflicts follow the traceable owner or stop when ownership is
+missing. Priority orders handling for every class but cannot convert evidence
+into authority or a failing obligation into compliance.
+
+An archive relocation is valid only for a fully retired atom with no active
+claim, reliance, or unresolved lifecycle work. The toolchain verifies the
+content digest is unchanged, moves it only to the artifact type's `archive/`
+subfolder, updates canonical ID lookup, and rejects partial-absorption moves,
+content edits, broken references, or deletion.
+
+Equal, unknown, cyclically inherited, or incomparable priorities must stop with
+the artifact IDs, values, sources, context, and safe next action. Every automatic
+resolution is a derived transactional record containing those same inputs, both
+artifact roles, the conflict class, disposition or selected claim, governing
+profile edition, and invalidation trigger. Atomic sources are never rewritten;
+an authorized compiler may update only declared evergreen projections.
+Reprioritization or input changes invalidate the affected resolution and health
+projection.
+
+**Scenario DSET-SCENARIO-TOOL-019:** A Requirement and project-owned Contract
+conflict over one selectable output field. With no explicit-precedence result,
+the higher-priority Contract governs that field and a resolution record is
+emitted. Changing either priority makes check mode mark the record stale; equal
+priority stops for a Decision instead of choosing by scan order. A fixture with
+two incompatible immutable Contracts stops as unsatisfiable regardless of
+priority. An active Decision/spec fixture selects the Decision and emits a
+stale-projection/recompile disposition; a Test/spec fixture emits an
+assurance-change disposition rather than selecting the Test. A successor atom
+beats an absorbed predecessor by lifecycle relation rather than age.

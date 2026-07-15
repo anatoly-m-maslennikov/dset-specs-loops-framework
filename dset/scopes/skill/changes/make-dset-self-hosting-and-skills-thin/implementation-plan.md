@@ -71,14 +71,15 @@
 - Keep the independent qualitative eval pending until the runtime session
   resume capability can exercise stale-scope re-resolution end to end.
 
-## Batch 8 — Provenance and artifact authority — deterministic implementation complete
+## Batch 8 — Provenance and artifact roles — extension specified
 
-- Define evergreen, transactional, and implementation artifact classes in GOV
-  governance.
-- Require transactional artifacts, including Decisions, Problems,
-  Opportunities, Questions, proofs, runs, sessions, and release evidence, to
-  compile accepted consequences into current evergreen truth before
-  implementation relies on them.
+- Distinguish immutable atomic authority sources, evergreen compiled
+  projections, transactional context/evidence, and implementation artifacts.
+- Require active Requirements, Contracts, Decisions, and other normative atoms
+  to compile into evergreen projections; the atom wins when a projection is
+  stale.
+- Require append-only lifecycle events, explicit acyclic absorption, derived
+  current state, and byte-stable archive relocation only after full retirement.
 - Require commits that change evergreen truth or implementation artifacts to
   cite the Decision they implement, or the authorizing Problem, Opportunity,
   Question, or Change when no Decision is required.
@@ -105,9 +106,28 @@
   validator, profile templates, active Change traceability, and bounded FPF
   provenance.
 
+## Batch 10 — Project health, external review, and ranking — specification complete
+
+- Define a non-authoritative project-health projection with artifact inventory,
+  explicit coverage denominators/applicability/freshness, and canonical return
+  links; require portable Markdown first and keep interactive rendering optional.
+- Define provider-independent review packets and transactional reports with a
+  mandatory provenance/evidence envelope, free-form findings body, explicit
+  dispositions, compile-down, and smallest-closure proof reopening.
+- Use priority as the only generic rank across every governed artifact, allow
+  visible inheritance for implementation files, keep impact/severity/value in
+  their existing semantics, classify every governed artifact pairing, apply
+  active-source/projection and absorbing/absorbed lifecycle rules, auto-resolve
+  only selectable policy conflicts after immutable authority and explicit
+  precedence, stop on unsatisfiable obligations/ties/unknown/incomparability,
+  and leave the exact scale/inheritance policy to the open governance Question.
+- Register deterministic tests, qualitative evals, implementation tasks, and
+  current missing-capability Problems without claiming the renderer, schemas,
+  reconciliation runtime, or cross-host proof exists.
+
 ## Later batches
 
-Implement the remaining Batch 4 runtime adapter, run/checkpoint persistence, executable release/version mechanics, and publication automation plus roadmap §§5–§10 for the TypeScript profile, owned Your Harness pilot, clean-room Claudian evaluation, complete tests/evals, and pinned distribution. Keep unfinished behavior out of public capability claims.
+Implement the remaining Batch 4 runtime adapter, run/checkpoint persistence, executable release/version mechanics, and publication automation; Batch 10 health/review/ranking mechanics; plus roadmap §§5–§10 for the TypeScript profile, owned Your Harness pilot, clean-room Claudian evaluation, complete tests/evals, and pinned distribution. Keep unfinished behavior out of public capability claims.
 
 ## Rollout and recovery
 

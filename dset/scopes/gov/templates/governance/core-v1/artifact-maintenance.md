@@ -11,9 +11,9 @@ Every normative rule ID has one editable governing document. Hubs navigate, wrap
 - Confirm authorization before editing existing project artifacts.
 - Write each conclusion to its owning accepted package, active change, decision, runbook, proof plan, or evidence artifact.
 - Keep deterministic tests and qualitative/probabilistic evals separate.
-- Classify each durable artifact as evergreen, transactional, or implementation
-  layer. Do not let an implementation file or transactional record become a
-  hidden substitute for current evergreen truth.
+- Classify each durable artifact by role: atomic authority source, evergreen
+  compiled projection, transactional context/evidence, or implementation.
+  Status and applicability determine whether an atomic source is active.
 - Materialized rules become project-owned immediately. Later framework releases provide an explicit comparison and proposed delta, never an invisible overwrite.
 - Record intentional local customization with `dset rules refresh`, retaining the source profile, version, template path, and digest as provenance.
 - During migration, map every old rule/spec/plan/decision/runbook/evidence surface and make the old writer a concise pointer, read-only history, verified archive, or remove it only after cutover proof.
@@ -21,24 +21,43 @@ Every normative rule ID has one editable governing document. Hubs navigate, wrap
 
 ## Transactional discharge
 
-A resolved consequential Question produces a Decision, but the Decision is not
-a second specification. Discharge its normative consequences into the owning
-canonical Requirements, Scenarios, Contracts, Design, proof plans, or operating
-rules; link those edits and the closed Question back to the Decision. Keep the
-Decision as the durable rationale, alternatives, trade-offs, and consequences.
+A resolved consequential Question produces a Decision. An accepted, active,
+applicable Decision is an atomic authority source, not a parallel evergreen
+specification. Compile its normative consequences into the owning evergreen
+Requirements, Scenarios, Contracts, Design, proof plans, or operating rules;
+emit a lifecycle event linking those projections and the resolved Question to
+the Decision. Keep the Decision as the durable rationale, alternatives,
+trade-offs, and consequences.
+If the Decision and compiled projection differ, the Decision wins, the
+projection is stale, and the relying release gate fails until recompilation.
 
-Problems, Opportunities, Questions, evidence records, and other transactional
-artifacts follow the same compile-down rule. Their accepted consequences must
-enter current evergreen specs, implementation plans, test plans, eval plans,
-contracts, runbooks, or governance before they govern implementation. Closing a
-transactional artifact without compiling its accepted consequences leaves the
-work incomplete.
+Accepted active Requirements, Contracts, Decisions, and other registered
+normative atoms follow the same source-to-projection rule. Problems,
+Opportunities, Questions, evidence records, and other transactional context
+route work or support those sources but do not become authority merely by
+existing. Closing a transactional artifact without compiling its accepted
+normative consequences leaves the work incomplete.
 
-A Decision records status and decision date, its evidence basis, superseded and
-successor Decisions, confirmation or violation evidence, and the condition that
-reopens it. Counter-evidence may withdraw a Decision's current authority without
-deleting its history or the evidence that once supported it. Supersession creates
-an explicit successor link; it never silently rewrites the earlier Decision.
+Atomic artifacts are immutable. Editable drafts are working documents, not
+atoms. Emitting an atom fixes its ID, content, provenance, creation status, and
+links. Later acceptance, rejection, reopening, correction, withdrawal, or other
+state change is a new append-only lifecycle event; current status is derived.
+
+A successor atom may declare `absorbs` links to older atoms. Absorption is
+explicit, acyclic, validated, and never inferred from a timestamp, ID, or file
+order. It removes the older atom from the active compilation set without
+editing or deleting it. The successor carries forward or explicitly replaces
+every still-applicable consequence. A partial replacement links the affected
+claims and leaves all other older claims active; it does not absorb the entire
+atom. Reverse `absorbed_by` links, current status, confirmation/violation state,
+and the active compilation set are derived views, never edits to an atom.
+
+When an atom has no active claims, open reliance, or unresolved lifecycle work,
+it is fully retired and may move byte-for-byte into its artifact type's
+`archive/` subfolder. The move preserves its ID and content digest; the
+canonical ID registry updates the location so references still resolve. Partial
+absorption never qualifies. Archived atoms remain immutable history and are
+never deleted merely because they are inactive.
 
 ## Commit and session provenance
 
@@ -48,13 +67,14 @@ the Decision or Decisions it implements in the commit body, for example
 the commit must name the governing Problem, Opportunity, Question, or Change
 that authorized it and explain why no Decision was required.
 
-Every newly created or materially changed atomic artifact has an explicit LLM
-session-provenance field. Use unique `llm_session_ids` with stable
-host-prefixed IDs such as `codex:<session-id>` when an LLM created or materially
-revised the artifact; use an explicit empty list or `none` for human-only work.
-Missing provenance is not equivalent to human-only work. Session provenance is
-not authority by itself; it lets a reviewer find the working context that
-created, reviewed, or materially revised the artifact.
+Every newly emitted atomic artifact or append-only lifecycle event has explicit
+LLM session provenance. Use unique `llm_session_ids` with stable host-prefixed
+IDs such as `codex:<session-id>` when an LLM produced the record; use an
+explicit empty list or `none` for human-only work. A review or correction emits
+another linked record rather than revising the original provenance. Missing
+provenance is not equivalent to human-only work. Session provenance is not
+authority by itself; it lets a reviewer find the working context that created
+or assessed the atom.
 
 Current Change manifests, intake items, Decisions, promoted proofs, local
 skill-run records, and session checkpoints are atomic artifacts. Their schemas,
@@ -109,17 +129,54 @@ Question, Decision, Change, evergreen owner, or proof obligation. Review does
 not authorize repair. Compile accepted consequences into current truth and
 reopen only affected proof before implementation or release relies on them.
 
-## Importance and priority
+## Priority
 
-Importance expresses the consequence of an artifact, claim, or obligation
-being wrong, missing, or unresolved. Priority expresses current execution order
-for actionable Problems, Opportunities, Questions, Changes, and Change tasks.
-Do not assign synthetic priority to every evergreen or evidence artifact.
+Priority is the single generic ordered rank. Every governed atomic authority,
+evergreen projection, transactional context/evidence, and implementation
+artifact declares it directly or inherits it through one visible canonical
+relation.
+Implementation files may inherit from their owning Requirement, Decision,
+Change, Test, or Eval rather than duplicating metadata inside every file.
 
-The selected project profile owns bounded labels, their legend, and escalation
-rules. Keep missing values explicitly unknown. Never infer either attribute
-from artifact type, file order, age, severity, dashboard score, or the other
-attribute. Reprioritization alone does not alter importance or accepted truth.
+Actionable work uses priority as one execution-order input; dependencies,
+authorization, gates, and resources may still determine the next action.
+Impact, severity, likelihood, expected value, obligations, and Outcome value
+stay in their owning semantics as priority evidence, not a second universal
+rank. The selected project profile owns one bounded scale, legend, inheritance,
+override, and escalation rules.
+
+Classify each conflict before resolving it. Immutable external authority wins
+over mutable project truth. If two immutable obligations cannot both be
+satisfied, priority orders remediation or escalation but cannot claim
+compliance; stop for an exception, boundary change, or external resolution.
+For a declared comparable and resolvable policy conflict, apply explicit
+specific precedence first; otherwise, higher effective priority wins the
+conflicting claim. Equal, unknown, cyclically inherited, or incomparable
+priority stops for a Decision or explicit precedence.
+
+The resolver accepts every governed artifact pairing and uses artifact role
+before priority:
+
+- an active atomic authority source versus its evergreen projection selects the
+  atomic source, marks the projection stale, and routes recompilation;
+- an absorbed atom is inactive where the absorption applies; the explicit
+  absorbing successor wins without consulting age or priority;
+- authority versus Test, Eval, review, or proof updates assurance and the
+  relying gate; evidence never rewrites authority;
+- implementation versus authority creates a conformance Problem;
+- conflicting assurance evidence follows the registered proof plan and
+  evidence-quality/freshness rules or stops for adjudication;
+- generated views versus canonical sources mark the view stale; and
+- conflicts inside implementation follow the owning authority or stop when no
+  owner or applicable rule exists.
+
+Priority orders remediation for every conflict class, but selects a normative
+claim only where the governing profile permits selection. Record both artifact
+IDs, roles, effective priority values and sources, conflict class, context,
+disposition or selected claim, and profile edition. Never infer resolution from
+filename, list order, or age. Reprioritization invalidates affected derived
+resolutions. Conflict handling never edits an atom; recompilation updates only
+the declared evergreen projection.
 
 ## Artifact threshold
 

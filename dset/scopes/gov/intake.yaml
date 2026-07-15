@@ -62,8 +62,8 @@ items:
     scope: gov
     type: question
     status: open
-    title: Should DSET standardize prioritization?
-    statement: Should a later DSET version define a prioritization method or remain neutral while projects register their own governing rule?
+    title: Which priority scale should DSET standardize?
+    statement: The framework now uses priority as its only generic ordered rank for every governed artifact, orders remediation across every conflict class, and selects claims only for declared selectable policy conflicts after immutable authority and explicit precedence, but should core-v1 standardize one bounded scale and inheritance/override/conflict-classification policy, provide replaceable defaults, or require every project to declare them?
     owner_change: DSET-CHANGE-SKILL-001
     decision: pending
     external_refs: []
@@ -108,7 +108,7 @@ items:
     type: problem
     status: open
     title: Core skill runtime is incomplete
-    statement: DSET publishes only the clarify, diagnose, and prototype wrappers. The primary dset wrapper, guarded dset-release wrapper, run writer, session checkpoint, resume path, and host-native proof remain unimplemented, so the declared five-skill and continuity contracts are not usable end to end.
+    statement: DSET now publishes all five repository-native source wrappers, but the run writer, session checkpoint/resume runtime, executable release publisher, and host-native proof remain unimplemented, so the declared continuity and release contracts are not yet usable end to end.
     owner_change: DSET-CHANGE-SKILL-001
     decision: pending
     external_refs:
@@ -283,6 +283,72 @@ items:
     status: open
     title: Generate a cross-repository adoption status view
     statement: DSET could generate a helicopter view of framework, fixture, pilot, and clean-room adoption status from each repository's own manifests and exact proof links without making the central view a new authority.
+    owner_change: DSET-CHANGE-SKILL-001
+    decision: pending
+    external_refs: []
+  - id: DSET-PROBLEM-TOOL-004
+    llm_session_ids:
+      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+    scope: tool
+    type: problem
+    status: open
+    title: Project health renderer is not implemented
+    statement: Accepted methodology now requires a deterministic Markdown project-health view with explicit coverage denominators, applicability, freshness, and canonical return links, but the CLI has no health model, renderer, refresh command, or staleness check.
+    owner_change: DSET-CHANGE-SKILL-001
+    decision: pending
+    external_refs: []
+  - id: DSET-PROBLEM-GOV-005
+    llm_session_ids:
+      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+    scope: gov
+    type: problem
+    status: open
+    title: External review handoff has no executable artifact flow
+    statement: DSET defines independent review as transactional evidence, but it lacks a review-packet template, report envelope/schema, stable finding IDs, and an import/reconciliation flow that routes Codex, Claude, or human findings without silently authorizing fixes.
+    owner_change: DSET-CHANGE-SKILL-001
+    decision: pending
+    external_refs: []
+  - id: DSET-QUESTION-TOOL-001
+    llm_session_ids:
+      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+    scope: tool
+    type: question
+    status: open
+    title: When should project health gain an interactive renderer?
+    statement: After the portable Markdown baseline works, what evidence would justify a local or hosted interactive dashboard rather than continuing with the generated Markdown view alone?
+    owner_change: DSET-CHANGE-SKILL-001
+    decision: pending
+    external_refs: []
+  - id: DSET-QUESTION-GOV-007
+    llm_session_ids:
+      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+    scope: gov
+    type: question
+    status: open
+    title: How strictly should external review reports be schema-enforced?
+    statement: Should DSET 0.3 enforce the entire review report structurally, or validate only a mandatory identity/provenance/finding envelope while keeping the analysis body free-form?
+    owner_change: DSET-CHANGE-SKILL-001
+    decision: pending
+    external_refs: []
+  - id: DSET-PROBLEM-TOOL-005
+    llm_session_ids:
+      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+    scope: tool
+    type: problem
+    status: open
+    title: Priority conflict resolver is not implemented
+    statement: Accepted methodology now requires deterministic role-aware handling for every governed artifact conflict pairing and uses effective priority to select claims only for declared selectable policy conflicts after immutable authority and explicit precedence, but no artifact-priority schema, inheritance graph, pairwise conflict matrix, conflict registry, deterministic resolver, resolution record, or invalidation check exists.
+    owner_change: DSET-CHANGE-SKILL-001
+    decision: pending
+    external_refs: []
+  - id: DSET-PROBLEM-GOV-006
+    llm_session_ids:
+      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+    scope: gov
+    type: problem
+    status: open
+    title: Immutable atomic lifecycle is not enforced
+    statement: Accepted methodology now makes every emitted atomic artifact immutable and requires append-only lifecycle events, explicit acyclic absorption, derived current state, and byte-stable archival only after full retirement, but current schemas and validators still permit in-place mutation and do not maintain canonical ID/digest lookup across archive moves.
     owner_change: DSET-CHANGE-SKILL-001
     decision: pending
     external_refs: []

@@ -4,8 +4,9 @@
 - **Status:** proposed
 - **Decision date:** pending
 - **Resolves Question:** pending
-- **Supersedes:** none
-- **Superseded by:** none
+- **Absorbs:** none
+- **Replaces claims:** none
+- **Priority:** unknown
 - **Selected candidate/version:** pending
 
 Record the consequential choice among valid alternatives, the decision basis,
@@ -18,15 +19,15 @@ when a genuine consequential choice exists; do not manufacture alternatives for
 an externally fixed Contract or ordinary implementation detail. Keep observable
 edge cases in Requirements/Scenarios and internal detail in Design.
 
-Before marking the Decision accepted, discharge its normative consequences into
-the owning canonical specs, Contracts, Design, and proof plans; link those edits
-and the resolved Question here. This artifact retains rationale rather than
-becoming a parallel specification.
+Compile the Decision's normative consequences into evergreen specs, Design,
+and proof plans; link those projections and the resolved Question here. The
+accepted active Decision remains the atomic authority source and wins if a
+projection is stale.
 
-When counter-evidence invalidates the basis, mark the Decision reopened or
-superseded, retain its earlier evidence and rationale, state the invalid
-assumptions and withdrawn authority, update affected downstream owners, and link
-the successor or explicit retirement with `no successor`. Never silently edit
-history to make the old Decision appear current. This adoption specialization
-uses the same lifecycle as the neutral [`decision.md`](decision.md) template; it
-adds candidate version, license, lock-in, replacement, and upgrade concerns.
+The emitted Decision is immutable. Counter-evidence, acceptance, reopening,
+withdrawal, and retirement are append-only lifecycle events. A successor points
+backward with `Absorbs`; reverse links and current state are derived. A fully
+retired Decision may move byte-for-byte to `archive/` with stable ID, digest,
+and lookup. This adoption specialization uses the same lifecycle as the neutral
+[`decision.md`](decision.md) template; it adds candidate version, license,
+lock-in, replacement, and upgrade concerns.

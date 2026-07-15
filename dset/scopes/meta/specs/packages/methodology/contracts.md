@@ -35,7 +35,7 @@ Examples, diagrams, and cited candidates may evolve without compatibility guaran
 
 ## Authoritative boundary contracts
 
-A Contract is not implementation advice. It is an authoritative boundary that implementation must satisfy without rewriting. Every Contract record names its authority, source, exactly one version or digest, direction, producer, consumer, conformance rule, compatibility rule, and lifecycle state. Lifecycle is `declared -> active -> superseded` or `declared -> active -> retired`; only the named authority may issue a superseding version. Ambiguity creates a Question, incompatibility creates a Problem, and a Decision cannot override an active Contract.
+A Contract is not implementation advice. It is an authoritative boundary that implementation must satisfy without rewriting. Every immutable Contract atom names its authority, source, exactly one version or digest, direction, producer, consumer, conformance rule, compatibility rule, priority, creation state, and any older Contract atoms it absorbs. Current lifecycle is derived from append-only events: `declared -> active -> absorbed` or `declared -> active -> retired`; only the named authority may emit an absorbing version or retirement event. Ambiguity creates a Question, incompatibility creates a Problem, and a Decision cannot override an active Contract.
 
 ## DSET-CONTRACT-META-001 — Repository Work Area declaration
 

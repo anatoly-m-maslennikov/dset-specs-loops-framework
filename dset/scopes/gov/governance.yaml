@@ -18,7 +18,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/gov/templates/governance/core-v1/architecture.md
-      sha256: 59b1107a565067337994ef54ddd549c396c230b4116b3e19d1c29eb245fa3636
+      sha256: 27af00e3eef034ce3d8ac05b8860416b8d1c0d6d09641e37188ed799a519b46c
   -
     id: DSET-RULE-BUILD
     layer: TOOL
@@ -114,7 +114,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/gov/templates/governance/core-v1/artifact-maintenance.md
-      sha256: 0b08c3cc4206df2b07e4d967804c84f761ac6c8fc78c74df72006744dd53a389
+      sha256: bff63611d1b09dfcf5e7b334da01e10e5151009ccee7f8f97b531b2dcd066cc2
   -
     id: DSET-RULE-WORK-ITEMS
     layer: GOV
@@ -130,7 +130,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/gov/templates/governance/core-v1/work-items.md
-      sha256: 7ef561d808cb7157aef4278fcb235f1ec5763d6f4a39c8d9731b97b8e277547f
+      sha256: 04b50a3eff27403b1ef345070c1c803e7b0c2de32840636509685f8bdc2cf288
   -
     id: DSET-RULE-DELEGATION-BUDGET
     layer: SKILL

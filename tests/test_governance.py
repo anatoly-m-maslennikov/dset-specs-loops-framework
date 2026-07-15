@@ -705,11 +705,14 @@ class GovernanceTests(unittest.TestCase):
             "Decision ID",
             "Decision date",
             "Resolves Question",
-            "Confirmation evidence",
-            "Violation or counter-evidence",
+            "Absorbs",
+            "Replaces claims",
+            "Priority",
+            "Expected confirmation evidence",
+            "Known counter-evidence",
             "If reopened, retain",
             "If reopened, withdraw",
-            "Successor or retirement",
+            "Retirement condition",
         ):
             self.assertIn(field, decision_template)
 
@@ -775,10 +778,48 @@ class GovernanceTests(unittest.TestCase):
             "mandatory envelope",
             "findings body may be free-form",
             "authorize repair",
-            "Importance expresses the consequence",
-            "Priority expresses current execution order",
+            "transactional context/evidence, and implementation",
+            "priority orders remediation or escalation",
+            "otherwise, higher effective priority wins",
+            "resolver accepts every governed artifact pairing",
+            "evidence never rewrites authority",
+            "Atomic artifacts are immutable",
+            "move byte-for-byte",
         ):
             self.assertIn(phrase, live)
+
+        architecture = (ROOT / "dset/scopes/gov/governance/architecture.md").read_text(
+            encoding="utf-8"
+        )
+        architecture_template = (
+            ROOT / "dset/scopes/gov/templates/governance/core-v1/architecture.md"
+        ).read_text(encoding="utf-8")
+        self.assertEqual(architecture, architecture_template)
+        for phrase in (
+            "Atomic authority sources",
+            "Later state is an append-only lifecycle event",
+            "active atom wins over a stale compiled projection",
+            "move byte-for-byte",
+        ):
+            self.assertIn(phrase, architecture)
+
+        work_items = (ROOT / "dset/scopes/gov/governance/work-items.md").read_text(
+            encoding="utf-8"
+        )
+        work_items_template = (
+            ROOT / "dset/scopes/gov/templates/governance/core-v1/work-items.md"
+        ).read_text(encoding="utf-8")
+        self.assertEqual(work_items, work_items_template)
+        self.assertIn("Question atom is not edited", work_items)
+        self.assertIn("append-only", work_items)
+
+        for name in ("decision.md", "adoption-decision.md"):
+            decision_template = (
+                ROOT / "dset/scopes/gov/templates/change" / name
+            ).read_text(encoding="utf-8")
+            self.assertIn("**Absorbs:**", decision_template)
+            self.assertNotIn("**Superseded by:**", decision_template)
+            self.assertIn("emitted Decision", decision_template)
 
         gov = (ROOT / "dset/scopes/gov/specs/packages/methodology/spec.md").read_text(
             encoding="utf-8"
@@ -789,8 +830,23 @@ class GovernanceTests(unittest.TestCase):
         self.assertIn("DSET-REQUIREMENT-GOV-024", gov)
         self.assertIn("DSET-REQUIREMENT-GOV-025", gov)
         self.assertIn("DSET-REQUIREMENT-GOV-026", gov)
-        self.assertIn("DSET-REQUIREMENT-TOOL-005", tool)
+        self.assertIn("DSET-REQUIREMENT-TOOL-018", tool)
+        self.assertIn("DSET-REQUIREMENT-TOOL-019", tool)
         self.assertIn("portable Markdown", tool)
+
+        archived_ids: set[str] = set()
+        for path in ROOT.glob("dset/scopes/*/changes/archive/*/change.yaml"):
+            manifest = cast(dict[str, Any], load(path))
+            for group in ("requirements", "tests", "evals"):
+                archived_ids.update(cast(list[str], manifest.get(group, [])))
+        self.assertTrue(
+            {
+                "DSET-REQUIREMENT-TOOL-018",
+                "DSET-REQUIREMENT-TOOL-019",
+                "DSET-TEST-TOOL-018",
+                "DSET-TEST-TOOL-019",
+            }.isdisjoint(archived_ids)
+        )
 
     @staticmethod
     def _make_layered_project(root: Path) -> None:

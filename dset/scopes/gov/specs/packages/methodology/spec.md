@@ -116,35 +116,81 @@ The project prefix is `DSET`. Project-wide IDs use `DSET-<FULL-TYPE>-<NNN>`; lay
 
 **Scenario DSET-SCENARIO-GOV-020:** A project-wide question uses `DSET-QUESTION-001`; layer-owned accepted truth uses IDs such as `DSET-STORY-SKILL-001`, `DSET-OUTCOME-OPS-001`, `DSET-REQUIREMENT-GOV-001`, and `DSET-TEST-GOV-001`; a durable resolution uses `DSET-DECISION-001`. Directory-only refactors do not rename these identities.
 
-## DSET-REQUIREMENT-GOV-020 — Artifacts declare evergreen, transactional, or implementation authority
+## DSET-REQUIREMENT-GOV-020 — Artifacts declare authority and lifecycle roles
 
-DSET must distinguish evergreen current-truth artifacts, transactional atomic artifacts, and implementation-layer artifacts. Evergreen artifacts are updatable accepted truth such as specs, implementation plans, test plans, eval plans, contracts, runbooks, and governing rules. Transactional artifacts preserve bounded choices, questions, observations, evidence, and work history such as Decisions, Problems, Opportunities, Questions, proofs, Changes, releases, sessions, and runs. Implementation artifacts are code, tests, eval prompts/datasets, CI workflows, scripts, generated runtime assets, and configuration examples.
+DSET must distinguish atomic authority sources, evergreen compiled projections,
+transactional context/evidence, and implementation-layer artifacts. Accepted,
+active, applicable Requirements, Contracts, Decisions, and other registered
+normative atoms are authority sources. Evergreen specs, implementation plans,
+test plans, eval plans, runbooks, and governing rules are updatable projections
+compiled from those sources. Problems, Opportunities, Questions, proofs,
+Changes, releases, sessions, and runs preserve work history or evidence without
+becoming authority merely by existing. Implementation artifacts are code,
+tests, eval prompts/datasets, CI workflows, scripts, generated runtime assets,
+and configuration examples.
 
-**Scenario DSET-SCENARIO-GOV-021:** A Decision and a Problem explain why behavior changes, the spec and plans own the current behavior and proof obligations, and the code/tests/eval prompts implement those owners without becoming a competing specification.
+**Scenario DSET-SCENARIO-GOV-021:** An accepted Decision changes behavior, the
+compiled spec and proof plans expose its current consequences, and code/tests/
+eval prompts implement those sources without becoming competing authority. If
+the Decision and compiled spec differ, the Decision wins and the spec is stale.
 
-## DSET-REQUIREMENT-GOV-021 — Transactional artifacts compile into evergreen truth
+## DSET-REQUIREMENT-GOV-021 — Atomic authority compiles into evergreen projections
 
-Accepted Decisions, Problems, Opportunities, Questions, proofs, and other transactional artifacts must discharge their current behavioral consequences into the owning evergreen specs, plans, contracts, runbooks, or governing rules before they authorize implementation. Transactional artifacts remain provenance and rationale; generated traceability may show the relationship but cannot replace the evergreen owner.
+Accepted, active, applicable normative atoms must compile their current
+behavioral consequences into the owning evergreen specs, plans, runbooks, or
+governing rules. A compiled projection never outranks an active source atom. If
+they differ, the source atom governs, the projection is stale, and its relying
+release gate fails until deterministic recompilation succeeds. Transactional
+context and evidence can motivate or assess a source but cannot replace one;
+generated traceability shows the relationship without becoming authority.
 
-**Scenario DSET-SCENARIO-GOV-022:** A resolved Question produces a Decision, the Decision updates the relevant spec and proof plans, the implementation cites that Decision, and review rejects a code-only change that leaves the evergreen spec stale.
+Atomic artifacts are immutable. Editable drafts are not atoms. Emission fixes
+the atom's ID, content, provenance, creation status, and links. Acceptance,
+rejection, reopening, correction, withdrawal, or any other later change is a
+new append-only lifecycle event from which current status is derived.
+
+A replacement is a new atom with an explicit `absorbs` relation to older atoms.
+Absorption is acyclic, validated, never inferred from time or numbering, and
+removes the older atoms from the active authority set without deleting or
+editing their history. The absorbing atom must carry forward or explicitly
+replace every still-applicable consequence. Partial replacement leaves
+unaffected older claims active and does not absorb the whole atom. Reverse
+links and the active compilation set are derived views.
+
+An atom with no active claims, open reliance, or unresolved lifecycle work is
+fully retired and may move byte-for-byte into its artifact type's `archive/`
+subfolder. Its ID and content digest remain unchanged, and the canonical ID
+registry updates its location. Partial absorption does not qualify. Archived
+atoms remain immutable history and are not deleted.
+
+**Scenario DSET-SCENARIO-GOV-022:** A resolved Question produces a Decision, the
+Decision compiles into the relevant spec and proof plans, and review rejects a
+code-only change that leaves the evergreen projection stale. A later Decision
+absorbs the earlier one explicitly; the original remains immutable provenance,
+while only the successor participates in the active compilation set. After all
+reliance closes, the original moves byte-for-byte to `archive/` and remains
+resolvable by ID.
 
 ## DSET-REQUIREMENT-GOV-022 — Commits and atomic artifacts retain provenance
 
-Every commit that changes evergreen truth or implementation artifacts must name the Decision or Decisions it implements in its commit message body. If no Decision is required, the commit must name the authorizing Problem, Opportunity, Question, or Change. Each newly created or materially changed atomic artifact has an explicit session-provenance field: unique stable host-prefixed `llm_session_ids` when an LLM helped produce it, or an explicit empty list/`none` for human-only work. Missing provenance is invalid. This applies to Changes, intake items, Decisions, promoted proofs, skill-run records, and session checkpoints without making provenance authoritative.
+Every commit that changes an evergreen projection or implementation artifact must name the Decision or Decisions it implements in its commit message body. If no Decision is required, the commit must name the authorizing Problem, Opportunity, Question, or Change. Each newly emitted atomic artifact or append-only lifecycle event has an explicit session-provenance field: unique stable host-prefixed `llm_session_ids` when an LLM helped produce it, or an explicit empty list/`none` for human-only work. Missing provenance is invalid. A review, correction, or status change emits another linked record rather than revising the atom. This applies to Changes, intake items, Decisions, promoted proofs, skill-run records, and session checkpoints without making provenance authoritative.
 
-**Scenario DSET-SCENARIO-GOV-023:** A commit body contains `Implements: DSET-DECISION-GOV-001`; the created Decision, Change, intake item, proof, run, and checkpoint shapes record the Codex session IDs that produced or materially revised them; and a human-only fixture passes only with explicit empty provenance.
+**Scenario DSET-SCENARIO-GOV-023:** A commit body contains `Implements: DSET-DECISION-GOV-001`; the emitted Decision, Change, intake item, proof, run, checkpoint, and later lifecycle-event shapes record the Codex session IDs that produced them; a correction is a new linked event; and a human-only fixture passes only with explicit empty provenance.
 
 ## DSET-REQUIREMENT-GOV-023 — Rule authority and assurance are explicit
 
 `DSET-RULE-ARCHITECTURE` must remain the dependency-free constitutional root
 for repository governance. Every registered normative rule must resolve to one
-applicable repository-local owner in the current profile edition and declare
-separate `depends_on` and `precedence_over` relations. Both graphs must be
-acyclic; registry order must not imply precedence; missing precedence targets
-or unresolved conflicts must fail closed.
+accepted, active, applicable atomic source set and one repository-local compiled
+governing document in the current profile edition and declare separate
+`depends_on` and `precedence_over` relations. A source/document mismatch selects
+the source, marks the document stale, and blocks reliance until recompilation.
+Both graphs must be acyclic; registry order must not imply precedence; missing
+precedence targets or unresolved conflicts must fail closed.
 
-Decisions and provenance authorize and explain rule changes, while tests,
-evals, reviews, and evidence assess reliance claims. None becomes rule
+Active Decisions authorize and explain rule changes; provenance identifies
+origin but does not authorize. Tests, evals, reviews, and evidence assess
+reliance claims. None becomes rule
 authority by existing or passing. Missing or stale assurance must leave only
 the affected claim pending or stale and block its relying gate according to
 risk; it must not silently erase an otherwise valid rule. Transactional
@@ -159,8 +205,9 @@ affected assurance claim stale, and blocks the release gate that relies on it.
 
 DSET must expose a generated project-health projection without making it a new
 authority. It reports artifact counts by authority class, type, layer, status,
-and applicable Work Area; unresolved Problems, Opportunities, and Questions;
-proof freshness; and traceability coverage for Decisions compiled into
+priority, and applicable Work Area; unresolved and automatically resolved
+conflicts; unresolved Problems, Opportunities, and Questions; proof freshness;
+and traceability coverage for Decisions compiled into
 evergreen owners, Requirements connected to implementation and applicable
 Tests/Evals, implementation commits connected to their authorizing artifact,
 and proof plans connected to current evidence.
@@ -185,8 +232,8 @@ portable review packet and report. The packet identifies exact commits and
 artifacts, resolved rules, review criteria, requested scope, and allowed
 effects. The report uses a mandatory envelope for reviewer/host identity,
 available model/tool version, `llm_session_ids`, exact reviewed inputs, method,
-observation time, limitations, and stable finding IDs; the findings body may be
-free-form.
+observation time, priority, limitations, and stable finding IDs with effective
+priority; the findings body may be free-form.
 
 Every finding records evidence, confidence, impact, and proposed disposition.
 Import or reconciliation must explicitly reject it with rationale, defer it,
@@ -201,23 +248,67 @@ DSET preserves its provenance, routes one defect to a Problem, one ambiguity to
 a Question, rejects one unsupported finding with rationale, updates accepted
 truth for the accepted findings, and reruns only affected proof.
 
-## DSET-REQUIREMENT-GOV-026 — Importance and priority are separate attributes
+## DSET-REQUIREMENT-GOV-026 — Every governed artifact has one priority
 
-DSET must distinguish importance from priority wherever ranking is applicable.
-Importance expresses the consequence of an artifact, claim, or obligation
-being wrong, missing, or unresolved. Priority expresses the current execution
-order of actionable work. Priority applies to Problems, Opportunities,
-Questions, Changes, and Change tasks; evergreen or evidence artifacts may carry
-importance but do not receive a synthetic execution priority merely because
-they exist.
+DSET must use `priority` as its only generic ordered rank across atomic
+authority, evergreen projection, transactional context/evidence, and
+implementation artifacts. Every governed artifact declares priority directly
+or inherits it through one visible canonical relation.
+Implementation files may inherit from their owning Requirement, Decision,
+Change, Test, or Eval instead of carrying duplicated inline metadata.
 
-The selected project governance profile owns bounded scales, labels, and
-escalation rules and exposes their legend to generated views. Missing values
-remain `unknown`; type, file order, age, severity, and a dashboard score must
-not infer them. Changing priority alone does not rewrite importance or accepted
-behavior.
+Problems, Opportunities, Questions, Changes, and tasks use priority as one
+input to execution order. Dependencies, authorization boundaries, release
+gates, and resource constraints may still require a different next action.
+Impact, severity, likelihood, expected value, Contract obligations, Outcome
+value, and gate status remain evidence that explains priority rather than
+separate universal ranking fields.
 
-**Scenario DSET-SCENARIO-GOV-027:** A high-importance compliance obligation may
-remain planned behind a lower-importance release-blocking correction. The
-dashboard shows both declared values and their rationale instead of collapsing
-them into one rank.
+Priority is also the default deterministic tie-breaker for declared resolvable
+policy conflicts. The resolver first classifies the conflict. Immutable
+external authority wins over mutable project truth. If two immutable
+obligations cannot both be satisfied, priority may order remediation or
+escalation but cannot report the lower-priority obligation as satisfied; the
+conflict stops for an exception, boundary change, or external resolution.
+
+For a comparable conflict whose governing profile permits selection, the
+resolver applies any explicit specific precedence relation, then the higher
+effective priority. The selected artifact governs only the conflicting claim
+in the declared context; the other artifact remains valid elsewhere. Equal,
+unknown, cyclically inherited, or incomparable priorities stop with the
+unresolved artifacts and require a Decision or explicit precedence. Every
+automatic resolution records the artifact IDs, effective priorities, priority
+sources, conflict class, context, selected claim, and governing profile edition.
+
+Every governed artifact pair is classifiable even when it is not a selectable
+normative conflict. An accepted, active, applicable atomic source governs over
+its stale evergreen projection and routes recompilation. An explicit absorption
+relation selects the absorbing atom over absorbed predecessors before priority.
+Test/Eval/review/proof evidence changes assurance and the relying gate instead
+of overriding authority. Implementation that contradicts authority creates a
+conformance Problem. Conflicting evidence follows its registered proof plan and
+quality/freshness rules or stops for adjudication. A generated view that
+contradicts its canonical source is stale. An implementation-only conflict
+follows its traceable owner or stops when no owner or applicable rule exists.
+Priority orders remediation across these classes but selects a normative claim
+only when the profile permits selection.
+
+The selected project governance profile owns one bounded priority scale, its
+legend, inheritance rules, override rules, and escalation behavior and exposes
+them to generated views. Missing effective priority remains `unknown` and is a
+visible governance gap; type, file order, age, or a dashboard score must not
+infer it. Reprioritization may change future conflict or queue outcomes, so it
+records provenance and invalidates affected derived resolutions, but it does
+not silently rewrite accepted artifacts.
+
+**Scenario DSET-SCENARIO-GOV-027:** A project-owned output Contract permits one
+of two formats and has higher priority than a preferred-format Requirement. The
+Contract wins the declared field automatically and both artifacts remain valid
+outside that conflict. Two immutable customer Contracts demanding mutually
+exclusive values stop as unsatisfiable; priority orders remediation but does
+not falsely mark either Contract satisfied. An active Decision that differs
+from its compiled evergreen spec wins and makes that projection stale; a
+failing Test changes assurance instead of competing by priority. An absorbing
+Decision wins over its absorbed predecessor by explicit lifecycle relation,
+not because it is newer. Equal selectable priorities stop for a Decision; no
+outcome is inferred from document order.
