@@ -18,4 +18,4 @@ This is the thin wrapper for the registered `domain-clarification` workflow. Rep
 
 ## Handoff
 
-Return decision-ready alternatives and remaining unknowns under the resolved `DSET-RULE-LIFECYCLE` specialist boundary. Write conclusions only to resolved owning artifacts when authorized; otherwise return a proposed update. Update session continuity, recommend the next handoff, and stop before consequential selection or implementation.
+Return decision-ready alternatives and remaining unknowns under this wrapper's registered specialist boundary. Write conclusions only to resolved owning artifacts when authorized; otherwise return a proposed update. Update session continuity, recommend the next handoff, and stop before consequential selection or implementation.
