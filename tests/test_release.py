@@ -39,9 +39,7 @@ class ReleasePolicyTests(unittest.TestCase):
             "0.3.1",
         )
         for base, target in (("0.1.0", "0.3.1"), (None, "1.0.0")):
-            with self.subTest(base=base, target=target), self.assertRaises(
-                ValueError
-            ):
+            with self.subTest(base=base, target=target), self.assertRaises(ValueError):
                 expected_target(base, "bootstrap", bootstrap_target=target)
 
     def test_invalid_progressions_fail(self) -> None:
@@ -54,9 +52,10 @@ class ReleasePolicyTests(unittest.TestCase):
             ("1.2.0", "final", True),
         )
         for base, release_class, readiness in cases:
-            with self.subTest(
-                base=base, release_class=release_class
-            ), self.assertRaises(ValueError):
+            with (
+                self.subTest(base=base, release_class=release_class),
+                self.assertRaises(ValueError),
+            ):
                 expected_target(base, release_class, readiness_passed=readiness)
 
     def test_rc_identity_has_one_exact_python_mapping(self) -> None:
