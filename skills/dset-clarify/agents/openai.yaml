@@ -1,4 +1,4 @@
 interface:
   display_name: "DSET Clarify"
-  short_description: "Turn ambiguity into accepted domain decisions"
-  default_prompt: "Use $dset-clarify to clarify this change before writing its specification."
+  short_description: "Make domain ambiguity decision-ready"
+  default_prompt: "Use $dset-clarify to clarify this change into decision-ready alternatives and unknowns without selecting or implementing an answer."
