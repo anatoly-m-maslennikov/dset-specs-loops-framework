@@ -3,6 +3,7 @@
 - **Decision ID:** `{{project_key}}-DECISION{{id_layer}}-001`
 - **Status:** proposed
 - **Decision date:** pending
+- **Resolves Question:** pending
 - **Supersedes:** none
 - **Superseded by:** none
 - **Selected candidate/version:** pending
@@ -23,5 +24,9 @@ and the resolved Question here. This artifact retains rationale rather than
 becoming a parallel specification.
 
 When counter-evidence invalidates the basis, mark the Decision reopened or
-superseded, retain its earlier evidence and rationale, and link the successor.
-Never silently edit history to make the old Decision appear current.
+superseded, retain its earlier evidence and rationale, state the invalid
+assumptions and withdrawn authority, update affected downstream owners, and link
+the successor or explicit retirement with `no successor`. Never silently edit
+history to make the old Decision appear current. This adoption specialization
+uses the same lifecycle as the neutral [`decision.md`](decision.md) template; it
+adds candidate version, license, lock-in, replacement, and upgrade concerns.

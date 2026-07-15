@@ -159,3 +159,13 @@ items:
     decision: null
     external_refs:
       - https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9
+  - id: DSET-QUESTION-SKILL-001
+    scope: skill
+    type: question
+    status: resolved
+    title: Which operating shape should DSET 0.3 adopt?
+    statement: Which rule-authority, skill-topology, self-hosting, release, intake, and delegation-budget shape should DSET 0.3 adopt without presenting incomplete runtime or pilot behavior as implemented?
+    owner_change: DSET-CHANGE-SKILL-001
+    decision: DSET-DECISION-SKILL-001
+    external_refs:
+      - https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9

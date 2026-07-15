@@ -110,6 +110,7 @@ intake:
   - DSET-QUESTION-GOV-004
   - DSET-QUESTION-GOV-005
   - DSET-PROBLEM-GOV-002
+  - DSET-QUESTION-SKILL-001
 outcomes: []
 stories: []
 contracts:
@@ -193,4 +194,5 @@ evals:
   - DSET-EVAL-TOOL-006
   - DSET-EVAL-OPS-008
   - DSET-EVAL-OPS-009
-decisions: []
+decisions:
+  - DSET-DECISION-SKILL-001

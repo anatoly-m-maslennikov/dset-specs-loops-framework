@@ -254,7 +254,9 @@ changes:
       - DSET-QUESTION-META-004
       - DSET-QUESTION-META-005
       - DSET-QUESTION-OPS-001
-    decisions: []
+      - DSET-QUESTION-SKILL-001
+    decisions:
+      - DSET-DECISION-SKILL-001
     contracts:
       - DSET-CONTRACT-META-001
       - DSET-CONTRACT-OPS-001

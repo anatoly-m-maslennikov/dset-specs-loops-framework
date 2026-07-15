@@ -28,7 +28,7 @@ Matt Pocock's name and marks belong to their owner. References describe provenan
 - **Revision reviewed:** [`afa4936541774021c92adb97c3cbf787bf126062`](https://github.com/ailev/FPF/commit/afa4936541774021c92adb97c3cbf787bf126062)
 - **License:** No license was declared in the reviewed repository tree; this is recorded at [`third_party/licenses/fpf-NO-LICENSE.txt`](third_party/licenses/fpf-NO-LICENSE.txt).
 - **DSET surfaces:** workflow return boundaries, Decision discharge, risk-scaled review, comparison evidence, proof currentness, and derived navigation.
-- **Use:** DSET independently re-expresses a small set of public concepts. No FPF text, templates, ontology, indexes, or Obsidian mechanics are copied or distributed.
+- **Use:** DSET independently re-expresses and attributes a small set of public concepts and short technical terms. No substantial expressive passage, template, code, ontology, index, or Obsidian mechanic from FPF is copied or distributed.
 
 ## Conductor
 

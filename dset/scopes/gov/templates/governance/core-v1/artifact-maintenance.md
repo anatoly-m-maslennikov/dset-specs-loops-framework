@@ -36,11 +36,17 @@ Promoted proof supports one named claim for one intended use. It records the
 producer or performed work, method and setup, applicable repository/version/
 environment/assumption context, observation time or validity window, exact
 commit or artifact version, evidence location and polarity, currentness status,
-and reopen trigger. A failed or unsupported attempted use remains `uncertain` or
-`pending`; it is not converted into a positive conclusion. Contrary evidence or
-a changed input is a defeater that makes only the affected claim closure stale.
-Refresh that smallest closure; do not rerun unrelated proof merely because it
-shares a repository.
+and reopen trigger. An attempted use that the evidence cannot support remains
+`uncertain` or `pending`; it is not converted into a positive conclusion.
+Contrary evidence or a changed input is a defeater that makes only the affected
+claim closure stale. Refresh that smallest closure; do not rerun unrelated proof
+merely because it shares a repository.
+
+When reliance or risk is high, also separate evidence producer from source
+maintainer, distinguish the planned method from performed work and deviations,
+and record credible rival explanations plus the evidence that supports or
+weakens them. These fields are triggered extensions, not mandatory ceremony for
+every bounded proof.
 
 Generated hubs and ID, relation, or term indexes are thin non-authoritative
 views. A reliance-bearing view states the structure it captures, what it omits,

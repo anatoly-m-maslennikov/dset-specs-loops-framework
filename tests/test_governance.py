@@ -600,6 +600,55 @@ class GovernanceTests(unittest.TestCase):
         (self.root / "dset" / "dset.yaml").unlink()
         self.assertEqual(validate_repository(self.root)[0].code, "DSET-E001")
 
+    def test_comparison_and_decision_templates_separate_selection(self) -> None:
+        layout = discover_layout(ROOT)
+        landscape = layout.find_template("change/solution-landscape.md").read_text(
+            encoding="utf-8"
+        )
+        candidates, decision = landscape.split("## Decision", maxsplit=1)
+        self.assertIn("Compared with / criteria", candidates)
+        self.assertIn("Evidence eligibility", candidates)
+        self.assertNotIn("**Adopt", candidates)
+        self.assertNotIn("**Reject", candidates)
+        self.assertIn("Record adopt, adapt, or reject only", decision)
+
+        decision_template = layout.find_template("change/decision.md").read_text(
+            encoding="utf-8"
+        )
+        for field in (
+            "Decision ID",
+            "Decision date",
+            "Resolves Question",
+            "Confirmation evidence",
+            "Violation or counter-evidence",
+            "If reopened, retain",
+            "If reopened, withdraw",
+            "Successor or retirement",
+        ):
+            self.assertIn(field, decision_template)
+
+        active = (
+            ROOT / "dset/scopes/skill/changes/"
+            "make-dset-self-hosting-and-skills-thin/solution-landscape.md"
+        ).read_text(encoding="utf-8")
+        active_candidates, _ = active.split("## Decision", maxsplit=1)
+        self.assertNotIn("**Adopt", active_candidates)
+        self.assertNotIn("**Reject", active_candidates)
+
+    def test_fpf_provenance_bounds_each_adaptation(self) -> None:
+        provenance = cast(
+            dict[str, Any], load(ROOT / "dset/scopes/gov/provenance.yaml")
+        )
+        fpf = next(
+            source
+            for source in cast(list[dict[str, Any]], provenance["sources"])
+            if source["id"] == "fpf"
+        )
+        for mapping in cast(list[dict[str, Any]], fpf["mappings"]):
+            with self.subTest(pattern=mapping["pattern"]):
+                self.assertTrue(mapping["adaptation_scope"])
+                self.assertTrue(mapping["exclusions"])
+
     @staticmethod
     def _make_layered_project(root: Path) -> None:
         scopes = root / "dset" / "scopes"

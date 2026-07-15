@@ -1,6 +1,7 @@
 # GOV templates
 
-- [Change templates](change/)
+- [Change templates](change/), including the neutral
+  [Decision lifecycle template](change/decision.md)
 - [Governance profile and GOV rule templates](governance/core-v1/README.md)
 - [Intake template](intake.yaml)
 - [Change profiles](profiles.yaml)
