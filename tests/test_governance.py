@@ -194,6 +194,34 @@ class GovernanceTests(unittest.TestCase):
                     hashlib.sha256(canonical.read_bytes()).hexdigest(),
                 )
 
+    def test_release_applicable_adopter_installs_all_five_wrappers(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw) / "release-adopter"
+            (target / "dset").mkdir(parents=True)
+            (target / "dset" / "dset.yaml").write_text(
+                dump(
+                    {
+                        "schema_version": 1.1,
+                        "profiles": {"repository_governance": "core-v1"},
+                        "release": {"status": "applicable"},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            materialize_governance(ROOT, target, install_wrappers=True)
+            self.assertEqual(validate_governance(target), [])
+            for workflow in (
+                "lifecycle-orchestration",
+                "domain-clarification",
+                "diagnosis",
+                "prototyping",
+                "release",
+            ):
+                with self.subTest(workflow=workflow):
+                    resolved, diagnostics = resolve_workflow(target, workflow)
+                    self.assertEqual(diagnostics, [])
+                    self.assertIsNotNone(resolved)
+
     def test_justified_unselected_non_applicability_is_valid(self) -> None:
         path, registry = self._registry(self.root)
         rule = registry["rules"][-1]
