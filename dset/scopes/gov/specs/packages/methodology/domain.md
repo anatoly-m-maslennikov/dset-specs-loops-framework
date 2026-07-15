@@ -34,7 +34,7 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 
 - **DSET-INVARIANT-GOV-001:** Framework truth and project truth never share a writable owner.
 - **DSET-INVARIANT-GOV-002:** Public methodology renders and navigates on GitHub without Obsidian-only links or callouts.
-- **DSET-INVARIANT-GOV-003:** A change cannot alter accepted truth until its proof is fresh and the change is archived through its implementing PR.
+- **DSET-INVARIANT-GOV-003:** A Change may reconcile candidate evergreen projections before archival, but those projections cannot be released or treated as accepted truth until applicable proof is fresh and the Change is archived through its implementing PR.
 - **DSET-INVARIANT-GOV-004:** Each governed artifact has one primary type and owning question; links connect authorities without duplicating their rules.
 - **DSET-INVARIANT-GOV-005:** Hubs own navigation and boundaries, while atomic documents own rules, rationale, procedures, decisions, proof, and history.
 - **DSET-INVARIANT-GOV-006:** Every selected normative rule resolves to one editable governing document inside the adopting repository; a source template remains provenance rather than a live authority after materialization.

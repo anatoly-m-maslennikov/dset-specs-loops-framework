@@ -15,7 +15,24 @@ DSET uses independent profile axes for runtime behavior, durable authority, code
 
 A project selects each applicable axis explicitly. Selecting `documentation-v1` does not imply that the project is documentation-only; selecting `python-v1` does not govern prose.
 
-## Authority hierarchy
+## Artifact roles and navigation
+
+Durable content has one of four roles:
+
+- an **atomic authority source** is an immutable accepted Requirement,
+  Contract, Decision, or other normative atom;
+- an **evergreen compiled projection** is an editable current spec, plan,
+  runbook, or governing document compiled from active sources;
+- **transactional context or evidence** records proposed work, rationale,
+  review, proof, or history without becoming authority by itself; and
+- an **implementation artifact** is code, configuration, tests, eval prompts,
+  or another delivered executable surface.
+
+An active applicable source atom wins when its evergreen projection is stale.
+The drift must be routed for recompilation; implementation and evidence cannot
+silently redefine either authority.
+
+Navigation remains hierarchical:
 
 ```text
 repository root hub
@@ -28,21 +45,30 @@ repository root hub
 
 - The root hub answers which stable public areas exist.
 - An area hub answers what the area owns, excludes, and where a reader starts.
-- An owning artifact answers one primary question and is authoritative for that concern.
-- Rationale, procedures, decisions, and evidence link to the owner; they do not copy its rule.
+- An owning artifact answers one primary question and declares its role and
+  authority boundary.
+- Rationale, procedures, and evidence link to the owner; they do not copy its
+  rule. Decisions are atomic sources whose consequences compile into their
+  owning evergreen projections.
 
 Every governed area declares one root, owner, purpose, hub, and parent. A child may have many semantic links but one structural parent. Cycles and missing parents are invalid.
 
 ## Current truth and history
 
-Active normative artifacts state current rules or accepted behavior. DSET change folders hold proposed deltas and verification. Archived changes and changelogs preserve what happened. Evidence may prove current truth, but it is not a second writable authority for that truth.
+Active source atoms authorize current rules or accepted behavior. Evergreen
+artifacts present the current compiled view. DSET Change folders hold proposed
+deltas and verification. Archived Changes and changelogs preserve what
+happened. Evidence may prove current truth, but it is not another authority for
+that truth.
 
 ## Artifact lifecycle
 
 1. Classify the intended artifact by its owning question.
 2. Locate the existing owner and area hub before writing.
 3. Use a bounded DSET change when authority, public behavior, structure, or reusable rules change.
-4. Update normative, rationale, decision, procedure, and evidence artifacts only when each is affected.
+4. Recompile affected evergreen projections. Emit a new source atom,
+   append-only lifecycle event, or explicit absorbing successor when atomic
+   authority changes; never edit an emitted atom.
 5. Validate configuration, hierarchy, hubs, links, and applicable semantic evals.
 6. Reconcile accepted truth and archive through the implementing PR.
 

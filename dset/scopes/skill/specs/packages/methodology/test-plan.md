@@ -4,7 +4,7 @@ This fragment owns exact deterministic proof for its listed IDs. Shared package 
 
 | Test ID | Requirement or invariant | Assertion | Current automation |
 |---|---|---|---|
-| **DSET-TEST-SKILL-001** | DSET-REQUIREMENT-SKILL-001, DSET-INVARIANT-SKILL-001 | Validate three skill packages, UI metadata, distinct trigger descriptions, and static cross-platform portability | Skill Creator `quick_validate.py` plus the repository skill audit |
+| **DSET-TEST-SKILL-001** | DSET-REQUIREMENT-SKILL-001, DSET-INVARIANT-SKILL-001 | Validate all five skill packages, UI metadata, distinct trigger descriptions, and static cross-platform portability | Skill Creator `quick_validate.py` plus the repository skill audit |
 | **DSET-TEST-SKILL-002** | DSET-REQUIREMENT-SKILL-002, DSET-INVARIANT-SKILL-002 | Statically reject substantive normative rules, concrete thresholds, copied workflow steps, or embedded fallback procedures in canonical workflow wrappers | Governance thin-wrapper test plus Skill Creator validation |
 | **DSET-TEST-SKILL-003** | DSET-REQUIREMENT-SKILL-003, DSET-INVARIANT-SKILL-003 | Hold the wrapper hash constant, change a registered local rule, and assert the resolved identity and next invocation input change | Governance customization and generated-wrapper identity tests |
 | **DSET-TEST-SKILL-004** | DSET-REQUIREMENT-SKILL-004, DSET-INVARIANT-SKILL-004 | Assert the release-target registry declares exactly `dset`, `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release`, with no helper wrappers, and that each specialist has one trigger/output/stop boundary | Skill registry/package inventory test |

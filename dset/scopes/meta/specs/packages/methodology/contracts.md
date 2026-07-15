@@ -17,7 +17,9 @@
 - Bounded, PR-traceable Changes under `dset/scopes/<primary-layer>/changes/`.
 - Versioned schemas, templates, fixtures, migration guidance, provenance, and generated traceability under `dset/`.
 - The `dset` CLI through `python -m dset_toolchain` and an installable console entry point.
-- Three implemented specialist skill sources under `skills/`; the active DSET 0.3 Change owns the unimplemented five-skill release target.
+- Five implemented repository-native source wrappers under `skills/`; runtime,
+  host-distribution, cross-platform, and publication claims remain separately
+  gated.
 - A coordinated DSET product/CLI-package release contract, with project-configured delivery and independent schema/profile/template compatibility versions.
 - Active authoritative-boundary Contract records with explicit ownership, direction, conformance, compatibility, and lifecycle.
 

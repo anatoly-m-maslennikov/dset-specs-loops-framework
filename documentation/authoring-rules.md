@@ -43,8 +43,12 @@ When two entities are mutually related, define each independently first using sh
 
 - Rationale explains forces and trade-offs behind active normative truth; it links back without restating the full rule.
 - A Decision records a material choice in context, including rejected alternatives and consequences.
-- Do not silently rewrite accepted decision history. Supersede or amend it and preserve both directions.
-- Neither rationale nor Decision prose becomes behavioral truth until a spec owns the accepted behavior.
+- Never edit an emitted Decision atom. Record later state in an append-only
+  lifecycle event or emit an explicit absorbing successor while preserving the
+  predecessor and both directions.
+- An active applicable Decision is an atomic authority source. Compile its
+  behavioral consequences into the owning evergreen spec; when they differ,
+  the Decision wins and the projection is stale until recompiled.
 
 ## Hubs
 

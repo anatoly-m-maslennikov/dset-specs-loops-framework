@@ -41,7 +41,7 @@ Domain → Spec + Supportability + Test Plan + Eval Plan → Implement → Test 
 | Artifact governance | [Documentation architecture hub](documentation/README.md) | Artifact types, authoring rules, hubs, maintenance, and `documentation-v1` |
 | Project control plane | [DSET project hub](dset/README.md) | Accepted project truth, active/archive changes, schemas, templates, fixtures, traceability, migrations, and supportability |
 | Executable CLI | [`dset_toolchain/`](dset_toolchain/) | Dependency-light lifecycle, governance resolution/materialization, validation, traceability, archive, and bounded self-hosting |
-| Agent workflows | [Skills hub](skills/README.md) | Focused domain-clarification, diagnosis, and disposable-prototype workflows |
+| Agent workflows | [Skills hub](skills/README.md) | Five thin lifecycle, clarification, diagnosis, prototype, and release wrappers |
 | Delivery and provenance | [Delivery policy](.github/DELIVERY.md) and [third-party notices](THIRD_PARTY_NOTICES.md) | Protected publication path and external-source/license boundaries |
 
 ## What is already here
@@ -60,9 +60,9 @@ methodology document set. The current `0.3.1` state includes:
   `archive`, `rules`, `self-host`, and `version` workflows;
 - schemas, templates, fixtures, migration guidance, generated traceability, and
   provenance records;
-- initial Codex/agent workflow wrappers for clarify, diagnose, and prototype
-  loops, plus governing contracts for thin wrappers, skill-run logs, session
-  checkpoints, and delegation budgets;
+- five repository-native workflow wrappers for lifecycle routing, clarification,
+  diagnosis, prototyping, and release, plus governing contracts for thin
+  wrappers, skill-run logs, session checkpoints, and delegation budgets;
 - GitHub delivery policy, CI validation, supportability runbooks, third-party
   notices, and PR-linked proof history.
 
@@ -123,9 +123,9 @@ toolchain that works outside this repository:
 - add a generated schema `1.2` adopter that exercises Work Areas, the default
   local `dev` to remote `dev` to PR `main` flow, and optional worktree
   isolation;
-- finish the primary `dset` skill/runtime path: run writer, session checkpoint,
-  resume behavior after compaction, release wrapper, and next-action
-  recommendation;
+- finish the runtime behind the five source wrappers: initialization and
+  lifecycle routing, run records, session checkpoint/resume, release mechanics,
+  and next-action recommendation;
 - package and test the thin skills for Codex and Claude against repository-local
   governing rules rather than duplicated skill prose;
 - add the JavaScript/TypeScript applied profile while keeping documentation and

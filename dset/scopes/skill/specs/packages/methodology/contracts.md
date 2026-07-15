@@ -2,7 +2,7 @@
 
 ## Skill release target
 
-`dset` is the primary operator entrypoint for initialization, decomposition, landscape/decision/spec/proof/implementation planning, implementation, verification, work-item routing, and next-step advice through registered project-local workflows. `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release` are explicit specialist triggers. Helper operations are modes or chained workflows, not additional public skill names. Until `skills/dset/` and `skills/dset-release/` are implemented and proven, only the three specialist skills listed in [the skills hub](../../../../../../skills/README.md) are released.
+`dset` is the primary operator entrypoint for initialization, decomposition, landscape/decision/spec/proof/implementation planning, implementation, verification, work-item routing, and next-step advice through registered project-local workflows. `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release` are explicit specialist triggers. Helper operations are modes or chained workflows, not additional public skill names. All five repository-native source wrappers listed in [the skills hub](../../../../../../skills/README.md) are implemented; runtime, host-distribution, and publication capability must still be claimed only when its separate proof passes.
 
 All five target skills are thin wrappers over the repository governance registry. The registered `DSET-RULE-LIFECYCLE`, `DSET-RULE-SKILL-RUNS`, `DSET-RULE-RELEASE`, `DSET-RULE-DELEGATION-BUDGET`, and `DSET-RULE-WORK-ITEMS` documents own substantive behavior. Versioned bounded local run records under `.dset/runs/` are operational evidence only and are excluded from committed project truth.
 
