@@ -22,7 +22,7 @@ class ProfileTests(unittest.TestCase):
         self.assertIn("global-impact.md", large_files)
         self.assertIn("dependency-map.yaml", large_files)
         self.assertIn("root-cause.md", defect_files)
-        self.assertIn("adoption-adr.md", adoption_files)
+        self.assertIn("adoption-decision.md", adoption_files)
         self.assertIn("proofs/candidate-fit", adoption_dirs)
 
 

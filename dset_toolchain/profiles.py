@@ -3,13 +3,14 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from .layout import discover_layout
 from .yaml_subset import load
 
 VALID_PROFILES = {"small", "standard", "large", "defect", "adoption"}
 
 
 def required_artifacts(root: Path, profile: str) -> tuple[set[str], set[str]]:
-    data = load(root / "dset" / "templates" / "profiles.yaml")
+    data = load(discover_layout(root).find_template("profiles.yaml"))
     profiles: dict[str, dict[str, Any]] = data["profiles"]
     documents: set[str] = set()
     directories: set[str] = set()

@@ -2,96 +2,74 @@
 
 ## Purpose
 
-This is the control-plane hub for the repository as an adopting DSET project. It routes to accepted truth, repository-local governance, bounded changes, reusable contracts, generated traceability, migration guidance, and delivery supportability.
+This is the control-plane hub for the repository as both the DSET framework source and its recursive adopter. Project truth is divided among five stable semantic owners without duplicating one logical package.
 
 ## Boundaries
 
-This directory owns project configuration and DSET artifacts. It does not duplicate normative framework prose under `methodology/` or `documentation/`, the CLI implementation under `dset_toolchain/`, or live GitHub PR/check state.
+`dset/scopes/` owns project control artifacts. Public framework prose remains under `methodology/` and `documentation/`; executable source remains under `dset_toolchain/`, `skills/`, and `.github/`. Those implementation surfaces trace back to accepted layer-owned contracts.
 
 ## Start here
 
-- [Accepted methodology package](specs/packages/methodology/README.md) — current truth and proof contracts.
-- [Repository governance](governance/README.md) and [`governance.yaml`](governance.yaml) — project-owned rules, workflow resolution, customization provenance, and thin-wrapper identity.
-- [`version.yaml`](version.yaml) — independent framework milestone, Python package, schema, and released/candidate validator identities.
-- [Changes](changes/README.md) — active proposed work; `changes/archive/` preserves completed PR-linked evidence.
-- [Templates](templates/README.md), [schemas](schemas/README.md), and [fixtures](fixtures/README.md) — reusable framework contracts and deterministic examples.
-- [Traceability](traceability.yaml) — generated change-to-proof-to-PR discovery index.
-- [Migrations](migrations/README.md) and the [delivery runbook](supportability/delivery-runbook.md) — adoption guidance and production supportability.
+- [META](scopes/meta/README.md) — identity, accepted behavior, specification semantics, and proof plans.
+- [GOV](scopes/gov/README.md) — governance, intake, provenance, migrations, and generated views.
+- [TOOL](scopes/tool/README.md) — executable CLI, validation, fixtures, traceability, and self-hosting.
+- [SKILL](scopes/skill/README.md) — agent workflows, delegation, and local run evidence.
+- [OPS](scopes/ops/README.md) — delivery, release, supportability, and hosted evidence.
 
 ## Current structure
 
 ```text
 dset/
-├── dset.yaml
-├── version.yaml
-├── governance.yaml
-├── governance/
-├── provenance.yaml
-├── traceability.yaml
-├── specs/
-│   └── packages/
-│       └── methodology/
-├── changes/
-│   ├── archive/
-│   └── <change-id>/
-├── templates/
-├── schemas/
-├── fixtures/
-├── migrations/
-├── history/
-└── supportability/
+├── README.md
+└── scopes/
+    ├── meta/
+    ├── gov/
+    ├── tool/
+    ├── skill/
+    └── ops/
 ```
 
-The project currently has one package, `methodology`. A `specs/global/` layer is intentionally absent: it becomes justified only when a second package creates cross-package behavior, contracts, or release gates.
+Each scope has a hub and may own governing rules, schemas, templates, a fragment of the logical `methodology` package, and Changes. The project manifest is [META-owned](scopes/meta/dset.yaml). The single governance and intake registries are [GOV-owned](scopes/gov/governance.yaml) and [GOV-owned](scopes/gov/intake.yaml). Generated [traceability](scopes/gov/generated/traceability.yaml) is a non-authoritative relationship view.
 
 ## Ownership
 
-| Path | Owns |
+| Scope | Owns |
 |---|---|
-| `dset.yaml` | Project identity, package registry, and selected profiles |
-| `version.yaml` | DSET 0.2 framework milestone plus independent toolchain/schema and released/candidate validator identities |
-| `governance.yaml` | Deterministic workflow/rule ownership, dependency, provenance, customization, and wrapper identity metadata |
-| `governance/` | The repository's editable governing rule owners |
-| `provenance.yaml` | Exact third-party sources, revisions, licenses, and use boundaries |
-| `traceability.yaml` | Generated deterministic change-to-proof-to-PR relationship view |
-| `specs/packages/methodology/` | Accepted current truth for the methodology package |
-| `changes/<change-id>/` | Unaccepted proposal, deltas, proof plans, design, tasks, and verification for one bounded change |
-| `changes/archive/` | Completed changes reconciled into current truth and archived through their implementing PR |
-| `templates/` | Framework-owned reusable artifact templates |
-| `schemas/` | Framework-owned machine-readable contracts and validators' schema inputs |
-| `fixtures/` | Materialized base artifacts and deterministic pass/fail mutations |
-| `migrations/` | One-writable-root adoption guidance and mapping template |
-| `history/` | GitHub-authoritative PR metadata snapshot used as bounded evidence |
-| `supportability/` | Production runbooks for this repository's hosted automation |
+| META | Project/version identity; accepted domain, behavior, Contracts, and proof-plan semantics |
+| GOV | Artifact and repository governance; Problems, Opportunities, Questions; provenance and derived indexes |
+| TOOL | CLI behavior, diagnostics, fixtures, trace generation, validation, and self-hosting |
+| SKILL | Thin wrappers, lifecycle recommendation, delegation budgets, and local run records |
+| OPS | Release, hosted delivery, supportability, incident investigation, and recovery evidence |
+
+The accepted methodology remains one logical package with five writable fragments. A Change lives only under its `primary_layer`; `affected_layers` and stable IDs connect cross-layer work.
+
+The project manifest also declares neutral repository-relative Work Areas. A
+Work Area may contain a deployable service, local tool, library, documentation,
+methodology, data, tests, hosted automation, or mixed content. It is a scope
+boundary, not a feature/module/service classification. Every schema 1.2 Change
+targets either the whole repository or one or more declared Work Areas.
 
 ## Repository commands
 
 | Command | Behavior |
 |---|---|
-| `python -m dset_toolchain check .` | Read-only validation with stable diagnostics and no third-party runtime dependency |
-| `python -m dset_toolchain verify .` | Canonical aggregate: project-configured gates, unit/fixture tests, Markdown checks, diff hygiene, and trace freshness |
-| `python -m dset_toolchain rules check .` | Validate local profile identity, ownership, dependency order, paths, applicability, customization, and wrappers |
-| `python -m dset_toolchain rules resolve <workflow-id> . --format json` | Print the stable ordered repository-local rule set used by a thin wrapper |
-| `python -m dset_toolchain rules materialize <target> --source <framework-root>` | Copy selected defaults without overwriting and record template provenance |
-| `python -m dset_toolchain rules refresh .` | Explicitly record intentional local customization after a rule edit |
-| `python -m dset_toolchain rules diff . --source <framework-root>` | Produce a read-only proposed delta from framework templates to local rules |
-| `python -m dset_toolchain self-host .` | Run the bounded released-validator → candidate → repository/temporary-adopter fixed point |
-| `uv run dset new <change-id> --package <package-id> --profile <profile>` | Create a non-overwriting active change from released templates |
-| `uv run dset trace .` | Print deterministic traceability; add `--write` to update or `--check` to compare |
-| `uv run dset archive <change-id>` | Print an archive dry-run; add `--execute` only after readiness gates pass |
-
-Inside this repository's locked development environment, `uv run dset verify .` invokes the same canonical aggregate through the installed console entry point.
-
-`small`, `standard`, `large`, `defect`, and `adoption` profiles select proportional artifacts. Every profile preserves separate deterministic test and probabilistic/qualitative eval plans; an eval plan may explicitly state not applicable.
+| `python -m dset_toolchain check .` | Read-only validation with stable diagnostics |
+| `python -m dset_toolchain verify .` | Project-configured gates plus trace freshness |
+| `python -m dset_toolchain rules check .` | Validate repository-local rule ownership and identity |
+| `python -m dset_toolchain rules resolve <workflow-id> . --format json` | Print the ordered local rules used by a thin wrapper |
+| `python -m dset_toolchain self-host .` | Run the bounded released-to-candidate fixed point |
+| `uv run dset new <slug> --package <package-id> --profile <profile> --layer <layer> [--work-area <id> ...] [--workspace branch-worktree]` | Allocate a stable layer-qualified Change ID; use the integration branch by default or opt into an isolated worktree |
+| `uv run dset trace . --write` | Regenerate deterministic relationship evidence |
+| `uv run dset archive <stable-change-id>` | Preview guarded archival; add `--execute` only after readiness passes |
 
 ## Lifecycle
 
-1. Create a kebab-case change under `changes/`.
-2. Write requirements plus deterministic test proof and applicable eval proof before implementation.
-3. Open a draft PR and record its repository-qualified identity in the change.
-4. Implement and collect fresh verification evidence.
-5. Reconcile accepted deltas into `specs/`, move the change under `archive/` as an explicitly labeled candidate, commit it, and push it to the still-draft PR so remote identity and archive-layout checks can inspect the real head.
-6. Evaluate the pushed candidate, refresh `dset/traceability.yaml`, record final proof, run `uv run dset verify .`, and mark the candidate complete in an evidence-only commit.
-7. Keep the PR draft until archive readiness passes; then mark it ready and merge.
+1. Create one Change with one stable `DSET-CHANGE-<LAYER>-NNN` ID, readable slug, repository-or-Work-Area target, and explicit workspace mode.
+2. Record affected layers, dependencies, exact consumed commits, Contracts, proof plans, and reopen triggers.
+3. Implement against accepted truth; keep deterministic tests and qualitative/probabilistic evals separate.
+4. Reconcile only the affected package fragments, refresh the smallest invalidated proof closure, and regenerate traceability.
+5. Archive the Change under its primary layer through its implementing PR.
+6. By default, work on local `dev`, push remote `dev`, and open the release PR from `dev` to protected `main`.
+7. Select `branch-worktree` only when the Change needs isolation; review that branch into `dev` before the release PR.
 
-An incomplete or failed change remains active and never modifies accepted truth. A dated candidate on a draft PR branch is not accepted archive history until its final evidence is recorded and the PR merges.
+Permanent layer branches are forbidden. One cross-layer Change stays atomic when splitting would create an invalid intermediate state; split only independently reviewable, verifiable, and mergeable work.

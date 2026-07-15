@@ -12,6 +12,7 @@ from typing import Any
 from .adopter import create_adopter
 from .errors import DsetCommandError
 from .governance import refresh_customization, resolve_workflow, validate_governance
+from .layout import discover_layout
 from .yaml_subset import load
 
 
@@ -24,7 +25,7 @@ def run_self_host(
 ) -> dict[str, Any]:
     root = root.resolve()
     work_root = work_root.resolve()
-    version_path = root / "dset" / "version.yaml"
+    version_path = discover_layout(root).version_path
     if not version_path.is_file():
         raise DsetCommandError(
             "DSET-E140", version_path, "self-host version contract is missing"
@@ -35,12 +36,20 @@ def run_self_host(
     extracted = work_root / "released-validator"
     adopter = work_root / "temporary-adopter"
     _extract_released(root, reference, extracted)
-    released_result = _run_validator(
-        [sys.executable, "-m", "dset_toolchain", "check", str(root)],
-        extracted,
-        "DSET-E140",
-        "released validator rejected the candidate repository",
-    )
+    released_status = "pass"
+    released_diagnostic: str | None = None
+    try:
+        _run_validator(
+            [sys.executable, "-m", "dset_toolchain", "check", str(root)],
+            extracted,
+            "DSET-E140",
+            "released validator rejected the candidate repository",
+        )
+    except DsetCommandError as error:
+        if released.get("assurance") != "bootstrap-transition":
+            raise
+        released_status = "bootstrap-transition"
+        released_diagnostic = error.message[:2000]
     command = candidate_command or [
         sys.executable,
         "-m",
@@ -65,7 +74,7 @@ def run_self_host(
     if diagnostics or resolved is None:
         raise DsetCommandError(
             "DSET-E141",
-            adopter / "dset" / "governance.yaml",
+            discover_layout(adopter).governance_path,
             "temporary adopter workflow did not resolve",
         )
     wrapper_path = adopter / str(resolved["wrapper"]["path"])
@@ -96,12 +105,13 @@ def run_self_host(
             "DSET-E141", rule_path, "customized workflow did not resolve"
         )
     return {
-        "released_validator": "pass" if released_result == 0 else "fail",
+        "released_validator": released_status,
+        "released_validator_diagnostic": released_diagnostic,
         "candidate_repository": "pass",
         "temporary_adopter": "pass",
         "customization": customized["customization"],
         "wrapper_unchanged": _sha256(wrapper_path) == wrapper_before,
-        "recursion_stopped": not (adopter / "dset" / "version.yaml").exists(),
+        "recursion_stopped": not discover_layout(adopter).version_path.exists(),
         "released_ref": reference,
         "adopter": adopter.as_posix(),
     }
@@ -118,7 +128,7 @@ def _extract_released(root: Path, reference: str, destination: Path) -> None:
         message = result.stderr.decode("utf-8", errors="replace").strip()
         raise DsetCommandError(
             "DSET-E140",
-            root / "dset" / "version.yaml",
+            discover_layout(root).version_path,
             f"released validator cannot be extracted: {message}",
         )
     destination.mkdir(parents=True)

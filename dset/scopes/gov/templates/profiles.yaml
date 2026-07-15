@@ -1,0 +1,41 @@
+schema_version: 1.0
+profiles:
+  small:
+    documents:
+      - proposal.md
+      - test-plan.md
+      - eval-plan.md
+      - tasks.md
+      - verification.md
+    directories:
+      - specs
+      - proofs
+  standard:
+    documents:
+      - proposal.md
+      - test-plan.md
+      - eval-plan.md
+      - solution-landscape.md
+      - design.md
+      - implementation-plan.md
+      - tasks.md
+      - verification.md
+    directories:
+      - specs
+      - proofs
+  large:
+    extends: standard
+    documents:
+      - global-impact.md
+    files:
+      - dependency-map.yaml
+  defect:
+    extends: standard
+    documents:
+      - root-cause.md
+  adoption:
+    extends: standard
+    documents:
+      - adoption-decision.md
+    directories:
+      - proofs/candidate-fit

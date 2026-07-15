@@ -4,7 +4,7 @@
 
 ```mermaid
 graph TD
-    WHY["Why (rationale / ADR)<br/>kept separate"] -.justifies.-> WHAT
+    WHY["Why (rationale / Decision)<br/>kept separate"] -.justifies.-> WHAT
     WHAT["What (impl reference)<br/>entities + lifecycle"] --> ENT["Domain entities<br/>+ per-entity FSM"]
     ENT --> SCHEMA["Schema/contract owns<br/>stored data shape"]
     ENT --> ORDER["Define-before-use order<br/>stable §IDs; fwd = connection"]
@@ -63,7 +63,7 @@ graph TD
 
 <summary>Checklist</summary>
 
-- [ ] **Two docs: what vs why** — an implementation-reference spec (entities/lifecycle/control) + a separate rationale (ADR) doc; keep the *what* free of justification prose.
+- [ ] **Two docs: what vs why** — an implementation-reference spec (entities/lifecycle/control) + a separate rationale or Decision doc; keep the *what* free of justification prose.
 - [ ] **Entities + lifecycle first** — name the domain entities, their properties, and each entity's state machine before any code.
 - [ ] **Stored-data contract** — identify the DDL, file/schema contract, or backing-service contract that owns each stored shape; link it and never maintain a second field list in prose.
 - [ ] **Define-before-use order + stable IDs** — each section defines using only entities above; forward links are connections; section IDs are stable so the order is free to change.

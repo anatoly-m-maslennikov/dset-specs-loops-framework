@@ -22,6 +22,20 @@ OpenSpec names and marks belong to their respective owners. References describe 
 
 Matt Pocock's name and marks belong to their owner. References describe provenance only and do not imply endorsement.
 
+## First Principles Framework
+
+- **Upstream:** [ailev/FPF](https://github.com/ailev/FPF)
+- **Revision reviewed:** [`afa4936541774021c92adb97c3cbf787bf126062`](https://github.com/ailev/FPF/commit/afa4936541774021c92adb97c3cbf787bf126062)
+- **License:** No license was declared in the reviewed repository tree; this is recorded at [`third_party/licenses/fpf-NO-LICENSE.txt`](third_party/licenses/fpf-NO-LICENSE.txt).
+- **DSET surfaces:** workflow return boundaries, Decision discharge, risk-scaled review, comparison evidence, proof currentness, and derived navigation.
+- **Use:** DSET independently re-expresses and attributes a small set of public concepts and short technical terms. No substantial expressive passage, template, code, ontology, index, or Obsidian mechanic from FPF is copied or distributed.
+
+## Conductor
+
+- **Sources reviewed:** [Git worktrees](https://www.conductor.build/docs/concepts/git-worktrees), [workspaces and branches](https://www.conductor.build/docs/concepts/workspaces-and-branches), and [parallel agents](https://www.conductor.build/docs/concepts/parallel-agents), observed 2026-07-15.
+- **DSET surface:** the optional one Change to one isolated branch-backed workspace/worktree mode.
+- **Use:** DSET independently defines its own Change identity, proof, dependency handoff, default integration-branch flow, optional worktree isolation, and release semantics. No Conductor text, code, or product artifact is copied.
+
 ## Contribution rule
 
-Before copied or substantially adapted third-party material enters this repository, record its exact source and revision, license, affected files, modifications, required notices, and trademark boundary here and in [`dset/provenance.yaml`](dset/provenance.yaml). Add the applicable license text under `third_party/licenses/`. Independently re-expressed ideas must still cite their source when it materially shaped the design.
+Before copied or substantially adapted third-party material enters this repository, record its exact source and revision, license, affected files, modifications, required notices, and trademark boundary here and in [`dset/scopes/gov/provenance.yaml`](dset/scopes/gov/provenance.yaml). Add the applicable license text under `third_party/licenses/`. Independently re-expressed ideas must still cite their source when it materially shaped the design; web-only references may be recorded here with their observation date when no versioned source artifact is imported.

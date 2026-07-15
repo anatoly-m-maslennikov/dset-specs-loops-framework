@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dset-spec-loops"
-version = "1.0.0"
+version = "0.3.1"
 description = "Executable contracts for DSET Spec Loops"
 readme = "README.md"
 requires-python = ">=3.10"

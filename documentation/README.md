@@ -25,4 +25,7 @@ This area owns artifact types, authoring boundaries, hub/navigation rules, and t
 - [Methodology hub](../methodology/README.md) — the DSET stage and cross-cutting methodology map.
 - [Project-control hub](../dset/README.md) — this repository's accepted truth, changes, schemas, templates, and evidence.
 
-This hub lists stable owning documents, not every Markdown file. Governed areas and parent relationships are declared in `dset/artifacts.yaml`; the canonical DSET command validates their structure and links.
+This hub lists stable owning documents, not every Markdown file. Governed areas
+and parent relationships are declared in
+`dset/scopes/gov/artifacts.yaml`; the canonical DSET command validates their
+structure and links.

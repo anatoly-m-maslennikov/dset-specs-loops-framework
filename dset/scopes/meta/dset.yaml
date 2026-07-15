@@ -1,0 +1,79 @@
+schema_version: "1.2"
+
+project:
+  key: DSET
+  id: dset-specs-loops-framework
+  name: DSET Spec Loops
+  repository_slug: dset-specs-loops-framework
+  repository_role: framework-source-and-adopter
+
+supportability:
+  status: applicable
+  reason: GitHub Actions and repository rules operate the production delivery path from dev to main
+  authority: github
+  runbook: dset/scopes/ops/supportability/delivery-runbook.md
+
+release:
+  status: applicable
+  integration_branch: dev
+  protected_branch: main
+  publisher: github
+  tag_pattern: "v{product_version}"
+
+work_items:
+  registry: dset/scopes/gov/intake.yaml
+
+structure:
+  layout: layered-v1
+
+work_areas:
+  - id: methodology
+    path: methodology
+  - id: documentation
+    path: documentation
+  - id: project-control
+    path: dset
+  - id: toolchain
+    path: dset_toolchain
+  - id: skills
+    path: skills
+  - id: tests
+    path: tests
+  - id: delivery
+    path: .github
+
+packages:
+  - id: methodology
+    status: active
+    layers:
+      - meta
+      - gov
+      - tool
+      - skill
+      - ops
+
+profiles:
+  runtime_risk: low-risk-hosted-automation
+  durability_topology: external-platform
+  enforcement: python-v1
+  artifact: documentation-v1
+  repository_governance: core-v1
+  delegation_budget: medium
+
+change_contract:
+  change_id_format: project-type-layer-sequence
+  change_slug_format: kebab-case
+  workspace_default: integration-branch
+  pull_request_required_before_archive: true
+  archive_requires_fresh_verification: true
+  keep_pull_request_draft_until_archive_ready: true
+
+verification:
+  commands:
+    - uv run ruff format --check dset_toolchain tests
+    - uv run ruff check dset_toolchain tests
+    - uv run mypy dset_toolchain tests
+    - "{python} -m unittest discover -s tests -v"
+    - git diff --check
+
+canonical_command: python -m dset_toolchain verify .

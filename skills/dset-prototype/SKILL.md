@@ -1,6 +1,6 @@
 ---
 name: dset-prototype
-description: Run a bounded disposable experiment to answer a specific design, framework, library, protocol, performance, recovery, or integration question with comparable evidence. Use when uncertainty blocks a DSET Solution Landscape or ADR decision and production-quality implementation would be premature; never use the prototype as an unreviewed path into production.
+description: Run a bounded disposable experiment to answer a specific design, framework, library, protocol, performance, recovery, or integration question with comparable evidence. Use when uncertainty blocks a DSET Solution Landscape or Decision and production-quality implementation would be premature; never use the prototype as an unreviewed path into production.
 ---
 
 # DSET Prototype
@@ -9,7 +9,7 @@ This is the thin wrapper for the registered `prototyping` workflow. Repository-l
 
 ## Bootstrap and invocation
 
-1. Locate the repository root by walking upward to `dset/dset.yaml`.
+1. Locate the repository root by walking upward to `dset/scopes/meta/dset.yaml` for schema 1.2 or legacy `dset/dset.yaml` for schema 1.0/1.1; stop if both authorities exist.
 2. Run `dset rules resolve prototyping --format json` or `python -m dset_toolchain rules resolve prototyping --format json`.
 3. Stop on any nonzero result. Never fall back to this wrapper, agent memory, an installed template, or remote framework prose.
 4. Before governed work, report the resolved workflow ID, profile/version, customization identity, ordered rule IDs and paths, wrapper identity, and conflicts.

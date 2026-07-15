@@ -20,6 +20,7 @@ from .governance import (
     resolve_workflow,
     validate_governance,
 )
+from .layout import discover_layout
 from .scaffold import create_change
 from .self_host import run_self_host
 from .traceability import (
@@ -55,6 +56,14 @@ def build_parser() -> argparse.ArgumentParser:
         default="standard",
     )
     new.add_argument("--title")
+    new.add_argument("--layer", choices=["META", "GOV", "TOOL", "SKILL", "OPS"])
+    new.add_argument("--work-area", action="append", dest="work_areas", default=[])
+    new.add_argument(
+        "--workspace",
+        choices=["integration-branch", "branch-worktree"],
+        dest="workspace_mode",
+        help="override the project default; branch-worktree is optional isolation",
+    )
 
     trace = commands.add_parser("trace", help="generate PR traceability")
     _root_argument(trace)
@@ -124,6 +133,9 @@ def main(argv: list[str] | None = None) -> int:
                 args.package_id,
                 args.profile,
                 args.title,
+                args.layer,
+                work_areas=args.work_areas,
+                workspace_mode=args.workspace_mode,
             )
             print(path.relative_to(root).as_posix())
             return 0
@@ -133,7 +145,8 @@ def main(argv: list[str] | None = None) -> int:
                 if trace_is_fresh(root):
                     print("DSET traceability is fresh")
                     return 0
-                print("DSET-E111 dset/traceability.yaml: traceability is stale")
+                path = discover_layout(root).traceability_path.relative_to(root)
+                print(f"DSET-E111 {path}: traceability is stale")
                 return 1
             if args.write:
                 path = write_traceability(root)
@@ -192,7 +205,9 @@ def main(argv: list[str] | None = None) -> int:
                     root, args.work_dir, released_ref=args.released_ref
                 )
             else:
-                with tempfile.TemporaryDirectory() as raw:
+                with tempfile.TemporaryDirectory(
+                    prefix="dset-self-host-", dir=_self_host_temp_parent(root)
+                ) as raw:
                     report = run_self_host(
                         root, Path(raw), released_ref=args.released_ref
                     )
@@ -201,15 +216,15 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         if args.command == "version":
             root = _repository_root(args.root)
-            data = load(root / "dset" / "version.yaml")
+            data = load(discover_layout(root).version_path)
             if args.format == "json":
                 print(json.dumps(data, indent=2))
             else:
                 framework = data["framework"]
                 toolchain = data["python_package"]
                 schemas = data["schemas"]
-                print(f"framework milestone: {framework['milestone']}")
-                print(f"python package: {toolchain['version']} (independent)")
+                print(f"product: {framework['version']} (coordinated)")
+                print(f"python package: {toolchain['version']} (coordinated)")
                 print(f"schemas: {schemas['version']} (independent)")
             return 0
     except DsetCommandError as error:
@@ -223,6 +238,16 @@ def main(argv: list[str] | None = None) -> int:
 
 def _root_argument(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("root", nargs="?", type=Path)
+
+
+def _self_host_temp_parent(root: Path) -> str | None:
+    system_temp = Path(tempfile.gettempdir()).resolve()
+    repository = root.resolve()
+    try:
+        system_temp.relative_to(repository)
+    except ValueError:
+        return None
+    return str(repository.parent)
 
 
 def _repository_root(raw: Path | None) -> Path:

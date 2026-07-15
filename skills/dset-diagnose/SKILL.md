@@ -9,7 +9,7 @@ This is the thin wrapper for the registered `diagnosis` workflow. Repository-loc
 
 ## Bootstrap and invocation
 
-1. Locate the repository root by walking upward to `dset/dset.yaml`.
+1. Locate the repository root by walking upward to `dset/scopes/meta/dset.yaml` for schema 1.2 or legacy `dset/dset.yaml` for schema 1.0/1.1; stop if both authorities exist.
 2. Run `dset rules resolve diagnosis --format json` or `python -m dset_toolchain rules resolve diagnosis --format json`.
 3. Stop on any nonzero result. Never fall back to this wrapper, agent memory, an installed template, or remote framework prose.
 4. Before governed work, report the resolved workflow ID, profile/version, customization identity, ordered rule IDs and paths, wrapper identity, and conflicts.

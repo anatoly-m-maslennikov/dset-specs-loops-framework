@@ -1,0 +1,22 @@
+schema_version: 1.0
+id: {{package_id}}
+status: active
+requirements:
+  - {{project_key}}-REQUIREMENT{{id_layer}}-001
+tests:
+  - {{project_key}}-TEST{{id_layer}}-001
+evals:
+  - {{project_key}}-EVAL{{id_layer}}-001
+contracts:
+  - {{project_key}}-CONTRACT{{id_layer}}-001
+stories: []
+outcomes: []
+artifacts:
+  domain: domain.md
+  spec: spec.md
+  contracts: contracts.md
+  stories: stories.md
+  outcomes: outcomes.md
+  test_plan: test-plan.md
+  eval_plan: eval-plan.md
+

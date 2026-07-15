@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+from datetime import date
 from pathlib import Path
 from typing import Any
 from urllib.parse import unquote
@@ -9,11 +10,30 @@ from urllib.parse import unquote
 from . import __version__
 from .diagnostics import Diagnostic
 from .governance import validate_governance
+from .layout import RepositoryLayout, discover_layout
 from .profiles import VALID_PROFILES, required_artifacts
 from .yaml_subset import YamlSubsetError, load
 
 ID_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
 CHANGE_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+PROJECT_KEY_PATTERN = re.compile(r"^[A-Z][A-Z0-9]*$")
+TRACE_LAYERS = ("META", "GOV", "TOOL", "SKILL", "OPS")
+TRACE_TYPES = (
+    "REQUIREMENT",
+    "SCENARIO",
+    "INVARIANT",
+    "TEST",
+    "EVAL",
+    "TASK",
+    "PROBLEM",
+    "OPPORTUNITY",
+    "QUESTION",
+    "DECISION",
+    "CONTRACT",
+    "STORY",
+    "OUTCOME",
+    "CHANGE",
+)
 LINK_PATTERN = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 CALLOUT_PATTERN = re.compile(r"^> \[!([^\]]+)\]", re.MULTILINE)
 GITHUB_CALLOUTS = {"NOTE", "TIP", "IMPORTANT", "WARNING", "CAUTION"}
@@ -22,8 +42,11 @@ GITHUB_CALLOUTS = {"NOTE", "TIP", "IMPORTANT", "WARNING", "CAUTION"}
 def validate_repository(root: Path) -> list[Diagnostic]:
     root = root.resolve()
     diagnostics: list[Diagnostic] = []
-    dset_root = root / "dset"
-    manifest_path = dset_root / "dset.yaml"
+    try:
+        layout = discover_layout(root)
+    except ValueError as error:
+        return [_diag("DSET-E001", root / "dset", str(error))]
+    manifest_path = layout.manifest_path
     if not manifest_path.is_file():
         return [_diag("DSET-E001", manifest_path, "project manifest is missing")]
     if (root / ".dset" / "specs").exists() or (root / ".dset" / "changes").exists():
@@ -37,23 +60,32 @@ def validate_repository(root: Path) -> list[Diagnostic]:
     manifest = _safe_load(manifest_path, diagnostics)
     if manifest:
         diagnostics.extend(_validate_project_manifest(root, manifest_path, manifest))
+        diagnostics.extend(_validate_intake_registry(root, manifest))
         diagnostics.extend(_validate_artifacts(root, manifest_path, manifest))
         profiles = manifest.get("profiles", {})
         if isinstance(profiles, dict) and profiles.get("repository_governance"):
             diagnostics.extend(
                 validate_governance(root, str(profiles["repository_governance"]))
             )
-        diagnostics.extend(_validate_version(root, manifest))
-    diagnostics.extend(_validate_schemas(dset_root / "schemas"))
+        diagnostics.extend(_validate_version(root, manifest, layout))
+    try:
+        schema_paths = tuple(layout.schema_paths())
+    except ValueError as error:
+        diagnostics.append(_diag("DSET-E118", layout.dset_root, str(error)))
+        schema_paths = ()
+    diagnostics.extend(_validate_schemas(schema_paths))
     diagnostics.extend(_validate_provenance(root))
     diagnostics.extend(_validate_packages(root, manifest or {}))
-    active = dset_root / "changes"
-    if active.is_dir():
+    diagnostics.extend(_validate_change_uniqueness(layout))
+    for active in layout.active_change_roots:
+        if not active.is_dir():
+            continue
         for path in sorted(active.iterdir()):
             if path.is_dir() and path.name != "archive":
                 diagnostics.extend(validate_change(root, path, archived=False))
-    archive = active / "archive"
-    if archive.is_dir():
+    for archive in layout.archive_change_roots:
+        if not archive.is_dir():
+            continue
         for path in sorted(archive.iterdir()):
             if path.is_dir() and re.match(r"^\d{4}-\d{2}-\d{2}-", path.name):
                 diagnostics.extend(validate_change(root, path, archived=True))
@@ -85,14 +117,19 @@ def validate_change(
     data = _safe_load(manifest_path, diagnostics)
     if not data:
         return diagnostics
+    layout = discover_layout(root)
+    layered = layout.layered
     change_id = str(data.get("id", ""))
     folder_id = re.sub(r"^\d{4}-\d{2}-\d{2}-", "", change_dir.name)
-    if not CHANGE_PATTERN.fullmatch(change_id) or change_id != folder_id:
+    change_slug = str(data.get("slug", "")) if layered else change_id
+    if not CHANGE_PATTERN.fullmatch(change_slug) or change_slug != folder_id:
         diagnostics.append(
             _diag(
-                "DSET-E101",
+                "DSET-E151" if layered else "DSET-E101",
                 manifest_path,
-                "change ID must be kebab-case and match its directory",
+                "change slug must be kebab-case and match its directory"
+                if layered
+                else "change ID must be kebab-case and match its directory",
             )
         )
     profile = str(data.get("profile", ""))
@@ -116,7 +153,9 @@ def validate_change(
             diagnostics.append(
                 _diag("DSET-E104", path, "required artifact directory is missing")
             )
-    diagnostics.extend(_validate_change_ids(change_dir, data))
+    diagnostics.extend(_validate_change_ids(root, change_dir, data))
+    if layered:
+        diagnostics.extend(_validate_layered_change(layout, change_dir, data))
     status = data.get("status")
     pr = data.get("pull_request", {})
     pr_number = pr.get("number") if isinstance(pr, dict) else None
@@ -152,9 +191,22 @@ def validate_change(
             if expected and archive.get("path") != expected:
                 diagnostics.append(
                     _diag(
-                        "DSET-E108",
+                        "DSET-E150" if layered else "DSET-E108",
                         manifest_path,
                         "archive path does not match the change directory",
+                    )
+                )
+        if layered:
+            workspace = data.get("workspace")
+            if not isinstance(workspace, dict) or not all(
+                _is_exact_commit(workspace.get(field))
+                for field in ("base_commit", "head_commit")
+            ):
+                diagnostics.append(
+                    _diag(
+                        "DSET-E152",
+                        manifest_path,
+                        "archived workspace requires exact base and head commits",
                     )
                 )
     return diagnostics
@@ -165,12 +217,15 @@ def _validate_project_manifest(
 ) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     project = data.get("project", {})
+    project_key = project.get("key") if isinstance(project, dict) else None
     project_id = project.get("id") if isinstance(project, dict) else None
     repository_slug = (
         project.get("repository_slug") if isinstance(project, dict) else None
     )
     if (
-        not isinstance(project_id, str)
+        not isinstance(project_key, str)
+        or PROJECT_KEY_PATTERN.fullmatch(project_key) is None
+        or not isinstance(project_id, str)
         or not CHANGE_PATTERN.fullmatch(project_id)
         or not isinstance(repository_slug, str)
         or not CHANGE_PATTERN.fullmatch(repository_slug)
@@ -184,6 +239,47 @@ def _validate_project_manifest(
         diagnostics.append(
             _diag("DSET-E115", path, "package IDs must be non-empty and unique")
         )
+    if str(data.get("schema_version")) == "1.2":
+        structure = data.get("structure")
+        valid_structure = structure == {"layout": "layered-v1"}
+        diagnostics.extend(_validate_work_areas(root, path, data.get("work_areas")))
+        valid_packages = isinstance(packages, list) and bool(packages)
+        if valid_packages:
+            for item in packages:
+                layers = item.get("layers") if isinstance(item, dict) else None
+                valid_packages = (
+                    isinstance(item, dict)
+                    and set(item) == {"id", "status", "layers"}
+                    and isinstance(item.get("id"), str)
+                    and CHANGE_PATTERN.fullmatch(str(item.get("id"))) is not None
+                    and item.get("status") in {"active", "retired"}
+                    and isinstance(layers, list)
+                    and bool(layers)
+                    and len(layers) == len(set(layers))
+                    and set(layers).issubset({item.lower() for item in TRACE_LAYERS})
+                )
+                if not valid_packages:
+                    break
+        expected_change_contract = {
+            "change_id_format": "project-type-layer-sequence",
+            "change_slug_format": "kebab-case",
+            "workspace_default": "integration-branch",
+            "pull_request_required_before_archive": True,
+            "archive_requires_fresh_verification": True,
+            "keep_pull_request_draft_until_archive_ready": True,
+        }
+        if (
+            not valid_structure
+            or not valid_packages
+            or data.get("change_contract") != expected_change_contract
+        ):
+            diagnostics.append(
+                _diag(
+                    "DSET-E143",
+                    path,
+                    "schema 1.2 requires layered-v1 and package id/status/layers",
+                )
+            )
     support = data.get("supportability", {})
     workflows = root / ".github" / "workflows"
     if workflows.is_dir() and support.get("status") != "applicable":
@@ -199,13 +295,260 @@ def _validate_project_manifest(
         diagnostics.append(
             _diag("DSET-E116", path, "canonical command is not executable")
         )
+    work_items = data.get("work_items", {})
+    registry = work_items.get("registry") if isinstance(work_items, dict) else None
+    if data.get("schema_version") == 1.1 and registry != "dset/intake.yaml":
+        diagnostics.append(
+            _diag("DSET-E115", path, "schema 1.1 requires dset/intake.yaml")
+        )
+    elif isinstance(registry, str) and not (root / registry).is_file():
+        diagnostics.append(
+            _diag("DSET-E115", root / registry, "work-item registry is missing")
+        )
+    if str(data.get("schema_version")) == "1.2":
+        if registry != "dset/scopes/gov/intake.yaml":
+            diagnostics.append(
+                _diag("DSET-E143", path, "schema 1.2 requires the layered intake path")
+            )
+        return diagnostics
+    contracts = data.get("contracts")
+    if not isinstance(project_key, str):
+        return diagnostics
+    contract_pattern = _trace_id_pattern(project_key, ("CONTRACT",))
+    if not isinstance(contracts, list) or any(
+        not isinstance(identifier, str)
+        or contract_pattern.fullmatch(identifier) is None
+        for identifier in contracts
+    ):
+        diagnostics.append(
+            _diag("DSET-E115", path, "project contract IDs are inconsistent")
+        )
+    for group, trace_type in (("stories", "STORY"), ("outcomes", "OUTCOME")):
+        if group not in data:
+            continue
+        identifiers = data[group]
+        pattern = _trace_id_pattern(project_key, (trace_type,))
+        if not isinstance(identifiers, list) or any(
+            not isinstance(identifier, str) or pattern.fullmatch(identifier) is None
+            for identifier in identifiers
+        ):
+            diagnostics.append(
+                _diag("DSET-E115", path, f"project {group} IDs are inconsistent")
+            )
     return diagnostics
 
 
-def _validate_version(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]:
+def _validate_work_areas(
+    root: Path, manifest_path: Path, raw_work_areas: object
+) -> list[Diagnostic]:
+    valid = isinstance(raw_work_areas, list)
+    identifiers: set[str] = set()
+    raw_paths: set[str] = set()
+    resolved_paths: set[Path] = set()
+    for raw_item in raw_work_areas if isinstance(raw_work_areas, list) else []:
+        if not isinstance(raw_item, dict) or set(raw_item) != {"id", "path"}:
+            valid = False
+            continue
+        identifier = raw_item.get("id")
+        relative = raw_item.get("path")
+        if (
+            not isinstance(identifier, str)
+            or CHANGE_PATTERN.fullmatch(identifier) is None
+            or not isinstance(relative, str)
+        ):
+            valid = False
+            continue
+        resolved = _safe_repository_directory(root, relative)
+        if (
+            identifier in identifiers
+            or relative in raw_paths
+            or resolved is None
+            or resolved in resolved_paths
+        ):
+            valid = False
+        identifiers.add(identifier)
+        raw_paths.add(relative)
+        if resolved is not None:
+            resolved_paths.add(resolved)
+    if valid:
+        return []
+    return [
+        _diag(
+            "DSET-E143",
+            manifest_path,
+            "work areas require unique kebab-case IDs and safe unique existing "
+            "repository-relative directory paths",
+        )
+    ]
+
+
+def _safe_repository_directory(root: Path, relative: str) -> Path | None:
+    if (
+        not relative
+        or "\\" in relative
+        or re.match(r"^[A-Za-z]:", relative)
+        or any(part in {"", ".", ".."} for part in relative.split("/"))
+    ):
+        return None
+    candidate = root.joinpath(*relative.split("/"))
+    try:
+        resolved = candidate.resolve()
+        resolved.relative_to(root.resolve())
+    except (OSError, ValueError):
+        return None
+    return resolved if candidate.is_dir() else None
+
+
+def _validate_intake_registry(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]:
+    work_items = manifest.get("work_items", {})
+    relative = work_items.get("registry") if isinstance(work_items, dict) else None
+    if not isinstance(relative, str):
+        return []
+    path = root / relative
+    if not path.is_file():
+        return []
+    diagnostics: list[Diagnostic] = []
+    data = _safe_load(path, diagnostics)
+    if not data:
+        return diagnostics
+    project_key = _manifest_project_key(manifest)
+    if project_key is None:
+        return diagnostics
+    layered = str(manifest.get("schema_version")) == "1.2"
+    scopes: dict[str, str]
+    if layered:
+        scopes = {segment.lower(): segment for segment in TRACE_LAYERS}
+        if data.get("schema_version") != "1.1" or any(
+            key in data for key in ("scope_mode", "scopes")
+        ):
+            diagnostics.append(
+                _diag(
+                    "DSET-E142",
+                    path,
+                    "layered intake derives the fixed layers and cannot redefine them",
+                )
+            )
+    else:
+        if data.get("scope_mode") != "multi-scope":
+            diagnostics.append(
+                _diag("DSET-E142", path, "intake must use registered layer scopes")
+            )
+        raw_scopes = data.get("scopes")
+        if not isinstance(raw_scopes, list):
+            diagnostics.append(_diag("DSET-E142", path, "scopes must be a list"))
+            return diagnostics
+        scopes = {}
+        seen_segments: set[str] = set()
+        for raw_scope in raw_scopes:
+            if not isinstance(raw_scope, dict):
+                diagnostics.append(
+                    _diag("DSET-E142", path, "every scope must be a mapping")
+                )
+                continue
+            scope_id = raw_scope.get("id")
+            segment = raw_scope.get("id_segment")
+            if (
+                not isinstance(scope_id, str)
+                or not isinstance(segment, str)
+                or segment not in TRACE_LAYERS
+                or raw_scope.get("kind") != "layer"
+                or scope_id != segment.lower()
+                or scope_id in scopes
+                or segment in seen_segments
+            ):
+                diagnostics.append(
+                    _diag("DSET-E142", path, f"invalid layer scope: {scope_id}")
+                )
+                continue
+            scopes[scope_id] = segment
+            seen_segments.add(segment)
+        if seen_segments != set(TRACE_LAYERS):
+            diagnostics.append(
+                _diag(
+                    "DSET-E142",
+                    path,
+                    "intake must register META, GOV, TOOL, SKILL, and OPS exactly once",
+                )
+            )
+    raw_items = data.get("items")
+    if not isinstance(raw_items, list):
+        diagnostics.append(_diag("DSET-E142", path, "items must be a list"))
+        return diagnostics
+    seen_ids: set[str] = set()
+    item_pattern = _trace_id_pattern(
+        project_key, ("PROBLEM", "OPPORTUNITY", "QUESTION")
+    )
+    decision_pattern = _trace_id_pattern(project_key, ("DECISION",))
+    for raw_item in raw_items:
+        if not isinstance(raw_item, dict):
+            diagnostics.append(
+                _diag("DSET-E142", path, "every intake item must be a mapping")
+            )
+            continue
+        identifier = raw_item.get("id")
+        match = (
+            item_pattern.fullmatch(identifier) if isinstance(identifier, str) else None
+        )
+        scope_id = raw_item.get("scope")
+        scope_segment = scopes.get(scope_id) if isinstance(scope_id, str) else None
+        item_type = raw_item.get("type")
+        if (
+            match is None
+            or identifier in seen_ids
+            or not isinstance(item_type, str)
+            or match.group("type").lower() != item_type
+            or scope_segment is None
+            or (
+                match.group("layer") is not None
+                and match.group("layer") != scope_segment
+            )
+        ):
+            diagnostics.append(
+                _diag("DSET-E142", path, f"invalid intake identity: {identifier}")
+            )
+        elif isinstance(identifier, str):
+            seen_ids.add(identifier)
+        decision = raw_item.get("decision")
+        owner_change = raw_item.get("owner_change")
+        if layered and owner_change not in (None, "pending"):
+            owner_match = (
+                _trace_id_pattern(project_key, ("CHANGE",)).fullmatch(owner_change)
+                if isinstance(owner_change, str)
+                else None
+            )
+            if owner_match is None or owner_match.group("layer") is None:
+                diagnostics.append(
+                    _diag(
+                        "DSET-E142",
+                        path,
+                        f"invalid owner Change identity: {owner_change}",
+                    )
+                )
+        if decision in (None, "pending"):
+            continue
+        decision_match = (
+            decision_pattern.fullmatch(decision) if isinstance(decision, str) else None
+        )
+        if (
+            decision_match is None
+            or scope_segment is None
+            or (
+                decision_match.group("layer") is not None
+                and decision_match.group("layer") != scope_segment
+            )
+        ):
+            diagnostics.append(
+                _diag("DSET-E142", path, f"invalid Decision identity: {decision}")
+            )
+    return diagnostics
+
+
+def _validate_version(
+    root: Path, manifest: dict[str, Any], layout: RepositoryLayout
+) -> list[Diagnostic]:
     project = manifest.get("project", {})
     role = project.get("repository_role") if isinstance(project, dict) else None
-    path = root / "dset" / "version.yaml"
+    path = layout.version_path
     if role != "framework-source-and-adopter" and not path.exists():
         return []
     diagnostics: list[Diagnostic] = []
@@ -216,21 +559,27 @@ def _validate_version(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]:
     package = data.get("python_package", {})
     schemas = data.get("schemas", {})
     released = data.get("released_validator", {})
-    if not isinstance(framework, dict) or framework.get("milestone") != "0.2":
+    product_version = framework.get("version") if isinstance(framework, dict) else None
+    if (
+        not isinstance(framework, dict)
+        or not isinstance(product_version, str)
+        or _python_release_version(product_version) != __version__
+        or framework.get("versioning") != "coordinated-product-package"
+    ):
         diagnostics.append(
-            _diag("DSET-E124", path, "framework milestone must be explicit")
+            _diag("DSET-E124", path, "framework version contract is inconsistent")
         )
     if (
         not isinstance(package, dict)
         or package.get("version") != __version__
-        or package.get("versioning") != "independent"
+        or package.get("versioning") != "coordinated-product-package"
     ):
         diagnostics.append(
             _diag("DSET-E124", path, "Python package version contract is inconsistent")
         )
     if (
         not isinstance(schemas, dict)
-        or schemas.get("version") != "1.0"
+        or schemas.get("version") != "1.2"
         or schemas.get("versioning") != "independent"
     ):
         diagnostics.append(
@@ -241,15 +590,40 @@ def _validate_version(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]:
         diagnostics.append(
             _diag("DSET-E124", path, "released validator commit must be a full SHA")
         )
+    if data.get("schema_version") != "1.2" or released.get("assurance") not in {
+        "published-release",
+        "bootstrap-transition",
+    }:
+        diagnostics.append(
+            _diag("DSET-E124", path, "validator assurance contract is inconsistent")
+        )
     return diagnostics
+
+
+def _python_release_version(product_version: str) -> str:
+    return product_version.replace("-rc.", "rc")
 
 
 def _validate_packages(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
+    layout = discover_layout(root)
+    if layout.layered:
+        return _validate_layered_packages(root, layout, manifest)
+    project_key = _manifest_project_key(manifest)
+    if project_key is None:
+        return diagnostics
+    group_types = {
+        "requirements": "REQUIREMENT",
+        "tests": "TEST",
+        "evals": "EVAL",
+        "contracts": "CONTRACT",
+        "stories": "STORY",
+        "outcomes": "OUTCOME",
+    }
     for package in manifest.get("packages", []):
         if not isinstance(package, dict):
             continue
-        base = root / "dset" / str(package.get("path", ""))
+        base = layout.resolve_dset_path(str(package.get("path", "")))
         package_manifest = base / "package.yaml"
         if not package_manifest.is_file():
             diagnostics.append(
@@ -264,12 +638,242 @@ def _validate_packages(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]
                 _diag("DSET-E117", package_manifest, "package ID mismatch")
             )
         artifacts = data.get("artifacts", {})
+        if not isinstance(artifacts, dict):
+            diagnostics.append(
+                _diag("DSET-E117", package_manifest, "artifacts must be a mapping")
+            )
+            continue
         for relative in artifacts.values():
             path = base / str(relative)
             if not path.is_file():
                 diagnostics.append(
                     _diag("DSET-E117", path, "package artifact is missing")
                 )
+        owner_paths = {
+            "requirements": [base / str(artifacts.get("spec", "spec.md"))],
+            "tests": [base / str(artifacts.get("test_plan", "test-plan.md"))],
+            "evals": [base / str(artifacts.get("eval_plan", "eval-plan.md"))],
+            "contracts": [base / str(artifacts.get("contracts", "contracts.md"))],
+            "stories": [base / str(artifacts.get("stories", "stories.md"))],
+            "outcomes": [base / str(artifacts.get("outcomes", "outcomes.md"))],
+        }
+        for group, trace_type in group_types.items():
+            if group in {"stories", "outcomes"} and group not in data:
+                continue
+            identifiers = data.get(group)
+            if not isinstance(identifiers, list):
+                diagnostics.append(
+                    _diag("DSET-E117", package_manifest, f"{group} must be a list")
+                )
+                continue
+            pattern = _trace_id_pattern(project_key, (trace_type,))
+            content = "\n".join(
+                path.read_text(encoding="utf-8")
+                for path in owner_paths[group]
+                if path.is_file()
+            )
+            for identifier in identifiers:
+                if (
+                    not isinstance(identifier, str)
+                    or pattern.fullmatch(identifier) is None
+                ):
+                    diagnostics.append(
+                        _diag(
+                            "DSET-E117",
+                            package_manifest,
+                            f"invalid {group} ID: {identifier}",
+                        )
+                    )
+                elif identifier not in content:
+                    diagnostics.append(
+                        _diag(
+                            "DSET-E117",
+                            package_manifest,
+                            f"{identifier} is not present in its owning artifact",
+                        )
+                    )
+                elif group in {"stories", "outcomes"}:
+                    missing = _missing_semantic_fields(
+                        owner_paths[group], identifier, trace_type
+                    )
+                    if missing:
+                        diagnostics.append(
+                            _diag(
+                                "DSET-E117",
+                                package_manifest,
+                                f"{identifier} is missing fields: {', '.join(missing)}",
+                            )
+                        )
+    return diagnostics
+
+
+def _validate_layered_packages(
+    root: Path, layout: RepositoryLayout, manifest: dict[str, Any]
+) -> list[Diagnostic]:
+    diagnostics: list[Diagnostic] = []
+    project_key = _manifest_project_key(manifest)
+    if project_key is None:
+        return diagnostics
+    declared: dict[str, set[str]] = {}
+    for item in manifest.get("packages", []):
+        if not isinstance(item, dict):
+            continue
+        package_id = item.get("id")
+        layers = item.get("layers")
+        if isinstance(package_id, str) and isinstance(layers, list):
+            declared[package_id] = {layer for layer in layers if isinstance(layer, str)}
+    expected = {
+        (package_id, layer)
+        for package_id, layers in declared.items()
+        for layer in layers
+    }
+    found: set[tuple[str, str]] = set()
+    owners: dict[str, Path] = {}
+    group_types = {
+        "requirements": "REQUIREMENT",
+        "tests": "TEST",
+        "evals": "EVAL",
+        "contracts": "CONTRACT",
+        "stories": "STORY",
+        "outcomes": "OUTCOME",
+    }
+    artifact_names = {
+        "hub": "README.md",
+        "domain": "domain.md",
+        "spec": "spec.md",
+        "contracts": "contracts.md",
+        "stories": "stories.md",
+        "outcomes": "outcomes.md",
+        "test_plan": "test-plan.md",
+        "eval_plan": "eval-plan.md",
+    }
+    owner_artifact = {
+        "requirements": "spec",
+        "tests": "test_plan",
+        "evals": "eval_plan",
+        "contracts": "contracts",
+        "stories": "stories",
+        "outcomes": "outcomes",
+    }
+    for path in layout.package_fragments():
+        data = _safe_load(path, diagnostics)
+        if not data:
+            continue
+        try:
+            relative = path.relative_to(layout.scopes_root)
+        except ValueError:
+            diagnostics.append(
+                _diag("DSET-E145", path, "package fragment is outside layer roots")
+            )
+            continue
+        physical_layer = relative.parts[0]
+        physical_package = path.parent.name
+        package_id = data.get("package_id")
+        layer = data.get("layer")
+        identity = (str(package_id), str(layer))
+        if (
+            data.get("schema_version") != "1.2"
+            or package_id != physical_package
+            or layer != physical_layer
+            or identity not in expected
+        ):
+            diagnostics.append(
+                _diag(
+                    "DSET-E145",
+                    path,
+                    "package fragment identity must match its derived path",
+                )
+            )
+        else:
+            found.add(identity)
+        artifacts = data.get("artifacts")
+        if not isinstance(artifacts, dict) or artifacts != artifact_names:
+            diagnostics.append(
+                _diag("DSET-E144", path, "package fragment artifacts are malformed")
+            )
+            artifacts = {}
+        for name, filename in artifact_names.items():
+            artifact = path.parent / filename
+            if artifacts.get(name) == filename and not artifact.is_file():
+                diagnostics.append(
+                    _diag("DSET-E144", artifact, "package fragment artifact is missing")
+                )
+        for group, trace_type in group_types.items():
+            identifiers = data.get(group)
+            if not isinstance(identifiers, list) or len(identifiers) != len(
+                set(
+                    identifier
+                    for identifier in identifiers
+                    if isinstance(identifier, str)
+                )
+            ):
+                diagnostics.append(
+                    _diag("DSET-E144", path, f"{group} must be a unique list")
+                )
+                continue
+            pattern = _trace_id_pattern(project_key, (trace_type,))
+            owner = path.parent / artifact_names[owner_artifact[group]]
+            content = owner.read_text(encoding="utf-8") if owner.is_file() else ""
+            for identifier in identifiers:
+                match = (
+                    pattern.fullmatch(identifier)
+                    if isinstance(identifier, str)
+                    else None
+                )
+                if match is None:
+                    diagnostics.append(
+                        _diag("DSET-E144", path, f"invalid {group} ID: {identifier}")
+                    )
+                    continue
+                identifier_layer = match.group("layer")
+                owns_id = (
+                    physical_layer == "meta" and identifier_layer in {None, "META"}
+                ) or identifier_layer == physical_layer.upper()
+                if not owns_id:
+                    diagnostics.append(
+                        _diag(
+                            "DSET-E146",
+                            path,
+                            f"{identifier} is not owned by layer {physical_layer}",
+                        )
+                    )
+                previous = owners.get(identifier)
+                if previous is not None and previous != path:
+                    diagnostics.append(
+                        _diag(
+                            "DSET-E147",
+                            path,
+                            f"{identifier} is also owned by "
+                            f"{previous.relative_to(root)}",
+                        )
+                    )
+                else:
+                    owners[identifier] = path
+                if identifier not in content:
+                    diagnostics.append(
+                        _diag(
+                            "DSET-E144",
+                            path,
+                            f"{identifier} is not present in its owning artifact",
+                        )
+                    )
+                elif group in {"stories", "outcomes"}:
+                    missing = _missing_semantic_fields([owner], identifier, trace_type)
+                    if missing:
+                        diagnostics.append(
+                            _diag(
+                                "DSET-E144",
+                                path,
+                                f"{identifier} is missing fields: {', '.join(missing)}",
+                            )
+                        )
+    for package_id, layer in sorted(expected - found):
+        missing_path = (
+            layout.layer_root(layer) / "specs/packages" / package_id / "package.yaml"
+        )
+        diagnostics.append(
+            _diag("DSET-E144", missing_path, "declared package fragment is missing")
+        )
     return diagnostics
 
 
@@ -290,7 +894,7 @@ def _validate_artifacts(
                 f"unsupported artifact profile: {profile}",
             )
         ]
-    registry_path = root / "dset" / "artifacts.yaml"
+    registry_path = discover_layout(root).artifact_registry_path
     if not registry_path.is_file():
         return [
             _diag(
@@ -562,32 +1166,95 @@ def _local_link_targets(path: Path) -> set[Path]:
     return targets
 
 
-def _validate_change_ids(change_dir: Path, data: dict[str, Any]) -> list[Diagnostic]:
+def _validate_change_ids(
+    root: Path, change_dir: Path, data: dict[str, Any]
+) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
-    groups = {
+    manifest_path = change_dir / "change.yaml"
+    legacy = _is_legacy_change(data)
+    manifest = _safe_load(discover_layout(root).manifest_path, diagnostics) or {}
+    project_key = _manifest_project_key(manifest)
+    if project_key is None:
+        diagnostics.append(
+            _diag("DSET-E106", manifest_path, "project.key is unavailable")
+        )
+        return diagnostics
+    groups: dict[str, list[Path]] = {
         "requirements": list((change_dir / "specs").glob("*.md")),
         "tests": [change_dir / "test-plan.md"],
         "evals": [change_dir / "eval-plan.md"],
-        "adrs": list(change_dir.glob("*adr*.md")),
     }
+    group_types = {
+        "requirements": "REQUIREMENT",
+        "tests": "TEST",
+        "evals": "EVAL",
+    }
+    if legacy:
+        if "adrs" not in data or "decisions" in data:
+            diagnostics.append(
+                _diag(
+                    "DSET-E106",
+                    manifest_path,
+                    "schema 1.0 requires adrs and forbids decisions",
+                )
+            )
+        groups["adrs"] = list(change_dir.glob("*adr*.md"))
+    else:
+        if "decisions" not in data or "adrs" in data:
+            diagnostics.append(
+                _diag(
+                    "DSET-E106",
+                    manifest_path,
+                    "schema 1.1 requires decisions and forbids adrs",
+                )
+            )
+        groups["decisions"] = [
+            *change_dir.glob("*decision*.md"),
+            *change_dir.glob("*adr*.md"),
+        ]
+        group_types["decisions"] = "DECISION"
+        if "contracts" not in data:
+            diagnostics.append(
+                _diag("DSET-E106", manifest_path, "schema 1.1 requires contracts")
+            )
+        groups["contracts"] = [
+            *list((change_dir / "specs").glob("*.md")),
+            change_dir / "design.md",
+            change_dir / "solution-landscape.md",
+        ]
+        group_types["contracts"] = "CONTRACT"
+        for group, trace_type, artifact in (
+            ("stories", "STORY", "stories.md"),
+            ("outcomes", "OUTCOME", "outcomes.md"),
+        ):
+            if group not in data:
+                continue
+            groups[group] = [
+                change_dir / artifact,
+                *list((change_dir / "specs").glob("*.md")),
+            ]
+            group_types[group] = trace_type
     for group, paths in groups.items():
         ids = data.get(group, [])
         if not isinstance(ids, list):
             diagnostics.append(
-                _diag(
-                    "DSET-E106", change_dir / "change.yaml", f"{group} must be a list"
-                )
+                _diag("DSET-E106", manifest_path, f"{group} must be a list")
             )
             continue
+        pattern = (
+            ID_PATTERN
+            if legacy
+            else _trace_id_pattern(project_key, (group_types[group],))
+        )
         content = "\n".join(
             path.read_text(encoding="utf-8") for path in paths if path.is_file()
         )
         for identifier in ids:
-            if not isinstance(identifier, str) or not ID_PATTERN.fullmatch(identifier):
+            if not isinstance(identifier, str) or pattern.fullmatch(identifier) is None:
                 diagnostics.append(
                     _diag(
                         "DSET-E106",
-                        change_dir / "change.yaml",
+                        manifest_path,
                         f"invalid ID: {identifier}",
                     )
                 )
@@ -595,10 +1262,22 @@ def _validate_change_ids(change_dir: Path, data: dict[str, Any]) -> list[Diagnos
                 diagnostics.append(
                     _diag(
                         "DSET-E106",
-                        change_dir / "change.yaml",
+                        manifest_path,
                         f"{identifier} is not present in its owning artifact",
                     )
                 )
+            elif group in {"stories", "outcomes"}:
+                missing = _missing_semantic_fields(
+                    paths, identifier, group_types[group]
+                )
+                if missing:
+                    diagnostics.append(
+                        _diag(
+                            "DSET-E106",
+                            manifest_path,
+                            f"{identifier} is missing fields: {', '.join(missing)}",
+                        )
+                    )
         if group == "evals" and not ids:
             eval_plan = change_dir / "eval-plan.md"
             if (
@@ -617,16 +1296,427 @@ def _validate_change_ids(change_dir: Path, data: dict[str, Any]) -> list[Diagnos
         diagnostics.append(
             _diag(
                 "DSET-E106",
-                change_dir / "change.yaml",
+                manifest_path,
                 "requirements and tests cannot be empty",
             )
         )
+    intake_ids = data.get("intake", [])
+    if not isinstance(intake_ids, list):
+        diagnostics.append(_diag("DSET-E106", manifest_path, "intake must be a list"))
+    else:
+        registry_path = discover_layout(root).intake_path
+        if not intake_ids and not registry_path.is_file():
+            return diagnostics
+        registry = _safe_load(registry_path, diagnostics) or {}
+        registered = {
+            item.get("id")
+            for item in registry.get("items", [])
+            if isinstance(item, dict)
+        }
+        for identifier in intake_ids:
+            if identifier not in registered:
+                diagnostics.append(
+                    _diag(
+                        "DSET-E106",
+                        manifest_path,
+                        f"unregistered intake ID: {identifier}",
+                    )
+                )
     return diagnostics
 
 
-def _validate_schemas(schema_root: Path) -> list[Diagnostic]:
+def _validate_layered_change(
+    layout: RepositoryLayout, change_dir: Path, data: dict[str, Any]
+) -> list[Diagnostic]:
+    path = change_dir / "change.yaml"
     diagnostics: list[Diagnostic] = []
-    for path in sorted(schema_root.glob("*.json")):
+    project = _safe_load(layout.manifest_path, diagnostics) or {}
+    diagnostics.extend(_validate_change_target(path, data.get("target"), project))
+    primary = data.get("primary_layer")
+    affected = data.get("affected_layers")
+    try:
+        physical = layout.change_layer(change_dir)
+    except ValueError:
+        physical = None
+    layer_names = {layer.lower() for layer in TRACE_LAYERS}
+    if (
+        data.get("schema_version") != "1.2"
+        or not isinstance(primary, str)
+        or primary not in layer_names
+        or not isinstance(affected, list)
+        or not affected
+        or any(
+            not isinstance(layer, str) or layer not in layer_names for layer in affected
+        )
+        or len(affected) != len(set(affected))
+        or primary not in affected
+        or physical != primary
+    ):
+        diagnostics.append(
+            _diag(
+                "DSET-E148",
+                path,
+                "change ownership must match primary and affected layers",
+            )
+        )
+        return diagnostics
+    for group in ("contracts", "stories", "outcomes"):
+        if not isinstance(data.get(group), list):
+            diagnostics.append(
+                _diag("DSET-E148", path, f"schema 1.2 requires {group} as a list")
+            )
+    project_key = _manifest_project_key(project)
+    if project_key is None:
+        return diagnostics
+    change_id = data.get("id")
+    change_match = (
+        _trace_id_pattern(project_key, ("CHANGE",)).fullmatch(change_id)
+        if isinstance(change_id, str)
+        else None
+    )
+    if (
+        change_match is None
+        or change_match.group("layer") is None
+        or change_match.group("layer").lower() != primary
+    ):
+        diagnostics.append(
+            _diag(
+                "DSET-E151",
+                path,
+                "Change ID must be project-CHANGE-layer-sequence and match owner",
+            )
+        )
+    diagnostics.extend(_validate_workspace(path, data, archived=False))
+    diagnostics.extend(_validate_change_dependencies(path, data, project_key))
+    release = data.get("release")
+    if isinstance(release, dict):
+        policy = release.get("policy")
+        owner = release.get("owner_change")
+        if policy is not None and policy != "dset/scopes/ops/governance/release.md":
+            diagnostics.append(
+                _diag("DSET-E153", path, "schema 1.2 release policy path is invalid")
+            )
+        if owner is not None:
+            owner_match = (
+                _trace_id_pattern(project_key, ("CHANGE",)).fullmatch(owner)
+                if isinstance(owner, str)
+                else None
+            )
+            if owner_match is None or owner_match.group("layer") is None:
+                diagnostics.append(
+                    _diag("DSET-E153", path, "release owner_change must be stable")
+                )
+    pattern = _trace_id_pattern(project_key, TRACE_TYPES)
+    for group in (
+        "requirements",
+        "tests",
+        "evals",
+        "intake",
+        "decisions",
+        "contracts",
+        "stories",
+        "outcomes",
+    ):
+        identifiers = data.get(group, [])
+        if not isinstance(identifiers, list):
+            continue
+        for identifier in identifiers:
+            match = (
+                pattern.fullmatch(identifier) if isinstance(identifier, str) else None
+            )
+            if match is None:
+                continue
+            id_layer = match.group("layer")
+            owner = id_layer.lower() if id_layer is not None else "meta"
+            if owner not in affected:
+                diagnostics.append(
+                    _diag(
+                        "DSET-E148",
+                        path,
+                        f"{identifier} is outside affected_layers",
+                    )
+                )
+    return diagnostics
+
+
+def _validate_change_target(
+    path: Path, raw_target: object, project: dict[str, Any]
+) -> list[Diagnostic]:
+    raw_declared = project.get("work_areas", [])
+    declared = {
+        item.get("id")
+        for item in (raw_declared if isinstance(raw_declared, list) else [])
+        if isinstance(item, dict) and isinstance(item.get("id"), str)
+    }
+    valid = isinstance(raw_target, dict) and set(raw_target) == {
+        "repository",
+        "work_areas",
+    }
+    repository = raw_target.get("repository") if isinstance(raw_target, dict) else None
+    work_areas = raw_target.get("work_areas") if isinstance(raw_target, dict) else None
+    valid = (
+        valid
+        and isinstance(repository, bool)
+        and isinstance(work_areas, list)
+        and len(work_areas)
+        == len({item for item in work_areas if isinstance(item, str)})
+        and all(
+            isinstance(item, str)
+            and CHANGE_PATTERN.fullmatch(item) is not None
+            and item in declared
+            for item in work_areas
+        )
+        and ((repository and not work_areas) or (not repository and bool(work_areas)))
+    )
+    if valid:
+        return []
+    return [
+        _diag(
+            "DSET-E148",
+            path,
+            "change target must select the repository or one or more declared "
+            "work-area IDs",
+        )
+    ]
+
+
+def _validate_change_uniqueness(layout: RepositoryLayout) -> list[Diagnostic]:
+    diagnostics: list[Diagnostic] = []
+    if not layout.layered:
+        return diagnostics
+    owners: dict[str, Path] = {}
+    branches: dict[str, Path] = {}
+    pull_requests: dict[tuple[str, int], Path] = {}
+    roots = (*layout.active_change_roots, *layout.archive_change_roots)
+    for root in roots:
+        if not root.is_dir():
+            continue
+        archived_root = root in layout.archive_change_roots
+        for change in sorted(root.iterdir()):
+            manifest = change / "change.yaml"
+            if not change.is_dir() or not manifest.is_file():
+                continue
+            try:
+                data = load(manifest)
+            except (OSError, ValueError, YamlSubsetError):
+                continue
+            identifier = data.get("id") if isinstance(data, dict) else None
+            if not isinstance(identifier, str):
+                continue
+            previous = owners.get(identifier)
+            if previous is not None:
+                diagnostics.append(
+                    _diag(
+                        "DSET-E149",
+                        manifest,
+                        f"change ID is also owned by {previous}",
+                    )
+                )
+            else:
+                owners[identifier] = manifest
+            workspace = data.get("workspace") if isinstance(data, dict) else None
+            isolation = (
+                workspace.get("isolation") if isinstance(workspace, dict) else None
+            )
+            branch = workspace.get("branch") if isinstance(workspace, dict) else None
+            if (
+                not archived_root
+                and isolation == "branch-worktree"
+                and isinstance(branch, str)
+                and branch != "pending"
+            ):
+                previous = branches.get(branch)
+                if previous is not None:
+                    diagnostics.append(
+                        _diag(
+                            "DSET-E154",
+                            manifest,
+                            f"workspace branch is also owned by {previous}",
+                        )
+                    )
+                else:
+                    branches[branch] = manifest
+            pr = data.get("pull_request") if isinstance(data, dict) else None
+            repository = pr.get("repository") if isinstance(pr, dict) else None
+            number = pr.get("number") if isinstance(pr, dict) else None
+            if (
+                isolation == "branch-worktree"
+                and isinstance(repository, str)
+                and isinstance(number, int)
+            ):
+                pr_key = (repository, number)
+                previous = pull_requests.get(pr_key)
+                if previous is not None:
+                    diagnostics.append(
+                        _diag(
+                            "DSET-E154",
+                            manifest,
+                            f"pull request is also owned by {previous}",
+                        )
+                    )
+                else:
+                    pull_requests[pr_key] = manifest
+    return diagnostics
+
+
+def _validate_workspace(
+    path: Path, data: dict[str, Any], *, archived: bool
+) -> list[Diagnostic]:
+    workspace = data.get("workspace")
+    if not isinstance(workspace, dict):
+        return [_diag("DSET-E152", path, "workspace metadata is required")]
+    required = {"isolation", "branch", "base_ref", "base_commit", "head_commit"}
+    valid = (
+        set(workspace) == required
+        and workspace.get("isolation") in {"integration-branch", "branch-worktree"}
+        and isinstance(workspace.get("branch"), str)
+        and bool(str(workspace.get("branch")).strip())
+        and isinstance(workspace.get("base_ref"), str)
+        and bool(str(workspace.get("base_ref")).strip())
+        and all(
+            _is_exact_commit(workspace.get(field))
+            or (not archived and workspace.get(field) == "pending")
+            for field in ("base_commit", "head_commit")
+        )
+    )
+    if not valid:
+        return [_diag("DSET-E152", path, "workspace metadata is inconsistent")]
+    release = data.get("release")
+    candidate = release.get("candidate_commit") if isinstance(release, dict) else None
+    head = workspace.get("head_commit")
+    if (
+        data.get("status") in {"verified", "archive-ready", "archived"}
+        and _is_exact_commit(candidate)
+        and candidate != head
+    ):
+        return [
+            _diag(
+                "DSET-E152",
+                path,
+                "workspace head_commit must match the release candidate commit",
+            )
+        ]
+    return []
+
+
+def _validate_change_dependencies(
+    path: Path, data: dict[str, Any], project_key: str
+) -> list[Diagnostic]:
+    dependencies = data.get("dependencies")
+    if not isinstance(dependencies, list):
+        return [_diag("DSET-E153", path, "dependencies must be a list")]
+    diagnostics: list[Diagnostic] = []
+    seen: set[str] = set()
+    change_pattern = _trace_id_pattern(project_key, ("CHANGE",))
+    trace_pattern = _trace_id_pattern(project_key, TRACE_TYPES)
+    own_id = data.get("id")
+    required = {
+        "change_id",
+        "pull_request",
+        "required_commit",
+        "consumes",
+        "claim",
+        "use",
+        "evidence",
+        "checked_at",
+        "reopen_when",
+        "status",
+    }
+    statuses = {"planned", "available", "integrated", "blocked", "stale"}
+    for dependency in dependencies:
+        if not isinstance(dependency, dict) or set(dependency) != required:
+            diagnostics.append(
+                _diag("DSET-E153", path, "dependency record shape is inconsistent")
+            )
+            continue
+        dependency_id = dependency.get("change_id")
+        identifier_match = (
+            change_pattern.fullmatch(dependency_id)
+            if isinstance(dependency_id, str)
+            else None
+        )
+        consumes = dependency.get("consumes")
+        status = dependency.get("status")
+        pr = dependency.get("pull_request")
+        exact_status = status in {"available", "integrated"}
+        valid_pr = _valid_pull_request(pr, exact=exact_status)
+        valid = (
+            identifier_match is not None
+            and identifier_match.group("layer") is not None
+            and dependency_id != own_id
+            and dependency_id not in seen
+            and status in statuses
+            and valid_pr
+            and (
+                _is_exact_commit(dependency.get("required_commit"))
+                or (not exact_status and dependency.get("required_commit") == "pending")
+            )
+            and isinstance(consumes, list)
+            and bool(consumes)
+            and len(consumes) == len(set(consumes))
+            and all(
+                isinstance(identifier, str)
+                and trace_pattern.fullmatch(identifier) is not None
+                for identifier in consumes
+            )
+            and all(
+                isinstance(dependency.get(field), str)
+                and bool(str(dependency.get(field)).strip())
+                for field in ("claim", "use", "evidence", "reopen_when")
+            )
+            and _is_iso_date(dependency.get("checked_at"))
+        )
+        if not valid:
+            diagnostics.append(
+                _diag("DSET-E153", path, f"invalid dependency: {dependency_id}")
+            )
+        elif isinstance(dependency_id, str):
+            seen.add(dependency_id)
+    return diagnostics
+
+
+def _valid_pull_request(raw: Any, *, exact: bool) -> bool:
+    if not isinstance(raw, dict) or set(raw) != {"repository", "number", "url"}:
+        return False
+    repository = raw.get("repository")
+    number = raw.get("number")
+    url = raw.get("url")
+    if (
+        not isinstance(repository, str)
+        or re.fullmatch(r"[^/]+/[^/]+", repository) is None
+    ):
+        return False
+    if exact:
+        return (
+            isinstance(number, int)
+            and number >= 1
+            and isinstance(url, str)
+            and url.startswith("https://")
+            and url != "pending"
+        )
+    return (
+        ((isinstance(number, int) and number >= 1) or number == "pending")
+        and isinstance(url, str)
+        and bool(url)
+    )
+
+
+def _is_exact_commit(raw: Any) -> bool:
+    return isinstance(raw, str) and re.fullmatch(r"[0-9a-f]{40}", raw) is not None
+
+
+def _is_iso_date(raw: Any) -> bool:
+    if not isinstance(raw, str):
+        return False
+    try:
+        return date.fromisoformat(raw).isoformat() == raw
+    except ValueError:
+        return False
+
+
+def _validate_schemas(schema_paths: tuple[Path, ...]) -> list[Diagnostic]:
+    diagnostics: list[Diagnostic] = []
+    for path in schema_paths:
         try:
             json.loads(path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as error:
@@ -635,7 +1725,7 @@ def _validate_schemas(schema_root: Path) -> list[Diagnostic]:
 
 
 def _validate_provenance(root: Path) -> list[Diagnostic]:
-    path = root / "dset" / "provenance.yaml"
+    path = discover_layout(root).provenance_path
     diagnostics: list[Diagnostic] = []
     data = _safe_load(path, diagnostics)
     if not data:
@@ -703,6 +1793,99 @@ def _validate_markdown(root: Path) -> list[Diagnostic]:
 def _without_code(text: str) -> str:
     without_fences = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
     return re.sub(r"`[^`]*`", "", without_fences)
+
+
+def _manifest_project_key(manifest: dict[str, Any]) -> str | None:
+    project = manifest.get("project")
+    key = project.get("key") if isinstance(project, dict) else None
+    if not isinstance(key, str) or PROJECT_KEY_PATTERN.fullmatch(key) is None:
+        return None
+    return key
+
+
+def _trace_id_pattern(
+    project_key: str, trace_types: tuple[str, ...]
+) -> re.Pattern[str]:
+    invalid = set(trace_types) - set(TRACE_TYPES)
+    if invalid:
+        raise ValueError(f"unknown trace ID types: {sorted(invalid)}")
+    type_pattern = "|".join(re.escape(item) for item in trace_types)
+    layer_pattern = "|".join(TRACE_LAYERS)
+    return re.compile(
+        rf"^{re.escape(project_key)}-(?P<type>{type_pattern})"
+        rf"(?:-(?P<layer>{layer_pattern}))?-(?P<number>[0-9]{{3,}})$"
+    )
+
+
+def _missing_semantic_fields(
+    paths: list[Path], identifier: str, trace_type: str
+) -> list[str]:
+    section: str | None = None
+    heading_pattern = re.compile(
+        rf"^(?P<marks>#{{1,6}})[^\n]*\b{re.escape(identifier)}\b[^\n]*$",
+        flags=re.MULTILINE,
+    )
+    for path in paths:
+        if not path.is_file():
+            continue
+        text = path.read_text(encoding="utf-8")
+        match = heading_pattern.search(text)
+        if match is None:
+            continue
+        level = len(match.group("marks"))
+        next_heading = re.compile(rf"^#{{1,{level}}}\s+", flags=re.MULTILINE).search(
+            text, match.end()
+        )
+        section = text[match.start() : next_heading.start() if next_heading else None]
+        break
+    if section is None:
+        return ["record heading"]
+    normalized = re.sub(r"[*_`]", "", section).lower()
+    if trace_type == "STORY":
+        fields = {
+            "actor or stakeholder": ("actor or stakeholder", "actor/stakeholder"),
+            "desired capability or outcome": ("desired capability or outcome",),
+            "value or purpose": ("value or purpose",),
+            "linked Requirements": ("linked requirements",),
+            "linked Scenarios": ("linked scenarios",),
+        }
+    elif trace_type == "OUTCOME":
+        fields = {
+            "baseline": ("baseline",),
+            "target": ("target",),
+            "observation method/source": (
+                "observation method/source",
+                "source and method",
+                "measurement source and method",
+            ),
+            "evaluation window": (
+                "evaluation window",
+                "measurement window",
+                "| window |",
+            ),
+            "Problem/Opportunity links": (
+                "linked problems/opportunities",
+                "problem or opportunity",
+                "| problem |",
+                "| opportunity |",
+            ),
+            "User Story links/disposition": (
+                "linked user stories",
+                "| user stories |",
+            ),
+            "Eval links": ("linked evals", "| evals |"),
+        }
+    else:
+        return []
+    return [
+        label
+        for label, alternatives in fields.items()
+        if not any(alternative in normalized for alternative in alternatives)
+    ]
+
+
+def _is_legacy_change(data: dict[str, Any]) -> bool:
+    return str(data.get("schema_version")) in {"1.0", "1.0-draft"}
 
 
 def _safe_load(path: Path, diagnostics: list[Diagnostic]) -> dict[str, Any] | None:
