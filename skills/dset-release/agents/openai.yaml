@@ -1,0 +1,4 @@
+interface:
+  display_name: "DSET Release"
+  short_description: "Prepare and verify governed DSET releases"
+  default_prompt: "Use $dset-release to prepare or verify this release without publishing unless separately authorized."
