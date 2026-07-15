@@ -6,7 +6,9 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import unquote
 
+from . import __version__
 from .diagnostics import Diagnostic
+from .governance import validate_governance
 from .profiles import VALID_PROFILES, required_artifacts
 from .yaml_subset import YamlSubsetError, load
 
@@ -36,6 +38,12 @@ def validate_repository(root: Path) -> list[Diagnostic]:
     if manifest:
         diagnostics.extend(_validate_project_manifest(root, manifest_path, manifest))
         diagnostics.extend(_validate_artifacts(root, manifest_path, manifest))
+        profiles = manifest.get("profiles", {})
+        if isinstance(profiles, dict) and profiles.get("repository_governance"):
+            diagnostics.extend(
+                validate_governance(root, str(profiles["repository_governance"]))
+            )
+        diagnostics.extend(_validate_version(root, manifest))
     diagnostics.extend(_validate_schemas(dset_root / "schemas"))
     diagnostics.extend(_validate_provenance(root))
     diagnostics.extend(_validate_packages(root, manifest or {}))
@@ -157,7 +165,16 @@ def _validate_project_manifest(
 ) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     project = data.get("project", {})
-    if project.get("repository_slug") != "dset-specs-loops-framework":
+    project_id = project.get("id") if isinstance(project, dict) else None
+    repository_slug = (
+        project.get("repository_slug") if isinstance(project, dict) else None
+    )
+    if (
+        not isinstance(project_id, str)
+        or not CHANGE_PATTERN.fullmatch(project_id)
+        or not isinstance(repository_slug, str)
+        or not CHANGE_PATTERN.fullmatch(repository_slug)
+    ):
         diagnostics.append(
             _diag("DSET-E115", path, "repository identity is inconsistent")
         )
@@ -181,6 +198,48 @@ def _validate_project_manifest(
     if "pending" in command.lower() or not command:
         diagnostics.append(
             _diag("DSET-E116", path, "canonical command is not executable")
+        )
+    return diagnostics
+
+
+def _validate_version(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]:
+    project = manifest.get("project", {})
+    role = project.get("repository_role") if isinstance(project, dict) else None
+    path = root / "dset" / "version.yaml"
+    if role != "framework-source-and-adopter" and not path.exists():
+        return []
+    diagnostics: list[Diagnostic] = []
+    data = _safe_load(path, diagnostics)
+    if not data:
+        return diagnostics or [_diag("DSET-E124", path, "version contract is missing")]
+    framework = data.get("framework", {})
+    package = data.get("python_package", {})
+    schemas = data.get("schemas", {})
+    released = data.get("released_validator", {})
+    if not isinstance(framework, dict) or framework.get("milestone") != "0.2":
+        diagnostics.append(
+            _diag("DSET-E124", path, "framework milestone must be explicit")
+        )
+    if (
+        not isinstance(package, dict)
+        or package.get("version") != __version__
+        or package.get("versioning") != "independent"
+    ):
+        diagnostics.append(
+            _diag("DSET-E124", path, "Python package version contract is inconsistent")
+        )
+    if (
+        not isinstance(schemas, dict)
+        or schemas.get("version") != "1.0"
+        or schemas.get("versioning") != "independent"
+    ):
+        diagnostics.append(
+            _diag("DSET-E124", path, "schema version contract is inconsistent")
+        )
+    commit = released.get("commit") if isinstance(released, dict) else None
+    if not isinstance(commit, str) or not re.fullmatch(r"[0-9a-f]{40}", commit):
+        diagnostics.append(
+            _diag("DSET-E124", path, "released validator commit must be a full SHA")
         )
     return diagnostics
 

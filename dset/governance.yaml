@@ -1,0 +1,181 @@
+schema_version: 1.0
+profile:
+  id: core-v1
+  version: "0.2"
+  customization: unmodified
+rules:
+  -
+    id: DSET-RULE-ARCHITECTURE
+    path: dset/governance/architecture.md
+    owner: project
+    applicability: applicable
+    reason: Every governed workflow requires explicit authority and bootstrap boundaries
+    depends_on: []
+    customization: unmodified
+    source:
+      profile: core-v1
+      version: "0.2"
+      template: dset/templates/governance/core-v1/architecture.md
+      sha256: bfb3c93eedadf998bd05a92db3299e52425c9da85e3b8ef2e511cd8c6626bbf8
+  -
+    id: DSET-RULE-BUILD
+    path: dset/governance/build-rules.md
+    owner: project
+    applicability: applicable
+    reason: Implementation work requires selected gates and safe change behavior
+    depends_on:
+      - DSET-RULE-ARCHITECTURE
+    customization: unmodified
+    source:
+      profile: core-v1
+      version: "0.2"
+      template: dset/templates/governance/core-v1/build-rules.md
+      sha256: b2c8f31cab241fad46ab523b030ab1b5d9149f6ff88d6d36a157bf8639f4559e
+  -
+    id: DSET-RULE-DOMAIN-SPEC
+    path: dset/governance/domain-spec-authoring.md
+    owner: project
+    applicability: applicable
+    reason: Domain decisions must precede implementation planning
+    depends_on:
+      - DSET-RULE-ARCHITECTURE
+    customization: unmodified
+    source:
+      profile: core-v1
+      version: "0.2"
+      template: dset/templates/governance/core-v1/domain-spec-authoring.md
+      sha256: bfc4014d9f312710dd20f387a204aa42755132ff7ae6933983600eb29a1a96a6
+  -
+    id: DSET-RULE-TEST-PLAN
+    path: dset/governance/test-planning.md
+    owner: project
+    applicability: applicable
+    reason: Exact proof must be designed with requirements
+    depends_on:
+      - DSET-RULE-DOMAIN-SPEC
+    customization: unmodified
+    source:
+      profile: core-v1
+      version: "0.2"
+      template: dset/templates/governance/core-v1/test-planning.md
+      sha256: d35e335fffe73396cc29e7f3d5b268c8a44f249bb8a8426126b8ca15322884b4
+  -
+    id: DSET-RULE-EVAL-PLAN
+    path: dset/governance/eval-planning.md
+    owner: project
+    applicability: applicable
+    reason: Variable and qualitative proof requires an explicit owner
+    depends_on:
+      - DSET-RULE-DOMAIN-SPEC
+    customization: unmodified
+    source:
+      profile: core-v1
+      version: "0.2"
+      template: dset/templates/governance/core-v1/eval-planning.md
+      sha256: 23549cb49b10d44f0b657859b33185cf73e40b46d30c5a1f35a1f1e9955b5cb8
+  -
+    id: DSET-RULE-SUPPORTABILITY
+    path: dset/governance/supportability.md
+    owner: project
+    applicability: applicable
+    reason: Production investigation and recovery must be profile-scaled
+    depends_on:
+      - DSET-RULE-ARCHITECTURE
+    customization: unmodified
+    source:
+      profile: core-v1
+      version: "0.2"
+      template: dset/templates/governance/core-v1/supportability.md
+      sha256: cf1e5c0dea9f1a1690cd962ffd6511fa7e2af6242e3d2340fe7daa603bd1c35f
+  -
+    id: DSET-RULE-ARTIFACT-MAINTENANCE
+    path: dset/governance/artifact-maintenance.md
+    owner: project
+    applicability: applicable
+    reason: Durable conclusions require one writable owner and verified cutover
+    depends_on:
+      - DSET-RULE-ARCHITECTURE
+    customization: unmodified
+    source:
+      profile: core-v1
+      version: "0.2"
+      template: dset/templates/governance/core-v1/artifact-maintenance.md
+      sha256: 6ab16f37577813ec4aff9ecf2d1f5502a54767fc052c91f42e287e3d7d3b9c26
+  -
+    id: DSET-RULE-DIAGNOSIS
+    path: dset/governance/diagnosis.md
+    owner: project
+    applicability: applicable
+    reason: Defect investigation requires evidence and authorization boundaries
+    depends_on:
+      - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-TEST-PLAN
+      - DSET-RULE-EVAL-PLAN
+      - DSET-RULE-SUPPORTABILITY
+      - DSET-RULE-ARTIFACT-MAINTENANCE
+    customization: unmodified
+    source:
+      profile: core-v1
+      version: "0.2"
+      template: dset/templates/governance/core-v1/diagnosis.md
+      sha256: 8f5e78a193298fb0e92b2a67891f005464a50760d84cf814dc3901ea30d122e2
+  -
+    id: DSET-RULE-PROTOTYPING
+    path: dset/governance/prototyping.md
+    owner: project
+    applicability: applicable
+    reason: Solution experiments require comparable disposable evidence
+    depends_on:
+      - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-TEST-PLAN
+      - DSET-RULE-EVAL-PLAN
+      - DSET-RULE-SUPPORTABILITY
+      - DSET-RULE-ARTIFACT-MAINTENANCE
+    customization: unmodified
+    source:
+      profile: core-v1
+      version: "0.2"
+      template: dset/templates/governance/core-v1/prototyping.md
+      sha256: 615532ee3e32137f63748c9a742c2d4cf39130c0a9dd824fb1006dadd7c39455
+workflows:
+  -
+    id: domain-clarification
+    rules:
+      - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-DOMAIN-SPEC
+      - DSET-RULE-TEST-PLAN
+      - DSET-RULE-EVAL-PLAN
+      - DSET-RULE-ARTIFACT-MAINTENANCE
+  -
+    id: diagnosis
+    rules:
+      - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-DOMAIN-SPEC
+      - DSET-RULE-TEST-PLAN
+      - DSET-RULE-EVAL-PLAN
+      - DSET-RULE-SUPPORTABILITY
+      - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DIAGNOSIS
+  -
+    id: prototyping
+    rules:
+      - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-DOMAIN-SPEC
+      - DSET-RULE-TEST-PLAN
+      - DSET-RULE-EVAL-PLAN
+      - DSET-RULE-SUPPORTABILITY
+      - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-PROTOTYPING
+wrappers:
+  -
+    workflow: domain-clarification
+    path: skills/dset-clarify/SKILL.md
+    sha256: 67fe30ceee969a912310158e5f487a18deb7ac1109d76521e5ce4ff5970b6764
+  -
+    workflow: diagnosis
+    path: skills/dset-diagnose/SKILL.md
+    sha256: b6f655846ed6fb1881a66785c20cb0fe9eda2b18f1bcfb29e112bf383c41e7a5
+  -
+    workflow: prototyping
+    path: skills/dset-prototype/SKILL.md
+    sha256: 701747279e91e1f119202fc9451adba6dfa1c6e4474540f8c0293abd38a70255

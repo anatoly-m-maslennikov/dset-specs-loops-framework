@@ -20,6 +20,11 @@
 | **Hub** | A thin navigation surface that identifies an area's purpose, boundaries, and stable owning documents without becoming an exhaustive index or a second normative owner |
 | **Production supportability contract** | Risk- and topology-scaled agreement for the evidence, correlation and deploy/change identity, safe diagnostics, data controls, runbook, recovery/escalation paths, and incident-to-fix traceability needed to investigate and repair production behavior |
 | **DSET toolchain** | The dependency-light CLI, schemas, templates, fixtures, traceability generator, migration guidance, CI gate, and focused skills that execute the accepted methodology contract |
+| **Governance registry** | Repository-local machine-readable mapping from workflow and normative rule IDs to their editable governing documents, dependencies, applicability, and profile/customization identity; it points to rules without restating them |
+| **Governing document** | The single editable repository-local owner of one or more normative rule IDs selected by the governance registry |
+| **Workflow wrapper** | A thin skill or runtime adapter that discovers the repository, invokes one registered workflow, reports the resolved ruleset, and hands off output without owning substantive rules |
+| **Ruleset identity** | Stable declaration of selected profile/version provenance and whether the materialized local rules remain equivalent or have become a valid custom project profile |
+| **Self-hosting gate** | Bounded release proof in which the last released validator checks the candidate change, the candidate checks this repository, and the candidate materializes and checks one non-recursive temporary adopter |
 | **Diagnostic** | A stable code, artifact path, and actionable message emitted by a deterministic DSET gate |
 | **Traceability index** | A deterministic committed view from changes to packages, requirements, tests, evals, ADRs, evidence, and repository-qualified PRs; it is derived evidence rather than the owner of GitHub state or code diffs |
 | **Hosted delivery automation** | GitHub workflows and rulesets that govern the repository's production publication path and use GitHub PR/check/run/commit identities as authoritative operational evidence |
@@ -38,3 +43,12 @@
 - **METH-INV-010:** Repository skills have distinct triggers and stop conditions and cannot replace the owning DSET specification, diagnosis authorization boundary, or implementation plan.
 - **METH-INV-011:** Each governed artifact has one primary type and owning question; links connect authorities without duplicating their rules.
 - **METH-INV-012:** Hubs own navigation and boundaries, while atomic documents own rules, rationale, procedures, decisions, proof, and history.
+- **METH-INV-013:** Before release, this repository adopts every new capability applicable to its selected profiles; a non-applicable profile-specific capability passes through a versioned in-repository adopter fixture before any external pilot depends on it.
+- **METH-INV-014:** Self-hosting terminates after released-to-candidate, candidate-to-repository, and candidate-to-temporary-adopter proof; the temporary adopter never recursively creates another adopter.
+- **METH-INV-015:** Every selected normative rule resolves to one editable governing document inside the adopting repository; a source template remains provenance rather than a live authority after materialization.
+- **METH-INV-016:** Workflow wrappers own discovery, invocation, reporting, handoff, authorization, and stop behavior but no substantive workflow, architecture, authoring, proof, threshold, safety, or supportability rules.
+- **METH-INV-017:** Changing a registered local rule changes the next governed invocation without changing the canonical workflow wrapper.
+- **METH-INV-018:** Invalid or incompatible selected rule ownership fails closed with a stable diagnostic, while explicitly justified non-applicability remains valid.
+- **METH-INV-019:** A locally changed ruleset remains valid project truth only under an explicit custom identity that retains its source profile/version provenance.
+- **METH-INV-020:** Exact governance and recursion behavior remains deterministic test proof; agent interpretation, rule-following, navigation, and diagnostic usefulness remain separate eval proof.
+- **METH-INV-021:** Every normative rule ID has exactly one editable governing document; skills, agent guidance, templates, generated installations, indexes, summaries, and caches never become parallel writable rule stores.

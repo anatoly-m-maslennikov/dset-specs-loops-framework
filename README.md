@@ -36,8 +36,8 @@ Domain → Spec + Supportability + Test Plan + Eval Plan → Implement → Test 
 | Methodology | [Methodology hub](methodology/README.md) | Delivery stages, runtime/build rules, proof conventions, and external grounding |
 | Artifact governance | [Documentation architecture hub](documentation/README.md) | Artifact types, authoring rules, hubs, maintenance, and `documentation-v1` |
 | Project control plane | [DSET project hub](dset/README.md) | Accepted project truth, active/archive changes, schemas, templates, fixtures, traceability, migrations, and supportability |
-| Executable CLI | [`dset_toolchain/`](dset_toolchain/) | Dependency-light `new`, `check`, `verify`, `trace`, and guarded `archive` implementation |
-| Agent workflows | [Skills hub](skills/README.md) | Focused domain-grilling, diagnosis, and disposable-prototype workflows |
+| Executable CLI | [`dset_toolchain/`](dset_toolchain/) | Dependency-light lifecycle, governance resolution/materialization, validation, traceability, archive, and bounded self-hosting |
+| Agent workflows | [Skills hub](skills/README.md) | Focused domain-clarification, diagnosis, and disposable-prototype workflows |
 | Delivery and provenance | [Delivery policy](.github/DELIVERY.md) and [third-party notices](THIRD_PARTY_NOTICES.md) | Protected publication path and external-source/license boundaries |
 
 ## Run DSET
@@ -55,7 +55,7 @@ uv sync --locked --dev
 uv run dset verify .
 ```
 
-The CLI also provides `new`, `trace`, and guarded `archive` workflows. See the [project-root guide](dset/README.md) for lifecycle and command details.
+The CLI also provides `rules check`, `rules resolve`, `rules materialize`, `rules refresh`, `rules diff`, `self-host`, `version`, `new`, `trace`, and guarded `archive` workflows. See the [project-root guide](dset/README.md) for lifecycle and command details.
 
 ## Source-of-truth model
 
@@ -65,4 +65,4 @@ Each project that adopts DSET owns its project truth separately under its own `d
 
 ## Status
 
-The methodology is published, the repository dogfoods its own project contract, and the executable DSET v1 toolchain was implemented and verified through PR [#7](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7). Versioned schemas, profile-aware templates, fixtures, a dependency-light CLI, generated PR traceability, migration guidance, CI enforcement, and three focused skills are public in this repository. The [bootstrap structure](dset/changes/archive/2026-07-14-bootstrap-dset-project-structure/proposal.md) and [supportability contract](dset/changes/archive/2026-07-14-make-supportability-first-class/proposal.md) remain accepted archive history; external pilots and evidence-backed JavaScript/TypeScript profile work remain on the roadmap.
+The methodology is published, the repository dogfoods its own project contract, and the executable DSET v1 toolchain was implemented and verified through PR [#7](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7). The DSET 0.2 framework milestone is now an active candidate: repository-local governance, thin wrappers, project-owned materialization, and the bounded self-hosting fixed point pass locally and in hosted CI on draft PR [#9](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9). Independent qualitative evals, the evidence-derived JavaScript/TypeScript profile, external pilots, pinned distribution, and final release reconciliation remain open; 0.2 is not yet an adoption-readiness claim.

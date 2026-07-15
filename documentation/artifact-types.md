@@ -16,7 +16,7 @@ Every governed artifact has one primary type and one owning question. Split a fi
 | Test plan | Which deterministic claims must be proven exactly? | Test IDs, requirement mapping, seams, cases, commands, pass criteria | Probabilistic rubrics or implementation results |
 | Eval plan | Which variable or qualitative behavior must be judged? | Dataset/cases, rubric, thresholds, calibration, budgets, drift policy | Deterministic checks relabeled as evals |
 | Evidence/changelog | What was observed or changed at an identified revision/time? | Subject identity, bounded result, source/evidence pointers, disposition | Current rules, mutable runtime authority, secrets or unnecessary raw logs |
-| Skill | Which bounded agent workflow should run for a specific trigger? | Trigger, workflow, output, verification, authorization and stop boundaries | A competing methodology, broad permanent project truth |
+| Skill | Which registered repository-governed workflow should run for a specific trigger? | Trigger, root/manifest/registry discovery, workflow ID, resolver invocation, resolved-rule reporting, authorization handoff, and fail-closed behavior | Substantive workflow steps, architecture or authoring rules, proof thresholds, supportability rules, fallback methodology, or broad permanent project truth |
 
 ## Classification order
 
@@ -29,6 +29,6 @@ Ask these questions in order:
 5. Is it telling an operator or contributor how to act? Use a playbook/runbook.
 6. Is it defining proof before implementation? Use a test or eval plan.
 7. Is it recording an observation or past change? Use evidence/changelog.
-8. Is it a reusable agent procedure? Use a skill that writes conclusions back to the owning project artifacts.
+8. Is it a reusable agent invocation? Use a thin skill that resolves the repository-governed procedure and writes conclusions back to the owning project artifacts.
 
 Examples may appear in normative artifacts when needed to apply a rule. They remain illustrative and cannot introduce a second rule that exists nowhere in the normative text.

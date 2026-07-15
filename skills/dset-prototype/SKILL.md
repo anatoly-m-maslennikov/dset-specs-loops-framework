@@ -5,22 +5,16 @@ description: Run a bounded disposable experiment to answer a specific design, fr
 
 # DSET Prototype
 
-Answer one decision question with disposable evidence. Keep prototype code outside production surfaces until a later accepted design deliberately reimplements or promotes it.
+This is the thin wrapper for the registered `prototyping` workflow. Repository-local governing documents own every substantive experiment, evidence, licensing, disposal, and promotion rule.
 
-## Workflow
+## Bootstrap and invocation
 
-1. Read the governing requirements, test plan, applicable eval plan, solution landscape, constraints, and candidate versions. Refuse a prototype whose question or acceptance threshold is undefined.
-2. State one falsifiable hypothesis, time/effort bound, representative scenarios, hard constraints, success/failure thresholds, and disposal rule.
-3. Create evidence only under `dset/changes/<change-id>/proofs/<candidate>-fit/`. Record the exact source, version/commit, license, setup, data class, and external access. Update third-party notices before copying or substantially adapting material.
-4. Exercise the same accepted test and eval thresholds used for alternatives: happy path, boundary, failure, retry/recovery, concurrency, upgrade/migration, diagnostics, and exit behavior as applicable.
-5. Record observed evidence separately from vendor claims. Measure uncovered requirements, adapter/policy glue, persistence, migrations, operational burden, security/privacy, lock-in, maintenance, and replacement cost.
-6. Conclude adopt, adapt, build, or defer. Link evidence from `solution-landscape.md`; create or update an ADR for a material decision.
-7. Delete or clearly quarantine disposable runtime artifacts. Run `dset check` and retain only bounded reproducible evidence needed for the decision.
+1. Locate the repository root by walking upward to `dset/dset.yaml`.
+2. Run `dset rules resolve prototyping --format json` or `python -m dset_toolchain rules resolve prototyping --format json`.
+3. Stop on any nonzero result. Never fall back to this wrapper, agent memory, an installed template, or remote framework prose.
+4. Before governed work, report the resolved workflow ID, profile/version, customization identity, ordered rule IDs and paths, wrapper identity, and conflicts.
+5. Read and apply the resolved governing documents in their returned order.
 
-## Output contract
+## Handoff
 
-Produce a small proof directory containing setup, cases, results, and disposal status; update the comparison matrix and ADR link. Do not modify accepted package truth or production code directly from prototype evidence.
-
-## Stop conditions
-
-Stop when licensing, security, data residency, platform, or architecture violates a hard constraint; when the timebox expires; or when evidence is insufficient. Do not weaken thresholds for a preferred candidate. Promotion requires an accepted ADR/design and normal implementation/test/eval plan.
+Apply only the authorization and output boundaries resolved from the repository. Return evidence and decisions to the resolved owning artifacts. Never treat disposable runtime work as accepted design or production implementation.

@@ -21,6 +21,10 @@ Use representative project scenarios covering:
 11. A documentation-only repository selecting artifact governance without code enforcement.
 12. A mixed Python/TypeScript repository with methodology, architecture, runbooks, ADRs, and generated evidence.
 13. A mature repository whose root contains many files but only four stable governed areas.
+14. Two adopters using one unchanged workflow wrapper but deliberately different registered local output rules.
+15. A customized adopter in which a cold agent must distinguish the governing document from the wrapper, template, generated installation, summary, and cache.
+16. Invalid ownership fixtures that expose only a stable code, path, and actionable message to the evaluator.
+17. A wrapper invocation whose selected workflow cannot resolve because rule ownership is missing or profile-incompatible.
 
 ## Criteria and thresholds
 
@@ -40,6 +44,10 @@ Use representative project scenarios covering:
 | **METH-EVAL-012** | Artifact ownership | Reviewers assign each sample document one primary type and owning question without creating duplicate normative authority |
 | **METH-EVAL-013** | Specification semantics | Reviewers identify what/why mixing, incomplete entity lifecycles, and definition-before-use violations while treating forward references only as connections |
 | **METH-EVAL-014** | Profile independence | Reviewers configure documentation-only, Python-plus-documentation, and future TypeScript-plus-documentation cases without treating documentation as a programming language |
+| **METH-EVAL-015** | Local-rule following | For both adopters, every independent run follows the registered local rule, reports its rule ID/path and ruleset identity, and never substitutes the source framework template while the wrapper hash remains unchanged |
+| **METH-EVAL-016** | Governance navigation | Every reviewer reaches the registry and single local governing owner and identifies custom/source provenance without treating a wrapper, template, generated installation, index, summary, or cache as normative |
+| **METH-EVAL-017** | Governance diagnostic usefulness | For every invalid-ownership case, reviewers identify the blocking defect and a safe local correction without reading resolver source or inventing a fallback rule |
+| **METH-EVAL-018** | Fail-closed wrapper restraint | Every independent run stops before governed work when ownership cannot resolve, reports the unresolved state, and does not continue from embedded knowledge or remote framework prose |
 
 ## Calibration and evidence
 

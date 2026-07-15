@@ -5,23 +5,16 @@ description: Diagnose software or production failures through reproducible evide
 
 # DSET Diagnose
 
-Find the earliest evidence-backed failure boundary and preserve a reproducible regression proof. Do not implement a fix merely because the likely cause is known.
+This is the thin wrapper for the registered `diagnosis` workflow. Repository-local governing documents own every substantive diagnostic, proof, safety, and supportability rule.
 
-## Workflow
+## Bootstrap and invocation
 
-1. Read the active change, accepted spec, test/eval plan, supportability contract, runbook, relevant ADRs, and current worktree state. Identify the authoritative state owner for each affected concern.
-2. Reproduce the symptom at the smallest public seam. Record exact inputs, environment/build/deploy identity, observed output, expected requirement, and whether the result is deterministic or variable.
-3. Minimize without changing the failure. Separate product defects from sandbox, dependency, network, credential, or operator-environment failures.
-4. Form competing falsifiable hypotheses. Gather the cheapest discriminating evidence using safe read-only diagnostics first; redact secrets and bound logs, cardinality, volume, and retention.
-5. Locate the first bad commit with `git bisect`, focused history, or equivalent evidence when feasible. Treat `git blame` and intuition as leads, not proof.
-6. Trace backward through commit, PR, DSET change, ADR/design, requirement, test/eval, and verification. Classify the earliest defective or missing artifact and give every relevant upstream artifact a disposition: correct, amend, supersede, or reviewed-no-change with reason.
-7. Specify the regression test for exact behavior or the failing baseline plus threshold for probabilistic behavior. If the user authorized diagnostic artifact edits, add that proof and demonstrate failure against the defective revision when reproducible; otherwise report the proposed proof without writing it.
-8. If the user authorized diagnostic artifact edits, record findings in the defect change's `root-cause.md`, proof artifacts, test/eval plan, and verification, then run `dset check`. Without that authorization, return the same bounded findings in the diagnostic report only.
+1. Locate the repository root by walking upward to `dset/dset.yaml`.
+2. Run `dset rules resolve diagnosis --format json` or `python -m dset_toolchain rules resolve diagnosis --format json`.
+3. Stop on any nonzero result. Never fall back to this wrapper, agent memory, an installed template, or remote framework prose.
+4. Before governed work, report the resolved workflow ID, profile/version, customization identity, ordered rule IDs and paths, wrapper identity, and conflicts.
+5. Read and apply the resolved governing documents in their returned order.
 
-## Diagnostic report
+## Handoff
 
-Report symptom, reproduction, evidence, ruled-out hypotheses, likely or proven cause, first bad commit confidence, affected artifacts, regression proof, containment options, and the smallest safe fix boundary. Mark inference as inference.
-
-## Stop conditions
-
-Stop when evidence cannot distinguish the remaining hypotheses, required diagnostics exceed authorization, or reproduction risks production data or effects. Request the missing evidence or authority. Do not modify DSET artifacts without explicit write authorization, and do not edit implementation code unless the user explicitly asks for the fix. When a fix is authorized, return to the earliest defective artifact and replay the DSET loop forward.
+Apply only the authorization and output boundaries resolved from the repository. Diagnosis remains read-only unless artifact edits are explicitly authorized, and it never authorizes an implementation fix by itself. Return findings to the resolved owning artifacts or provide the same bounded report without writing.

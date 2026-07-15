@@ -17,7 +17,7 @@ OpenSpec names and marks belong to their respective owners. References describe 
 - **Upstream:** [mattpocock/skills](https://github.com/mattpocock/skills)
 - **Revision reviewed:** [`66898f60e8c744e269f8ce06c2b2b99ce7660d5f`](https://github.com/mattpocock/skills/commit/66898f60e8c744e269f8ce06c2b2b99ce7660d5f)
 - **License:** MIT; retained at [`third_party/licenses/mattpocock-skills-MIT.txt`](third_party/licenses/mattpocock-skills-MIT.txt)
-- **DSET surfaces:** `dset-grill`, `dset-diagnose`, and `dset-prototype` workflow boundaries
+- **DSET surfaces:** `dset-clarify`, `dset-diagnose`, and `dset-prototype` workflow boundaries
 - **Use:** The public skill collection informed the choice of three focused workflow categories. DSET instructions, outputs, safety boundaries, and implementation are independently written; no upstream skill file is copied.
 
 Matt Pocock's name and marks belong to their owner. References describe provenance only and do not imply endorsement.
