@@ -5,7 +5,7 @@ editable governing document per normative rule ID. Existing agent guidance,
 project rules, specs, test plans, eval plans, implementation plans, Decision
 records or legacy ADRs, runbooks, and evidence are inputs; they do not remain
 competing writable authorities. The DSET product and Python package share
-prepared version `0.3.0`; current schema 1.2 uses layer-owned paths under
+prepared version `0.3.1`; current schema 1.2 uses layer-owned paths under
 `dset/scopes/` while continuing to detect supported legacy 1.0/1.1 central
 layouts. New Changes use layer ownership and Decision fields; archived legacy
 Changes retain their original fields and prose and are not rewritten.

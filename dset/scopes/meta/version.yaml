@@ -1,10 +1,10 @@
 schema_version: "1.2"
 framework:
-  version: "0.3.0"
+  version: "0.3.1"
   versioning: coordinated-product-package
 python_package:
   name: dset-spec-loops
-  version: "0.3.0"
+  version: "0.3.1"
   versioning: coordinated-product-package
 schemas:
   version: "1.2"

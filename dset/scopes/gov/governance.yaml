@@ -174,7 +174,7 @@ rules:
       profile: core-v1
       version: "0.2"
       template: dset/scopes/ops/templates/governance/core-v1/release.md
-      sha256: e2e95de10e2d780a2640a61f84a65479808e62da6261c492add4b2aed1403541
+      sha256: 3bd2beffd371e09a22eb4b9d2c47dd6eb1df08bf0547fccda0d09a025e9152ef
   -
     id: DSET-RULE-LIFECYCLE
     layer: SKILL

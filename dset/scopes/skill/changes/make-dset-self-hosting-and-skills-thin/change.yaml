@@ -89,7 +89,7 @@ release:
     ref: main
     commit: b874504c25e42329eae19ed14f2b50a3d922d64e
     version: unversioned
-  target: 0.3.0
+  target: 0.3.1
   readiness: verification.md
   candidate_commit: c95b8b82e9d2cb57119025ab0d4a5f446032ce34
 intake:

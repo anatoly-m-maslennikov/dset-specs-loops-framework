@@ -308,9 +308,18 @@ class GovernanceTests(unittest.TestCase):
             result = main(["version", str(ROOT)])
         self.assertEqual(result, 0)
         output = stream.getvalue()
-        self.assertIn("product: 0.3.0 (coordinated)", output)
-        self.assertIn("python package: 0.3.0 (coordinated)", output)
+        self.assertIn("product: 0.3.1 (coordinated)", output)
+        self.assertIn("python package: 0.3.1 (coordinated)", output)
         self.assertIn("schemas: 1.2 (independent)", output)
+
+    def test_bootstrap_release_target_is_explicit_not_framework_hard_coded(self) -> None:
+        release = (ROOT / "dset/scopes/ops/governance/release.md").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("explicit first `0.Y.Z` target", release)
+        self.assertNotIn(
+            "| no activated product version | `bootstrap` | `0.3.0` |", release
+        )
 
     def test_temporary_adopter_materializes_current_project_inputs(self) -> None:
         manifest = cast(dict[str, Any], load(self.root / "dset" / "dset.yaml"))

@@ -4,7 +4,7 @@
 
 **Outcome:** Make DSET self-hosting before external adoption, make skills thin wrappers over repository-local governing documents, prove that unchanged skills follow changed local rules, and validate the design through the first owned TypeScript pilot in [obsidian-your-harness](https://github.com/anatoly-m-maslennikov/obsidian-your-harness).
 
-**Release label:** `0.3.0` is the first coordinated DSET product and CLI-package release under the new policy. The earlier incomplete `0.2.0` development target and unreleased independent package `1.0.0` candidate are superseded before merge. Schema, profile, and template-format versions remain independent compatibility identities rather than product-maturity claims.
+**Release label:** `0.3.1` is the corrected first coordinated DSET product and CLI-package release under the new policy. The unpublished `0.3.0` draft, earlier incomplete `0.2.0` target, and unreleased independent package `1.0.0` candidate are superseded before merge. Schema, profile, and template-format versions remain independent compatibility identities rather than product-maturity claims.
 
 ## DSET 0.3 invariants
 
@@ -20,7 +20,7 @@
 - **DSET-INVARIANT-SKILL-003 — Small skill surface:** Core users see `dset`, `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release`; helper lifecycle operations remain modes or chained workflows.
 - **DSET-INVARIANT-SKILL-004 — Primary orchestration:** `dset` selects bounded next actions from authoritative local state and registered local rules without embedding the lifecycle or authorizing effects silently.
 - **DSET-INVARIANT-SKILL-005 — Investigable runs:** Every skill emits a bounded redacted local run record under ignored `.dset/runs/`; records support heuristics but never replace repository, Git, hosted, or promoted-proof authorities.
-- **DSET-INVARIANT-OPS-001 — One version transition per main PR:** After bootstrap `0.3.0`, every accepted `dev` to `main` PR declares exactly one normal, small, RC, or final product/package transition using integer components.
+- **DSET-INVARIANT-OPS-001 — One version transition per main PR:** After the explicit first pre-1.0 bootstrap target is published, every accepted `dev` to `main` PR declares exactly one normal, small, RC, or final product/package transition using integer components.
 - **DSET-INVARIANT-OPS-002 — Protected release transaction:** Release artifacts are prepared before merge; tags and GitHub Releases derive from the protected merge commit without post-merge content changes.
 - **DSET-INVARIANT-OPS-003 — Fully working 1.0 gate:** `1.0.0-rc.N` and `1.0.0` require complete scope, supportability, proof, pilots, distribution, and no known release blockers; arithmetic and schedules cannot promote them.
 - **DSET-INVARIANT-SKILL-006 — Main-session inheritance:** Subagents use the main session's model and reasoning effort by default; medium budget targets two or three useful agents and every deviation is explicit.
@@ -64,7 +64,7 @@ adoption-readiness claim.
 
 ## §0 | Resolve version and bootstrap semantics
 
-- [x] **DSET-TASK-OPS-016:** Establish coordinated DSET product/CLI-package `0.3.0`, keep schema/profile/template versions independent, supersede the incomplete `0.2.0` development target and unreleased package `1.0.0` candidate before merge, and preserve archived v1 evidence unchanged.
+- [x] **DSET-TASK-OPS-016:** Establish corrected coordinated DSET product/CLI-package `0.3.1`, keep schema/profile/template versions independent, supersede the unpublished `0.3.0` draft, incomplete `0.2.0` target, and unreleased package `1.0.0` candidate before merge, and preserve archived evidence unchanged.
 - [x] **DSET-TASK-TOOL-011:** Define the last-released-validator versus candidate-validator contract so a candidate is never its own only judge.
 - [x] **DSET-TASK-SKILL-004:** Define the minimum non-project bootstrap protocol that wrappers may contain: locate the repository root, locate schema 1.2 `dset/scopes/meta/dset.yaml` or a legacy central manifest, resolve the layout-owned governance registry, and fail closed on duplicate authority.
 - [x] **DSET-TASK-GOV-014:** Open one standard DSET change, `make-dset-self-hosting-and-skills-thin`, with separate requirements, test plan, eval plan, design, implementation batches, evidence, and PR identity.

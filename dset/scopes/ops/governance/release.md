@@ -28,6 +28,11 @@ again.
 
 ## Classification and transitions
 
+`bootstrap` declares the first pre-1.0 product identity explicitly. It is never
+derived from an absent base, and an unpublished candidate may revise that target
+inside the same release-owning Change. Once published, every later transition
+uses the normal table and a higher identity.
+
 `small` means a compatible correction or documentation/internal change with no
 new public capability, migration, deprecation, or changed public contract.
 `normal` means any new capability, public contract/profile/schema behavior,
@@ -36,7 +41,7 @@ highest-impact class. A material ambiguity stops release preparation.
 
 | Base state | Class | Only valid target |
 |---|---|---|
-| no activated product version | `bootstrap` | `0.3.0` |
+| no activated product version | `bootstrap` | explicit first `0.Y.Z` target |
 | `0.Y.Z` | `small` | `0.Y.(Z+1)` |
 | `0.Y.Z` | `normal` | `0.(Y+1).0` |
 | passing `0.Y.Z` with 1.0 readiness | `rc` | `1.0.0-rc.1` |
