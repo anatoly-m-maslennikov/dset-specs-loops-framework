@@ -1,0 +1,4 @@
+interface:
+  display_name: "DSET"
+  short_description: "Route work through local DSET governance"
+  default_prompt: "Use $dset to inspect this repository and recommend the next governed lifecycle action."
