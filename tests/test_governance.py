@@ -46,6 +46,16 @@ class GovernanceTests(unittest.TestCase):
 
     def test_valid_registry_resolves_stable_order(self) -> None:
         self.assertEqual(validate_governance(self.root), [])
+        registry = cast(
+            dict[str, Any], load(self.root / "dset" / "governance.yaml")
+        )
+        self.assertEqual(registry["schema_version"], 1.1)
+        self.assertTrue(
+            all(
+                "precedence_over" in rule
+                for rule in cast(list[dict[str, Any]], registry["rules"])
+            )
+        )
         resolved, diagnostics = resolve_workflow(self.root, "domain-clarification")
         self.assertEqual(diagnostics, [])
         self.assertIsNotNone(resolved)
@@ -53,6 +63,12 @@ class GovernanceTests(unittest.TestCase):
         self.assertEqual(resolved["workflow_id"], "domain-clarification")
         self.assertEqual(resolved["customization"], "unmodified")
         self.assertGreater(len(cast(list[Any], resolved["rules"])), 3)
+        self.assertTrue(
+            all(
+                "precedence_over" in rule
+                for rule in cast(list[dict[str, Any]], resolved["rules"])
+            )
+        )
 
     def test_find_repository_walks_upward(self) -> None:
         nested = self.root / "src" / "feature"
@@ -95,6 +111,12 @@ class GovernanceTests(unittest.TestCase):
             "missing-document": ("DSET-E133", self._missing_document),
             "outside-root": ("DSET-E134", self._outside_root),
             "dependency-cycle": ("DSET-E135", self._dependency_cycle),
+            "precedence-cycle": ("DSET-E150", self._precedence_cycle),
+            "missing-precedence": ("DSET-E150", self._missing_precedence),
+            "missing-precedence-owner": (
+                "DSET-E150",
+                self._missing_precedence_owner,
+            ),
             "incompatible-profile": ("DSET-E137", self._incompatible_profile),
             "wrapper-mismatch": ("DSET-E138", self._wrapper_mismatch),
         }
@@ -203,6 +225,8 @@ class GovernanceTests(unittest.TestCase):
                 discover_layout(ROOT).find_template("governance/core-v1/profile.yaml")
             ),
         )
+        self.assertEqual(profile["schema_version"], 1.1)
+        self.assertEqual(profile["version"], "0.3")
         actual = {item["id"]: item["layer"] for item in profile["rules"]}
         self.assertEqual(
             actual,
@@ -735,6 +759,27 @@ class GovernanceTests(unittest.TestCase):
         second = data["rules"][1]
         first["depends_on"] = [second["id"]]
         second["depends_on"] = [first["id"]]
+        cls._write_registry(root, data)
+
+    @classmethod
+    def _precedence_cycle(cls, root: Path) -> None:
+        _, data = cls._registry(root)
+        first = data["rules"][0]
+        second = data["rules"][1]
+        first["precedence_over"] = [second["id"]]
+        second["precedence_over"] = [first["id"]]
+        cls._write_registry(root, data)
+
+    @classmethod
+    def _missing_precedence(cls, root: Path) -> None:
+        _, data = cls._registry(root)
+        del data["rules"][0]["precedence_over"]
+        cls._write_registry(root, data)
+
+    @classmethod
+    def _missing_precedence_owner(cls, root: Path) -> None:
+        _, data = cls._registry(root)
+        data["rules"][0]["precedence_over"] = ["DSET-RULE-MISSING"]
         cls._write_registry(root, data)
 
     @classmethod

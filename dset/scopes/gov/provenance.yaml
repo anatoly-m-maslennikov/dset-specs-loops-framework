@@ -56,6 +56,34 @@ sources:
         exclusions:
           - Architecture-only ADR semantics
           - FPF Decision ontology and ADR terminology
+      - pattern: FPF-E.3
+        source: FPF-Spec/E_The FPF Constitution and Authoring Guides/02_03_Principle Taxonomy & Precedence Model/00_E.03 - Principle Taxonomy & Precedence Model.md
+        source_lines: 40-76,162-170
+        dset_surface: dset/scopes/gov/governance/architecture.md
+        disposition: adapted
+        adaptation_scope: Separate dependency and conflict precedence relations, acyclic precedence, and deterministic fail-closed conflict handling
+        exclusions:
+          - FPF Pillar and principle class taxonomy
+          - FPF default class precedence stack
+          - FPF governance ontology and canonical identifiers
+      - pattern: FPF-E.5.3
+        source: FPF-Spec/E_The FPF Constitution and Authoring Guides/04_05_Four Guard-Rails of FPF/03_E.05.03 - Unidirectional Dependency.md
+        source_lines: 22-77
+        dset_surface: dset/scopes/gov/governance/architecture.md
+        disposition: adapted
+        adaptation_scope: Acyclic dependency closure and explicit separation of dependency from other rule relations
+        exclusions:
+          - FPF Core, Tooling Reference, and Pedagogical Companion family order
+          - FPF imports relation and ecosystem-family semantics
+      - pattern: FPF-E.9
+        source: FPF-Spec/E_The FPF Constitution and Authoring Guides/08_09_Design-Rationale Record (DRR) Method/00_E.09 - Design-Rationale Record (DRR) Method.md
+        source_lines: 61-109,318-331
+        dset_surface: dset/scopes/gov/governance/artifact-maintenance.md
+        disposition: adapted
+        adaptation_scope: Decision as temporary convergence record, evergreen discharge, and shadow-specification prevention
+        exclusions:
+          - FPF DRR publication format and content-block inventory
+          - FPF Core, Pillar, and pattern ontology
       - pattern: FPF-E.17
         source: FPF-Spec/E_The FPF Constitution and Authoring Guides/16_17_Multi-View Publication Kit/03_E.17 - Multi-View Publication Kit.md
         source_lines: 29-39

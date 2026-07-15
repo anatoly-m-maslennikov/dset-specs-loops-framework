@@ -1,6 +1,6 @@
-schema_version: 1.0
+schema_version: 1.1
 id: core-v1
-version: "0.2"
+version: "0.3"
 rules:
   -
     id: DSET-RULE-ARCHITECTURE
@@ -10,6 +10,7 @@ rules:
     applicability: applicable
     reason: Every governed workflow requires explicit authority and bootstrap boundaries
     depends_on: []
+    precedence_over: []
   -
     id: DSET-RULE-BUILD
     layer: TOOL
@@ -19,6 +20,7 @@ rules:
     reason: Implementation work requires selected gates and safe change behavior
     depends_on:
       - DSET-RULE-ARCHITECTURE
+    precedence_over: []
   -
     id: DSET-RULE-DOMAIN-SPEC
     layer: META
@@ -28,6 +30,7 @@ rules:
     reason: Domain decisions must precede implementation planning
     depends_on:
       - DSET-RULE-ARCHITECTURE
+    precedence_over: []
   -
     id: DSET-RULE-TEST-PLAN
     layer: META
@@ -37,6 +40,7 @@ rules:
     reason: Exact proof must be designed with requirements
     depends_on:
       - DSET-RULE-DOMAIN-SPEC
+    precedence_over: []
   -
     id: DSET-RULE-EVAL-PLAN
     layer: META
@@ -46,6 +50,7 @@ rules:
     reason: Variable and qualitative proof requires an explicit owner
     depends_on:
       - DSET-RULE-DOMAIN-SPEC
+    precedence_over: []
   -
     id: DSET-RULE-SUPPORTABILITY
     layer: OPS
@@ -55,6 +60,7 @@ rules:
     reason: Production investigation and recovery must be profile-scaled
     depends_on:
       - DSET-RULE-ARCHITECTURE
+    precedence_over: []
   -
     id: DSET-RULE-ARTIFACT-MAINTENANCE
     layer: GOV
@@ -64,6 +70,7 @@ rules:
     reason: Durable conclusions require one writable owner and verified cutover
     depends_on:
       - DSET-RULE-ARCHITECTURE
+    precedence_over: []
   -
     id: DSET-RULE-WORK-ITEMS
     layer: GOV
@@ -73,6 +80,7 @@ rules:
     reason: Intake must distinguish problems, opportunities, questions, and change-owned tasks
     depends_on:
       - DSET-RULE-ARCHITECTURE
+    precedence_over: []
   -
     id: DSET-RULE-DELEGATION-BUDGET
     layer: SKILL
@@ -82,6 +90,7 @@ rules:
     reason: Delegation requires inherited model/effort, bounded tree budgets, and a fixed quality floor
     depends_on:
       - DSET-RULE-ARCHITECTURE
+    precedence_over: []
   -
     id: DSET-RULE-SKILL-RUNS
     layer: SKILL
@@ -93,6 +102,7 @@ rules:
       - DSET-RULE-ARCHITECTURE
       - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-DELEGATION-BUDGET
+    precedence_over: []
   -
     id: DSET-RULE-RELEASE
     layer: OPS
@@ -107,6 +117,7 @@ rules:
       - DSET-RULE-EVAL-PLAN
       - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+    precedence_over: []
   -
     id: DSET-RULE-LIFECYCLE
     layer: SKILL
@@ -125,6 +136,7 @@ rules:
       - DSET-RULE-DELEGATION-BUDGET
       - DSET-RULE-SKILL-RUNS
       - DSET-RULE-RELEASE
+    precedence_over: []
   -
     id: DSET-RULE-DIAGNOSIS
     layer: SKILL
@@ -138,6 +150,7 @@ rules:
       - DSET-RULE-EVAL-PLAN
       - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+    precedence_over: []
   -
     id: DSET-RULE-PROTOTYPING
     layer: SKILL
@@ -151,6 +164,7 @@ rules:
       - DSET-RULE-EVAL-PLAN
       - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+    precedence_over: []
 workflows:
   -
     id: lifecycle-orchestration

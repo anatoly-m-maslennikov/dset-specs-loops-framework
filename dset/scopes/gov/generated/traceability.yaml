@@ -172,6 +172,7 @@ changes:
       - DSET-REQUIREMENT-GOV-020
       - DSET-REQUIREMENT-GOV-021
       - DSET-REQUIREMENT-GOV-022
+      - DSET-REQUIREMENT-GOV-023
       - DSET-REQUIREMENT-META-007
       - DSET-REQUIREMENT-META-011
       - DSET-REQUIREMENT-OPS-003
@@ -199,6 +200,7 @@ changes:
       - DSET-TEST-GOV-020
       - DSET-TEST-GOV-021
       - DSET-TEST-GOV-022
+      - DSET-TEST-GOV-023
       - DSET-TEST-META-007
       - DSET-TEST-META-010
       - DSET-TEST-META-011
@@ -228,6 +230,7 @@ changes:
       - DSET-EVAL-GOV-010
       - DSET-EVAL-GOV-011
       - DSET-EVAL-GOV-012
+      - DSET-EVAL-GOV-013
       - DSET-EVAL-META-008
       - DSET-EVAL-META-009
       - DSET-EVAL-OPS-002
@@ -271,6 +274,7 @@ changes:
       - DSET-QUESTION-SKILL-001
     decisions:
       - DSET-DECISION-GOV-001
+      - DSET-DECISION-GOV-002
       - DSET-DECISION-SKILL-001
     contracts:
       - DSET-CONTRACT-META-001
@@ -284,6 +288,7 @@ changes:
     pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9
     evidence:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-governance-constitution-review-2026-07-16.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-principles-audit-2026-07-15.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-principles-reaudit-2026-07-15.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/hosted-fixed-point-2026-07-14.md

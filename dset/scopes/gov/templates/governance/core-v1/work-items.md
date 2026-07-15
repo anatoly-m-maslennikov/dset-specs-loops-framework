@@ -26,6 +26,12 @@ Discharge the Decision's normative consequences into canonical Requirements,
 Scenarios, Contracts, Design, proof plans, or operating rules, then link the
 closed Question and changed owners back to the Decision.
 
+Problems, Opportunities, and Questions are transactional artifacts. They may
+motivate work, but they do not become current behavior until their accepted
+consequences are compiled into the relevant evergreen spec, plan, contract, or
+rule. Implementation may link to a Problem or Opportunity for context, but it
+must still cite the Change or Decision that authorized the behavior it adds.
+
 A Requirement owns a verifiable observable WHAT, delivered result, or constraint;
 observable edge cases belong in Requirements and Scenarios. A Decision owns a
 consequential choice among valid alternatives plus rationale, trade-offs, and

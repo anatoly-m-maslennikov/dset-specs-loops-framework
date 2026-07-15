@@ -133,3 +133,24 @@ Accepted Decisions, Problems, Opportunities, Questions, proofs, and other transa
 Every commit that changes evergreen truth or implementation artifacts must name the Decision or Decisions it implements in its commit message body. If no Decision is required, the commit must name the authorizing Problem, Opportunity, Question, or Change. Each newly created or materially changed atomic artifact records `llm_session_ids` when an LLM helped produce it, using stable host-prefixed session IDs.
 
 **Scenario DSET-SCENARIO-GOV-023:** A commit body contains `Implements: DSET-DECISION-GOV-001`, and the created Decision artifact records the Codex session IDs that produced or materially revised it.
+
+## DSET-REQUIREMENT-GOV-023 — Rule authority and assurance are explicit
+
+`DSET-RULE-ARCHITECTURE` must remain the dependency-free constitutional root
+for repository governance. Every registered normative rule must resolve to one
+applicable repository-local owner in the current profile edition and declare
+separate `depends_on` and `precedence_over` relations. Both graphs must be
+acyclic; registry order must not imply precedence; missing precedence targets
+or unresolved conflicts must fail closed.
+
+Decisions and provenance authorize and explain rule changes, while tests,
+evals, reviews, and evidence assess reliance claims. None becomes rule
+authority by existing or passing. Missing or stale assurance must leave only
+the affected claim pending or stale and block its relying gate according to
+risk; it must not silently erase an otherwise valid rule. Transactional
+consequences must still compile into the evergreen governing artifact.
+
+**Scenario DSET-SCENARIO-GOV-024:** An adopter rejects a precedence cycle and a
+precedence target without a registered owner. A separate review keeps an
+applicable rule authoritative when one proof becomes stale, marks only the
+affected assurance claim stale, and blocks the release gate that relies on it.

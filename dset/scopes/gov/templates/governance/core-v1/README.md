@@ -25,4 +25,9 @@ This hub owns navigation only. `governance.yaml` owns machine-readable resolutio
 - [Release transaction](../../../../ops/templates/governance/core-v1/release.md)
 - [Problem, opportunity, and question intake](work-items.md)
 
-Use `dset rules check` to validate ownership and `dset rules resolve <workflow-id>` to obtain the ordered rule set. Use `dset rules refresh` only after an intentional local edit, and review `dset rules diff --source <framework-root>` before adopting later framework changes.
+Use `dset rules check` to validate ownership, dependency order, and declared
+precedence. Use `dset rules resolve <workflow-id>` to obtain the
+dependency-ordered rule set plus precedence metadata. Use `dset rules refresh`
+only after an intentional local edit, and review
+`dset rules diff --source <framework-root>` before adopting later framework
+changes.

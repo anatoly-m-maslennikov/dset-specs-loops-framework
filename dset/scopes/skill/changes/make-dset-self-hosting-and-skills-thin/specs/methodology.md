@@ -13,6 +13,7 @@ the implementation scope to its current layer-owned Requirement owners.
 | Intake routing and stable layer-qualified IDs | `DSET-REQUIREMENT-GOV-018..019` |
 | Neutral repository or Work Area scope | `DSET-REQUIREMENT-META-011` |
 | Artifact classes, compile-down, commit provenance, and session provenance | `DSET-REQUIREMENT-GOV-020..022` |
+| Governance constitution, dependency/precedence separation, and authority/assurance boundary | `DSET-REQUIREMENT-GOV-023` |
 
 The canonical text lives in the accepted META, GOV, TOOL, SKILL, and OPS package
 fragments under `dset/scopes/<layer>/specs/packages/methodology/`. This Change
@@ -25,7 +26,7 @@ Connected accepted IDs are `DSET-REQUIREMENT-META-007`,
 `DSET-REQUIREMENT-GOV-016`, `DSET-REQUIREMENT-GOV-017`,
 `DSET-REQUIREMENT-GOV-018`, `DSET-REQUIREMENT-GOV-019`,
 `DSET-REQUIREMENT-GOV-020`, `DSET-REQUIREMENT-GOV-021`,
-`DSET-REQUIREMENT-GOV-022`,
+`DSET-REQUIREMENT-GOV-022`, `DSET-REQUIREMENT-GOV-023`,
 `DSET-REQUIREMENT-SKILL-002`, `DSET-REQUIREMENT-SKILL-003`,
 `DSET-REQUIREMENT-SKILL-004`, `DSET-REQUIREMENT-SKILL-005`,
 `DSET-REQUIREMENT-SKILL-006`, `DSET-REQUIREMENT-SKILL-007`,
@@ -80,3 +81,15 @@ when an LLM helped create or materially revise them.
 **Scenario DSET-SCENARIO-GOV-023:** A commit body contains
 `Implements: DSET-DECISION-GOV-001`, and the Decision artifact records the
 Codex session IDs that produced or materially revised it.
+
+## ADDED — DSET-REQUIREMENT-GOV-023 Governance constitution
+
+`DSET-RULE-ARCHITECTURE` remains the sole dependency-free governance root.
+Every rule declares separate acyclic dependency and conflict-precedence
+relations. Rule authority comes only from the applicable current local owner;
+Decisions and provenance explain changes, while tests, evals, reviews, and
+evidence assess assurance without becoming authority.
+
+**Scenario DSET-SCENARIO-GOV-024:** A precedence cycle or missing precedence
+owner fails closed. Stale evidence leaves the affected assurance claim stale
+and blocks its relying gate without silently erasing the applicable rule.

@@ -85,6 +85,20 @@
   templates so atomic artifacts can point back to the sessions that created or
   materially revised them.
 
+## Batch 9 — Governance constitution — complete
+
+- Keep `DSET-RULE-ARCHITECTURE` as the sole dependency-free governance root and
+  separate rule authority from assurance.
+- Add explicit per-rule `precedence_over` alongside `depends_on`; validate
+  missing targets, duplicate targets, and precedence cycles independently from
+  dependency closure.
+- Promote the project-local artifact classes, transactional discharge,
+  commit/session provenance, and work-item compile-down rules into `core-v1`
+  profile version 0.3.
+- Compile `DSET-DECISION-GOV-002` into GOV requirements, tests, evals, schema,
+  validator, profile templates, active Change traceability, and bounded FPF
+  provenance.
+
 ## Later batches
 
 Implement the Batch 4 orchestration/run/budget/release mechanics and roadmap §§5–§10 for the TypeScript profile, owned Your Harness pilot, clean-room Claudian evaluation, complete tests/evals, and pinned distribution. Keep unfinished behavior out of public capability claims.

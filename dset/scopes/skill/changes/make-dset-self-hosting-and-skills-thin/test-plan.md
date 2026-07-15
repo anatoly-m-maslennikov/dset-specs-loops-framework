@@ -6,7 +6,7 @@ Change executes and records their applicable proof; it does not redefine them.
 | Owning plan | Applicable Test IDs |
 |---|---|
 | [META](../../../meta/specs/packages/methodology/test-plan.md) | `DSET-TEST-META-007`, `DSET-TEST-META-010..011` |
-| [GOV](../../../gov/specs/packages/methodology/test-plan.md) | `DSET-TEST-GOV-014..022` |
+| [GOV](../../../gov/specs/packages/methodology/test-plan.md) | `DSET-TEST-GOV-014..023` |
 | [TOOL](../../../tool/specs/packages/methodology/test-plan.md) | `DSET-TEST-TOOL-005` |
 | [SKILL](../../specs/packages/methodology/test-plan.md) | `DSET-TEST-SKILL-002..009` |
 | [OPS](../../../ops/specs/packages/methodology/test-plan.md) | `DSET-TEST-OPS-003..007` |
@@ -15,7 +15,8 @@ Connected accepted IDs are `DSET-TEST-META-007`, `DSET-TEST-META-010`,
 `DSET-TEST-META-011`, `DSET-TEST-GOV-014`, `DSET-TEST-GOV-015`,
 `DSET-TEST-GOV-016`, `DSET-TEST-GOV-017`, `DSET-TEST-GOV-018`,
 `DSET-TEST-GOV-019`, `DSET-TEST-GOV-020`, `DSET-TEST-GOV-021`,
-`DSET-TEST-GOV-022`, `DSET-TEST-TOOL-005`, `DSET-TEST-SKILL-002`,
+`DSET-TEST-GOV-022`, `DSET-TEST-GOV-023`, `DSET-TEST-TOOL-005`,
+`DSET-TEST-SKILL-002`,
 `DSET-TEST-SKILL-003`, `DSET-TEST-SKILL-004`, `DSET-TEST-SKILL-005`,
 `DSET-TEST-SKILL-006`, `DSET-TEST-SKILL-007`, `DSET-TEST-SKILL-008`,
 `DSET-TEST-SKILL-009`, `DSET-TEST-OPS-003`, `DSET-TEST-OPS-004`,

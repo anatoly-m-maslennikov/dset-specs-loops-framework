@@ -18,6 +18,7 @@ SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 CUSTOMIZATION = {"unmodified", "custom"}
 APPLICABILITY = {"applicable", "not-applicable"}
 RULE_LAYERS = {layer.upper() for layer in LAYERS}
+GOVERNANCE_SCHEMA_VERSION = 1.1
 
 
 def find_repository(start: Path) -> Path:
@@ -74,6 +75,14 @@ def validate_governance_registry(
     root = root.resolve()
     layout = discover_layout(root)
     diagnostics: list[Diagnostic] = []
+    if data.get("schema_version") != GOVERNANCE_SCHEMA_VERSION:
+        diagnostics.append(
+            _diag(
+                "DSET-E131",
+                registry_path,
+                "unsupported governance registry schema version",
+            )
+        )
     profile = data.get("profile")
     if not isinstance(profile, dict):
         return [_diag("DSET-E137", registry_path, "profile must be a mapping")]
@@ -204,6 +213,7 @@ def validate_governance_registry(
         )
 
     diagnostics.extend(_validate_dependencies(registry_path, by_id))
+    diagnostics.extend(_validate_precedence(registry_path, by_id))
     workflows = data.get("workflows")
     workflow_items = workflows if isinstance(workflows, list) else []
     if not workflow_items:
@@ -313,6 +323,7 @@ def resolve_workflow(
                 "path": rule["path"],
                 "owner": rule["owner"],
                 "applicability": rule["applicability"],
+                "precedence_over": list(rule["precedence_over"]),
                 "customization": rule["customization"],
                 "source_profile": source["profile"],
                 "source_version": source["version"],
@@ -437,6 +448,7 @@ def materialize_governance(
                     "applicability": applicability,
                     "reason": reason,
                     "depends_on": dependencies,
+                    "precedence_over": list(item.get("precedence_over", [])),
                     "customization": "unmodified",
                     "source": {
                         "profile": profile_id,
@@ -477,7 +489,9 @@ def materialize_governance(
                 ]
             rendered_workflows.append(rendered)
         registry = {
-            "schema_version": 1.0,
+            "schema_version": profile.get(
+                "schema_version", GOVERNANCE_SCHEMA_VERSION
+            ),
             "profile": {
                 "id": profile_id,
                 "version": str(profile["version"]),
@@ -581,6 +595,70 @@ def _validate_dependencies(
             for dependency in dependencies:
                 if isinstance(dependency, str) and dependency in by_id:
                     visit(dependency)
+        visiting.remove(rule_id)
+        visited.add(rule_id)
+
+    for rule_id in by_id:
+        visit(rule_id)
+    return diagnostics
+
+
+def _validate_precedence(
+    path: Path, by_id: dict[str, dict[str, Any]]
+) -> list[Diagnostic]:
+    diagnostics: list[Diagnostic] = []
+    graph: dict[str, list[str]] = {}
+    for rule_id, rule in by_id.items():
+        precedence = rule.get("precedence_over")
+        if not isinstance(precedence, list):
+            diagnostics.append(
+                _diag(
+                    "DSET-E150",
+                    path,
+                    f"precedence_over must be a list: {rule_id}",
+                )
+            )
+            graph[rule_id] = []
+            continue
+        if len(precedence) != len(set(map(str, precedence))):
+            diagnostics.append(
+                _diag(
+                    "DSET-E150",
+                    path,
+                    f"precedence targets must be unique: {rule_id}",
+                )
+            )
+        graph[rule_id] = []
+        for target in precedence:
+            if not isinstance(target, str) or target not in by_id:
+                diagnostics.append(
+                    _diag(
+                        "DSET-E150",
+                        path,
+                        f"precedence target has no rule owner: {rule_id}/{target}",
+                    )
+                )
+                continue
+            graph[rule_id].append(target)
+
+    visiting: set[str] = set()
+    visited: set[str] = set()
+
+    def visit(rule_id: str) -> None:
+        if rule_id in visiting:
+            diagnostics.append(
+                _diag(
+                    "DSET-E150",
+                    path,
+                    f"rule precedence cycle includes: {rule_id}",
+                )
+            )
+            return
+        if rule_id in visited:
+            return
+        visiting.add(rule_id)
+        for target in graph.get(rule_id, []):
+            visit(target)
         visiting.remove(rule_id)
         visited.add(rule_id)
 

@@ -26,6 +26,7 @@ This fragment owns exact deterministic proof for its listed IDs. Shared package 
 | **DSET-TEST-GOV-020** | DSET-REQUIREMENT-GOV-020 | Verify artifact-governance docs define evergreen, transactional, and implementation-layer authority classes without making generated views authoritative | Documentation/gov link and text audit |
 | **DSET-TEST-GOV-021** | DSET-REQUIREMENT-GOV-021 | Verify every accepted Decision added by this Change names the evergreen artifacts that compile its normative consequences | Change artifact audit |
 | **DSET-TEST-GOV-022** | DSET-REQUIREMENT-GOV-022 | Verify the active Change and new atomic artifacts carry `llm_session_ids`, and the implementing commit body names the Decision it implements | Change manifest/schema audit plus commit-message review |
+| **DSET-TEST-GOV-023** | DSET-REQUIREMENT-GOV-023, DSET-INVARIANT-GOV-012 | Materialize governance registry schema 1.1, require separate `depends_on` and `precedence_over` lists, and reject missing precedence owners or precedence cycles with stable `DSET-E150` diagnostics | `python -m unittest tests.test_governance` |
 
 ## Regression policy
 

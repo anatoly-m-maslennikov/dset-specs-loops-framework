@@ -14,6 +14,28 @@ version remain provenance only.
 
 Resolution precedence is project-local registered rule, then an explicitly selected local profile, then failure. Never fall back to wrapper prose, agent memory, a generated cache, an installed copy, or remote framework text.
 
+## Rule authority and assurance
+
+Governance separates authority from assurance. A normative rule governs only
+when the current repository-local registry resolves it to one applicable,
+editable governing document and validates its dependency and precedence
+closure. The registered layer and path bound its scope; the selected profile
+version and customization state identify its current edition.
+
+`depends_on` declares prerequisites required to interpret or execute a rule.
+`precedence_over` declares only how an explicit conflict between rules is
+resolved. Neither relation implies the other, both graphs must be acyclic, and
+every rule declares both fields even when the lists are empty. Registry order
+is not precedence. If selected rules conflict and no declared precedence path
+resolves the conflict, governed work stops rather than choosing implicitly.
+
+Decisions and provenance authorize and explain change. Tests, evals, reviews,
+and evidence assess reliance claims. None becomes rule authority merely by
+existing or passing. Missing or stale assurance leaves the affected claim
+pending or stale and blocks the relying gate; it does not silently erase an
+otherwise valid rule. `DSET-RULE-ARTIFACT-MAINTENANCE` governs transactional
+discharge and risk-proportionate proof with explicit reopen conditions.
+
 ## Bootstrap
 
 These steps govern repository-rooted workflows. When no manifest exists, only
@@ -34,6 +56,29 @@ Explicit justified non-applicability is valid. Missing or invalid selected owner
 ## State boundaries
 
 The project manifest selects the profile; the registry owns resolution metadata; governing documents own rules; wrappers own invocation only; generated indexes and caches are derived. Writes that change customization status are explicit and never overwrite governing documents.
+
+## Artifact classes
+
+DSET separates three authority classes:
+
+- **Evergreen artifacts** are updatable current truth. Specs, implementation
+  plans, deterministic test plans, eval plans, architecture, contracts,
+  runbooks, and governing rules may change in place through a bounded Change.
+  They state the current accepted version.
+- **Transactional artifacts** record bounded facts, choices, observations, or
+  questions in time. Decisions, Problems, Opportunities, Questions, proof
+  records, session/run records, release evidence, and Change records are not
+  edited into a new truth shape silently; they are resolved, superseded,
+  archived, or linked forward.
+- **Implementation artifacts** are the executable or concrete delivery layer:
+  code, tests, eval prompts/datasets, CI workflows, scripts, generated runtime
+  assets, and configuration examples. They implement evergreen truth and cite
+  the transactional artifacts that authorized or constrained the work.
+
+Transactional artifacts influence current behavior only after their accepted
+consequences are compiled into the owning evergreen artifact. A generated view
+may summarize that relationship, but the evergreen owner remains the current
+truth and the transactional artifact remains provenance.
 
 ## Public workflow contract
 

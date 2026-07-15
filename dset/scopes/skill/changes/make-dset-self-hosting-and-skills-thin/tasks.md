@@ -24,3 +24,4 @@
 - [x] **DSET-TASK-META-016:** Define and reconcile the Work Area entity, invariant, requirement, and Contract with separate deterministic test and qualitative eval mappings without claiming runtime enforcement.
 - [x] **DSET-TASK-TOOL-038:** Implement schema 1.2 Work Area declaration validation, repository-or-area Change targets, `dset new --work-area`, and trace propagation with deterministic fixtures.
 - [x] **DSET-TASK-GOV-039:** Register Journey, Actor/Persona, Hypothesis/Experiment, prioritization, feedback/analytics, and generated roadmap/release views as deferred Questions without creating new artifact types or intake queues.
+- [x] **DSET-TASK-GOV-040:** Strengthen Architecture as the governance constitution, separate dependency from precedence and authority from assurance, promote accepted local GOV rules into `core-v1`, and add schema/validator/test coverage under `DSET-DECISION-GOV-002`.

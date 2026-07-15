@@ -16,6 +16,7 @@ Applicable qualitative and probabilistic proof is layer-owned. The representativ
 | **DSET-EVAL-GOV-010** | Intake clarity | Every reviewer classifies intake consistently using only problems, opportunities, and questions, while placing tasks inside Changes, treating Decision as both the entity and durable artifact, and treating hosted tickets as representations |
 | **DSET-EVAL-GOV-011** | ID grammar | Reviewers use the `DSET` project prefix and full type, omit the layer for project-wide IDs, include the semantic layer for layer-owned IDs, use full `DECISION`, and never derive identity from directories |
 | **DSET-EVAL-GOV-012** | Compile-down clarity | Reviewers can distinguish evergreen, transactional, and implementation artifacts; identify which evergreen owner received a transactional artifact's accepted consequence; and reject an implementation-only change that leaves current truth stale |
+| **DSET-EVAL-GOV-013** | Authority versus assurance | Reviewers distinguish invalid rule authority, valid authority with stale or missing assurance, and evidence or provenance being mistaken for authority; they block only the affected reliance gate and identify the proportionate reopen path |
 
 ## Calibration and evidence
 
