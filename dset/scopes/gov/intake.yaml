@@ -179,3 +179,13 @@ items:
     decision: null
     external_refs:
       - https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9
+  - id: DSET-PROBLEM-GOV-003
+    scope: gov
+    type: problem
+    status: resolved
+    title: Verification promoted proofs after their reopen conditions fired
+    statement: The verification matrix continued to present the pre-layer invariant proof and the 0.3.0 Work Area proof as current after IDs, schemas, version, validation, and tests changed. Both records are now explicitly historical, and current use requires replacement exact-commit evidence.
+    owner_change: DSET-CHANGE-SKILL-001
+    decision: null
+    external_refs:
+      - https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9

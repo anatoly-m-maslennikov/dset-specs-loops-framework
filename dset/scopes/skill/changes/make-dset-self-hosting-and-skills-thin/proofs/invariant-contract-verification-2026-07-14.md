@@ -1,5 +1,12 @@
 # Invariant contract verification — 2026-07-14
 
+> [!NOTE]
+> Historical proof only. This record evaluated the pre-layer DSET 0.2 contract
+> at commit `b84c23bdbc642508a142b8f7469de4cd08b94573`. Its `METH-*` candidate
+> owners were superseded by schema 1.2 layer-owned `DSET-*` truth, so this file
+> no longer supports a current invariant-contract Pass claim. Reopen occurred
+> when the ID model, accepted owners, schemas, validation, and version changed.
+
 ## Scope
 
 This evidence covers only the DSET 0.2 invariant-contract batch. It verifies stable ownership, requirement, scenario, test, and eval mappings and the integrity of the current repository. It does not claim that the planned governance resolver, materializer, thin wrappers, recursive self-hosting runner, TypeScript profile, or adopter pilots are implemented.

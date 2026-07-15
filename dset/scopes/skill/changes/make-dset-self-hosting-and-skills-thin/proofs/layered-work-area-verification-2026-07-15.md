@@ -1,5 +1,12 @@
 # Layered Work Area verification — 2026-07-15
 
+> [!NOTE]
+> Historical proof only. The evaluated `0.3.0` candidate predates the 0.3.1
+> version correction, neutral Work Area schema update, workspace-mode changes,
+> self-host diagnostic correction, and later tests. Those changes triggered the
+> proof's reopen rule. Its historical `released_validator: pass` label is not a
+> current assurance claim; the released boundary is `bootstrap-transition`.
+
 ## Proof contract
 
 - Claim: DSET 0.3 defines Work Area as a whole-framework Contract and applies
@@ -9,7 +16,7 @@
   its monorepo/arbitrary-folder targeting behavior.
 - Evaluated candidate: `c95b8b82e9d2cb57119025ab0d4a5f446032ce34`.
 - Framework/product/package version: `0.3.0`; schema version: `1.2`.
-- Currentness: current for the evaluated candidate and its unchanged inputs.
+- Currentness: stale for current use; retained only for the evaluated candidate.
 - Reopen when: the Work Area Contract, project/change/session/run schemas,
   repository layout, target resolution, trace generation, or relevant tests
   change.
