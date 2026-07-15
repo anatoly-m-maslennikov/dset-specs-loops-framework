@@ -189,3 +189,50 @@ items:
     decision: null
     external_refs:
       - https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9
+  - id: DSET-PROBLEM-GOV-004
+    scope: gov
+    type: problem
+    status: open
+    title: The declared Your Harness pilot has not adopted DSET
+    statement: The first owned pilot has no DSET root, schema 1.2 control plane, repository-owned rule registry, Work Areas, split Test/Eval ownership, DSET delivery contract, supportability proof, or lifecycle evidence. Its current CLAUDE and spec surfaces remain the old authority, so this is an open adoption-readiness gap rather than a failed rollout or partial DSET adoption.
+    owner_change: DSET-CHANGE-SKILL-001
+    decision: pending
+    external_refs:
+      - https://github.com/anatoly-m-maslennikov/obsidian-your-harness
+      - https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9
+  - id: DSET-QUESTION-GOV-006
+    scope: gov
+    type: question
+    status: open
+    title: Should proof dependency closures become machine-readable?
+    statement: Should promoted proofs declare structured dependencies and reopen triggers that let DSET detect stale claim closures automatically, or should currentness remain a prose contract plus reviewer judgment?
+    owner_change: DSET-CHANGE-SKILL-001
+    decision: pending
+    external_refs: []
+  - id: DSET-OPPORTUNITY-GOV-001
+    scope: gov
+    type: opportunity
+    status: open
+    title: Generate a proof-currentness review view
+    statement: DSET could generate a non-authoritative view of proof dependencies, last evaluated identities, declared reopen triggers, and suspected stale closures while returning reviewers to the canonical proof records.
+    owner_change: DSET-CHANGE-SKILL-001
+    decision: pending
+    external_refs: []
+  - id: DSET-OPPORTUNITY-TOOL-001
+    scope: tool
+    type: opportunity
+    status: open
+    title: Expand schema template validation into a compatibility matrix
+    statement: Beyond the current schema-specific scaffold regressions, DSET could materialize every supported template/profile/schema combination and validate each filled output as a generated compatibility matrix.
+    owner_change: DSET-CHANGE-SKILL-001
+    decision: pending
+    external_refs: []
+  - id: DSET-OPPORTUNITY-OPS-001
+    scope: ops
+    type: opportunity
+    status: open
+    title: Generate a cross-repository adoption status view
+    statement: DSET could generate a helicopter view of framework, fixture, pilot, and clean-room adoption status from each repository's own manifests and exact proof links without making the central view a new authority.
+    owner_change: DSET-CHANGE-SKILL-001
+    decision: pending
+    external_refs: []
