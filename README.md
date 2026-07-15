@@ -123,9 +123,10 @@ toolchain that works outside this repository:
 - add a generated schema `1.2` adopter that exercises Work Areas, the default
   local `dev` to remote `dev` to PR `main` flow, and optional worktree
   isolation;
-- finish the runtime behind the five source wrappers: initialization and
-  lifecycle routing, run records, session checkpoint/resume, release mechanics,
-  and next-action recommendation;
+- connect the tested run/checkpoint and release-transition library cores to the
+  five source wrappers through portable CLI/host adapters; finish
+  initialization, next-action recommendation, synchronized version updates,
+  and post-merge publication;
 - package and test the thin skills for Codex and Claude against repository-local
   governing rules rather than duplicated skill prose;
 - add the JavaScript/TypeScript applied profile while keeping documentation and

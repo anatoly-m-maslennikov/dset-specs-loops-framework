@@ -325,6 +325,7 @@ changes:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/recursive-session-provenance-2026-07-16.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/schema-self-application-audit-2026-07-15.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/schema-self-application-reaudit-2026-07-15.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/skill-runtime-consistency-2026-07-16.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/wrapper-rule-inventory-2026-07-14.md
     slug: make-dset-self-hosting-and-skills-thin
     primary_layer: skill
