@@ -383,6 +383,9 @@ class GovernanceTests(unittest.TestCase):
         self.assertEqual(release["applicability"], "not-applicable")
         workflows = cast(list[dict[str, Any]], registry["workflows"])
         self.assertNotIn("release", {item["id"] for item in workflows})
+        wrappers = cast(list[dict[str, Any]], registry["wrappers"])
+        self.assertNotIn("release", {item["workflow"] for item in wrappers})
+        self.assertFalse((self.root / "skills" / "dset-release").exists())
         self.assertTrue(
             all(
                 "DSET-RULE-RELEASE" not in cast(list[str], item["rules"])
@@ -607,9 +610,23 @@ class GovernanceTests(unittest.TestCase):
 
     def test_wrappers_are_thin_and_registered(self) -> None:
         workflows = {
+            "lifecycle-orchestration": "dset",
             "domain-clarification": "dset-clarify",
             "diagnosis": "dset-diagnose",
             "prototyping": "dset-prototype",
+            "release": "dset-release",
+        }
+        registry = cast(
+            dict[str, Any],
+            load(ROOT / "dset" / "scopes" / "gov" / "governance.yaml"),
+        )
+        registered = {
+            item["workflow"]: item["path"]
+            for item in cast(list[dict[str, Any]], registry["wrappers"])
+        }
+        resolved_workflows = {
+            item["id"]: set(cast(list[str], item["rules"]))
+            for item in cast(list[dict[str, Any]], registry["workflows"])
         }
         for workflow, skill in workflows.items():
             with self.subTest(workflow=workflow):
@@ -620,6 +637,19 @@ class GovernanceTests(unittest.TestCase):
                 self.assertNotIn("## Workflow", text)
                 self.assertNotIn("git bisect", text)
                 self.assertNotIn("proofs/<candidate>-fit", text)
+                self.assertEqual(
+                    registered[workflow], path.relative_to(ROOT).as_posix()
+                )
+                metadata = cast(
+                    dict[str, Any],
+                    load(ROOT / "skills" / skill / "agents" / "openai.yaml"),
+                )
+                interface = cast(dict[str, Any], metadata["interface"])
+                self.assertTrue(interface["display_name"])
+                self.assertIn(f"${skill}", interface["default_prompt"])
+                self.assertIn("DSET-RULE-SKILL-RUNS", resolved_workflows[workflow])
+                if workflow == "lifecycle-orchestration":
+                    self.assertIn("DSET-RULE-LIFECYCLE", resolved_workflows[workflow])
 
     def test_manifest_and_template_boundaries_are_stable(self) -> None:
         with self.assertRaises(DsetCommandError) as captured:

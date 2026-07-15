@@ -33,6 +33,16 @@ class SelfHostTests(unittest.TestCase):
         self.assertEqual(report["candidate_repository"], "pass")
         self.assertEqual(report["temporary_adopter"], "pass")
         self.assertEqual(report["customization"], "custom")
+        self.assertEqual(
+            report["workflows_resolved"],
+            [
+                "lifecycle-orchestration",
+                "domain-clarification",
+                "diagnosis",
+                "prototyping",
+            ],
+        )
+        self.assertTrue(report["wrappers_unchanged"])
         self.assertTrue(report["wrapper_unchanged"])
         self.assertTrue(report["recursion_stopped"])
 

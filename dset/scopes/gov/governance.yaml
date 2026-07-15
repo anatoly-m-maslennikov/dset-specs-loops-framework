@@ -274,7 +274,10 @@ workflows:
       - DSET-RULE-DOMAIN-SPEC
       - DSET-RULE-TEST-PLAN
       - DSET-RULE-EVAL-PLAN
+      - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
   -
     id: diagnosis
     rules:
@@ -284,6 +287,8 @@ workflows:
       - DSET-RULE-EVAL-PLAN
       - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
       - DSET-RULE-DIAGNOSIS
   -
     id: prototyping
@@ -294,6 +299,8 @@ workflows:
       - DSET-RULE-EVAL-PLAN
       - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
       - DSET-RULE-PROTOTYPING
   -
     id: release
@@ -316,14 +323,22 @@ workflows:
       - DSET-RULE-WORK-ITEMS
 wrappers:
   -
+    workflow: lifecycle-orchestration
+    path: skills/dset/SKILL.md
+    sha256: 52d0aa1298a533fa6e967fa02e9502abb091ba30d2d2a4755c105111d4b1bcfd
+  -
     workflow: domain-clarification
     path: skills/dset-clarify/SKILL.md
-    sha256: a10002be9869fbd35e444530f2b3343446d9c58dee204238bc228866610ddebf
+    sha256: b2dcb6dde2349d007b0a3f8716afd0ca3a34e73620767b60abdd21756fffff45
   -
     workflow: diagnosis
     path: skills/dset-diagnose/SKILL.md
-    sha256: 9cb673b424b7c8e0859ab4f45c993fe56c15c47964bc4c0e675b6ad9fcad7c18
+    sha256: edba755b23ff6729a89837c97c8e2fdf6d4658b2b8c90e1d73e52f08a8529d8f
   -
     workflow: prototyping
     path: skills/dset-prototype/SKILL.md
-    sha256: 1fe5aa103e5e054de2b74dca1a3b99e81cc19778cf6cde69622ed1e167f672f1
+    sha256: 9c23ddb14fc6e94d4e858b8dc367df2a919e9a6814d8ff9af166d1478b5aa3c4
+  -
+    workflow: release
+    path: skills/dset-release/SKILL.md
+    sha256: 3a33128c7ce6d444a805e989e78129f1ae9450706795e67b753509b19bb8238c

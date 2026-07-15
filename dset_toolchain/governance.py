@@ -460,6 +460,8 @@ def materialize_governance(
             )
         wrappers: list[dict[str, Any]] = []
         for item in cast(list[dict[str, Any]], profile.get("wrappers", [])):
+            if release_not_applicable and item.get("workflow") == "release":
+                continue
             source = source_root / str(item["path"])
             target = target_root / str(item["path"])
             if source_root != target_root and install_wrappers:

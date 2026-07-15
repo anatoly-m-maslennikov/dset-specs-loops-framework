@@ -10,16 +10,16 @@ Skills own discovery, workflow identity, resolver invocation, rule-set reporting
 
 ## Start here
 
+- [`dset`](dset/SKILL.md) — inspect repository state, recommend one governed lifecycle mode, and hand off at the next authorization boundary.
 - [`dset-clarify`](dset-clarify/SKILL.md) — resolve domain ambiguity and proof obligations before specification acceptance.
 - [`dset-diagnose`](dset-diagnose/SKILL.md) — investigate defects and incidents through evidence and Back-to-Left provenance without silently authorizing a fix.
 - [`dset-prototype`](dset-prototype/SKILL.md) — run bounded disposable design experiments and feed evidence into the Solution Landscape and Decision.
+- [`dset-release`](dset-release/SKILL.md) — prepare or verify a release and publish only under separate explicit authority.
 
-These three specialists are the currently implemented skill surface. The active
-DSET 0.3 Change specifies, but does not yet release, the primary `dset`
-orchestrator and guarded `dset-release` specialist. The primary orchestrator
-also owns the internal session checkpoint/resume capability; it is not a sixth
-public skill. No README or accepted
-contract should present those two source directories as implemented before
-their wrappers, registry entries, tests, and evals pass.
+These five repository-native wrappers are the implemented source skill surface.
+The primary orchestrator owns the internal session checkpoint/resume boundary;
+it is not a sixth public skill. Wrapper availability does not claim the still
+separately gated runtime adapter, release publisher, declared-host installation
+proof, or cross-platform execution proof is complete.
 
 Each folder contains a concise `SKILL.md` and generated `agents/openai.yaml`. Resolve its workflow with `dset rules resolve <workflow-id>` before acting. No skill depends on private memory, machine-specific paths, shell-only behavior, or a parallel specification format.

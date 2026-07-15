@@ -188,7 +188,10 @@ workflows:
       - DSET-RULE-DOMAIN-SPEC
       - DSET-RULE-TEST-PLAN
       - DSET-RULE-EVAL-PLAN
+      - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
   -
     id: diagnosis
     rules:
@@ -198,6 +201,8 @@ workflows:
       - DSET-RULE-EVAL-PLAN
       - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
       - DSET-RULE-DIAGNOSIS
   -
     id: prototyping
@@ -208,6 +213,8 @@ workflows:
       - DSET-RULE-EVAL-PLAN
       - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
       - DSET-RULE-PROTOTYPING
   -
     id: release
@@ -230,6 +237,9 @@ workflows:
       - DSET-RULE-WORK-ITEMS
 wrappers:
   -
+    workflow: lifecycle-orchestration
+    path: skills/dset/SKILL.md
+  -
     workflow: domain-clarification
     path: skills/dset-clarify/SKILL.md
   -
@@ -238,3 +248,6 @@ wrappers:
   -
     workflow: prototyping
     path: skills/dset-prototype/SKILL.md
+  -
+    workflow: release
+    path: skills/dset-release/SKILL.md

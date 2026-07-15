@@ -70,15 +70,26 @@ def run_self_host(
         "DSET-E141",
         "candidate validator rejected the temporary adopter",
     )
-    resolved, diagnostics = resolve_workflow(adopter, "domain-clarification")
-    if diagnostics or resolved is None:
-        raise DsetCommandError(
-            "DSET-E141",
-            discover_layout(adopter).governance_path,
-            "temporary adopter workflow did not resolve",
-        )
-    wrapper_path = adopter / str(resolved["wrapper"]["path"])
-    wrapper_before = _sha256(wrapper_path)
+    adopter_registry = load(discover_layout(adopter).governance_path)
+    workflow_ids = tuple(
+        str(item["workflow"])
+        for item in adopter_registry.get("wrappers", [])
+        if isinstance(item, dict) and isinstance(item.get("workflow"), str)
+    )
+    resolved_workflows: dict[str, dict[str, Any]] = {}
+    wrapper_before: dict[str, str] = {}
+    for workflow_id in workflow_ids:
+        resolved, diagnostics = resolve_workflow(adopter, workflow_id)
+        if diagnostics or resolved is None:
+            raise DsetCommandError(
+                "DSET-E141",
+                discover_layout(adopter).governance_path,
+                f"temporary adopter workflow did not resolve: {workflow_id}",
+            )
+        resolved_workflows[workflow_id] = resolved
+        wrapper_path = adopter / str(resolved["wrapper"]["path"])
+        wrapper_before[workflow_id] = _sha256(wrapper_path)
+    resolved = resolved_workflows["domain-clarification"]
     rule = next(
         item for item in resolved["rules"] if item["id"] == "DSET-RULE-DOMAIN-SPEC"
     )
@@ -99,18 +110,30 @@ def run_self_host(
         "DSET-E141",
         "customized temporary adopter did not validate",
     )
-    customized, diagnostics = resolve_workflow(adopter, "domain-clarification")
-    if diagnostics or customized is None:
-        raise DsetCommandError(
-            "DSET-E141", rule_path, "customized workflow did not resolve"
+    customized_workflows: dict[str, dict[str, Any]] = {}
+    wrappers_unchanged = True
+    for workflow_id in workflow_ids:
+        customized, diagnostics = resolve_workflow(adopter, workflow_id)
+        if diagnostics or customized is None:
+            raise DsetCommandError(
+                "DSET-E141",
+                rule_path,
+                f"customized workflow did not resolve: {workflow_id}",
+            )
+        customized_workflows[workflow_id] = customized
+        wrapper_path = adopter / str(customized["wrapper"]["path"])
+        wrappers_unchanged = (
+            wrappers_unchanged and _sha256(wrapper_path) == wrapper_before[workflow_id]
         )
     return {
         "released_validator": released_status,
         "released_validator_diagnostic": released_diagnostic,
         "candidate_repository": "pass",
         "temporary_adopter": "pass",
-        "customization": customized["customization"],
-        "wrapper_unchanged": _sha256(wrapper_path) == wrapper_before,
+        "customization": customized_workflows["domain-clarification"]["customization"],
+        "workflows_resolved": list(workflow_ids),
+        "wrappers_unchanged": wrappers_unchanged,
+        "wrapper_unchanged": wrappers_unchanged,
         "recursion_stopped": not discover_layout(adopter).version_path.exists(),
         "released_ref": reference,
         "adopter": adopter.as_posix(),
