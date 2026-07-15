@@ -48,7 +48,7 @@ class TraceabilityTests(unittest.TestCase):
             load(discover_layout(ROOT).find_change(str(current["id"])) / "change.yaml"),
         )
         self.assertEqual(current["intake"], sorted(active_manifest["intake"]))
-        self.assertEqual(current["decisions"], [])
+        self.assertEqual(current["decisions"], sorted(active_manifest["decisions"]))
         self.assertEqual(current["contracts"], sorted(active_manifest["contracts"]))
         self.assertEqual(current["stories"], sorted(active_manifest.get("stories", [])))
         self.assertEqual(
