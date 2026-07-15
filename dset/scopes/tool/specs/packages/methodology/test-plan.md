@@ -9,6 +9,7 @@ This fragment owns exact deterministic proof for its listed IDs. Shared package 
 | **DSET-TEST-TOOL-003** | DSET-REQUIREMENT-TOOL-002 | Generate traceability twice, assert byte stability, verify freshness, and resolve the real archived/current change IDs and PR #7 | `python -m unittest tests.test_traceability` |
 | **DSET-TEST-TOOL-004** | DSET-REQUIREMENT-TOOL-003 | Prove archive dry-run, readiness/PR/reconciliation gates, atomic move, and destination refusal | `python -m unittest tests.test_scaffold_archive` |
 | **DSET-TEST-TOOL-005** | DSET-REQUIREMENT-TOOL-004, DSET-INVARIANT-TOOL-003 | Assert the released → candidate → repository/temporary-adopter graph has the declared depth and that the temporary adopter cannot create another adopter or traverse unrelated DSET roots | `python -m unittest tests.test_self_host` and `python -m dset_toolchain self-host .` |
+| **DSET-TEST-TOOL-006** | DSET-REQUIREMENT-TOOL-005, DSET-INVARIANT-TOOL-004 | Render unchanged health inputs twice for byte stability, detect stale output in check mode, refresh only the declared generated destination, preserve repository/layer/package/Work Area drill-downs, and reject private or authoritative dashboard state | Project-health unit and fixture tests |
 
 ## Regression policy
 

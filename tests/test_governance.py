@@ -761,6 +761,37 @@ class GovernanceTests(unittest.TestCase):
                 self.assertTrue(mapping["adaptation_scope"])
                 self.assertTrue(mapping["exclusions"])
 
+    def test_health_review_and_ranking_rules_are_compiled(self) -> None:
+        live = (ROOT / "dset/scopes/gov/governance/artifact-maintenance.md").read_text(
+            encoding="utf-8"
+        )
+        template = (
+            ROOT / "dset/scopes/gov/templates/governance/core-v1/"
+            "artifact-maintenance.md"
+        ).read_text(encoding="utf-8")
+        self.assertEqual(live, template)
+        for phrase in (
+            "numerator, denominator, exclusions",
+            "mandatory envelope",
+            "findings body may be free-form",
+            "authorize repair",
+            "Importance expresses the consequence",
+            "Priority expresses current execution order",
+        ):
+            self.assertIn(phrase, live)
+
+        gov = (ROOT / "dset/scopes/gov/specs/packages/methodology/spec.md").read_text(
+            encoding="utf-8"
+        )
+        tool = (ROOT / "dset/scopes/tool/specs/packages/methodology/spec.md").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("DSET-REQUIREMENT-GOV-024", gov)
+        self.assertIn("DSET-REQUIREMENT-GOV-025", gov)
+        self.assertIn("DSET-REQUIREMENT-GOV-026", gov)
+        self.assertIn("DSET-REQUIREMENT-TOOL-005", tool)
+        self.assertIn("portable Markdown", tool)
+
     @staticmethod
     def _make_layered_project(root: Path) -> None:
         scopes = root / "dset" / "scopes"

@@ -86,6 +86,41 @@ currentness. Regenerate only the affected closure, retain stable links to
 canonical owners, and report staleness rather than treating a generated view as
 truth.
 
+A generated project-health view follows the same boundary. Report artifact
+counts by declared class/type/layer/status and applicable Work Area, unresolved
+work, proof freshness, and traceability coverage without turning counts into a
+target. Every ratio exposes numerator, denominator, exclusions,
+not-applicable, unknown, and stale counts. Link each gap to its canonical owner;
+never invent a Decision, code artifact, Test, or Eval merely to improve a
+percentage. Markdown is the portable baseline. An interactive renderer may use
+the same derived model but cannot own private health state.
+
+## Independent review flow
+
+Cross-host or external review uses a bounded packet and transactional report.
+The packet names exact commits/artifacts, resolved rules, criteria, scope, and
+allowed effects. The report has a mandatory envelope for reviewer/host and
+available model/tool version, `llm_session_ids`, exact inputs, method, time,
+limitations, and stable finding IDs; its findings body may be free-form.
+
+For each finding, record evidence, confidence, impact, and one explicit
+disposition: reject with rationale, defer, or route to a Problem, Opportunity,
+Question, Decision, Change, evergreen owner, or proof obligation. Review does
+not authorize repair. Compile accepted consequences into current truth and
+reopen only affected proof before implementation or release relies on them.
+
+## Importance and priority
+
+Importance expresses the consequence of an artifact, claim, or obligation
+being wrong, missing, or unresolved. Priority expresses current execution order
+for actionable Problems, Opportunities, Questions, Changes, and Change tasks.
+Do not assign synthetic priority to every evergreen or evidence artifact.
+
+The selected project profile owns bounded labels, their legend, and escalation
+rules. Keep missing values explicitly unknown. Never infer either attribute
+from artifact type, file order, age, severity, dashboard score, or the other
+attribute. Reprioritization alone does not alter importance or accepted truth.
+
 ## Artifact threshold
 
 Ordinary reversible work may return a bounded result without opening a committed

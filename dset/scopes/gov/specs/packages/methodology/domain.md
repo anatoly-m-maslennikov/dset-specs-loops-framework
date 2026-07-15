@@ -14,6 +14,10 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 | **Governed artifact area** | A stable public knowledge boundary with one purpose, owner, root, hub, and structural parent |
 | **Artifact type** | A document family defined by one primary owning question, such as navigation, normative rules, behavior, architecture, rationale, decision, procedure, proof plan, evidence, or agent workflow |
 | **Hub** | A thin navigation surface that identifies an area's purpose, boundaries, and stable owning documents without becoming an exhaustive index or a second normative owner |
+| **Project health view** | A generated non-authoritative projection of artifact inventory, traceability coverage, proof freshness, and unresolved work that returns every result to its canonical owner |
+| **External review report** | Transactional evidence from an independent human or agent review, bound to exact inputs and provenance, whose findings require explicit triage and never authorize repair by themselves |
+| **Importance** | The consequence if an artifact, claim, or obligation is wrong, missing, or left unresolved; it is distinct from current scheduling order |
+| **Priority** | The current execution order of actionable work under a declared project scale; it may change without changing the work's intrinsic importance |
 | **Governance registry** | Repository-local machine-readable mapping from workflow and normative rule IDs to their editable governing documents, dependencies, applicability, and profile/customization identity; it points to rules without restating them |
 | **Governing document** | The single editable repository-local owner of one or more normative rule IDs selected by the governance registry |
 | **Problem** | An observed bug, gap, or debt item that requires triage without implying its solution |
@@ -37,3 +41,6 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 - **DSET-INVARIANT-GOV-010:** Intake routes only to problems, opportunities, or questions; Decisions and Changes are artifacts, Decision is both the entity and durable artifact, tasks live inside Changes, and external tickets are representations rather than semantic types.
 - **DSET-INVARIANT-GOV-011:** All accepted IDs use the `DSET` project prefix and a full type; project-wide IDs omit the layer, layer-owned IDs include `META`, `GOV`, `TOOL`, `SKILL`, or `OPS`, and numbering is independent per type within each project-wide or layer sequence.
 - **DSET-INVARIANT-GOV-012:** Rule authority and assurance remain distinct. Dependency and precedence are separate acyclic relations; invalid authority or unresolved conflict fails closed, while missing or stale assurance affects only the relying claim or gate.
+- **DSET-INVARIANT-GOV-013:** A health percentage is valid only with an explicit numerator, denominator, excluded/not-applicable/unknown/stale counts, and canonical return links; it never creates authority or rewards unnecessary artifacts.
+- **DSET-INVARIANT-GOV-014:** External review findings remain transactional evidence until each finding is explicitly rejected, deferred, or routed to a Problem, Opportunity, Question, Decision, Change, or evergreen owner; review never silently authorizes a fix.
+- **DSET-INVARIANT-GOV-015:** Importance and priority remain orthogonal. Artifact type, list order, age, or severity never silently substitutes for either declared value.

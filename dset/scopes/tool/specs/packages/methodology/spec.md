@@ -32,3 +32,18 @@ not create another adopter or traverse unrelated nested DSET roots.
 as pass or an explicitly declared bootstrap-transition rejection, requires
 candidate-to-repository and candidate-to-temporary-adopter to pass, then
 terminates at the declared fixed point.
+
+## DSET-REQUIREMENT-TOOL-005 — Project health has a portable deterministic renderer
+
+The toolchain must compute the project-health model from discovered canonical
+artifacts, registry ownership, traceability, Git identities, and current proof
+metadata, then render a GitHub-portable Markdown view. Default inspection is
+read-only; an explicit write refreshes only the declared generated destination
+and a check mode detects staleness. Repository, layer, package, and Work Area
+drill-downs use the same source model. A later local or hosted dashboard may
+render that model but cannot introduce private health state or new authority.
+
+**Scenario DSET-SCENARIO-TOOL-005:** Two runs over unchanged inputs produce the
+same Markdown bytes. A changed Requirement makes check mode report the view
+stale, explicit refresh updates only the generated health destination, and
+every row links back to a canonical artifact or an explicit unknown.

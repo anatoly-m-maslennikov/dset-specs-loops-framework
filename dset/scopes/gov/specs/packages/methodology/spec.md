@@ -154,3 +154,70 @@ consequences must still compile into the evergreen governing artifact.
 precedence target without a registered owner. A separate review keeps an
 applicable rule authoritative when one proof becomes stale, marks only the
 affected assurance claim stale, and blocks the release gate that relies on it.
+
+## DSET-REQUIREMENT-GOV-024 — Project health is a transparent derived view
+
+DSET must expose a generated project-health projection without making it a new
+authority. It reports artifact counts by authority class, type, layer, status,
+and applicable Work Area; unresolved Problems, Opportunities, and Questions;
+proof freshness; and traceability coverage for Decisions compiled into
+evergreen owners, Requirements connected to implementation and applicable
+Tests/Evals, implementation commits connected to their authorizing artifact,
+and proof plans connected to current evidence.
+
+Every coverage result states its numerator, denominator, exclusions,
+not-applicable, unknown, and stale counts and links back to canonical owners.
+The view must not require a Decision for every Requirement, code for a
+documentation-only Requirement, or an Eval where the eval plan declares one
+not applicable. A portable Markdown renderer is the baseline public surface;
+interactive renderers may consume the same derived model later.
+
+**Scenario DSET-SCENARIO-GOV-025:** A repository reports 18 of 20 applicable
+Requirements with current deterministic Test coverage, one justified
+not-applicable Requirement, and one uncovered Requirement. The dashboard links
+the uncovered row to its spec owner and does not inflate the score by creating
+irrelevant Decisions, code, or Evals.
+
+## DSET-REQUIREMENT-GOV-025 — External reviews are portable transactional evidence
+
+DSET must support independent review across humans and agent hosts through a
+portable review packet and report. The packet identifies exact commits and
+artifacts, resolved rules, review criteria, requested scope, and allowed
+effects. The report uses a mandatory envelope for reviewer/host identity,
+available model/tool version, `llm_session_ids`, exact reviewed inputs, method,
+observation time, limitations, and stable finding IDs; the findings body may be
+free-form.
+
+Every finding records evidence, confidence, impact, and proposed disposition.
+Import or reconciliation must explicitly reject it with rationale, defer it,
+or route it to an existing or new Problem, Opportunity, Question, Decision,
+Change, evergreen owner, or proof obligation. Accepted consequences compile
+into current truth and reopen the smallest affected proof closure. Neither the
+report nor the reviewer may silently edit or authorize implementation.
+
+**Scenario DSET-SCENARIO-GOV-026:** Codex produces a candidate commit and review
+packet; Claude reviews that exact commit and returns a partly free-form report.
+DSET preserves its provenance, routes one defect to a Problem, one ambiguity to
+a Question, rejects one unsupported finding with rationale, updates accepted
+truth for the accepted findings, and reruns only affected proof.
+
+## DSET-REQUIREMENT-GOV-026 — Importance and priority are separate attributes
+
+DSET must distinguish importance from priority wherever ranking is applicable.
+Importance expresses the consequence of an artifact, claim, or obligation
+being wrong, missing, or unresolved. Priority expresses the current execution
+order of actionable work. Priority applies to Problems, Opportunities,
+Questions, Changes, and Change tasks; evergreen or evidence artifacts may carry
+importance but do not receive a synthetic execution priority merely because
+they exist.
+
+The selected project governance profile owns bounded scales, labels, and
+escalation rules and exposes their legend to generated views. Missing values
+remain `unknown`; type, file order, age, severity, and a dashboard score must
+not infer them. Changing priority alone does not rewrite importance or accepted
+behavior.
+
+**Scenario DSET-SCENARIO-GOV-027:** A high-importance compliance obligation may
+remain planned behind a lower-importance release-blocking correction. The
+dashboard shows both declared values and their rationale instead of collapsing
+them into one rank.

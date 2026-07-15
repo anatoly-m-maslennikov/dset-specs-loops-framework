@@ -17,6 +17,9 @@ Applicable qualitative and probabilistic proof is layer-owned. The representativ
 | **DSET-EVAL-GOV-011** | ID grammar | Reviewers use the `DSET` project prefix and full type, omit the layer for project-wide IDs, include the semantic layer for layer-owned IDs, use full `DECISION`, and never derive identity from directories |
 | **DSET-EVAL-GOV-012** | Compile-down clarity | Reviewers can distinguish evergreen, transactional, and implementation artifacts; identify which evergreen owner received a transactional artifact's accepted consequence; and reject an implementation-only change that leaves current truth stale |
 | **DSET-EVAL-GOV-013** | Authority versus assurance | Reviewers distinguish invalid rule authority, valid authority with stale or missing assurance, and evidence or provenance being mistaken for authority; they block only the affected reliance gate and identify the proportionate reopen path |
+| **DSET-EVAL-GOV-014** | Health-view decision usefulness | A cold reviewer identifies the largest actionable coverage/freshness gap, its denominator and exclusions, and the canonical owner without treating the generated view as authority or maximizing artifact counts |
+| **DSET-EVAL-GOV-015** | Cross-host review portability | Codex, Claude, and a human reviewer can exchange the same bounded packet/report, identify exact reviewed inputs and permissions, and reach explicit finding dispositions without hidden session context or silent fixes |
+| **DSET-EVAL-GOV-016** | Importance/priority clarity | Reviewers independently distinguish consequence from execution order, preserve unknown values, and explain a reprioritization without changing importance or accepted behavior |
 
 ## Calibration and evidence
 
