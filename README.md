@@ -44,6 +44,28 @@ Domain → Spec + Supportability + Test Plan + Eval Plan → Implement → Test 
 | Agent workflows | [Skills hub](skills/README.md) | Focused domain-clarification, diagnosis, and disposable-prototype workflows |
 | Delivery and provenance | [Delivery policy](.github/DELIVERY.md) and [third-party notices](THIRD_PARTY_NOTICES.md) | Protected publication path and external-source/license boundaries |
 
+## What is already here
+
+DSET is now a public, self-hosted framework repository rather than only a
+methodology document set. The current `0.3.1` state includes:
+
+- published methodology and documentation governance for Domain,
+  Supportability, Evals, Tests, specs, Decisions, contracts, stories, outcomes,
+  and risk-scaled proof;
+- a repository-local DSET control plane split into the META, GOV, TOOL, SKILL,
+  and OPS scopes under [`dset/scopes/`](dset/scopes/);
+- schema `1.2` layered project metadata, Work Areas for monorepos and mixed
+  repositories, scoped Changes, and stable project-prefixed artifact IDs;
+- a dependency-light Python toolchain with `check`, `verify`, `new`, `trace`,
+  `archive`, `rules`, `self-host`, and `version` workflows;
+- schemas, templates, fixtures, migration guidance, generated traceability, and
+  provenance records;
+- initial Codex/agent workflow wrappers for clarify, diagnose, and prototype
+  loops, plus governing contracts for thin wrappers, skill-run logs, session
+  checkpoints, and delegation budgets;
+- GitHub delivery policy, CI validation, supportability runbooks, third-party
+  notices, and PR-linked proof history.
+
 ## Run DSET
 
 Read-only validation requires only Python 3.10 or newer:
@@ -85,14 +107,31 @@ Areas without treating those folders as features, modules, or services.
 The methodology is published, the repository dogfoods its own project contract,
 and the executable schema/toolchain v1 contract was implemented through PR
 [#7](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7).
-The coordinated DSET `0.3.1` product/Python-package release remains an active
-candidate on draft PR
-[#9](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9):
-the candidate validates this repository and one bounded temporary adopter, while
-the pinned pre-transition validator records an explicit degraded bootstrap
-incompatibility instead of a false pass. The unpublished `0.3.0` draft is
-superseded. Current exact-head hosted proof,
-independent qualitative evals, two target skill wrappers, run/session/release
-automation, the JavaScript/TypeScript profile, external pilots, pinned
-distribution, and final reconciliation remain open; DSET `0.3.1` is not yet an
-adoption-readiness claim.
+The coordinated DSET `0.3.1` product/Python-package release was merged through
+PR [#10](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/10).
+It is a framework-foundation release: it validates this repository, publishes
+the scoped schema/control-plane shape, and records remaining gaps explicitly.
+It is not yet an end-user adoption-readiness claim.
+
+## What is next
+
+The next work should turn the foundation into an installable, repeatable
+toolchain that works outside this repository:
+
+- publish a schema `1.2` compatible validator release so self-hosting no longer
+  relies on the migration-baseline bootstrap;
+- add a generated schema `1.2` adopter that exercises Work Areas, the default
+  local `dev` to remote `dev` to PR `main` flow, and optional worktree
+  isolation;
+- finish the primary `dset` skill/runtime path: run writer, session checkpoint,
+  resume behavior after compaction, release wrapper, and next-action
+  recommendation;
+- package and test the thin skills for Codex and Claude against repository-local
+  governing rules rather than duplicated skill prose;
+- add the JavaScript/TypeScript applied profile while keeping documentation and
+  methodology as first-class artifact types;
+- pilot the framework on external repositories such as Obsidian Your Harness and
+  record the resulting Problems, Opportunities, Questions, Decisions, proofs,
+  and release evidence;
+- harden release automation, pinned distribution, hosted exact-head proofs, and
+  recovery diagnostics before claiming `1.0` adoption readiness.
