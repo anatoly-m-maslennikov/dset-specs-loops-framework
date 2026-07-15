@@ -1,10 +1,11 @@
 # Proposal — Make DSET self-hosting and skills thin
 
-- **Change ID:** `make-dset-self-hosting-and-skills-thin`
+- **Change ID:** `DSET-CHANGE-SKILL-001`
 - **Profile:** `standard`
 - **Target package:** `methodology`
 - **Implementing PR:** [anatoly-m-maslennikov/dset-specs-loops-framework#9](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9)
-- **Status:** in progress; roadmap §§0–§4 implemented and proven locally plus in hosted CI
+- **Status:** in progress; roadmap §§0–§4 implemented and proven locally;
+  current exact-head hosted proof remains pending
 
 ## Problem
 
