@@ -8,7 +8,7 @@ Change executes and records their applicable proof; it does not redefine them.
 | [META](../../../meta/specs/packages/methodology/test-plan.md) | `DSET-TEST-META-007`, `DSET-TEST-META-010..011` |
 | [GOV](../../../gov/specs/packages/methodology/test-plan.md) | `DSET-TEST-GOV-014..027` |
 | [TOOL](../../../tool/specs/packages/methodology/test-plan.md) | `DSET-TEST-TOOL-005`, `DSET-TEST-TOOL-018..019` |
-| [SKILL](../../specs/packages/methodology/test-plan.md) | `DSET-TEST-SKILL-002..009` |
+| [SKILL](../../specs/packages/methodology/test-plan.md) | `DSET-TEST-SKILL-001..009` |
 | [OPS](../../../ops/specs/packages/methodology/test-plan.md) | `DSET-TEST-OPS-003..007` |
 
 Connected accepted IDs are `DSET-TEST-META-007`, `DSET-TEST-META-010`,
@@ -19,8 +19,8 @@ Connected accepted IDs are `DSET-TEST-META-007`, `DSET-TEST-META-010`,
 `DSET-TEST-GOV-024`, `DSET-TEST-GOV-025`, `DSET-TEST-GOV-026`,
 `DSET-TEST-GOV-027`,
 `DSET-TEST-TOOL-018`, `DSET-TEST-TOOL-019`,
-`DSET-TEST-SKILL-002`,
-`DSET-TEST-SKILL-003`, `DSET-TEST-SKILL-004`, `DSET-TEST-SKILL-005`,
+`DSET-TEST-SKILL-001`, `DSET-TEST-SKILL-002`, `DSET-TEST-SKILL-003`,
+`DSET-TEST-SKILL-004`, `DSET-TEST-SKILL-005`,
 `DSET-TEST-SKILL-006`, `DSET-TEST-SKILL-007`, `DSET-TEST-SKILL-008`,
 `DSET-TEST-SKILL-009`, `DSET-TEST-OPS-003`, `DSET-TEST-OPS-004`,
 `DSET-TEST-OPS-005`, `DSET-TEST-OPS-006`, and `DSET-TEST-OPS-007`.

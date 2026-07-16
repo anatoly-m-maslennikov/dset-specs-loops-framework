@@ -33,11 +33,11 @@ class SkillDistributionTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.temporary.cleanup()
 
-    def test_install_is_dry_run_then_copies_all_five_codex_skills(self) -> None:
+    def test_install_is_dry_run_then_copies_all_public_codex_skills(self) -> None:
         destination = self.root / "codex-skills"
         actions = plan_install(self.source, "codex", destination)
 
-        self.assertEqual(len(actions), 5)
+        self.assertEqual(len(actions), len(SKILL_WORKFLOWS))
         self.assertEqual({item.status for item in actions}, {"create"})
         self.assertFalse(destination.exists())
 
@@ -61,7 +61,7 @@ class SkillDistributionTests(unittest.TestCase):
         destination = self.root / "claude-skills"
         apply_install(plan_install(self.source / "skills", "claude", destination))
         proofs = verify_installation("claude", destination)
-        self.assertEqual(len(proofs), 5)
+        self.assertEqual(len(proofs), len(SKILL_WORKFLOWS))
 
         home = self.root / "home"
         self.assertEqual(
@@ -107,7 +107,9 @@ class SkillDistributionTests(unittest.TestCase):
             "---\nname: dset-extra\ndescription: extra\n---\n", encoding="utf-8"
         )
 
-        with self.assertRaisesRegex(SkillDistributionError, "exactly the five"):
+        with self.assertRaisesRegex(
+            SkillDistributionError, "public DSET skill catalog"
+        ):
             plan_install(self.source, "codex", self.root / "target")
 
     def test_invocation_receipt_requires_real_host_observations(self) -> None:

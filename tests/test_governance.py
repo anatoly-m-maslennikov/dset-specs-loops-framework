@@ -23,6 +23,7 @@ from dset_toolchain.governance import (
     validate_governance,
 )
 from dset_toolchain.layout import discover_layout
+from dset_toolchain.skill_catalog import REGISTERED_SKILL_WORKFLOWS
 from dset_toolchain.validation import validate_repository
 from dset_toolchain.yaml_subset import dump, load
 
@@ -210,7 +211,7 @@ class GovernanceTests(unittest.TestCase):
                     hashlib.sha256(canonical.read_bytes()).hexdigest(),
                 )
 
-    def test_release_applicable_adopter_installs_all_five_wrappers(self) -> None:
+    def test_release_applicable_adopter_installs_all_registered_wrappers(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             target = Path(raw) / "release-adopter"
             (target / "dset").mkdir(parents=True)
@@ -226,13 +227,7 @@ class GovernanceTests(unittest.TestCase):
             )
             materialize_governance(ROOT, target, install_wrappers=True)
             self.assertEqual(validate_governance(target), [])
-            for workflow in (
-                "lifecycle-orchestration",
-                "domain-clarification",
-                "diagnosis",
-                "prototyping",
-                "release",
-            ):
+            for workflow in REGISTERED_SKILL_WORKFLOWS.values():
                 with self.subTest(workflow=workflow):
                     resolved, diagnostics = resolve_workflow(target, workflow)
                     self.assertEqual(diagnostics, [])
@@ -668,6 +663,15 @@ class GovernanceTests(unittest.TestCase):
             "diagnosis": "dset-diagnose",
             "prototyping": "dset-prototype",
             "release": "dset-release",
+            "work-triage": "dset-triage",
+            "decompose": "dset-decompose",
+            "landscape": "dset-landscape",
+            "decide": "dset-decide",
+            "plan-proof": "dset-plan-proof",
+            "plan-implementation": "dset-plan-implementation",
+            "implement": "dset-implement",
+            "verify": "dset-verify",
+            "complete": "dset-complete",
         }
         registry = cast(
             dict[str, Any],

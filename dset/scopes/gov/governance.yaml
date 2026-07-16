@@ -210,7 +210,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/skill/templates/governance/core-v1/lifecycle-orchestration.md
-      sha256: 734f166adbb9f1d42320c449b0fb0ab3a13ffd845064a8a8dc0f6d0005ecd1a7
+      sha256: c600e0c6fb071dca10870f1932381df2412c38b751c686030d4eea2cb5bb8a5f
   -
     id: DSET-RULE-DIAGNOSIS
     layer: SKILL
@@ -319,14 +319,20 @@ workflows:
     id: work-triage
     rules:
       - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
       - DSET-RULE-WORK-ITEMS
   -
     id: decompose
     rules:
       - DSET-RULE-ARCHITECTURE
       - DSET-RULE-DOMAIN-SPEC
+      - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
       - DSET-RULE-WORK-ITEMS
   -
     id: landscape
@@ -335,13 +341,19 @@ workflows:
       - DSET-RULE-DOMAIN-SPEC
       - DSET-RULE-TEST-PLAN
       - DSET-RULE-EVAL-PLAN
+      - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
   -
     id: decide
     rules:
       - DSET-RULE-ARCHITECTURE
       - DSET-RULE-DOMAIN-SPEC
+      - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
       - DSET-RULE-WORK-ITEMS
   -
     id: plan-proof
@@ -350,7 +362,10 @@ workflows:
       - DSET-RULE-DOMAIN-SPEC
       - DSET-RULE-TEST-PLAN
       - DSET-RULE-EVAL-PLAN
+      - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
   -
     id: plan-implementation
     rules:
@@ -361,6 +376,8 @@ workflows:
       - DSET-RULE-EVAL-PLAN
       - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
   -
     id: implement
     rules:
@@ -371,6 +388,8 @@ workflows:
       - DSET-RULE-EVAL-PLAN
       - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
       - DSET-RULE-WORK-ITEMS
   -
     id: verify
@@ -382,11 +401,16 @@ workflows:
       - DSET-RULE-EVAL-PLAN
       - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
   -
     id: complete
     rules:
       - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
       - DSET-RULE-WORK-ITEMS
 wrappers:
   -
@@ -409,3 +433,39 @@ wrappers:
     workflow: release
     path: skills/dset-release/SKILL.md
     sha256: 42a3d62fb72c362a6b47238acb91d00eb85b18f0c57cd1202d88ddffd31ec260
+  -
+    workflow: work-triage
+    path: skills/dset-triage/SKILL.md
+    sha256: 90773fe2f2110cbdbdb632b355478f7feb47287d1e30c7769bd994bac8dc6467
+  -
+    workflow: decompose
+    path: skills/dset-decompose/SKILL.md
+    sha256: afe0b6a52ffdbd6d5d812edee10ff139e2b5c3d4f373946b0d9668e1a8c33ccf
+  -
+    workflow: landscape
+    path: skills/dset-landscape/SKILL.md
+    sha256: 153aeac8cf089cdb6545841f95c3318224f1bed11b8b77e177ccac928b25dcff
+  -
+    workflow: decide
+    path: skills/dset-decide/SKILL.md
+    sha256: 0d2cae5b55762d02dddf6554653470395d2f50c83a0abe8ed60d805b43aa450c
+  -
+    workflow: plan-proof
+    path: skills/dset-plan-proof/SKILL.md
+    sha256: fb5ca0b812dd64deef6282e4c0bc07e69dcf3578c86d8faeafcec022f867380c
+  -
+    workflow: plan-implementation
+    path: skills/dset-plan-implementation/SKILL.md
+    sha256: 1468c65378f0f224ce81e1bccaddb8dc999c4f4172e6422059b6c4c0fd1a0a1b
+  -
+    workflow: implement
+    path: skills/dset-implement/SKILL.md
+    sha256: 9e664c4782a9085d794e030cd787b39462460659dfa206d1066c06ee552c043f
+  -
+    workflow: verify
+    path: skills/dset-verify/SKILL.md
+    sha256: 1b5c1913063c6b21b1c0dda5b357167a61d177255154976bfbf83d32dbdca4e4
+  -
+    workflow: complete
+    path: skills/dset-complete/SKILL.md
+    sha256: cb24f74cd39db6be93d7512e115dba00c1e2d1f69fc14d1f71505a5f801e85bb

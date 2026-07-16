@@ -1,0 +1,4 @@
+interface:
+  display_name: "DSET Landscape"
+  short_description: "Compare implementation and technology alternatives"
+  default_prompt: "Use $dset-landscape to resolve and run the repository-local solution landscape workflow."

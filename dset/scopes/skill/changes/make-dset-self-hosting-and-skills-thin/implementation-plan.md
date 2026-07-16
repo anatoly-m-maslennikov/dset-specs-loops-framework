@@ -33,10 +33,10 @@
   temporary work outside the repository, and rerun exact-head hosted proof after
   the current branch is pushed.
 
-## Batch 4 — Skill topology and release cycle — local implementation complete; native/hosted proof pending
+## Batch 4 — Skill topology and release cycle — expanded implementation in progress; native/hosted proof pending
 
-- Define the five-skill core surface and make `dset` the only general lifecycle/next-step entrypoint.
-- Implement and register all five thin source packages, including applicability-aware adopter materialization and recursive wrapper-identity proof.
+- Keep `dset` as the only general lifecycle/next-step entrypoint and expose one thin direct wrapper for every stable lifecycle mode.
+- Implement and register all 16 thin source packages, including the two pre-resolution exceptions, applicability-aware adopter materialization, and recursive wrapper-identity proof.
 - Define bounded ignored skill-run evidence and its non-authoritative relationship to repository/Git/hosted state.
 - Package the governance templates and wrappers into a verified bootstrap bundle; add dry-run-first initialization for empty or existing repositories with collision stops, rollback, and post-write validation.
 - Expose persistent start/resume/checkpoint/finish runtime commands that resolve repository-owned rules before recording bounded machine-local state.

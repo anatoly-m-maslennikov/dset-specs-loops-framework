@@ -233,14 +233,20 @@ workflows:
     id: work-triage
     rules:
       - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
       - DSET-RULE-WORK-ITEMS
   -
     id: decompose
     rules:
       - DSET-RULE-ARCHITECTURE
       - DSET-RULE-DOMAIN-SPEC
+      - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
       - DSET-RULE-WORK-ITEMS
   -
     id: landscape
@@ -249,13 +255,19 @@ workflows:
       - DSET-RULE-DOMAIN-SPEC
       - DSET-RULE-TEST-PLAN
       - DSET-RULE-EVAL-PLAN
+      - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
   -
     id: decide
     rules:
       - DSET-RULE-ARCHITECTURE
       - DSET-RULE-DOMAIN-SPEC
+      - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
       - DSET-RULE-WORK-ITEMS
   -
     id: plan-proof
@@ -264,7 +276,10 @@ workflows:
       - DSET-RULE-DOMAIN-SPEC
       - DSET-RULE-TEST-PLAN
       - DSET-RULE-EVAL-PLAN
+      - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
   -
     id: plan-implementation
     rules:
@@ -275,6 +290,8 @@ workflows:
       - DSET-RULE-EVAL-PLAN
       - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
   -
     id: implement
     rules:
@@ -285,6 +302,8 @@ workflows:
       - DSET-RULE-EVAL-PLAN
       - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
       - DSET-RULE-WORK-ITEMS
   -
     id: verify
@@ -296,11 +315,16 @@ workflows:
       - DSET-RULE-EVAL-PLAN
       - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
   -
     id: complete
     rules:
       - DSET-RULE-ARCHITECTURE
+      - DSET-RULE-SUPPORTABILITY
       - DSET-RULE-ARTIFACT-MAINTENANCE
+      - DSET-RULE-DELEGATION-BUDGET
+      - DSET-RULE-SKILL-RUNS
       - DSET-RULE-WORK-ITEMS
 wrappers:
   -
@@ -318,3 +342,30 @@ wrappers:
   -
     workflow: release
     path: skills/dset-release/SKILL.md
+  -
+    workflow: work-triage
+    path: skills/dset-triage/SKILL.md
+  -
+    workflow: decompose
+    path: skills/dset-decompose/SKILL.md
+  -
+    workflow: landscape
+    path: skills/dset-landscape/SKILL.md
+  -
+    workflow: decide
+    path: skills/dset-decide/SKILL.md
+  -
+    workflow: plan-proof
+    path: skills/dset-plan-proof/SKILL.md
+  -
+    workflow: plan-implementation
+    path: skills/dset-plan-implementation/SKILL.md
+  -
+    workflow: implement
+    path: skills/dset-implement/SKILL.md
+  -
+    workflow: verify
+    path: skills/dset-verify/SKILL.md
+  -
+    workflow: complete
+    path: skills/dset-complete/SKILL.md

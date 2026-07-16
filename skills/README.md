@@ -11,20 +11,35 @@ Skills own discovery, workflow identity, resolver invocation, rule-set reporting
 ## Start here
 
 - [`dset`](dset/SKILL.md) — inspect repository state, recommend one governed lifecycle mode, and hand off at the next authorization boundary.
+- [`dset-init`](dset-init/SKILL.md) — preview and, only when authorized, initialize a repository or monorepo Work Area.
+- [`dset-repair-governance`](dset-repair-governance/SKILL.md) — diagnose invalid local governance and stop with a repair handoff.
+- [`dset-decompose`](dset-decompose/SKILL.md) — establish bounded Work Area and Change seams.
 - [`dset-clarify`](dset-clarify/SKILL.md) — resolve domain ambiguity and proof obligations before specification acceptance.
 - [`dset-diagnose`](dset-diagnose/SKILL.md) — investigate defects and incidents through evidence and Back-to-Left provenance without silently authorizing a fix.
+- [`dset-landscape`](dset-landscape/SKILL.md) — compare solution, library, framework, architecture, and language alternatives.
 - [`dset-prototype`](dset-prototype/SKILL.md) — run bounded disposable design experiments and feed evidence into the Solution Landscape and Decision.
+- [`dset-decide`](dset-decide/SKILL.md) — emit a durable Decision and its evergreen-compilation handoff.
+- [`dset-plan-proof`](dset-plan-proof/SKILL.md) — maintain separate deterministic test and qualitative eval plans.
+- [`dset-plan-implementation`](dset-plan-implementation/SKILL.md) — create dependency-ordered implementation work and Change tasks.
+- [`dset-implement`](dset-implement/SKILL.md) — execute authorized code, documentation, methodology, test, eval-asset, and configuration changes.
+- [`dset-verify`](dset-verify/SKILL.md) — check implementation and governance against accepted truth and proof plans.
+- [`dset-triage`](dset-triage/SKILL.md) — classify and route Problems, Opportunities, Questions, and Conflicts.
 - [`dset-release`](dset-release/SKILL.md) — prepare or verify a release and publish only under separate explicit authority.
+- [`dset-complete`](dset-complete/SKILL.md) — confirm terminal state and report residual obligations without inventing work.
 
-These five repository-native wrappers are the implemented source skill surface.
-The primary orchestrator owns the internal session checkpoint/resume boundary;
-it is not a sixth public skill. Wrapper availability does not claim the still
-separately gated CLI/host runtime bridge, release publisher, declared-host
-installation proof, or cross-platform execution proof is complete. The
-repository now contains tested run/checkpoint and release-transition library
-cores; those libraries do not by themselves prove host-native execution.
+These 16 folders are the exact implemented source catalog. Fourteen wrappers
+resolve repository-local workflows; `dset-init` and
+`dset-repair-governance` are the only bounded pre-resolution exceptions. The
+primary orchestrator owns the shared session checkpoint/resume boundary; there
+is no separate session-management skill. Source availability does not prove a
+real host invocation, release publication, or cross-platform execution until
+those separate gates pass.
 
-Each folder contains a concise `SKILL.md` and generated `agents/openai.yaml`. Resolve its workflow with `dset rules resolve <workflow-id>` before acting. No skill depends on private memory, machine-specific paths, shell-only behavior, or a parallel specification format.
+Each folder contains a concise `SKILL.md` and generated `agents/openai.yaml`.
+Governed wrappers resolve their registered workflow before acting; the two
+exceptions use only their declared bootstrap/diagnostic transaction. No skill
+depends on private memory, machine-specific paths, shell-only behavior, or a
+parallel specification format.
 
 Use the [host-distribution workflow](host-distribution.md) to preview or apply
 copy-based Codex and Claude installations, verify discovery artifacts, and

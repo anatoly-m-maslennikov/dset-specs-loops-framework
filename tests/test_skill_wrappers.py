@@ -4,59 +4,37 @@ import re
 import unittest
 from pathlib import Path
 
+from dset_toolchain.skill_catalog import (
+    PRE_RESOLUTION_SKILLS,
+    PUBLIC_SKILL_WORKFLOWS,
+    SKILL_INVOCATION_MARKERS,
+)
+
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS = ROOT / "skills"
-WORKFLOWS = {
-    "dset": "lifecycle-orchestration",
-    "dset-clarify": "domain-clarification",
-    "dset-diagnose": "diagnosis",
-    "dset-prototype": "prototyping",
-    "dset-release": "release",
-}
 
 
 class SkillWrapperTests(unittest.TestCase):
     def _skill_text(self, name: str) -> str:
         return (SKILLS / name / "SKILL.md").read_text(encoding="utf-8")
 
-    def test_exactly_five_thin_portable_public_wrappers(self) -> None:
+    def test_exact_public_catalog_is_thin_and_portable(self) -> None:
         actual = {
             path.parent.name for path in SKILLS.glob("*/SKILL.md") if path.is_file()
         }
-        self.assertEqual(actual, set(WORKFLOWS))
+        self.assertEqual(actual, set(PUBLIC_SKILL_WORKFLOWS))
 
         forbidden = ("/Users/", "/tmp/", "~/", "## Workflow", "PowerShell")
-        for name, workflow in WORKFLOWS.items():
+        for name, marker in SKILL_INVOCATION_MARKERS.items():
             with self.subTest(skill=name):
                 text = self._skill_text(name)
                 self.assertLessEqual(len(text.splitlines()), 24)
                 self.assertIn(f"name: {name}\n", text)
                 self.assertRegex(text, r"(?m)^description: \S")
-                self.assertIn(
-                    f"rules resolve {workflow} --format json",
-                    text,
-                )
-                self.assertIn("Select exactly one available resolver entrypoint", text)
+                self.assertIn(marker, text)
+                self.assertIn("Select exactly one available", text)
                 self.assertIn("Never retry the alternate after a nonzero result", text)
-                self.assertIn(
-                    "without fallback to the wrapper, memory, installed templates, "
-                    "or remote framework prose",
-                    text,
-                )
-                self.assertIn("`conflict_resolution` coverage", text)
-                self.assertIn("Empty `conflicts` is unassured", text)
-                self.assertIn(
-                    "selected rules require unavailable conflict coverage", text
-                )
-                self.assertIn("`persistence: unavailable`", text)
-                self.assertIn("never edit an emitted atomic artifact", text)
                 self.assertFalse(any(fragment in text for fragment in forbidden))
-
-                resolve_at = text.index(f"rules resolve {workflow}")
-                read_at = text.index("Read the returned rule documents")
-                runtime_at = text.index("runtime adapter only when exposed")
-                self.assertLess(resolve_at, read_at)
-                self.assertLess(read_at, runtime_at)
 
                 metadata = (SKILLS / name / "agents" / "openai.yaml").read_text(
                     encoding="utf-8"
@@ -70,25 +48,70 @@ class SkillWrapperTests(unittest.TestCase):
                 self.assertGreaterEqual(len(match.group(1)), 25)
                 self.assertLessEqual(len(match.group(1)), 64)
 
-    def test_primary_trigger_is_general_and_specialist_stops_are_distinct(self) -> None:
+    def test_governed_wrappers_fail_closed_after_local_resolution(self) -> None:
+        for name, workflow in PUBLIC_SKILL_WORKFLOWS.items():
+            if name in PRE_RESOLUTION_SKILLS:
+                continue
+            with self.subTest(skill=name):
+                text = self._skill_text(name)
+                self.assertIn(
+                    f"rules resolve {workflow} --format json",
+                    text,
+                )
+                self.assertIn(
+                    "without fallback to the wrapper, memory, installed templates, "
+                    "or remote framework prose",
+                    text,
+                )
+                self.assertIn("`conflict_resolution` coverage", text)
+                self.assertIn("Empty `conflicts` is unassured", text)
+                self.assertIn(
+                    "selected rules require unavailable conflict coverage", text
+                )
+                self.assertIn("`persistence: unavailable`", text)
+
+                resolve_at = text.index(f"rules resolve {workflow}")
+                read_at = text.index("Read the returned rule documents")
+                runtime_at = text.index("runtime adapter only when exposed")
+                self.assertLess(resolve_at, read_at)
+                self.assertLess(read_at, runtime_at)
+
+    def test_pre_resolution_exceptions_are_bounded(self) -> None:
+        initialize = self._skill_text("dset-init")
+        self.assertIn("without `--execute`", initialize)
+        self.assertIn("With authorization", initialize)
+        self.assertIn("never overwrite or merge", initialize)
+        self.assertIn("continue into another lifecycle mode", initialize)
+
+        repair = self._skill_text("dset-repair-governance")
+        self.assertIn("Do not run `rules resolve`", repair)
+        self.assertIn("Do not copy template content", repair)
+        self.assertIn("Stop before any write", repair)
+
+    def test_primary_and_direct_stop_boundaries_are_distinct(self) -> None:
         primary = self._skill_text("dset")
         self.assertIn("general, multi-stage, or next-action", primary)
         self.assertNotIn("Route any DSET lifecycle request", primary)
         self.assertIn("at most two workflow transitions", primary)
 
-        specialists = {
+        boundaries = {
+            "dset-decompose": "stop before specification or implementation",
             "dset-clarify": "stop before consequential selection or implementation",
             "dset-diagnose": "stop before implementing a fix",
+            "dset-landscape": "stop before a Decision or implementation",
             "dset-prototype": "stop before adoption or promotion",
+            "dset-decide": "stop before implementation",
+            "dset-plan-proof": "stop before implementation or execution",
+            "dset-plan-implementation": "stop before implementation",
+            "dset-implement": "stop before claiming conformance",
+            "dset-verify": "stop before repair or release",
+            "dset-triage": "stop before solving the work",
             "dset-release": "Publication requires separate explicit authority",
+            "dset-complete": "Stop without creating work",
         }
-        for name, boundary in specialists.items():
+        for name, boundary in boundaries.items():
             with self.subTest(skill=name):
-                text = self._skill_text(name)
-                self.assertIn(
-                    "With no root, return a `$dset` `initialize` handoff", text
-                )
-                self.assertIn(boundary, text)
+                self.assertIn(boundary, self._skill_text(name))
 
 
 if __name__ == "__main__":

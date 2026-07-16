@@ -3,11 +3,16 @@ from __future__ import annotations
 import contextlib
 import io
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from dset_toolchain.cli import main
+from dset_toolchain.skill_distribution import SKILL_WORKFLOWS
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 class EndToEndCliTests(unittest.TestCase):
@@ -40,7 +45,10 @@ class EndToEndCliTests(unittest.TestCase):
             self.assertTrue(json.loads(output.getvalue())["executed"])
 
             output = io.StringIO()
-            with contextlib.redirect_stdout(output):
+            with (
+                mock.patch.dict(os.environ, {"PYTHONPATH": str(ROOT)}),
+                contextlib.redirect_stdout(output),
+            ):
                 result = main(["verify", str(target), "--format", "json"])
             self.assertEqual(result, 0)
             self.assertEqual(json.loads(output.getvalue()), [])
@@ -100,7 +108,7 @@ class EndToEndCliTests(unittest.TestCase):
             self.assertEqual(result, 0)
             installed = json.loads(output.getvalue())
             self.assertTrue(installed["applied"])
-            self.assertEqual(len(installed["proofs"]), 5)
+            self.assertEqual(len(installed["proofs"]), len(SKILL_WORKFLOWS))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,4 @@
+interface:
+  display_name: "DSET Complete"
+  short_description: "Confirm DSET work has no remaining obligations"
+  default_prompt: "Use $dset-complete to resolve and run the repository-local completion workflow."

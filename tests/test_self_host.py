@@ -40,6 +40,15 @@ class SelfHostTests(unittest.TestCase):
                 "domain-clarification",
                 "diagnosis",
                 "prototyping",
+                "work-triage",
+                "decompose",
+                "landscape",
+                "decide",
+                "plan-proof",
+                "plan-implementation",
+                "implement",
+                "verify",
+                "complete",
             ],
         )
         self.assertTrue(report["wrappers_unchanged"])

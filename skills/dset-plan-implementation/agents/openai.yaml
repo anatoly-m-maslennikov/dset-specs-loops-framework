@@ -1,0 +1,4 @@
+interface:
+  display_name: "DSET Plan Implementation"
+  short_description: "Plan dependency-ordered DSET implementation"
+  default_prompt: "Use $dset-plan-implementation to resolve and run the repository-local implementation-planning workflow."

@@ -1,6 +1,6 @@
 # DSET skill host distribution
 
-The five folders in this directory are canonical source artifacts. Host
+The 16 folders listed in the [skills hub](README.md) are canonical source artifacts. Host
 installations are copied distributions: they do not become editable rule
 owners, and installation never adds another public skill.
 
@@ -22,8 +22,11 @@ user's `.claude/skills`. These paths are derived at runtime through portable
 path APIs on Linux, macOS, native Windows, and WSL.
 
 The installer rejects symlinked source content and creates real copied skill
-folders. It requires exactly `dset`, `dset-clarify`, `dset-diagnose`,
-`dset-prototype`, and `dset-release`.
+folders. It requires the exact 16-skill catalog: `dset`, `dset-init`,
+`dset-repair-governance`, `dset-decompose`, `dset-diagnose`, `dset-clarify`,
+`dset-landscape`, `dset-prototype`, `dset-decide`, `dset-plan-proof`,
+`dset-plan-implementation`, `dset-implement`, `dset-verify`, `dset-triage`,
+`dset-release`, and `dset-complete`.
 
 ## Verify discovery
 

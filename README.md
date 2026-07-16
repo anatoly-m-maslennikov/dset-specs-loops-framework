@@ -62,10 +62,11 @@ methodology document set. The current `0.3.1` state includes:
   coordinated release preparation;
 - schemas, templates, fixtures, migration guidance, generated traceability, and
   provenance records;
-- five repository-native workflow wrappers for lifecycle routing, clarification,
-  diagnosis, prototyping, and release, plus governing contracts for thin
-  wrappers, skill-run logs, session checkpoints, and delegation budgets;
-- dry-run-first copy distribution for all five skills into Codex and Claude
+- 16 repository-native skills: one catch-all lifecycle orchestrator, one thin
+  direct wrapper per stable lifecycle mode, and two bounded pre-resolution
+  entrypoints, plus governing contracts for skill-run logs, session
+  checkpoints, and delegation budgets;
+- dry-run-first copy distribution for the exact public skill catalog into Codex and Claude
   layouts, with digest verification, collision stops, and invocation receipts;
 - GitHub delivery policy, Linux/macOS/native-Windows CI, an explicit WSL proof
   hook, a guarded exact-merge-SHA release publisher, supportability runbooks,

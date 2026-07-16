@@ -13,14 +13,9 @@ from pathlib import Path
 from typing import Any
 
 from .bootstrap import distribution_source
+from .skill_catalog import PUBLIC_SKILL_WORKFLOWS, SKILL_INVOCATION_MARKERS
 
-SKILL_WORKFLOWS = {
-    "dset": "lifecycle-orchestration",
-    "dset-clarify": "domain-clarification",
-    "dset-diagnose": "diagnosis",
-    "dset-prototype": "prototyping",
-    "dset-release": "release",
-}
+SKILL_WORKFLOWS = PUBLIC_SKILL_WORKFLOWS
 HOSTS = {"claude", "codex"}
 RECEIPT_SCHEMA_VERSION = "1.0"
 RECEIPT_FIELDS = {
@@ -181,7 +176,7 @@ def apply_install(actions: Sequence[InstallAction]) -> list[InstallationProof]:
 def verify_installation(host: str, destination: Path) -> list[InstallationProof]:
     _require_host(host)
     proofs: list[InstallationProof] = []
-    for skill_id, workflow in sorted(SKILL_WORKFLOWS.items()):
+    for skill_id, _workflow in sorted(SKILL_WORKFLOWS.items()):
         skill = destination / skill_id
         _validate_skill_shape(skill, host)
         if skill.is_symlink():
@@ -195,7 +190,7 @@ def verify_installation(host: str, destination: Path) -> list[InstallationProof]
                 digest=tree_digest(skill),
                 copied_folder=True,
                 discoverable=True,
-                invocation_contract=(f"rules resolve {workflow} --format json" in text),
+                invocation_contract=(SKILL_INVOCATION_MARKERS[skill_id] in text),
             )
         )
     return proofs
@@ -321,7 +316,7 @@ def _validate_source_surface(skills_root: Path) -> None:
     expected = set(SKILL_WORKFLOWS)
     if actual != expected:
         raise SkillDistributionError(
-            "source must contain exactly the five public DSET skills: "
+            "source must contain exactly the public DSET skill catalog: "
             f"expected={sorted(expected)}, actual={sorted(actual)}"
         )
 
@@ -335,8 +330,8 @@ def _validate_skill_shape(skill: Path, host: str) -> None:
     name = skill.name
     if f"\nname: {name}\n" not in text or "\ndescription: " not in text:
         raise SkillDistributionError(f"skill frontmatter is invalid: {skill_file}")
-    workflow = SKILL_WORKFLOWS.get(name)
-    if workflow is None or f"rules resolve {workflow} --format json" not in text:
+    marker = SKILL_INVOCATION_MARKERS.get(name)
+    if marker is None or marker not in text:
         raise SkillDistributionError(f"skill invocation contract is invalid: {name}")
     if host == "codex":
         metadata = skill / "agents" / "openai.yaml"

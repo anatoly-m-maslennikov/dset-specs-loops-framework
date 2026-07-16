@@ -2,9 +2,14 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from dset_toolchain.skill_catalog import PUBLIC_SKILL_WORKFLOWS  # noqa: E402
+
 OUTPUT = ROOT / "dset_toolchain" / "bootstrap_bundle.json"
 
 
@@ -16,13 +21,7 @@ def selected_files() -> list[Path]:
             selected.extend(
                 path for path in (layer_root / folder).rglob("*") if path.is_file()
             )
-    for skill_id in (
-        "dset",
-        "dset-clarify",
-        "dset-diagnose",
-        "dset-prototype",
-        "dset-release",
-    ):
+    for skill_id in sorted(PUBLIC_SKILL_WORKFLOWS):
         selected.extend(
             path
             for path in (ROOT / "skills" / skill_id).rglob("*")

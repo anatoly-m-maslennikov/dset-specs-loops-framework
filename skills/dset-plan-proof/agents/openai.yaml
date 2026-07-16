@@ -1,0 +1,4 @@
+interface:
+  display_name: "DSET Plan Proof"
+  short_description: "Plan deterministic tests and qualitative evals"
+  default_prompt: "Use $dset-plan-proof to resolve and run the repository-local proof-planning workflow."
