@@ -28,8 +28,7 @@ def selected_files() -> list[Path]:
             for path in (ROOT / "skills" / skill_id).rglob("*")
             if path.is_file()
             and not any(part.startswith(".") for part in path.relative_to(ROOT).parts)
-            and path.suffix
-            in {".json", ".md", ".py", ".toml", ".txt", ".yaml", ".yml"}
+            and path.suffix in {".json", ".md", ".py", ".toml", ".txt", ".yaml", ".yml"}
         )
     return sorted(set(selected))
 
