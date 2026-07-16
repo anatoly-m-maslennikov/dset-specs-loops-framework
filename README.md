@@ -56,15 +56,20 @@ methodology document set. The current `0.3.1` state includes:
   and OPS scopes under [`dset/scopes/`](dset/scopes/);
 - schema `1.2` layered project metadata, Work Areas for monorepos and mixed
   repositories, scoped Changes, and stable project-prefixed artifact IDs;
-- a dependency-light Python toolchain with `check`, `verify`, `new`, `trace`,
-  `archive`, `rules`, `self-host`, and `version` workflows;
+- a dependency-light Python toolchain with packaged `init`, repository checks,
+  Change scaffolding/archive, traceability, governance resolution, bounded
+  self-hosting, persistent runtime checkpoints, host skill distribution, and
+  coordinated release preparation;
 - schemas, templates, fixtures, migration guidance, generated traceability, and
   provenance records;
 - five repository-native workflow wrappers for lifecycle routing, clarification,
   diagnosis, prototyping, and release, plus governing contracts for thin
   wrappers, skill-run logs, session checkpoints, and delegation budgets;
-- GitHub delivery policy, CI validation, supportability runbooks, third-party
-  notices, and PR-linked proof history.
+- dry-run-first copy distribution for all five skills into Codex and Claude
+  layouts, with digest verification, collision stops, and invocation receipts;
+- GitHub delivery policy, Linux/macOS/native-Windows CI, an explicit WSL proof
+  hook, a guarded exact-merge-SHA release publisher, supportability runbooks,
+  third-party notices, and PR-linked proof history.
 
 ## Run DSET
 
@@ -81,7 +86,34 @@ uv sync --locked --dev
 uv run dset verify .
 ```
 
-The CLI also provides `rules check`, `rules resolve`, `rules materialize`, `rules refresh`, `rules diff`, `self-host`, `version`, `new`, `trace`, and guarded `archive` workflows. See the [project-root guide](dset/README.md) for lifecycle and command details.
+Initialize an empty or existing repository with a read-only preview first:
+
+```bash
+dset init /path/to/project \
+  --project-key APP \
+  --project-id example-app \
+  --name "Example App" \
+  --license MIT
+
+# Repeat the reviewed command with --execute to materialize and validate it.
+```
+
+Install the five portable source skills after reviewing the plan:
+
+```bash
+dset skills install --host codex
+dset skills install --host codex --apply
+
+dset skills install --host claude
+dset skills install --host claude --apply
+```
+
+The CLI also provides `runtime start|resume|checkpoint|finish`,
+`release plan|check|prepare`, `rules check|resolve|materialize|refresh|diff`,
+`self-host`, `version`, `new`, `trace`, and guarded `archive` workflows. See
+the [project-root guide](dset/README.md) and
+[host distribution guide](skills/host-distribution.md) for lifecycle,
+authorization, and proof details.
 
 ## Source-of-truth model
 
@@ -115,20 +147,19 @@ It is not yet an end-user adoption-readiness claim.
 
 ## What is next
 
-The next work should turn the foundation into an installable, repeatable
-toolchain that works outside this repository:
+The local wheel/toolchain boundary is implemented. The next work should close
+the remaining native and hosted evidence gaps without overstating them:
 
 - publish a schema `1.2` compatible validator release so self-hosting no longer
   relies on the migration-baseline bootstrap;
-- add a generated schema `1.2` adopter that exercises Work Areas, the default
-  local `dev` to remote `dev` to PR `main` flow, and optional worktree
-  isolation;
-- connect the tested run/checkpoint and release-transition library cores to the
-  five source wrappers through portable CLI/host adapters; finish
-  initialization, next-action recommendation, synchronized version updates,
-  and post-merge publication;
-- package and test the thin skills for Codex and Claude against repository-local
-  governing rules rather than duplicated skill prose;
+- run authenticated clean-host Codex and Claude discovery/load/invocation,
+  local-rule, handoff, and stop proofs and promote only verified receipts;
+- run the configured Linux/macOS/native-Windows CI matrix and a labeled WSL
+  runner against the same commit;
+- exercise the guarded publisher through a real version-changing `dev` to
+  `main` delivery, including retry, partial-recovery, and collision evidence;
+- finish the next-action heuristic, RC/final readiness integration, generated
+  project-health view, and external-review reconciliation flow;
 - add the JavaScript/TypeScript applied profile while keeping documentation and
   methodology as first-class artifact types;
 - pilot the framework on external repositories such as Obsidian Your Harness and

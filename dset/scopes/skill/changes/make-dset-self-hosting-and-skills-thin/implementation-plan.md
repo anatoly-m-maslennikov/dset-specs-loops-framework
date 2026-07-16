@@ -33,14 +33,18 @@
   temporary work outside the repository, and rerun exact-head hosted proof after
   the current branch is pushed.
 
-## Batch 4 — Skill topology and release-cycle contract — source wrappers complete; runtime pending
+## Batch 4 — Skill topology and release cycle — local implementation complete; native/hosted proof pending
 
 - Define the five-skill core surface and make `dset` the only general lifecycle/next-step entrypoint.
 - Implement and register all five thin source packages, including applicability-aware adopter materialization and recursive wrapper-identity proof.
 - Define bounded ignored skill-run evidence and its non-authoritative relationship to repository/Git/hosted state.
+- Package the governance templates and wrappers into a verified bootstrap bundle; add dry-run-first initialization for empty or existing repositories with collision stops, rollback, and post-write validation.
+- Expose persistent start/resume/checkpoint/finish runtime commands that resolve repository-owned rules before recording bounded machine-local state.
+- Add copy-based, digest-verified, no-overwrite Codex/Claude distribution plus invocation-receipt validation without making installed copies authoritative.
 - Replace decimal version arithmetic with normal/small integer-component transitions and reserve `1.0.0-rc.N` plus `1.0.0` for fully working release gates.
 - Coordinate the product and CLI package release while retaining schema/profile/template compatibility versions independently.
-- Separate pre-merge release preparation from post-merge tag/GitHub Release publication.
+- Separate explicit pre-merge release preparation from an idempotent exact-merge-SHA tag/GitHub Release publisher with collision stops and no post-merge content commit.
+- Run the complete local gate and clean-wheel adopter/runtime/host-layout fixed point; retain real authenticated host invocation, hosted OS/WSL, and publication evidence as explicit open gates.
 - Run three independent high-effort specification reviews, reconcile blocking findings, and preserve bounded evidence.
 - Define default main-model/main-effort inheritance, medium useful fan-out, explicit override reporting, and outcome-cost-aware low/high budget behavior.
 - Define one project-owned problem/opportunity/question registry, stable layer IDs, and Decision records; keep tasks inside Changes and retain the Action entity as a project open question pending Decision.
@@ -129,7 +133,7 @@
 
 ## Later batches
 
-Implement the remaining Batch 4 runtime adapter, run/checkpoint persistence, executable release/version mechanics, and publication automation; Batch 10 health/review/ranking mechanics; plus roadmap §§5–§10 for the TypeScript profile, owned Your Harness pilot, clean-room Claudian evaluation, complete tests/evals, and pinned distribution. Keep unfinished behavior out of public capability claims.
+Complete Batch 4's native authenticated Codex/Claude receipts, hosted Linux/macOS/native-Windows and WSL execution, RC/final readiness integration, and real exact-SHA publication proof. Implement Batch 10 health/review/ranking mechanics plus roadmap §§5–§10 for the TypeScript profile, owned Your Harness pilot, clean-room Claudian evaluation, and complete qualitative evals. Keep unfinished evidence and behavior out of public capability claims.
 
 ## Rollout and recovery
 
