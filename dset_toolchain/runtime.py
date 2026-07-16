@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import os
 import re
@@ -12,6 +13,8 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
+
+from .yaml_subset import load
 
 RUN_SCHEMA_VERSION = "1.2"
 CHECKPOINT_SCHEMA_VERSION = "1.1"
@@ -513,6 +516,25 @@ def finish_run(
     return copy.deepcopy(terminal)
 
 
+def load_invocation(root: Path, run_id: str) -> RuntimeInvocation:
+    """Reload one persisted non-terminal invocation for a host bridge call."""
+
+    _require_id(run_id)
+    storage = _existing_storage(root)
+    if storage is None:
+        raise RuntimeStateError("runtime storage is unavailable")
+    running_path = storage.runs / f".{run_id}.running.json"
+    run = _read_running_record(running_path)
+    if run.get("run_id") != run_id or run.get("status") != "running":
+        raise RuntimeStateError(f"invalid running invocation: {run_id}")
+    session_id = run.get("session_id")
+    _require_id(session_id)
+    checkpoint = _read_checkpoint(storage.sessions / f"{session_id}.json")
+    if checkpoint.get("latest_run_id") != run_id:
+        raise RuntimeStateError(f"checkpoint does not own invocation: {run_id}")
+    return RuntimeInvocation(run, checkpoint, storage, running_path)
+
+
 def _storage_for_root(root: Path | None) -> _Storage | None:
     if not _is_dset_root(root):
         return None
@@ -590,6 +612,18 @@ def _read_checkpoint(path: Path) -> dict[str, Any]:
     return data
 
 
+def _read_running_record(path: Path) -> dict[str, Any]:
+    try:
+        if path.stat().st_size > MAX_RECORD_BYTES:
+            raise RuntimeStateError(f"running record exceeds size limit: {path.name}")
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise RuntimeStateError(f"invalid running record: {path.name}") from error
+    if not isinstance(data, dict) or data.get("schema_version") != RUN_SCHEMA_VERSION:
+        raise RuntimeStateError(f"invalid running record: {path.name}")
+    return data
+
+
 def _scopes_compatible(candidate: Mapping[str, Any], wanted: Mapping[str, Any]) -> bool:
     for key in ("repository", "workspace", "project", "package", "change"):
         value = wanted.get(key)
@@ -604,7 +638,7 @@ def _normalize_scope(
     provided = dict(raw or {})
     repository = provided.get("repository")
     if repository is None and root is not None and root.is_dir():
-        repository = root.resolve().name
+        repository = _repository_identity(root)
     values = {
         "repository": repository,
         "workspace": provided.get("workspace"),
@@ -638,6 +672,25 @@ def _normalize_scope(
         "work_areas": normalized_areas,
     }
     return values
+
+
+def _repository_identity(root: Path) -> str:
+    manifest_path = root / "dset" / "scopes" / "meta" / "dset.yaml"
+    try:
+        manifest = load(manifest_path)
+    except (OSError, UnicodeError, ValueError):
+        manifest = {}
+    project = manifest.get("project") if isinstance(manifest, dict) else None
+    if isinstance(project, dict):
+        for key in ("repository_slug", "id"):
+            value = project.get(key)
+            if isinstance(value, str) and value:
+                return value
+    name = root.resolve().name
+    if re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}", name) is not None:
+        return name
+    digest = hashlib.sha256(str(root.resolve()).encode("utf-8")).hexdigest()[:16]
+    return f"path-{digest}"
 
 
 def _run_scope(scope: Mapping[str, Any]) -> dict[str, Any]:
