@@ -1,0 +1,109 @@
+from __future__ import annotations
+
+import json
+import tempfile
+import unittest
+from pathlib import Path
+
+from dset_toolchain.bootstrap import (
+    InitializationError,
+    WorkArea,
+    bundled_source_digest,
+    initialize_project,
+    parse_work_area,
+)
+from dset_toolchain.validation import validate_repository
+from dset_toolchain.yaml_subset import load
+from scripts.build_bootstrap_bundle import render_bundle
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+class BootstrapTests(unittest.TestCase):
+    def test_generated_bundle_is_fresh_and_digest_valid(self) -> None:
+        bundle_path = ROOT / "dset_toolchain" / "bootstrap_bundle.json"
+        committed = bundle_path.read_text(encoding="utf-8")
+        self.assertEqual(committed, render_bundle())
+        bundle = json.loads(committed)
+        self.assertEqual(bundle["sha256"], bundled_source_digest())
+
+    def test_preview_does_not_touch_existing_repository(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw) / "existing"
+            target.mkdir()
+            marker = target / "existing.txt"
+            marker.write_text("keep", encoding="utf-8")
+            result = initialize_project(
+                target,
+                project_key="APP",
+                project_id="sample-app",
+                project_name="Sample App",
+                project_license="MIT",
+                work_areas=(WorkArea("source", "src"),),
+            )
+            self.assertFalse(result.executed)
+            self.assertGreater(len(result.paths), 20)
+            self.assertEqual(marker.read_text(encoding="utf-8"), "keep")
+            self.assertFalse((target / "dset").exists())
+
+    def test_execute_initializes_and_validates_nonempty_repository(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw) / "existing"
+            (target / "src").mkdir(parents=True)
+            (target / "README.md").write_text("# Existing\n", encoding="utf-8")
+            result = initialize_project(
+                target,
+                project_key="APP",
+                project_id="sample-app",
+                project_name="Sample App",
+                project_license="MIT",
+                repository="owner/sample-app",
+                work_areas=(WorkArea("source", "src"),),
+                execute=True,
+            )
+            self.assertTrue(result.executed)
+            self.assertEqual(validate_repository(target), [])
+            self.assertTrue((target / "skills" / "dset" / "SKILL.md").is_file())
+            manifest = load(target / "dset" / "scopes" / "meta" / "dset.yaml")
+            self.assertEqual(manifest["project"]["repository_slug"], "sample-app")
+            self.assertEqual(
+                (target / "README.md").read_text(encoding="utf-8"), "# Existing\n"
+            )
+
+    def test_existing_destination_stops_without_partial_write(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw) / "existing"
+            manifest = target / "dset" / "scopes" / "meta" / "dset.yaml"
+            manifest.parent.mkdir(parents=True)
+            manifest.write_text("existing\n", encoding="utf-8")
+            with self.assertRaises(FileExistsError):
+                initialize_project(
+                    target,
+                    project_key="APP",
+                    project_id="sample-app",
+                    project_name="Sample App",
+                    project_license="MIT",
+                    execute=True,
+                )
+            self.assertEqual(manifest.read_text(encoding="utf-8"), "existing\n")
+            self.assertFalse((target / "skills").exists())
+
+    def test_work_area_parser_is_platform_neutral(self) -> None:
+        self.assertEqual(
+            parse_work_area("docs=docs/reference"), WorkArea("docs", "docs/reference")
+        )
+        for invalid in ("docs", "docs=/absolute", "docs=../outside", "docs=src\\win"):
+            with self.subTest(invalid=invalid), self.assertRaises(InitializationError):
+                area = parse_work_area(invalid)
+                initialize_project(
+                    ROOT,
+                    project_key="APP",
+                    project_id="sample-app",
+                    project_name="Sample App",
+                    project_license="MIT",
+                    work_areas=(area,),
+                )
+
+
+if __name__ == "__main__":
+    unittest.main()

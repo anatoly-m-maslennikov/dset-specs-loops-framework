@@ -424,7 +424,11 @@ def materialize_governance(
     for destination in sorted(governance_roots):
         destination.mkdir(parents=True)
     try:
-        shutil.copyfile(readme_template, target_layout.governance_root / "README.md")
+        _write_governance_hub(
+            readme_template,
+            target_layout.governance_root / "README.md",
+            layered=target_layout.layered,
+        )
         rendered_rules: list[dict[str, Any]] = []
         for item in rules:
             rule_id = str(item["id"])
@@ -518,6 +522,17 @@ def materialize_governance(
                 shutil.rmtree(wrapper)
         raise
     return registry_path
+
+
+def _write_governance_hub(source: Path, target: Path, *, layered: bool) -> None:
+    content = source.read_text(encoding="utf-8")
+    if layered:
+        for layer in ("meta", "tool", "skill", "ops"):
+            content = content.replace(
+                f"../../../../{layer}/templates/governance/core-v1/",
+                f"../../{layer}/governance/",
+            )
+    target.write_text(content, encoding="utf-8")
 
 
 def refresh_customization(root: Path) -> Path:

@@ -6,7 +6,7 @@
   "required": ["schema_version", "project_license", "sources"],
   "properties": {
     "schema_version": {"const": 1.0},
-    "project_license": {"const": "Apache-2.0"},
+    "project_license": {"type": "string", "minLength": 1},
     "sources": {
       "type": "array",
       "items": {
