@@ -25,3 +25,7 @@ repository now contains tested run/checkpoint and release-transition library
 cores; those libraries do not by themselves prove host-native execution.
 
 Each folder contains a concise `SKILL.md` and generated `agents/openai.yaml`. Resolve its workflow with `dset rules resolve <workflow-id>` before acting. No skill depends on private memory, machine-specific paths, shell-only behavior, or a parallel specification format.
+
+Use the [host-distribution workflow](host-distribution.md) to preview or apply
+copy-based Codex and Claude installations, verify discovery artifacts, and
+validate a bounded receipt from a representative host invocation.
