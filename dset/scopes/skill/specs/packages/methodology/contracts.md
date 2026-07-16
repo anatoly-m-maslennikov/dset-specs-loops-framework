@@ -2,9 +2,9 @@
 
 ## Skill release target
 
-`dset` is the primary operator entrypoint for initialization, decomposition, landscape/decision/spec/proof/implementation planning, implementation, verification, work-item routing, and next-step advice through registered project-local workflows. `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release` are explicit specialist triggers. Helper operations are modes or chained workflows, not additional public skill names. All five repository-native source wrappers listed in [the skills hub](../../../../../../skills/README.md) are implemented; runtime, host-distribution, and publication capability must still be claimed only when its separate proof passes.
+`dset` is the primary operator entrypoint for lifecycle and next-step advice. Every stable lifecycle mode also has an explicit public direct-entry skill listed in [the skills hub](../../../../../../skills/README.md). Governed wrappers resolve registered project-local workflows; `dset-init` and `dset-repair-governance` are the only bounded pre-resolution exceptions. Runtime, host-distribution, and publication capability must still be claimed only when its separate proof passes.
 
-All five target skills are thin wrappers over the repository governance registry. The registered `DSET-RULE-LIFECYCLE`, `DSET-RULE-SKILL-RUNS`, `DSET-RULE-RELEASE`, `DSET-RULE-DELEGATION-BUDGET`, and `DSET-RULE-WORK-ITEMS` documents own substantive behavior. Versioned bounded local run records under `.dset/runs/` are operational evidence only and are excluded from committed project truth.
+All governed target skills are thin wrappers over the repository governance registry. The registered `DSET-RULE-LIFECYCLE`, `DSET-RULE-SKILL-RUNS`, `DSET-RULE-RELEASE`, `DSET-RULE-DELEGATION-BUDGET`, and `DSET-RULE-WORK-ITEMS` documents own substantive behavior. Versioned bounded local run records under `.dset/runs/` are operational evidence only and are excluded from committed project truth.
 
 Subagents request the main session's model and reasoning effort by default and report effective attestation or uncertainty. Medium budget targets two and caps the whole tree at three unique subagents, depth one, and two rounds. Scope, proof, and safety are invariant; model overrides require dated task-relevant evidence and remain visible in run records.
 

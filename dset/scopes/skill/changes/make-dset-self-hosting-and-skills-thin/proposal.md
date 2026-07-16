@@ -13,7 +13,7 @@ DSET 0.3 must become self-hosting and let adopting repositories own their rules 
 
 ## Outcome
 
-Implement the first bounded self-hosting fixed point and finalize the next contracts: coordinated pre-1.0 product/package releases, repository-local rule authority, five thin adaptive wrappers, one primary lifecycle orchestrator, bounded local run evidence, and guarded release preparation/publication. Keep deterministic tests and qualitative evals separate and retain the TypeScript profile, pilots, distribution, and release mechanics as explicit open implementation scope.
+Implement the first bounded self-hosting fixed point and finalize the next contracts: coordinated pre-1.0 product/package releases, repository-local rule authority, thin adaptive wrappers for every lifecycle mode, one primary lifecycle orchestrator, bounded local run evidence, and guarded release preparation/publication. Keep deterministic tests and qualitative evals separate and retain the TypeScript profile, pilots, distribution, and release mechanics as explicit open implementation scope.
 
 ## Scope
 
@@ -28,7 +28,7 @@ Implement the first bounded self-hosting fixed point and finalize the next contr
 - Thin canonical skills plus a complete former-rule ownership inventory.
 - Versioned `core-v1` governing-document templates, materialization, customization, migration, and update comparison.
 - Bounded released/candidate/framework/adopter self-hosting with failure-boundary tests.
-- Exactly five core user-facing skills, with `dset` as the primary orchestrator and `dset-release` as the explicit release boundary.
+- One primary `dset` orchestrator plus one thin direct-entry wrapper for every stable lifecycle mode, with `dset-release` as the explicit release boundary.
 - Machine-local bounded skill-run records that inform but never own next-step decisions.
 - A complete SemVer-compatible bootstrap, pre-1.0, RC/final, and post-1.0 transition policy for each configured release PR.
 - Separate pre-merge preparation, post-merge publication, RC, and final-1.0 readiness contracts.

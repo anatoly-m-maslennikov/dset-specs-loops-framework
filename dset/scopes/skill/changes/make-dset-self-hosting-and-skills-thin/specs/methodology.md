@@ -8,7 +8,7 @@ the implementation scope to its current layer-owned Requirement owners.
 | Framework-first self-hosting and bounded recursion | `DSET-REQUIREMENT-OPS-003`, `DSET-REQUIREMENT-TOOL-004` |
 | Repository-owned rules, fail-closed ownership, customization, and one owner | `DSET-REQUIREMENT-GOV-014..017` |
 | Separate test/eval proof | `DSET-REQUIREMENT-META-007` |
-| Thin wrappers, local-rule following, five-skill orchestration, runs, budget, and continuity | `DSET-REQUIREMENT-SKILL-002..009` |
+| Thin wrappers, local-rule following, lifecycle-mode entrypoints, runs, budget, and continuity | `DSET-REQUIREMENT-SKILL-002..009` |
 | Release transaction, RC/final gate, and coordinated version identity | `DSET-REQUIREMENT-OPS-004..007` |
 | Intake routing and stable layer-qualified IDs | `DSET-REQUIREMENT-GOV-018..019` |
 | Neutral repository or Work Area scope | `DSET-REQUIREMENT-META-011` |

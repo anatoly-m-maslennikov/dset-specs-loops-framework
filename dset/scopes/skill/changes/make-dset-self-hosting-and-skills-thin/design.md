@@ -62,7 +62,7 @@ No adopter application runtime or production data is changed. The CLI reads repo
 - Use one registry with local paths and source digests; never read a template as live fallback.
 - Treat explicit `rules refresh` as acknowledgement of intentional local customization.
 - Use generated adopter copies to prove runtime-wrapper distribution identity without making installed copies rule owners.
-- Target five core user-facing skills: primary `dset`, specialist `dset-clarify`, `dset-diagnose`, `dset-prototype`, and guarded `dset-release`; do not claim the two new wrappers are released before implementation proof.
+- Keep `dset` as the catch-all entrypoint and expose one thin direct wrapper for every stable lifecycle mode; do not claim the expanded source, distribution, or host surface before its separate implementation proof.
 - Store bounded skill-run evidence under ignored `.dset/runs/`; never let heuristics override accepted artifacts, Git history, or hosted state.
 - Use the complete bootstrap/pre-1.0/RC/final/post-1.0 transition table and never derive 1.0 by decimal arithmetic.
 - Treat the change release declaration as the single pre-merge owner; publish/retry immutable tag/release objects idempotently from the protected merge commit.

@@ -46,15 +46,26 @@ Return the first useful result as soon as the selected mode reaches its declared
 output boundary. Report the recommended handoff separately; do not continue
 merely to advance through the mode list.
 
-## Specialist boundaries
+## Public entrypoint boundaries
 
 | Entrypoint | Trigger and first useful result | Stop/return boundary |
 |---|---|---|
 | `dset` | Catch-all lifecycle request; returns one mode, its evidence, and the next authorized handoff | Does not perform a specialist workflow merely because it can name one |
+| `dset-init` | No valid DSET root exists; returns an exact initialization preview and, only after write authorization, materialization plus validation result | Stops after preview when unauthorized and after validation when authorized; never continues into governed work |
+| `dset-repair-governance` | A DSET root exists but selected ownership is invalid; returns stable diagnostics and proposed local repair paths | Stops before substantive rule resolution or any repair write without separate authorization |
+| `dset-decompose` | Package, feature, service, or Work Area boundaries are materially unresolved; returns a bounded ownership/dependency decomposition | Stops before specification or implementation of a selected unit |
 | `dset-clarify` | Explicit clarification request or blocking open question; returns decision-ready alternatives and remaining unknowns | Stops before choosing a consequential answer or implementing it |
 | `dset-diagnose` | Explicit investigation request, current problem, or failed proof; returns evidence, cause confidence, and repair options | Stops before modifying the system unless repair receives separate authorization |
+| `dset-landscape` | A consequential solution, dependency, framework, or language choice lacks comparable evidence; returns eligible candidates and comparison state | Stops before selection or implementation |
 | `dset-prototype` | Explicit bounded experiment where solution uncertainty blocks a decision; returns comparable disposable evidence | Stops before production adoption or promotion |
+| `dset-decide` | A consequential resolved question has sufficient evidence but no durable Decision; returns the immutable Decision and its compilation handoff | Stops before changing implementation merely because a Decision was emitted |
+| `dset-plan-proof` | Accepted behavior lacks complete deterministic tests or applicable qualitative evals; returns separate current test and eval plans | Stops before implementation or proof execution |
+| `dset-plan-implementation` | Accepted behavior and proof obligations exist but executable work is incomplete; returns a dependency-ordered build plan and Change tasks | Stops before implementation |
+| `dset-implement` | Authorized, prerequisite-satisfied Change tasks remain; returns bounded implementation, tests/eval assets, and provenance | Stops before claiming verification or release readiness |
+| `dset-verify` | Implementation or governing artifacts changed after applicable proof; returns deterministic test results, eval evidence where applicable, and conformance status | Stops before repairing failures or releasing |
+| `dset-triage` | A Problem, Opportunity, Question, or Conflict lacks classification, ownership, or Change/tracker linkage; returns typed routing and priority state | Stops before diagnosis, decision, or implementation |
 | `dset-release` | Explicit release request or verified release-ready change; returns prepared/verified release state and, only with release authority, publication result | Stops on any mismatch, missing gate, collision, or new authorization boundary |
+| `dset-complete` | No earlier mode applies; returns terminal Change/session status and any residual open obligations | Stops without creating work solely to keep the workflow active |
 
 Failed verification routes to `diagnose` when the cause is unknown and to
 `implement` when a known accepted correction exists. Ambiguity routes to
@@ -100,10 +111,14 @@ resume from that bounded checkpoint, re-read authoritative state, and recompute
 the next mode before acting. Session continuity is an internal capability, not
 another user-facing skill.
 
-The exact specialist map is `clarify` → `domain-clarification`, `diagnose` →
-`diagnosis`, `prototype` → `prototyping`, `triage-work` → `work-triage`, and
-`release` → `release`. Other modes resolve the project-owned rules registered
-for that mode; a skill name is not synthesized for them.
+The governed direct-entry map is `decompose` → `dset-decompose`, `diagnose` →
+`dset-diagnose`, `clarify` → `dset-clarify`, `landscape` → `dset-landscape`,
+`prototype` → `dset-prototype`, `decide` → `dset-decide`, `plan-proof` →
+`dset-plan-proof`, `plan-implementation` → `dset-plan-implementation`,
+`implement` → `dset-implement`, `verify` → `dset-verify`, `triage-work` →
+`dset-triage`, `release` → `dset-release`, and `complete` → `dset-complete`.
+Each wrapper resolves the registered workflow shown by the mode. `dset-init`
+and `dset-repair-governance` are the two pre-resolution exceptions below.
 
 ## Rootless initialization exception
 
