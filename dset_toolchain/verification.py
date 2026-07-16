@@ -21,13 +21,22 @@ def verify_repository(root: Path) -> list[Diagnostic]:
     verification = manifest.get("verification", {})
     for command in verification.get("commands", []):
         args = shlex.split(str(command).replace("{python}", sys.executable))
-        result = subprocess.run(args, cwd=root, check=False)
+        result = subprocess.run(
+            args,
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
         if result.returncode:
+            detail = (result.stderr or result.stdout).strip()
+            suffix = f"; output: {detail[-2000:]}" if detail else ""
             diagnostics.append(
                 Diagnostic(
                     "DSET-E201",
                     layout.manifest_path,
-                    f"verification command failed ({result.returncode}): {command}",
+                    "verification command failed "
+                    f"({result.returncode}): {command}{suffix}",
                 )
             )
             return diagnostics

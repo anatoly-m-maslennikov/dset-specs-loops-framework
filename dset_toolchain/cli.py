@@ -10,6 +10,7 @@ from pathlib import Path
 
 from . import __version__
 from .archive import archive_plan, execute_archive
+from .bootstrap import initialize_project, parse_work_area
 from .diagnostics import Diagnostic
 from .errors import DsetCommandError
 from .governance import (
@@ -21,8 +22,16 @@ from .governance import (
     validate_governance,
 )
 from .layout import discover_layout
+from .release import check_release, plan_release, prepare_release
+from .runtime_bridge import (
+    checkpoint_runtime,
+    finish_runtime,
+    read_runtime,
+    start_runtime,
+)
 from .scaffold import create_change
 from .self_host import run_self_host
+from .skill_distribution import main as skill_distribution_main
 from .traceability import (
     rendered_traceability,
     trace_is_fresh,
@@ -37,6 +46,22 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="dset")
     parser.add_argument("--version", action="version", version=__version__)
     commands = parser.add_subparsers(dest="command", required=True)
+
+    initialize = commands.add_parser(
+        "init", help="preview or execute rootless DSET initialization"
+    )
+    initialize.add_argument("target", type=Path)
+    initialize.add_argument("--project-key", required=True)
+    initialize.add_argument("--project-id", required=True)
+    initialize.add_argument("--name", required=True, dest="project_name")
+    initialize.add_argument("--license", required=True, dest="project_license")
+    initialize.add_argument("--package", default="project", dest="package_id")
+    initialize.add_argument("--repository")
+    initialize.add_argument("--work-area", action="append", default=[])
+    initialize.add_argument("--profile", default="core-v1")
+    initialize.add_argument("--source", type=Path)
+    initialize.add_argument("--execute", action="store_true")
+    initialize.add_argument("--format", choices=["text", "json"], default="text")
 
     check = commands.add_parser("check", help="validate DSET contracts")
     _root_argument(check)
@@ -113,12 +138,113 @@ def build_parser() -> argparse.ArgumentParser:
     version = commands.add_parser("version", help="show framework version semantics")
     _root_argument(version)
     version.add_argument("--format", choices=["text", "json"], default="text")
+
+    release = commands.add_parser("release", help="guard the release transaction")
+    release_commands = release.add_subparsers(dest="release_command", required=True)
+    release_plan = release_commands.add_parser(
+        "plan", help="render the committed release transition"
+    )
+    _root_argument(release_plan)
+    release_plan.add_argument("--format", choices=["text", "json"], default="text")
+    release_check = release_commands.add_parser(
+        "check", help="check synchronized prepared release identity"
+    )
+    _root_argument(release_check)
+    release_check.add_argument("--format", choices=["text", "json"], default="text")
+    release_prepare = release_commands.add_parser(
+        "prepare", help="synchronize version surfaces after explicit authorization"
+    )
+    _root_argument(release_prepare)
+    release_prepare.add_argument("--execute", action="store_true")
+    release_prepare.add_argument("--format", choices=["text", "json"], default="text")
+
+    runtime = commands.add_parser("runtime", help="bridge host skill run state")
+    runtime_commands = runtime.add_subparsers(dest="runtime_command", required=True)
+    runtime_start = runtime_commands.add_parser("start")
+    runtime_start.add_argument("workflow_id")
+    _root_argument(runtime_start)
+    runtime_start.add_argument(
+        "--entrypoint",
+        choices=[
+            "dset",
+            "dset-clarify",
+            "dset-diagnose",
+            "dset-prototype",
+            "dset-release",
+        ],
+        required=True,
+    )
+    runtime_start.add_argument("--objective", required=True)
+    runtime_start.add_argument("--mode")
+    runtime_start.add_argument("--session-id")
+    runtime_start.add_argument("--llm-session-id", action="append", default=[])
+    runtime_resume = runtime_commands.add_parser("resume")
+    _root_argument(runtime_resume)
+    runtime_resume.add_argument("--session-id")
+    runtime_checkpoint = runtime_commands.add_parser("checkpoint")
+    runtime_checkpoint.add_argument("run_id")
+    _root_argument(runtime_checkpoint)
+    runtime_checkpoint.add_argument(
+        "--status",
+        choices=["active", "paused", "completed", "stopped"],
+        default="active",
+    )
+    runtime_checkpoint.add_argument("--objective")
+    runtime_checkpoint.add_argument("--next-mode")
+    runtime_checkpoint.add_argument("--reason-code")
+    runtime_checkpoint.add_argument(
+        "--requires-authorization",
+        choices=["none", "repository-write", "external-write", "publication"],
+    )
+    runtime_finish = runtime_commands.add_parser("finish")
+    runtime_finish.add_argument("run_id")
+    _root_argument(runtime_finish)
+    runtime_finish.add_argument(
+        "--status",
+        choices=["succeeded", "failed", "stopped", "interrupted"],
+        required=True,
+    )
+    runtime_finish.add_argument("--output", action="append", default=[])
+    runtime_finish.add_argument("--diagnostic", action="append", default=[])
+    runtime_finish.add_argument("--next-signal", action="append", default=[])
+    runtime_finish.add_argument(
+        "--session-status", choices=["active", "paused", "completed", "stopped"]
+    )
+
+    skills = commands.add_parser(
+        "skills",
+        help="install or verify portable Codex and Claude skill distributions",
+        add_help=False,
+    )
+    skills.add_argument("skills_args", nargs=argparse.REMAINDER)
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
+        if args.command == "init":
+            initialization = initialize_project(
+                args.target,
+                project_key=args.project_key,
+                project_id=args.project_id,
+                project_name=args.project_name,
+                project_license=args.project_license,
+                package_id=args.package_id,
+                repository=args.repository,
+                work_areas=tuple(parse_work_area(item) for item in args.work_area),
+                profile=args.profile,
+                source_root=args.source,
+                execute=args.execute,
+            )
+            if args.format == "json":
+                print(json.dumps(initialization.as_dict(), indent=2, sort_keys=True))
+            else:
+                label = "INITIALIZED" if initialization.executed else "DRY RUN"
+                print(f"{label} {initialization.target} source={initialization.source}")
+                for relative_path in initialization.paths:
+                    print(relative_path)
+            return 0
         if args.command == "check":
             root = _repository_root(args.root)
             return _report(validate_repository(root), root, args.format)
@@ -227,6 +353,60 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"python package: {toolchain['version']} (coordinated)")
                 print(f"schemas: {schemas['version']} (independent)")
             return 0
+        if args.command == "release":
+            root = _repository_root(args.root)
+            if args.release_command == "plan":
+                plan = plan_release(root)
+                _print_release(plan.to_dict(), args.format, "RELEASE PLAN")
+                return 0
+            if args.release_command == "check":
+                plan = check_release(root)
+                _print_release(plan.to_dict(), args.format, "RELEASE CHECK PASSED")
+                return 0
+            if args.release_command == "prepare":
+                preparation = prepare_release(root, execute=args.execute)
+                label = "RELEASE PREPARED" if args.execute else "DRY RUN"
+                _print_release(preparation.to_dict(), args.format, label)
+                return 0
+        if args.command == "runtime":
+            root = _repository_root(args.root)
+            runtime_result: object
+            if args.runtime_command == "start":
+                runtime_result = start_runtime(
+                    root,
+                    public_entrypoint=args.entrypoint,
+                    workflow_id=args.workflow_id,
+                    objective=args.objective,
+                    mode_id=args.mode,
+                    session_id=args.session_id,
+                    llm_session_ids=args.llm_session_id,
+                )
+            elif args.runtime_command == "resume":
+                runtime_result = read_runtime(root, session_id=args.session_id)
+            elif args.runtime_command == "checkpoint":
+                runtime_result = checkpoint_runtime(
+                    root,
+                    args.run_id,
+                    status=args.status,
+                    objective=args.objective,
+                    next_mode=args.next_mode,
+                    next_reason_code=args.reason_code,
+                    requires_authorization=args.requires_authorization,
+                )
+            else:
+                runtime_result = finish_runtime(
+                    root,
+                    args.run_id,
+                    status=args.status,
+                    outputs=args.output,
+                    diagnostics=args.diagnostic,
+                    next_signals=args.next_signal,
+                    session_status=args.session_status,
+                )
+            print(json.dumps(runtime_result, indent=2, sort_keys=True))
+            return 0
+        if args.command == "skills":
+            return skill_distribution_main(args.skills_args)
     except DsetCommandError as error:
         print(error.render(), file=sys.stderr)
         return 2
@@ -264,6 +444,20 @@ def _print_resolved(data: dict[str, object]) -> None:
         for rule in rules:
             if isinstance(rule, dict):
                 print(f"{rule['id']} {rule['path']}")
+
+
+def _print_release(data: dict[str, object], output_format: str, label: str) -> None:
+    if output_format == "json":
+        print(json.dumps(data, indent=2, sort_keys=True))
+        return
+    print(
+        f"{label} {data['owner_change']} {data['release_class']} "
+        f"{data['target']} tag={data['tag']}"
+    )
+    changes = data.get("changes")
+    if isinstance(changes, list):
+        for path in changes:
+            print(path)
 
 
 def _report(diagnostics: Sequence[Diagnostic], root: Path, output_format: str) -> int:
