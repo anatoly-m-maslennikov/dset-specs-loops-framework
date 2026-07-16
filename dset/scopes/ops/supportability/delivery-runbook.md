@@ -2,7 +2,7 @@
 
 ## Scope and objective
 
-This runbook covers the GitHub-hosted automation that accepts owner pushes to `dev`, validates owner-authored same-repository `dev → main` pull requests, runs DSET gates, enables merge-commit auto-merge, updates protected `main`, and—after the pending release publisher is implemented—creates the immutable tag and GitHub Release. It does not govern application runtime behavior in adopting repositories.
+This runbook covers the GitHub-hosted automation that accepts owner pushes to `dev`, validates owner-authored same-repository `dev → main` pull requests, runs DSET gates, enables merge-commit auto-merge, updates protected `main`, and, when the coordinated version contract changes, creates or verifies the immutable tag and GitHub Release at the exact merge SHA. It does not govern application runtime behavior in adopting repositories.
 
 Investigate when a valid delivery remains blocked after its checks should finish, an invalid PR appears mergeable, a required check is missing or unexpectedly green/red, auto-merge fails, `main` does not contain the accepted `dev` head, or an activated publication run is absent, partial, colliding, or points at the wrong SHA.
 
@@ -31,7 +31,7 @@ Local files are source for workflow definitions and DSET contracts, not authorit
 4. Open the `DSET` run and inspect the first failed bounded gate: format, lint, typing, unit tests, DSET validation, trace freshness, or diff hygiene.
 5. If checks pass but merge is blocked, inspect the [`main` ruleset](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/rules/18897046), permitted merge method, required check names, and auto-merge state.
 6. After merge, verify the PR merge commit contains the exact accepted `dev` head as a parent. A green check on a different SHA is not completion evidence.
-7. When publication automation is activated, verify the tag is exactly `v<product-semver>`, resolves to that merge SHA, and has not been reused or retargeted.
+7. Open the `Publish DSET release` run and verify its local `dset release check` evaluated the exact checked-out merge SHA and the tag is exactly `v<product-semver>`, resolves to that SHA, and has not been reused or retargeted.
 8. Verify the GitHub Release targets that tag, reports the canonical product SemVer, and was created by the publication run for the same merge SHA. A tag without a Release or a Release without the correct tag is partial publication.
 
 Use `gh pr view`, `gh pr checks`, `gh run view`, and read-only ruleset/API queries when available. Keep diagnostic output to IDs, conclusions, durations, and concise failure excerpts.
@@ -50,7 +50,9 @@ Use `gh pr view`, `gh pr checks`, `gh run view`, and read-only ruleset/API queri
 
 ## Release publication activation
 
-Post-merge tag/GitHub Release publication is specified but not yet implemented in this candidate. Until its workflow and hosted tests pass, a merged PR is not a published DSET product release and the release transaction remains incomplete. Activation must add the stable publication check/run identity to this runbook and prove exact-SHA, retry, partial-failure, and collision cases on the draft delivery path.
+The repository now contains the guarded `Publish DSET release` workflow and deterministic local `dset release plan`, `check`, and explicit `prepare --execute` transaction. The publisher runs only after a protected `main` push that changed `dset/scopes/meta/version.yaml`; it checks the committed declaration, verifies the checkout SHA, creates only missing GitHub objects, and stops on tag identity or SHA collisions without a post-merge content write.
+
+This source implementation is not hosted proof. Until an actual version-changing `dev → main` PR demonstrates the workflow at its merge SHA—including already-correct retry, tag-only and release-only recovery, and collision stops—the hosted publication gate remains pending and no local check may claim that GitHub published a release.
 
 ## Data controls
 
