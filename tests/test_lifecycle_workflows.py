@@ -35,8 +35,7 @@ PUBLIC_WRAPPER_WORKFLOWS = set(REGISTERED_SKILL_WORKFLOWS.values())
 
 def _workflow_ids(data: dict[str, Any]) -> set[str]:
     return {
-        cast(str, item["id"])
-        for item in cast(list[dict[str, Any]], data["workflows"])
+        cast(str, item["id"]) for item in cast(list[dict[str, Any]], data["workflows"])
     }
 
 

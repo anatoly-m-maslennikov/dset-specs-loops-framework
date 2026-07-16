@@ -19,9 +19,7 @@ PUBLIC_SKILL_WORKFLOWS = {
     "dset-complete": "complete",
 }
 
-PRE_RESOLUTION_SKILLS = frozenset(
-    {"dset-init", "dset-repair-governance"}
-)
+PRE_RESOLUTION_SKILLS = frozenset({"dset-init", "dset-repair-governance"})
 
 SKILL_INVOCATION_MARKERS = {
     skill_id: f"rules resolve {workflow_id} --format json"
