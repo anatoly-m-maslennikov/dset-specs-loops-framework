@@ -1827,7 +1827,7 @@ def _validate_provenance(root: Path) -> list[Diagnostic]:
 def _validate_markdown(root: Path) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     for path in sorted(root.rglob("*.md")):
-        if ".git" in path.parts:
+        if any(part in {".git", ".cache"} for part in path.relative_to(root).parts):
             continue
         text = path.read_text(encoding="utf-8")
         rendered = _without_code(text)

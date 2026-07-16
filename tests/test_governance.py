@@ -525,6 +525,15 @@ class GovernanceTests(unittest.TestCase):
             )
         self.assertEqual(validate_repository(self.root), [])
 
+    def test_validator_ignores_machine_local_cache_documents(self) -> None:
+        cache = self.root / ".cache" / "vendor"
+        cache.mkdir(parents=True)
+        (cache / "README.md").write_text(
+            "[generated missing link](not-present.md)\n", encoding="utf-8"
+        )
+
+        self.assertEqual(validate_repository(self.root), [])
+
     def test_legacy_intake_enforces_type_and_registered_layer(self) -> None:
         path = self.root / "dset" / "intake.yaml"
         baseline = cast(dict[str, Any], load(path))

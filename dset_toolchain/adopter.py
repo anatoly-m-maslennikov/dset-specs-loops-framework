@@ -45,6 +45,10 @@ def _write_adopter_files(source_root: Path, root: Path) -> None:
     shutil.copytree(source_layout.history_root, dset / "history")
     (root / "skills").mkdir()
     shutil.copyfile(source_root / "skills" / "README.md", root / "skills" / "README.md")
+    shutil.copyfile(
+        source_root / "skills" / "host-distribution.md",
+        root / "skills" / "host-distribution.md",
+    )
     manifest = {
         "schema_version": 1.1,
         "project": {
