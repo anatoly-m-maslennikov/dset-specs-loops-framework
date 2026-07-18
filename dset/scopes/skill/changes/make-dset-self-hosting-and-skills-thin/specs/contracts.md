@@ -4,6 +4,7 @@ The following Contracts are already accepted and are only consumed here:
 
 - `DSET-CONTRACT-META-001` — repository/Work Area scope declaration.
 - `DSET-CONTRACT-SKILL-001` — host-native skill distribution.
+- `DSET-CONTRACT-SKILL-002` — target-project local-governance resolution.
 - `DSET-CONTRACT-TOOL-001` — declared platform compatibility.
 - `DSET-CONTRACT-TOOL-002` — dependency provenance and exceptions.
 - `DSET-CONTRACT-OPS-001` — hosted protected-delivery evidence.

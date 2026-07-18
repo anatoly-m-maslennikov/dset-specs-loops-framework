@@ -173,6 +173,57 @@ class GovernanceTests(unittest.TestCase):
         self.assertEqual(hashlib.sha256(wrapper.read_bytes()).hexdigest(), before)
         self.assertIn("Local output rule.", diff_governance(self.root, ROOT))
 
+    def test_same_wrappers_resolve_each_projects_local_governance(self) -> None:
+        results: dict[str, dict[str, object]] = {}
+        with tempfile.TemporaryDirectory() as raw:
+            parent = Path(raw)
+            for label in ("project-a", "project-b"):
+                project = parent / label
+                create_adopter(ROOT, project)
+                rule = project / "dset" / "governance" / "domain-spec-authoring.md"
+                marker = f"{label} local output rule."
+                rule.write_text(
+                    rule.read_text(encoding="utf-8") + f"\n{marker}\n",
+                    encoding="utf-8",
+                )
+                refresh_customization(project)
+
+                nested_target = project / "src" / "feature"
+                nested_target.mkdir(parents=True)
+                discovered = find_repository(nested_target)
+                resolved, diagnostics = resolve_workflow(
+                    discovered, "domain-clarification"
+                )
+                self.assertEqual(diagnostics, [])
+                assert resolved is not None
+                local_rule = next(
+                    item
+                    for item in cast(list[dict[str, Any]], resolved["rules"])
+                    if item["id"] == "DSET-RULE-DOMAIN-SPEC"
+                )
+                wrapper = project / "skills" / "dset-clarify" / "SKILL.md"
+                results[label] = {
+                    "root": discovered,
+                    "wrapper_sha": hashlib.sha256(wrapper.read_bytes()).hexdigest(),
+                    "rule_sha": local_rule["sha256"],
+                    "customization": resolved["customization"],
+                    "rule_text": (project / str(local_rule["path"])).read_text(
+                        encoding="utf-8"
+                    ),
+                }
+
+        first = results["project-a"]
+        second = results["project-b"]
+        self.assertNotEqual(first["root"], second["root"])
+        self.assertEqual(first["wrapper_sha"], second["wrapper_sha"])
+        self.assertNotEqual(first["rule_sha"], second["rule_sha"])
+        self.assertEqual(first["customization"], "custom")
+        self.assertEqual(second["customization"], "custom")
+        self.assertIn("project-a local output rule.", str(first["rule_text"]))
+        self.assertNotIn("project-b local output rule.", str(first["rule_text"]))
+        self.assertIn("project-b local output rule.", str(second["rule_text"]))
+        self.assertNotIn("project-a local output rule.", str(second["rule_text"]))
+
     def test_materialized_rules_do_not_read_changed_source_template(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             source = Path(raw) / "framework"
@@ -616,6 +667,7 @@ class GovernanceTests(unittest.TestCase):
                 "DSET-CONTRACT-META-001",
                 "DSET-CONTRACT-OPS-001",
                 "DSET-CONTRACT-SKILL-001",
+                "DSET-CONTRACT-SKILL-002",
                 "DSET-CONTRACT-TOOL-001",
                 "DSET-CONTRACT-TOOL-002",
             ],

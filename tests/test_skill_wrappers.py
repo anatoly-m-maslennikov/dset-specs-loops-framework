@@ -58,6 +58,11 @@ class SkillWrapperTests(unittest.TestCase):
                     f"rules resolve {workflow} --format json",
                     text,
                 )
+                self.assertIn("Walk upward from the target", text)
+                self.assertIn(
+                    "resolved repository-local documents own substantive behavior",
+                    text,
+                )
                 self.assertIn(
                     "without fallback to the wrapper, memory, installed templates, "
                     "or remote framework prose",

@@ -8,6 +8,12 @@ This is the hub for thin DSET workflow wrappers. These repository-native sources
 
 Skills own discovery, workflow identity, resolver invocation, rule-set reporting, authorization handoff, and fail-closed behavior. Repository-local governing documents own the substantive procedure and project rules. A skill never falls back to embedded prose or remote framework text.
 
+The same installed skill packages serve every DSET project. Each invocation
+starts from its explicit target, discovers exactly one owning DSET root, and
+resolves that project's local governance layer. Moving to another project
+changes the registry, rules, and ruleset identity—not the skill package—and no
+project policy is retained or copied across that boundary.
+
 ## Start here
 
 - [`dset`](dset/SKILL.md) — inspect repository state, recommend one governed lifecycle mode, and hand off at the next authorization boundary.

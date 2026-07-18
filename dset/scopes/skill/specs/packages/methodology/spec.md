@@ -14,9 +14,26 @@ A DSET 0.3 skill may own trigger metadata, root discovery, workflow identity, re
 
 ## DSET-REQUIREMENT-SKILL-003 — DSET 0.3 wrappers follow local changes
 
-A DSET 0.3 wrapper must consume the currently resolved repository-local rule set. Changing a registered local rule must affect the next invocation without changing the canonical wrapper.
+A DSET 0.3 wrapper must be project-agnostic and consume the currently resolved
+rule set from the target project's local governance layer on every invocation.
+The same installed skill package and wrapper hash must work across independent
+repositories and monorepo Work Areas. Starting from the requested target, it
+discovers exactly one owning DSET root, validates that root's selected local
+registry, and reads only the rule documents returned by that project's
+resolver before governed work.
 
-**Scenario DSET-SCENARIO-SKILL-003:** Two adopters use the same wrapper hash but different registered output conventions; each invocation follows and reports its adopter's local rule identity.
+Changing a registered local rule must affect the next invocation without
+changing the canonical wrapper. Switching targets must switch project root,
+registry, rule paths, customization, and ruleset identity without retaining
+policy from the previous project. Competing roots, invalid ownership, or an
+unavailable resolver stop the invocation; installed templates, another
+project's cache, agent memory, and remote framework prose never substitute for
+the target project's governance.
+
+**Scenario DSET-SCENARIO-SKILL-003:** Two adopters use byte-identical wrappers
+but different registered output conventions. Consecutive invocations from a
+nested target in each repository discover different roots, follow only that
+adopter's convention, and report its local rule paths and ruleset identity.
 
 ## DSET-REQUIREMENT-SKILL-004 — Every lifecycle mode has a public wrapper
 
