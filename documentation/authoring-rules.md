@@ -13,6 +13,11 @@
 7. Use GitHub-portable Markdown and resolving relative links. Avoid private paths, editor-specific links, and hidden context.
 8. Order content for top-to-bottom comprehension. Define terms before relying on them.
 9. Prefer a small table, checklist, or example only when it makes the owning rule easier to apply.
+10. Prompt every Decision for a concise rationale. Other atomic artifacts may
+    include rationale when it improves review, support, or later replacement.
+    Rationale is recommended but optional; omission alone is never invalid.
+    Keep normative claims, lifecycle state, and evidence in their canonical
+    owners rather than hiding them in explanatory prose.
 
 ## Specifications
 
@@ -45,7 +50,7 @@ When two entities are mutually related, define each independently first using sh
 ## Rationale and Decisions
 
 - Rationale explains forces and trade-offs behind active normative truth; it links back without restating the full rule.
-- A Decision records a material choice in context, including rejected alternatives and consequences.
+- A Decision records a material choice in context, including rejected alternatives and consequences. Its rationale is strongly recommended but remains optional in validation.
 - Never edit an emitted Decision atom. Record later state in an append-only
   lifecycle event or emit an explicit absorbing successor while preserving the
   predecessor and both directions.

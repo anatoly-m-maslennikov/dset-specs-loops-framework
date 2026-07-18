@@ -357,3 +357,28 @@ demanding mutually exclusive values emit one blocking Conflict. Investigation
 creates a linked Question only when the governing scope is unclear; resolution
 links the authority's new absorbing Contract and an append-only Conflict event
 without editing either original atom.
+
+## DSET-REQUIREMENT-GOV-028 — Atomic rationale is recommended and optional
+
+Every Decision representation must prompt for a concise rationale explaining
+why its option was selected. Every other atomic artifact representation must
+permit rationale when it helps review, production investigation, priority or
+scope interpretation, absorption, replacement, or conflict resolution.
+Rationale remains optional for every atomic type: omission alone must never
+invalidate an artifact or block a proof or release gate.
+
+When a structured rationale is supplied, its schema must require a non-empty,
+bounded value. Rationale is explanatory context, not an alternate authority;
+it cannot hide a Requirement, Contract, lifecycle transition, or evidence claim
+that is absent from the canonical owner for that concern. Templates should
+prompt useful reasoning without encouraging placeholder prose. Evergreen
+implementation references remain focused on current executable truth and link
+out when the rationale is substantial.
+
+**Scenario DSET-SCENARIO-GOV-029:** Two otherwise identical Decisions, one with
+a concise rationale and one without it, both pass structural validation; the
+template makes the rationale opportunity visible. A Change, intake atom, proof,
+skill run, or checkpoint may add a bounded rationale when its non-obvious scope,
+interpretation, or handoff needs explanation. An empty supplied structured
+value fails, and no rationale is allowed to introduce an unowned behavioral
+rule or lifecycle transition.

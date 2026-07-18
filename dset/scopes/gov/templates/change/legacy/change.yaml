@@ -9,6 +9,7 @@ pull_request:
   number: pending
   url: pending
 llm_session_ids: []
+# rationale: Optional concise reason for this Change's scope or shape.
 release:
   policy: pending
   class: pending

@@ -8,7 +8,8 @@ compatibility, error behavior, authority, and lifecycle rules. Implementation
 conforms to this immutable Contract atom and cannot rewrite it. Record
 `priority`, creation state, and `absorbs`. Only the named authority may emit an
 absorbing successor or append-only retirement event; current state and reverse
-links are derived.
+links are derived. A concise rationale for the boundary is recommended but
+optional; it must not replace the authoritative interface definition.
 
 For skill-host contracts, prove native load, install, and invocation in every
 declared Claude, Codex, or other host; Markdown validity is not host proof. For

@@ -18,6 +18,7 @@ the implementation scope to its current layer-owned Requirement owners.
 | Independent external review packet/report and explicit finding reconciliation | `DSET-REQUIREMENT-GOV-025` |
 | One explicit or inherited priority for every governed artifact | `DSET-REQUIREMENT-GOV-026` |
 | Workflow-independent Problem, Question, and Conflict semantics | `DSET-REQUIREMENT-GOV-027` |
+| Recommended optional rationale for Decisions and other atomic artifacts | `DSET-REQUIREMENT-GOV-028` |
 | Role-aware handling for every governed conflict pairing, with priority selection only where permitted | `DSET-REQUIREMENT-TOOL-019` |
 
 The canonical text lives in the accepted META, GOV, TOOL, SKILL, and OPS package
@@ -34,6 +35,7 @@ Connected accepted IDs are `DSET-REQUIREMENT-META-007`,
 `DSET-REQUIREMENT-GOV-022`, `DSET-REQUIREMENT-GOV-023`,
 `DSET-REQUIREMENT-GOV-024`, `DSET-REQUIREMENT-GOV-025`,
 `DSET-REQUIREMENT-GOV-026`, `DSET-REQUIREMENT-GOV-027`,
+`DSET-REQUIREMENT-GOV-028`,
 `DSET-REQUIREMENT-TOOL-018`,
 `DSET-REQUIREMENT-TOOL-019`,
 `DSET-REQUIREMENT-SKILL-002`, `DSET-REQUIREMENT-SKILL-003`,

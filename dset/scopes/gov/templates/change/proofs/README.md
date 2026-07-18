@@ -10,3 +10,7 @@ high-risk or reliance-bearing claims, also separate producer
 from source maintainer, planned method from performed work/deviations, and record
 credible rival explanations. Keep raw generated logs ephemeral unless a concise
 excerpt is required to diagnose failure.
+
+A concise rationale is recommended when the proof record includes a
+non-obvious interpretation, scope choice, or disposition. It is optional and
+cannot replace the observed evidence or method.

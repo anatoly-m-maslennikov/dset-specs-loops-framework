@@ -59,6 +59,22 @@ canonical ID registry updates the location so references still resolve. Partial
 absorption never qualifies. Archived atoms remain immutable history and are
 never deleted merely because they are inactive.
 
+## Rationale
+
+Every Decision should record a concise rationale for its selected option.
+Rationale is also recommended for another atomic artifact when it explains why
+the atom was emitted, interpreted, prioritized, related, or scoped as written
+and that explanation will help review, support, absorption, replacement, or
+conflict resolution. It remains optional: absence alone never invalidates an
+atom or blocks a gate.
+
+When present, rationale is explanatory context, not hidden authority. It must
+not carry a Requirement, Contract, lifecycle transition, or evidence claim that
+is absent from that concern's canonical owner. Keep a short rationale in the
+atom or link a separate rationale artifact; keep evergreen implementation
+references focused on current executable truth. Templates prompt for rationale,
+and structured schemas permit a non-empty bounded value without requiring it.
+
 ## Commit and session provenance
 
 Every commit that changes evergreen truth or implementation artifacts must name

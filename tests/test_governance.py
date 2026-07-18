@@ -450,6 +450,42 @@ class GovernanceTests(unittest.TestCase):
                 "llm_session_ids", intake_schema["$defs"][item_name]["required"]
             )
 
+    def test_atomic_rationale_is_supported_but_optional(self) -> None:
+        change_schema = json.loads(_framework_schema("change.schema.json").read_text())
+        self.assertIn("rationale", change_schema["properties"])
+        self.assertNotIn("rationale", change_schema["required"])
+        self.assertEqual(change_schema["$defs"]["rationale"]["minLength"], 1)
+
+        intake_schema = json.loads(_framework_schema("intake.schema.json").read_text())
+        for item_name in ("legacy_item", "layered_item"):
+            item = intake_schema["$defs"][item_name]
+            self.assertIn("rationale", item["properties"])
+            self.assertNotIn("rationale", item["required"])
+        self.assertEqual(intake_schema["$defs"]["rationale"]["minLength"], 1)
+
+        for schema_path in (
+            ROOT / "dset/scopes/skill/schemas/skill-run.schema.json",
+            ROOT / "dset/scopes/skill/schemas/session-checkpoint.schema.json",
+        ):
+            schema = json.loads(schema_path.read_text(encoding="utf-8"))
+            self.assertIn("rationale", schema["properties"])
+            self.assertNotIn("rationale", schema["required"])
+            self.assertEqual(schema["$defs"]["rationale"]["minLength"], 1)
+
+        for name in ("decision.md", "adoption-decision.md"):
+            decision_template = (
+                ROOT / "dset/scopes/gov/templates/change" / name
+            ).read_text(encoding="utf-8")
+            self.assertIn("Rationale (recommended, optional)", decision_template)
+            self.assertIn("Omission alone does", decision_template)
+            self.assertIn("not invalidate the Decision", decision_template)
+
+        rule = (ROOT / "dset/scopes/gov/governance/artifact-maintenance.md").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("absence alone never invalidates", rule)
+        self.assertIn("not hidden authority", rule)
+
     def test_trace_id_schemas_are_type_first_and_layer_bounded(self) -> None:
         change_schema = json.loads(_framework_schema("change.schema.json").read_text())
         patterns = change_schema["$defs"]

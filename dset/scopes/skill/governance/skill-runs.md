@@ -29,6 +29,12 @@ content, credentials, environment dumps, and raw tool logs are forbidden.
 The published schema limits every string, collection, path count, diagnostic
 count, and record to a maximum serialized size of 64 KiB.
 
+A run or checkpoint may include a bounded non-empty `rationale` when a
+non-obvious workflow, scope, budget, disposition, or next-handoff choice needs
+explanation. The field is recommended only when it adds support or review value
+and is never required. It cannot contain hidden instructions, source content,
+or authority that is absent from the repository's canonical artifacts.
+
 ## Unavailable persistence
 
 Before initialization, in a read-only workspace, or when local persistence

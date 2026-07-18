@@ -18,7 +18,7 @@ a file when it must answer two independently maintained questions.
 | Problem | What harmful state, gap, defect, debt, risk, or nonconformance was observed? | Evidence, affected scope, impact, priority, and triage links | Competing-claim resolution or an implied repair |
 | Question | What knowledge, interpretation, or authorized choice is missing? | Context, unknown or alternatives, evidence, priority, and resolution link | An assertion that something is wrong or the consequential choice itself |
 | Conflict | Which applicable claims are verified incompatible over the same scope, concern, and effective time? | Exact claim IDs/propositions, roles, applicability, shared scope, evidence, priority, resolution class, and lifecycle links | Ordinary wording drift, failed assurance, implementation nonconformance, or an edited-in-place resolution |
-| Decision | Which material decision was accepted in a specific context? | Context, decision, alternatives, consequences, status, implementation links | Accepted behavioral truth or an implementation file ledger |
+| Decision | Which material decision was accepted in a specific context? | Context, decision, alternatives, consequences, status, implementation links, and recommended optional rationale | Accepted behavioral truth or an implementation file ledger |
 | Playbook/runbook | How is a repeatable change or operational response performed? | Trigger, preconditions, ordered steps, checks, failure/rollback path, stop conditions | General rationale, duplicated normative rules, historical audit output |
 | Test plan | Which deterministic claims must be proven exactly? | Test IDs, requirement mapping, seams, cases, commands, pass criteria | Probabilistic rubrics or implementation results |
 | Eval plan | Which variable or qualitative behavior must be judged? | Dataset/cases, rubric, thresholds, calibration, budgets, drift policy | Deterministic checks relabeled as evals |
@@ -42,3 +42,10 @@ Ask these questions in order:
 9. Is it a reusable agent invocation? Use a thin skill that resolves the repository-governed procedure and writes conclusions back to the owning project artifacts.
 
 Examples may appear in normative artifacts when needed to apply a rule. They remain illustrative and cannot introduce a second rule that exists nowhere in the normative text.
+
+Every atomic artifact may carry a concise rationale when the explanation helps
+review, investigation, absorption, replacement, or conflict resolution.
+Decision templates always prompt for it. The field or section is recommended,
+not required: missing rationale alone does not invalidate an artifact. A
+rationale explains the atom; it cannot silently own normative behavior,
+lifecycle state, or evidence assigned to another artifact type.

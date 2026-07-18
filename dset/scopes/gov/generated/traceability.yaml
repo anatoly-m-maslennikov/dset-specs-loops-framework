@@ -221,6 +221,7 @@ changes:
       - DSET-TEST-OPS-007
       - DSET-TEST-OPS-014
       - DSET-TEST-OPS-015
+      - DSET-TEST-SKILL-001
       - DSET-TEST-SKILL-002
       - DSET-TEST-SKILL-003
       - DSET-TEST-SKILL-004
@@ -301,6 +302,7 @@ changes:
       - DSET-DECISION-GOV-004
       - DSET-DECISION-GOV-005
       - DSET-DECISION-SKILL-001
+      - DSET-DECISION-SKILL-002
     contracts:
       - DSET-CONTRACT-META-001
       - DSET-CONTRACT-OPS-001
@@ -314,6 +316,7 @@ changes:
     evidence:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/end-to-end-toolchain-verification-2026-07-16.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/expanded-skill-surface-verification-2026-07-16.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/five-skill-source-verification-2026-07-16.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-governance-constitution-review-2026-07-16.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-principles-audit-2026-07-15.md

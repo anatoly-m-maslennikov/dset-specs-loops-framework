@@ -1,2 +1,4 @@
 schema_version: "1.1"
+# Each item may include a non-empty optional `rationale` when its classification,
+# scope, priority, or routing needs explanation.
 items: []

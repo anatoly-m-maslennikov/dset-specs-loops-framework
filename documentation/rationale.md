@@ -14,6 +14,18 @@ Normative rules change when accepted behavior changes. Rationale changes when th
 
 The separation is not absolute isolation. The artifacts link bidirectionally where useful, but only one owns each concern.
 
+## Why atomic rationale is optional
+
+A Decision is easier to review, investigate, and replace when its reasoning is
+preserved, so every Decision template prompts for a concise rationale. The same
+context can help with other atomic artifacts, especially when their scope,
+priority, interpretation, or relationship is not obvious. Making rationale a
+universal validity gate would reward placeholder prose and would make simple
+facts, deterministic run records, and self-explanatory atoms unnecessarily
+ceremonial. DSET therefore recommends rationale, validates a supplied structured
+value, and accepts a missing one. Normative behavior, lifecycle state, and
+evidence still belong to their typed owners.
+
 ## Why semantic ordering matters
 
 A reader or agent should be able to build the domain model incrementally. The [specification authoring rules](authoring-rules.md#specifications) require definitions to use earlier vocabulary. When an entity definition depends on a later undefined entity, a forward link provides navigation but not meaning. Defining entities first and then describing later connections produces specifications that can guide implementation and proof without hidden context.

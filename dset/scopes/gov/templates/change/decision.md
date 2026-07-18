@@ -16,12 +16,17 @@ State the bounded consequential choice, affected Work Areas or repository scope,
 fixed Contracts, assumptions, and the comparison frame used. A fixed external
 Contract is not a candidate.
 
-## Evidence basis and rationale
+## Rationale (recommended, optional)
 
 Link the Solution Landscape, eligible evidence, comparator/criteria, rejected,
 tied, incomparable, inconclusive, or evidence-needed alternatives, and explain
 why the selected option is justified for this context. Comparison results do not
-select an option by themselves.
+select an option by themselves. Omission alone does not invalidate the Decision;
+do not add placeholder prose when the reason is genuinely self-evident.
+
+## Evidence basis
+
+Link the evidence used for the selection and state its relevant limitations.
 
 ## Consequences and discharge
 

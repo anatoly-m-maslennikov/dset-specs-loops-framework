@@ -9,8 +9,16 @@
 - **Priority:** unknown
 - **Selected candidate/version:** pending
 
+## Rationale (recommended, optional)
+
+Explain why this candidate is selected in this context. Omission alone does
+not invalidate the Decision; do not add placeholder prose when the reason is
+genuinely self-evident.
+
+## Evidence and consequences
+
 Record the consequential choice among valid alternatives, the decision basis,
-rationale, trade-offs, consequences, linked requirements/proof,
+trade-offs, consequences, linked requirements/proof,
 license/provenance, rejected or currently incomparable alternatives, affected
 structure, integration boundary, data ownership, implementation feasibility,
 upgrade/rollback policy, lock-in, replacement seam, confirmation/violation

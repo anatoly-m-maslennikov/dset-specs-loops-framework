@@ -8,6 +8,7 @@
     "schema_version": {"const": "1.2"},
     "session_id": {"$ref": "#/$defs/id"},
     "llm_session_ids": {"type": "array", "maxItems": 8, "uniqueItems": true, "items": {"$ref": "#/$defs/llm_session_id"}},
+    "rationale": {"$ref": "#/$defs/rationale"},
     "run_id": {"$ref": "#/$defs/id"},
     "root_run_id": {"$ref": "#/$defs/id"},
     "parent_run_id": {"oneOf": [{"$ref": "#/$defs/id"}, {"type": "null"}]},
@@ -103,6 +104,7 @@
   "$defs": {
     "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
     "llm_session_id": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$", "maxLength": 160},
+    "rationale": {"type": "string", "minLength": 1, "maxLength": 1024},
     "nullable_id": {"oneOf": [{"$ref": "#/$defs/id"}, {"type": "null"}]},
     "nullable_scope": {"oneOf": [{"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$"}, {"type": "null"}]},
     "target": {
