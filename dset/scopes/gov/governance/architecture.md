@@ -37,8 +37,8 @@ every rule declares both fields even when the lists are empty. Registry order
 is not precedence. If selected rules conflict and no declared precedence path
 resolves the conflict, governed work stops rather than choosing implicitly.
 
-Active Decisions, including Requirement, Constraint, and Contract subtypes,
-authorize and explain change. Provenance identifies origin but does not
+Active Decisions, including every direct Decision subtype, authorize and
+explain change. Provenance identifies origin but does not
 authorize. QA/Test and QA/Evaluation results, reviews, and other evidence
 assess reliance claims. None becomes rule authority merely by existing or
 passing. Missing or stale assurance leaves the affected claim
@@ -71,6 +71,22 @@ presentation; wrappers own invocation only; generated indexes and caches are
 derived. Writes that change customization status are explicit and never mutate
 atoms.
 
+## Semantic boundaries
+
+A typed atom is the smallest independently reviewable primary project claim or
+directive. It is not the real-world subject, condition, operator act, file,
+record carrier, performed work, result, evidence, gate disposition, or derived
+view connected to it. One stored record may link several of those roles but
+must keep their meanings and identifiers distinct.
+
+In particular, an operator acceptance act grants authority to Decision
+directive content; a QA atom defines a check; execution performs work; results
+and logs provide evidence; and Verification derives a current bounded reliance
+statement. A carrier does none of those merely by containing readable text.
+Multi-head claims split into linked sibling atoms. Irreducible subtype
+ambiguity falls back to the empty subtype of the selected Type and raises a
+Question when the ambiguity affects work.
+
 ## Artifact roles
 
 DSET separates four artifact roles from the four semantic Types—Decision,
@@ -86,7 +102,8 @@ Question, Problem, and QA:
   become stale when they disagree with one.
 - **Transactional context and evidence** record Questions and their Conflict,
   Risk, and Opportunity subtypes; Problems and their Defect, Gap, and Debt
-  subtypes; QA results; proofs; sessions/runs; and optional delivery records.
+  subtypes; QA executions and results; proofs; sessions/runs; acceptance and
+  other lifecycle events; and optional delivery records.
   They route work or assess claims without becoming normative authority merely
   by existing.
 - **Implementation artifacts** are code, Test code, Evaluation prompts or

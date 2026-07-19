@@ -25,41 +25,49 @@ a rigid execution order.
 ```mermaid
 flowchart LR
     O["Operator input<br/>What should the project do?"]
+    A["Acceptance act<br/>Operator grants authority"]
     D["Decision<br/>What governs the project?"]
     E["Evergreen truth<br/>Current specs and plans"]
     I["Implementation<br/>Code, docs, scripts"]
-    QA["QA<br/>Tests and evaluations"]
+    QA["QA definitions<br/>Tests and evaluations"]
+    X["Execution and evidence<br/>What was run and observed?"]
     V["Verification<br/>Current proven state"]
     Q["Question<br/>What remains unresolved?"]
     P["Problem<br/>What is currently insufficient?"]
 
-    O -->|"accepted as"| D
+    O -->|"accepted through"| A
+    A -->|"authorizes"| D
     D -->|"compiled into"| E
     E -->|"governs"| I
-    I -->|"checked by"| QA
-    QA -->|"passes"| V
+    D -->|"assured by"| QA
+    I -->|"subject under check"| X
+    QA -->|"executed as"| X
+    X -->|"supports"| V
 
-    Q -->|"resolved by operator input"| D
-    QA -->|"fails"| P
+    Q -->|"returns for input"| O
+    X -->|"reveals"| P
     P -->|"resolution unclear"| Q
     P -->|"existing decision already applies"| I
 ```
 
-- **Operator input** is the source of project intent and authority.
+- **Operator input** is the source of project intent. An explicit operator
+  acceptance act grants project authority to a Decision directive; the act,
+  directive, and record carrying it remain distinct.
 - **Question** records unresolved knowledge, interpretation, or choice.
 - **Problem** records something that is currently wrong, missing, or
   insufficient. It returns directly to implementation when current authority
   already defines the correction; otherwise it raises a Question.
-- **Decision** records immutable project authority accepted from operator
-  input. Requirements, Constraints, Contracts, User Stories, Outcomes,
+- **Decision** records immutable directive content accepted as project
+  authority. Requirements, Constraints, Contracts, User Stories, Outcomes,
   Scenarios, and Invariants are direct Decision subtypes; a general Decision
   has no subtype, and subtypes never contain subtypes.
 - **Evergreen truth** is the mutable current projection of active Decisions
   into specifications and implementation, Test, and Evaluation plans.
 - **Implementation** contains the actual code, documentation, scripts, Tests,
   Evaluation prompts, and other executable project material.
-- **QA** keeps deterministic Tests separate from qualitative, probabilistic,
-  statistical, or model-judged Evaluations.
+- **QA** defines checks and keeps deterministic Tests separate from
+  qualitative, probabilistic, statistical, or model-judged Evaluations. A
+  check's execution and result are work and evidence, not QA atoms.
 - **Verification** is a derived statement of the currently proven state, not a
   competing source of authority.
 

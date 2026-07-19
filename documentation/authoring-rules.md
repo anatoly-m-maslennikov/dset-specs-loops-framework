@@ -6,6 +6,10 @@
 2. Give each atomic artifact one primary Type, optional allowed subtype, owner,
    and authority boundary. Give each document one primary role and owning
    question.
+   Classify the smallest independently reviewable primary claim. Split
+   multi-head statements into linked sibling atoms; if an irreducible claim
+   remains subtype-ambiguous, use its general Type and raise a Question when
+   the ambiguity matters.
 3. Determine Type and subtype from semantic content—not from a workflow,
    queue, skill, tool, host, filename, folder, or intended next action. Keep
    Type separate from document and lifecycle role.
@@ -20,6 +24,11 @@
     Rationale is recommended but optional; omission alone is never invalid.
     Keep normative claims, lifecycle state, and evidence in their canonical
     owners rather than hiding them in explanatory prose.
+11. Keep the governed atom distinct from its real-world subject, operator
+    acceptance or other lifecycle act, record or file carrier, performed work,
+    result, evidence, gate disposition, and derived Verification. A single
+    stored record may link several of these roles but must not collapse their
+    meanings.
 
 ## Specifications
 

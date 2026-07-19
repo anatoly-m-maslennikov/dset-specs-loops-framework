@@ -20,6 +20,51 @@ sources:
     license_file: third_party/licenses/fpf-NO-LICENSE.txt
     use: independently-reexpressed-concepts-only
     mappings:
+      - pattern: FPF-A.07
+        source: FPF-Spec/A_Kernel Architecture Cluster/07_Strict Distinction (Clarity Lattice)/00_A.07 - Strict Distinction (Clarity Lattice).md
+        source_lines: 25-41,47-51,66-73
+        dset_surface: documentation/artifact-types.md
+        disposition: adapted
+        adaptation_scope: Separation of governed subject, directive description, carrier, performed work, and evidence
+        exclusions:
+          - FPF EntityOfConcern, Episteme, Method, Capability, and Work ontology
+          - FPF canonical terminology, identifiers, and publication relations
+      - pattern: FPF-A.11
+        source: FPF-Spec/A_Kernel Architecture Cluster/11_Ontological Parsimony/00_A.11 - Ontological Parsimony.md
+        source_lines: 61-88,122-128
+        dset_surface: documentation/artifact-types.md
+        disposition: adapted
+        adaptation_scope: Four-Type parsimony, action-facing contribution, sharp recognition boundaries, and reopen-on-overlap discipline
+        exclusions:
+          - FPF U-kind admission ontology and records
+          - FPF conformance claims and canonical admission process
+      - pattern: FPF-A.02.09
+        source: FPF-Spec/A_Kernel Architecture Cluster/02_Role Taxonomy/09_A.02.09 - U.SpeechAct (Communicative Work Object).md
+        source_lines: 30-53,103-121
+        dset_surface: documentation/artifact-types.md
+        disposition: adapted
+        adaptation_scope: Operator acceptance or authorization act separated from directive content, carrier, and evidence
+        exclusions:
+          - FPF SpeechAct and Work ontology
+          - FPF communicative-act schema and institutional semantics
+      - pattern: FPF-C.32.PAD
+        source: FPF-Spec/C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/08_C.32.PAD - Project Architecture Decision After Candidate Synthesis.md
+        source_lines: 64-96
+        dset_surface: documentation/artifact-types.md
+        disposition: adapted
+        adaptation_scope: Decision directive or relation separated from its publication record and downstream work
+        exclusions:
+          - Architecture-specific decision slots and candidate-synthesis workflow
+          - FPF project-relation ontology and identifiers
+      - pattern: FPF-E.17.AUD
+        source: FPF-Spec/E_The FPF Constitution and Authoring Guides/16_17_Multi-View Publication Kit/06_AUD_PublicationUnit Stability Discipline - keep one publication unit stable enough to read honestly/00_E.17.AUD - PublicationUnit Stability Discipline - keep one publication unit stable enough to read honestly.md
+        source_lines: 47-60,71-85
+        dset_surface: documentation/authoring-rules.md
+        disposition: adapted
+        adaptation_scope: One primary claim per atom, honest split of mixed publication moves, and explicit outside work boundary
+        exclusions:
+          - FPF publication-unit ontology and repair dispositions
+          - FPF canonical publication forms, identifiers, and process
       - pattern: FPF-A.10
         source: FPF-Spec/A_Kernel Architecture Cluster/10_Evidence Graph Referring- Claim-Bound Evidence and Provenance Graph/00_A.10 - Evidence Graph Referring- Claim-Bound Evidence and Provenance Graph.md
         source_lines: 32-44,77-101,117-138

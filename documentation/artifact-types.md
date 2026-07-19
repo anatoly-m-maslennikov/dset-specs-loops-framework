@@ -5,7 +5,7 @@
 This document is the public framework definition of DSET semantic Types and
 subtypes. The DSET repository applies it through
 [`DSET-RULE-WORK-ITEMS`](../dset/scopes/gov/governance/work-items.md), compiled
-from [`DSET-DECISION-GOV-007`](../dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-007.md).
+from [`DSET-DECISION-GOV-008`](../dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-008.md).
 
 ## Type rule
 
@@ -16,10 +16,11 @@ DSET has exactly four core semantic Types:
 3. **Problem**
 4. **QA**
 
-A Type identifies what an atomic artifact means. A subtype adds precision
-without creating a second top-level Type. Type is not a “family,” and an empty
-subtype is represented by omitting `subtype`; it is never represented by
-repeating the Type name.
+A Type identifies what an atomic project claim or directive means for DSET
+governance and routing. It does not classify every real-world condition, work
+occurrence, or file. A subtype adds precision without creating a second
+top-level Type. Type is not a “family,” and an empty subtype is represented by
+omitting `subtype`; it is never represented by repeating the Type name.
 
 ```yaml
 # General Decision: valid
@@ -40,6 +41,13 @@ queue, skill, host, tool, status, filename, folder, or intended next action.
 They are immutable after emission. Changed semantics require a new linked atom,
 not an in-place retype.
 
+Classify the smallest independently reviewable primary claim, not its entire
+file, ticket, paragraph, or workflow. If a statement contains several
+independently enforceable or verifiable claims, split it into linked sibling
+atoms. If an irreducible claim still fits several subtypes, use the empty
+subtype of its Type and record a Question when the ambiguity matters. Never
+guess from location or encode multiple subtypes.
+
 When a subtype exists, its full name is the artifact's external kind and ID
 kind. A Requirement therefore carries `type: decision` and
 `subtype: requirement` but uses `REQUIREMENT` in its ID. An empty-subtype
@@ -48,9 +56,14 @@ until a provenance-preserving migration replaces or absorbs them.
 
 ## Decision
 
-**Definition:** Immutable project authority explicitly provided or accepted by
-the operator. It states what must govern the project and compiles into mutable
-evergreen specifications, plans, and rules.
+**Definition:** Immutable directive content that the operator has explicitly
+accepted as project authority. It states what must govern the project and
+compiles into mutable evergreen specifications, plans, and rules.
+
+The operator's acceptance is an act or append-only lifecycle event that grants
+authority to the directive; it is not the directive itself. A Markdown, YAML,
+database, or hosted record is only its carrier or representation. The record
+may store both atom and acceptance metadata, but their semantics stay distinct.
 
 An external law, customer statement, DDL, API schema, platform rule, or library
 policy is source material until the operator supplies or accepts it as project
@@ -62,15 +75,20 @@ choice that is not more precisely one of the direct subtypes below.
 
 | Subtype | Canonical definition | Classification test | Must not represent |
 |---|---|---|---|
-| `requirement` | An observable result, behavior, capability, quality, or outcome that the project must provide or prevent | Can satisfaction be judged from the required result without prescribing the entire solution? | A preferred implementation with no required outcome |
-| `constraint` | A restriction on the acceptable solution space, including required or forbidden technologies, dependencies, environments, resources, formats, or operating limits | Does it remove otherwise valid implementation choices? | A boundary obligation between named participants |
+| `requirement` | The residual observable result, behavior, capability, quality, or prevention condition that the project must provide and no more precise Decision subtype owns | Can satisfaction be judged from the required result, and do none of the more specific subtype recognition rules own the claim? | A preferred implementation, boundary obligation, story, outcome target, scenario, or invariant |
+| `constraint` | A restriction on the acceptable solution space, including required or forbidden technologies, dependencies, environments, resources, formats, or operating limits | Does it remove otherwise valid implementation choices without a boundary participant relying on it as a Contract? | A boundary obligation between named participants |
 | `contract` | An obligation at a boundary between the project and an external system or between project components | Are provider, consumer, interface, schema/protocol, compatibility, or failure obligations identifiable? | An internal preference that no boundary participant relies on |
-| `user_story` | An actor's or stakeholder's desired capability or outcome and its value | Does it clearly state who wants what and why? | A Requirement nested beneath the story; both are sibling Decision subtypes |
-| `outcome` | A measurable change in user, business, operational, or system state | Are baseline, target, observation method, and evaluation window identifiable where applicable? | An output or deliverable with no state change |
-| `scenario` | A concrete accepted behavioral example with preconditions, interaction or event, and observable result | Does it define one behavior instance that can guide implementation or QA? | A general rule with no concrete case |
-| `invariant` | A condition that must always hold within a declared scope | Would any violation make the governed state invalid? | A temporary target or ordinary scenario step |
+| `user_story` | An actor's or stakeholder's desired capability or outcome and its value | Does it clearly state who wants what and why? | Acceptance criteria or a Requirement nested beneath the story; link sibling atoms instead |
+| `outcome` | An intended measurable change in user, business, operational, or system state | Are baseline, target, observation method, and evaluation window identifiable where applicable? | An observed result, which is evidence, or an output with no state change |
+| `scenario` | A concrete accepted behavioral example with preconditions, interaction or event, and expected observable result | Does it define one behavior instance that can guide implementation or QA? | An executed run, which is work and evidence |
+| `invariant` | A condition that must always hold in every state within a declared scope | Would any violation make the governed state invalid? | Evidence that the condition currently holds |
 
-Requirements own **what** the project must provide. Constraints narrow the
+Choose the subtype whose defining acceptance condition owns the claim:
+Contract before Constraint when a boundary participant relies on it; User
+Story for actor/want/value framing; Outcome for intended measurable change;
+Scenario for one accepted example; Invariant for an always-hold condition; and
+Requirement for a remaining observable obligation. Requirements own **what**
+the project must provide. Constraints narrow the
 allowed solution space. Contracts define what must hold across a boundary.
 User Stories, Outcomes, Scenarios, and Invariants express other direct forms of
 accepted authority. They may link each other, but none is nested under another
@@ -121,7 +139,9 @@ Use this compact test:
 - might cause harm later → **Risk**;
 - could create optional value → **Opportunity**.
 
-A Gap may be caused by Debt, and Debt may later produce a Defect. Record one
+A Gap may be caused by Debt, and Debt may later produce a Defect. Debt must not
+hide an active Defect or Gap: link separate atoms or emit a Decision that
+changes the applicable authority. Record one
 primary subtype for the condition being governed and link causes or related
 atoms rather than duplicating the same condition under multiple subtypes.
 
@@ -136,7 +156,7 @@ it does not say whether deterministic or judgment-based proof semantics apply.
 | Subtype | Canonical definition | Classification test | Must not represent |
 |---|---|---|---|
 | `test` | A deterministic check with declared conditions and an exact reproducible pass/fail result | Should the same controlled inputs and environment always produce the same verdict? | Rubric-based or probabilistic judgment disguised as exact proof |
-| `evaluation` | A qualitative, probabilistic, statistical, or model-judged assessment with an explicit method, rubric or metric, threshold, and uncertainty treatment where applicable | Does the verdict require judgment, sampling, calibration, statistics, or an evaluator/model? | A deterministic assertion that should be a Test |
+| `evaluation` | A qualitative, probabilistic, statistical, or model-judged assessment with an explicit method, rubric or metric, threshold, and uncertainty treatment where applicable | Does the conclusion require judgment, sampling, calibration, statistics, probability, or an evaluator/model, even if deterministic code executes the method? | An exact deterministic predicate that should be a Test |
 
 A QA atom defines what must be checked. Test code, Evaluation prompts,
 datasets, harnesses, and fixtures are implementation artifacts. Execution
@@ -186,7 +206,8 @@ many Decisions; a Test plan can compile many QA/Test atoms; neither
 The mandatory base flow is:
 
 ```text
-Operator input → Decision → Evergreen truth → Implementation → QA → Verification
+Operator input → acceptance act → Decision directive → Evergreen truth
+Decision + Implementation + QA definitions → execution → evidence → Verification
 ```
 
 Problems and Questions form feedback paths. A Problem returns directly to
