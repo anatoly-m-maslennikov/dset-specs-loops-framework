@@ -196,7 +196,7 @@ the remaining native and hosted evidence gaps without overstating them:
 - finish the next-action heuristic, RC/final readiness integration, generated
   project-health view, and external-review reconciliation flow;
 - add the JavaScript/TypeScript applied profile while keeping documentation and
-  methodology as first-class artifact types;
+  methodology as first-class Work Areas and implementation roles;
 - pilot the framework on external repositories such as Obsidian Your Harness and
   record the resulting Problems, Opportunities, Questions, Decisions, proofs,
   and release evidence;

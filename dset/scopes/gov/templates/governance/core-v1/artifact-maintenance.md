@@ -127,7 +127,7 @@ counts by declared class/type/layer/status and applicable Work Area, unresolved
 work, proof freshness, and traceability coverage without turning counts into a
 target. Every ratio exposes numerator, denominator, exclusions,
 not-applicable, unknown, and stale counts. Link each gap to its canonical owner;
-never invent a Decision, code artifact, Test, or Eval merely to improve a
+never invent a Decision, code artifact, Test, or Evaluation merely to improve a
 percentage. Markdown is the portable baseline. An interactive renderer may use
 the same derived model but cannot own private health state.
 

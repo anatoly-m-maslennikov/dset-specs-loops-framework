@@ -927,7 +927,10 @@ class GovernanceTests(unittest.TestCase):
             ROOT / "dset/scopes/gov/templates/governance/core-v1/work-items.md"
         ).read_text(encoding="utf-8")
         self.assertEqual(work_items, work_items_template)
-        self.assertIn("Question atom is not edited", work_items)
+        self.assertIn("one Type and at most one direct subtype", work_items)
+        self.assertIn("sibling Decision subtypes", work_items)
+        self.assertIn("never edits the Question atom", work_items)
+        self.assertIn("QA always has one of its two", work_items)
         self.assertIn("append-only", work_items)
 
         for name in ("decision.md", "adoption-decision.md"):

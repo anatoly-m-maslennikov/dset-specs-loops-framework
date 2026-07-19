@@ -51,8 +51,8 @@ every row links back to a canonical artifact or an explicit unknown.
 ## DSET-REQUIREMENT-TOOL-019 — Priority conflict resolution is deterministic
 
 The toolchain must evaluate candidate incompatibilities between any governed
-artifact types. It first resolves each artifact's semantic type and role
-independently from the workflow that discovered it, then distinguishes genuine
+artifacts. It first resolves each atom's semantic Type and direct subtype plus
+each document's role independently from the workflow that discovered it, then distinguishes genuine
 Conflicts from drift, assurance changes, nonconformance, and evidence
 adjudication. Only verified incompatible applicable claims over the same scope,
 concern, and effective time emit a first-class immutable Conflict atom.

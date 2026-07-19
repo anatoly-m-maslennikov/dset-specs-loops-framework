@@ -47,7 +47,9 @@
 - Run the complete local gate and clean-wheel adopter/runtime/host-layout fixed point; retain real authenticated host invocation, hosted OS/WSL, and publication evidence as explicit open gates.
 - Run three independent high-effort specification reviews, reconcile blocking findings, and preserve bounded evidence.
 - Define default main-model/main-effort inheritance, medium useful fan-out, explicit override reporting, and outcome-cost-aware low/high budget behavior.
-- Define one project-owned problem/opportunity/question registry, stable layer IDs, and Decision records; keep tasks inside Changes and retain the Action entity as a project open question pending Decision.
+- Define project-owned semantic routing, stable IDs, and immutable atoms; keep
+  tasks inside Changes and retain the Action entity as a project Question
+  pending Decision.
 
 ## Batch 5 — Concrete conformance contracts — specification complete
 
@@ -60,11 +62,13 @@
 ## Batch 6 — Outcome and deferred product practices — specification complete
 
 - Define Outcome as a measurable state change rather than an output, feature, milestone, or task completion.
-- Record one DSET 0.3 adoption-readiness Outcome with baseline, target, source/method, window, and related Problem, Opportunity, User Story, and Eval dispositions.
+- Record one DSET 0.3 adoption-readiness Decision/Outcome with baseline,
+  target, source/method, window, and related Problem, Question/Opportunity,
+  sibling Decision/User Story, and QA/Evaluation dispositions.
 - Register Journey, Actor/Persona, Hypothesis/Experiment, prioritization, feedback/analytics, and generated roadmap/release views as concise open Questions only.
-- Preserve the three intake queues; add Conflict only under
-  `DSET-DECISION-GOV-005`, keep its open register/view separate, and classify
-  every artifact by semantics rather than workflow.
+- Apply the flat semantic model under `DSET-DECISION-GOV-007`; keep Conflict as
+  a direct Question subtype and classify every atom by semantics rather than
+  workflow.
 
 ## Batch 7 — Work Area Contract — deterministic implementation complete
 
@@ -87,8 +91,8 @@
 - Require append-only lifecycle events, explicit acyclic absorption, derived
   current state, and byte-stable archive relocation only after full retirement.
 - Require commits that change evergreen truth or implementation artifacts to
-  cite the Decision they implement, or the authorizing Problem, Opportunity,
-  Question, or Change when no Decision is required.
+  cite the Decision or Decisions they implement; linked Problems, Questions,
+  QA atoms, and Changes are additional provenance rather than authority.
 - Require explicit `llm_session_ids` provenance, or an explicit human-only
   disposition, across Change manifests, intake items, Decisions, promoted
   proofs, skill-run records, and session checkpoints.

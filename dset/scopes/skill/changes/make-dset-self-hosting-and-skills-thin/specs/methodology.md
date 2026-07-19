@@ -89,8 +89,9 @@ immutable predecessor rather than winning because it is newer.
 ## ADDED — DSET-REQUIREMENT-GOV-022 Commit and session provenance
 
 Commits that change evergreen truth or implementation artifacts must cite the
-Decision they implement, or the authorizing Problem, Opportunity, Question, or
-Change when no Decision is required. Newly emitted atomic artifacts and
+Decision or Decisions they implement. A Problem, Question, QA atom, or Change
+may be cited as additional provenance but never substitutes for authorizing
+Decision authority. Newly emitted atomic artifacts and
 append-only lifecycle events expose explicit unique host-prefixed
 `llm_session_ids` when an LLM helped produce them, or an explicit empty/`none`
 disposition for human-only work. Review, correction, and status changes emit

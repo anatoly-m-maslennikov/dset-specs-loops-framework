@@ -77,7 +77,7 @@ DSET separates four artifact roles from the four semantic Types—Decision,
 Question, Problem, and QA:
 
 - **Atomic authority sources** are accepted, active, applicable Decisions,
-  including Requirement, Constraint, and Contract subtypes. Atoms are
+  including every direct Decision subtype. Atoms are
   immutable. Later state is an append-only lifecycle event; replacement is a
   successor atom with an explicit acyclic `absorbs` relation.
 - **Evergreen compiled projections** are updatable current views such as specs,

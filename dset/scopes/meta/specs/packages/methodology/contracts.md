@@ -25,11 +25,26 @@
 
 ## Specification boundary surface
 
-A User Story is optional accepted truth, not an intake queue. When present, `DSET-STORY-<NNN>` or `DSET-STORY-<LAYER>-<NNN>` records an actor or stakeholder, desired capability or outcome, value or purpose, and links to normative Requirements and applicable Scenarios. Absence is valid where no meaningful User Story exists. A User Story never substitutes for a Requirement; `STORY` remains its compact ID token.
+A User Story is a direct Decision subtype. When present, its stable `STORY`
+compatibility ID records an actor or stakeholder, desired capability or
+outcome, and value or purpose. It may link sibling Requirements, Outcomes,
+Scenarios, Invariants, Contracts, and QA atoms, but is never nested beneath a
+Requirement. Absence remains valid where no meaningful actor perspective
+exists.
 
-Requirements own observable verifiable delivered behavior, results, and constraints; Scenarios own observable examples and edge cases. Decisions own consequential choices among alternatives with rationale, tradeoffs, and consequences, not every implementation detail. Design owns internal logic, implementation plans own build sequence, and Contracts own boundaries the project cannot choose or rewrite.
+Requirement, Constraint, Contract, User Story, Outcome, Scenario, and Invariant
+are sibling Decision subtypes. Requirement owns observable required results;
+Constraint narrows solutions; Contract owns boundary obligations; User Story
+owns actor/value intent; Outcome owns measurable state change; Scenario owns a
+concrete behavior; and Invariant owns an always-true condition. Design and
+implementation plan remain document roles rather than semantic Types.
 
-An Outcome is a measurable change in user, business, operational, or system state, not a delivered output or feature. `DSET-OUTCOME-<NNN>` or `DSET-OUTCOME-<LAYER>-<NNN>` records baseline, target, observation method/source, evaluation window, originating Problem or Opportunity links, relevant User Story links when present, and applicable Eval links. Requirements and their deterministic evidence prove delivered behavior; Outcome evidence shows whether that behavior had the intended effect. This model-only change defines the type without asserting a concrete Outcome.
+Outcome is a direct Decision subtype for measurable user, business,
+operational, or system state change, not a delivered output. Its stable
+`OUTCOME` ID links baseline, target, observation method/source, evaluation
+window, originating Problem or Question/Opportunity, sibling User Stories, and
+QA/Evaluations. QA/Test evidence proves Requirement delivery; Outcome evidence
+shows whether delivery had the intended effect.
 
 ## Non-contractual surfaces
 
@@ -37,7 +52,13 @@ Examples, diagrams, and cited candidates may evolve without compatibility guaran
 
 ## Authoritative boundary contracts
 
-A Contract is not implementation advice. It is an authoritative boundary that implementation must satisfy without rewriting. Every immutable Contract atom names its authority, source, exactly one version or digest, direction, producer, consumer, conformance rule, compatibility rule, priority, creation state, and any older Contract atoms it absorbs. Current lifecycle is derived from append-only events: `declared -> active -> absorbed` or `declared -> active -> retired`; only the named authority may emit an absorbing version or retirement event. Ambiguity creates a Question, incompatibility creates a Problem, and a Decision cannot override an active Contract.
+A Contract is a direct Decision subtype, not implementation advice. Every
+immutable Contract atom names its operator-accepted source, version or digest,
+direction, provider, consumer, conformance, compatibility, priority, creation
+state, and absorbed predecessors. Implementation cannot rewrite it. Ambiguity
+creates a Question, incompatible active authority creates Question/Conflict,
+and observed nonconformance creates Problem/Defect. Change requires explicit
+precedence or an operator-accepted absorbing Contract.
 
 ## DSET-CONTRACT-META-001 — Repository Work Area declaration
 

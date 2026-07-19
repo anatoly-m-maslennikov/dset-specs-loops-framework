@@ -56,11 +56,21 @@ Every governed public artifact area must declare one purpose, owner, root, hub, 
 
 **Scenario DSET-SCENARIO-GOV-010:** A cold reader starts at `README.md`, reaches the documentation or methodology hub, and identifies the owning artifact without scanning unrelated files.
 
-## DSET-REQUIREMENT-GOV-010 — Artifact types own different questions
+## DSET-REQUIREMENT-GOV-010 — Semantic Types and document roles stay separate
 
-DSET must define distinct types for navigation, normative rules, behavioral specification, architecture, rationale, decisions, procedures, proof plans, evidence/history, and agent workflows. Each artifact has one primary type determined by its semantic content, owning question, and authority/lifecycle role where needed; workflow, queue, skill, tool, host, filename, and path never determine type. Secondary meaning is expressed through links rather than duplicated rule text.
+DSET must define exactly four semantic Types—Decision, Question, Problem, and
+QA—and at most one allowed direct subtype per emitted atom. Navigation,
+specification, architecture, rationale, procedure, plan, evidence/history,
+implementation, derived view, agent workflow, Change, and Release are document,
+lifecycle, implementation, or optional-container roles rather than additional
+semantic Types. Workflow, queue, skill, tool, host, filename, path, and next
+action never determine Type or subtype.
 
-**Scenario DSET-SCENARIO-GOV-011:** A design explanation moves to rationale, a repeatable sequence moves to a playbook, and the normative rule remains in one reference document linked by both.
+**Scenario DSET-SCENARIO-GOV-011:** A User Story and Requirement are sibling
+Decision subtypes linked from one specification; the specification is their
+evergreen document role rather than a fifth Type. A design explanation moves to
+rationale and a repeatable sequence to a playbook without retyping either as an
+atom.
 
 ## DSET-REQUIREMENT-GOV-011 — Authoring rules are type-specific
 
@@ -104,39 +114,70 @@ Every normative rule ID must resolve to exactly one editable governing document.
 
 **Scenario DSET-SCENARIO-GOV-018:** The registry rejects two governing documents claiming the same rule ID and accepts multiple navigation or generated surfaces that point to the single owner without restating its normative text.
 
-## DSET-REQUIREMENT-GOV-018 — Intake routing uses three queues
+## DSET-REQUIREMENT-GOV-018 — Routing applies the flat semantic Type model
 
-`DSET-RULE-WORK-ITEMS` must expose only `problems`, `opportunities`, and `questions` through one project-owned `dset/scopes/gov/intake.yaml` registry in schema 1.2. Problems cover bugs, gaps, debt, and risks; opportunities describe improvements when nothing is wrong; consequential questions close through Decisions. Open Conflicts use their own governed register/view because they may be emitted by deterministic analysis and are not a fourth intake queue. Decision is both the entity and durable artifact and uses the full `DECISION` type. Accepted problems, opportunities, and Decisions enter a DSET Change, whose executable steps live in `tasks.md`. Decisions and Changes are artifacts, while GitHub Issues and Jira/support tickets are external tracker representations rather than additional semantic types.
+`DSET-RULE-WORK-ITEMS` must route operator-accepted authority to Decision;
+unresolved knowledge, Conflict, Risk, and Opportunity to Question; current
+insufficiency, Defect, Gap, and Debt to Problem; and deterministic Test or
+qualitative, probabilistic, statistical, or model-judged Evaluation definitions
+to QA. Every named subtype is direct; no subtype may contain another subtype.
 
-**Scenario DSET-SCENARIO-GOV-019:** A production defect and a delivery risk become problems, optional release-note automation becomes an opportunity, and an unresolved API choice becomes a question linked to a Decision. Their accepted implementation steps appear only after a DSET Change creates tasks.
+Problems and Questions do not authorize implementation. A Problem may return
+directly to implementation only when an active Decision already defines the
+correction; otherwise it raises a Question whose consequential answer becomes a
+Decision. GitHub Issues, Jira/support tickets, tasks, Changes, and releases are
+representations, steps, or optional containers rather than semantic Types.
 
-## DSET-REQUIREMENT-GOV-019 — IDs use project and optional layer grammar
+**Scenario DSET-SCENARIO-GOV-019:** A production failure is a Problem/Defect, a
+missing required platform is a Problem/Gap, future delivery harm is a
+Question/Risk, optional release-note automation is a Question/Opportunity, and
+incompatible active API obligations form a Question/Conflict. An operator
+answer becomes a Decision or direct Decision subtype before implementation.
 
-The project prefix is `DSET`. Project-wide IDs use `DSET-<FULL-TYPE>-<NNN>`; layer-owned IDs use `DSET-<FULL-TYPE>-<LAYER>-<NNN>`, where `<LAYER>` is `META`, `GOV`, `TOOL`, `SKILL`, or `OPS`. Accepted methodology uses the full types `STORY`, `OUTCOME`, `REQUIREMENT`, `SCENARIO`, `INVARIANT`, `TEST`, and `EVAL`; intake, conflict, resolution, and authoritative-boundary artifacts use `PROBLEM`, `OPPORTUNITY`, `QUESTION`, `CONFLICT`, `DECISION`, and `CONTRACT`. Numbering is independent per full type within the project-wide sequence or semantic layer. No alternate global prefix is used, and directory moves do not rename IDs.
+## DSET-REQUIREMENT-GOV-019 — IDs expose the concrete Type or subtype
 
-**Scenario DSET-SCENARIO-GOV-020:** A project-wide question uses `DSET-QUESTION-001`; an open layer-owned conflict uses `DSET-CONFLICT-GOV-001`; layer-owned accepted truth uses IDs such as `DSET-STORY-SKILL-001`, `DSET-OUTCOME-OPS-001`, `DSET-REQUIREMENT-GOV-001`, and `DSET-TEST-GOV-001`; a durable resolution uses `DSET-DECISION-001`. Directory-only refactors do not rename these identities.
+The project prefix is `DSET`. Project-wide IDs use
+`DSET-<FULL-KIND>-<NNN>`; layer-owned compatibility IDs use
+`DSET-<FULL-KIND>-<LAYER>-<NNN>`, where `<LAYER>` is `META`, `GOV`, `TOOL`,
+`SKILL`, or `OPS`. `<FULL-KIND>` is the subtype when present and the Type when
+subtype is empty. No ID encodes a subtype path.
+
+Decision kinds are `DECISION`, `REQUIREMENT`, `CONSTRAINT`, `CONTRACT`,
+`STORY`, `OUTCOME`, `SCENARIO`, and `INVARIANT`; Question kinds are `QUESTION`,
+`CONFLICT`, `RISK`, and `OPPORTUNITY`; Problem kinds are `PROBLEM`, `DEFECT`,
+`GAP`, and `DEBT`; QA kinds are `TEST` and `EVALUATION`. Existing stable
+`EVAL` and other legacy IDs remain resolvable compatibility history and are not
+renamed in place. No alternate global prefix is used, and directory moves do
+not rename identities.
+
+**Scenario DSET-SCENARIO-GOV-020:** A general Decision uses
+`DSET-DECISION-001`; a User Story uses `DSET-STORY-002` with
+`type: decision` and `subtype: user_story`; a Risk uses `DSET-RISK-003` with
+`type: question`; and a Test uses `DSET-TEST-004` with `type: qa`. None carries
+a nested subtype in its ID or metadata.
 
 ## DSET-REQUIREMENT-GOV-020 — Artifacts declare authority and lifecycle roles
 
 DSET must distinguish atomic authority sources, evergreen compiled projections,
 transactional context/evidence, and implementation-layer artifacts. Accepted,
-active, applicable Requirements, Contracts, Decisions, and other registered
-normative atoms are authority sources. Evergreen specs, implementation plans,
-test plans, eval plans, runbooks, and governing rules are updatable projections
-compiled from those sources. Problems, Opportunities, Questions, Conflicts, proofs,
-Changes, releases, sessions, and runs preserve work history or evidence without
-becoming authority merely by existing. Implementation artifacts are code,
-tests, eval prompts/datasets, CI workflows, scripts, generated runtime assets,
-and configuration examples.
+active, applicable Decision atoms and their direct subtypes are authority
+sources. Evergreen specs, implementation plans, Test plans, Evaluation plans,
+runbooks, and governing rules are updatable projections compiled from those
+sources. Problems, Questions and their direct subtypes, QA results, proofs,
+optional Changes/releases, sessions, and runs preserve work history or evidence
+without becoming authority merely by existing. Implementation artifacts are
+code, Test code, Evaluation prompts/datasets, CI workflows, scripts, generated
+runtime assets, and configuration examples.
 
 **Scenario DSET-SCENARIO-GOV-021:** An accepted Decision changes behavior, the
-compiled spec and proof plans expose its current consequences, and code/tests/
-eval prompts implement those sources without becoming competing authority. If
+compiled spec and proof plans expose its current consequences, and code, Test
+code, and Evaluation prompts implement those sources without becoming
+competing authority. If
 the Decision and compiled spec differ, the Decision wins and the spec is stale.
 
 ## DSET-REQUIREMENT-GOV-021 — Atomic authority compiles into evergreen projections
 
-Accepted, active, applicable normative atoms must compile their current
+Accepted, active, applicable Decision atoms and direct subtypes must compile their current
 behavioral consequences into the owning evergreen specs, plans, runbooks, or
 governing rules. A compiled projection never outranks an active source atom. If
 they differ, the source atom governs, the projection is stale, and its relying
@@ -173,7 +214,17 @@ resolvable by ID.
 
 ## DSET-REQUIREMENT-GOV-022 — Commits and atomic artifacts retain provenance
 
-Every commit that changes an evergreen projection or implementation artifact must name the Decision or Decisions it implements in its commit message body. If no Decision is required, the commit must name the authorizing Problem, Opportunity, Question, or Change. Each newly emitted atomic artifact or append-only lifecycle event has an explicit session-provenance field: unique stable host-prefixed `llm_session_ids` when an LLM helped produce it, or an explicit empty list/`none` for human-only work. Missing provenance is invalid. A review, correction, or status change emits another linked record rather than revising the atom. This applies to Changes, intake items, Decisions, promoted proofs, skill-run records, and session checkpoints without making provenance authoritative.
+Every commit that changes an evergreen projection or implementation artifact
+must name the Decision or Decisions it implements in its commit message body.
+A linked Problem may explain the need for correction, but does not replace
+Decision authority. Each newly emitted atomic artifact or append-only lifecycle
+event has an explicit session-provenance field: unique stable host-prefixed
+`llm_session_ids` when an LLM helped produce it, or an explicit empty
+list/`none` for human-only work. Missing provenance is invalid. A review,
+correction, or status change emits another linked record rather than revising
+the atom. This applies to supported Decision, Question, Problem, and QA atoms,
+optional containers, promoted proofs, skill-run records, and session
+checkpoints without making provenance authoritative.
 
 **Scenario DSET-SCENARIO-GOV-023:** A commit body contains `Implements: DSET-DECISION-GOV-001`; the emitted Decision, Change, intake item, proof, run, checkpoint, and later lifecycle-event shapes record the Codex session IDs that produced them; a correction is a new linked event; and a human-only fixture passes only with explicit empty provenance.
 
@@ -188,8 +239,9 @@ the source, marks the document stale, and blocks reliance until recompilation.
 Both graphs must be acyclic; registry order must not imply precedence; missing
 precedence targets or unresolved conflicts must fail closed.
 
-Active Decisions authorize and explain rule changes; provenance identifies
-origin but does not authorize. Tests, evals, reviews, and evidence assess
+Active Decisions and their direct subtypes authorize and explain rule changes;
+provenance identifies origin but does not authorize. QA/Test and
+QA/Evaluation results, reviews, and evidence assess
 reliance claims. None becomes rule
 authority by existing or passing. Missing or stale assurance must leave only
 the affected claim pending or stale and block its relying gate according to
@@ -204,26 +256,26 @@ affected assurance claim stale, and blocks the release gate that relies on it.
 ## DSET-REQUIREMENT-GOV-024 — Project health is a transparent derived view
 
 DSET must expose a generated project-health projection without making it a new
-authority. It reports artifact counts by authority class, type, layer, status,
+authority. It reports artifact counts by role, Type, subtype, layer, status,
 priority, and applicable Work Area; unresolved and automatically resolved
-conflicts; unresolved Problems, Opportunities, and Questions; proof freshness;
-and traceability coverage for Decisions compiled into
-evergreen owners, Requirements connected to implementation and applicable
-Tests/Evals, implementation commits connected to their authorizing artifact,
-and proof plans connected to current evidence.
+Question/Conflict subtypes; unresolved Problems and Questions with their
+subtypes; proof freshness; and traceability coverage for Decision atoms
+compiled into evergreen owners, applicable authority connected to
+implementation and QA/Test or QA/Evaluation, implementation commits connected
+to their authorizing Decision, and proof plans connected to current evidence.
 
 Every coverage result states its numerator, denominator, exclusions,
 not-applicable, unknown, and stale counts and links back to canonical owners.
-The view must not require a Decision for every Requirement, code for a
-documentation-only Requirement, or an Eval where the eval plan declares one
-not applicable. A portable Markdown renderer is the baseline public surface;
+The view must not require a second empty-subtype Decision for every direct
+Decision subtype, code for a documentation-only Requirement, or an Evaluation
+where the Evaluation plan declares one not applicable. A portable Markdown renderer is the baseline public surface;
 interactive renderers may consume the same derived model later.
 
 **Scenario DSET-SCENARIO-GOV-025:** A repository reports 18 of 20 applicable
 Requirements with current deterministic Test coverage, one justified
 not-applicable Requirement, and one uncovered Requirement. The dashboard links
-the uncovered row to its spec owner and does not inflate the score by creating
-irrelevant Decisions, code, or Evals.
+the uncovered row to its authority and evergreen owners and does not inflate
+the score by creating irrelevant Decisions, code, or Evaluations.
 
 ## DSET-REQUIREMENT-GOV-025 — External reviews are portable transactional evidence
 
@@ -237,8 +289,9 @@ priority; the findings body may be free-form.
 
 Every finding records evidence, confidence, impact, and proposed disposition.
 Import or reconciliation must explicitly reject it with rationale, defer it,
-or route it to an existing or new Problem, Opportunity, Question, Decision,
-Change, evergreen owner, or proof obligation. Accepted consequences compile
+or route it to an existing or new Problem or Question and direct subtype,
+Decision and direct subtype, optional Change, evergreen owner, or proof
+obligation. Accepted consequences compile
 into current truth and reopen the smallest affected proof closure. Neither the
 report nor the reviewer may silently edit or authorize implementation.
 
@@ -254,13 +307,13 @@ DSET must use `priority` as its only generic ordered rank across atomic
 authority, evergreen projection, transactional context/evidence, and
 implementation artifacts. Every governed artifact declares priority directly
 or inherits it through one visible canonical relation.
-Implementation files may inherit from their owning Requirement, Decision,
-Change, Test, or Eval instead of carrying duplicated inline metadata.
+Implementation files may inherit from their owning Decision or QA atom, or an
+optional Change, instead of carrying duplicated inline metadata.
 
-Problems, Opportunities, Questions, Changes, and tasks use priority as one
+Problems, Questions and their direct subtypes, optional Changes, and tasks use priority as one
 input to execution order. Dependencies, authorization boundaries, release
 gates, and resource constraints may still require a different next action.
-Impact, severity, likelihood, expected value, Contract obligations, Outcome
+Impact, severity, likelihood, expected value, Decision/Contract obligations, Outcome
 value, and gate status remain evidence that explains priority rather than
 separate universal ranking fields.
 
@@ -284,7 +337,7 @@ Every governed artifact pair is classifiable even when it is not a selectable
 normative conflict. An accepted, active, applicable atomic source governs over
 its stale evergreen projection and routes recompilation. An explicit absorption
 relation selects the absorbing atom over absorbed predecessors before priority.
-Test/Eval/review/proof evidence changes assurance and the relying gate instead
+QA/Test, QA/Evaluation, review, and proof evidence change assurance and the relying gate instead
 of overriding authority. Implementation that contradicts authority creates a
 conformance Problem. Conflicting evidence follows its registered proof plan and
 quality/freshness rules or stops for adjudication. A generated view that
@@ -313,50 +366,50 @@ Decision wins over its absorbed predecessor by explicit lifecycle relation,
 not because it is newer. Equal selectable priorities stop for a Decision; no
 outcome is inferred from document order.
 
-## DSET-REQUIREMENT-GOV-027 — Problems, Questions, and Conflicts are distinct
+## DSET-REQUIREMENT-GOV-027 — Four Types use one flat subtype level
 
-DSET must classify an observed current or possible harmful state as a Problem,
-missing knowledge, interpretation, or choice as a Question, and verified
-incompatible applicable claims as a Conflict. A Conflict exists only when two
-or more identified claims cover the same scope, concern, and effective time and
-cannot all govern as written. Different wording alone is insufficient.
+DSET must represent each semantic atom with exactly one of four Types and at
+most one direct allowed subtype:
 
-Classification depends on semantic content and authority/lifecycle role, never
-on the workflow, queue, skill, tool, agent host, filename, or path that created,
-discovered, routed, or resolves the artifact. A workflow may emit or link any
-applicable type, but moving an artifact through a workflow cannot retype it.
-Changed semantics require a new correctly typed artifact and explicit links.
+- Decision: Requirement, Constraint, Contract, User Story, Outcome, Scenario,
+  or Invariant;
+- Question: Conflict, Risk, or Opportunity;
+- Problem: Defect, Gap, or Debt; and
+- QA: Test or Evaluation, with subtype required.
 
-An active atomic source versus its stale compiled projection routes
-recompilation. A failing Test, Eval, or review changes assurance. Implementation
-that contradicts authority creates a Problem. Contradictory evidence follows
-its proof plan or creates a Question. None becomes a Conflict unless the
-applicable claims themselves are verified incompatible.
+A general Decision, Question, or Problem omits subtype. A subtype never repeats
+its Type and never contains another subtype. User Story and Requirement are
+sibling Decision subtypes; links between them do not create
+Decision/Requirement/User Story nesting.
 
-Conflict is an immutable transactional entity using
-`<PROJECT>-CONFLICT-<NNN>` or
-`<PROJECT>-CONFLICT-<LAYER>-<NNN>`. It records exact claim/artifact IDs,
-incompatible propositions, roles, applicability, shared scope, evidence,
-detection state, priority, and required resolution class. Open Conflicts use a
-dedicated governed register/view rather than the three operator-facing intake
-queues.
+Classification depends on semantic content, never workflow, queue, skill,
+tool, host, filename, path, or next action. Changed semantics require a new
+linked atom. All emitted atoms are immutable.
 
-A Conflict resolves only through an append-only lifecycle event linking the
-durable resolving artifacts or events. Depending on class, those may include a
-new or absorbing Requirement, Contract, Decision, explicit precedence rule,
-valid exception or boundary change, recompiled evergreen projection with
-proof, or external-authority update. Deterministic role/lifecycle rules may
-resolve it without a Question; create a Question only when knowledge or an
-authorized choice is missing. Unsatisfiable immutable obligations remain open
-and blocking until an authority changes the boundary or grants a valid
-exception.
+Problem means presently true insufficiency. Wrong now is Defect; missing now is
+Gap; a working known compromise with continuing cost is Debt. Question means
+uncertainty. Possible future harm is Risk; optional possible value is
+Opportunity; verified incompatible active applicable authority is Conflict.
+Different wording, stale compilation, failed QA, implementation nonconformance,
+and contradictory evidence alone are not Conflicts.
 
-**Scenario DSET-SCENARIO-GOV-028:** A failing Test against an active Requirement
-creates an assurance failure, not a Conflict. Two active customer Contracts
-demanding mutually exclusive values emit one blocking Conflict. Investigation
-creates a linked Question only when the governing scope is unclear; resolution
-links the authority's new absorbing Contract and an append-only Conflict event
-without editing either original atom.
+QA/Test is deterministic under declared conditions. QA/Evaluation is
+qualitative, probabilistic, statistical, or model-judged and declares its
+method, criterion, threshold, and uncertainty handling where applicable. QA
+results affect assurance and never override Decision authority.
+
+A Question/Conflict records exact incompatible authority and resolves through
+an append-only lifecycle event linked to the answering or absorbing Decision,
+precedence, exception, boundary change, or external-authority update. A
+Problem returns directly to implementation only when an active Decision already
+defines the correction; otherwise it raises a Question.
+
+**Scenario DSET-SCENARIO-GOV-028:** A failing QA/Test against an active
+Requirement creates assurance failure and a Problem/Defect when current
+behavior is wrong, not a Conflict. Two active Contract subtypes demanding
+mutually exclusive values create one Question/Conflict. An operator-accepted
+absorbing Contract resolves it through an append-only event without editing the
+original atoms.
 
 ## DSET-REQUIREMENT-GOV-028 — Atomic rationale is recommended and optional
 
@@ -369,7 +422,7 @@ invalidate an artifact or block a proof or release gate.
 
 When a structured rationale is supplied, its schema must require a non-empty,
 bounded value. Rationale is explanatory context, not an alternate authority;
-it cannot hide a Requirement, Contract, lifecycle transition, or evidence claim
+it cannot hide a Decision or direct subtype, lifecycle transition, or evidence claim
 that is absent from the canonical owner for that concern. Templates should
 prompt useful reasoning without encouraging placeholder prose. Evergreen
 implementation references remain focused on current executable truth and link

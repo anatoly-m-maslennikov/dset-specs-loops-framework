@@ -9,7 +9,7 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 | **DSET toolchain** | The dependency-light CLI, schemas, templates, fixtures, traceability generator, migration guidance, CI gate, and focused skills that execute the accepted methodology contract |
 | **Self-hosting gate** | Bounded release proof in which the last released validator checks the candidate change, the candidate checks this repository, and the candidate materializes and checks one non-recursive temporary adopter |
 | **Diagnostic** | A stable code, artifact path, and actionable message emitted by a deterministic DSET gate |
-| **Traceability index** | A deterministic committed view from changes to intake, packages, User Stories, Outcomes, Requirements, tests, evals, Contracts, Decisions, evidence, and repository-qualified PRs; it is derived evidence rather than the owner of GitHub state or code diffs |
+| **Traceability index** | A deterministic committed view from semantic Types and direct subtypes through evergreen projections, implementation, QA, evidence, optional Changes, and repository-qualified PRs; it is derived evidence rather than the owner of GitHub state or code diffs |
 | **Project health renderer** | A deterministic projection that derives a portable Markdown health view from canonical repository artifacts and traceability without becoming another truth store |
 | **Priority conflict resolver** | A deterministic evaluator for every governed artifact pairing that emits a role-aware disposition, selects an effective claim only when policy permits resolution, and stops on unsatisfiable obligations, ties, or uncertainty |
 

@@ -15,7 +15,7 @@
 | Guarded RC/final publication | `DSET-REQUIREMENT-OPS-005..006`; `DSET-TEST-OPS-005..006`; `DSET-EVAL-OPS-003` | PR-only main updates, fully working RC, evidence-gated 1.0 |
 | Proportional delegation budget | `DSET-REQUIREMENT-SKILL-007..008`; `DSET-TEST-SKILL-007..008`; `DSET-EVAL-SKILL-005..006` | Main model/effort inheritance, useful medium fan-out, outcome cost rather than nominal price |
 | Session continuity | `DSET-REQUIREMENT-SKILL-009`; `DSET-TEST-SKILL-009`; `DSET-EVAL-SKILL-008` | One public entrypoint, linked internal runs, bounded checkpoint recovery after compaction, and authoritative-state refresh |
-| Unambiguous project intake | `DSET-REQUIREMENT-GOV-018..019`; `DSET-TEST-GOV-018..019`; `DSET-EVAL-GOV-010..011` | One registry; Problems include risks; Opportunities require no defect; Questions lead to Decisions; tasks stay in Changes; stable architectural layers own IDs |
+| Unambiguous semantic routing | `DSET-REQUIREMENT-GOV-018..019`; `DSET-TEST-GOV-018..019`; `DSET-EVAL-GOV-010..011` | Exactly four Types; one direct subtype at most; User Story is a Decision subtype; tasks and Changes remain non-Type structures; legacy IDs retain stable lookup |
 
 ## Candidates
 

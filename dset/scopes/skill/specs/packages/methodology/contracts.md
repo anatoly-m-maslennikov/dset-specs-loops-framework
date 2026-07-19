@@ -14,7 +14,14 @@ changing the installed skill package.
 
 Subagents request the main session's model and reasoning effort by default and report effective attestation or uncertainty. Medium budget targets two and caps the whole tree at three unique subagents, depth one, and two rounds. Scope, proof, and safety are invariant; model overrides require dated task-relevant evidence and remain visible in run records.
 
-Intake routing uses only problems, opportunities, and questions in `dset/scopes/gov/intake.yaml`; open Conflicts use a separate governed register/view. Type follows semantic content and authority/lifecycle role, never the workflow or skill. Decision is the durable entity and artifact and uses the full `DECISION` type. Decisions and DSET Changes are artifacts, tasks live inside Changes, and GitHub Issues and Jira/support tickets are external representations. IDs use the `DSET` project prefix: project-wide IDs omit the optional layer, while layer-owned IDs insert `META`, `GOV`, `TOOL`, `SKILL`, or `OPS` between the full type and sequence. Optional accepted User Stories use the compact full `STORY` ID type, measurable intended effects use the full `OUTCOME` type, verified incompatible applicable claims use the full `CONFLICT` type, and authoritative boundaries use the full `CONTRACT` type.
+Semantic routing uses exactly four Types with one optional direct subtype:
+Decision, Question, Problem, and QA. User Story, Outcome, Requirement,
+Constraint, Contract, Scenario, and Invariant are sibling Decision subtypes;
+Conflict, Risk, and Opportunity are Question subtypes; Defect, Gap, and Debt
+are Problem subtypes; Test and Evaluation are QA subtypes. Type follows meaning,
+never workflow or skill. Tasks and hosted tickets are representations, and
+Change is optional. IDs expose the direct subtype kind when present and the
+Type kind when subtype is absent; they never encode subtype nesting.
 
 ### DSET-CONTRACT-SKILL-001 — Released skills are host-native
 

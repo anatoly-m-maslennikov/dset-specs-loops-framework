@@ -18,15 +18,20 @@ CHANGE = (
 
 
 class ConflictEntityTests(unittest.TestCase):
-    def test_accepted_truth_distinguishes_three_semantic_conditions(self) -> None:
+    def test_accepted_truth_defines_four_types_and_flat_subtypes(self) -> None:
         domain = (GOV_PACKAGE / "domain.md").read_text(encoding="utf-8")
         spec = (GOV_PACKAGE / "spec.md").read_text(encoding="utf-8")
+        self.assertIn("**Decision**", domain)
         self.assertIn("**Problem**", domain)
         self.assertIn("**Question**", domain)
+        self.assertIn("**QA**", domain)
         self.assertIn("**Conflict**", domain)
+        self.assertIn("direct Question subtype", domain)
+        self.assertIn("direct Decision subtype", domain)
         self.assertIn("DSET-INVARIANT-GOV-017", domain)
         self.assertIn("DSET-REQUIREMENT-GOV-027", spec)
-        self.assertIn("incompatible applicable claims as a Conflict", spec)
+        self.assertIn("Four Types use one flat subtype level", spec)
+        self.assertIn("never contains another subtype", spec)
 
     def test_type_is_never_defined_by_workflow_or_location(self) -> None:
         artifacts = (ROOT / "documentation" / "artifact-types.md").read_text(
@@ -38,10 +43,10 @@ class ConflictEntityTests(unittest.TestCase):
         rules = (
             ROOT / "dset" / "scopes" / "gov" / "governance" / "work-items.md"
         ).read_text(encoding="utf-8")
-        self.assertIn("never by workflow", artifacts)
+        self.assertIn("never workflow", artifacts)
         self.assertIn("not from a workflow", authoring)
-        self.assertIn("Type follows the semantic condition", rules)
-        self.assertIn("cannot retype an artifact", rules)
+        self.assertIn("Type is determined by meaning", rules)
+        self.assertIn("must not be silently retyped", rules)
 
     def test_conflict_proof_ids_are_registered(self) -> None:
         package = load(GOV_PACKAGE / "package.yaml")

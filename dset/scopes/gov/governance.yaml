@@ -18,7 +18,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/gov/templates/governance/core-v1/architecture.md
-      sha256: 20cec720493cd7e43dc5167a1706ddd2466c7980b5049990c71336f551054742
+      sha256: 1df41bec381a4a46b206eeb278a6270fdfc08346f16b15399679d701906bc527
   -
     id: DSET-RULE-BUILD
     layer: TOOL
@@ -114,7 +114,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/gov/templates/governance/core-v1/artifact-maintenance.md
-      sha256: 5672e643c48c6d9488e3885adaa074317868ec656a7b9676f86c0fcd79f90d04
+      sha256: 42704739c624d11c4742564ec25cae0b114e56634ceb940d3aa09cf2ee00c247
   -
     id: DSET-RULE-WORK-ITEMS
     layer: GOV
@@ -210,7 +210,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/skill/templates/governance/core-v1/lifecycle-orchestration.md
-      sha256: c600e0c6fb071dca10870f1932381df2412c38b751c686030d4eea2cb5bb8a5f
+      sha256: 546196f6e9ae7e6e93ccf53b1671b4e3e627af157585f46d1ffa85fc8d47bfc3
   -
     id: DSET-RULE-DIAGNOSIS
     layer: SKILL

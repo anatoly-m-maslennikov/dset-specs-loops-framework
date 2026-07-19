@@ -44,29 +44,76 @@ Exact resolver, ownership, path, identity, wrapper, and recursion behavior must 
 
 **Scenario DSET-SCENARIO-META-008:** A scripted assertion that a cycle emits one stable code remains a test; an automated agent run measuring whether the diagnostic enables a safe correction remains an eval.
 
-## DSET-REQUIREMENT-META-008 — Contracts preserve authoritative boundaries
+## DSET-REQUIREMENT-META-008 — Contract Decisions preserve boundaries
 
-An existing DDL, required CSV/XLSX schema, supplied OpenAPI/message/protocol, host-native package format, supported-platform interface, hosted-CI interface, dependency policy, or comparable externally constrained boundary must be represented as a first-class Contract when implementation is not authorized to redefine it. A project-wide Contract uses `DSET-CONTRACT-<NNN>` and a layer-owned Contract uses `DSET-CONTRACT-<LAYER>-<NNN>`. Each immutable record must name its authority, source, exactly one record version or digest, direction, producer, consumer, conformance rule, compatibility rule, priority, creation state, and any older Contract atoms it absorbs. Sources that define external formats must themselves be pinned by version or digest in the applicable release evidence.
+When the operator supplies or accepts a DDL, CSV/XLSX schema,
+OpenAPI/message/protocol, host-native package format, supported-platform
+interface, hosted-CI interface, dependency boundary, or comparable obligation,
+DSET must represent it as `type: decision`, `subtype: contract`. A Contract uses
+a stable `CONTRACT` ID. Each immutable atom names the accepted source,
+direction, provider, consumer, conformance rule, compatibility rule, priority,
+creation state, and any older Contract atoms it absorbs. External formats are
+pinned by version or digest in applicable evidence.
 
-Contract lifecycle is derived from append-only events: `declared -> active -> absorbed` or `declared -> active -> retired`. An emitted Contract atom is never edited. Implementation must conform to every applicable active Contract and cannot change the boundary to fit itself. Only the named authority may emit an absorbing version or retirement event. Ambiguity routes to a Question; demonstrated incompatibility routes to a Problem; a Decision cannot override a Contract. A mandated dependency is therefore a Contract constraint rather than a Decision, although a consequential choice among Contract-allowed alternatives may become a Decision.
+Contract lifecycle is derived from append-only events. Implementation conforms
+to every applicable active Contract and cannot rewrite the boundary. Ambiguity
+routes to a Question; incompatible active authority becomes Question/Conflict;
+observed nonconformance becomes Problem/Defect. A general or unrelated Decision
+does not silently override a Contract; change requires explicit precedence or
+an operator-accepted absorbing Contract. A mandated dependency is
+Decision/Constraint when it restricts the solution space and Decision/Contract
+when a boundary participant relies on it.
 
-**Scenario DSET-SCENARIO-META-009:** A release claims support for Claude, Codex, macOS, native Windows, WSL, Linux, and protected GitHub pull requests while also adopting a governed dependency set. `DSET-CONTRACT-SKILL-001` requires real install/load/invoke proof for each declared host-native skill package, `DSET-CONTRACT-TOOL-001` requires platform execution or an honest pre-release non-applicability declaration, `DSET-CONTRACT-TOOL-002` constrains dependencies and exceptions, and `DSET-CONTRACT-OPS-001` requires a real workflow and hosted run on the exact PR head. Descriptive Markdown or local scripts alone cannot satisfy those Contracts. An unclear host format becomes a Question, a failing platform or disallowed dependency becomes a Problem, and no Decision rewrites the active boundary.
+**Scenario DSET-SCENARIO-META-009:** The operator accepts host, platform,
+dependency, and GitHub Actions boundaries as Contract Decisions. Descriptive
+Markdown or local scripts alone cannot satisfy them. An unclear host format is
+a Question, incompatible active formats are a Question/Conflict, and a failing
+platform or disallowed dependency is a Problem with the applicable subtype.
 
-## DSET-REQUIREMENT-META-009 — User Stories add optional actor and value context
+## DSET-REQUIREMENT-META-009 — User Story is a direct Decision subtype
 
-When a meaningful User Story exists, accepted project truth may record it with project-wide ID `DSET-STORY-<NNN>` or layer-owned ID `DSET-STORY-<LAYER>-<NNN>`. A User Story must capture the actor or stakeholder, desired capability or outcome, value or purpose, and links to the normative Requirements and applicable Scenarios that make the desired behavior verifiable. A package with no meaningful User Story remains valid without one. User Stories are accepted truth, not a fourth intake queue, and never substitute for a normative verifiable Requirement. `STORY` is the compact ID token for the public User Story entity.
+When meaningful, accepted project truth records a User Story with
+`type: decision`, `subtype: user_story`, and a stable `STORY` compatibility ID.
+It captures the actor or stakeholder, desired capability or outcome, and value
+or purpose. User Story, Requirement, Constraint, Contract, Outcome, Scenario,
+and Invariant are sibling Decision subtypes. Links among them never create
+subtype nesting, and a User Story is never represented as
+Decision/Requirement/User Story.
 
-Artifact boundaries remain explicit. A Requirement states observable, verifiable delivered behavior, result, or constraint. An observable edge case is a Scenario. A consequential choice among alternatives is a Decision only when its rationale, tradeoffs, and consequences matter; ordinary implementation details are not Decisions. Internal logic belongs to Design, build and rollout sequence belongs to the implementation plan, and a boundary the project is not authorized to choose or rewrite is a Contract.
+Each sibling owns its own semantics: Requirement owns observable required
+results; Constraint narrows solutions; Contract owns boundary obligations;
+Outcome owns measurable state change; Scenario owns a concrete accepted
+behavior; Invariant owns an always-true condition. Design owns internal logic
+and implementation plans own build order. A package with no meaningful actor
+perspective may omit User Story without inventing one.
 
-**Scenario DSET-SCENARIO-META-010:** `DSET-STORY-SKILL-001` states that a contributor wants a released DSET skill to load in the contributor's declared host so the workflow is usable there, then links to the exact host-native packaging Requirement and install/load/invoke Scenarios. The pinned host format remains a Contract, a failed-load edge case remains a Scenario, loader internals remain Design, and the build order remains in the implementation plan. If no meaningful actor perspective adds context, the package omits a User Story and retains the Requirements.
+**Scenario DSET-SCENARIO-META-010:** `DSET-STORY-SKILL-001` states that a
+contributor wants a released DSET skill to load in a declared host and links to
+sibling Requirement, Contract, Scenario, and QA atoms. The links make behavior
+traceable without making any atom a subtype of User Story or Requirement.
 
 ## DSET-REQUIREMENT-META-010 — Outcomes measure intended state change
 
-An accepted Outcome uses project-wide ID `DSET-OUTCOME-<NNN>` or layer-owned ID `DSET-OUTCOME-<LAYER>-<NNN>`. It must describe a measurable change in user, business, operational, or system state rather than a delivered output or feature, and record its baseline, target, observation method and source, evaluation window, originating Problem or Opportunity links, relevant User Story links when User Stories exist, and applicable Eval links. An Outcome is accepted truth, not an intake queue or item. A model-only methodology change may define Outcome without inventing a concrete Outcome record.
+An accepted Outcome uses `type: decision`, `subtype: outcome`, and a stable
+`OUTCOME` ID. It describes a measurable change in user, business, operational,
+or system state rather than a delivered output or feature and records its
+baseline, target, observation method/source, evaluation window, originating
+Problem or Question/Opportunity links, relevant sibling User Story links, and
+applicable QA/Evaluation links. A model-only methodology change does not invent
+a concrete Outcome atom.
 
-Requirements and Outcomes own different proof. A Requirement defines the observable, verifiable behavior, result, or constraint the implementation must deliver. Deterministic Requirement evidence proves delivery. Outcome evidence observes the declared source over the declared evaluation window and shows whether the delivered behavior produced the intended state change; shipping a feature or artifact alone cannot satisfy an Outcome.
+Requirement and Outcome are sibling Decision subtypes with different proof. A
+Requirement defines observable behavior or result the implementation must
+deliver. Deterministic QA/Test evidence proves delivery. Outcome evidence uses
+the declared source and window to show whether delivery produced the intended
+state change; shipping an artifact alone cannot satisfy an Outcome.
 
-**Scenario DSET-SCENARIO-META-011:** A Requirement states that the release workflow records a stable failed check on the exact pull-request SHA. A linked operational Outcome may instead target a measurable reduction from a recorded baseline in time-to-diagnose failed releases over a stated window, using hosted check/run timestamps as its observation source and an Eval to judge the evidence. Adding the workflow file proves the Requirement, not the Outcome.
+**Scenario DSET-SCENARIO-META-011:** A Requirement states that the release
+workflow records a stable failed check on the exact pull-request SHA. A linked
+operational Outcome instead targets a measurable reduction from a recorded
+baseline in time-to-diagnose failed releases over a stated window, using hosted
+check/run timestamps as its observation source and QA/Evaluation to judge the
+evidence. Adding the workflow file proves the Requirement, not the Outcome.
 
 ## DSET-REQUIREMENT-META-011 — Work Areas bound repository scope without assuming implementation type
 
