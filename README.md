@@ -24,25 +24,28 @@ a rigid execution order.
 
 ```mermaid
 flowchart LR
-    Q["Question<br/>What remains unresolved?"]
+    O["Operator input<br/>What should the project do?"]
     D["Decision<br/>What governs the project?"]
     E["Evergreen truth<br/>Current specs and plans"]
     I["Implementation<br/>Code, docs, scripts"]
     QA["QA<br/>Tests and evaluations"]
     V["Verification<br/>Current proven state"]
+    Q["Question<br/>What remains unresolved?"]
     P["Problem<br/>What is currently insufficient?"]
 
-    Q -->|"resolved by"| D
+    O -->|"accepted as"| D
     D -->|"compiled into"| E
     E -->|"governs"| I
     I -->|"checked by"| QA
     QA -->|"passes"| V
 
+    Q -->|"resolved by operator input"| D
     QA -->|"fails"| P
     P -->|"resolution unclear"| Q
     P -->|"existing decision already applies"| I
 ```
 
+- **Operator input** is the source of project intent and authority.
 - **Question** records unresolved knowledge, interpretation, or choice.
 - **Problem** records something that is currently wrong, missing, or
   insufficient. It returns directly to implementation when current authority
