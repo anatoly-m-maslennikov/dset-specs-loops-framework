@@ -1,0 +1,167 @@
+schema_version: 1.0
+profile: documentation-v1
+
+classification:
+  unclassified: error
+  multiple_matches: error
+  direct_metadata_fields:
+    type: artifact_type
+    subtype: artifact_subtype
+
+artifact_types:
+  -
+    id: atomic_record
+    primary_question: What atomic project claim or directive does this carrier preserve?
+    allow_empty_subtype: true
+    subtypes: []
+  -
+    id: analysis_report
+    primary_question: What interpreted understanding should inform, but not authorize, a decision?
+    allow_empty_subtype: true
+    subtypes:
+      - solution_landscape
+      - root_cause_analysis
+      - proposal
+      - technical_investigation
+      - external_audit_analysis
+  -
+    id: specification
+    primary_question: What current or required truth does this document compile?
+    allow_empty_subtype: true
+    subtypes:
+      - domain_model
+      - behavior
+      - architecture
+      - design
+      - governance
+      - version_scope
+  -
+    id: procedure
+    primary_question: What reusable way of working should an operator enact?
+    allow_empty_subtype: true
+    subtypes:
+      - playbook
+      - runbook
+  -
+    id: plan
+    primary_question: What intended work or proof should occur for this bounded objective?
+    allow_empty_subtype: true
+    subtypes:
+      - roadmap
+      - implementation_plan
+      - test_plan
+      - evaluation_plan
+      - release_plan
+  -
+    id: change
+    primary_question: Which accepted work and evidence are grouped for one bounded delivery?
+    allow_empty_subtype: true
+    subtypes: []
+  -
+    id: implementation
+    primary_question: What realizes accepted truth or QA definitions?
+    allow_empty_subtype: true
+    subtypes:
+      - source_code
+      - documentation
+      - configuration
+      - migration
+      - test_implementation
+      - evaluation_implementation
+  -
+    id: evidence_record
+    primary_question: What was observed for an identified subject, revision, method, and time?
+    allow_empty_subtype: true
+    subtypes:
+      - test_result
+      - evaluation_result
+      - review_report
+      - run_record
+  -
+    id: verification
+    primary_question: What do the applicable evidence records support at this revision?
+    allow_empty_subtype: true
+    subtypes: []
+  -
+    id: readiness_record
+    primary_question: May this exact release candidate proceed through its release gate?
+    allow_empty_subtype: true
+    subtypes: []
+  -
+    id: release_record
+    primary_question: What exact version was published, what did it deliver, and where?
+    allow_empty_subtype: true
+    subtypes: []
+  -
+    id: derived_view
+    primary_question: What does current canonical project data imply for this declared use?
+    allow_empty_subtype: true
+    subtypes:
+      - project_overview
+      - health_dashboard
+      - traceability_index
+      - changelog
+  -
+    id: navigation
+    primary_question: Where should a reader start or continue?
+    allow_empty_subtype: true
+    subtypes:
+      - readme
+      - hub
+      - index
+
+path_rules:
+  -
+    pattern: "**/decision-*.md"
+    artifact_type: atomic_record
+  -
+    pattern: "**/solution-landscape.md"
+    artifact_type: analysis_report
+    artifact_subtype: solution_landscape
+  -
+    pattern: "**/root-cause.md"
+    artifact_type: analysis_report
+    artifact_subtype: root_cause_analysis
+  -
+    pattern: "**/proposal.md"
+    artifact_type: analysis_report
+    artifact_subtype: proposal
+  -
+    pattern: "**/domain.md"
+    artifact_type: specification
+    artifact_subtype: domain_model
+  -
+    pattern: "**/spec.md"
+    artifact_type: specification
+    artifact_subtype: behavior
+  -
+    pattern: "**/design.md"
+    artifact_type: specification
+    artifact_subtype: design
+  -
+    pattern: "**/implementation-plan.md"
+    artifact_type: plan
+    artifact_subtype: implementation_plan
+  -
+    pattern: "**/test-plan.md"
+    artifact_type: plan
+    artifact_subtype: test_plan
+  -
+    pattern: "**/eval-plan.md"
+    artifact_type: plan
+    artifact_subtype: evaluation_plan
+  -
+    pattern: "**/change.yaml"
+    artifact_type: change
+  -
+    pattern: "**/verification.md"
+    artifact_type: verification
+  -
+    pattern: "**/generated/traceability.yaml"
+    artifact_type: derived_view
+    artifact_subtype: traceability_index
+  -
+    pattern: "**/README.md"
+    artifact_type: navigation
+    artifact_subtype: hub
+

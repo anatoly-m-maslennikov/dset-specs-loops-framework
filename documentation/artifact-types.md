@@ -1,4 +1,4 @@
-# Semantic Types, subtypes, and artifact roles
+# Semantic Types, subtypes, and artifact types
 
 ## Authority
 
@@ -181,25 +181,58 @@ If none applies, the artifact is probably a document role, lifecycle record,
 implementation artifact, derived view, or optional workflow container rather
 than another semantic Type.
 
-## Artifact roles are not Types
+## Artifact types are a separate axis
 
-The following classifications remain necessary, but they do not expand the
-four-Type model:
+`artifact_type` classifies the primary job performed by a carrier.
+`artifact_subtype` adds at most one direct specialization. These fields are
+independent from the semantic `type` and `subtype` of an Atomic Record.
 
-| Role or layer | Owning question | Typical artifacts |
-|---|---|---|
-| Navigation | Where does a reader start? | Hub, README, index |
-| Evergreen projection | What is the current compiled truth? | Specification, architecture, implementation plan, Test plan, Evaluation plan, runbook, governing rule |
-| Rationale | Why does an authority or structure exist? | Rationale section or linked explanation |
-| Implementation | What actually realizes the authority and QA definitions? | Code, documentation, configuration, scripts, Test code, Evaluation prompts, datasets, CI |
-| Transactional evidence | What was observed at an identified revision, environment, or time? | Proof result, review report, changelog, session/run record |
-| Derived view | What does current source data imply? | Verification, project overview, traceability, health dashboard |
-| Agent interface | Which governed workflow should be invoked? | Thin skill wrapper |
-| Optional delivery container | Which accepted work is grouped for delivery or publication? | Change, Release |
+The machine-readable catalog is
+[`dset/scopes/gov/artifact-types.yaml`](../dset/scopes/gov/artifact-types.yaml).
+It defines thirteen artifact types:
 
-Document roles may contain or project typed atoms. A specification can compile
-many Decisions; a Test plan can compile many QA/Test atoms; neither
-“specification” nor “plan” becomes a fifth semantic Type.
+| Artifact type | Direct artifact subtypes |
+|---|---|
+| `atomic_record` | None; use semantic Type fields for its atom |
+| `analysis_report` | `solution_landscape`, `root_cause_analysis`, `proposal`, `technical_investigation`, `external_audit_analysis` |
+| `specification` | `domain_model`, `behavior`, `architecture`, `design`, `governance`, `version_scope` |
+| `procedure` | `playbook`, `runbook` |
+| `plan` | `roadmap`, `implementation_plan`, `test_plan`, `evaluation_plan`, `release_plan` |
+| `change` | None |
+| `implementation` | `source_code`, `documentation`, `configuration`, `migration`, `test_implementation`, `evaluation_implementation` |
+| `evidence_record` | `test_result`, `evaluation_result`, `review_report`, `run_record` |
+| `verification` | None |
+| `readiness_record` | None |
+| `release_record` | None |
+| `derived_view` | `project_overview`, `health_dashboard`, `traceability_index`, `changelog` |
+| `navigation` | `readme`, `hub`, `index` |
+
+Omit an optional artifact subtype when none fits precisely. Never repeat the
+artifact type as its subtype, nest artifact subtypes, or infer semantic Type
+from artifact classification. Every governed artifact has one primary artifact
+type, recorded directly or resolved through one unambiguous registered path
+rule.
+
+An Analysis Report interprets information without authorizing its conclusion.
+A Solution Landscape compares live options; Root-Cause Analysis supports a
+cause for an observed Problem; Proposal recommends one candidate; Technical
+Investigation establishes facts, mechanisms, or feasibility; External Audit
+Analysis interprets an external audit while the audit remains evidence. An
+accepted conclusion is emitted separately as a Decision, Question, Problem, or
+QA atom.
+
+Critical boundaries are: Specification versus intended Plan; reusable
+Procedure versus one enactment Plan; Implementation versus observed Evidence
+Record; Evidence Record versus derived Verification; Verification versus an
+explicit Readiness Record gate decision; and release readiness versus immutable
+Release Record publication history. Derived View and Navigation never become
+authority.
+
+The flat Release lifecycle uses Version Scope
+(`specification/version_scope`), Roadmap (`plan/roadmap`), Release Plan
+(`plan/release_plan`), Readiness Record, and Release Record. Milestones are
+Roadmap entries. Release Notes and changelogs are rendered or derived from
+Release Records.
 
 ## Lifecycle and authority
 

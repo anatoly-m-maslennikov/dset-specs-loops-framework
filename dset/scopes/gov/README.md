@@ -11,6 +11,7 @@ GOV owns the single intake and governance registries. Generated views are naviga
 ## Start here
 
 - [Governance registry](governance.yaml)
+- [Artifact-type registry](artifact-types.yaml)
 - [Governing rules](governance/README.md)
 - [Intake](intake.yaml)
 - [Methodology package fragment](specs/packages/methodology/README.md)

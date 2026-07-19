@@ -15,26 +15,21 @@ DSET uses independent profile axes for runtime behavior, durable authority, code
 
 A project selects each applicable axis explicitly. Selecting `documentation-v1` does not imply that the project is documentation-only; selecting `python-v1` does not govern prose.
 
-## Artifact roles and navigation
+## Artifact classification and navigation
 
-Durable content has one of four roles. These roles are orthogonal to the four
-semantic Types—Decision, Question, Problem, and QA:
+Every governed carrier has one primary artifact type from the project-local
+MECE registry. Atomic Record, Analysis Report, Specification, Procedure, Plan,
+Change, Implementation, Evidence Record, Verification, Readiness Record,
+Release Record, Derived View, and Navigation cover the development lifecycle
+without changing the four semantic Types—Decision, Question, Problem, and QA.
 
-- an **atomic authority source** is an immutable accepted Decision, including
-  a Requirement, Constraint, or Contract subtype;
-- an **evergreen compiled projection** is an editable current spec, plan,
-  runbook, or governing document compiled from active sources;
-- **transactional context or evidence** records Questions, Problems, QA
-  results, proposed work, rationale, review, proof, or history without becoming
-  authority by itself; and
-- an **implementation artifact** is code, configuration, tests, eval prompts,
-  or another delivered executable surface.
+Artifact type answers what job the carrier performs. Semantic Type answers what
+an Atomic Record means. Workflow, queue, skill, tool, host, filename, folder,
+and intended next action determine neither axis. Direct metadata or exactly one
+registered path rule supplies artifact classification; ambiguity fails closed.
 
-Role and primary Type come from semantic content and authority/lifecycle
-position. Workflow, queue, skill, tool, host, filename, folder, and intended
-next action are routing metadata and never define Type or subtype.
-
-An active applicable source atom wins when its evergreen projection is stale.
+An active applicable source atom wins when its compiled Specification,
+Procedure, or Plan is stale.
 The drift must be routed for recompilation; implementation and evidence cannot
 silently redefine either authority.
 
@@ -43,7 +38,7 @@ Navigation remains hierarchical:
 ```text
 repository root hub
 └── governed area hub
-    └── owning artifact
+    └── classified owning artifact
         ├── linked rationale or Decision
         ├── linked playbook/runbook
         └── linked proof/evidence
@@ -51,7 +46,7 @@ repository root hub
 
 - The root hub answers which stable public areas exist.
 - An area hub answers what the area owns, excludes, and where a reader starts.
-- An owning artifact answers one primary question and declares its role and
+- An owning artifact answers one primary question and declares its type and
   authority boundary.
 - Rationale, procedures, and evidence link to the owner; they do not copy its
   rule. Decisions are atomic sources whose consequences compile into their
@@ -61,11 +56,11 @@ Every governed area declares one root, owner, purpose, hub, and parent. A child 
 
 ## Current truth and history
 
-Active source atoms authorize current rules or accepted behavior. Evergreen
-artifacts present the current compiled view. DSET Change folders hold proposed
-deltas and verification. Archived Changes and changelogs preserve what
-happened. Evidence may prove current truth, but it is not another authority for
-that truth.
+Active source atoms authorize current rules or accepted behavior.
+Specifications, Procedures, and Plans present compiled views. DSET Change
+folders hold proposed deltas and Verification. Archived Changes and Release
+Records preserve what happened; changelogs are Derived Views. Evidence may
+support current truth, but it is not another authority for that truth.
 
 ## Artifact lifecycle
 

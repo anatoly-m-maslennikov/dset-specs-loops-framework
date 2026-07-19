@@ -1,0 +1,68 @@
+# Artifact classification rules
+
+**Rule ID:** `DSET-RULE-ARTIFACT-CLASSIFICATION`
+
+## Two independent axes
+
+Every governed artifact has exactly one primary `artifact_type` and at most one
+allowed direct `artifact_subtype`. Atomic records separately use semantic
+`type` and `subtype`. Artifact classification never creates a fifth semantic
+Type or derives semantic meaning from a filename, folder, workflow, or tool.
+
+The project-local `dset/scopes/gov/artifact-types.yaml` registry owns the
+machine-readable artifact vocabulary for schema 1.2. The legacy equivalent is
+`dset/artifact-types.yaml`. The selected artifact profile must validate the
+registry before relying on classification.
+
+## Classification order
+
+1. Identify the carrier's one primary owning question.
+2. Select the registered `artifact_type` that owns that question.
+3. Select at most one allowed direct `artifact_subtype`; omit it when the type's
+   general form is the honest classification.
+4. Record classification directly on an editable carrier or resolve it through
+   exactly one registered path rule.
+5. Stop on unknown types, mismatched subtypes, nested subtypes, missing
+   classification, or multiple applicable path rules.
+
+Direct metadata uses `artifact_type` and `artifact_subtype`. The fields `type`
+and `subtype` remain reserved for semantic atom classification. Existing
+immutable atoms are classified externally; classification never edits their
+emitted content.
+
+## Role boundaries
+
+- Analysis Report interprets information; Evidence Record records an
+  observation.
+- Specification compiles current or required truth; Plan describes intended
+  work.
+- Procedure describes a reusable method; Plan describes one intended
+  enactment.
+- Implementation realizes accepted truth or QA definitions; Verification
+  assesses what evidence supports.
+- Readiness Record contains the explicit release gate disposition; green checks
+  alone do not authorize release.
+- Release Record immutably records the publication occurrence.
+- Derived View and Navigation never become authority.
+
+An accepted analysis conclusion becomes a separate Decision, Question,
+Problem, or QA atom. A proposed Design is an Analysis Report/Proposal; accepted
+current Design is a Specification/Design. An external audit is evidence;
+External Audit Analysis is the project's interpretation and triage of it.
+
+## Release lifecycle
+
+Release lifecycle artifacts remain flat: Version Scope is
+`specification/version_scope`; Roadmap is `plan/roadmap`; Release Plan is
+`plan/release_plan`; Readiness Record and Release Record use their eponymous
+types. Milestones are Roadmap entries. Release Notes and changelogs are rendered
+or derived from immutable Release Records.
+
+## Scope
+
+The catalog covers development and release handoff. Sales, customer-success
+management, performed production support, and operation of deployment
+infrastructure are outside it. External work may supply operator input or
+evidence. Developing required supportability behavior or documentation remains
+Implementation.
+

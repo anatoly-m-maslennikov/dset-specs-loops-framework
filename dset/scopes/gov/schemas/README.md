@@ -3,6 +3,7 @@
 Repository-governance schemas owned by GOV:
 
 - [Artifact areas](artifacts.schema.json)
+- [Artifact types](artifact-types.schema.json)
 - [Changes](change.schema.json)
 - [Governance registry](governance.schema.json) — schema 1.1 separates
   dependency from conflict precedence

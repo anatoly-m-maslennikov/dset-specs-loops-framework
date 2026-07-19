@@ -3,9 +3,10 @@
 ## Universal rules
 
 1. Start with the answer, rule, contract, or decision; context follows only when it helps application.
-2. Give each atomic artifact one primary Type, optional allowed subtype, owner,
-   and authority boundary. Give each document one primary role and owning
-   question.
+2. Give each governed carrier one primary `artifact_type`, at most one allowed
+   direct `artifact_subtype`, owner, and owning question. Give each atomic
+   artifact a separate semantic Type, optional allowed semantic subtype, and
+   authority boundary.
    Classify the smallest independently reviewable primary claim. Split
    multi-head statements into linked sibling atoms; if an irreducible claim
    remains subtype-ambiguous, use its general Type and raise a Question when
@@ -29,6 +30,21 @@
     result, evidence, gate disposition, and derived Verification. A single
     stored record may link several of these roles but must not collapse their
     meanings.
+
+## Analysis reports
+
+- State the exact question, reviewed inputs, revision/currentness, assumptions,
+  method, limitations, and conclusion or unresolved return.
+- Use Solution Landscape to compare live options without selecting one;
+  Root-Cause Analysis for a supported causal conclusion about an observed
+  Problem; Proposal to recommend one candidate; Technical Investigation for
+  facts, mechanisms, or feasibility; and External Audit Analysis to interpret
+  an external audit.
+- Keep source observations in Evidence Records. Link them rather than
+  laundering interpretation into evidence.
+- Do not treat a recommendation as accepted authority. Emit the accepted
+  conclusion separately as a Decision, Question, Problem, or QA atom.
+- Omit `artifact_subtype` when no direct subtype fits; never nest subtypes.
 
 ## Specifications
 

@@ -19,6 +19,7 @@ This hub owns navigation only. `governance.yaml` owns machine-readable resolutio
 - [Prototyping](../../../../skill/templates/governance/core-v1/prototyping.md)
 - [Supportability](../../../../ops/templates/governance/core-v1/supportability.md)
 - [Artifact maintenance](artifact-maintenance.md)
+- [Artifact classification](artifact-classification.md)
 - [Lifecycle orchestration](../../../../skill/templates/governance/core-v1/lifecycle-orchestration.md)
 - [Skill-run records](../../../../skill/templates/governance/core-v1/skill-runs.md)
 - [Delegation budgets](../../../../skill/templates/governance/core-v1/delegation-budget.md)

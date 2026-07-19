@@ -472,3 +472,36 @@ skill run, or checkpoint may add a bounded rationale when its non-obvious scope,
 interpretation, or handoff needs explanation. An empty supplied structured
 value fails, and no rationale is allowed to introduce an unowned behavioral
 rule or lifecycle transition.
+
+## DSET-REQUIREMENT-GOV-029 — Artifact classification is MECE and independent
+
+DSET must classify every governed carrier with exactly one primary
+`artifact_type` and at most one allowed direct `artifact_subtype`, independently
+from the semantic `type` and `subtype` used by Atomic Records. The registered
+types are Atomic Record, Analysis Report, Specification, Procedure, Plan,
+Change, Implementation, Evidence Record, Verification, Readiness Record,
+Release Record, Derived View, and Navigation. The project-local
+machine-readable registry owns their IDs, primary questions, direct subtypes,
+fallback behavior, and path rules.
+
+Analysis Report permits Solution Landscape, Root-Cause Analysis, Proposal,
+Technical Investigation, and External Audit Analysis. It interprets named
+inputs but does not authorize its conclusion; accepted conclusions are emitted
+as separate Decision, Question, Problem, or QA atoms. Evidence records
+observations, Verification derives assurance, Readiness Record owns the
+explicit release gate disposition, and Release Record owns immutable
+publication history. Unknown types, missing classifications, mismatched or
+nested subtypes, and multiple applicable path rules fail closed.
+
+Version Scope, Roadmap, Release Plan, Readiness Record, and Release Record are
+flat Release lifecycle artifacts. The first three classify respectively as
+Specification/Version Scope, Plan/Roadmap, and Plan/Release Plan. Milestones are
+Roadmap entries; Release Notes and changelogs are mirrors or Derived Views of
+Release Records.
+
+**Scenario DSET-SCENARIO-GOV-030:** A Solution Landscape compares three options
+without choosing one; a later Decision accepts one option and compiles it into
+Specification/Design and Plan/Implementation Plan. Test execution emits an
+Evidence Record, Verification assesses its support, and a Readiness Record
+records an explicit blocked gate until the required evidence passes. No
+workflow position changes any semantic or artifact classification.

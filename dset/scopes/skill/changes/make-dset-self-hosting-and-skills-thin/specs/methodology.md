@@ -19,6 +19,7 @@ the implementation scope to its current layer-owned Requirement owners.
 | One explicit or inherited priority for every governed artifact | `DSET-REQUIREMENT-GOV-026` |
 | Workflow-independent Problem, Question, and Conflict semantics | `DSET-REQUIREMENT-GOV-027` |
 | Recommended optional rationale for Decisions and other atomic artifacts | `DSET-REQUIREMENT-GOV-028` |
+| Independent MECE artifact classification and Analysis Report boundaries | `DSET-REQUIREMENT-GOV-029` |
 | Role-aware handling for every governed conflict pairing, with priority selection only where permitted | `DSET-REQUIREMENT-TOOL-019` |
 
 The canonical text lives in the accepted META, GOV, TOOL, SKILL, and OPS package
@@ -36,6 +37,7 @@ Connected accepted IDs are `DSET-REQUIREMENT-META-007`,
 `DSET-REQUIREMENT-GOV-024`, `DSET-REQUIREMENT-GOV-025`,
 `DSET-REQUIREMENT-GOV-026`, `DSET-REQUIREMENT-GOV-027`,
 `DSET-REQUIREMENT-GOV-028`,
+`DSET-REQUIREMENT-GOV-029`,
 `DSET-REQUIREMENT-TOOL-018`,
 `DSET-REQUIREMENT-TOOL-019`,
 `DSET-REQUIREMENT-SKILL-002`, `DSET-REQUIREMENT-SKILL-003`,
@@ -45,6 +47,23 @@ Connected accepted IDs are `DSET-REQUIREMENT-META-007`,
 `DSET-REQUIREMENT-OPS-003`, `DSET-REQUIREMENT-OPS-004`,
 `DSET-REQUIREMENT-OPS-005`, `DSET-REQUIREMENT-OPS-006`, and
 `DSET-REQUIREMENT-OPS-007`.
+
+## ADDED — DSET-REQUIREMENT-GOV-029 MECE artifact classification
+
+Every governed carrier must have one primary artifact type and at most one
+allowed direct artifact subtype, independently from the four semantic Types.
+The project-local artifact-type registry owns the thirteen development roles,
+their primary questions, direct subtypes, fallback behavior, and path rules.
+Analysis Report is non-authoritative and permits Solution Landscape,
+Root-Cause Analysis, Proposal, Technical Investigation, and External Audit
+Analysis. Unknown, mismatched, nested, missing, or ambiguous classifications
+fail closed.
+
+**Scenario DSET-SCENARIO-GOV-030:** A Proposal recommends one candidate; a
+separate Decision accepts it; Specification/Design compiles it; Evidence Record
+captures a Test run; Verification assesses the evidence; and Readiness Record
+makes the explicit release gate disposition without any workflow-derived
+reclassification.
 
 ## ADDED — DSET-REQUIREMENT-OPS-012 Integration delivery is the default
 

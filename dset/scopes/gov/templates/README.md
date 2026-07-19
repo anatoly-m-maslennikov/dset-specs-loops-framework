@@ -7,6 +7,7 @@
   manifest family from the discovered repository layout; neither seed is a
   schema-neutral current manifest.
 - [Governance profile and GOV rule templates](governance/core-v1/README.md)
+- [Artifact-type registry](artifact-types.yaml)
 - [Intake template](intake.yaml)
 - [Change profiles](profiles.yaml)
 
