@@ -1,93 +1,145 @@
-# Work-item routing rules
+# Semantic Type and routing rules
 
-DSET exposes only three operator-facing intake queues:
+**Rule ID:** `DSET-RULE-WORK-ITEMS`
 
-| Queue | Meaning | Required fields |
+## Canonical Types
+
+DSET has exactly four core semantic Types. Type is determined by meaning, not
+workflow, queue, skill, host, tool, status, filename, path, or next action.
+
+| Type | Empty subtype | Allowed subtypes |
 |---|---|---|
-| `problems` | Something is wrong or may harm the project: bug, gap, debt, or risk | Subtype/concern, evidence, state, and owning change when accepted |
-| `opportunities` | Nothing is wrong, but a bounded improvement may create value | Expected value, evidence, state, and owning change when accepted |
-| `questions` | An unresolved choice or uncertainty | Decision needed, context, options/evidence, and Decision link when resolved |
+| `decision` | General operator-accepted authority | `requirement`, `constraint`, `contract`, `user_story`, `outcome`, `scenario`, `invariant` |
+| `question` | General missing knowledge, interpretation, or choice | `conflict`, `risk`, `opportunity` |
+| `problem` | General current insufficiency | `defect`, `gap`, `debt` |
+| `qa` | Invalid for an emitted QA atom | `test`, `evaluation` |
 
-Type follows the semantic condition and owning question, never the workflow,
-queue, skill, tool, host, filename, or path. Open Conflicts use a separate
-governed register/view, not a fourth intake queue. Emit a Conflict only when two
-or more identified applicable claims cover the same scope, concern, and
-effective time and cannot all govern as written. Record the exact claims and
-propositions, roles/applicability, shared scope, evidence, priority, and
-resolution class.
+Omit an empty subtype. Never repeat the Type as its own subtype. Every emitted
+atom has one Type and at most one direct subtype; QA always has one of its two
+subtypes. Subtypes never contain subtypes. Type and subtype are immutable after
+emission.
 
-Ordinary wording differences, stale projections, failed proof, contradictory
-evidence, and implementation nonconformance follow their own dispositions and
-are not automatically Conflicts. A workflow may discover or link any artifact
-type, but cannot retype an artifact.
+When a subtype exists, its full name is the external artifact and ID kind. A
+Requirement uses `type: decision`, `subtype: requirement`, and a `REQUIREMENT`
+ID. A general Decision omits subtype and uses a `DECISION` ID.
 
-Debt is a problem subtype, not a synonym for a question. Use concern labels such
-as product, implementation, supportability, documentation, test, or eval.
-Keep the Problem form thin and scale it by risk. Every Problem atom needs an ID,
-concise statement, evidence or observation, impact, owner, and creation state. Add
-reproduction and severity for an observed defect; add likelihood, trigger, and
-mitigation for a possible future harm; add deeper analysis only when the
-selected risk profile or handoff requires it.
+## Decision routing
 
-Consequential questions close through a Decision and an append-only lifecycle
-event; the Question atom is not edited. Decision is both the entity and durable
-artifact type. Accepted problems, opportunities, and Decisions enter a DSET
-Change. Their executable steps are tasks inside that change's `tasks.md`, not a
-fourth top-level queue.
+A Decision is immutable project authority explicitly supplied or accepted by
+the operator. External material is provenance until the operator accepts it.
+Active Decisions compile into evergreen specifications, plans, runbooks, or
+governing rules and win when a projection is stale.
 
-Resolving a Question is not complete when the Decision file alone is written.
-Compile the Decision's normative consequences into evergreen Requirements,
-Scenarios, Contracts, Design, proof plans, or operating rules, then emit a
-lifecycle event linking the resolved Question, Decision, and projections.
+- A **Requirement** states an observable result, behavior, capability,
+  quality, or outcome the project must provide or prevent.
+- A **Constraint** restricts acceptable solutions, including required or
+  forbidden technologies, dependencies, environments, resources, formats, or
+  limits.
+- A **Contract** states an obligation across a project/external or internal
+  component boundary, including provider, consumer, interface, schema,
+  protocol, compatibility, and failure obligations.
+- A **User Story** states which actor or stakeholder wants which capability or
+  outcome and why it has value.
+- An **Outcome** states a measurable change in user, business, operational, or
+  system state.
+- A **Scenario** states a concrete accepted behavioral example through
+  preconditions, interaction or event, and observable result.
+- An **Invariant** states a condition that must always hold within its declared
+  scope.
+- An empty-subtype **Decision** owns any other accepted authoritative choice.
 
-Problems, Opportunities, Questions, and Conflicts are immutable transactional atoms. They
-may motivate work but do not become normative authority. Accepted, active,
-applicable Requirements, Contracts, and Decisions are atomic authority sources
-compiled into evergreen specs, plans, and rules. Implementation may link to a
-Problem or Opportunity for context, but it must still cite the Change or
-Decision that authorized the behavior it adds.
+Requirements own what must result, Constraints narrow the solution space, and
+Contracts own boundary obligations. User Stories, Outcomes, Scenarios, and
+Invariants are sibling Decision subtypes, not children of Requirement or each
+other. They may link but never create a subtype path. A general Decision may
+own material governance, logic, design, implementation, or edge-case choices.
 
-A Requirement owns a verifiable observable WHAT, delivered result, or constraint;
-observable edge cases belong in Requirements and Scenarios. A Decision owns a
-consequential choice among valid alternatives plus rationale, trade-offs, and
-consequences. It may constrain HOW, but it is not a ledger for every internal
-detail or edge case. Internal details belong in Design, build order belongs in
-the implementation plan, and an externally authoritative boundary remains a
-Contract rather than a Decision.
+## Question routing
 
-A User Story records who wants what and why: a meaningful actor or stakeholder, the
-desired capability or outcome, its value or purpose, and links to owning
-Requirements and Scenarios. User Stories are optional, traceable entities; they are
-not a fourth intake queue and never substitute for a Requirement.
+A Question records unresolved knowledge, interpretation, or choice and does
+not authorize implementation merely by existing.
 
-An Outcome records a measurable change in user, business, operational, or
-system state, never merely an output, deliverable, or feature. Each Outcome
-states a baseline, target, observation method and source, evaluation window,
-and links to motivating Problems or Opportunities, relevant User Stories, and the
-Evals that determine attainment.
+- A **Conflict** is verified incompatible active and applicable authority over
+  the same scope, concern, and effective time. It is spec-level uncertainty,
+  not a runtime failure.
+- A **Risk** is an uncertain future harmful condition. Record likelihood,
+  impact, trigger, and mitigation when useful.
+- An **Opportunity** is a possible beneficial improvement when no current
+  obligation is unmet.
+- An empty-subtype **Question** owns any other uncertainty.
 
-Schema 1.2 `dset/scopes/gov/intake.yaml` is the one project-owned append-only
-intake-atom registry; lifecycle events and derived current state never mutate
-an emitted entry. Legacy schema 1.0/1.1 uses central `dset/intake.yaml`. `project.key` in
-the discovered project manifest owns the stable project prefix. The registry owns the stable
-`META`, `GOV`, `TOOL`, `SKILL`, and `OPS` layer segments. Numeric trace IDs use
-`<PROJECT>-<FULL-TYPE>-<NNN>` or
-`<PROJECT>-<FULL-TYPE>-<LAYER>-<NNN>`. The full intake types are `PROBLEM`,
-`OPPORTUNITY`, and `QUESTION`; the separate conflict type is `CONFLICT`;
-`GLOBAL` is never an ID segment. Numbering is
-independent per full type within the project-wide sequence or semantic layer,
-and a layer segment never changes merely because directories move.
+Different wording, stale projections, failed proof, implementation
+nonconformance, and contradictory evidence are not automatically Conflicts.
+Identify the exact incompatible authority claims before using that subtype.
 
-Decision and DSET Change are durable artifacts, not additional queues. Decision
-IDs use `<PROJECT>-DECISION-<NNN>` or
-`<PROJECT>-DECISION-<LAYER>-<NNN>`. GitHub
-Issues and Jira/support tickets are external tracker representations of a problem,
-opportunity, question, conflict, or task, not additional semantic types.
-Discovery or triage does not authorize the solution.
+Evidence may answer a factual Question. A consequential choice resolves
+through a Decision. Resolution emits an append-only lifecycle event linking
+the answer or Decision; it never edits the Question atom. An accepted
+Opportunity becomes authority only through a new Requirement or other
+Decision.
 
-A Conflict atom is never edited to record its outcome. Resolution emits an
-append-only lifecycle event linking durable resolving artifacts or events,
-such as a new or absorbing Requirement, Contract, Decision, explicit
-precedence rule, valid exception or boundary change, recompiled projection with
-proof, or external-authority update. Create a linked Question only when
-knowledge or an authorized choice is actually missing.
+## Problem routing
+
+A Problem records a presently true, evidence-backed insufficiency. It does not
+choose or authorize its correction.
+
+- A **Defect** is current behavior or implementation that contradicts active
+  authority or its current evergreen projection.
+- A **Gap** is a required capability, artifact, proof, or obligation that is
+  absent now.
+- **Debt** is a knowingly accepted compromise that works sufficiently now but
+  creates continuing or future cost.
+- An empty-subtype **Problem** owns any other current insufficiency.
+
+Use: wrong now → Defect; missing now → Gap; works through a known costly
+compromise → Debt; might harm later → Risk; could add optional value →
+Opportunity. Select one primary subtype and link causes or related atoms rather
+than duplicating a condition.
+
+A Problem returns directly to implementation when existing Decisions already
+define the correction. If knowledge or a new choice is missing, create a linked
+Question first.
+
+## QA routing
+
+QA defines how accepted claims are checked and changes assurance, not
+authority.
+
+- A **Test** is deterministic under declared conditions and has an exact,
+  reproducible pass/fail result.
+- An **Evaluation** uses qualitative, probabilistic, statistical, or
+  model-judged assessment with an explicit method, rubric or metric, threshold,
+  and uncertainty treatment where applicable.
+
+QA atoms define checks. Test code, Evaluation prompts, datasets, fixtures, and
+harnesses are implementation artifacts. Execution results are evidence for
+derived Verification and never rewrite Decisions.
+
+## Lifecycle and authority
+
+All emitted Decision, Question, Problem, and QA atoms are immutable. Editable
+drafts are not atoms. Later acceptance, answer, correction, replacement,
+absorption, or retirement is a new linked atom or append-only lifecycle event.
+
+Problems and Questions route work but do not authorize implementation. Active
+Decisions own authority. QA owns assurance definitions. Evergreen specs and
+plans are mutable compiled projections; implementation realizes them;
+Verification and project-health views are derived.
+
+Commits changing evergreen truth or implementation cite their governing
+Decision or Decisions. A correction under existing authority may additionally
+link its Problem. A workflow, GitHub Issue, Jira/support ticket, task, Change,
+or Release is a route, representation, step, or optional container rather than
+another semantic Type.
+
+## Representation migration
+
+Existing emitted atoms remain immutable. Legacy top-level Opportunity and
+Conflict records, Problem/Risk classifications, separate Requirement/Contract
+authority records, and `EVAL` identities must not be silently retyped or
+renamed. A successor schema must preserve their IDs, content digests,
+provenance, and explicit successor or absorption relations.
+
+Until that migration is implemented, the accepted Type model governs and the
+older schema/validator projection is stale. Workflows must report the mismatch
+rather than claiming end-to-end Type/subtype enforcement.

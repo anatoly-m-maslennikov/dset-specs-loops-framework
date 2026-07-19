@@ -21,22 +21,22 @@ Every normative rule ID has one editable governing document. Hubs navigate, wrap
 
 ## Transactional discharge
 
-A resolved consequential Question produces a Decision. An accepted, active,
-applicable Decision is an atomic authority source, not a parallel evergreen
-specification. Compile its normative consequences into the owning evergreen
-Requirements, Scenarios, Contracts, Design, proof plans, or operating rules;
-emit a lifecycle event linking those projections and the resolved Question to
-the Decision. Keep the Decision as the durable rationale, alternatives,
-trade-offs, and consequences.
+A resolved consequential Question produces a Decision. Every accepted, active,
+applicable Decision—including any direct subtype—is an atomic authority source,
+not a parallel evergreen specification. Compile its normative consequences
+into the owning evergreen specifications, Design, proof plans, or operating
+rules; emit a lifecycle event linking those projections and the resolved
+Question to the Decision. Keep the Decision as durable authority plus its
+linked context, alternatives, rationale, trade-offs, and consequences where
+applicable.
 If the Decision and compiled projection differ, the Decision wins, the
 projection is stale, and the relying release gate fails until recompilation.
 
-Accepted active Requirements, Contracts, Decisions, and other registered
-normative atoms follow the same source-to-projection rule. Problems,
-Opportunities, Questions, evidence records, and other transactional context
-route work or support those sources but do not become authority merely by
-existing. Closing a transactional artifact without compiling its accepted
-normative consequences leaves the work incomplete.
+All active Decision atoms follow the same source-to-projection rule. Problems,
+Questions and their direct subtypes, QA results, evidence records, and other
+transactional context route work or support those sources but do not become
+authority merely by existing. Closing a transactional artifact without
+compiling its accepted normative consequences leaves the work incomplete.
 
 Atomic artifacts are immutable. Editable drafts are working documents, not
 atoms. Emitting an atom fixes its ID, content, provenance, creation status, and
@@ -69,7 +69,7 @@ conflict resolution. It remains optional: absence alone never invalidates an
 atom or blocks a gate.
 
 When present, rationale is explanatory context, not hidden authority. It must
-not carry a Requirement, Contract, lifecycle transition, or evidence claim that
+not carry a Decision or subtype, lifecycle transition, or evidence claim that
 is absent from that concern's canonical owner. Keep a short rationale in the
 atom or link a separate rationale artifact; keep evergreen implementation
 references focused on current executable truth. Templates prompt for rationale,
@@ -79,9 +79,9 @@ and structured schemas permit a non-empty bounded value without requiring it.
 
 Every commit that changes evergreen truth or implementation artifacts must name
 the Decision or Decisions it implements in the commit body, for example
-`Implements: DSET-DECISION-GOV-001`. If a small fix has no accepted Decision,
-the commit must name the governing Problem, Opportunity, Question, or Change
-that authorized it and explain why no Decision was required.
+`Implements: DSET-DECISION-GOV-001`. A linked Problem may explain why a
+correction is needed, but only an active Decision or direct Decision subtype
+authorizes the resulting behavior.
 
 Every newly emitted atomic artifact or append-only lifecycle event has explicit
 LLM session provenance. Use unique `llm_session_ids` with stable host-prefixed
@@ -140,8 +140,9 @@ available model/tool version, `llm_session_ids`, exact inputs, method, time,
 limitations, and stable finding IDs; its findings body may be free-form.
 
 For each finding, record evidence, confidence, impact, and one explicit
-disposition: reject with rationale, defer, or route to a Problem, Opportunity,
-Question, Decision, Change, evergreen owner, or proof obligation. Review does
+disposition: reject with rationale, defer, or route to a Problem or Question
+and applicable subtype, a Decision and applicable subtype, an optional Change,
+an evergreen owner, or a proof obligation. Review does
 not authorize repair. Compile accepted consequences into current truth and
 reopen only affected proof before implementation or release relies on them.
 
@@ -151,8 +152,8 @@ Priority is the single generic ordered rank. Every governed atomic authority,
 evergreen projection, transactional context/evidence, and implementation
 artifact declares it directly or inherits it through one visible canonical
 relation.
-Implementation files may inherit from their owning Requirement, Decision,
-Change, Test, or Eval rather than duplicating metadata inside every file.
+Implementation files may inherit from their owning Decision or QA atom, or an
+optional Change, rather than duplicating metadata inside every file.
 
 Actionable work uses priority as one execution-order input; dependencies,
 authorization, gates, and resources may still determine the next action.
@@ -177,7 +178,7 @@ before priority:
   atomic source, marks the projection stale, and routes recompilation;
 - an absorbed atom is inactive where the absorption applies; the explicit
   absorbing successor wins without consulting age or priority;
-- authority versus Test, Eval, review, or proof updates assurance and the
+- authority versus QA/Test, QA/Evaluation, review, or proof updates assurance and the
   relying gate; evidence never rewrites authority;
 - implementation versus authority creates a conformance Problem;
 - conflicting assurance evidence follows the registered proof plan and

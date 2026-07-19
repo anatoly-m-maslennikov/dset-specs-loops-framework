@@ -1,51 +1,207 @@
-# Artifact types and ownership
+# Semantic Types, subtypes, and artifact roles
 
-## Rule
+## Authority
 
-Every governed artifact has one primary type and one owning question. Type is
-determined by semantic content and authority/lifecycle role, never by workflow,
-queue, skill, tool, host, filename, folder, or intended next action. A workflow
-may create, discover, link, or resolve artifacts, but cannot retype them. Split
-a file when it must answer two independently maintained questions.
+This document is the public framework definition of DSET semantic Types and
+subtypes. The DSET repository applies it through
+[`DSET-RULE-WORK-ITEMS`](../dset/scopes/gov/governance/work-items.md), compiled
+from [`DSET-DECISION-GOV-007`](../dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-007.md).
 
-| Type | Owning question | Required content | Must not own |
+## Type rule
+
+DSET has exactly four core semantic Types:
+
+1. **Decision**
+2. **Question**
+3. **Problem**
+4. **QA**
+
+A Type identifies what an atomic artifact means. A subtype adds precision
+without creating a second top-level Type. Type is not a “family,” and an empty
+subtype is represented by omitting `subtype`; it is never represented by
+repeating the Type name.
+
+```yaml
+# General Decision: valid
+type: decision
+
+# Requirement: valid
+type: decision
+subtype: requirement
+
+# Synthetic self-subtype: invalid
+type: decision
+subtype: decision
+```
+
+Every emitted atom has one primary Type and at most one direct subtype. There
+are no sub-subtypes. Type and subtype follow semantic content, never workflow,
+queue, skill, host, tool, status, filename, folder, or intended next action.
+They are immutable after emission. Changed semantics require a new linked atom,
+not an in-place retype.
+
+When a subtype exists, its full name is the artifact's external kind and ID
+kind. A Requirement therefore carries `type: decision` and
+`subtype: requirement` but uses `REQUIREMENT` in its ID. An empty-subtype
+Decision uses `DECISION`. Legacy IDs and records remain compatibility history
+until a provenance-preserving migration replaces or absorbs them.
+
+## Decision
+
+**Definition:** Immutable project authority explicitly provided or accepted by
+the operator. It states what must govern the project and compiles into mutable
+evergreen specifications, plans, and rules.
+
+An external law, customer statement, DDL, API schema, platform rule, or library
+policy is source material until the operator supplies or accepts it as project
+authority. The source remains linked provenance; the Decision owns the
+project's accepted directive.
+
+An empty subtype means a general authoritative instruction or consequential
+choice that is not more precisely one of the direct subtypes below.
+
+| Subtype | Canonical definition | Classification test | Must not represent |
 |---|---|---|---|
-| Hub/README | Where do readers start and which stable areas or owners exist? | Purpose, boundaries, start routes, short descriptions | Atomic rules, exhaustive leaf inventory, long rationale |
-| Normative reference/methodology | What reusable rule or convention applies, and when? | Rule, scope, applicability, invariants, examples needed to apply it | Historical narrative, repeated procedure, extensive design rationale |
-| Behavioral specification | What observable behavior, entities, states, constraints, and non-goals are accepted? | Domain vocabulary, requirements, scenarios, lifecycle state machines, authority boundaries | Implementation sequence, tool preference, unaccepted rationale |
-| Architecture | How are stable components/artifacts arranged, owned, and constrained? | Goals, boundaries, components, dependencies, authority, constraints, decision links | Product requirements, step-by-step operations, decision history copies |
-| Rationale | Why does an active rule or structure exist? | Forces, trade-offs, rejected shapes, consequences, link to normative owner | New normative requirements or procedures hidden in explanatory prose |
-| Problem | What harmful state, gap, defect, debt, risk, or nonconformance was observed? | Evidence, affected scope, impact, priority, and triage links | Competing-claim resolution or an implied repair |
-| Question | What knowledge, interpretation, or authorized choice is missing? | Context, unknown or alternatives, evidence, priority, and resolution link | An assertion that something is wrong or the consequential choice itself |
-| Conflict | Which applicable claims are verified incompatible over the same scope, concern, and effective time? | Exact claim IDs/propositions, roles, applicability, shared scope, evidence, priority, resolution class, and lifecycle links | Ordinary wording drift, failed assurance, implementation nonconformance, or an edited-in-place resolution |
-| Decision | Which material decision was accepted in a specific context? | Context, decision, alternatives, consequences, status, implementation links, and recommended optional rationale | Accepted behavioral truth or an implementation file ledger |
-| Playbook/runbook | How is a repeatable change or operational response performed? | Trigger, preconditions, ordered steps, checks, failure/rollback path, stop conditions | General rationale, duplicated normative rules, historical audit output |
-| Test plan | Which deterministic claims must be proven exactly? | Test IDs, requirement mapping, seams, cases, commands, pass criteria | Probabilistic rubrics or implementation results |
-| Eval plan | Which variable or qualitative behavior must be judged? | Dataset/cases, rubric, thresholds, calibration, budgets, drift policy | Deterministic checks relabeled as evals |
-| Evidence/changelog | What was observed or changed at an identified revision/time? | Subject identity, bounded result, source/evidence pointers, disposition | Current rules, mutable runtime authority, secrets or unnecessary raw logs |
-| Skill | Which registered repository-governed workflow should run for a specific trigger? | Trigger, root/manifest/registry discovery, workflow ID, resolver invocation, resolved-rule reporting, authorization handoff, and fail-closed behavior | Substantive workflow steps, architecture or authoring rules, proof thresholds, supportability rules, fallback methodology, or broad permanent project truth |
+| `requirement` | An observable result, behavior, capability, quality, or outcome that the project must provide or prevent | Can satisfaction be judged from the required result without prescribing the entire solution? | A preferred implementation with no required outcome |
+| `constraint` | A restriction on the acceptable solution space, including required or forbidden technologies, dependencies, environments, resources, formats, or operating limits | Does it remove otherwise valid implementation choices? | A boundary obligation between named participants |
+| `contract` | An obligation at a boundary between the project and an external system or between project components | Are provider, consumer, interface, schema/protocol, compatibility, or failure obligations identifiable? | An internal preference that no boundary participant relies on |
+| `user_story` | An actor's or stakeholder's desired capability or outcome and its value | Does it clearly state who wants what and why? | A Requirement nested beneath the story; both are sibling Decision subtypes |
+| `outcome` | A measurable change in user, business, operational, or system state | Are baseline, target, observation method, and evaluation window identifiable where applicable? | An output or deliverable with no state change |
+| `scenario` | A concrete accepted behavioral example with preconditions, interaction or event, and observable result | Does it define one behavior instance that can guide implementation or QA? | A general rule with no concrete case |
+| `invariant` | A condition that must always hold within a declared scope | Would any violation make the governed state invalid? | A temporary target or ordinary scenario step |
+
+Requirements own **what** the project must provide. Constraints narrow the
+allowed solution space. Contracts define what must hold across a boundary.
+User Stories, Outcomes, Scenarios, and Invariants express other direct forms of
+accepted authority. They may link each other, but none is nested under another
+subtype. A general Decision owns other accepted choices, including material
+governance, logic, design, implementation, and edge-case resolutions.
+
+## Question
+
+**Definition:** An immutable record of missing knowledge, interpretation, or
+choice. A Question does not authorize implementation merely by existing.
+
+An empty subtype means a general uncertainty that is not more precisely a
+Conflict, Risk, or Opportunity. Evidence may answer a factual Question; an
+authoritative choice is resolved through a Decision. Resolution is an
+append-only lifecycle event linked to the immutable Question atom.
+
+| Subtype | Canonical definition | Classification test | Must not represent |
+|---|---|---|---|
+| `conflict` | Verified incompatible active and applicable authority claims over the same scope, concern, and effective time | Can the exact governing claims be identified, and is it impossible to satisfy all of them as written? | Runtime failure, stale compilation, wording differences, or contradictory evidence alone |
+| `risk` | An uncertain future harmful condition | Is the harm not currently true, with likelihood, impact, trigger, or mitigation relevant to handling it? | An observed current insufficiency |
+| `opportunity` | A possible beneficial improvement when no current obligation is unmet | Could value be created without correcting a violation or missing requirement? | Required work or a current gap |
+
+A Conflict is a spec-level unresolved Question, not a runtime issue and not a
+separate Type. Risk is future uncertainty; once the harmful condition is true,
+record a Problem. Opportunity remains optional until the operator accepts a
+Requirement or another Decision that makes it authoritative.
+
+## Problem
+
+**Definition:** An immutable record of a presently true, evidence-backed
+insufficiency. A Problem states what is wrong or insufficient; it does not
+choose or authorize its correction.
+
+An empty subtype means a current insufficiency that is not more precisely a
+Defect, Gap, or Debt.
+
+| Subtype | Canonical definition | Classification test | Must not represent |
+|---|---|---|---|
+| `defect` | Current behavior or implementation contradicts an active Decision or its current evergreen projection | Is something present but behaving incorrectly? | A required capability that does not exist |
+| `gap` | A required capability, artifact, proof, or other obligation is currently absent | Is something required missing now? | Optional improvement or uncertain future harm |
+| `debt` | A knowingly accepted compromise works sufficiently now but creates continuing or future cost | Does the current solution work while increasing maintenance, supportability, delivery, or correction cost? | Any missing item regardless of cause |
+
+Use this compact test:
+
+- wrong now → **Defect**;
+- missing now → **Gap**;
+- working through a known costly compromise → **Debt**;
+- might cause harm later → **Risk**;
+- could create optional value → **Opportunity**.
+
+A Gap may be caused by Debt, and Debt may later produce a Defect. Record one
+primary subtype for the condition being governed and link causes or related
+atoms rather than duplicating the same condition under multiple subtypes.
+
+## QA
+
+**Definition:** An immutable definition of how an accepted claim must be
+checked. QA changes assurance, not authority.
+
+An emitted QA atom must declare a subtype. Empty-subtype QA is invalid because
+it does not say whether deterministic or judgment-based proof semantics apply.
+
+| Subtype | Canonical definition | Classification test | Must not represent |
+|---|---|---|---|
+| `test` | A deterministic check with declared conditions and an exact reproducible pass/fail result | Should the same controlled inputs and environment always produce the same verdict? | Rubric-based or probabilistic judgment disguised as exact proof |
+| `evaluation` | A qualitative, probabilistic, statistical, or model-judged assessment with an explicit method, rubric or metric, threshold, and uncertainty treatment where applicable | Does the verdict require judgment, sampling, calibration, statistics, or an evaluator/model? | A deterministic assertion that should be a Test |
+
+A QA atom defines what must be checked. Test code, Evaluation prompts,
+datasets, harnesses, and fixtures are implementation artifacts. Execution
+results are evidence used by derived Verification. Neither a passing Test nor
+Evaluation becomes project authority.
 
 ## Classification order
 
-Ask these questions in order:
+Classify an atomic artifact in this order:
 
-1. Is the file a navigation front door? Use a hub.
-2. Is it current reusable truth or accepted behavior? Use a normative reference or specification.
-3. Is it stable structural design? Use architecture and link material decisions.
-4. Is it an observed harmful state? Use a Problem. Is knowledge or choice
-   missing? Use a Question. Are identified applicable claims verified
-   incompatible? Use a Conflict.
-5. Is it explaining why? Use rationale or a Decision when a specific choice is being recorded.
-6. Is it telling an operator or contributor how to act? Use a playbook/runbook.
-7. Is it defining proof before implementation? Use a test or eval plan.
-8. Is it recording an observation or past change? Use evidence/changelog.
-9. Is it a reusable agent invocation? Use a thin skill that resolves the repository-governed procedure and writes conclusions back to the owning project artifacts.
+1. Does it state operator-accepted authority? Use **Decision**, then choose one
+   direct Decision subtype or no subtype.
+2. Does it state missing knowledge, incompatible authority, possible future
+   harm, or optional value? Use **Question**, then choose Conflict, Risk,
+   Opportunity, or no subtype.
+3. Does it state a currently true insufficiency? Use **Problem**, then choose
+   Defect, Gap, Debt, or no subtype.
+4. Does it define how to check a claim? Use **QA**, then choose Test or
+   Evaluation.
 
-Examples may appear in normative artifacts when needed to apply a rule. They remain illustrative and cannot introduce a second rule that exists nowhere in the normative text.
+If none applies, the artifact is probably a document role, lifecycle record,
+implementation artifact, derived view, or optional workflow container rather
+than another semantic Type.
 
-Every atomic artifact may carry a concise rationale when the explanation helps
-review, investigation, absorption, replacement, or conflict resolution.
-Decision templates always prompt for it. The field or section is recommended,
-not required: missing rationale alone does not invalidate an artifact. A
-rationale explains the atom; it cannot silently own normative behavior,
-lifecycle state, or evidence assigned to another artifact type.
+## Artifact roles are not Types
+
+The following classifications remain necessary, but they do not expand the
+four-Type model:
+
+| Role or layer | Owning question | Typical artifacts |
+|---|---|---|
+| Navigation | Where does a reader start? | Hub, README, index |
+| Evergreen projection | What is the current compiled truth? | Specification, architecture, implementation plan, Test plan, Evaluation plan, runbook, governing rule |
+| Rationale | Why does an authority or structure exist? | Rationale section or linked explanation |
+| Implementation | What actually realizes the authority and QA definitions? | Code, documentation, configuration, scripts, Test code, Evaluation prompts, datasets, CI |
+| Transactional evidence | What was observed at an identified revision, environment, or time? | Proof result, review report, changelog, session/run record |
+| Derived view | What does current source data imply? | Verification, project overview, traceability, health dashboard |
+| Agent interface | Which governed workflow should be invoked? | Thin skill wrapper |
+| Optional delivery container | Which accepted work is grouped for delivery or publication? | Change, Release |
+
+Document roles may contain or project typed atoms. A specification can compile
+many Decisions; a Test plan can compile many QA/Test atoms; neither
+“specification” nor “plan” becomes a fifth semantic Type.
+
+## Lifecycle and authority
+
+The mandatory base flow is:
+
+```text
+Operator input → Decision → Evergreen truth → Implementation → QA → Verification
+```
+
+Problems and Questions form feedback paths. A Problem returns directly to
+implementation when an active Decision already defines the correction. If the
+correction requires missing knowledge or a new choice, it raises a Question;
+the operator's answer becomes a Decision and recompiles evergreen truth.
+
+All emitted Type atoms are immutable. Acceptance, resolution, replacement,
+absorption, retirement, and other later state changes use new linked atoms or
+append-only lifecycle events. Evergreen projections remain editable and must
+be recompiled when active authority changes.
+
+## Rationale
+
+Every Decision representation should prompt for concise rationale. Any other
+atomic Type may carry rationale when it helps review, investigation,
+prioritization, absorption, or replacement. Rationale remains optional and
+cannot hide authority, lifecycle state, or evidence owned elsewhere.

@@ -13,7 +13,8 @@ This area owns artifact types, authoring boundaries, hub/navigation rules, and t
 ## Start here
 
 1. [Artifact architecture](artifact-architecture.md) — the profile axes, authority graph, and hierarchy.
-2. [Artifact types](artifact-types.md) — the owning question and boundaries for every document family.
+2. [Semantic Types and artifact roles](artifact-types.md) — canonical Decision,
+   Question, Problem, and QA subtypes plus non-Type document roles.
 3. [Authoring rules](authoring-rules.md) — universal and type-specific writing rules.
 4. [Hub rules](hub-rules.md) — helicopter navigation without exhaustive indexes.
 5. [Documentation v1](documentation-v1.md) — deterministic gates and qualitative review contract.

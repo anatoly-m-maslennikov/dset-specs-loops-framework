@@ -18,7 +18,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/gov/templates/governance/core-v1/architecture.md
-      sha256: 27af00e3eef034ce3d8ac05b8860416b8d1c0d6d09641e37188ed799a519b46c
+      sha256: 20cec720493cd7e43dc5167a1706ddd2466c7980b5049990c71336f551054742
   -
     id: DSET-RULE-BUILD
     layer: TOOL
@@ -114,14 +114,14 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/gov/templates/governance/core-v1/artifact-maintenance.md
-      sha256: 2e67e1934232d4b4ea8f02b8b17e6f5ae9e30ac4cac6b7689a23acdd5a4e2cfb
+      sha256: 5672e643c48c6d9488e3885adaa074317868ec656a7b9676f86c0fcd79f90d04
   -
     id: DSET-RULE-WORK-ITEMS
     layer: GOV
     path: dset/scopes/gov/governance/work-items.md
     owner: project
     applicability: applicable
-    reason: Semantic routing must distinguish problems, opportunities, questions, conflicts, and change-owned tasks independently of workflow
+    reason: Semantic routing must apply the four canonical Types and their subtypes independently of workflow
     depends_on:
       - DSET-RULE-ARCHITECTURE
     precedence_over: []
@@ -130,7 +130,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/gov/templates/governance/core-v1/work-items.md
-      sha256: b71f87f9cb72d0abb037c944cf929a96cf2be77673946cc28565ed1b0a6d4c56
+      sha256: 5fab0596a05461c19914a5d9d1be0480949c3e5e66180c774503fed6e8fb785c
   -
     id: DSET-RULE-DELEGATION-BUDGET
     layer: SKILL

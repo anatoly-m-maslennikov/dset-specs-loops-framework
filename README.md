@@ -51,8 +51,9 @@ flowchart LR
   insufficient. It returns directly to implementation when current authority
   already defines the correction; otherwise it raises a Question.
 - **Decision** records immutable project authority accepted from operator
-  input. Requirements, Constraints, and Contracts are specialized Decisions;
-  a general Decision has no subtype.
+  input. Requirements, Constraints, Contracts, User Stories, Outcomes,
+  Scenarios, and Invariants are direct Decision subtypes; a general Decision
+  has no subtype, and subtypes never contain subtypes.
 - **Evergreen truth** is the mutable current projection of active Decisions
   into specifications and implementation, Test, and Evaluation plans.
 - **Implementation** contains the actual code, documentation, scripts, Tests,

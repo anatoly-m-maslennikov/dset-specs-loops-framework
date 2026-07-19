@@ -17,20 +17,22 @@ A project selects each applicable axis explicitly. Selecting `documentation-v1` 
 
 ## Artifact roles and navigation
 
-Durable content has one of four roles:
+Durable content has one of four roles. These roles are orthogonal to the four
+semantic Types—Decision, Question, Problem, and QA:
 
-- an **atomic authority source** is an immutable accepted Requirement,
-  Contract, Decision, or other normative atom;
+- an **atomic authority source** is an immutable accepted Decision, including
+  a Requirement, Constraint, or Contract subtype;
 - an **evergreen compiled projection** is an editable current spec, plan,
   runbook, or governing document compiled from active sources;
-- **transactional context or evidence** records proposed work, rationale,
-  review, proof, or history without becoming authority by itself; and
+- **transactional context or evidence** records Questions, Problems, QA
+  results, proposed work, rationale, review, proof, or history without becoming
+  authority by itself; and
 - an **implementation artifact** is code, configuration, tests, eval prompts,
   or another delivered executable surface.
 
-Role and primary type come from semantic content, the owning question, and
-authority/lifecycle position. Workflow, queue, skill, tool, host, filename,
-folder, and intended next action are routing metadata and never define type.
+Role and primary Type come from semantic content and authority/lifecycle
+position. Workflow, queue, skill, tool, host, filename, folder, and intended
+next action are routing metadata and never define Type or subtype.
 
 An active applicable source atom wins when its evergreen projection is stale.
 The drift must be routed for recompilation; implementation and evidence cannot

@@ -3,10 +3,12 @@
 ## Universal rules
 
 1. Start with the answer, rule, contract, or decision; context follows only when it helps application.
-2. Give each file one primary question, type, owner, and authority boundary.
-3. Determine type from semantic content, the owning question, and authority or
-   lifecycle role—not from a workflow, queue, skill, tool, host, filename,
-   folder, or intended next action.
+2. Give each atomic artifact one primary Type, optional allowed subtype, owner,
+   and authority boundary. Give each document one primary role and owning
+   question.
+3. Determine Type and subtype from semantic content—not from a workflow,
+   queue, skill, tool, host, filename, folder, or intended next action. Keep
+   Type separate from document and lifecycle role.
 4. State scope, non-goals, applicability, and failure behavior where ambiguity would change implementation or operations.
 5. Link to another owner instead of copying its rule. Summaries are navigation aids and must identify the authoritative source.
 6. Keep current truth separate from proposed changes, rationale, procedures, and historical evidence.
@@ -26,7 +28,8 @@
 - Give every owned entity with transitions a lifecycle state machine. For an owned entity with no meaningful transition, state its single stable state or record why lifecycle is not applicable.
 - Order sections so each entity is **defined using only entities above it**. A forward section reference is a connection, not a definition.
 - Define ownership and authority for state, inputs, outputs, effects, retries, idempotency boundaries, and recovery when applicable.
-- Give every requirement a stable ID and scenario or acceptance check.
+- Give every Requirement Decision a stable ID and scenario or acceptance
+  check.
 - Keep implementation mechanisms out unless they constrain observable behavior, compatibility, safety, ownership, or operations.
 - Design deterministic tests and applicable qualitative/probabilistic evals in separate artifacts before implementation.
 
@@ -50,13 +53,17 @@ When two entities are mutually related, define each independently first using sh
 ## Rationale and Decisions
 
 - Rationale explains forces and trade-offs behind active normative truth; it links back without restating the full rule.
-- A Decision records a material choice in context, including rejected alternatives and consequences. Its rationale is strongly recommended but remains optional in validation.
+- A Decision records operator-accepted authority. An empty subtype represents a
+  general choice; Requirement, Constraint, and Contract add precise authority
+  semantics. Rationale is strongly recommended but remains optional in
+  validation.
 - Never edit an emitted Decision atom. Record later state in an append-only
   lifecycle event or emit an explicit absorbing successor while preserving the
   predecessor and both directions.
-- An active applicable Decision is an atomic authority source. Compile its
-  behavioral consequences into the owning evergreen spec; when they differ,
-  the Decision wins and the projection is stale until recompiled.
+- Every active applicable Decision, including its subtypes, is an atomic
+  authority source. Compile its consequences into the owning evergreen spec or
+  plan; when they differ, the Decision wins and the projection is stale until
+  recompiled.
 
 ## Hubs
 

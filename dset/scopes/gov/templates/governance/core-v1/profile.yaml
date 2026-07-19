@@ -77,7 +77,7 @@ rules:
     template: work-items.md
     target: work-items.md
     applicability: applicable
-    reason: Semantic routing must distinguish problems, opportunities, questions, conflicts, and change-owned tasks independently of workflow
+    reason: Semantic routing must apply the four canonical Types and their subtypes independently of workflow
     depends_on:
       - DSET-RULE-ARCHITECTURE
     precedence_over: []

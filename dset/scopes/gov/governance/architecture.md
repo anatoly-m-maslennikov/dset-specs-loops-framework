@@ -37,9 +37,11 @@ every rule declares both fields even when the lists are empty. Registry order
 is not precedence. If selected rules conflict and no declared precedence path
 resolves the conflict, governed work stops rather than choosing implicitly.
 
-Active Decisions authorize and explain change. Provenance identifies origin but
-does not authorize. Tests, evals, reviews, and evidence assess reliance claims.
-None becomes rule authority merely by existing or passing. Missing or stale assurance leaves the affected claim
+Active Decisions, including Requirement, Constraint, and Contract subtypes,
+authorize and explain change. Provenance identifies origin but does not
+authorize. QA/Test and QA/Evaluation results, reviews, and other evidence
+assess reliance claims. None becomes rule authority merely by existing or
+passing. Missing or stale assurance leaves the affected claim
 pending or stale and blocks the relying gate; it does not silently erase an
 otherwise valid rule. `DSET-RULE-ARTIFACT-MAINTENANCE` governs transactional
 discharge and risk-proportionate proof with explicit reopen conditions.
@@ -71,20 +73,24 @@ atoms.
 
 ## Artifact roles
 
-DSET separates four roles:
+DSET separates four artifact roles from the four semantic Types—Decision,
+Question, Problem, and QA:
 
-- **Atomic authority sources** are accepted, active, applicable Requirements,
-  Contracts, Decisions, and other registered normative atoms. Atoms are
+- **Atomic authority sources** are accepted, active, applicable Decisions,
+  including Requirement, Constraint, and Contract subtypes. Atoms are
   immutable. Later state is an append-only lifecycle event; replacement is a
   successor atom with an explicit acyclic `absorbs` relation.
 - **Evergreen compiled projections** are updatable current views such as specs,
   implementation plans, deterministic test plans, eval plans, architecture,
   runbooks, and governing rules. They are compiled from active source atoms and
   become stale when they disagree with one.
-- **Transactional context and evidence** record Problems, Opportunities,
-  Questions, proofs, sessions/runs, releases, and Changes. They route work or
-  assess claims without becoming normative authority merely by existing.
-- **Implementation artifacts** are code, tests, eval prompts/datasets, CI
+- **Transactional context and evidence** record Questions and their Conflict,
+  Risk, and Opportunity subtypes; Problems and their Defect, Gap, and Debt
+  subtypes; QA results; proofs; sessions/runs; and optional delivery records.
+  They route work or assess claims without becoming normative authority merely
+  by existing.
+- **Implementation artifacts** are code, Test code, Evaluation prompts or
+  datasets, CI
   workflows, scripts, generated runtime assets, and configuration examples.
   They implement atomic sources through their compiled projections.
 
