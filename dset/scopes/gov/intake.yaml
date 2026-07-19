@@ -125,6 +125,17 @@ items:
     decision: pending
     external_refs:
       - https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9
+  - id: DSET-PROBLEM-OPS-002
+    llm_session_ids:
+      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+    scope: ops
+    type: problem
+    status: open
+    title: Release-planning enforcement is not implemented
+    statement: DSET can define and self-apply Version Target and next-minor Roadmap documents with templates and structural regression checks, but the schema, initializer, validator, traceability model, overview, and release CLI do not yet require, create, or validate exactly one current target catalog and one active next-minor Roadmap for every release-applicable adopter.
+    owner_change: DSET-CHANGE-SKILL-001
+    decision: DSET-DECISION-OPS-001
+    external_refs: []
   - id: DSET-PROBLEM-GOV-001
     llm_session_ids:
       - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
