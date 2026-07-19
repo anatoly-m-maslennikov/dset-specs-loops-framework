@@ -32,6 +32,9 @@ class ConflictEntityTests(unittest.TestCase):
         self.assertIn("DSET-REQUIREMENT-GOV-027", spec)
         self.assertIn("Four Types use one flat subtype level", spec)
         self.assertIn("never contains another subtype", spec)
+        self.assertIn("reviewable primary claim", spec)
+        self.assertIn("operator's acceptance is an act", spec)
+        self.assertIn("deterministic code executes the method", spec)
 
     def test_type_is_never_defined_by_workflow_or_location(self) -> None:
         artifacts = (ROOT / "documentation" / "artifact-types.md").read_text(
@@ -63,6 +66,13 @@ class ConflictEntityTests(unittest.TestCase):
         self.assertIn("**Absorbs:** `DSET-DECISION-GOV-004` in full", text)
         self.assertIn("workflow never defines artifact type", text)
 
+        fpf_predecessor = CHANGE / "decision-DSET-DECISION-GOV-007.md"
+        fpf_successor = CHANGE / "decision-DSET-DECISION-GOV-008.md"
+        self.assertTrue(fpf_predecessor.is_file())
+        fpf_text = fpf_successor.read_text(encoding="utf-8")
+        self.assertIn("**Absorbs:** `DSET-DECISION-GOV-007` in full", fpf_text)
+        self.assertIn("One atom, one primary governed claim", fpf_text)
+
     def test_live_and_template_work_item_rules_match(self) -> None:
         live = ROOT / "dset" / "scopes" / "gov" / "governance" / "work-items.md"
         template = (
@@ -76,6 +86,15 @@ class ConflictEntityTests(unittest.TestCase):
             / "work-items.md"
         )
         self.assertEqual(live.read_bytes(), template.read_bytes())
+        text = live.read_text(encoding="utf-8")
+        for phrase in (
+            "independently reviewable primary claim",
+            "acceptance is a lifecycle act",
+            "Markdown, YAML, database, and hosted records are carriers",
+            "Debt must not conceal a Defect or Gap",
+            "deterministic code executes the method",
+        ):
+            self.assertIn(phrase, text)
 
 
 if __name__ == "__main__":

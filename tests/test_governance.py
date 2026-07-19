@@ -880,6 +880,19 @@ class GovernanceTests(unittest.TestCase):
             with self.subTest(pattern=mapping["pattern"]):
                 self.assertTrue(mapping["adaptation_scope"])
                 self.assertTrue(mapping["exclusions"])
+        patterns = {
+            mapping["pattern"]
+            for mapping in cast(list[dict[str, Any]], fpf["mappings"])
+        }
+        self.assertTrue(
+            {
+                "FPF-A.07",
+                "FPF-A.11",
+                "FPF-A.02.09",
+                "FPF-C.32.PAD",
+                "FPF-E.17.AUD",
+            }.issubset(patterns)
+        )
 
     def test_health_review_and_ranking_rules_are_compiled(self) -> None:
         live = (ROOT / "dset/scopes/gov/governance/artifact-maintenance.md").read_text(
@@ -917,6 +930,9 @@ class GovernanceTests(unittest.TestCase):
             "Later state is an append-only lifecycle event",
             "active atom wins over a stale compiled projection",
             "move byte-for-byte",
+            "smallest independently reviewable primary project claim",
+            "acceptance act grants authority to Decision",
+            "QA atom defines a check",
         ):
             self.assertIn(phrase, architecture)
 

@@ -159,20 +159,27 @@ a nested subtype in its ID or metadata.
 ## DSET-REQUIREMENT-GOV-020 — Artifacts declare authority and lifecycle roles
 
 DSET must distinguish atomic authority sources, evergreen compiled projections,
-transactional context/evidence, and implementation-layer artifacts. Accepted,
+transactional context/evidence, and implementation-layer artifacts. A typed
+atom owns one primary claim or directive rather than its real-world subject,
+operator acceptance act, file or record carrier, performed work, result,
+evidence, gate disposition, or derived Verification. Accepted,
 active, applicable Decision atoms and their direct subtypes are authority
 sources. Evergreen specs, implementation plans, Test plans, Evaluation plans,
 runbooks, and governing rules are updatable projections compiled from those
-sources. Problems, Questions and their direct subtypes, QA results, proofs,
-optional Changes/releases, sessions, and runs preserve work history or evidence
+sources. Problems, Questions and their direct subtypes, acceptance and other
+lifecycle events, QA executions/results, proofs, optional Changes/releases,
+sessions, and runs preserve work history or evidence
 without becoming authority merely by existing. Implementation artifacts are
 code, Test code, Evaluation prompts/datasets, CI workflows, scripts, generated
 runtime assets, and configuration examples.
 
-**Scenario DSET-SCENARIO-GOV-021:** An accepted Decision changes behavior, the
+**Scenario DSET-SCENARIO-GOV-021:** An operator acceptance event grants
+authority to a Decision directive carried in a Markdown record. The directive
+changes behavior, the
 compiled spec and proof plans expose its current consequences, and code, Test
-code, and Evaluation prompts implement those sources without becoming
-competing authority. If
+code, and Evaluation prompts implement those sources. Later QA execution
+produces evidence and Verification without any act, carrier, work occurrence,
+or result becoming competing authority. If
 the Decision and compiled spec differ, the Decision wins and the spec is stale.
 
 ## DSET-REQUIREMENT-GOV-021 — Atomic authority compiles into evergreen projections
@@ -386,6 +393,29 @@ Classification depends on semantic content, never workflow, queue, skill,
 tool, host, filename, path, or next action. Changed semantics require a new
 linked atom. All emitted atoms are immutable.
 
+Types are application-level routing classifications for durable project claims
+and directives, not universal classifications of people, systems, real-world
+conditions, performed work, or files. Classify the smallest independently
+reviewable primary claim. Split multi-head statements into linked sibling
+atoms. When an irreducible claim remains plausible under several subtypes, use
+the empty subtype of its Type and raise a Question when ambiguity affects work;
+never guess or assign several subtypes.
+
+The operator's acceptance is an act or lifecycle event distinct from Decision
+directive content and its carrier. QA atoms define checks; Test/Evaluation
+execution is work; results and logs are evidence; gate decisions and
+Verification are derived. Storage may colocate linked roles without collapsing
+their semantics or identities.
+
+Direct Decision subtypes are recognized by the acceptance condition that owns
+the claim. Contract owns named boundary obligations. Constraint narrows
+otherwise acceptable solutions when no boundary participant relies on it as a
+Contract. User Story owns actor/want/value framing but not acceptance criteria.
+Outcome owns intended measurable state change, not observed evidence. Scenario
+owns one accepted example, not its run. Invariant owns an always-hold
+condition, not evidence that it currently holds. Requirement owns the remaining
+observable obligation that no more precise Decision subtype owns.
+
 Problem means presently true insufficiency. Wrong now is Defect; missing now is
 Gap; a working known compromise with continuing cost is Debt. Question means
 uncertainty. Possible future harm is Risk; optional possible value is
@@ -393,10 +423,17 @@ Opportunity; verified incompatible active applicable authority is Conflict.
 Different wording, stale compilation, failed QA, implementation nonconformance,
 and contradictory evidence alone are not Conflicts.
 
-QA/Test is deterministic under declared conditions. QA/Evaluation is
-qualitative, probabilistic, statistical, or model-judged and declares its
+Debt cannot hide a Defect or Gap. If a compromise also violates active
+authority or leaves an obligation absent, record linked Defect or Gap atoms or
+emit a Decision that changes the applicable authority.
+
+QA/Test is an exact reproducible predicate under declared conditions.
+QA/Evaluation is qualitative, probabilistic, statistical, or model-judged and
+declares its
 method, criterion, threshold, and uncertainty handling where applicable. QA
-results affect assurance and never override Decision authority.
+remains Evaluation when deterministic code executes the method but the
+conclusion depends on judgment, sampling, calibration, probability, statistics,
+or a model. QA results affect assurance and never override Decision authority.
 
 A Question/Conflict records exact incompatible authority and resolves through
 an append-only lifecycle event linked to the answering or absorbing Decision,

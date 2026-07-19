@@ -75,15 +75,18 @@ platform or disallowed dependency is a Problem with the applicable subtype.
 When meaningful, accepted project truth records a User Story with
 `type: decision`, `subtype: user_story`, and a stable `STORY` compatibility ID.
 It captures the actor or stakeholder, desired capability or outcome, and value
-or purpose. User Story, Requirement, Constraint, Contract, Outcome, Scenario,
+or purpose without absorbing acceptance criteria. User Story, Requirement,
+Constraint, Contract, Outcome, Scenario,
 and Invariant are sibling Decision subtypes. Links among them never create
 subtype nesting, and a User Story is never represented as
 Decision/Requirement/User Story.
 
-Each sibling owns its own semantics: Requirement owns observable required
-results; Constraint narrows solutions; Contract owns boundary obligations;
-Outcome owns measurable state change; Scenario owns a concrete accepted
-behavior; Invariant owns an always-true condition. Design owns internal logic
+Each sibling owns its own semantics: Requirement owns residual observable
+obligations; Constraint narrows solutions when no boundary participant relies
+on the restriction; Contract owns boundary obligations; Outcome owns intended
+measurable state change; Scenario owns a concrete accepted behavior rather than
+its execution; Invariant owns an always-true condition rather than evidence
+that it currently holds. Design owns internal logic
 and implementation plans own build order. A package with no meaningful actor
 perspective may omit User Story without inventing one.
 
@@ -96,7 +99,8 @@ traceable without making any atom a subtype of User Story or Requirement.
 
 An accepted Outcome uses `type: decision`, `subtype: outcome`, and a stable
 `OUTCOME` ID. It describes a measurable change in user, business, operational,
-or system state rather than a delivered output or feature and records its
+or system state that the project intends rather than a delivered output,
+feature, or observed result and records its
 baseline, target, observation method/source, evaluation window, originating
 Problem or Question/Opportunity links, relevant sibling User Story links, and
 applicable QA/Evaluation links. A model-only methodology change does not invent
@@ -104,7 +108,8 @@ a concrete Outcome atom.
 
 Requirement and Outcome are sibling Decision subtypes with different proof. A
 Requirement defines observable behavior or result the implementation must
-deliver. Deterministic QA/Test evidence proves delivery. Outcome evidence uses
+deliver. Deterministic QA/Test evidence proves delivery. Outcome observations
+are evidence and use
 the declared source and window to show whether delivery produced the intended
 state change; shipping an artifact alone cannot satisfy an Outcome.
 
