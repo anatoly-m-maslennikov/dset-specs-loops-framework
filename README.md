@@ -18,20 +18,50 @@ Framework rules and release assets live here. Each adopting repository owns its 
 
 ## Core loop
 
-This is an ownership and readiness view, not a mandatory execution order. Work
-may revisit, parallelize, or skip non-applicable activities while each concern
-still returns to its one authoritative artifact and proof owner.
+The core workflow separates unresolved context, atomic authority, compiled
+current truth, implementation, and proof. It is an ownership model rather than
+a rigid execution order.
 
-```text
-Domain → Spec + Supportability + Test Plan + Eval Plan → Implement → Test + Evaluate → Review → Reconcile Spec → Next Loop
+```mermaid
+flowchart LR
+    Q["Question<br/>What remains unresolved?"]
+    D["Decision<br/>What governs the project?"]
+    E["Evergreen truth<br/>Current specs and plans"]
+    I["Implementation<br/>Code, docs, scripts"]
+    QA["QA<br/>Tests and evaluations"]
+    V["Verification<br/>Current proven state"]
+    P["Problem<br/>What is currently insufficient?"]
+
+    Q -->|"resolved by"| D
+    D -->|"compiled into"| E
+    E -->|"governs"| I
+    I -->|"checked by"| QA
+    QA -->|"passes"| V
+
+    QA -->|"fails"| P
+    P -->|"resolution unclear"| Q
+    P -->|"existing decision already applies"| I
 ```
 
-- **Domain** defines entities, language, states, invariants, and boundaries.
-- **Supportability** defines the risk-scaled production evidence, identity, diagnostics, data-safety controls, and runbook needed to investigate and fix real incidents.
-- **Spec** records accepted behavioral truth and change scope.
-- **Evals** assess probabilistic, qualitative, or LLM-mediated behavior.
-- **Tests** prove deterministic behavior.
-- **Loops** deliver small vertical slices, use fresh evidence, and reconcile accepted results into current truth.
+- **Question** records unresolved knowledge, interpretation, or choice.
+- **Problem** records something that is currently wrong, missing, or
+  insufficient. It returns directly to implementation when current authority
+  already defines the correction; otherwise it raises a Question.
+- **Decision** records immutable project authority accepted from operator
+  input. Requirements, Constraints, and Contracts are specialized Decisions;
+  a general Decision has no subtype.
+- **Evergreen truth** is the mutable current projection of active Decisions
+  into specifications and implementation, Test, and Evaluation plans.
+- **Implementation** contains the actual code, documentation, scripts, Tests,
+  Evaluation prompts, and other executable project material.
+- **QA** keeps deterministic Tests separate from qualitative, probabilistic,
+  statistical, or model-judged Evaluations.
+- **Verification** is a derived statement of the currently proven state, not a
+  competing source of authority.
+
+Supportability applies across evergreen truth, implementation, QA, and
+verification. It is the risk-scaled ability to investigate, reproduce, and fix
+real failures using suitable logs, traces, provenance, state, and runbooks.
 
 ## Repository areas
 
