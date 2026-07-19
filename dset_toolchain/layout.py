@@ -11,6 +11,7 @@ LAYERS: Final[tuple[str, ...]] = ("meta", "gov", "tool", "skill", "ops")
 LEGACY_SCHEMA_VERSIONS: Final[frozenset[str]] = frozenset({"1.0", "1.1"})
 LAYERED_SCHEMA_VERSION: Final[str] = "1.2"
 LEGACY_AUTHORITY_PATHS: Final[tuple[str, ...]] = (
+    "artifact-types.yaml",
     "artifacts.yaml",
     "budget.yaml",
     "changes",
@@ -78,6 +79,10 @@ class RepositoryLayout:
     @property
     def artifact_registry_path(self) -> Path:
         return self._owned_file("gov", "artifacts.yaml")
+
+    @property
+    def artifact_type_registry_path(self) -> Path:
+        return self._owned_file("gov", "artifact-types.yaml")
 
     @property
     def intake_path(self) -> Path:

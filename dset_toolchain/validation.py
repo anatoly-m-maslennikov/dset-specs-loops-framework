@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import re
 from datetime import date
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 from urllib.parse import unquote
 
@@ -42,6 +42,60 @@ LLM_SESSION_FIELD_PATTERN = re.compile(
     r"^\s*(?:-\s*)?\*\*LLM session IDs?:\*\*\s*(.*)$",
     re.IGNORECASE,
 )
+ARTIFACT_CLASSIFICATION_PATTERN = re.compile(r"^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$")
+ARTIFACT_TYPE_SUBTYPES: dict[str, frozenset[str]] = {
+    "atomic_record": frozenset(),
+    "analysis_report": frozenset(
+        {
+            "solution_landscape",
+            "root_cause_analysis",
+            "proposal",
+            "technical_investigation",
+            "external_audit_analysis",
+        }
+    ),
+    "specification": frozenset(
+        {
+            "domain_model",
+            "behavior",
+            "architecture",
+            "design",
+            "governance",
+            "version_scope",
+        }
+    ),
+    "procedure": frozenset({"playbook", "runbook"}),
+    "plan": frozenset(
+        {
+            "roadmap",
+            "implementation_plan",
+            "test_plan",
+            "evaluation_plan",
+            "release_plan",
+        }
+    ),
+    "change": frozenset(),
+    "implementation": frozenset(
+        {
+            "source_code",
+            "documentation",
+            "configuration",
+            "migration",
+            "test_implementation",
+            "evaluation_implementation",
+        }
+    ),
+    "evidence_record": frozenset(
+        {"test_result", "evaluation_result", "review_report", "run_record"}
+    ),
+    "verification": frozenset(),
+    "readiness_record": frozenset(),
+    "release_record": frozenset(),
+    "derived_view": frozenset(
+        {"project_overview", "health_dashboard", "traceability_index", "changelog"}
+    ),
+    "navigation": frozenset({"readme", "hub", "index"}),
+}
 
 
 def validate_repository(root: Path) -> list[Diagnostic]:
@@ -972,7 +1026,8 @@ def _validate_artifacts(
                 f"unsupported artifact profile: {profile}",
             )
         ]
-    registry_path = discover_layout(root).artifact_registry_path
+    layout = discover_layout(root)
+    registry_path = layout.artifact_registry_path
     if not registry_path.is_file():
         return [
             _diag(
@@ -995,7 +1050,296 @@ def _validate_artifacts(
         )
         return diagnostics
     diagnostics.extend(validate_artifact_registry(root, registry_path, registry))
+    type_registry_path = layout.artifact_type_registry_path
+    if not type_registry_path.is_file():
+        diagnostics.append(
+            _diag(
+                "DSET-E156",
+                type_registry_path,
+                "documentation-v1 requires an artifact-type registry",
+            )
+        )
+        return diagnostics
+    type_registry = _safe_load(type_registry_path, diagnostics)
+    if type_registry:
+        diagnostics.extend(
+            validate_artifact_type_registry(root, type_registry_path, type_registry)
+        )
     return diagnostics
+
+
+def validate_artifact_type_registry(
+    root: Path, registry_path: Path, data: dict[str, Any]
+) -> list[Diagnostic]:
+    """Validate the documentation-v1 artifact-role vocabulary and path rules."""
+    diagnostics: list[Diagnostic] = []
+    if str(data.get("schema_version")) != "1.0":
+        diagnostics.append(
+            _diag("DSET-E156", registry_path, "schema_version must be 1.0")
+        )
+    if data.get("profile") != "documentation-v1":
+        diagnostics.append(
+            _diag("DSET-E156", registry_path, "profile must be documentation-v1")
+        )
+    diagnostics.extend(_validate_artifact_classification(registry_path, data))
+    types, type_diagnostics = _artifact_type_catalog(registry_path, data)
+    diagnostics.extend(type_diagnostics)
+    diagnostics.extend(_validate_artifact_path_rules(root, registry_path, data, types))
+    return diagnostics
+
+
+def _validate_artifact_classification(
+    registry_path: Path, data: dict[str, Any]
+) -> list[Diagnostic]:
+    expected = {
+        "unclassified": "error",
+        "multiple_matches": "error",
+        "direct_metadata_fields": {
+            "type": "artifact_type",
+            "subtype": "artifact_subtype",
+        },
+    }
+    if data.get("classification") != expected:
+        return [
+            _diag(
+                "DSET-E156",
+                registry_path,
+                "classification policy and direct metadata fields are invalid",
+            )
+        ]
+    return []
+
+
+def _artifact_type_catalog(
+    registry_path: Path, data: dict[str, Any]
+) -> tuple[dict[str, frozenset[str]], list[Diagnostic]]:
+    diagnostics: list[Diagnostic] = []
+    raw_types = data.get("artifact_types")
+    if not isinstance(raw_types, list) or not raw_types:
+        return {}, [
+            _diag(
+                "DSET-E156",
+                registry_path,
+                "artifact_types must be a non-empty list",
+            )
+        ]
+    catalog: dict[str, frozenset[str]] = {}
+    questions: set[str] = set()
+    for entry in raw_types:
+        if not isinstance(entry, dict):
+            diagnostics.append(
+                _diag(
+                    "DSET-E156", registry_path, "every artifact type must be a mapping"
+                )
+            )
+            continue
+        identifier = entry.get("id")
+        if (
+            not isinstance(identifier, str)
+            or ARTIFACT_CLASSIFICATION_PATTERN.fullmatch(identifier) is None
+        ):
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"invalid artifact type ID: {identifier}",
+                )
+            )
+            continue
+        if identifier in catalog:
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"duplicate artifact type ID: {identifier}",
+                )
+            )
+            continue
+        question = entry.get("primary_question")
+        if not isinstance(question, str) or not question.strip():
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"{identifier} requires a primary_question",
+                )
+            )
+        elif question in questions:
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"duplicate primary_question: {question}",
+                )
+            )
+        else:
+            questions.add(question)
+        if not isinstance(entry.get("allow_empty_subtype"), bool):
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"{identifier} allow_empty_subtype must be boolean",
+                )
+            )
+        raw_subtypes = entry.get("subtypes")
+        if not isinstance(raw_subtypes, list):
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"{identifier} subtypes must be a flat list",
+                )
+            )
+            catalog[identifier] = frozenset()
+            continue
+        subtypes: set[str] = set()
+        for subtype in raw_subtypes:
+            if (
+                not isinstance(subtype, str)
+                or ARTIFACT_CLASSIFICATION_PATTERN.fullmatch(subtype) is None
+            ):
+                diagnostics.append(
+                    _diag(
+                        "DSET-E156",
+                        registry_path,
+                        f"{identifier} contains an invalid or nested subtype",
+                    )
+                )
+            elif subtype in subtypes:
+                diagnostics.append(
+                    _diag(
+                        "DSET-E156",
+                        registry_path,
+                        f"{identifier} contains duplicate subtype: {subtype}",
+                    )
+                )
+            else:
+                subtypes.add(subtype)
+        catalog[identifier] = frozenset(subtypes)
+    if set(catalog) != set(ARTIFACT_TYPE_SUBTYPES):
+        diagnostics.append(
+            _diag(
+                "DSET-E156",
+                registry_path,
+                "artifact_types must contain the thirteen canonical types exactly",
+            )
+        )
+    for identifier, expected in ARTIFACT_TYPE_SUBTYPES.items():
+        if identifier in catalog and catalog[identifier] != expected:
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"{identifier} direct subtype set does not match the profile",
+                )
+            )
+    return catalog, diagnostics
+
+
+def _validate_artifact_path_rules(
+    root: Path,
+    registry_path: Path,
+    data: dict[str, Any],
+    catalog: dict[str, frozenset[str]],
+) -> list[Diagnostic]:
+    diagnostics: list[Diagnostic] = []
+    raw_rules = data.get("path_rules")
+    if not isinstance(raw_rules, list) or not raw_rules:
+        return [
+            _diag("DSET-E156", registry_path, "path_rules must be a non-empty list")
+        ]
+    rules: list[tuple[str, str, str | None]] = []
+    seen_patterns: set[str] = set()
+    for rule in raw_rules:
+        if not isinstance(rule, dict):
+            diagnostics.append(
+                _diag("DSET-E156", registry_path, "every path rule must be a mapping")
+            )
+            continue
+        pattern = rule.get("pattern")
+        artifact_type = rule.get("artifact_type")
+        artifact_subtype = rule.get("artifact_subtype")
+        if not isinstance(pattern, str) or not pattern.strip():
+            diagnostics.append(
+                _diag("DSET-E156", registry_path, "path rule pattern is missing")
+            )
+            continue
+        if pattern in seen_patterns:
+            diagnostics.append(
+                _diag("DSET-E156", registry_path, f"duplicate path rule: {pattern}")
+            )
+        seen_patterns.add(pattern)
+        if not isinstance(artifact_type, str) or artifact_type not in catalog:
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"path rule uses unknown artifact type: {artifact_type}",
+                )
+            )
+            continue
+        if artifact_subtype is not None:
+            if not isinstance(artifact_subtype, str):
+                diagnostics.append(
+                    _diag(
+                        "DSET-E156",
+                        registry_path,
+                        f"path rule {pattern} has a nested or invalid subtype",
+                    )
+                )
+                continue
+            if artifact_subtype not in catalog[artifact_type]:
+                diagnostics.append(
+                    _diag(
+                        "DSET-E156",
+                        registry_path,
+                        f"path rule {pattern} has a subtype/type mismatch",
+                    )
+                )
+                continue
+        rules.append((pattern, artifact_type, artifact_subtype))
+    diagnostics.extend(_validate_current_path_matches(root, registry_path, rules))
+    return diagnostics
+
+
+def _validate_current_path_matches(
+    root: Path, registry_path: Path, rules: list[tuple[str, str, str | None]]
+) -> list[Diagnostic]:
+    diagnostics: list[Diagnostic] = []
+    ignored_parts = {
+        ".git",
+        ".mypy_cache",
+        ".pytest_cache",
+        ".ruff_cache",
+        ".uv-cache",
+        ".venv",
+        "__pycache__",
+        "dist",
+    }
+    for path in root.rglob("*"):
+        if not path.is_file() or any(part in ignored_parts for part in path.parts):
+            continue
+        relative = path.relative_to(root).as_posix()
+        matches = [
+            pattern for pattern, _, _ in rules if _path_rule_matches(relative, pattern)
+        ]
+        if len(matches) > 1:
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    path,
+                    "artifact path matches multiple rules: " + ", ".join(matches),
+                )
+            )
+    return diagnostics
+
+
+def _path_rule_matches(relative_path: str, pattern: str) -> bool:
+    path = PurePosixPath(relative_path)
+    return path.match(pattern) or (
+        pattern.startswith("**/") and path.match(pattern.removeprefix("**/"))
+    )
 
 
 def validate_artifact_registry(

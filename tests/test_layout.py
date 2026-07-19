@@ -26,6 +26,9 @@ class RepositoryLayoutTest(unittest.TestCase):
             self.assertEqual(layout.manifest_path, dset / "dset.yaml")
             self.assertEqual(layout.governance_path, dset / "governance.yaml")
             self.assertEqual(layout.artifact_registry_path, dset / "artifacts.yaml")
+            self.assertEqual(
+                layout.artifact_type_registry_path, dset / "artifact-types.yaml"
+            )
             self.assertEqual(layout.intake_path, dset / "intake.yaml")
             self.assertEqual(layout.version_path, dset / "version.yaml")
             self.assertEqual(layout.history_path, dset / "history/pull-requests.yaml")
@@ -65,6 +68,10 @@ class RepositoryLayoutTest(unittest.TestCase):
             self.assertEqual(layout.governance_path, scopes / "gov" / "governance.yaml")
             self.assertEqual(
                 layout.artifact_registry_path, scopes / "gov" / "artifacts.yaml"
+            )
+            self.assertEqual(
+                layout.artifact_type_registry_path,
+                scopes / "gov" / "artifact-types.yaml",
             )
             self.assertEqual(layout.intake_path, scopes / "gov" / "intake.yaml")
             self.assertEqual(layout.provenance_path, scopes / "gov" / "provenance.yaml")

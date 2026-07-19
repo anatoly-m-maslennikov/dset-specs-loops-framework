@@ -66,6 +66,7 @@ class BootstrapTests(unittest.TestCase):
             self.assertTrue((target / "skills" / "dset" / "SKILL.md").is_file())
             manifest = load(target / "dset" / "scopes" / "meta" / "dset.yaml")
             self.assertEqual(manifest["project"]["repository_slug"], "sample-app")
+            self.assertTrue((target / "dset/scopes/gov/artifact-types.yaml").is_file())
             self.assertEqual(
                 (target / "README.md").read_text(encoding="utf-8"), "# Existing\n"
             )

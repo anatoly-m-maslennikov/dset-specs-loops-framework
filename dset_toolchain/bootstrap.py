@@ -286,6 +286,10 @@ def _stage_project(
         project_name,
     )
     gov = stage / "dset" / "scopes" / "gov"
+    shutil.copyfile(
+        source_layout.find_template("artifact-types.yaml"),
+        gov / "artifact-types.yaml",
+    )
     shutil.copyfile(source_layout.find_template("intake.yaml"), gov / "intake.yaml")
     (gov / "provenance.yaml").write_text(
         dump(
