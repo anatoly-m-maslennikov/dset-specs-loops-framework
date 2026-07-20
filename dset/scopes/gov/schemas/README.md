@@ -4,7 +4,8 @@ Repository-governance schemas owned by GOV:
 
 - [Artifact areas](artifacts.schema.json)
 - [Artifact types](artifact-types.schema.json)
-- [Semantic atom frontmatter](atom.schema.json)
+- [Semantic atom frontmatter](atom.schema.json) — canonical typed relations plus
+  sealed legacy `child_of` compatibility
 - [Immutable atom ledger](atom-ledger.schema.json)
 - [Append-only atom lifecycle](lifecycle.schema.json)
 - [Changes](change.schema.json)

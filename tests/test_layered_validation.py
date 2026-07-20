@@ -415,7 +415,7 @@ class LayeredValidationTests(unittest.TestCase):
 
         trace = build_traceability(self.root)
 
-        self.assertEqual(trace["schema_version"], "1.2")
+        self.assertEqual(trace["schema_version"], "1.3")
         self.assertEqual(trace["changes"][0]["primary_layer"], "tool")
         self.assertEqual(trace["changes"][0]["affected_layers"], ["tool"])
         self.assertEqual(trace["changes"][0]["slug"], "layered-change")

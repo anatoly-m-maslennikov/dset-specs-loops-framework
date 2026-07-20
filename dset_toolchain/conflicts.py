@@ -271,7 +271,9 @@ def emit_conflict_atom(
         "claim": _required_text(atom, "claim"),
         "scope": atom.get("scope"),
         "promotion": atom.get("promotion"),
-        "child_of": parents,
+        "relations": [
+            {"type": "relates_to", "target": parent} for parent in parents
+        ],
         "llm_session_ids": atom.get("llm_session_ids"),
     }
     for field in (

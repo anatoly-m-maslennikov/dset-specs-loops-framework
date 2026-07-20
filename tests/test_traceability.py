@@ -63,27 +63,58 @@ class TraceabilityTests(unittest.TestCase):
         self.assertTrue(
             all(item["outcomes"] == [] for item in trace["changes"] if item != current)
         )
-        lineage = {item["id"]: item for item in trace["lineage"]}
-        self.assertEqual(
-            lineage["DSET-REQUIREMENT-GOV-034"]["child_of"],
-            ["DSET-REQUIREMENT-GOV-033"],
-        )
-        self.assertIn(
-            "DSET-REQUIREMENT-GOV-034",
-            lineage["DSET-REQUIREMENT-GOV-033"]["parent_to"],
-        )
-        self.assertTrue(trace["implementation_edges"])
+        relations = trace["relations"]
+        legacy = [
+            item
+            for item in relations
+            if item["source"] == "DSET-REQUIREMENT-GOV-034"
+        ]
+        self.assertEqual(legacy[0]["type"], "child_of")
+        self.assertEqual(legacy[0]["target"], "DSET-REQUIREMENT-GOV-033")
+        self.assertEqual(legacy[0]["origin"], "legacy_child_of")
+        self.assertFalse(any("parent_to" in item for item in relations))
+        implementation_relations = [
+            item for item in relations if item["source_kind"] == "commit"
+        ]
+        self.assertTrue(implementation_relations)
         self.assertTrue(
             any(
-                "DSET-REQUIREMENT-GOV-034" in item["implements"]
-                for item in trace["implementation_edges"]
+                item["target"] == "DSET-REQUIREMENT-GOV-034"
+                for item in implementation_relations
             )
+        )
+        decision_relations = [
+            (item["type"], item.get("target"))
+            for item in relations
+            if item["source"] == "DSET-DECISION-GOV-013"
+        ]
+        self.assertIn(("resolution_of", "DSET-QUESTION-GOV-004"), decision_relations)
+        self.assertIn(
+            ("replacement_of", "DSET-REQUIREMENT-GOV-034"),
+            decision_relations,
+        )
+        projection_ranges = [
+            item["range"]
+            for item in relations
+            if item["source"] == "DSET-SPECIFICATION-001"
+            and item["type"] == "projection_of"
+        ]
+        self.assertEqual(len(projection_ranges), 3)
+        self.assertEqual(
+            {item["through"] for item in projection_ranges},
+            {
+                "DSET-ATOMIC-RECORD-035",
+                "DSET-ATOMIC-RECORD-036",
+                "DSET-ATOMIC-RECORD-037",
+            },
         )
         atoms = {item["id"]: item for item in trace["semantic_atoms"]}
         self.assertEqual(atoms["DSET-DECISION-GOV-010"]["type"], "decision")
         self.assertEqual(atoms["DSET-DECISION-GOV-010"]["priority"], "high")
         self.assertEqual(atoms["DSET-DECISION-GOV-010"]["current_status"], "accepted")
         self.assertFalse(atoms["DSET-DECISION-GOV-010"]["archived"])
+        typed = atoms["DSET-DECISION-GOV-013"]["relations"]
+        self.assertTrue(any(item["type"] == "resolution_of" for item in typed))
         classifications = {
             item["id"]: item for item in trace["semantic_classifications"]
         }

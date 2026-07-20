@@ -11,6 +11,7 @@ from typing import Any
 from .diagnostics import Diagnostic
 from .layout import discover_layout
 from .legacy_authority import validate_legacy_authority_ledger
+from .lineage import ArtifactRelation, parse_authored_relations
 from .semantic_types import SEMANTIC_ID_KINDS, SEMANTIC_SUBTYPES
 from .settings import load_project_settings
 from .yaml_subset import YamlSubsetError, dump, load, loads
@@ -45,8 +46,17 @@ class SemanticAtom:
     emission_status: str
     priority: str
     llm_session_ids: tuple[str, ...]
-    child_of: tuple[str, ...]
+    relations: tuple[ArtifactRelation, ...]
     sha256: str
+
+    @property
+    def child_of(self) -> tuple[str, ...]:
+        """Expose sealed legacy lineage to compatibility callers."""
+        return tuple(
+            relation.target
+            for relation in self.relations
+            if relation.type == "child_of" and relation.target is not None
+        )
 
 
 def collect_semantic_atoms(
@@ -124,7 +134,7 @@ def seal_atom(root: Path, path: Path) -> Path:
         "subtype": metadata.get("subtype"),
         "scope": metadata.get("scope"),
         "llm_session_ids": metadata.get("llm_session_ids"),
-        "material_links": metadata.get("child_of", []),
+        "material_links": _material_relation_links(metadata, path),
         "priority": metadata.get("priority"),
         "acceptance": metadata.get("status"),
         "promotion": metadata.get("promotion"),
@@ -231,7 +241,7 @@ def build_semantic_atom_index(root: Path) -> list[dict[str, Any]]:
                 "current_status": _current_status(atom, atom_events),
                 "priority": priority,
                 "priority_source": priority_source,
-                "child_of": list(atom.child_of),
+                "relations": [relation.as_dict() for relation in atom.relations],
                 "lifecycle_events": [str(event["id"]) for event in atom_events],
                 "absorbed_by": absorbed_by,
                 "archived": "archive" in Path(atom.path).parts,
@@ -259,7 +269,11 @@ def archive_atom(root: Path, semantic_id: str) -> Path:
     active_dependants = [
         candidate.semantic_id
         for candidate in atoms.values()
-        if semantic_id in candidate.child_of
+        if any(
+            relation.target == semantic_id
+            and relation.type in {"child_of", "override_of"}
+            for relation in candidate.relations
+        )
         and _current_status(
             candidate,
             [
@@ -350,14 +364,7 @@ def _parse_atom(
         diagnostics.append(
             _atom_diag(path, "atom requires unique host-prefixed llm_session_ids")
         )
-    child_of = data.get("child_of", [])
-    if child_of is None:
-        child_of = []
-    if not isinstance(child_of, list) or not all(
-        isinstance(item, str) and ID_PATTERN.fullmatch(item) for item in child_of
-    ):
-        diagnostics.append(_atom_diag(path, "child_of must contain canonical IDs"))
-        child_of = []
+    relations = parse_authored_relations(path, data, diagnostics)
     if diagnostics:
         return None, diagnostics
     assert isinstance(semantic_id, str)
@@ -376,11 +383,25 @@ def _parse_atom(
             emission_status=status,
             priority=priority,
             llm_session_ids=tuple(str(item) for item in sessions),
-            child_of=tuple(str(item) for item in child_of),
+            relations=relations,
             sha256=_digest(path),
         ),
         diagnostics,
     )
+
+
+def _material_relation_links(data: dict[str, Any], path: Path) -> list[str]:
+    diagnostics: list[Diagnostic] = []
+    relations = parse_authored_relations(path, data, diagnostics)
+    if diagnostics:
+        raise ValueError(diagnostics[0].message)
+    links: list[str] = []
+    for relation in relations:
+        if relation.target is not None:
+            links.append(relation.target)
+        elif relation.range is not None:
+            links.append(relation.range.through)
+    return links
 
 
 def _validate_lifecycle(

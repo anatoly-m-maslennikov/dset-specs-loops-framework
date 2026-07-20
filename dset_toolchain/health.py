@@ -3,7 +3,6 @@ from __future__ import annotations
 import hashlib
 import os
 import re
-import subprocess
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
@@ -11,6 +10,7 @@ from typing import Any
 
 from .compilation import active_authority_ids
 from .layout import discover_layout
+from .lineage import build_relation_index
 from .semantic_atoms import collect_semantic_atoms, effective_priority
 from .semantic_types import build_semantic_classification_index
 from .settings import load_project_settings
@@ -80,7 +80,14 @@ def build_health_model(root: Path) -> dict[str, Any]:
     }
     qa_ids = _qa_ids(root, atoms)
     projections = _evergreen_text(root)
-    commit_edges = _commit_implements(root)
+    relations = build_relation_index(root)
+    commit_edges = {
+        str(item["target"])
+        for item in relations
+        if item["source_kind"] == "commit"
+        and item["type"] == "implementation_of"
+        and isinstance(item.get("target"), str)
+    }
     proof_text = _proof_text(root)
     qa_plan_text = _qa_plan_text(root)
 
@@ -173,6 +180,20 @@ def build_health_model(root: Path) -> dict[str, Any]:
                 1 for item in semantic_classifications if not item["compatibility"]
             ),
         },
+        "relation_counts": {
+            "total": len(relations),
+            "by_type": dict(
+                sorted(Counter(str(item["type"]) for item in relations).items())
+            ),
+            "by_origin": dict(
+                sorted(Counter(str(item["origin"]) for item in relations).items())
+            ),
+            "by_source_kind": dict(
+                sorted(
+                    Counter(str(item["source_kind"]) for item in relations).items()
+                )
+            ),
+        },
         "atoms": sorted(atom_rows, key=lambda item: str(item["id"])),
         "unresolved": unresolved,
         "open_conflicts": sorted(open_conflicts, key=lambda item: str(item["id"])),
@@ -235,6 +256,7 @@ def render_health(root: Path) -> str:
 
     counts = model["artifact_counts"]
     semantic_counts = model["semantic_counts"]
+    relation_counts = model["relation_counts"]
     lines.extend(
         [
             "",
@@ -256,6 +278,14 @@ def render_health(root: Path) -> str:
             f"- **Native immutable atoms:** {semantic_counts['native_atoms']}",
             "- **Compatibility-classified legacy IDs:** "
             f"{semantic_counts['compatibility']}",
+            "",
+            "## Typed relation inventory",
+            "",
+            f"- **Forward relations:** {relation_counts['total']}",
+            f"- **By type:** {_counter_text(relation_counts['by_type'])}",
+            f"- **By origin:** {_counter_text(relation_counts['by_origin'])}",
+            "- **By source kind:** "
+            f"{_counter_text(relation_counts['by_source_kind'])}",
             "",
             "## Unresolved work",
             "",
@@ -527,24 +557,6 @@ def _proof_text(root: Path) -> str:
         and "proofs" in path.parts
     ]
     return "\n".join(path.read_text(encoding="utf-8") for path in sorted(paths))
-
-
-def _commit_implements(root: Path) -> set[str]:
-    try:
-        completed = subprocess.run(
-            ["git", "log", "--format=%B%x00"],
-            cwd=root,
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-    except (OSError, subprocess.CalledProcessError):
-        return set()
-    identifiers: set[str] = set()
-    for line in completed.stdout.splitlines():
-        if line.startswith("Implements:"):
-            identifiers.update(ID_RE.findall(line))
-    return identifiers
 
 
 def _lifecycle_events(root: Path) -> list[dict[str, Any]]:

@@ -136,9 +136,13 @@ class PriorityConflictTests(unittest.TestCase):
             self.assertEqual(path, output)
             self.assertTrue(result["conflict_atom_required"])
             self.assertEqual(atoms["DSET-CONFLICT-003"].subtype, "conflict")
+            relations = atoms["DSET-CONFLICT-003"].relations
             self.assertEqual(
-                atoms["DSET-CONFLICT-003"].child_of,
-                ("DSET-DECISION-001", "DSET-CONTRACT-002"),
+                [(item.type, item.target) for item in relations],
+                [
+                    ("relates_to", "DSET-DECISION-001"),
+                    ("relates_to", "DSET-CONTRACT-002"),
+                ],
             )
 
     def test_priority_change_invalidates_recorded_conflict_result(self) -> None:

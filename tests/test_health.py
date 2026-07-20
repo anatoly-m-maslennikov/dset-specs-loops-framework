@@ -34,6 +34,7 @@ class ProjectHealthTests(unittest.TestCase):
         self.assertIn("This generated view is not authority", first)
         self.assertIn("## Semantic inventory", first)
         self.assertIn("Compatibility-classified legacy IDs", first)
+        self.assertIn("## Typed relation inventory", first)
         self.assertIn("## Canonical return paths", first)
 
     def test_explicit_refresh_and_staleness_check(self) -> None:
@@ -68,6 +69,11 @@ class ProjectHealthTests(unittest.TestCase):
             + model["semantic_counts"]["compatibility"],
             model["semantic_counts"]["total"],
         )
+        repository = build_health_model(ROOT)
+        relation_types = set(repository["relation_counts"]["by_type"])
+        self.assertIn("implementation_of", relation_types)
+        self.assertIn("projection_of", relation_types)
+        self.assertGreater(repository["relation_counts"]["total"], 0)
         for coverage in model["coverage"]:
             self.assertGreaterEqual(coverage.denominator, 0)
             self.assertGreaterEqual(coverage.unknown, 0)

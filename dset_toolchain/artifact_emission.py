@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from .layout import LAYERS, discover_layout
-from .lineage import collect_artifact_lineage
+from .lineage import collect_artifact_relations
 from .semantic_types import SEMANTIC_SUBTYPES, build_semantic_classification_index
 from .settings import load_project_settings
 from .yaml_subset import load
@@ -279,8 +279,8 @@ def _link_diagnostics(root: Path, candidate: Mapping[str, Any]) -> list[dict[str
         known.update(
             str(row["id"]) for row in build_semantic_classification_index(root)
         )
-        nodes, lineage_issues = collect_artifact_lineage(root)
-        if not lineage_issues:
+        nodes, relation_issues = collect_artifact_relations(root)
+        if not relation_issues:
             for node in nodes.values():
                 known.update((node.id, node.artifact_id))
     except (OSError, ValueError):

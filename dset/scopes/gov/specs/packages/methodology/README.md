@@ -10,6 +10,7 @@ The fragment owns only IDs listed in `package.yaml`. Cross-layer connections use
 
 ## Start here
 
+- [Projection set](DSET-SPECIFICATION-001-methodology-projection-set.md)
 - [Domain](domain.md)
 - [Specification](spec.md)
 - [Contracts](contracts.md)
