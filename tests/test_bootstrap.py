@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -74,6 +75,28 @@ class BootstrapTests(unittest.TestCase):
             self.assertEqual(
                 (target / "README.md").read_text(encoding="utf-8"), "# Existing\n"
             )
+
+    def test_execute_ignores_git_ignored_runtime_markdown(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw) / "existing"
+            target.mkdir()
+            (target / ".gitignore").write_text("tmp/\n", encoding="utf-8")
+            runtime = target / "tmp/runtime/system.md"
+            runtime.parent.mkdir(parents=True)
+            runtime.write_text("[[host-only-link]]\n", encoding="utf-8")
+            subprocess.run(["git", "init", "-q"], cwd=target, check=True)
+
+            result = initialize_project(
+                target,
+                project_key="APP",
+                project_id="sample-app",
+                project_name="Sample App",
+                project_license="MIT",
+                execute=True,
+            )
+
+            self.assertTrue(result.executed)
+            self.assertEqual(validate_repository(target), [])
 
     def test_existing_destination_stops_without_partial_write(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

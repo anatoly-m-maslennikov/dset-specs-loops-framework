@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
 from datetime import date
 from pathlib import Path, PurePosixPath
 from typing import Any
@@ -63,6 +64,8 @@ MARKDOWN_IGNORED_PARTS = frozenset(
         "coverage",
         "dist",
         "node_modules",
+        "temp",
+        "tmp",
     }
 )
 LLM_SESSION_ID_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
@@ -2444,7 +2447,7 @@ def _validate_provenance(root: Path) -> list[Diagnostic]:
 
 def _validate_markdown(root: Path) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
-    for path in sorted(root.rglob("*.md")):
+    for path in _markdown_paths(root):
         if any(part in MARKDOWN_IGNORED_PARTS for part in path.relative_to(root).parts):
             continue
         text = path.read_text(encoding="utf-8")
@@ -2484,6 +2487,34 @@ def _validate_markdown(root: Path) -> list[Diagnostic]:
                     )
                 )
     return diagnostics
+
+
+def _markdown_paths(root: Path) -> list[Path]:
+    """Return project-visible Markdown, honoring Git ignores when available."""
+
+    try:
+        result = subprocess.run(
+            [
+                "git",
+                "ls-files",
+                "-z",
+                "--cached",
+                "--others",
+                "--exclude-standard",
+                "--",
+                "*.md",
+            ],
+            cwd=root,
+            check=False,
+            capture_output=True,
+        )
+    except OSError:
+        result = None
+    if result is not None and result.returncode == 0:
+        return sorted(
+            root / item.decode("utf-8") for item in result.stdout.split(b"\0") if item
+        )
+    return sorted(root.rglob("*.md"))
 
 
 def _without_code(text: str) -> str:
