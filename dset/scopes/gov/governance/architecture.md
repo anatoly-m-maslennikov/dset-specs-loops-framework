@@ -163,7 +163,7 @@ whole-project version, release, readiness, and publication artifacts; and
 cross-owner Decisions, Questions, Problems, and Analysis Reports. Parent
 artifacts link child-owned detail and never duplicate it as parallel truth.
 
-## Artifact inheritance
+## Artifact scope-inheritance policy
 
 Project, feature-group, feature, and layer artifacts inherit through only two
 directions: a new local child stores `child_of`, and `parent_to` is the derived
@@ -179,6 +179,13 @@ parent in one scope stop as unresolved authority.
 Inheritance adds no `applies_to`, `realizes`, `implements`, `conforms_to`, or
 override relation. The accepted child directive contains the local effect;
 `child_of` and derived `parent_to` contain the hierarchy.
+
+This semantic effect is not inferred from the edge. Deterministic lineage
+validation proves only resolved immediate ancestry, derived reverse/transitive
+views, and graph integrity. The child claim must state any implementation,
+replacement, or local cancellation explicitly; review or governed conflict
+assessment judges that content. An edge by itself cannot cancel authority,
+prove conformance, or create a Conflict.
 
 ## Artifact lineage
 

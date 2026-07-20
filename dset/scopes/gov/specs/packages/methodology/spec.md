@@ -635,6 +635,13 @@ Inheritance requires no separate applicability, realization, implementation,
 conformance, or override relation. Multiple incompatible active children for
 the same parent and scope are unresolved authority and must stop.
 
+The edge does not encode or prove those semantic effects. Deterministic lineage
+validation owns only resolved immediate ancestry, graph integrity, and derived
+reverse/transitive views. The accepted child claim must state implementation,
+replacement, or local cancellation explicitly; review or governed conflict
+assessment judges the content. `child_of` alone cannot cancel authority, prove
+conformance, or create a Conflict.
+
 **Scenario DSET-SCENARIO-GOV-034:** A project Requirement has no TOOL child, so
 TOOL applies it directly. SKILL emits a `child_of` Decision selecting its local
 implementation, while OPS emits a `child_of` Decision cancelling the parent for

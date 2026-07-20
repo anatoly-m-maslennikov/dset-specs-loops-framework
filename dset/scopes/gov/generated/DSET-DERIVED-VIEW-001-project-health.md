@@ -12,7 +12,7 @@ llm_session_ids: []
 > This generated view is not authority. Follow each link to its canonical
 > owner and refresh explicitly after source changes.
 
-- **Source digest:** `c832f9ce655d3bbba43ef2aa58051b7d72b9917bab47e2452fbd1471baa3fd58`
+- **Source digest:** `cc9ef7cd3c5c66adf83aa2dfddd7766dcdc0b05390da3bd9766049ceb4b0d6a5`
 - **Renderer:** `dset health` schema 1.0
 
 ## Coverage
