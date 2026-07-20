@@ -96,13 +96,14 @@ def default_destination(
     home: Path | None = None,
 ) -> Path:
     _require_host(host)
+    base = Path.home() if home is None else home
+    if host == "codex":
+        return base / ".agents" / "skills"
     values = os.environ if environment is None else environment
-    variable = "CODEX_HOME" if host == "codex" else "CLAUDE_CONFIG_DIR"
-    configured = values.get(variable)
+    configured = values.get("CLAUDE_CONFIG_DIR")
     if configured:
         return Path(configured).expanduser() / "skills"
-    base = Path.home() if home is None else home
-    return base / (".codex" if host == "codex" else ".claude") / "skills"
+    return base / ".claude" / "skills"
 
 
 def default_package_destination(

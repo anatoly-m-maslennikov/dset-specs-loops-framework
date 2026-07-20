@@ -17,10 +17,12 @@ python -m dset_toolchain.skill_distribution install --host claude --source .
 Add `--apply` to perform the exact previewed copy. Existing byte-identical
 folders are accepted; differing destinations stop without overwrite. Use
 `--destination PATH` for a project-local or other explicit host skill root.
-Without it, Codex uses `CODEX_HOME/skills` or the current user's
-`.codex/skills`, and Claude uses `CLAUDE_CONFIG_DIR/skills` or the current
-user's `.claude/skills`. These paths are derived at runtime through portable
-path APIs on Linux, macOS, native Windows, and WSL.
+Without it, Codex uses the current user's `.agents/skills`, and Claude uses
+`CLAUDE_CONFIG_DIR/skills` or the current user's `.claude/skills`. For a
+repository-local Codex install, pass the repository's `.agents/skills` as the
+explicit destination. These paths follow the hosts' documented discovery
+locations and are derived at runtime through portable path APIs on Linux,
+macOS, native Windows, and WSL.
 
 The combined apply is one transaction across all wrappers and the shared
 runtime. If a later package fails after an earlier new destination was
@@ -88,8 +90,8 @@ each declared real host and pinned host-version evidence.
 
 ## Host references
 
-The implementation was checked on 2026-07-16 against the official
-[OpenAI Skills overview](https://help.openai.com/en/articles/20001066-skills-in-chatgpt),
+The implementation was checked on 2026-07-20 against the official
+[Codex skill locations](https://developers.openai.com/codex/skills),
 [Claude Code skill locations](https://code.claude.com/docs/en/skills), and
 [Claude configuration-directory contract](https://code.claude.com/docs/en/claude-directory).
 Release evidence must still pin the exact host versions actually exercised.

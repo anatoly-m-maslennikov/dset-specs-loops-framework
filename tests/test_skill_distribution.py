@@ -76,7 +76,7 @@ class SkillDistributionTests(unittest.TestCase):
             {"current"},
         )
 
-    def test_claude_copy_and_default_destinations_are_portable(self) -> None:
+    def test_host_copy_and_default_destinations_are_portable(self) -> None:
         destination = self.root / "claude-skills"
         apply_install(plan_install(self.source / "skills", "claude", destination))
         proofs = verify_installation("claude", destination)
@@ -85,7 +85,7 @@ class SkillDistributionTests(unittest.TestCase):
         home = self.root / "home"
         self.assertEqual(
             default_destination("codex", environment={}, home=home),
-            home / ".codex" / "skills",
+            home / ".agents" / "skills",
         )
         self.assertEqual(
             default_destination("claude", environment={}, home=home),
@@ -96,7 +96,7 @@ class SkillDistributionTests(unittest.TestCase):
             default_destination(
                 "codex", environment={"CODEX_HOME": str(configured)}, home=home
             ),
-            configured / "skills",
+            home / ".agents" / "skills",
         )
         self.assertEqual(
             default_package_destination("codex", environment={}, home=home),

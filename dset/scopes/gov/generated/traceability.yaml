@@ -5230,6 +5230,12 @@ implementation_edges:
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
+    commit: c167ec33434f9738f5d80a48e61c58210b39b8c7
+    implements:
+      - DSET-DECISION-OPS-004
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
     commit: c3fdba93d27f491aa7843373b15e12a253a5eb40
     implements:
       - DSET-DECISION-SKILL-001
