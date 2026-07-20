@@ -70,6 +70,12 @@ or an unbounded conversation summary. Immutable invocation evidence remains in
 `.dset/runs/`; the checkpoint is only a recovery index over those runs and the
 repository's authoritative artifacts.
 
+The checkpoint also carries a bounded `active_run_ids` stack. Starting a child
+adds only that child; finalizing it removes only that child, so a still-running
+parent remains finishable. `latest_run_id` identifies the newest invocation and
+never grants exclusive ownership of the session. A session cannot become
+terminal while another run remains active.
+
 Update the checkpoint after every workflow transition, before a known context
 handoff or compaction when the host exposes that event, and on terminal exit.
 Return the `session_id` with every handoff. Native host memory may cache the

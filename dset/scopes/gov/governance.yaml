@@ -180,7 +180,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/skill/templates/governance/core-v1/skill-runs.md
-      sha256: 2ff9673388df6bb458acff2d328ecfd13c4e69fec938b5006305dfc207d44a3a
+      sha256: e12028008647369fc788800e72a604446d4b08f6ee5c2ab9f2e998e9ba70c06b
   -
     id: DSET-RULE-RELEASE
     layer: OPS

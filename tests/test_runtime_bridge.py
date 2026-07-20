@@ -223,6 +223,24 @@ class RuntimeBridgeTests(unittest.TestCase):
             )
             second_run = cast(dict[str, Any], second["run"])
             self.assertEqual(second_run["parent_run_id"], child_run["run_id"])
+            finish_runtime(
+                adopter,
+                str(second_run["run_id"]),
+                status="succeeded",
+                session_status="active",
+            )
+            terminal = finish_runtime(
+                adopter,
+                str(root_run["run_id"]),
+                status="succeeded",
+            )
+            self.assertEqual(terminal["status"], "succeeded")
+            final_checkpoint = read_runtime(
+                adopter, session_id="session-closure"
+            )
+            assert final_checkpoint is not None
+            self.assertEqual(final_checkpoint["status"], "completed")
+            self.assertEqual(final_checkpoint["active_run_ids"], [])
 
 
 if __name__ == "__main__":

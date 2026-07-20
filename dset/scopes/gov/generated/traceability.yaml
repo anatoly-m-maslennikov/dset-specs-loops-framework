@@ -880,7 +880,8 @@ semantic_classifications:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-024-runtime-terminalization.md
     carrier_statuses:
       - accepted
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-020
   -
     id: DSET-EVAL-GOV-001
     type: qa
@@ -3851,11 +3852,12 @@ semantic_atoms:
     type: problem
     subtype: defect
     emission_status: accepted
-    current_status: accepted
+    current_status: resolved
     priority: critical
     priority_source: atom:DSET-DEFECT-TOOL-001
     child_of: []
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-020
     absorbed_by: []
     archived: false
   -
@@ -5149,6 +5151,12 @@ implementation_edges:
     implements:
       - DSET-REQUIREMENT-TOOL-021
       - DSET-TEST-TOOL-021
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: df42c5a7a81812ab3834a0bfc56643d27f95462a
+    implements:
+      - DSET-DECISION-GOV-003
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -

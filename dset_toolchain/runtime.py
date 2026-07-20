@@ -19,7 +19,7 @@ from .skill_catalog import PUBLIC_SKILL_MODES, PUBLIC_SKILL_WORKFLOWS
 from .yaml_subset import load
 
 RUN_SCHEMA_VERSION = "1.2"
-CHECKPOINT_SCHEMA_VERSION = "1.2"
+CHECKPOINT_SCHEMA_VERSION = "1.3"
 MAX_RECORD_BYTES = 64 * 1024
 MAX_RUN_AGE = timedelta(days=30)
 MAX_RUN_COUNT = 200
@@ -291,6 +291,8 @@ def start_run(
         if resumed is not None and isinstance(resumed.get("closure"), dict)
         else initial_closure(public_entrypoint, mode_id)
     )
+    active_run_ids = _active_run_ids(resumed)
+    active_run_ids.append(run_id)
     checkpoint = {
         "schema_version": CHECKPOINT_SCHEMA_VERSION,
         "session_id": selected_session_id,
@@ -308,6 +310,7 @@ def start_run(
         ),
         "root_run_id": selected_root_run,
         "latest_run_id": run_id,
+        "active_run_ids": active_run_ids,
         "scope": checkpoint_scope,
         "objective": objective,
         "ruleset_identity": ruleset_identity,
@@ -515,6 +518,26 @@ def finish_run(
     normalized_outputs = _normalize_relative_paths(outputs, 32)
     normalized_diagnostics = _normalize_diagnostics(diagnostics)
     normalized_signals = _normalize_next_signals(next_signals)
+    checkpoint = copy.deepcopy(invocation.checkpoint)
+    active_run_ids = _active_run_ids(checkpoint)
+    if invocation.run_id not in active_run_ids:
+        raise RuntimeStateError(
+            f"checkpoint does not own invocation: {invocation.run_id}"
+        )
+    remaining_run_ids = [
+        identifier for identifier in active_run_ids if identifier != invocation.run_id
+    ]
+    final_session_status = session_status
+    if final_session_status is None:
+        if remaining_run_ids:
+            final_session_status = "active"
+        else:
+            final_session_status = "completed" if status == "succeeded" else "stopped"
+    _require(final_session_status in _SESSION_STATUSES, "unknown checkpoint status")
+    if final_session_status in {"completed", "stopped"} and remaining_run_ids:
+        raise RuntimeStateError(
+            "session cannot become terminal while child or parent runs remain active"
+        )
     terminal = copy.deepcopy(invocation.run)
     terminal.update(
         {
@@ -548,15 +571,10 @@ def finish_run(
 
     invocation.run = terminal
     invocation.storage = storage
-    final_session_status = session_status
-    if final_session_status is None:
-        final_session_status = "completed" if status == "succeeded" else "stopped"
-    _require(final_session_status in _SESSION_STATUSES, "unknown checkpoint status")
-    checkpoint = copy.deepcopy(invocation.checkpoint)
     checkpoint["sequence"] = int(checkpoint["sequence"]) + 1
     checkpoint["updated_at"] = str(terminal["finished_at"])
     checkpoint["status"] = final_session_status
-    checkpoint["latest_run_id"] = invocation.run_id
+    checkpoint["active_run_ids"] = remaining_run_ids
     checkpoint["persistence"] = "persisted" if storage is not None else "unavailable"
     if storage is not None:
         try:
@@ -587,7 +605,7 @@ def load_invocation(root: Path, run_id: str) -> RuntimeInvocation:
     session_id = run.get("session_id")
     _require_id(session_id)
     checkpoint = _read_checkpoint(storage.sessions / f"{session_id}.json")
-    if checkpoint.get("latest_run_id") != run_id:
+    if run_id not in _active_run_ids(checkpoint):
         raise RuntimeStateError(f"checkpoint does not own invocation: {run_id}")
     return RuntimeInvocation(run, checkpoint, storage, running_path)
 
@@ -666,16 +684,44 @@ def _read_checkpoint(path: Path) -> dict[str, Any]:
         raise RuntimeStateError(f"invalid checkpoint: {path.name}") from error
     if not isinstance(data, dict) or data.get("schema_version") not in {
         "1.1",
+        "1.2",
         CHECKPOINT_SCHEMA_VERSION,
     }:
         raise RuntimeStateError(f"invalid checkpoint: {path.name}")
-    if data["schema_version"] == "1.1":
+    if data["schema_version"] in {"1.1", "1.2"}:
+        previous_version = str(data["schema_version"])
         data["schema_version"] = CHECKPOINT_SCHEMA_VERSION
-        data["closure"] = initial_closure(
-            str(data.get("public_entrypoint", "dset")),
-            _checkpoint_mode(data),
+        if previous_version == "1.1":
+            data["closure"] = initial_closure(
+                str(data.get("public_entrypoint", "dset")),
+                _checkpoint_mode(data),
+            )
+        latest = data.get("latest_run_id")
+        running_path = path.parent.parent / "runs" / f".{latest}.running.json"
+        data["active_run_ids"] = (
+            [latest]
+            if isinstance(latest, str)
+            and data.get("status") in {"active", "paused"}
+            and running_path.is_file()
+            else []
         )
     return data
+
+
+def _active_run_ids(checkpoint: Mapping[str, Any] | None) -> list[str]:
+    if checkpoint is None:
+        return []
+    raw = checkpoint.get("active_run_ids", [])
+    if not isinstance(raw, list):
+        raise RuntimeStateError("checkpoint active_run_ids are invalid")
+    values = [str(item) for item in raw]
+    if (
+        len(values) > 32
+        or len(values) != len(set(values))
+        or any(not _ID.fullmatch(item) for item in values)
+    ):
+        raise RuntimeStateError("checkpoint active_run_ids are invalid")
+    return values
 
 
 def _checkpoint_mode(checkpoint: Mapping[str, Any]) -> str | None:
