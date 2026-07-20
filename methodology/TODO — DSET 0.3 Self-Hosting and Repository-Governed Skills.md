@@ -167,11 +167,11 @@ paths; schema 1.2 assigns each governing document to its semantic layer.
 
 ## §7 | Evaluate upstream Claudian after the owned pilot
 
-- [ ] **DSET-TASK-GOV-035:** Treat upstream Claudian as a read-only clean-room fixture first; do not push DSET artifacts to an upstream-owned remote during evaluation.
-- [ ] **DSET-TASK-TOOL-034:** Re-run initialization, registry resolution, documentation classification, and candidate TypeScript gates against a pinned clean upstream revision.
-- [ ] **DSET-TASK-META-014:** Compare which Your Harness governing rules are product-specific adaptations and which defaults generalize to an unmodified Claudian codebase.
+- [x] **DSET-TASK-GOV-035:** Treat upstream Claudian as a read-only clean-room fixture first; do not push DSET artifacts to an upstream-owned remote during evaluation.
+- [x] **DSET-TASK-TOOL-034:** Re-run initialization, registry resolution, documentation classification, and candidate TypeScript gates against a pinned clean upstream revision.
+- [x] **DSET-TASK-META-014:** Compare which Your Harness governing rules are product-specific adaptations and which defaults generalize to an unmodified Claudian codebase.
 - [ ] **DSET-TASK-GOV-036:** If durable Claudian adoption is desired, create or select an authorized personal fork/branch and open a separate DSET change with its own project truth and provenance.
-- [ ] **DSET-TASK-GOV-037:** Prohibit cross-repository rule ownership: Claudian and Your Harness may share framework-template origin, but each repository owns its materialized rules independently.
+- [x] **DSET-TASK-GOV-037:** Prohibit cross-repository rule ownership: Claudian and Your Harness may share framework-template origin, but each repository owns its materialized rules independently.
 
 ## §8 | Deterministic test plan
 

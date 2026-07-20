@@ -10,3 +10,4 @@ diagnose failure.
 - [OYOHA local DSET adoption](DSET-EVIDENCE-RECORD-012-oyoha-local-adoption.md)
 - [OYOHA local-rule cutover](DSET-EVIDENCE-RECORD-013-oyoha-local-rule-cutover.md)
 - [OYOHA independent Evaluation](DSET-EVIDENCE-RECORD-014-oyoha-independent-evaluation.md)
+- [Claudian clean-room comparison](DSET-EVIDENCE-RECORD-015-claudian-clean-room.md)
