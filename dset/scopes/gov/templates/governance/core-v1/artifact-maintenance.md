@@ -178,6 +178,15 @@ the Decision or Decisions it implements in the commit body, for example
 correction is needed, but only an active Decision or direct Decision subtype
 authorizes the resulting behavior.
 
+The repository manifest activates deterministic commit validation from an
+explicit commit or from the commit that first added the manifest. Every later
+non-merge commit uses exactly one provenance mode: implementation has one or
+more Decision-family `Implements:` IDs; evidence has both Decision-family
+`Decision:` IDs and known `Verifies:` IDs. Both modes require exactly one valid
+`Session:` trailer. Optional `Resolves:` IDs must identify Problems. Unknown
+IDs, non-Decision implementation authority, mixed modes, and missing provenance
+fail the repository check.
+
 Every newly emitted atomic artifact or append-only lifecycle event has explicit
 LLM session provenance. Use unique `llm_session_ids` with stable host-prefixed
 IDs such as `codex:<session-id>` when an LLM produced the record; use an

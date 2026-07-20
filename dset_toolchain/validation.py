@@ -9,6 +9,7 @@ from typing import Any
 from urllib.parse import unquote
 
 from . import __version__
+from .commit_provenance import validate_commit_provenance
 from .compilation import compilation_is_fresh, compilation_path
 from .dependencies import validate_dependency_policy
 from .diagnostics import Diagnostic
@@ -196,6 +197,7 @@ def validate_repository(root: Path) -> list[Diagnostic]:
     diagnostics.extend(validate_semantic_classifications(root))
     diagnostics.extend(validate_artifact_lineage(root))
     diagnostics.extend(validate_dependency_policy(root))
+    diagnostics.extend(validate_commit_provenance(root))
     if health_path(root).is_file() and not health_is_fresh(root):
         diagnostics.append(
             _diag("DSET-E162", health_path(root), "project health is stale")

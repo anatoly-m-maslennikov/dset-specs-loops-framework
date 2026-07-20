@@ -687,6 +687,7 @@ class LayeredValidationTests(unittest.TestCase):
                 "archive_requires_fresh_verification": True,
                 "keep_pull_request_draft_until_archive_ready": True,
             },
+            "commit_provenance": {"start_commit": "manifest-addition"},
             "verification": {"commands": ["python -m dset_toolchain check ."]},
             "canonical_command": "python -m dset_toolchain check .",
         }

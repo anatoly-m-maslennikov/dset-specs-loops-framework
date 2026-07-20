@@ -267,6 +267,13 @@ the atom. This applies to supported Decision, Question, Problem, and QA atoms,
 optional containers, promoted proofs, skill-run records, and session
 checkpoints without making provenance authoritative.
 
+The project manifest declares the commit at which enforcement begins. Every
+later non-merge commit must use exactly one validated mode: `Implements:` with
+one or more known Decision-family IDs, or the evidence pair `Decision:` and
+`Verifies:`. Both require exactly one valid `Session:` trailer; `Resolves:` may
+name only known Problems. Unknown IDs, QA/Problem IDs used as implementation
+authority, mixed modes, and missing trailers fail validation.
+
 **Scenario DSET-SCENARIO-GOV-023:** A commit body contains `Implements: DSET-DECISION-GOV-001`; the emitted Decision, Change, intake item, proof, run, checkpoint, and later lifecycle-event shapes record the Codex session IDs that produced them; a correction is a new linked event; and a human-only fixture passes only with explicit empty provenance.
 
 ## DSET-REQUIREMENT-GOV-023 — Rule authority and assurance are explicit

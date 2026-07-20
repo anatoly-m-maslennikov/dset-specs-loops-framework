@@ -3,7 +3,7 @@
   "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/scopes/meta/schemas/project.schema.json",
   "title": "DSET project manifest",
   "type": "object",
-  "required": ["schema_version", "project", "supportability", "structure", "packages", "profiles", "change_contract", "verification", "canonical_command"],
+  "required": ["schema_version", "project", "supportability", "structure", "packages", "profiles", "change_contract", "commit_provenance", "verification", "canonical_command"],
   "properties": {
     "schema_version": {"oneOf": [{"enum": [1.0, 1.1]}, {"type": "string", "pattern": "^1\\.(?:0|1)-draft$"}, {"const": "1.2"}]},
     "project": {
@@ -86,6 +86,19 @@
     },
     "change_contract": {
       "type": "object"
+    },
+    "commit_provenance": {
+      "type": "object",
+      "required": ["start_commit"],
+      "properties": {
+        "start_commit": {
+          "oneOf": [
+            {"enum": ["root", "manifest-addition"]},
+            {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+          ]
+        }
+      },
+      "additionalProperties": false
     },
     "verification": {
       "type": "object",

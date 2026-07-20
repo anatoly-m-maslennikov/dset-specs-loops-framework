@@ -68,6 +68,9 @@ change_contract:
   archive_requires_fresh_verification: true
   keep_pull_request_draft_until_archive_ready: true
 
+commit_provenance:
+  start_commit: 96800941678c9b665abac9d3838a8a4b36db02e2
+
 verification:
   commands:
     - uv run ruff format --check dset_toolchain tests

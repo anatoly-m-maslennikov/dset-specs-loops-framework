@@ -68,6 +68,8 @@ def validate_legacy_authority_ledger(root: Path) -> list[Diagnostic]:
         return [Diagnostic("DSET-E167", path, str(error))]
     if not path.is_file():
         if expected["records"]:
+            if not (root / ".git").exists():
+                return []
             return [Diagnostic("DSET-E167", path, "legacy authority ledger is missing")]
         return []
     try:

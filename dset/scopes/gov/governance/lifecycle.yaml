@@ -288,3 +288,13 @@ events:
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: Compilation now rejects loose identifier mentions, digest-binds explicit claim fragments, and confines semantic-equivalence judgment to the separately governed Evaluation route.
+  -
+    id: DSET-LIFECYCLE-EVENT-029
+    atom_id: DSET-GAP-TOOL-001
+    event: resolved
+    occurred_at: 2026-07-21T01:30:00+04:00
+    related:
+      - DSET-REQUIREMENT-GOV-022
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: Repository validation now checks every post-activation non-merge commit for one resolved Decision-backed implementation or evidence provenance mode and one valid session trailer.
