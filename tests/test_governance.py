@@ -39,7 +39,7 @@ def _framework_schema(name: str) -> Path:
 
 class GovernanceTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.temporary = tempfile.TemporaryDirectory()
+        self.temporary = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
         self.root = Path(self.temporary.name) / "adopter"
         create_adopter(ROOT, self.root)
 
