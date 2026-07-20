@@ -6,6 +6,7 @@ import unittest
 from pathlib import Path
 
 from dset_toolchain.compilation import (
+    _projection_fragments,
     active_authority_ids,
     build_compilation_index,
     compilation_is_fresh,
@@ -17,6 +18,25 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class CompilationTests(unittest.TestCase):
+    def test_loose_id_mentions_are_not_compiled_claim_fragments(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            path = Path(raw) / "spec.md"
+            path.write_text(
+                "A loose mention of DSET-REQUIREMENT-GOV-035 is not a claim.\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(
+                _projection_fragments(path, "DSET-REQUIREMENT-GOV-035"), []
+            )
+            path.write_text(
+                "## DSET-REQUIREMENT-GOV-035 — Explicit claim\n\n"
+                "The governed consequence is stated here.\n",
+                encoding="utf-8",
+            )
+            fragments = _projection_fragments(path, "DSET-REQUIREMENT-GOV-035")
+            self.assertEqual(fragments[0]["kind"], "section")
+            self.assertTrue(fragments[0]["sha256"])
+
     def test_every_active_authority_has_a_digest_bound_projection(self) -> None:
         model = build_compilation_index(ROOT)
         records = {item["id"]: item for item in model["records"]}

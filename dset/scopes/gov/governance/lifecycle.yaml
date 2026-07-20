@@ -277,3 +277,14 @@ events:
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: A committed compatibility ledger now seals dedicated legacy Decision carriers and selector-level package authority while allowing unrelated shared-registry additions.
+  -
+    id: DSET-LIFECYCLE-EVENT-028
+    atom_id: DSET-DEFECT-GOV-002
+    event: resolved
+    occurred_at: 2026-07-21T01:10:00+04:00
+    related:
+      - DSET-DECISION-GOV-003
+      - DSET-EVAL-GOV-012
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: Compilation now rejects loose identifier mentions, digest-binds explicit claim fragments, and confines semantic-equivalence judgment to the separately governed Evaluation route.

@@ -211,6 +211,13 @@ release gate fails until deterministic recompilation succeeds. Transactional
 context and evidence can motivate or assess a source but cannot replace one;
 generated traceability shows the relationship without becoming authority.
 
+The deterministic compilation gate accepts only an explicit ID-owned heading
+section, table row, or labeled block as a projection fragment; a loose ID
+mention provides no coverage. It binds source, full projection, fragment kind,
+location, and fragment digests. This proves declared structure and freshness,
+not semantic equivalence. Review or Evaluation separately judges whether the
+fragment faithfully carries the source consequence.
+
 Atomic artifacts are immutable. Editable drafts are not atoms. Emission fixes
 the atom's ID, content, provenance, creation status, and links. Acceptance,
 rejection, reopening, correction, withdrawal, or any other later change is a

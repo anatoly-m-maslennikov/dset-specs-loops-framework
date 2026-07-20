@@ -12,7 +12,7 @@ llm_session_ids: []
 > This generated view is not authority. Follow each link to its canonical
 > owner and refresh explicitly after source changes.
 
-- **Source digest:** `7e7b0e639e23e04e17ee38f659c38695686c7589ca8ce319b73e14feed02aabe`
+- **Source digest:** `1cd10699804bebe43d47fc09b26987738c83bbf34bc4b22a4d045ee6e90f57d2`
 - **Renderer:** `dset health` schema 1.0
 
 ## Coverage
@@ -39,7 +39,7 @@ llm_session_ids: []
 - **By subtype:** architecture=5, behavior=10, configuration=10, design=7, documentation=33, domain_model=6, evaluation_plan=14, evaluation_result=2, external_audit_analysis=1, governance=15, health_dashboard=1, hub=52, implementation_plan=7, proposal=8, release_plan=2, review_report=1, roadmap=2, root_cause_analysis=1, run_record=9, solution_landscape=7, source_code=36, technical_investigation=3, test_implementation=38, test_plan=14, test_result=7, version_scope=5
 - **By layer:** gov=68, meta=24, ops=33, repository=4, skill=125, tool=113
 - **By effective priority:** critical=7, high=16, medium=338, unknown=6
-- **By status:** absorbed=3, accepted=19, archived=4, in-progress=1, open=21, resolved=21
+- **By status:** absorbed=3, accepted=18, archived=4, in-progress=1, open=21, resolved=22
 
 ## Semantic inventory
 

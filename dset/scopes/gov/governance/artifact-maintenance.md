@@ -100,10 +100,15 @@ to its adjacent `archive/` folder while the digest-bound canonical registry
 updates only its lookup path.
 
 Compilation generates a digest-bound index from every active authority source
-to one or more evergreen governing projections. `dset compile ROOT --check`
-fails when the active source set, a source digest, or a recorded projection
-digest changes. The index is evidence of compilation, not another authority
-source.
+to one or more explicit evergreen claim fragments. A fragment must be a
+canonical ID-owned section, table row, or labeled block; a loose ID mention is
+not a projection. The index binds both the complete projection carrier and the
+identified fragment. `dset compile ROOT --check` fails when the active source
+set, source digest, projection digest, fragment location, or fragment digest
+changes. This deterministic gate proves structured projection and freshness,
+not semantic equivalence. Review or Evaluation judges whether the fragment
+faithfully carries the source consequence. The index is evidence of
+compilation, not another authority source.
 
 ## Rationale
 

@@ -2,10 +2,15 @@
 
 ## Active Decision source compilation
 
-- `DSET-DECISION-SKILL-001` compiles as the repository-local, self-hosting,
-  thin-wrapper, bounded-session, integration-first DSET 0.3 operating shape.
-- `DSET-DECISION-SKILL-002` compiles as the public catch-all `dset` wrapper plus
-  one thin direct wrapper for every registered stable lifecycle mode.
+### DSET-DECISION-SKILL-001 — Repository-local self-hosting
+
+The Decision compiles as the repository-local, self-hosting, thin-wrapper,
+bounded-session, integration-first DSET 0.3 operating shape.
+
+### DSET-DECISION-SKILL-002 — Public wrapper surface
+
+The Decision compiles as the public catch-all `dset` wrapper plus one thin
+direct wrapper for every registered stable lifecycle mode.
 
 ## DSET-REQUIREMENT-SKILL-001 — Workflow skills remain focused
 

@@ -32,7 +32,10 @@ def build_compilation_index(root: Path) -> dict[str, Any]:
     records: list[dict[str, Any]] = []
     missing: list[str] = []
     for identifier, source in sorted(sources.items()):
-        owners = [path for path in projections if identifier in _read(path)]
+        owners = [
+            (path, _projection_fragments(path, identifier)) for path in projections
+        ]
+        owners = [(path, fragments) for path, fragments in owners if fragments]
         if not owners:
             missing.append(identifier)
             continue
@@ -47,8 +50,9 @@ def build_compilation_index(root: Path) -> dict[str, Any]:
                     {
                         "path": path.relative_to(root).as_posix(),
                         "sha256": _digest(path),
+                        "fragments": fragments,
                     }
-                    for path in owners
+                    for path, fragments in owners
                 ],
             }
         )
@@ -180,6 +184,45 @@ def _read(path: Path) -> str:
         return path.read_text(encoding="utf-8")
     except (OSError, UnicodeError):
         return ""
+
+
+def _projection_fragments(path: Path, identifier: str) -> list[dict[str, Any]]:
+    """Extract only explicit evergreen claim structures, never loose mentions."""
+    lines = _read(path).splitlines()
+    fragments: list[dict[str, Any]] = []
+    escaped = re.escape(identifier)
+    heading = re.compile(rf"^(#{{1,6}})\s+`?{escaped}`?(?:\s|$)")
+    table = re.compile(rf"^\|\s*`?{escaped}`?\s*\|")
+    labeled = re.compile(rf"^\*\*[^*\n]*\b{escaped}\b[^*\n]*:\*\*")
+    for index, line in enumerate(lines):
+        match = heading.match(line)
+        kind: str | None = None
+        end = index + 1
+        if match:
+            kind = "section"
+            level = len(match.group(1))
+            while end < len(lines):
+                next_heading = re.match(r"^(#{1,6})\s+", lines[end])
+                if next_heading and len(next_heading.group(1)) <= level:
+                    break
+                end += 1
+        elif table.match(line):
+            kind = "table-row"
+        elif labeled.match(line):
+            kind = "labeled-block"
+            while end < len(lines) and lines[end].strip():
+                end += 1
+        if kind is None:
+            continue
+        content = "\n".join(lines[index:end]).strip()
+        fragments.append(
+            {
+                "kind": kind,
+                "line": index + 1,
+                "sha256": hashlib.sha256(content.encode()).hexdigest(),
+            }
+        )
+    return fragments
 
 
 def _digest(path: Path) -> str:

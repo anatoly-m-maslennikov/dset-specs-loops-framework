@@ -2,11 +2,13 @@
 
 ## Active Decision source compilation
 
-`DSET-DECISION-OPS-004` compiles here as five flat peer release lifecycle
-roles: Version Scope, Roadmap, Release Plan, Readiness Record, and Release
-Record. Milestone remains a Roadmap entry. Release Record combines delivered
-summary and publication identity. The absorbed OPS Decisions remain immutable
-history and do not participate in active compilation.
+### DSET-DECISION-OPS-004 — Flat release lifecycle roles
+
+The Decision compiles as five flat peer release lifecycle roles: Version Scope,
+Roadmap, Release Plan, Readiness Record, and Release Record. Milestone remains
+a Roadmap entry. Release Record combines delivered summary and publication
+identity. The absorbed OPS Decisions remain immutable history and do not
+participate in active compilation.
 
 ## DSET-REQUIREMENT-OPS-001 — Production supportability is explicit and risk-scaled
 
