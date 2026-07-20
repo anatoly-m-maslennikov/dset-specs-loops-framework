@@ -8,6 +8,82 @@ classification:
     type: artifact_type
     subtype: artifact_subtype
 
+exclusions:
+  -
+    pattern: ".gitignore"
+    rationale: Git transport metadata is not a development artifact.
+  -
+    pattern: "LICENSE"
+    rationale: The repository license is an external legal instrument.
+  -
+    pattern: "THIRD_PARTY_NOTICES.md"
+    rationale: Third-party notices mirror external legal attribution.
+  -
+    pattern: "third_party/licenses/*.txt"
+    rationale: Vendored third-party license texts remain external legal sources.
+  -
+    pattern: "uv.lock"
+    rationale: The generated dependency lock is classified through its owning package configuration.
+
+legacy_evidence_paths:
+  - dset/scopes/gov/changes/archive/2026-07-14-add-artifact-governance-profile/proofs/archive-readiness-2026-07-14.md
+  - dset/scopes/gov/changes/archive/2026-07-14-add-artifact-governance-profile/proofs/deterministic-verification-2026-07-14.md
+  - dset/scopes/gov/changes/archive/2026-07-14-add-artifact-governance-profile/proofs/github-delivery-evidence-2026-07-14.md
+  - dset/scopes/gov/changes/archive/2026-07-14-add-artifact-governance-profile/proofs/qualitative-evals-2026-07-14.md
+  - dset/scopes/gov/changes/archive/2026-07-14-bootstrap-dset-project-structure/proofs/boot-evals-2026-07-14.md
+  - dset/scopes/gov/changes/archive/2026-07-14-bootstrap-dset-project-structure/proofs/boot-evals-pushed-head-2026-07-14.md
+  - dset/scopes/ops/changes/archive/2026-07-14-make-supportability-first-class/proofs/archive-readiness-audit-2026-07-14.md
+  - dset/scopes/ops/changes/archive/2026-07-14-make-supportability-first-class/proofs/deterministic-checks-2026-07-14.md
+  - dset/scopes/ops/changes/archive/2026-07-14-make-supportability-first-class/proofs/supportability-evals-2026-07-14.md
+  - dset/scopes/ops/changes/archive/2026-07-14-make-supportability-first-class/proofs/synthetic-incidents.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-001-artifact-role-lifecycle.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-002-project-scope-ownership.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-003-artifact-lineage.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-004-entry-criteria-skill-chains.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-005-shared-skill-runtime.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-006-artifact-emission-gate.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-007-executable-entry-criteria-closure.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-008-governed-conflict-runtime.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-009-semantic-type-migration.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-010-release-runtime-reconciliation.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-011-typescript-candidate-profile.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-012-oyoha-local-adoption.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-013-oyoha-local-rule-cutover.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-014-oyoha-independent-evaluation.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-015-claudian-clean-room.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-016-oyoha-supportability-slice.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-017-typescript-profile-instantiation.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-018-codex-host-install-attempt.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-019-independent-review-remediation.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-020-codex-host-install-attempt.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-021-claude-review-attempt.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-022-codex-host-invocation-attempt.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-023-typed-artifact-relations.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-024-legacy-relation-sealing.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-025-verbose-project-settings.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/end-to-end-toolchain-verification-2026-07-16.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/expanded-skill-surface-verification-2026-07-16.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/five-skill-source-verification-2026-07-16.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-flat-type-model-review-2026-07-20.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-governance-constitution-review-2026-07-16.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-principles-audit-2026-07-15.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-principles-reaudit-2026-07-15.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/hosted-fixed-point-2026-07-14.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/invariant-contract-verification-2026-07-14.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/layered-work-area-verification-2026-07-15.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/local-fixed-point-2026-07-14.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/local-gate-2026-07-15.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/recursive-session-provenance-2026-07-16.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/schema-self-application-audit-2026-07-15.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/schema-self-application-reaudit-2026-07-15.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/skill-runtime-consistency-2026-07-16.md
+  - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/wrapper-rule-inventory-2026-07-14.md
+  - dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/proofs/archive-readiness-2026-07-14.md
+  - dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/proofs/deterministic-verification-2026-07-14.md
+  - dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/proofs/github-delivery-evidence-2026-07-14.md
+  - dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/proofs/qualitative-evals-2026-07-14.md
+
 artifact_types:
   -
     id: atomic_record
@@ -329,3 +405,243 @@ path_rules:
     pattern: "**/README.md"
     artifact_type: navigation
     artifact_subtype: hub
+  -
+    pattern: "dset_toolchain/*.py"
+    artifact_type: implementation
+    artifact_subtype: source_code
+  -
+    pattern: "scripts/*.py"
+    artifact_type: implementation
+    artifact_subtype: source_code
+  -
+    pattern: "tests/*.py"
+    artifact_type: implementation
+    artifact_subtype: test_implementation
+  -
+    pattern: ".github/workflows/*.yml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "dset/scopes/*/schemas/*.json"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "dset_toolchain/bootstrap_bundle.json"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "dset_settings.toml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "pyproject.toml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "dset/scopes/gov/artifact-types.yaml"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "dset/scopes/gov/artifacts.yaml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "dset/scopes/gov/governance.yaml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "dset/scopes/gov/intake.yaml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "dset/scopes/gov/provenance.yaml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "dset/scopes/gov/governance/*.yaml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "dset/scopes/gov/migrations/*.yaml"
+    artifact_type: implementation
+    artifact_subtype: migration
+  -
+    pattern: "dset/scopes/meta/dset.yaml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "dset/scopes/meta/version.yaml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "dset/scopes/*/specs/packages/*/package.yaml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "dset/scopes/ops/history/*.yaml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "dset/scopes/skill/budget.yaml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "dset/scopes/tool/fixtures/*.yaml"
+    artifact_type: implementation
+    artifact_subtype: test_implementation
+  -
+    pattern: "skills/*/agents/*.yaml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "skills/*/SKILL.md"
+    artifact_type: procedure
+    artifact_subtype: playbook
+  -
+    pattern: ".github/DELIVERY.md"
+    artifact_type: procedure
+    artifact_subtype: runbook
+  -
+    pattern: "documentation/maintenance-playbook.md"
+    artifact_type: procedure
+    artifact_subtype: playbook
+  -
+    pattern: "dset/scopes/ops/supportability/delivery-runbook.md"
+    artifact_type: procedure
+    artifact_subtype: runbook
+  -
+    pattern: "skills/host-distribution.md"
+    artifact_type: procedure
+    artifact_subtype: runbook
+  -
+    pattern: "dset/scopes/gov/governance/architecture.md"
+    artifact_type: specification
+    artifact_subtype: architecture
+  -
+    pattern: "dset/scopes/gov/governance/artifact-classification.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "dset/scopes/gov/governance/artifact-maintenance.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "dset/scopes/gov/governance/work-items.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "dset/scopes/meta/governance/*.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "dset/scopes/ops/governance/*.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "dset/scopes/skill/governance/*.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "dset/scopes/tool/governance/*.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "dset/scopes/*/specs/packages/*/contracts.md"
+    artifact_type: specification
+    artifact_subtype: behavior
+  -
+    pattern: "dset/scopes/*/specs/packages/*/stories.md"
+    artifact_type: specification
+    artifact_subtype: behavior
+  -
+    pattern: "dset/scopes/*/specs/packages/*/outcomes.md"
+    artifact_type: specification
+    artifact_subtype: behavior
+  -
+    pattern: "dset/scopes/*/changes/*/specs/methodology.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "dset/scopes/*/changes/*/specs/contracts.md"
+    artifact_type: specification
+    artifact_subtype: behavior
+  -
+    pattern: "dset/scopes/*/changes/*/specs/outcomes.md"
+    artifact_type: specification
+    artifact_subtype: behavior
+  -
+    pattern: "dset/scopes/*/changes/*/tasks.md"
+    artifact_type: atomic_record
+  -
+    pattern: "dset/scopes/*/changes/archive/*/specs/methodology.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "dset/scopes/*/changes/archive/*/tasks.md"
+    artifact_type: atomic_record
+  -
+    pattern: "dset/scopes/tool/fixtures/bases/*/specs/example.md"
+    artifact_type: specification
+    artifact_subtype: behavior
+  -
+    pattern: "dset/scopes/tool/fixtures/bases/*/tasks.md"
+    artifact_type: atomic_record
+  -
+    pattern: "documentation/artifact-architecture.md"
+    artifact_type: specification
+    artifact_subtype: architecture
+  -
+    pattern: "documentation/artifact-types.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "documentation/authoring-rules.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "documentation/documentation-v1.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "documentation/hub-rules.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "documentation/rationale.md"
+    artifact_type: analysis_report
+  -
+    pattern: "methodology/00_Tool Development Playbook.md"
+    artifact_type: procedure
+    artifact_subtype: playbook
+  -
+    pattern: "methodology/01_Spec Authoring Patterns — Service Spec Conventions.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "methodology/02_Test and Eval Plan Patterns — Proof Artifact Conventions.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "methodology/03_Implementation Plan Patterns — Service Build Conventions.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "methodology/04_General Build Rules — Tool Code Conventions.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "methodology/05_Layered Build Standard — DDD, TDD, Small Functions, Typed Gates.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "methodology/06_External Grounding — LLM Power-User Practice.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "methodology/TODO — DSET 0.3 Self-Hosting and Repository-Governed Skills.md"
+    artifact_type: plan
+    artifact_subtype: implementation_plan
+  -
+    pattern: "methodology/TODO — Operationalize OpenSpec and Composable Engineering Skills.md"
+    artifact_type: plan
+    artifact_subtype: implementation_plan

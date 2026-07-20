@@ -13,6 +13,7 @@ from .commit_provenance import validate_commit_provenance
 from .compilation import compilation_is_fresh, compilation_path
 from .dependencies import validate_dependency_policy
 from .diagnostics import Diagnostic
+from .evidence import validate_evidence_records
 from .frontmatter import FrontmatterError
 from .frontmatter import metadata as frontmatter_metadata
 from .frontmatter import parse as parse_frontmatter
@@ -239,7 +240,7 @@ def validate_change(
             )
         )
         return diagnostics
-    manifest_path = change_dir / "change.yaml"
+    manifest_path = discover_layout(root).structured_file(change_dir, "change.toml")
     if not manifest_path.is_file():
         return [_diag("DSET-E102", manifest_path, "change manifest is missing")]
     data = _safe_load(manifest_path, diagnostics)
@@ -272,7 +273,12 @@ def validate_change(
         diagnostics.append(_diag("DSET-E103", manifest_path, str(error)))
         return diagnostics
     for relative in sorted(files):
-        path = change_dir / relative
+        requested = change_dir / relative
+        path = (
+            layout.structured_file(change_dir, relative)
+            if requested.suffix.lower() in {".toml", ".yaml", ".yml"}
+            else requested
+        )
         if not path.is_file():
             diagnostics.append(_diag("DSET-E104", path, "required artifact is missing"))
     for relative in sorted(directories):
@@ -436,16 +442,22 @@ def _validate_project_manifest(
         )
     work_items = data.get("work_items", {})
     registry = work_items.get("registry") if isinstance(work_items, dict) else None
-    if data.get("schema_version") == 1.1 and registry != "dset/intake.yaml":
+    if data.get("schema_version") == 1.1 and registry not in {
+        "dset/intake.toml",
+        "dset/intake.yaml",
+    }:
         diagnostics.append(
-            _diag("DSET-E115", path, "schema 1.1 requires dset/intake.yaml")
+            _diag("DSET-E115", path, "schema 1.1 requires the central intake path")
         )
     elif isinstance(registry, str) and not (root / registry).is_file():
         diagnostics.append(
             _diag("DSET-E115", root / registry, "work-item registry is missing")
         )
     if str(data.get("schema_version")) == "1.2":
-        if registry != "dset/scopes/gov/intake.yaml":
+        if registry not in {
+            "dset/scopes/gov/intake.toml",
+            "dset/scopes/gov/intake.yaml",
+        }:
             diagnostics.append(
                 _diag("DSET-E143", path, "schema 1.2 requires the layered intake path")
             )
@@ -876,7 +888,7 @@ def _validate_packages(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]
         if not isinstance(package, dict):
             continue
         base = layout.resolve_dset_path(str(package.get("path", "")))
-        package_manifest = base / "package.yaml"
+        package_manifest = layout.structured_file(base, "package.toml")
         if not package_manifest.is_file():
             diagnostics.append(
                 _diag("DSET-E117", package_manifest, "package manifest is missing")
@@ -1126,8 +1138,9 @@ def _validate_layered_packages(
                             )
                         )
     for package_id, layer in sorted(expected - found):
-        missing_path = (
-            layout.layer_root(layer) / "specs/packages" / package_id / "package.yaml"
+        missing_path = layout.structured_file(
+            layout.layer_root(layer) / "specs/packages" / package_id,
+            "package.toml",
         )
         diagnostics.append(
             _diag("DSET-E144", missing_path, "declared package fragment is missing")
@@ -1227,14 +1240,27 @@ def validate_artifact_type_registry(
     diagnostics.extend(_validate_artifact_classification(registry_path, data))
     types, type_diagnostics = _artifact_type_catalog(registry_path, data)
     diagnostics.extend(type_diagnostics)
+    exclusions, exclusion_diagnostics = _artifact_exclusions(registry_path, data)
+    diagnostics.extend(exclusion_diagnostics)
+    legacy_evidence, compatibility_diagnostics = _legacy_evidence_paths(
+        registry_path, data
+    )
+    diagnostics.extend(compatibility_diagnostics)
     diagnostics.extend(
         _validate_artifact_path_rules(
             root,
             registry_path,
             data,
             types,
+            exclusions,
+            legacy_evidence,
             project_key=project_key,
             include_subtype_in_names=include_subtype_in_names,
+        )
+    )
+    diagnostics.extend(
+        validate_evidence_records(
+            root.resolve(), _project_visible_files(root.resolve()), legacy_evidence
         )
     )
     return diagnostics
@@ -1389,11 +1415,105 @@ def _artifact_type_catalog(
     return catalog, diagnostics
 
 
+def _artifact_exclusions(
+    registry_path: Path, data: dict[str, Any]
+) -> tuple[list[tuple[str, str]], list[Diagnostic]]:
+    diagnostics: list[Diagnostic] = []
+    raw_exclusions = data.get("exclusions")
+    if not isinstance(raw_exclusions, list) or not raw_exclusions:
+        return [], [
+            _diag(
+                "DSET-E156",
+                registry_path,
+                "exclusions must be a non-empty explicit registry",
+            )
+        ]
+    exclusions: list[tuple[str, str]] = []
+    seen: set[str] = set()
+    for item in raw_exclusions:
+        if not isinstance(item, dict) or set(item) != {"pattern", "rationale"}:
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    "every exclusion requires exactly pattern and rationale",
+                )
+            )
+            continue
+        pattern = item.get("pattern")
+        rationale = item.get("rationale")
+        if not isinstance(pattern, str) or not pattern.strip():
+            diagnostics.append(
+                _diag("DSET-E156", registry_path, "exclusion pattern is missing")
+            )
+            continue
+        if pattern in seen:
+            diagnostics.append(
+                _diag("DSET-E156", registry_path, f"duplicate exclusion: {pattern}")
+            )
+        seen.add(pattern)
+        if not isinstance(rationale, str) or not rationale.strip():
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"exclusion {pattern} requires a rationale",
+                )
+            )
+            continue
+        exclusions.append((pattern, rationale))
+    return exclusions, diagnostics
+
+
+def _legacy_evidence_paths(
+    registry_path: Path, data: dict[str, Any]
+) -> tuple[frozenset[str], list[Diagnostic]]:
+    diagnostics: list[Diagnostic] = []
+    raw_paths = data.get("legacy_evidence_paths")
+    if not isinstance(raw_paths, list):
+        return frozenset(), [
+            _diag(
+                "DSET-E156",
+                registry_path,
+                "legacy_evidence_paths must be an explicit finite list",
+            )
+        ]
+    paths: set[str] = set()
+    for item in raw_paths:
+        if (
+            not isinstance(item, str)
+            or not item.endswith(".md")
+            or "/proofs/" not in item
+            or item.startswith("/")
+            or any(token in item for token in ("*", "?", "[", "]"))
+        ):
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"invalid legacy evidence path: {item}",
+                )
+            )
+            continue
+        if item in paths:
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"duplicate legacy evidence path: {item}",
+                )
+            )
+        paths.add(item)
+    return frozenset(paths), diagnostics
+
+
 def _validate_artifact_path_rules(
     root: Path,
     registry_path: Path,
     data: dict[str, Any],
     catalog: dict[str, frozenset[str]],
+    exclusions: list[tuple[str, str]],
+    legacy_evidence: frozenset[str],
     *,
     project_key: str | None,
     include_subtype_in_names: bool,
@@ -1460,6 +1580,8 @@ def _validate_artifact_path_rules(
             registry_path,
             rules,
             catalog,
+            exclusions,
+            legacy_evidence,
             project_key=project_key,
             include_subtype_in_names=include_subtype_in_names,
         )
@@ -1472,6 +1594,8 @@ def _validate_current_artifact_classifications(
     registry_path: Path,
     rules: list[tuple[str, str, str | None]],
     catalog: dict[str, frozenset[str]],
+    exclusions: list[tuple[str, str]],
+    legacy_evidence: frozenset[str],
     *,
     project_key: str | None,
     include_subtype_in_names: bool,
@@ -1481,6 +1605,11 @@ def _validate_current_artifact_classifications(
         relative = path.relative_to(root).as_posix()
         matched_rules = [
             rule for rule in rules if _path_rule_matches(relative, rule[0])
+        ]
+        matched_exclusions = [
+            pattern
+            for pattern, _rationale in exclusions
+            if _path_rule_matches(relative, pattern)
         ]
         matches = [rule[0] for rule in matched_rules]
         if len(matches) > 1:
@@ -1492,6 +1621,48 @@ def _validate_current_artifact_classifications(
                 )
             )
         direct = _direct_artifact_classification(path)
+        is_legacy_evidence = relative in legacy_evidence
+        if len(matched_exclusions) > 1:
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    path,
+                    "artifact path matches multiple exclusions: "
+                    + ", ".join(matched_exclusions),
+                )
+            )
+        if matched_exclusions and (
+            direct is not None or matched_rules or is_legacy_evidence
+        ):
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    path,
+                    "governed carrier cannot be both classified and excluded",
+                )
+            )
+        if (
+            direct is None
+            and not matched_rules
+            and not is_legacy_evidence
+            and not matched_exclusions
+        ):
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    path,
+                    "governed carrier has no artifact classification or exclusion",
+                )
+            )
+            continue
+        if is_legacy_evidence and direct is not None and direct[0] != "evidence_record":
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    path,
+                    "legacy evidence path has a conflicting direct classification",
+                )
+            )
         if direct is None:
             continue
         artifact_type, artifact_subtype, artifact_id = direct
@@ -1599,6 +1770,8 @@ def _validate_artifact_name(
 
 
 def _path_rule_matches(relative_path: str, pattern: str) -> bool:
+    if "/" not in pattern:
+        return relative_path == pattern
     path = PurePosixPath(relative_path)
     return path.match(pattern) or (
         pattern.startswith("**/") and path.match(pattern.removeprefix("**/"))
@@ -1855,7 +2028,7 @@ def _validate_change_ids(
     root: Path, change_dir: Path, data: dict[str, Any]
 ) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
-    manifest_path = change_dir / "change.yaml"
+    manifest_path = discover_layout(root).structured_file(change_dir, "change.toml")
     legacy = _is_legacy_change(data)
     manifest = _safe_load(discover_layout(root).manifest_path, diagnostics) or {}
     project_key = _manifest_project_key(manifest)
@@ -2025,7 +2198,7 @@ def _validate_change_ids(
 def _validate_layered_change(
     layout: RepositoryLayout, change_dir: Path, data: dict[str, Any]
 ) -> list[Diagnostic]:
-    path = change_dir / "change.yaml"
+    path = layout.structured_file(change_dir, "change.toml")
     diagnostics: list[Diagnostic] = []
     project = _safe_load(layout.manifest_path, diagnostics) or {}
     diagnostics.extend(_validate_change_target(path, data.get("target"), project))
@@ -2190,7 +2363,7 @@ def _validate_change_uniqueness(layout: RepositoryLayout) -> list[Diagnostic]:
             continue
         archived_root = root in layout.archive_change_roots
         for change in sorted(root.iterdir()):
-            manifest = change / "change.yaml"
+            manifest = layout.structured_file(change, "change.toml")
             if not change.is_dir() or not manifest.is_file():
                 continue
             try:

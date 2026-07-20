@@ -7,6 +7,8 @@
     "schema_version",
     "profile",
     "classification",
+    "exclusions",
+    "legacy_evidence_paths",
     "artifact_types",
     "path_rules"
   ],
@@ -39,6 +41,20 @@
     "path_rules": {
       "type": "array",
       "items": {"$ref": "#/$defs/path_rule"}
+    },
+    "exclusions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/exclusion"}
+    },
+    "legacy_evidence_paths": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[^*?\\[\\]]+/proofs/[^*?\\[\\]]+\\.md$"
+      }
     }
   },
   "$defs": {
@@ -70,8 +86,16 @@
         "artifact_subtype": {"$ref": "#/$defs/id"}
       },
       "additionalProperties": false
+    },
+    "exclusion": {
+      "type": "object",
+      "required": ["pattern", "rationale"],
+      "properties": {
+        "pattern": {"type": "string", "minLength": 1},
+        "rationale": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false
 }
-

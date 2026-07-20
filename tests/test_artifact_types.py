@@ -8,11 +8,12 @@ import unittest
 from pathlib import Path, PurePosixPath
 from typing import Any
 
+from dset_toolchain.frontmatter import metadata as frontmatter_metadata
 from dset_toolchain.validation import (
     ARTIFACT_TYPE_SUBTYPES,
     validate_artifact_type_registry,
 )
-from dset_toolchain.yaml_subset import load, loads
+from dset_toolchain.yaml_subset import load
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY_PATH = ROOT / "dset/scopes/gov/artifact-types.yaml"
@@ -204,6 +205,58 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
 
             self.assertEqual(diagnostics, [])
 
+    def test_unclassified_carrier_fails_closed_and_exclusion_is_explicit(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            path = root / "notes.md"
+            path.write_text("# Notes\n", encoding="utf-8")
+            diagnostics = validate_artifact_type_registry(
+                root, REGISTRY_PATH, self.registry
+            )
+            self.assertTrue(
+                any(
+                    "no artifact classification or exclusion" in item.message
+                    for item in diagnostics
+                )
+            )
+
+            data = self._copy()
+            data["exclusions"].append(
+                {
+                    "pattern": "notes.md",
+                    "rationale": "Fixture-only non-artifact carrier.",
+                }
+            )
+            self.assertEqual(
+                validate_artifact_type_registry(root, REGISTRY_PATH, data), []
+            )
+
+    def test_procedure_paths_are_registered(self) -> None:
+        expected = {
+            "skills/*/SKILL.md": ("procedure", "playbook"),
+            "documentation/maintenance-playbook.md": ("procedure", "playbook"),
+            "dset/scopes/ops/supportability/delivery-runbook.md": (
+                "procedure",
+                "runbook",
+            ),
+        }
+        actual = {
+            item["pattern"]: (
+                item["artifact_type"],
+                item.get("artifact_subtype"),
+            )
+            for item in self.registry["path_rules"]
+        }
+        for pattern, classification in expected.items():
+            self.assertEqual(actual[pattern], classification)
+
+    def test_legacy_evidence_compatibility_is_an_exact_finite_list(self) -> None:
+        paths = self.registry["legacy_evidence_paths"]
+        self.assertTrue(paths)
+        self.assertEqual(len(paths), len(set(paths)))
+        self.assertTrue(all("/proofs/" in path for path in paths))
+        self.assertTrue(all(not any(char in path for char in "*?[]") for path in paths))
+
     def test_type_only_names_are_default_and_subtype_names_are_opt_in(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)
@@ -294,6 +347,8 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
 
     @staticmethod
     def _matches(path: PurePosixPath, pattern: str) -> bool:
+        if "/" not in pattern:
+            return path.as_posix() == pattern
         return path.match(pattern) or (
             pattern.startswith("**/") and path.match(pattern.removeprefix("**/"))
         )
@@ -302,14 +357,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
     def _direct_classification(path: Path) -> tuple[str, str | None] | None:
         if path.suffix.lower() != ".md":
             return None
-        lines = path.read_text(encoding="utf-8").splitlines()
-        if not lines or lines[0] != "---":
-            return None
-        try:
-            end = lines.index("---", 1)
-        except ValueError:
-            return None
-        metadata = loads("\n".join(lines[1:end]))
+        metadata = frontmatter_metadata(path)
         if not isinstance(metadata, dict) or metadata.get("artifact_type") is None:
             return None
         subtype = metadata.get("artifact_subtype")
