@@ -1528,7 +1528,8 @@ semantic_classifications:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-030-installer-transaction.md
     carrier_statuses:
       - accepted
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-025
   -
     id: DSET-OPPORTUNITY-GOV-001
     type: question
@@ -3971,11 +3972,12 @@ semantic_atoms:
     type: problem
     subtype: gap
     emission_status: accepted
-    current_status: accepted
+    current_status: resolved
     priority: medium
     priority_source: atom:DSET-GAP-TOOL-002
     child_of: []
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-025
     absorbed_by: []
     archived: false
   -
@@ -5225,6 +5227,12 @@ implementation_edges:
     implements:
       - DSET-DECISION-SKILL-001
     llm_session_ids: []
+  -
+    commit: f71a42ff14a3592853e7e52fec8afcd194bb8a18
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
     commit: f84c0961fdbe3562e059b789668cc96bed8dfea3
     implements:

@@ -9,6 +9,7 @@ import tempfile
 import unittest
 from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
+from unittest.mock import patch
 
 from dset_toolchain.adopter import create_adopter
 from dset_toolchain.skill_distribution import (
@@ -328,6 +329,37 @@ class SkillDistributionTests(unittest.TestCase):
             (package / "dset.py").read_text(encoding="utf-8"),
             "operator runtime\n",
         )
+
+    def test_combined_install_rolls_back_after_mid_transaction_failure(self) -> None:
+        destination = self.root / "codex" / "skills"
+        package = self.root / "codex" / "packages" / "dset"
+
+        with (
+            patch(
+                "dset_toolchain.skill_distribution.apply_runtime_install",
+                side_effect=OSError("injected runtime copy failure"),
+            ),
+            redirect_stdout(io.StringIO()),
+            redirect_stderr(io.StringIO()),
+        ):
+            status = main(
+                [
+                    "install",
+                    "--host",
+                    "codex",
+                    "--source",
+                    str(self.source),
+                    "--destination",
+                    str(destination),
+                    "--package-destination",
+                    str(package),
+                    "--apply",
+                ]
+            )
+
+        self.assertEqual(status, 2)
+        self.assertFalse(destination.exists())
+        self.assertFalse(package.exists())
 
 
 if __name__ == "__main__":

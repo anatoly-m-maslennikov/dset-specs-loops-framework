@@ -795,16 +795,70 @@ def _execute_install(
         if runtime_action.status == "conflict":
             raise SkillDistributionError("runtime destination conflict blocks install")
         _validate_runtime_source(runtime_action)
+        initially_absent = {
+            Path(action.destination): action.source_digest
+            for action in actions
+            if not Path(action.destination).exists()
+        }
+        runtime_path = Path(runtime_action.destination)
+        if not runtime_path.exists():
+            initially_absent[runtime_path] = runtime_action.source_digest
+        initially_absent_parents = {
+            destination.parent
+            for destination in initially_absent
+            if not destination.parent.exists()
+        }
+        try:
+            proofs = apply_install(actions)
+            runtime_proof = apply_runtime_install(runtime_action)
+        except Exception as error:
+            rollback_failures = _rollback_created_install(
+                initially_absent, initially_absent_parents
+            )
+            if rollback_failures:
+                raise SkillDistributionError(
+                    "install failed and rollback was incomplete: "
+                    + ", ".join(rollback_failures)
+                ) from error
+            raise
         return {
             "applied": True,
-            "proofs": [asdict(item) for item in apply_install(actions)],
-            "runtime_proof": asdict(apply_runtime_install(runtime_action)),
+            "proofs": [asdict(item) for item in proofs],
+            "runtime_proof": asdict(runtime_proof),
         }
     return {
         "applied": False,
         "actions": [asdict(item) for item in actions],
         "runtime_action": asdict(runtime_action),
     }
+
+
+def _rollback_created_install(
+    created: Mapping[Path, str], created_parents: set[Path]
+) -> list[str]:
+    failures: list[str] = []
+    for destination, expected_digest in reversed(tuple(created.items())):
+        if not destination.exists():
+            continue
+        try:
+            if not destination.is_dir() or tree_digest(destination) != expected_digest:
+                failures.append(str(destination))
+                continue
+            shutil.rmtree(destination)
+        except OSError:
+            failures.append(str(destination))
+    ordered_parents = sorted(
+        created_parents, key=lambda item: len(item.parts), reverse=True
+    )
+    for parent in ordered_parents:
+        try:
+            parent.rmdir()
+        except FileNotFoundError:
+            continue
+        except OSError:
+            if parent.is_dir() and not any(parent.iterdir()):
+                failures.append(str(parent))
+    return failures
 
 
 if __name__ == "__main__":

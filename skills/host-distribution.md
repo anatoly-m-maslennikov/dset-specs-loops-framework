@@ -22,6 +22,12 @@ Without it, Codex uses `CODEX_HOME/skills` or the current user's
 user's `.claude/skills`. These paths are derived at runtime through portable
 path APIs on Linux, macOS, native Windows, and WSL.
 
+The combined apply is one transaction across all wrappers and the shared
+runtime. If a later package fails after an earlier new destination was
+committed, DSET removes only transaction-created directories whose digests
+still equal the preview; an unexpected changed destination stops as an
+incomplete rollback instead of deleting operator content.
+
 The same transaction previews or installs the shared runtime under
 `CODEX_HOME/packages/dset` or `CLAUDE_CONFIG_DIR/packages/dset`; without an
 environment override it uses `.codex/packages/dset` or

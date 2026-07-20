@@ -247,3 +247,13 @@ events:
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: The installer now renders the exact current interpreter and package-local dset.py path into every copied wrapper and binds that command into the planned digest.
+  -
+    id: DSET-LIFECYCLE-EVENT-025
+    atom_id: DSET-GAP-TOOL-002
+    event: resolved
+    occurred_at: 2026-07-21T00:05:00+04:00
+    related:
+      - DSET-REQUIREMENT-SKILL-011
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: Combined installation now rolls back every transaction-created destination whose digest still matches the preview and fails closed rather than deleting changed content.
