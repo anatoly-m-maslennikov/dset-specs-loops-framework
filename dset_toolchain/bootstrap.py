@@ -15,6 +15,7 @@ from typing import Any, cast
 
 from .governance import materialize_governance
 from .layout import LAYERS, discover_layout
+from .legacy_authority import write_legacy_authority_ledger
 from .traceability import write_traceability
 from .validation import validate_repository
 from .yaml_subset import dump
@@ -350,6 +351,7 @@ def _stage_project(
         encoding="utf-8",
     )
     materialize_governance(source, stage, profile, install_wrappers=True)
+    write_legacy_authority_ledger(stage)
     write_traceability(stage)
 
 

@@ -43,6 +43,14 @@ atoms. Emitting an atom fixes its ID, content, provenance, creation status, and
 links. Later acceptance, rejection, reopening, correction, withdrawal, or other
 state change is a new append-only lifecycle event; current status is derived.
 
+Legacy Decision authority remains byte-stable during migration without
+rewriting its carriers. A committed compatibility ledger seals each dedicated
+legacy Decision carrier by whole-file digest and each Decision identifier in a
+shared package registry by a selector-specific digest. Validation fails when a
+sealed legacy fragment disappears or changes. New authority uses native atoms;
+a deliberate replacement requires a native successor and lifecycle event, not
+regeneration of the compatibility ledger.
+
 A successor atom may declare `absorbs` links to older atoms. Absorption is
 explicit, acyclic, validated, and never inferred from a timestamp, ID, or file
 order. It removes the older atom from the active compilation set without

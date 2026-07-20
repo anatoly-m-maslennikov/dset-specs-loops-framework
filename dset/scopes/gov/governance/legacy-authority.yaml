@@ -1,0 +1,821 @@
+schema_version: "1.0"
+records:
+  -
+    semantic_id: DSET-CONTRACT-META-001
+    type: decision
+    subtype: contract
+    fragments:
+      -
+        path: dset/scopes/meta/specs/packages/methodology/package.yaml
+        selector: contracts:DSET-CONTRACT-META-001
+        sha256: f7bade239c3eaafd3c070e6d601b798de51d7f9590c83a81118081271d0477d3
+  -
+    semantic_id: DSET-CONTRACT-OPS-001
+    type: decision
+    subtype: contract
+    fragments:
+      -
+        path: dset/scopes/ops/specs/packages/methodology/package.yaml
+        selector: contracts:DSET-CONTRACT-OPS-001
+        sha256: 7097d998a98c3437a8c52e191446f6f2030ef2d4f9927931c07c4c0c54462578
+  -
+    semantic_id: DSET-CONTRACT-SKILL-001
+    type: decision
+    subtype: contract
+    fragments:
+      -
+        path: dset/scopes/skill/specs/packages/methodology/package.yaml
+        selector: contracts:DSET-CONTRACT-SKILL-001
+        sha256: 93ef18445075eaa6e925a57c0f36bbabddcec76d96d06e685fb6f2577652f27c
+  -
+    semantic_id: DSET-CONTRACT-SKILL-002
+    type: decision
+    subtype: contract
+    fragments:
+      -
+        path: dset/scopes/skill/specs/packages/methodology/package.yaml
+        selector: contracts:DSET-CONTRACT-SKILL-002
+        sha256: 4951d82d520edc261de09f9623717cdcfb6422a72c5d55c96c3bf8a9450934a5
+  -
+    semantic_id: DSET-CONTRACT-TOOL-001
+    type: decision
+    subtype: contract
+    fragments:
+      -
+        path: dset/scopes/tool/specs/packages/methodology/package.yaml
+        selector: contracts:DSET-CONTRACT-TOOL-001
+        sha256: 26f3ef42581b39877c8460563fe742d7288b29aa39a926dae145ba64217f523a
+  -
+    semantic_id: DSET-CONTRACT-TOOL-002
+    type: decision
+    subtype: contract
+    fragments:
+      -
+        path: dset/scopes/tool/specs/packages/methodology/package.yaml
+        selector: contracts:DSET-CONTRACT-TOOL-002
+        sha256: 5cfd45cf62a2d50b5c471485f66ad6613e3c83e34b7c455328577cfb8b0dc252
+  -
+    semantic_id: DSET-DECISION-GOV-001
+    type: decision
+    subtype: none
+    fragments:
+      -
+        path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-001.md
+        selector: whole-carrier
+        sha256: 5c0c738fbf89c42e62986979110a6feeb6ceffacaea9d51c5c288d1295bdffb2
+  -
+    semantic_id: DSET-DECISION-GOV-002
+    type: decision
+    subtype: none
+    fragments:
+      -
+        path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-002.md
+        selector: whole-carrier
+        sha256: 4ac80c2b20e979d73e8321f55df074f3f2338481bfa68d8674506dbb50e354d6
+  -
+    semantic_id: DSET-DECISION-GOV-003
+    type: decision
+    subtype: none
+    fragments:
+      -
+        path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-003.md
+        selector: whole-carrier
+        sha256: f97871ec9ad418d14591e44e0cfaf4656265d9879474ea8ba313cb14ae5c85aa
+  -
+    semantic_id: DSET-DECISION-GOV-004
+    type: decision
+    subtype: none
+    fragments:
+      -
+        path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-004.md
+        selector: whole-carrier
+        sha256: d574f12dd5cc0d73b9904a3d17d710e9bd05c8367fd59ba374ccbb690d80b232
+  -
+    semantic_id: DSET-DECISION-GOV-005
+    type: decision
+    subtype: none
+    fragments:
+      -
+        path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-005.md
+        selector: whole-carrier
+        sha256: 3df23c842165aac48b1c80b73eacdb7be77a8d65ea0a722fa75cc0266b2acaff
+  -
+    semantic_id: DSET-DECISION-GOV-006
+    type: decision
+    subtype: none
+    fragments:
+      -
+        path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-006.md
+        selector: whole-carrier
+        sha256: 89dfec85aed45092280f48ad458ef730a36b03bb43efc07022a121b2a8129e25
+  -
+    semantic_id: DSET-DECISION-GOV-007
+    type: decision
+    subtype: none
+    fragments:
+      -
+        path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-007.md
+        selector: whole-carrier
+        sha256: 6afbef058746b483110d020079be8052c21638d829c05af32df4424cf4796501
+  -
+    semantic_id: DSET-DECISION-GOV-008
+    type: decision
+    subtype: none
+    fragments:
+      -
+        path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-008.md
+        selector: whole-carrier
+        sha256: 5fa7552e48c58c21f8b4fba08130661ad8038de731c1841190b7e285778bfcd0
+  -
+    semantic_id: DSET-DECISION-GOV-009
+    type: decision
+    subtype: none
+    fragments:
+      -
+        path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-009.md
+        selector: whole-carrier
+        sha256: fcf8f7566b7faf6304879ebcfd3802c2414f81463bfa9e51191854988d7970fa
+  -
+    semantic_id: DSET-DECISION-OPS-001
+    type: decision
+    subtype: none
+    fragments:
+      -
+        path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-OPS-001.md
+        selector: whole-carrier
+        sha256: b799715a8f39b8716a3f0b8a62bb93e6623c28eb94f9552f7b1be15d120e5a34
+  -
+    semantic_id: DSET-DECISION-OPS-002
+    type: decision
+    subtype: none
+    fragments:
+      -
+        path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-OPS-002.md
+        selector: whole-carrier
+        sha256: 9d1af17755d68dbae0280440168e44889806f9acd6978fcd5e0e739202fbc4ba
+  -
+    semantic_id: DSET-DECISION-OPS-003
+    type: decision
+    subtype: none
+    fragments:
+      -
+        path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-OPS-003.md
+        selector: whole-carrier
+        sha256: f7455d6ed5fc12fd76b123c58ba95b840b228ca30f862b24aef78d63443aa6b1
+  -
+    semantic_id: DSET-DECISION-OPS-004
+    type: decision
+    subtype: none
+    fragments:
+      -
+        path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-OPS-004.md
+        selector: whole-carrier
+        sha256: b0fd1289a16ce12a80d7057719eb96cd3a83065b2e30904768eb9aaa456c04df
+  -
+    semantic_id: DSET-DECISION-SKILL-001
+    type: decision
+    subtype: none
+    fragments:
+      -
+        path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-SKILL-001.md
+        selector: whole-carrier
+        sha256: e749f7df4c9e05ccb7c48badbe645cb5a78d641a0f748b89593cdf2e295ea2fc
+  -
+    semantic_id: DSET-DECISION-SKILL-002
+    type: decision
+    subtype: none
+    fragments:
+      -
+        path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-SKILL-002.md
+        selector: whole-carrier
+        sha256: e6773062cedb59c7afeecdf339843b9e8ec3834b691fd1a29027bdd84952700d
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-001
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-001
+        sha256: 847048547989b3150efc96a522290ee649775eb7f6d61d8114250d788a762045
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-002
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-002
+        sha256: e3410255cfbe660db71335f3c848b03f9d664ded78e232a72bb4023de24760c6
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-003
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-003
+        sha256: 73574af3b4b2170740e1b2ab54f3a02547ef76e471c5a0411b2049cee85d4d6f
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-004
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-004
+        sha256: 8b33f6979c13fbae98bb0b24a65715625fcd3ba61370f4103ac82522ee3609c0
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-005
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-005
+        sha256: fedf10aedb0489aa9cb30c17654da57e62bfb109a16d50beb7221adff1ba19cb
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-006
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-006
+        sha256: fbfa177f01e498bd622163c0bb5b80f003d188bacae64fd2148201018caf5394
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-007
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-007
+        sha256: e6d7c931f1814efda3b87ceefe30ce639482f3f1321b2c1a9c1bacc58206b75a
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-008
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-008
+        sha256: d74326de7cb9f1fbc41d839650e9dc354e9ef4980e706b0685bd05082eda28fe
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-009
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-009
+        sha256: d0a0799692749949d5d030f467cd4969e5799ad41bf27032acf09998f8fb6931
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-010
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-010
+        sha256: 955cd2b048ff204764526fc3268dd6833cfefb5c58dfe8dd5ab3ae791e9d4aa0
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-011
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-011
+        sha256: df05b330ad5f935a0570044fbc8aa0c70443d1825eece99e764ede5deedd808d
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-012
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-012
+        sha256: 1b6666d6cd6ee277e658a7680640c5db58d29182f9416f0ee8e5d4329b57fb99
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-013
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-013
+        sha256: 629009781a9818c1d23ea7c57848758401213664564885e2f2648eec20ddbe40
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-014
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-014
+        sha256: 3f2c76ffd02b9242929d707f8ef05a9a6a401f738952ba8c00b507aeb72e5a1b
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-015
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-015
+        sha256: 4cb62b1c099858fa97b0960f429f992a80bba128d6f6661c69cc723fc57dd1ee
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-016
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-016
+        sha256: deaafa27b91fcf6d59cd377b55274de43dfbe5e6dcfe130f7fd5d4e91ab812e7
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-017
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-017
+        sha256: 17ad8e475f51bc51f47b54326e21b6ac4407926073b0714c1a885b3cb33a8671
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-018
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-018
+        sha256: cac898d4eb72d25879a6e2e00cdb71640c8e47b047e9337c067821b59a78fd63
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-019
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-019
+        sha256: 7e7acd8efaebfd47ee364ba9ff19fa9781cff158383c099fd2ce0734f5b60e29
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-020
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-020
+        sha256: 18772d8edd2fc03f9617f852378db8da7bfbc70c237d90d9f79ea8f50ae1cdb7
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-021
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-021
+        sha256: 57188008a1df24022603520d07b90555c77504a3f203e568d3833daef47db954
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-022
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-022
+        sha256: 77b16576cbbf6a43fd59c9be59860ca5af8c2b85f20a674636c016cda7c08c60
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-023
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-023
+        sha256: 36c455b8353e55350bf0da517f9acd865c620d5825cb599fb135df4de3a63801
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-024
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-024
+        sha256: 754f7f6f71d4f875d295c513e9fd380f6994d822027934dd34f7dc67fc3c7657
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-025
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-025
+        sha256: 598914cfc057416741c2ef884261c48d4c7181a298c9a28dcef962a75a41ff88
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-026
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-026
+        sha256: cddd250dfa3d7293532e42e5510be75994950e9cc57d0eb54639ebf1eeba0a80
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-027
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-027
+        sha256: 3167c0171d5efb1a950f8ae29b48f65b0bb46d29086cda2d5a1bb48bfdb2efbf
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-028
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-028
+        sha256: ba132d69b6cb4c2da94e48144b5af39dc0e4275b5ede88531c151bb726a776f8
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-029
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-029
+        sha256: a1c71a8b01b756fdc1c465489ae55c3311e03d133e8a6c79d6e2622ec5c2d8aa
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-030
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-030
+        sha256: 74e7d87f4840d2f3e012f1cd459901e5f300b49db06ac929035176fe07d8c8e6
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-031
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-031
+        sha256: c575c249708d156a12155272c6b51b0522c50fbe0d020b7d04286de717b438c5
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-032
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-032
+        sha256: 91895b3eefa438fe050d70c52b466f02d23a4a8b7e830100a6bf0e758dc320b0
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-033
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-033
+        sha256: a6587f352ce9edca1532dd5b864522e0a2bfc290eeaeeb3ea31b4c837a2191d3
+  -
+    semantic_id: DSET-REQUIREMENT-META-001
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/meta/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-META-001
+        sha256: 96bc76d9e70a380f6d4fa3f62de902fd376befd4b18b04d6a2327e445934d641
+  -
+    semantic_id: DSET-REQUIREMENT-META-002
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/meta/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-META-002
+        sha256: b94d640eeaa9881a787a5d7ee0c3f5231f0b5c0355835da6d7d77f8a00da1280
+  -
+    semantic_id: DSET-REQUIREMENT-META-003
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/meta/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-META-003
+        sha256: 20e387b74529eed2ad7762b7c10a227a4f64554eca5ddb2828fead3a52979e5e
+  -
+    semantic_id: DSET-REQUIREMENT-META-004
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/meta/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-META-004
+        sha256: c779979689bab31b8998e29bb62e2484f1aff196fba4b09f54d58ffa880153eb
+  -
+    semantic_id: DSET-REQUIREMENT-META-005
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/meta/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-META-005
+        sha256: f44a50cf21712c86c5372c3218fc7916e0df27d7ae0792864f00ea8de73dfe7e
+  -
+    semantic_id: DSET-REQUIREMENT-META-006
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/meta/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-META-006
+        sha256: e9423e0732298819f9312ab2b830a6ab2cbc0894bbbd281decd1168b6d022b6a
+  -
+    semantic_id: DSET-REQUIREMENT-META-007
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/meta/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-META-007
+        sha256: 9bc369751067af17bcc555c090866bb8747c51c6073f1dff27ae44b42fa8fe93
+  -
+    semantic_id: DSET-REQUIREMENT-META-008
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/meta/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-META-008
+        sha256: 73647ee855a34700fbb701cd7559010128cf775db8be08fca71b3bbe851b6c91
+  -
+    semantic_id: DSET-REQUIREMENT-META-009
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/meta/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-META-009
+        sha256: b7def674c71048645e27ff110f18449283c733fed11c3b6c3ae0c69cba50a0aa
+  -
+    semantic_id: DSET-REQUIREMENT-META-010
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/meta/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-META-010
+        sha256: 23b583e6b628448907ed9298e9a1f770461cf3dfaf5ffa80a56fd39856c908a3
+  -
+    semantic_id: DSET-REQUIREMENT-META-011
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/meta/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-META-011
+        sha256: 71564c91287e934ef3be1d71d0bd9fcba1fc04f86e9331b27fa15b00b1bd1547
+  -
+    semantic_id: DSET-REQUIREMENT-OPS-001
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/ops/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-OPS-001
+        sha256: f2be03f736bde1a4d13013d0721df83d95d53a504c2f78c32a72c8c7cfb319dc
+  -
+    semantic_id: DSET-REQUIREMENT-OPS-002
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/ops/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-OPS-002
+        sha256: 65410a60847225197e476828b62359ccead9a07fd3c248ab74be229545593e8c
+  -
+    semantic_id: DSET-REQUIREMENT-OPS-003
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/ops/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-OPS-003
+        sha256: 3dedfda392ae311cf629991bdabe566afe9e1a4e5375d1beffd175c2ee8956c5
+  -
+    semantic_id: DSET-REQUIREMENT-OPS-004
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/ops/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-OPS-004
+        sha256: aec4c1a588c5924cccdac22e33317cf2bb43c946affb555727ad070c308087cf
+  -
+    semantic_id: DSET-REQUIREMENT-OPS-005
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/ops/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-OPS-005
+        sha256: 2fa6a3d73b0d15ebbaca7d4b576065891278de5c0f75b6748bb33114292ed22c
+  -
+    semantic_id: DSET-REQUIREMENT-OPS-006
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/ops/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-OPS-006
+        sha256: 783eadfe6a18f8018d64ea04a633e3f50ad12b60ffb65ee6d3e6dc5328194a2b
+  -
+    semantic_id: DSET-REQUIREMENT-OPS-007
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/ops/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-OPS-007
+        sha256: b942e8201b330d849df09e467fcf13b1b7cac904598f8385b033ee363f7b652d
+  -
+    semantic_id: DSET-REQUIREMENT-OPS-013
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/ops/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-OPS-013
+        sha256: 9a3413d6bdb61816c61ec6f61cb50107bfd7b7a926dd63457a0af3a9f59d68e4
+  -
+    semantic_id: DSET-REQUIREMENT-SKILL-001
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/skill/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-SKILL-001
+        sha256: 810641dab3c7cbf1bf6a8c9d72eba264fcc614138c4c6b95b9d8629e4ffae652
+  -
+    semantic_id: DSET-REQUIREMENT-SKILL-002
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/skill/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-SKILL-002
+        sha256: 915937e1236f1761912117431dd2efecd4ec0295a613a4ae049a5b702955a6b2
+  -
+    semantic_id: DSET-REQUIREMENT-SKILL-003
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/skill/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-SKILL-003
+        sha256: ea0bbcc16c111beca8f3e14a7c215c247b472ae120e12e2e63788509992db26a
+  -
+    semantic_id: DSET-REQUIREMENT-SKILL-004
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/skill/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-SKILL-004
+        sha256: fd87b4c10917441854599ce8167f0aad6b6f860f36553f461994e093486a8b05
+  -
+    semantic_id: DSET-REQUIREMENT-SKILL-005
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/skill/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-SKILL-005
+        sha256: 461869d9ae5ffb44bdcdd87e6e7c9bf07040c7b300ad630c601654abc43d2f3c
+  -
+    semantic_id: DSET-REQUIREMENT-SKILL-006
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/skill/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-SKILL-006
+        sha256: 73d130f98f9e20159fc2870510aaac82e66fc61c0a2109c2711adfd00b19bbbb
+  -
+    semantic_id: DSET-REQUIREMENT-SKILL-007
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/skill/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-SKILL-007
+        sha256: 16801c27df22f3c851a4c6484127efd1ac173eff372939e2f65dceab6f0430f5
+  -
+    semantic_id: DSET-REQUIREMENT-SKILL-008
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/skill/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-SKILL-008
+        sha256: ce72c0f793ada1258e91983db1bbf269b55b9c1e6d70e977ce34d0cc48fa832b
+  -
+    semantic_id: DSET-REQUIREMENT-SKILL-009
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/skill/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-SKILL-009
+        sha256: 98dd44616f6379296361b7e7ff509b925a95f00120195f63620d295478a7244a
+  -
+    semantic_id: DSET-REQUIREMENT-SKILL-010
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/skill/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-SKILL-010
+        sha256: 9355c764e15984e9d6bda0d871c7d115c55ed2f5196c108d370ec9a8266f8c5d
+  -
+    semantic_id: DSET-REQUIREMENT-TOOL-001
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/tool/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-TOOL-001
+        sha256: 1c6392c73884d943f5148e60e9624735f256ab1301e0fa09f8db9f5e24f3cf23
+  -
+    semantic_id: DSET-REQUIREMENT-TOOL-002
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/tool/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-TOOL-002
+        sha256: 06e853f6dc9ec885a1d57e46badeff721037d3288fa8d85aad900c2bcad19273
+  -
+    semantic_id: DSET-REQUIREMENT-TOOL-003
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/tool/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-TOOL-003
+        sha256: 8d50c3ca2810c5b72ab0c95ce588c9686a546db8b7d70560dfda9ad4c92ae776
+  -
+    semantic_id: DSET-REQUIREMENT-TOOL-004
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/tool/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-TOOL-004
+        sha256: 78b26c441be3a979c80bf53b2b53f0abf13795a875e512f3c3ca5eeb273a30a1
+  -
+    semantic_id: DSET-REQUIREMENT-TOOL-018
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/tool/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-TOOL-018
+        sha256: 2820dc5aa1864fd39d07270a3580582a30e2813a7c33c3f117a86e79957b4d3d
+  -
+    semantic_id: DSET-REQUIREMENT-TOOL-019
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/tool/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-TOOL-019
+        sha256: 250273ae015c544ff5f96225ad5e3f778cc785daf1c4ef0ef13c3fe9d6a55ee0
+  -
+    semantic_id: DSET-REQUIREMENT-TOOL-021
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/tool/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-TOOL-021
+        sha256: b4963999cee6971ad31dedc9cffe1a741b960a9dd293b2d6ab5f735ab5a7ce86
+  -
+    semantic_id: DSET-REQUIREMENT-TOOL-022
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/tool/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-TOOL-022
+        sha256: 516abe7b9af1a9c587df15bc295d39790f7ecb581ac585c63062a41075e00804

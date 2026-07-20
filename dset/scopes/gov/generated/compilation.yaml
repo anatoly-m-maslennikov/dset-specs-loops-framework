@@ -86,13 +86,13 @@ records:
     projections:
       -
         path: dset/scopes/gov/governance/artifact-maintenance.md
-        sha256: 96d655ccd51df4be43beb8909bb255d5053d16e5e019557ef478443139781d33
+        sha256: 0517b5778600fda208d306bcfe9badb22cf3fed4186f54d2f7662c184ce8f11f
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -104,10 +104,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
   -
     id: DSET-DECISION-GOV-003
     source:
@@ -116,10 +116,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
   -
     id: DSET-DECISION-GOV-008
     source:
@@ -128,10 +128,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
   -
     id: DSET-DECISION-GOV-009
     source:
@@ -140,10 +140,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
   -
     id: DSET-DECISION-GOV-010
     source:
@@ -152,10 +152,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
   -
     id: DSET-DECISION-OPS-004
     source:
@@ -203,10 +203,10 @@ records:
         sha256: aff1ed535f5c659315d97771422665151960562f30adf6dfa451c625cf382233
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
   -
     id: DSET-REQUIREMENT-GOV-002
     source:
@@ -218,10 +218,10 @@ records:
         sha256: aff1ed535f5c659315d97771422665151960562f30adf6dfa451c625cf382233
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
   -
     id: DSET-REQUIREMENT-GOV-003
     source:
@@ -233,10 +233,10 @@ records:
         sha256: aff1ed535f5c659315d97771422665151960562f30adf6dfa451c625cf382233
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
   -
     id: DSET-REQUIREMENT-GOV-004
     source:
@@ -248,10 +248,10 @@ records:
         sha256: 9d22164f6f63e1f9e71135cc85e8ab6591bd26e48d6801ee5e347bec8d1ba4f3
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
   -
     id: DSET-REQUIREMENT-GOV-005
     source:
@@ -263,10 +263,10 @@ records:
         sha256: 9d22164f6f63e1f9e71135cc85e8ab6591bd26e48d6801ee5e347bec8d1ba4f3
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
   -
     id: DSET-REQUIREMENT-GOV-006
     source:
@@ -278,10 +278,10 @@ records:
         sha256: 9d22164f6f63e1f9e71135cc85e8ab6591bd26e48d6801ee5e347bec8d1ba4f3
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
   -
     id: DSET-REQUIREMENT-GOV-007
     source:
@@ -290,10 +290,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
   -
     id: DSET-REQUIREMENT-GOV-008
     source:
@@ -302,10 +302,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
   -
     id: DSET-REQUIREMENT-GOV-009
     source:
@@ -314,10 +314,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
   -
     id: DSET-REQUIREMENT-GOV-010
     source:
@@ -326,10 +326,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
   -
     id: DSET-REQUIREMENT-GOV-011
     source:
@@ -338,10 +338,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
   -
     id: DSET-REQUIREMENT-GOV-012
     source:
@@ -350,10 +350,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
   -
     id: DSET-REQUIREMENT-GOV-013
     source:
@@ -362,10 +362,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
   -
     id: DSET-REQUIREMENT-GOV-014
     source:
@@ -374,10 +374,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -389,10 +389,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -404,10 +404,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -419,10 +419,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -434,10 +434,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -449,10 +449,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -464,10 +464,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -479,10 +479,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -494,10 +494,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -509,10 +509,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -524,10 +524,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -539,10 +539,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -554,10 +554,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -569,10 +569,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -584,10 +584,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -599,10 +599,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -614,10 +614,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -629,10 +629,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -644,10 +644,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -659,10 +659,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -674,10 +674,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
         sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
@@ -689,10 +689,10 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 09cf8c7a93fe5659afe8ad98c1219b64df6fd9cb3402912a26f46adccef2f2a3
+        sha256: 50e7d53997afd3c0a5a258b62e8d1d7fbbba11a1bdc57cc32792f5f70889ac7c
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
   -
     id: DSET-REQUIREMENT-META-001
     source:
@@ -773,7 +773,7 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/test-plan.md
-        sha256: ed836ef5944448bad99282c06f1a6f08fc9fbf6cd2fe7d9efa1a2c2b4c815602
+        sha256: f04ce8f68d16323c630a2bde588f1cabcf260930f30f91344de2e74a1ef053da
       -
         path: dset/scopes/meta/specs/packages/methodology/spec.md
         sha256: 011b015197059e6a888c506c76f85d4d4ae862559cb33cf57740c7f28683881c

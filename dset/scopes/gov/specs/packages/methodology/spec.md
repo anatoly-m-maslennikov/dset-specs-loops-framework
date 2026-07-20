@@ -216,6 +216,14 @@ the atom's ID, content, provenance, creation status, and links. Acceptance,
 rejection, reopening, correction, withdrawal, or any other later change is a
 new append-only lifecycle event from which current status is derived.
 
+Compatibility migration must not leave older Decision authority mutable.
+Dedicated legacy Decision carriers are sealed by whole-file digest; Decision
+identifiers held in shared package registries are sealed as independent
+selector fragments so unrelated registry additions remain possible. A missing
+or changed sealed fragment fails validation. New or replacement authority must
+use a native atom and append-only lifecycle transition rather than refreshing
+the legacy ledger.
+
 A replacement is a new atom with an explicit `absorbs` relation to older atoms.
 Absorption is acyclic, validated, never inferred from time or numbering, and
 removes the older atoms from the active authority set without deleting or

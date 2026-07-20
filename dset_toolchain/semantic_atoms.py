@@ -10,6 +10,7 @@ from typing import Any
 
 from .diagnostics import Diagnostic
 from .layout import discover_layout
+from .legacy_authority import validate_legacy_authority_ledger
 from .semantic_types import SEMANTIC_ID_KINDS, SEMANTIC_SUBTYPES
 from .settings import load_project_settings
 from .yaml_subset import YamlSubsetError, dump, load, loads
@@ -91,6 +92,7 @@ def validate_semantic_atoms(root: Path) -> list[Diagnostic]:
         )
     )
     diagnostics.extend(_validate_ledger(root, atoms))
+    diagnostics.extend(validate_legacy_authority_ledger(root))
     return sorted(set(diagnostics))
 
 

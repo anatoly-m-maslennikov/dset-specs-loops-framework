@@ -14,6 +14,7 @@ from dset_toolchain.semantic_atoms import (
     seal_atom,
     validate_semantic_atoms,
 )
+from dset_toolchain.yaml_subset import dump, load
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -38,10 +39,25 @@ class SemanticAtomTests(unittest.TestCase):
             "conflict-candidate.schema.json",
             "conflict-result.schema.json",
             "lifecycle.schema.json",
+            "legacy-authority-ledger.schema.json",
         )
         for name in schemas:
             with self.subTest(name=name):
                 json.loads((schema_root / name).read_text(encoding="utf-8"))
+
+    def test_legacy_authority_fragments_are_immutable(self) -> None:
+        package = self.root / "dset/specs/packages/sample/package.yaml"
+        data = load(package)
+        assert isinstance(data, dict)
+        data["contracts"] = []
+        package.write_text(dump(data), encoding="utf-8")
+
+        messages = [item.message for item in validate_semantic_atoms(self.root)]
+
+        self.assertIn(
+            "legacy Decision authority changed without native successors",
+            messages,
+        )
 
     def test_four_type_atom_is_sealed_and_later_mutation_fails(self) -> None:
         self._write_atom()

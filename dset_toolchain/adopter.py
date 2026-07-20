@@ -5,6 +5,7 @@ from pathlib import Path
 
 from .governance import materialize_governance
 from .layout import RepositoryLayout, discover_layout
+from .legacy_authority import write_legacy_authority_ledger
 from .traceability import write_traceability
 from .yaml_subset import dump
 
@@ -23,6 +24,7 @@ def create_adopter(source_root: Path, destination: Path) -> Path:
             "core-v1",
             install_wrappers=True,
         )
+        write_legacy_authority_ledger(destination)
         _write_legacy_governance_readme(
             destination / "dset" / "governance" / "README.md"
         )
