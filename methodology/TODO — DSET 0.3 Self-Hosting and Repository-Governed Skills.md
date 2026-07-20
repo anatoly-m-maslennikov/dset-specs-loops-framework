@@ -1,8 +1,15 @@
 # TODO — DSET 0.3: Self-Hosting and Repository-Governed Skills
 
-**Status:** Proposed roadmap. Unchecked items are not implemented capability claims.
+**Status:** Historical predecessor roadmap for the published `0.3.1` baseline.
+Unchecked items are not current DSET `0.4` obligations. Active work is owned by
+the [0.4 Version Scope](../dset/scopes/ops/planning/DSET-SPECIFICATION-002-0-4-self-hosted-core.md)
+and [Roadmap](../dset/scopes/ops/planning/DSET-PLAN-001-0-4-core-vertical-cut.md).
 
-**Outcome:** Make DSET self-hosting before external adoption, make skills thin wrappers over repository-local governing documents, prove that unchanged skills follow changed local rules, and validate the design through the first owned TypeScript pilot in [obsidian-your-harness](https://github.com/anatoly-m-maslennikov/obsidian-your-harness).
+**Historical outcome:** Make DSET self-hosting before external adoption, make
+skills thin wrappers over repository-local governing documents, prove that
+unchanged skills follow changed local rules, and explore the design through an
+owned TypeScript pilot. External-adopter work is now owned by its own project;
+the active DSET `0.4` scope explicitly excludes it.
 
 **Release label:** `0.3.1` is the corrected first coordinated DSET product and CLI-package release under the new policy. The unpublished `0.3.0` draft, earlier incomplete `0.2.0` target, and unreleased independent package `1.0.0` candidate are superseded before merge. Schema, profile, and template-format versions remain independent compatibility identities rather than product-maturity claims.
 
@@ -137,7 +144,7 @@ paths; schema 1.2 assigns each governing document to its semantic layer.
 - [x] **DSET-TASK-TOOL-024:** Define the recursion stop: the generated adopter may consume the candidate toolchain but does not regenerate the framework repository or recursively create another adopter.
 - [ ] **DSET-TASK-TOOL-025:** Rerun the bounded candidate/repository/adopter proof on the exact pushed PR head in hosted CI; the recorded older head is not current release evidence.
 
-## §5 | Derive TypeScript v1 from Your Harness
+## §5 | Historical external project — derive TypeScript v1
 
 - [x] **DSET-TASK-TOOL-026:** Inventory the actual Your Harness Node, TypeScript, ESLint, Jest, esbuild, package-lock, source/test scopes, generated outputs, warnings, and CI behavior at a pinned revision.
 - [x] **DSET-TASK-TOOL-027:** Map the six language-neutral gate categories to observed TypeScript-native tools and commands; do not translate Python thresholds mechanically.
@@ -147,7 +154,7 @@ paths; schema 1.2 assigns each governing document to its semantic layer.
 - [ ] **DSET-TASK-TOOL-031:** Define schema/contracts, secret hygiene, generated-bundle, lockfile, and test-to-source mapping gates appropriate to the plugin.
 - [ ] **DSET-TASK-TOOL-032:** Publish `typescript-v1` only after the pilot passes; use an explicitly labeled candidate profile before acceptance.
 
-## §6 | Adopt DSET in obsidian-your-harness
+## §6 | Historical external project — adopt DSET
 
 - [x] **DSET-TASK-GOV-026:** Use the owned `anatoly-m-maslennikov/obsidian-your-harness` repository as the first external pilot; record its exact starting revision, branch, upstream Claudian revision, MIT license, and adaptation boundary.
 - [x] **DSET-TASK-GOV-027:** Inventory `your_harness_specs/`, root and scoped `CLAUDE.md` files, README/architecture surfaces, tests, package scripts, generated assets, local context, and active feature work before creating a second authority.
@@ -165,7 +172,7 @@ paths; schema 1.2 assigns each governing document to its semantic layer.
 - [ ] **DSET-TASK-OPS-018:** Run a real feature/defect through proposal → requirements → test/eval plans → implementation → evidence → reconciliation → archive in one PR.
 - [x] **DSET-TASK-GOV-034:** Keep the pilot change active and the old owner intact if resolver, migration, TypeScript gates, skills, supportability, or recursive proof fails.
 
-## §7 | Evaluate upstream Claudian after the owned pilot
+## §7 | Historical external project — compare the upstream base
 
 - [x] **DSET-TASK-GOV-035:** Treat upstream Claudian as a read-only clean-room fixture first; do not push DSET artifacts to an upstream-owned remote during evaluation.
 - [x] **DSET-TASK-TOOL-034:** Re-run initialization, registry resolution, documentation classification, and candidate TypeScript gates against a pinned clean upstream revision.
@@ -181,11 +188,13 @@ roadmap does not redeclare their IDs or assertions. The active Change selects
 and executes its applicable set in its separate
 [test plan](../dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/test-plan.md).
 
-The implemented §0–§4 subset has current local proof. Remaining platform,
-release, hosted, TypeScript, migration, pilot, and distribution tests stay open
-through `DSET-TASK-TOOL-008..009`, `DSET-TASK-SKILL-020`,
-`DSET-TASK-TOOL-036..037`, and `DSET-TASK-OPS-025` in the active Change; an
-unchecked roadmap item never becomes a competing Test definition.
+The implemented DSET-only subset has current local proof. Remaining platform,
+release, hosted, and distribution tests stay open through
+`DSET-TASK-TOOL-008..009`, `DSET-TASK-SKILL-020`,
+`DSET-TASK-TOOL-036..037`, and `DSET-TASK-OPS-025` in the active Change.
+TypeScript, migration, and pilot work in §§5–§7 is historical external-project
+work and is not an active DSET `0.4` gate. An unchecked roadmap item never
+becomes a competing Test definition.
 
 ## §9 | Qualitative eval plan
 
@@ -194,10 +203,11 @@ Accepted qualitative criteria are owned by the layer plans under
 only execution and evidence for its selected set in its separate
 [eval plan](../dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/eval-plan.md).
 
-Independent rule-following, navigation, diagnostic, platform, release,
-TypeScript, migration, supportability, pilot, and clean-room reviews remain
-pending where the active verification matrix says so. They are eval work, not
-duplicate roadmap-owned Eval entities and not deterministic test substitutes.
+Independent rule-following, navigation, diagnostic, platform, release, and
+supportability reviews remain pending where the active verification matrix says
+so. Historical TypeScript, migration, pilot, and clean-room reviews belong to
+their external projects. They are eval work, not duplicate roadmap-owned Eval
+entities and not deterministic test substitutes.
 
 ## §10 | Distribution and release
 
@@ -216,7 +226,11 @@ duplicate roadmap-owned Eval entities and not deterministic test substitutes.
 - [ ] **DSET-TASK-OPS-023:** Require green framework self-hosting and green Your Harness hosted verification before marking `typescript-v1`, thin skills, or DSET 0.3 ready.
 - [ ] **DSET-TASK-OPS-024:** Reconcile accepted methodology and artifact contracts, archive through the implementing PR, and publish the final version mapping, release notes, pinned distribution identity, and migration guide.
 
-## Definition of done
+## Historical definition of done
+
+This checklist records the former `0.3` boundary and is not the active release
+gate. `DSET-SPECIFICATION-002` owns the current DSET-only `0.4` exit criteria;
+external-adopter rows below are preserved only as historical routing context.
 
 - [ ] The released validator checks the candidate change, and the candidate checks both this repository and one generated adopter.
 - [x] `dset/scopes/gov/governance.yaml`, its GOV-owned schema, resolver commands, stable diagnostics, distributed templates, and migrations are public and versioned; legacy central paths remain validated compatibility surfaces.
