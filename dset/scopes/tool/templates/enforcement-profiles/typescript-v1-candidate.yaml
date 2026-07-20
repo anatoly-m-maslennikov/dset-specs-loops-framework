@@ -1,0 +1,153 @@
+schema_version: "1.0"
+id: typescript-v1-candidate
+version: "0.1"
+status: candidate
+language_family: javascript-typescript
+
+evidence:
+  repository: https://github.com/anatoly-m-maslennikov/obsidian-your-harness
+  revision: 1c3ede2653245412d4d03067d5b20d9dd228298d
+  upstream_revision: 783df1ceb149ac9cd9a00a3444c3dadf83bbacf4
+  observed_on: 2026-07-20
+  license: MIT
+
+toolchain:
+  runtime: node
+  runtime_range: ">=24 <25"
+  package_manager: npm
+  lockfile: package-lock.json
+  scripts:
+    typecheck: tsc --noEmit
+    lint: 'eslint "{src,tests}/**/*.ts"'
+    test: node scripts/run-jest.js
+    build: node scripts/build.mjs production
+
+scope:
+  source_roots:
+    - src
+  test_roots:
+    - tests
+  required_files:
+    - package.json
+    - package-lock.json
+    - tsconfig.json
+    - eslint.config.mjs
+    - jest.config.js
+    - esbuild.config.mjs
+  generated_outputs:
+    - main.js
+    - styles.css
+    - coverage
+    - dist
+  exclusions:
+    - node_modules
+    - coverage
+    - dist
+    - main.js
+
+observed:
+  file_counts:
+    source_typescript: 348
+    test_typescript: 254
+    lint_files: 602
+  hard_failures:
+    typecheck: 1
+    lint: 3
+    product_tests: 3
+  notes:
+    - Restricted-host filesystem and socket failures are environment evidence, not product baselines.
+    - Production build must run without copying into a live vault.
+
+warning_baseline:
+  revision: 1c3ede2653245412d4d03067d5b20d9dd228298d
+  policy: shrink-only
+  error_count: 0
+  warning_count: 203
+  rules:
+    complexity: 136
+    max-lines-per-function: 63
+    obsidianmd-ui-sentence-case: 4
+
+canonical_sequence:
+  - npm run typecheck
+  - npm run lint
+  - npm test -- --runInBand
+  - npm run build
+  - python -m dset_toolchain check .
+  - python -m dset_toolchain trace . --check
+  - git diff --check
+
+gates:
+  -
+    id: conformance
+    status: ratcheted
+    owner: eslint.config.mjs
+    commands:
+      - npm run lint
+    mechanism: ESLint complexity and max-lines-per-function warnings plus hard syntax/style rules
+    thresholds:
+      max_lines_per_function: 80
+      complexity: 15
+  -
+    id: purity
+    status: enforced
+    owner: eslint.config.mjs
+    commands:
+      - npm run lint
+    mechanism: Syntax-aware no-restricted-imports boundaries for core, providers, services, features, and UI
+    thresholds: {}
+  -
+    id: spec_sync
+    status: blocked
+    owner: project-local DSET governance
+    commands:
+      - python -m dset_toolchain check .
+      - python -m dset_toolchain trace . --check
+    mechanism: DSET structural, ownership, compiled-truth, and trace freshness checks
+    thresholds: {}
+    reason: The pinned pilot has not materialized its repository-local DSET control plane.
+  -
+    id: typing_contracts
+    status: enforced
+    owner: tsconfig.json
+    commands:
+      - npm run typecheck
+    mechanism: TypeScript noEmit compiler gate with explicit boundary schemas and tests
+    thresholds:
+      hard_errors: 0
+  -
+    id: lint_static_analysis
+    status: ratcheted
+    owner: eslint.config.mjs
+    commands:
+      - npm run lint
+    mechanism: ESLint flat config, TypeScript rules, Jest rules, Obsidian rules, import sorting, and warning ratchet
+    thresholds:
+      hard_errors: 0
+      warning_baseline: 203
+  -
+    id: secret_hygiene
+    status: blocked
+    owner: project-local build and supportability governance
+    commands: []
+    mechanism: Dedicated tracked-source secret scan plus redaction and environment-boundary tests
+    thresholds: {}
+    reason: The pinned pilot has ignore rules but no dedicated executable secret scanner.
+
+known_blockers:
+  - OYOHA-TYPECHECK-001
+  - OYOHA-LINT-001
+  - OYOHA-TEST-001
+  - OYOHA-DSET-001
+  - OYOHA-SECRET-001
+  - OYOHA-HOSTED-001
+
+promotion:
+  target_id: typescript-v1
+  requires:
+    - Owned pilot local canonical sequence passes at one exact revision.
+    - Required hosted operating-system checks pass at that revision.
+    - Secret hygiene and DSET spec-sync gates are enforced.
+    - Warning ratchet does not grow and hard-error baselines remain zero.
+    - Clean upstream evaluation separates language defaults from product rules.
+    - Independent qualitative evaluation is reconciled without blockers.

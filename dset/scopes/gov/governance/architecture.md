@@ -194,4 +194,6 @@ release. A commit contributes implementation edges through its `Implements:`
 trailers. The relation is neutral: child content states whether it implements,
 refines, replaces, cancels, verifies, or reveals a problem in its parent.
 Unresolved parent IDs, non-list or empty `child_of`, duplicate parents,
-self-links, authored `parent_to`, and cycles fail closed.
+self-links, authored `parent_to`, and cycles fail closed in the active graph.
+An explicitly absorbed immutable predecessor retains its authored lineage as
+history but no longer participates in active relational validation.

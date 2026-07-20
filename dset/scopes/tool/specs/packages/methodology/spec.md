@@ -109,3 +109,23 @@ priority. An active Decision/spec fixture selects the Decision and emits a
 stale-projection/recompile disposition; a Test/spec fixture emits an
 assurance-change disposition rather than selecting the Test. A successor atom
 beats an absorbed predecessor by lifecycle relation rather than age.
+
+## DSET-REQUIREMENT-TOOL-021 — TypeScript enforcement starts as an evidence-derived candidate
+
+DSET must distribute an executable `typescript-v1-candidate` profile derived
+from an exact owned Your Harness revision. It maps all six language-neutral
+gate categories to observed TypeScript-native commands, scopes, thresholds,
+layer rules, outputs, lockfile policy, secret hygiene, and test/source
+boundaries. Hard failures remain failures. Only advisory warnings may enter a
+revision-bound non-growing baseline.
+
+The profile must record exact repository, revision, upstream revision, license,
+tool and script identities, file populations, exclusions, known blockers, and
+promotion criteria. It remains candidate until the owned pilot passes its
+complete local and required hosted proof. Product-specific behavior and
+governance never become language defaults.
+
+**Scenario DSET-SCENARIO-TOOL-021:** The pinned pilot has known lint and typing
+failures plus advisory complexity warnings. Target inspection reports the hard
+failures as blockers, accepts only the warning counts as a shrink-only ratchet,
+and rejects promotion to `typescript-v1` until the pilot is green.

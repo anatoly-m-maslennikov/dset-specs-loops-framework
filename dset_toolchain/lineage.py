@@ -7,9 +7,11 @@ from pathlib import Path
 from typing import Any
 
 from .diagnostics import Diagnostic
-from .yaml_subset import YamlSubsetError, loads
+from .layout import discover_layout
+from .yaml_subset import YamlSubsetError, load, loads
 
 ID_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
+INACTIVE_EVENTS = frozenset({"absorbed", "rejected", "retired", "withdrawn"})
 IGNORED_PARTS = frozenset(
     {
         ".git",
@@ -50,6 +52,7 @@ def collect_artifact_lineage(
     aliases: dict[str, str] = {}
     alias_paths: dict[str, Path] = {}
     diagnostics: list[Diagnostic] = []
+    inactive = _inactive_semantic_ids(root)
 
     for path in sorted(root.rglob("*.md")):
         relative = path.relative_to(root)
@@ -112,22 +115,28 @@ def collect_artifact_lineage(
         for parent in raw.child_of:
             canonical = aliases.get(parent)
             if canonical is None:
-                diagnostics.append(
-                    Diagnostic(
-                        "DSET-E158",
-                        raw.path,
-                        f"unresolved child_of ID: {parent}",
+                if raw.id not in inactive:
+                    diagnostics.append(
+                        Diagnostic(
+                            "DSET-E158",
+                            raw.path,
+                            f"unresolved child_of ID: {parent}",
+                        )
                     )
-                )
+                else:
+                    canonical_parents.append(parent)
                 continue
             if canonical == raw.id:
-                diagnostics.append(
-                    Diagnostic(
-                        "DSET-E158",
-                        raw.path,
-                        f"artifact cannot be child_of itself: {parent}",
+                if raw.id not in inactive:
+                    diagnostics.append(
+                        Diagnostic(
+                            "DSET-E158",
+                            raw.path,
+                            f"artifact cannot be child_of itself: {parent}",
+                        )
                     )
-                )
+                else:
+                    canonical_parents.append(canonical)
                 continue
             canonical_parents.append(canonical)
         nodes[raw.id] = LineageNode(
@@ -137,7 +146,7 @@ def collect_artifact_lineage(
             child_of=tuple(canonical_parents),
         )
 
-    diagnostics.extend(_cycle_diagnostics(root, nodes))
+    diagnostics.extend(_cycle_diagnostics(root, nodes, inactive))
     return nodes, sorted(set(diagnostics))
 
 
@@ -273,7 +282,11 @@ def _validate_parent_list(
     return tuple(dict.fromkeys(parents))
 
 
-def _cycle_diagnostics(root: Path, nodes: dict[str, LineageNode]) -> list[Diagnostic]:
+def _cycle_diagnostics(
+    root: Path,
+    nodes: dict[str, LineageNode],
+    inactive: set[str],
+) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     state: dict[str, int] = {}
     reported: set[str] = set()
@@ -299,11 +312,35 @@ def _cycle_diagnostics(root: Path, nodes: dict[str, LineageNode]) -> list[Diagno
         state[identifier] = 1
         stack.append(identifier)
         for parent in nodes[identifier].child_of:
-            if parent in nodes:
+            if parent in nodes and parent not in inactive:
                 visit(parent, stack)
         stack.pop()
         state[identifier] = 2
 
-    for identifier in sorted(nodes):
+    for identifier in sorted(set(nodes) - inactive):
         visit(identifier, [])
     return diagnostics
+
+
+def _inactive_semantic_ids(root: Path) -> set[str]:
+    """Return atoms removed from the active graph by append-only lifecycle."""
+
+    path = discover_layout(root).governance_root / "lifecycle.yaml"
+    if not path.is_file():
+        return set()
+    try:
+        data = load(path)
+    except (OSError, UnicodeError, YamlSubsetError):
+        return set()
+    events = data.get("events", []) if isinstance(data, dict) else []
+    current: dict[str, str] = {}
+    for event in events:
+        if not isinstance(event, dict) or event.get("event") == "priority_changed":
+            continue
+        atom_id = event.get("atom_id")
+        kind = event.get("event")
+        if isinstance(atom_id, str) and isinstance(kind, str):
+            current[atom_id] = kind
+    return {
+        identifier for identifier, kind in current.items() if kind in INACTIVE_EVENTS
+    }

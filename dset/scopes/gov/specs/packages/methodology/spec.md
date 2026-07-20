@@ -638,8 +638,12 @@ authority and asserts no agreement. Commit `Implements:` trailers contribute
 implementation edges to the derived graph.
 
 Unresolved parent IDs, an empty or non-list `child_of`, duplicate parents,
-self-links, and cycles must fail closed. The derived graph must expose both
-directions without writing reverse links into canonical artifacts.
+self-links, and cycles must fail closed in the active graph. When an immutable
+predecessor was sealed with an invalid relationship, a valid successor and an
+explicit absorption event remove that predecessor from active relational
+validation while preserving the authored relationship as historical data.
+The derived graph must expose both directions without writing reverse links
+into canonical artifacts.
 
 **Scenario DSET-SCENARIO-GOV-035:** One APP-PLAN emits a Requirement, a
 Constraint, and a Question. A Test is `child_of` both the Requirement and

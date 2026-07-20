@@ -26,6 +26,11 @@ from .conflicts import (
 )
 from .dependencies import dependency_summary
 from .diagnostics import Diagnostic
+from .enforcement_profiles import (
+    inspect_target,
+    resolve_profile_path,
+    validate_profile_file,
+)
 from .errors import DsetCommandError
 from .external_review import (
     create_review_packet,
@@ -95,6 +100,18 @@ def build_parser() -> argparse.ArgumentParser:
     verify = commands.add_parser("verify", help="run all configured gates")
     _root_argument(verify)
     verify.add_argument("--format", choices=["text", "json"], default="text")
+
+    profile = commands.add_parser(
+        "profile", help="validate an applied enforcement profile"
+    )
+    profile_commands = profile.add_subparsers(dest="profile_command", required=True)
+    profile_check = profile_commands.add_parser(
+        "check", help="inspect a profile and pinned target without executing it"
+    )
+    _root_argument(profile_check)
+    profile_check.add_argument("--profile", required=True, dest="profile_id")
+    profile_check.add_argument("--target", type=Path)
+    profile_check.add_argument("--format", choices=["text", "json"], default="text")
 
     new = commands.add_parser("new", help="create a change from templates")
     new.add_argument("change_id")
@@ -368,6 +385,29 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "verify":
             root = _repository_root(args.root)
             return _report(verify_repository(root), root, args.format)
+        if args.command == "profile":
+            root = _repository_root(args.root)
+            profile_path = resolve_profile_path(root, args.profile_id)
+            profile_data, diagnostics = validate_profile_file(profile_path)
+            target = root if args.target is None else args.target
+            if diagnostics:
+                return _report(diagnostics, root, args.format)
+            if profile_data.get("id") != args.profile_id:
+                raise ValueError("profile ID does not match the selected name")
+            inspection = inspect_target(profile_path, profile_data, target)
+            if args.format == "json":
+                print(json.dumps(inspection, indent=2, sort_keys=True))
+            else:
+                print(
+                    f"PROFILE {inspection['profile']} "
+                    f"status={inspection['profile_status']}"
+                )
+                print(f"target_revision={inspection['target_revision']}")
+                print(f"file_counts={inspection['file_counts']}")
+                print(f"known_blockers={len(inspection['known_blockers'])}")
+                for diagnostic in inspection["diagnostics"]:
+                    print(diagnostic)
+            return 0 if not inspection["diagnostics"] else 1
         if args.command == "new":
             root = _repository_root(args.root)
             path = create_change(

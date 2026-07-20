@@ -8,7 +8,7 @@ events:
     related:
       - DSET-DECISION-GOV-010
     llm_session_ids:
-      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: The accepted core-v1 priority Decision answers the open scale question without rewriting the legacy intake carrier.
   -
     id: DSET-LIFECYCLE-EVENT-002
@@ -18,7 +18,7 @@ events:
     related:
       - DSET-DECISION-GOV-005
     llm_session_ids:
-      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: Preserve the already-declared full absorption as append-only lifecycle state.
   -
     id: DSET-LIFECYCLE-EVENT-003
@@ -28,7 +28,7 @@ events:
     related:
       - DSET-DECISION-GOV-008
     llm_session_ids:
-      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: Preserve the FPF boundary Decision's declared full absorption without editing either Decision carrier.
   -
     id: DSET-LIFECYCLE-EVENT-004
@@ -38,7 +38,7 @@ events:
     related:
       - DSET-REQUIREMENT-TOOL-018
     llm_session_ids:
-      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: The deterministic Markdown health model, renderer, explicit refresh, staleness check, drill-downs, and coverage fixtures now exist.
   -
     id: DSET-LIFECYCLE-EVENT-005
@@ -48,7 +48,7 @@ events:
     related:
       - DSET-REQUIREMENT-GOV-025
     llm_session_ids:
-      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: DSET now generates exact read-only packets, validates mandatory report envelopes with free-form bodies, and reconciles every stable finding explicitly without authorizing repair.
   -
     id: DSET-LIFECYCLE-EVENT-006
@@ -58,7 +58,7 @@ events:
     related:
       - DSET-DECISION-GOV-006
     llm_session_ids:
-      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: Preserve the accepted full absorption without editing either Decision carrier.
   -
     id: DSET-LIFECYCLE-EVENT-007
@@ -68,7 +68,7 @@ events:
     related:
       - DSET-DECISION-GOV-007
     llm_session_ids:
-      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: Preserve the accepted full absorption without editing either Decision carrier.
   -
     id: DSET-LIFECYCLE-EVENT-008
@@ -78,7 +78,7 @@ events:
     related:
       - DSET-DECISION-OPS-002
     llm_session_ids:
-      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: Preserve the accepted full absorption without editing either Decision carrier.
   -
     id: DSET-LIFECYCLE-EVENT-009
@@ -88,7 +88,7 @@ events:
     related:
       - DSET-DECISION-OPS-003
     llm_session_ids:
-      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: Preserve the accepted full absorption without editing either Decision carrier.
   -
     id: DSET-LIFECYCLE-EVENT-010
@@ -98,7 +98,7 @@ events:
     related:
       - DSET-DECISION-OPS-004
     llm_session_ids:
-      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: Preserve the accepted full absorption without editing either Decision carrier.
   -
     id: DSET-LIFECYCLE-EVENT-011
@@ -110,7 +110,7 @@ events:
       - DSET-REQUIREMENT-GOV-021
       - DSET-REQUIREMENT-GOV-023
     llm_session_ids:
-      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: Immutable source registration, append-only lifecycle state, absorption, compilation, and freshness enforcement are now executable and covered.
   -
     id: DSET-LIFECYCLE-EVENT-012
@@ -122,7 +122,7 @@ events:
       - DSET-DECISION-GOV-010
       - DSET-REQUIREMENT-TOOL-019
     llm_session_ids:
-      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: Role-aware classification, guarded Conflict emission, result invalidation, lifecycle events, archive lookup, and derived-view propagation are executable and covered.
   -
     id: DSET-LIFECYCLE-EVENT-013
@@ -133,5 +133,35 @@ events:
       - DSET-DECISION-GOV-008
       - DSET-REQUIREMENT-GOV-027
     llm_session_ids:
-      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: Native atom enforcement and compatibility-preserving legacy classification now share one flat four-Type runtime across validation, traceability, health, and skill routing.
+  -
+    id: DSET-LIFECYCLE-EVENT-014
+    atom_id: DSET-REQUIREMENT-TOOL-020
+    event: absorbed
+    occurred_at: 2026-07-20T12:00:00+04:00
+    related:
+      - DSET-REQUIREMENT-TOOL-021
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: The successor preserves the claim while removing an invalid immediate lineage edge to a compatibility-classified legacy Decision carrier.
+  -
+    id: DSET-LIFECYCLE-EVENT-015
+    atom_id: DSET-TEST-TOOL-020
+    event: absorbed
+    occurred_at: 2026-07-20T12:01:00+04:00
+    related:
+      - DSET-TEST-TOOL-021
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: The successor attaches deterministic proof to the corrected active Requirement lineage.
+  -
+    id: DSET-LIFECYCLE-EVENT-016
+    atom_id: DSET-EVALUATION-TOOL-002
+    event: absorbed
+    occurred_at: 2026-07-20T12:02:00+04:00
+    related:
+      - DSET-EVALUATION-TOOL-003
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: The successor attaches qualitative proof to the corrected active Requirement lineage.

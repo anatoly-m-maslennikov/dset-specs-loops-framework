@@ -149,9 +149,22 @@ With this seam, `ask_json(prompt, schema=Reminder)` retains `Reminder` at the ca
 
 </details>
 
-### §6.2 | JavaScript/TypeScript — pending evidence
+### §6.2 | JavaScript/TypeScript candidate — evidence captured
 
-¶1 No JavaScript/TypeScript tool choice or threshold is normative yet. The profile will be derived from the real architecture, package boundaries, scripts, compiler settings, lint rules, tests, and failure history of `obsidian-your-harness`. The resulting profile must fill the same six-row mapping as Python v1 and record which observed failures each gate prevents. Candidate tools may be evaluated, but their presence here would not make them a standard before that evidence pass.
+¶1 `DSET-REQUIREMENT-TOOL-021` owns the executable
+`typescript-v1-candidate` profile. Its evidence is pinned to the owned Your
+Harness revision named in the profile rather than inferred from generic Node
+practice. The candidate maps all six categories to the repository's actual
+TypeScript compiler, ESLint rules, Jest projects, esbuild production build,
+package lock, source/test paths, generated outputs, and provider/core/feature
+boundaries.
+
+Hard failures are never baselined. Advisory warnings may use a revision-bound
+non-growing count by rule until removed. Product names, Obsidian behavior,
+provider capabilities, vault storage, and local UI conventions remain adopter
+governance, not language-profile defaults. The candidate becomes
+`typescript-v1` only after the owned pilot and required hosted proof are green;
+until then its status and blocker list remain visible.
 
 ## §7 | Agent ergonomics
 

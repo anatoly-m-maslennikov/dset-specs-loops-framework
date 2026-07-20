@@ -59,6 +59,12 @@ canonical ID registry updates the location so references still resolve. Partial
 absorption never qualifies. Archived atoms remain immutable history and are
 never deleted merely because they are inactive.
 
+Lifecycle absorption is also the repair mechanism when a sealed atom contains
+an invalid relationship that cannot be edited. The absorbing successor must
+pass the complete current-lineage gate. The inactive predecessor retains its
+authored relationship as historical data, but that relationship no longer
+participates in active unresolved-parent, self-link, or cycle gates.
+
 The executable boundary is explicit:
 
 ```text
