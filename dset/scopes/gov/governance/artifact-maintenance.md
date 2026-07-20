@@ -64,7 +64,9 @@ The executable boundary is explicit:
 ```text
 dset atom seal ROOT --file ATOM.md
 dset atom event ROOT --candidate EVENT.json
-dset conflict ROOT --candidate CONFLICT.json
+dset atom archive ROOT --id SEMANTIC-ID
+dset conflict ROOT --candidate CONFLICT.json --emit CONFLICT.md
+dset conflict ROOT --candidate CONFLICT.json --check-result RESULT.json
 dset compile ROOT --write
 ```
 
@@ -74,7 +76,14 @@ registered location drift. Lifecycle writes append unique events and reject
 unresolved targets or absorption cycles. Conflict resolution classifies role
 and applicability before consulting explicit precedence or effective priority;
 it reports whether a first-class open Conflict atom and later resolution event
-are required, but never edits an atom.
+are required, but never edits an atom. Explicit emission creates and seals one
+`question/conflict` atom whose `child_of` lineage names both incompatible
+parties. A separate append-only lifecycle event records its later resolution.
+Recorded dispositions bind the effective priority values and sources, context,
+precedence, and profile scale; check mode rejects them when that basis changes.
+An explicitly retired atom with no active child reliance may move byte-for-byte
+to its adjacent `archive/` folder while the digest-bound canonical registry
+updates only its lookup path.
 
 Compilation generates a digest-bound index from every active authority source
 to one or more evergreen governing projections. `dset compile ROOT --check`

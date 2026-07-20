@@ -79,6 +79,11 @@ class TraceabilityTests(unittest.TestCase):
                 for item in trace["implementation_edges"]
             )
         )
+        atoms = {item["id"]: item for item in trace["semantic_atoms"]}
+        self.assertEqual(atoms["DSET-DECISION-GOV-010"]["type"], "decision")
+        self.assertEqual(atoms["DSET-DECISION-GOV-010"]["priority"], "high")
+        self.assertEqual(atoms["DSET-DECISION-GOV-010"]["current_status"], "accepted")
+        self.assertFalse(atoms["DSET-DECISION-GOV-010"]["archived"])
 
     def test_write_is_stable_and_checkable(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

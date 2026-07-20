@@ -194,6 +194,115 @@ def effective_priority(root: Path, atom: SemanticAtom) -> tuple[str, str]:
     return atom.priority, f"atom:{atom.semantic_id}"
 
 
+def build_semantic_atom_index(root: Path) -> list[dict[str, Any]]:
+    """Build current atom/lifecycle/priority/archive lookup for derived views."""
+    atoms, diagnostics = collect_semantic_atoms(root)
+    if diagnostics:
+        raise ValueError(diagnostics[0].message)
+    events = _lifecycle_events(root)
+    rows: list[dict[str, Any]] = []
+    for atom in atoms.values():
+        atom_events = [
+            event for event in events if event.get("atom_id") == atom.semantic_id
+        ]
+        priority, priority_source = effective_priority(root, atom)
+        absorbed_by = [
+            str(event["related"][0])
+            for event in atom_events
+            if event.get("event") == "absorbed"
+            and isinstance(event.get("related"), list)
+            and event["related"]
+        ]
+        rows.append(
+            {
+                "id": atom.semantic_id,
+                "carrier_id": atom.carrier_id,
+                "path": atom.path,
+                "sha256": atom.sha256,
+                "type": atom.semantic_type,
+                "subtype": atom.subtype or "none",
+                "emission_status": atom.emission_status,
+                "current_status": _current_status(atom, atom_events),
+                "priority": priority,
+                "priority_source": priority_source,
+                "child_of": list(atom.child_of),
+                "lifecycle_events": [str(event["id"]) for event in atom_events],
+                "absorbed_by": absorbed_by,
+                "archived": "archive" in Path(atom.path).parts,
+            }
+        )
+    return sorted(rows, key=lambda item: str(item["id"]))
+
+
+def archive_atom(root: Path, semantic_id: str) -> Path:
+    """Move a fully retired atom byte-for-byte and update canonical lookup."""
+    root = root.resolve()
+    atoms, diagnostics = collect_semantic_atoms(root)
+    if diagnostics:
+        raise ValueError(diagnostics[0].message)
+    atom = atoms.get(semantic_id)
+    if atom is None:
+        raise ValueError(f"unknown semantic atom: {semantic_id}")
+    source = root / atom.path
+    if "archive" in source.relative_to(root).parts:
+        raise ValueError(f"semantic atom is already archived: {semantic_id}")
+    events = _lifecycle_events(root)
+    atom_events = [event for event in events if event.get("atom_id") == semantic_id]
+    if _current_status(atom, atom_events) != "retired":
+        raise ValueError("semantic atom must be explicitly retired before archival")
+    active_dependants = [
+        candidate.semantic_id
+        for candidate in atoms.values()
+        if semantic_id in candidate.child_of
+        and _current_status(
+            candidate,
+            [
+                event
+                for event in events
+                if event.get("atom_id") == candidate.semantic_id
+            ],
+        )
+        not in {"absorbed", "rejected", "retired", "withdrawn"}
+    ]
+    if active_dependants:
+        raise ValueError(
+            "semantic atom has active child reliance: "
+            + ", ".join(sorted(active_dependants))
+        )
+
+    destination = source.parent / "archive" / source.name
+    if destination.exists():
+        raise FileExistsError(f"atom archive destination exists: {destination}")
+    ledger_path = _ledger_path(root)
+    ledger = _load_or_empty(ledger_path, "records")
+    records = ledger["records"]
+    assert isinstance(records, list)
+    record = next(
+        (
+            item
+            for item in records
+            if isinstance(item, dict) and item.get("semantic_id") == semantic_id
+        ),
+        None,
+    )
+    if record is None or record.get("sha256") != atom.sha256:
+        raise ValueError("atom archive requires a current digest-bound ledger record")
+    updated = dict(record)
+    updated["path"] = destination.relative_to(root).as_posix()
+    records[records.index(record)] = updated
+    temporary = ledger_path.with_suffix(ledger_path.suffix + ".tmp")
+    temporary.write_text(dump(ledger), encoding="utf-8")
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    source.replace(destination)
+    try:
+        temporary.replace(ledger_path)
+    except Exception:
+        destination.replace(source)
+        temporary.unlink(missing_ok=True)
+        raise
+    return destination
+
+
 def _parse_atom(
     root: Path,
     path: Path,
@@ -472,6 +581,28 @@ def _validate_ledger(root: Path, atoms: dict[str, SemanticAtom]) -> list[Diagnos
                 Diagnostic("DSET-E161", path, f"sealed atom is missing: {identifier}")
             )
     return diagnostics
+
+
+def _lifecycle_events(root: Path) -> list[dict[str, Any]]:
+    path = _lifecycle_path(root)
+    if not path.is_file():
+        return []
+    data = load(path)
+    values = data.get("events", []) if isinstance(data, dict) else []
+    return [item for item in values if isinstance(item, dict)]
+
+
+def _current_status(atom: SemanticAtom, events: list[dict[str, Any]]) -> str:
+    status = atom.emission_status
+    for event in events:
+        kind = event.get("event")
+        if kind == "priority_changed":
+            continue
+        if kind == "accepted":
+            status = "accepted"
+        elif isinstance(kind, str):
+            status = kind
+    return status
 
 
 def _ledger_record(atom: SemanticAtom) -> dict[str, Any]:

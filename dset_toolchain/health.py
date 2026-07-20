@@ -129,6 +129,13 @@ def build_health_model(root: Path) -> dict[str, Any]:
         if event.get("event") == "resolved"
         and "CONFLICT" in str(event.get("atom_id", "")).split("-")
     ]
+    open_conflicts = [
+        row
+        for row in atom_rows
+        if row["subtype"] == "conflict"
+        and row["status"]
+        not in {"answered", "resolved", "rejected", "retired", "withdrawn"}
+    ]
     return {
         "schema_version": "1.0",
         "source_digest": _source_digest(root),
@@ -143,6 +150,7 @@ def build_health_model(root: Path) -> dict[str, Any]:
         },
         "atoms": sorted(atom_rows, key=lambda item: str(item["id"])),
         "unresolved": unresolved,
+        "open_conflicts": sorted(open_conflicts, key=lambda item: str(item["id"])),
         "resolved_conflicts": resolved_conflicts,
         "coverage": [compiled, implemented, qa_coverage, proof_coverage],
         "packages": packages,
@@ -225,6 +233,26 @@ def render_health(root: Path) -> str:
             subtype = f"/{item['subtype']}" if item["subtype"] else ""
             lines.append(
                 f"- [`{item['id']}`]({link}) — {item['type']}{subtype}: {item['title']}"
+            )
+    else:
+        lines.append("- None")
+    lines.extend(["", "## Open Conflicts", ""])
+    if model["open_conflicts"]:
+        for item in model["open_conflicts"]:
+            link = _link(root, output_dir, str(item["path"]))
+            lines.append(
+                f"- [`{item['id']}`]({link}) — {item['status']}; priority "
+                f"`{item['priority']}` from `{item['priority_source']}`"
+            )
+    else:
+        lines.append("- None")
+    lines.extend(["", "## Conflict outcomes", ""])
+    if model["resolved_conflicts"]:
+        for event in model["resolved_conflicts"]:
+            related = ", ".join(f"`{item}`" for item in event.get("related", []))
+            lines.append(
+                f"- `{event['atom_id']}` resolved by `{event['id']}`"
+                + (f"; related: {related}" if related else "")
             )
     else:
         lines.append("- None")

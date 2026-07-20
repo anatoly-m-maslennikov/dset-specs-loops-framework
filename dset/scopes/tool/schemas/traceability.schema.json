@@ -3,7 +3,7 @@
   "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/scopes/tool/schemas/traceability.schema.json",
   "title": "DSET traceability index",
   "type": "object",
-  "required": ["schema_version", "repository", "changes", "lineage", "implementation_edges"],
+  "required": ["schema_version", "repository", "changes", "semantic_atoms", "lineage", "implementation_edges"],
   "properties": {
     "schema_version": {"enum": [1.1, "1.2"]},
     "repository": {"type": "string"},
@@ -40,6 +40,10 @@
     "lineage": {
       "type": "array",
       "items": {"$ref": "#/$defs/lineage_node"}
+    },
+    "semantic_atoms": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/semantic_atom"}
     },
     "implementation_edges": {
       "type": "array",
@@ -79,6 +83,27 @@
         "path": {"type": "string", "minLength": 1},
         "child_of": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/lineage_id"}},
         "parent_to": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/lineage_id"}}
+      },
+      "additionalProperties": false
+    },
+    "semantic_atom": {
+      "type": "object",
+      "required": ["id", "carrier_id", "path", "sha256", "type", "subtype", "emission_status", "current_status", "priority", "priority_source", "child_of", "lifecycle_events", "absorbed_by", "archived"],
+      "properties": {
+        "id": {"$ref": "#/$defs/lineage_id"},
+        "carrier_id": {"$ref": "#/$defs/lineage_id"},
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "type": {"enum": ["decision", "question", "problem", "qa"]},
+        "subtype": {"enum": ["none", "requirement", "constraint", "contract", "user_story", "outcome", "scenario", "invariant", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
+        "emission_status": {"enum": ["proposed", "accepted"]},
+        "current_status": {"enum": ["proposed", "accepted", "answered", "absorbed", "confirmed", "reopened", "rejected", "resolved", "retired", "withdrawn"]},
+        "priority": {"enum": ["critical", "high", "medium", "low", "deferred", "unknown"]},
+        "priority_source": {"type": "string", "minLength": 1},
+        "child_of": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/lineage_id"}},
+        "lifecycle_events": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-LIFECYCLE-EVENT-[0-9]{3,}$"}},
+        "absorbed_by": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/lineage_id"}},
+        "archived": {"type": "boolean"}
       },
       "additionalProperties": false
     },

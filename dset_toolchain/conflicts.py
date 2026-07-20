@@ -6,8 +6,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from .semantic_atoms import collect_semantic_atoms, effective_priority
+from .artifact_emission import assess_artifact_candidate
+from .semantic_atoms import collect_semantic_atoms, effective_priority, seal_atom
 from .settings import load_project_settings
+from .yaml_subset import dump
 
 ROLES = frozenset(
     {
@@ -57,6 +59,15 @@ def resolve_conflict(root: Path, candidate: dict[str, Any]) -> dict[str, Any]:
         "context": context,
         "profile": "core-v1@0.3",
         "input_sha256": _input_digest(candidate),
+        "resolution_basis_sha256": _resolution_basis_digest(
+            left,
+            right,
+            context,
+            relation,
+            candidate.get("selectable"),
+            candidate.get("precedence"),
+            settings.priority_scale,
+        ),
         "conflict_atom_required": False,
         "selected_id": None,
         "resolution_event_required": False,
@@ -96,11 +107,23 @@ def resolve_conflict(root: Path, candidate: dict[str, Any]) -> dict[str, Any]:
             conflict_class="assurance_change",
             disposition="update_assurance_and_relying_gate",
         )
+    if not roles & AUTHORITY_ROLES and roles & ASSURANCE_ROLES:
+        return _result(
+            base,
+            conflict_class="assurance_change",
+            disposition="update_assurance_and_relying_gate",
+        )
     if "implementation" in roles and roles & AUTHORITY_ROLES:
         return _result(
             base,
             conflict_class="implementation_nonconformance",
             disposition="route_problem_defect",
+        )
+    if "implementation" in roles:
+        return _result(
+            base,
+            conflict_class="implementation_ownership",
+            disposition="follow_owner_or_stop",
         )
     if roles == {"evidence"}:
         return _result(
@@ -113,6 +136,18 @@ def resolve_conflict(root: Path, candidate: dict[str, Any]) -> dict[str, Any]:
             base,
             conflict_class="generated_staleness",
             disposition="refresh_derived_view",
+        )
+    if "evergreen_projection" in roles and not roles & AUTHORITY_ROLES:
+        return _result(
+            base,
+            conflict_class="projection_ownership",
+            disposition="route_source_conflict_or_recompile",
+        )
+    if "evergreen_projection" in roles:
+        return _result(
+            base,
+            conflict_class="projection_ownership",
+            disposition="declare_source_projection_relation_or_stop",
         )
     if left.external and left.immutable and not right.immutable:
         return _result(
@@ -167,9 +202,92 @@ def resolve_conflict(root: Path, candidate: dict[str, Any]) -> dict[str, Any]:
     )
 
 
-def write_conflict_result(
-    root: Path, path: Path, result: dict[str, Any]
-) -> Path:
+def conflict_result_is_fresh(
+    root: Path, candidate: dict[str, Any], recorded: dict[str, Any]
+) -> bool:
+    """Return whether a recorded disposition still matches current inputs."""
+    current = resolve_conflict(root, candidate)
+    return all(
+        recorded.get(field) == current.get(field)
+        for field in (
+            "input_sha256",
+            "resolution_basis_sha256",
+            "conflict_class",
+            "disposition",
+            "selected_id",
+            "conflict_atom_required",
+            "resolution_event_required",
+        )
+    )
+
+
+def emit_conflict_atom(
+    root: Path,
+    path: Path,
+    candidate: dict[str, Any],
+) -> tuple[Path, dict[str, Any]]:
+    """Emit and seal one first-class Conflict atom after strictness assessment."""
+    root = root.resolve()
+    path = path.resolve()
+    try:
+        path.relative_to(root)
+    except ValueError as error:
+        raise ValueError("conflict atom must be inside the repository") from error
+    if path.exists():
+        raise FileExistsError(f"conflict atom already exists: {path}")
+
+    result = resolve_conflict(root, candidate)
+    if result["conflict_atom_required"] is not True:
+        raise ValueError("classified incompatibility does not require a Conflict atom")
+    raw_atom = candidate.get("conflict_atom")
+    if not isinstance(raw_atom, dict):
+        raise ValueError("conflict candidate requires conflict_atom metadata")
+    atom = dict(raw_atom)
+    atom["type"] = "question"
+    atom["subtype"] = "conflict"
+    parents = [str(result["left"]["id"]), str(result["right"]["id"])]
+    if atom.get("material_links") != parents:
+        raise ValueError("conflict_atom material_links must equal the two party IDs")
+    if atom.get("lineage", parents) != parents:
+        raise ValueError("conflict_atom lineage must equal the two party IDs")
+    atom["lineage"] = parents
+    assessment = assess_artifact_candidate(root, atom)
+    if assessment["emission_allowed"] is not True:
+        questions = assessment.get("questions", [])
+        detail = "; ".join(str(item) for item in questions)
+        raise ValueError(
+            f"conflict atom emission is blocked: {detail or 'invalid candidate'}"
+        )
+
+    frontmatter: dict[str, Any] = {
+        "artifact_type": "atomic_record",
+        "artifact_id": _required_text(atom, "artifact_id"),
+        "type": "question",
+        "subtype": "conflict",
+        "semantic_id": _required_text(atom, "semantic_id"),
+        "status": _required_text(atom, "acceptance"),
+        "priority": _required_text(atom, "priority"),
+        "child_of": parents,
+        "llm_session_ids": atom.get("llm_session_ids"),
+    }
+    rationale = atom.get("rationale")
+    if rationale is not None:
+        frontmatter["rationale"] = rationale
+    claim = _required_text(atom, "claim")
+    body = _conflict_body(claim, result)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    temporary.write_text(f"---\n{dump(frontmatter)}---\n\n{body}", encoding="utf-8")
+    temporary.replace(path)
+    try:
+        seal_atom(root, path)
+    except Exception:
+        path.unlink(missing_ok=True)
+        raise
+    return path, result
+
+
+def write_conflict_result(root: Path, path: Path, result: dict[str, Any]) -> Path:
     root = root.resolve()
     path = path.resolve()
     try:
@@ -238,9 +356,7 @@ def _priority_winner(
     return left if left_rank < right_rank else right
 
 
-def _required_party_id(
-    value: object, left: ConflictParty, right: ConflictParty
-) -> str:
+def _required_party_id(value: object, left: ConflictParty, right: ConflictParty) -> str:
     if value not in {left.id, right.id}:
         raise ValueError("winner must identify one conflict party")
     return str(value)
@@ -283,3 +399,45 @@ def _result(
 def _input_digest(candidate: dict[str, Any]) -> str:
     encoded = json.dumps(candidate, sort_keys=True, separators=(",", ":")).encode()
     return hashlib.sha256(encoded).hexdigest()
+
+
+def _resolution_basis_digest(
+    left: ConflictParty,
+    right: ConflictParty,
+    context: dict[str, bool],
+    relation: object,
+    selectable: object,
+    precedence: object,
+    priority_scale: tuple[str, ...],
+) -> str:
+    basis = {
+        "left": _party_dict(left),
+        "right": _party_dict(right),
+        "context": context,
+        "relation": relation,
+        "selectable": selectable,
+        "precedence": precedence,
+        "priority_scale": list(priority_scale),
+    }
+    encoded = json.dumps(basis, sort_keys=True, separators=(",", ":")).encode()
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _required_text(candidate: dict[str, Any], field: str) -> str:
+    value = candidate.get(field)
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"conflict_atom requires {field}")
+    return value.strip()
+
+
+def _conflict_body(claim: str, result: dict[str, Any]) -> str:
+    return (
+        f"# Conflict\n\n{claim}\n\n"
+        "## Parties\n\n"
+        f"- `{result['left']['id']}`\n"
+        f"- `{result['right']['id']}`\n\n"
+        "## Initial classification\n\n"
+        f"- Class: `{result['conflict_class']}`\n"
+        f"- Disposition: `{result['disposition']}`\n"
+        f"- Resolution basis: `{result['resolution_basis_sha256']}`\n"
+    )

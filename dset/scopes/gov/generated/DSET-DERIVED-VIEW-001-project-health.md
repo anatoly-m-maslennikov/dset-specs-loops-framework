@@ -12,7 +12,7 @@ llm_session_ids: []
 > This generated view is not authority. Follow each link to its canonical
 > owner and refresh explicitly after source changes.
 
-- **Source digest:** `3ecc0a6fa004e3d4aaca55c55e37d166fa428934907aa23b35b0428764fb0a03`
+- **Source digest:** `210f64da22046507205ae90c77808017e004edc2d91136029698d05d4fd4df48`
 - **Renderer:** `dset health` schema 1.0
 
 ## Coverage
@@ -67,6 +67,14 @@ llm_session_ids: []
 - [`DSET-QUESTION-GOV-007`](../intake.yaml) — question: How strictly should external review reports be schema-enforced?
 - [`DSET-PROBLEM-TOOL-005`](../intake.yaml) — problem: Priority conflict resolver is not implemented
 - [`DSET-PROBLEM-GOV-007`](../intake.yaml) — problem: Canonical flat Type model is not schema-enforced
+
+## Open Conflicts
+
+- None
+
+## Conflict outcomes
+
+- None
 
 ## Drill-downs
 

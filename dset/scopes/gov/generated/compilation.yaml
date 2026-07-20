@@ -86,7 +86,7 @@ records:
     projections:
       -
         path: dset/scopes/gov/governance/artifact-maintenance.md
-        sha256: 63a8df71792d353608f3281d33fcadc7096eee8948b2dc75ceb2de8b9e2071de
+        sha256: 72d1d1bb08482ba6c3c599c77d50fdf5b04520cb6e2f67f180f4585001b12ee1
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
         sha256: 0a1aa5090732a9a37035fcde0cbad61a57a1aa33b18fa1a20ac184cf1fc2a934

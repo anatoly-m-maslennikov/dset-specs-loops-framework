@@ -18,7 +18,12 @@ from .compilation import (
     rendered_compilation,
     write_compilation,
 )
-from .conflicts import resolve_conflict, write_conflict_result
+from .conflicts import (
+    conflict_result_is_fresh,
+    emit_conflict_atom,
+    resolve_conflict,
+    write_conflict_result,
+)
 from .dependencies import dependency_summary
 from .diagnostics import Diagnostic
 from .errors import DsetCommandError
@@ -49,7 +54,7 @@ from .runtime_bridge import (
 )
 from .scaffold import create_change
 from .self_host import run_self_host
-from .semantic_atoms import append_lifecycle_event, seal_atom
+from .semantic_atoms import append_lifecycle_event, archive_atom, seal_atom
 from .skill_catalog import PUBLIC_SKILL_WORKFLOWS
 from .skill_distribution import main as skill_distribution_main
 from .traceability import (
@@ -198,13 +203,21 @@ def build_parser() -> argparse.ArgumentParser:
     )
     _root_argument(atom_event)
     atom_event.add_argument("--candidate", type=Path, required=True)
+    atom_archive = atom_commands.add_parser(
+        "archive", help="move a fully retired atom while preserving its lookup"
+    )
+    _root_argument(atom_archive)
+    atom_archive.add_argument("--id", required=True)
 
     conflict = commands.add_parser(
         "conflict", help="classify governed artifact incompatibilities"
     )
     _root_argument(conflict)
     conflict.add_argument("--candidate", type=Path, required=True)
-    conflict.add_argument("--output", type=Path)
+    conflict_mode = conflict.add_mutually_exclusive_group()
+    conflict_mode.add_argument("--output", type=Path)
+    conflict_mode.add_argument("--emit", type=Path)
+    conflict_mode.add_argument("--check-result", type=Path)
 
     health = commands.add_parser("health", help="render derived project health")
     _root_argument(health)
@@ -484,11 +497,13 @@ def main(argv: list[str] | None = None) -> int:
             root = _repository_root(args.root)
             if args.atom_command == "seal":
                 path = seal_atom(root, args.file)
-            else:
+            elif args.atom_command == "event":
                 event = json.loads(args.candidate.read_text(encoding="utf-8"))
                 if not isinstance(event, dict):
                     raise ValueError("lifecycle candidate must be a JSON object")
                 path = append_lifecycle_event(root, event)
+            else:
+                path = archive_atom(root, args.id)
             print(path.relative_to(root).as_posix())
             return 0
         if args.command == "conflict":
@@ -496,6 +511,19 @@ def main(argv: list[str] | None = None) -> int:
             candidate = json.loads(args.candidate.read_text(encoding="utf-8"))
             if not isinstance(candidate, dict):
                 raise ValueError("conflict candidate must be a JSON object")
+            if args.emit is not None:
+                path, _ = emit_conflict_atom(root, args.emit, candidate)
+                print(path.relative_to(root).as_posix())
+                return 0
+            if args.check_result is not None:
+                recorded = json.loads(args.check_result.read_text(encoding="utf-8"))
+                if not isinstance(recorded, dict):
+                    raise ValueError("recorded conflict result must be a JSON object")
+                if conflict_result_is_fresh(root, candidate, recorded):
+                    print("DSET conflict result is fresh")
+                    return 0
+                print("DSET-E165 recorded conflict result is stale")
+                return 1
             result = resolve_conflict(root, candidate)
             if args.output is not None:
                 path = write_conflict_result(root, args.output, result)

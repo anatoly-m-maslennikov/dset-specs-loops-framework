@@ -5,6 +5,7 @@ from typing import Any
 
 from .layout import discover_layout
 from .lineage import build_commit_implementation_edges, build_lineage_index
+from .semantic_atoms import build_semantic_atom_index
 from .yaml_subset import dump, load
 
 
@@ -85,6 +86,7 @@ def build_traceability(root: Path) -> dict[str, Any]:
         "schema_version": "1.2" if layout.layered else 1.1,
         "repository": history["repository"],
         "changes": changes,
+        "semantic_atoms": build_semantic_atom_index(root),
         "lineage": build_lineage_index(root),
         "implementation_edges": build_commit_implementation_edges(root),
     }

@@ -70,6 +70,9 @@ targets either the whole repository or one or more declared Work Areas.
 | `uv run dset trace . --write` | Regenerate deterministic relationship evidence |
 | `uv run dset health . --write` | Regenerate the portable project-health dashboard; use `--check` in gates |
 | `uv run dset dependencies .` | Enforce exact allow/deny, registry, version, license, provenance, lockfile, and exception policy |
+| `uv run dset conflict . --candidate <path> --emit <atom.md>` | Classify an incompatibility, apply the artifact gate, and emit a sealed Conflict atom only when required |
+| `uv run dset conflict . --candidate <path> --check-result <result.json>` | Reject a recorded disposition after party, context, precedence, or effective-priority drift |
+| `uv run dset atom archive . --id <semantic-id>` | Move an explicitly retired atom byte-for-byte while retaining canonical lookup |
 | `uv run dset review packet . --output <path> --packet-id <id> --artifact <path> --criterion <text> --scope <text>` | Bind an external review to exact inputs, commit, local rules, and read-only effects |
 | `uv run dset review validate . --packet <path> --report <path>` | Validate an independent report envelope while allowing a free-form findings body |
 | `uv run dset review reconcile . --packet <path> --report <path> --candidate <json>` | Require one explicit disposition per stable finding without authorizing repair |

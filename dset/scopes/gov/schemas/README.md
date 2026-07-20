@@ -13,6 +13,8 @@ Repository-governance schemas owned by GOV:
 - [Intake](intake.schema.json)
 - [Provenance](provenance.schema.json)
 - [Active authority compilation index](compilation.schema.json)
+- [Governed conflict candidate](conflict-candidate.schema.json)
+- [Governed conflict result](conflict-result.schema.json)
 - [External review packet](review-packet.schema.json)
 - [External review report](review-report.schema.json)
 - [External review reconciliation](review-reconciliation.schema.json)

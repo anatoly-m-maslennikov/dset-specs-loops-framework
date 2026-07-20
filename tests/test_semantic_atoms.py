@@ -8,6 +8,8 @@ from pathlib import Path
 from dset_toolchain.adopter import create_adopter
 from dset_toolchain.semantic_atoms import (
     append_lifecycle_event,
+    archive_atom,
+    build_semantic_atom_index,
     collect_semantic_atoms,
     seal_atom,
     validate_semantic_atoms,
@@ -33,6 +35,8 @@ class SemanticAtomTests(unittest.TestCase):
         schemas = (
             "atom.schema.json",
             "atom-ledger.schema.json",
+            "conflict-candidate.schema.json",
+            "conflict-result.schema.json",
             "lifecycle.schema.json",
         )
         for name in schemas:
@@ -105,6 +109,31 @@ class SemanticAtomTests(unittest.TestCase):
                 ),
             )
 
+    def test_retired_atom_moves_byte_for_byte_with_stable_lookup(self) -> None:
+        original = self._write_atom().encode()
+        seal_atom(self.root, self.atom_path)
+        append_lifecycle_event(
+            self.root,
+            {
+                "id": "DSET-LIFECYCLE-EVENT-001",
+                "atom_id": "DSET-CONTRACT-001",
+                "event": "retired",
+                "occurred_at": "2026-07-20T00:00:00+04:00",
+                "related": [],
+                "llm_session_ids": ["codex:test-session"],
+            },
+        )
+
+        archived = archive_atom(self.root, "DSET-CONTRACT-001")
+
+        self.assertEqual(archived.read_bytes(), original)
+        self.assertFalse(self.atom_path.exists())
+        self.assertEqual(validate_semantic_atoms(self.root), [])
+        row = build_semantic_atom_index(self.root)[0]
+        self.assertTrue(row["archived"])
+        self.assertEqual(row["current_status"], "retired")
+        self.assertEqual(row["path"], archived.relative_to(self.root).as_posix())
+
     def _write_atom(self) -> str:
         text = self._atom_text(
             carrier="DSET-ATOMIC-RECORD-001",
@@ -115,7 +144,7 @@ class SemanticAtomTests(unittest.TestCase):
 
     @staticmethod
     def _atom_text(*, carrier: str, semantic: str) -> str:
-        return f'''---
+        return f"""---
 artifact_type: atomic_record
 artifact_id: {carrier}
 type: decision
@@ -128,7 +157,7 @@ llm_session_ids:
 ---
 
 # Contract
-'''
+"""
 
     @staticmethod
     def _event(event_id: str, atom_id: str, successor: str) -> dict[str, object]:
