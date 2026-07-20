@@ -227,7 +227,7 @@ def _materialize_layered_manifest(
             release["policy"] = "dset/scopes/ops/governance/release.md"
         if "owner_change" in release:
             release["owner_change"] = stable_id
-    path.write_text(dump(data), encoding="utf-8")
+    path.write_text(dump(data, path), encoding="utf-8")
 
 
 def _workspace_for_change(

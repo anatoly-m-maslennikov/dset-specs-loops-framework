@@ -69,8 +69,8 @@ class RepositoryLayout:
     @property
     def manifest_path(self) -> Path:
         if self.layered:
-            return self.layer_root("meta") / "dset.yaml"
-        return self.dset_root / "dset.yaml"
+            return self.structured_file(self.layer_root("meta"), "dset.yaml")
+        return self.structured_file(self.dset_root, "dset.yaml")
 
     @property
     def governance_path(self) -> Path:
@@ -99,8 +99,10 @@ class RepositoryLayout:
     @property
     def traceability_path(self) -> Path:
         if self.layered:
-            return self.layer_root("gov") / "generated" / "traceability.yaml"
-        return self.dset_root / "traceability.yaml"
+            return self.structured_file(
+                self.layer_root("gov") / "generated", "traceability.yaml"
+            )
+        return self.structured_file(self.dset_root, "traceability.yaml")
 
     @property
     def migrations_root(self) -> Path:
@@ -120,7 +122,7 @@ class RepositoryLayout:
 
     @property
     def history_path(self) -> Path:
-        return self.history_root / "pull-requests.yaml"
+        return self.structured_file(self.history_root, "pull-requests.yaml")
 
     @property
     def supportability_root(self) -> Path:
@@ -181,8 +183,19 @@ class RepositoryLayout:
         fragments: list[Path] = []
         for root in self.package_roots:
             if root.is_dir():
-                fragments.extend(root.glob("*/package.yaml"))
+                for suffix in (".toml", ".yaml", ".yml"):
+                    fragments.extend(root.glob(f"*/package{suffix}"))
         return tuple(sorted(fragments))
+
+    @staticmethod
+    def structured_file(directory: Path, name: str) -> Path:
+        """Resolve an authority file, preferring TOML after cutover."""
+
+        legacy = directory / name
+        if legacy.suffix.lower() not in {".yaml", ".yml"}:
+            return legacy
+        toml = legacy.with_suffix(".toml")
+        return toml if toml.is_file() else legacy
 
     def active_change_root(self, layer: str | None = None) -> Path:
         if not self.layered:
@@ -202,7 +215,7 @@ class RepositoryLayout:
                 continue
             if archived or self.layered:
                 for path in root.iterdir():
-                    manifest = path / "change.yaml"
+                    manifest = self.structured_file(path, "change.yaml")
                     if not path.is_dir() or not manifest.is_file():
                         continue
                     try:
@@ -242,7 +255,7 @@ class RepositoryLayout:
 
     def _owned_file(self, layer: str, name: str) -> Path:
         base = self.layer_root(layer) if self.layered else self.dset_root
-        return base / name
+        return self.structured_file(base, name)
 
     def _owned_directory(self, layer: str, name: str) -> Path:
         return self._owned_file(layer, name)
@@ -250,7 +263,12 @@ class RepositoryLayout:
     @staticmethod
     def _find_unique(roots: tuple[Path, ...], relative: str | Path, kind: str) -> Path:
         normalized = _canonical_relative(relative)
-        candidates = [root / normalized for root in roots]
+        candidates: list[Path] = []
+        for root in roots:
+            legacy = root / normalized
+            candidates.append(legacy)
+            if legacy.suffix.lower() in {".yaml", ".yml"}:
+                candidates.append(legacy.with_suffix(".toml"))
         matches = [path for path in candidates if path.is_file()]
         if not matches:
             raise FileNotFoundError(f"{kind} is missing: {relative}")
@@ -264,8 +282,8 @@ def discover_layout(root: Path) -> RepositoryLayout:
     """Discover a DSET layout, defaulting missing repositories to legacy paths."""
 
     root = root.resolve()
-    legacy = root / "dset" / "dset.yaml"
-    layered = root / "dset" / "scopes" / "meta" / "dset.yaml"
+    legacy = _manifest_candidate(root / "dset" / "dset.yaml")
+    layered = _manifest_candidate(root / "dset" / "scopes" / "meta" / "dset.yaml")
     if legacy.is_file() and layered.is_file():
         raise ValueError(
             "DSET project has both legacy and schema 1.2 manifests: "
@@ -308,8 +326,8 @@ def discover_layout(root: Path) -> RepositoryLayout:
 
 def has_manifest(root: Path) -> bool:
     root = root.resolve()
-    return (root / "dset" / "dset.yaml").is_file() or (
-        root / "dset" / "scopes" / "meta" / "dset.yaml"
+    return _manifest_candidate(root / "dset" / "dset.yaml").is_file() or (
+        _manifest_candidate(root / "dset" / "scopes" / "meta" / "dset.yaml")
     ).is_file()
 
 
@@ -339,3 +357,8 @@ def _canonical_relative(relative: str | Path) -> Path:
     if any(segment in {"", ".", ".."} for segment in segments):
         raise ValueError(f"path is not canonical relative POSIX: {raw}")
     return Path(*segments)
+
+
+def _manifest_candidate(legacy: Path) -> Path:
+    toml = legacy.with_suffix(".toml")
+    return toml if toml.is_file() else legacy

@@ -62,7 +62,12 @@ from .self_host import run_self_host
 from .semantic_atoms import append_lifecycle_event, archive_atom, seal_atom
 from .skill_catalog import PUBLIC_SKILL_WORKFLOWS
 from .skill_distribution import main as skill_distribution_main
-from .toml_migration import MigrationPlan, apply_toml_migration, plan_toml_migration
+from .toml_migration import (
+    MigrationPlan,
+    apply_toml_migration,
+    plan_toml_migration,
+    prove_runtime_readiness,
+)
 from .traceability import (
     rendered_traceability,
     trace_is_fresh,
@@ -186,7 +191,16 @@ def build_parser() -> argparse.ArgumentParser:
         "toml", help="preview canonical TOML conversion; writes require --apply"
     )
     _root_argument(migrate_toml)
-    migrate_toml.add_argument("--apply", action="store_true")
+    migration_mode = migrate_toml.add_mutually_exclusive_group()
+    migration_mode.add_argument("--apply", action="store_true")
+    migration_mode.add_argument(
+        "--prove-runtime-readiness",
+        action="store_true",
+        help=(
+            "prove the preview in a disposable migrated copy and write "
+            "digest-only evidence"
+        ),
+    )
     migrate_toml.add_argument("--format", choices=["text", "json"], default="text")
 
     version = commands.add_parser("version", help="show framework version semantics")
@@ -630,6 +644,15 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "migrate":
             root = _repository_root(args.root)
             migration_plan = plan_toml_migration(root)
+            if args.prove_runtime_readiness:
+                try:
+                    prove_runtime_readiness(root)
+                except ValueError as error:
+                    print(f"TOML runtime readiness proof failed: {error}")
+                    return 1
+                migration_plan = plan_toml_migration(root)
+                _print_migration_report(migration_plan, args.format, applied=False)
+                return 0 if migration_plan.ready else 1
             if not migration_plan.ready:
                 _print_migration_report(migration_plan, args.format, applied=False)
                 return 1

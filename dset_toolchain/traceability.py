@@ -27,7 +27,7 @@ def build_traceability(root: Path) -> dict[str, Any]:
         if archive.is_dir():
             candidates.extend(path for path in archive.iterdir() if path.is_dir())
     for path in sorted(candidates, key=lambda item: item.name):
-        manifest = path / "change.yaml"
+        manifest = layout.structured_file(path, "change.yaml")
         if not manifest.is_file():
             continue
         data = load(manifest)
@@ -94,7 +94,8 @@ def build_traceability(root: Path) -> dict[str, Any]:
 
 
 def rendered_traceability(root: Path) -> str:
-    return dump(build_traceability(root))
+    path = discover_layout(root).traceability_path
+    return dump(build_traceability(root), path)
 
 
 def trace_is_fresh(root: Path) -> bool:
@@ -108,7 +109,7 @@ def write_traceability(root: Path) -> Path:
     path = discover_layout(root).traceability_path
     content = rendered_traceability(root)
     path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_suffix(".yaml.tmp")
+    temporary = path.with_suffix(path.suffix + ".tmp")
     temporary.write_text(content, encoding="utf-8")
     temporary.replace(path)
     return path

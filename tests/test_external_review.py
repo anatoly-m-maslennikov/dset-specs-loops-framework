@@ -12,7 +12,8 @@ from dset_toolchain.external_review import (
     validate_review_report,
     write_reconciliation,
 )
-from dset_toolchain.yaml_subset import dump, loads
+from dset_toolchain.frontmatter import parse as parse_frontmatter
+from dset_toolchain.frontmatter import render as render_frontmatter
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -136,18 +137,20 @@ class ExternalReviewTests(unittest.TestCase):
             ],
         }
         report.write_text(
-            f"---\n{dump(metadata)}---\n\n# Review report\n\n"
-            "Free-form narrative, tables, or host-specific detail may live here.\n",
+            render_frontmatter(
+                metadata,
+                "\n# Review report\n\n"
+                "Free-form narrative, tables, or host-specific detail may live here.\n",
+            ),
             encoding="utf-8",
         )
         return report
 
     @staticmethod
     def _metadata(path: Path) -> dict[str, object]:
-        lines = path.read_text(encoding="utf-8").splitlines()
-        end = lines.index("---", 1)
-        value = loads("\n".join(lines[1:end]))
-        assert isinstance(value, dict)
+        parsed = parse_frontmatter(path.read_text(encoding="utf-8"))
+        assert parsed is not None
+        value, _body, _format = parsed
         return value
 
 

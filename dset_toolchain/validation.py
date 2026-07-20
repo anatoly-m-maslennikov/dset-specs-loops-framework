@@ -13,6 +13,8 @@ from .commit_provenance import validate_commit_provenance
 from .compilation import compilation_is_fresh, compilation_path
 from .dependencies import validate_dependency_policy
 from .diagnostics import Diagnostic
+from .frontmatter import FrontmatterError
+from .frontmatter import metadata as frontmatter_metadata
 from .governance import validate_governance
 from .health import health_is_fresh, health_path
 from .layout import RepositoryLayout, discover_layout
@@ -21,7 +23,7 @@ from .profiles import VALID_PROFILES, required_artifacts
 from .semantic_atoms import validate_semantic_atoms
 from .semantic_types import classify_semantic_id, validate_semantic_classifications
 from .settings import load_project_settings
-from .yaml_subset import YamlSubsetError, load, loads
+from .yaml_subset import YamlSubsetError, load
 
 ID_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
 CHANGE_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
@@ -1539,19 +1541,8 @@ def _direct_artifact_classification(
     if path.suffix.lower() != ".md":
         return None
     try:
-        content = path.read_text(encoding="utf-8")
-    except (OSError, UnicodeError):
-        return None
-    lines = content.splitlines()
-    if not lines or lines[0].strip() != "---":
-        return None
-    try:
-        end = lines.index("---", 1)
-    except ValueError:
-        return None
-    try:
-        metadata = loads("\n".join(lines[1:end]))
-    except YamlSubsetError:
+        metadata = frontmatter_metadata(path)
+    except (OSError, UnicodeError, FrontmatterError):
         return None
     if not isinstance(metadata, dict):
         return None

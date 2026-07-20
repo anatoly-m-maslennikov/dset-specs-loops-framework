@@ -10,9 +10,12 @@ explicit boundary-format exceptions.
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import json
 import os
 import shutil
+import subprocess
+import sys
 import tempfile
 from collections.abc import Iterable
 from dataclasses import dataclass
@@ -148,7 +151,9 @@ class MigrationPlan:
         }
 
 
-def plan_toml_migration(root: Path) -> MigrationPlan:
+def plan_toml_migration(
+    root: Path, *, bypass_runtime_readiness: bool = False
+) -> MigrationPlan:
     """Inventory a root without modifying it.
 
     A plan may be ``blocked`` while still being complete: blockers are the
@@ -164,11 +169,6 @@ def plan_toml_migration(root: Path) -> MigrationPlan:
         classification = _exception_classification(root, path)
         if classification is not None:
             exceptions.append(classification)
-            if classification["category"] == "cli-wire-json":
-                blockers.append(
-                    "regeneration-boundary: generated CLI/wire bundle must be "
-                    f"regenerated outside migration: {classification['path']}"
-                )
             if classification["category"] == "retained-symlink" and not bool(
                 classification["resolves_within_root"]
             ):
@@ -201,8 +201,13 @@ def plan_toml_migration(root: Path) -> MigrationPlan:
     blockers.extend(_collision_blockers(root, entries))
     references, reference_blockers = _reference_rewrites(root, paths, entries)
     blockers.extend(reference_blockers)
-    runtime_readiness, runtime_blockers = _runtime_readiness(root, entries)
-    blockers.extend(runtime_blockers)
+    runtime_readiness, runtime_blockers = _runtime_readiness(
+        root, entries, references
+    )
+    if bypass_runtime_readiness:
+        runtime_readiness = {**runtime_readiness, "bypassed_for_proof": True}
+    else:
+        blockers.extend(runtime_blockers)
     return MigrationPlan(
         root=root,
         entries=tuple(entries),
@@ -213,10 +218,12 @@ def plan_toml_migration(root: Path) -> MigrationPlan:
     )
 
 
-def apply_toml_migration(root: Path) -> MigrationPlan:
+def apply_toml_migration(
+    root: Path, *, bypass_runtime_readiness: bool = False
+) -> MigrationPlan:
     """Apply a fully planned migration with backup-and-restore recovery."""
 
-    plan = plan_toml_migration(root)
+    plan = plan_toml_migration(root, bypass_runtime_readiness=bypass_runtime_readiness)
     if not plan.ready:
         raise TomlMigrationError("; ".join(plan.blockers))
     if not plan.entries:
@@ -228,7 +235,12 @@ def apply_toml_migration(root: Path) -> MigrationPlan:
     backup_root = (
         plan.root / ".dset" / "toml-migration-backups" / plan.digest
     )
-    affected = sorted(set(writes) | deletes)
+    bundle_path = plan.root / "dset_toolchain" / "bootstrap_bundle.json"
+    regenerates_bundle = bundle_path.is_file() and (
+        plan.root / "scripts" / "build_bootstrap_bundle.py"
+    ).is_file()
+    generated = {bundle_path} if regenerates_bundle else set()
+    affected = sorted(set(writes) | deletes | generated)
     originals = {
         path: path.read_bytes() if path.exists() else None for path in affected
     }
@@ -236,18 +248,16 @@ def apply_toml_migration(root: Path) -> MigrationPlan:
     try:
         for path in sorted(writes):
             _atomic_write_text(path, writes[path])
-        _validate_staged_tree(plan, writes)
         for path in sorted(deletes):
             path.unlink()
-    except OSError as error:
+        if regenerates_bundle:
+            _atomic_write_text(bundle_path, _render_bootstrap_bundle(plan.root))
+        _validate_staged_tree(plan, writes)
+        _validate_migrated_runtime(plan.root)
+    except Exception as error:
         _restore(originals)
         raise TomlMigrationError(
-            f"migration rolled back after write failure: {error}"
-        ) from error
-    except (TomlCodecError, ValueError) as error:
-        _restore(originals)
-        raise TomlMigrationError(
-            f"migration rolled back after validation failure: {error}"
+            f"migration rolled back after staged validation failure: {error}"
         ) from error
     return plan
 
@@ -306,7 +316,7 @@ def _exception_classification(root: Path, path: Path) -> dict[str, object] | Non
     if relative.as_posix() == "dset_toolchain/bootstrap_bundle.json":
         return {
             **_exception(root, path, "cli-wire-json"),
-            "migration_action": "regenerate-outside-migration",
+            "migration_action": "regenerated-transactionally",
         }
     if suffix == ".json" and "schemas" in parts and path.name.endswith(".schema.json"):
         return _external_contract_exception(root, path, "external-json-schema")
@@ -453,13 +463,11 @@ def _has_yaml_frontmatter(path: Path) -> bool:
 
 
 def _runtime_readiness(
-    root: Path, entries: list[MigrationEntry]
+    root: Path,
+    entries: list[MigrationEntry],
+    references: list[ReferenceRewrite],
 ) -> tuple[dict[str, object], list[str]]:
-    targets = {
-        _relative(root, entry.target): entry.target_digest
-        for entry in entries
-        if entry.source != entry.target
-    }
+    targets = _target_digests(root, entries, references)
     evidence_path = root / _RUNTIME_READINESS_PATH
     result: dict[str, object] = {
         "evidence_path": _RUNTIME_READINESS_PATH,
@@ -467,6 +475,9 @@ def _runtime_readiness(
     }
     if not (root / "dset_toolchain").is_dir():
         result["status"] = "not-applicable"
+        return result, []
+    if not targets:
+        result["status"] = "not-required"
         return result, []
     if not evidence_path.is_file() or evidence_path.is_symlink():
         result["status"] = "missing"
@@ -487,8 +498,15 @@ def _runtime_readiness(
         result["status"] = "invalid"
         return result, ["runtime-readiness: evidence targets must map paths to digests"]
     missing_or_stale = sorted(
-        path for path, digest in targets.items() if mapped.get(path) != digest
+        set(targets).symmetric_difference(mapped)
+        | {path for path, digest in targets.items() if mapped.get(path) != digest}
     )
+    source_tool_digest = evidence.get("source_tool_sha256")
+    current_tool_digest = _tool_digest(root)
+    if source_tool_digest != current_tool_digest:
+        missing_or_stale.append("source_tool_sha256")
+    if evidence.get("source_commit") != _git_head(root):
+        missing_or_stale.append("source_commit")
     result["status"] = "current" if not missing_or_stale else "stale"
     result["mapped_target_count"] = len(mapped)
     result["missing_or_stale"] = missing_or_stale
@@ -498,6 +516,34 @@ def _runtime_readiness(
             + ", ".join(missing_or_stale)
         ]
     return result, []
+
+
+def _target_digests(
+    root: Path,
+    entries: list[MigrationEntry],
+    references: list[ReferenceRewrite],
+) -> dict[str, str]:
+    if not entries:
+        return {}
+    writes = {entry.target: entry.after_text for entry in entries}
+    grouped: dict[Path, list[ReferenceRewrite]] = {}
+    for reference in references:
+        grouped.setdefault(reference.path, []).append(reference)
+    source_targets = {entry.source: entry.target for entry in entries}
+    for path, path_references in grouped.items():
+        target = source_targets.get(path, path)
+        current = writes.get(target)
+        if current is None:
+            current = path.read_text(encoding="utf-8")
+        for reference in sorted(
+            path_references, key=lambda item: len(item.source), reverse=True
+        ):
+            current = current.replace(reference.source, reference.target)
+        writes[target] = current
+    return {
+        _relative(root, path): _sha256(content)
+        for path, content in sorted(writes.items())
+    }
 
 
 def _collision_blockers(root: Path, entries: list[MigrationEntry]) -> list[str]:
@@ -533,6 +579,11 @@ def _reference_rewrites(
     blockers: list[str] = []
     for path in paths:
         classification = _exception_classification(root, path)
+        # Tests intentionally retain legacy YAML fixtures so one staged suite
+        # can verify the compatibility readers after the production tree has
+        # crossed to TOML.  They are not runtime reference carriers.
+        if path.relative_to(root).parts[:1] == ("tests",):
+            continue
         if (
             not _is_text_path(path)
             or classification is not None
@@ -700,6 +751,194 @@ def _validate_staged_tree(plan: MigrationPlan, writes: dict[Path, str]) -> None:
                     f"{_relative(plan.root, entry.target)}"
                 )
             load_toml(staged[4:closing])
+
+
+def _render_bootstrap_bundle(root: Path) -> str:
+    """Use the root-parameterized builder without trusting ambient imports."""
+
+    script = root / "scripts" / "build_bootstrap_bundle.py"
+    specification = importlib.util.spec_from_file_location("_dset_bundle", script)
+    if specification is None or specification.loader is None:
+        raise TomlMigrationError("cannot load bootstrap bundle builder")
+    module = importlib.util.module_from_spec(specification)
+    specification.loader.exec_module(module)
+    render = getattr(module, "render_bundle", None)
+    if not callable(render):
+        raise TomlMigrationError("bootstrap bundle builder has no render_bundle(root)")
+    rendered = render(root)
+    if not isinstance(rendered, str):
+        raise TomlMigrationError("bootstrap bundle builder returned non-text output")
+    return rendered
+
+
+def _validate_migrated_runtime(root: Path) -> None:
+    """Run the migrated tree in a new interpreter before committing the cutover."""
+
+    if not (root / "dset_toolchain").is_dir():
+        return
+    try:
+        completed = subprocess.run(
+            [sys.executable, "-m", "dset_toolchain", "check", "."],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+    except subprocess.TimeoutExpired as error:
+        raise TomlMigrationError("migrated dset check timed out") from error
+    if completed.returncode:
+        message = completed.stderr.strip() or completed.stdout.strip()
+        raise TomlMigrationError(
+            "migrated dset check failed"
+            + (f": {message}" if message else f" (exit {completed.returncode})")
+        )
+
+
+def prove_runtime_readiness(root: Path) -> dict[str, object]:
+    """Prove the exact preview in a disposable migrated copy, then write evidence.
+
+    The real repository is never migrated by this function.  It receives only
+    the compact digest-bound proof after all fresh-process checks pass.
+    """
+
+    root = root.resolve()
+    source_plan = plan_toml_migration(root)
+    non_runtime_blockers = [
+        blocker
+        for blocker in source_plan.blockers
+        if not blocker.startswith("runtime-readiness:")
+    ]
+    if non_runtime_blockers:
+        raise TomlMigrationError("; ".join(non_runtime_blockers))
+    if not (root / "dset_toolchain").is_dir():
+        raise TomlMigrationError("runtime readiness is not applicable to this root")
+
+    targets = _target_digests(
+        root, list(source_plan.entries), list(source_plan.references)
+    )
+    source_tool_digest = _tool_digest(root)
+    with tempfile.TemporaryDirectory(prefix="dset-toml-proof-", dir=root.parent) as raw:
+        staged = Path(raw) / "repository"
+        shutil.copytree(root, staged, ignore=_proof_ignore)
+        staged_plan = apply_toml_migration(staged, bypass_runtime_readiness=True)
+        results = _proof_commands(staged)
+        evidence: dict[str, object] = {
+            "schema_version": 1,
+            "source_commit": _git_head(root),
+            "source_tool_sha256": source_tool_digest,
+            "migrated_tool_sha256": _tool_digest(staged),
+            "targets": targets,
+            "proof": {
+                "plan_digest": source_plan.digest,
+                "applied_plan_digest": staged_plan.digest,
+                "commands": results,
+            },
+        }
+    _atomic_write_text(
+        root / _RUNTIME_READINESS_PATH,
+        json.dumps(evidence, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+    )
+    return evidence
+
+
+def _proof_ignore(_directory: str, names: list[str]) -> set[str]:
+    return {
+        name
+        for name in names
+        if name
+        in {
+            ".git",
+            ".venv",
+            ".cache",
+            ".dset",
+            "build",
+            "dist",
+            "__pycache__",
+            ".mypy_cache",
+            ".pytest_cache",
+            ".ruff_cache",
+        }
+    }
+
+
+def _proof_commands(root: Path) -> list[dict[str, object]]:
+    commands = [
+        [sys.executable, "-m", "dset_toolchain", "check", "."],
+        [
+            sys.executable,
+            "-m",
+            "unittest",
+            "tests.test_settings",
+            "tests.test_layout",
+            "tests.test_layered_validation",
+            "tests.test_semantic_atoms",
+            "tests.test_semantic_types",
+            "tests.test_external_review",
+            "tests.test_scaffold_archive",
+            "tests.test_runtime",
+            "tests.test_bootstrap",
+            "tests.test_toml_migration",
+        ],
+    ]
+    results: list[dict[str, object]] = []
+    for command in commands:
+        try:
+            completed = subprocess.run(
+                command,
+                cwd=root,
+                check=False,
+                capture_output=True,
+                text=True,
+                timeout=120,
+            )
+        except subprocess.TimeoutExpired as error:
+            raise TomlMigrationError(
+                f"runtime readiness proof timed out: {' '.join(command)}"
+            ) from error
+        result = {
+            "argv": command,
+            "returncode": completed.returncode,
+            "stdout_sha256": _sha256(completed.stdout),
+            "stderr_sha256": _sha256(completed.stderr),
+        }
+        results.append(result)
+        if completed.returncode:
+            raise TomlMigrationError(
+                "runtime readiness proof failed: "
+                + " ".join(command)
+                + f" (exit {completed.returncode})"
+            )
+    return results
+
+
+def _tool_digest(root: Path) -> str:
+    digest = hashlib.sha256()
+    candidates = [
+        path
+        for directory in (root / "dset_toolchain", root / "scripts")
+        if directory.is_dir()
+        for path in directory.rglob("*.py")
+    ]
+    for path in sorted(candidates):
+        relative = path.relative_to(root).as_posix()
+        digest.update(relative.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(path.read_bytes())
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def _git_head(root: Path) -> str | None:
+    completed = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    value = completed.stdout.strip()
+    return value if completed.returncode == 0 and value else None
 
 
 def _restore(originals: dict[Path, bytes | None]) -> None:

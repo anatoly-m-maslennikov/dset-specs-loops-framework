@@ -9,12 +9,14 @@ from pathlib import Path
 from typing import Any
 
 from .diagnostics import Diagnostic
+from .frontmatter import FrontmatterError
+from .frontmatter import metadata as frontmatter_metadata
 from .layout import discover_layout
 from .legacy_authority import validate_legacy_authority_ledger
 from .lineage import ArtifactRelation, parse_authored_relations
 from .semantic_types import SEMANTIC_ID_KINDS, SEMANTIC_SUBTYPES
 from .settings import load_project_settings
-from .yaml_subset import YamlSubsetError, dump, load, loads
+from .yaml_subset import YamlSubsetError, dump, load
 
 ID_PATTERN = re.compile(r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$")
 SESSION_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
@@ -118,7 +120,7 @@ def seal_atom(root: Path, path: Path) -> Path:
     if issues:
         raise ValueError("project settings must pass before sealing an atom")
     if metadata is None:
-        raise ValueError("atom carrier requires YAML frontmatter")
+        raise ValueError("atom carrier requires TOML or YAML frontmatter")
     if "child_of" in metadata:
         raise ValueError(
             "new atoms must use relations; child_of is sealed compatibility input only"
@@ -315,7 +317,7 @@ def archive_atom(root: Path, semantic_id: str) -> Path:
     updated["path"] = destination.relative_to(root).as_posix()
     records[records.index(record)] = updated
     temporary = ledger_path.with_suffix(ledger_path.suffix + ".tmp")
-    temporary.write_text(dump(ledger), encoding="utf-8")
+    temporary.write_text(dump(ledger, ledger_path), encoding="utf-8")
     destination.parent.mkdir(parents=True, exist_ok=True)
     source.replace(destination)
     try:
@@ -733,21 +735,14 @@ def _load_or_empty(path: Path, field: str) -> dict[str, Any]:
 def _atomic_dump(path: Path, data: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(dump(data), encoding="utf-8")
+    temporary.write_text(dump(data, path), encoding="utf-8")
     temporary.replace(path)
 
 
 def _frontmatter(path: Path) -> dict[str, Any] | None:
     try:
-        lines = path.read_text(encoding="utf-8").splitlines()
-    except (OSError, UnicodeError):
-        return None
-    if not lines or lines[0].strip() != "---":
-        return None
-    try:
-        end = lines.index("---", 1)
-        data = loads("\n".join(lines[1:end]))
-    except (ValueError, YamlSubsetError):
+        data = frontmatter_metadata(path)
+    except (OSError, UnicodeError, FrontmatterError):
         return None
     return data if isinstance(data, dict) else None
 

@@ -51,7 +51,7 @@ def build_legacy_authority_ledger(root: Path) -> dict[str, Any]:
 def write_legacy_authority_ledger(root: Path) -> Path:
     root = root.resolve()
     path = legacy_authority_ledger_path(root)
-    content = dump(build_legacy_authority_ledger(root))
+    content = dump(build_legacy_authority_ledger(root), path)
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
     temporary.write_text(content, encoding="utf-8")

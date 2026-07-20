@@ -8,8 +8,11 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from .frontmatter import FrontmatterError
+from .frontmatter import parse as parse_frontmatter
+from .frontmatter import render as render_frontmatter
 from .layout import discover_layout
-from .yaml_subset import dump, load, loads
+from .yaml_subset import load
 
 ID_PATTERN = re.compile(r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$")
 FINDING_PATTERN = re.compile(r"^[A-Z][A-Z0-9]*-REVIEW-FINDING-[0-9]{3,}$")
@@ -347,19 +350,16 @@ def _validate_disposition(value: object) -> dict[str, Any]:
 
 
 def _read_markdown(path: Path) -> tuple[dict[str, Any], str]:
-    lines = path.read_text(encoding="utf-8").splitlines()
-    if not lines or lines[0] != "---":
-        raise ValueError(f"review artifact requires YAML frontmatter: {path}")
     try:
-        end = lines.index("---", 1)
-    except ValueError as error:
+        parsed = parse_frontmatter(path.read_text(encoding="utf-8"))
+    except FrontmatterError as error:
         raise ValueError(
-            f"review artifact frontmatter is not closed: {path}"
+            f"review artifact frontmatter is invalid: {path}: {error}"
         ) from error
-    data = loads("\n".join(lines[1:end]))
-    if not isinstance(data, dict):
-        raise ValueError(f"review artifact envelope must be a mapping: {path}")
-    return data, "\n".join(lines[end + 1 :])
+    if parsed is None:
+        raise ValueError(f"review artifact requires TOML or YAML frontmatter: {path}")
+    data, body, _format = parsed
+    return data, body
 
 
 def _file_identity(root: Path, raw: str) -> dict[str, str]:
@@ -442,7 +442,7 @@ def _sha256(path: Path) -> str:
 
 
 def _markdown(metadata: dict[str, Any], title: str, body: str) -> str:
-    return f"---\n{dump(metadata)}---\n\n# {title}\n\n{body.rstrip()}\n"
+    return render_frontmatter(metadata, f"\n# {title}\n\n{body.rstrip()}\n")
 
 
 def _packet_body() -> str:

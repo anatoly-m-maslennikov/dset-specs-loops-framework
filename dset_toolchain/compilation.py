@@ -74,11 +74,11 @@ def compilation_path(root: Path) -> Path:
         if layout.layered
         else layout.dset_root / "generated"
     )
-    return generated / "compilation.yaml"
+    return layout.structured_file(generated, "compilation.yaml")
 
 
 def rendered_compilation(root: Path) -> str:
-    return dump(build_compilation_index(root))
+    return dump(build_compilation_index(root), compilation_path(root))
 
 
 def compilation_is_fresh(root: Path) -> bool:
@@ -94,7 +94,7 @@ def write_compilation(root: Path) -> Path:
     path = compilation_path(root)
     content = rendered_compilation(root)
     path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_suffix(".yaml.tmp")
+    temporary = path.with_suffix(path.suffix + ".tmp")
     temporary.write_text(content, encoding="utf-8")
     temporary.replace(path)
     return path

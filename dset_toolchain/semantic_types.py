@@ -6,8 +6,10 @@ from pathlib import Path
 from typing import Any
 
 from .diagnostics import Diagnostic
+from .frontmatter import FrontmatterError
+from .frontmatter import metadata as frontmatter_metadata
 from .layout import discover_layout
-from .yaml_subset import YamlSubsetError, load, loads
+from .yaml_subset import YamlSubsetError, load
 
 SEMANTIC_SUBTYPES: dict[str, frozenset[str]] = {
     "decision": frozenset(
@@ -324,10 +326,8 @@ def _register(
 
 def _frontmatter(path: Path) -> dict[str, Any] | None:
     try:
-        lines = path.read_text(encoding="utf-8").splitlines()
-        end = lines.index("---", 1) if lines and lines[0].strip() == "---" else -1
-        data = loads("\n".join(lines[1:end])) if end > 0 else None
-    except (OSError, UnicodeError, ValueError, YamlSubsetError):
+        data = frontmatter_metadata(path)
+    except (OSError, UnicodeError, FrontmatterError):
         return None
     return data if isinstance(data, dict) else None
 

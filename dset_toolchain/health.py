@@ -9,12 +9,16 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 
 from .compilation import active_authority_ids
+from .frontmatter import FrontmatterError
+from .frontmatter import format_for_path as frontmatter_format_for_path
+from .frontmatter import metadata as frontmatter_metadata
+from .frontmatter import render as render_frontmatter
 from .layout import discover_layout
 from .lineage import build_relation_index
 from .semantic_atoms import collect_semantic_atoms, effective_priority
 from .semantic_types import build_semantic_classification_index
 from .settings import load_project_settings
-from .yaml_subset import YamlSubsetError, load, loads
+from .yaml_subset import YamlSubsetError, load
 
 ID_RE = re.compile(r"\b[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+-[0-9]{3,}\b")
 DECISION_KINDS = frozenset(
@@ -217,14 +221,14 @@ def render_health(root: Path) -> str:
     output_dir = health_path(root).parent
     project = load(layout.manifest_path)["project"]
     project_key = str(project["key"])
+    frontmatter = {
+        "artifact_type": "derived_view",
+        "artifact_subtype": "health_dashboard",
+        "artifact_id": f"{project_key}-DERIVED-VIEW-001",
+        "priority": "low",
+        "llm_session_ids": [],
+    }
     lines = [
-        "---",
-        "artifact_type: derived_view",
-        "artifact_subtype: health_dashboard",
-        f"artifact_id: {project_key}-DERIVED-VIEW-001",
-        "priority: low",
-        "llm_session_ids: []",
-        "---",
         "",
         f"# {project_key} project health",
         "",
@@ -340,7 +344,11 @@ def render_health(root: Path) -> str:
             "",
         ]
     )
-    return "\n".join(lines)
+    return render_frontmatter(
+        frontmatter,
+        "\n".join(lines),
+        format=frontmatter_format_for_path(health_path(root)),
+    )
 
 
 def health_is_fresh(root: Path) -> bool:
@@ -688,10 +696,8 @@ def _frontmatter(path: Path) -> dict[str, Any] | None:
     if path.suffix.lower() != ".md":
         return None
     try:
-        lines = path.read_text(encoding="utf-8").splitlines()
-        end = lines.index("---", 1)
-        data = loads("\n".join(lines[1:end])) if lines[0] == "---" else None
-    except (OSError, UnicodeError, ValueError, YamlSubsetError, IndexError):
+        data = frontmatter_metadata(path)
+    except (OSError, UnicodeError, FrontmatterError):
         return None
     return data if isinstance(data, dict) else None
 

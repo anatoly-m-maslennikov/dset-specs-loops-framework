@@ -102,7 +102,8 @@ def _write_adopter_files(source_root: Path, root: Path) -> None:
         "verification": {"commands": ["{python} -m dset_toolchain check ."]},
         "canonical_command": "python -m dset_toolchain check .",
     }
-    (dset / "dset.yaml").write_text(dump(manifest), encoding="utf-8")
+    manifest_path = dset / "dset.yaml"
+    manifest_path.write_text(dump(manifest, manifest_path), encoding="utf-8")
     shutil.copyfile(source_layout.find_template("dset.toml"), root / "dset.toml")
     shutil.copyfile(
         source_layout.find_template("artifact-types.yaml"),
@@ -110,8 +111,9 @@ def _write_adopter_files(source_root: Path, root: Path) -> None:
     )
     shutil.copyfile(source_layout.find_template("budget.yaml"), dset / "budget.yaml")
     _write_legacy_intake(dset / "intake.yaml")
-    (dset / "provenance.yaml").write_text(
-        dump({"schema_version": 1.0, "sources": []}), encoding="utf-8"
+    provenance_path = dset / "provenance.yaml"
+    provenance_path.write_text(
+        dump({"schema_version": 1.0, "sources": []}, provenance_path), encoding="utf-8"
     )
     _write(
         root / "README.md",
@@ -244,7 +246,8 @@ The temporary adopter must pass DSET validation without external effects.
             "eval_plan": "eval-plan.md",
         },
     }
-    (package / "package.yaml").write_text(dump(package_manifest), encoding="utf-8")
+    package_path = package / "package.yaml"
+    package_path.write_text(dump(package_manifest, package_path), encoding="utf-8")
 
 
 def _write(path: Path, content: str) -> None:
@@ -316,7 +319,8 @@ def _write_legacy_intake(destination: Path) -> None:
                     for identifier, name, path in scopes
                 ],
                 "items": [],
-            }
+            },
+            destination,
         ),
         encoding="utf-8",
     )

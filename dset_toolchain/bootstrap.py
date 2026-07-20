@@ -289,7 +289,7 @@ def _stage_project(
         "canonical_command": "python -m dset_toolchain verify .",
     }
     manifest_path = stage / "dset" / "scopes" / "meta" / "dset.yaml"
-    manifest_path.write_text(dump(manifest), encoding="utf-8")
+    manifest_path.write_text(dump(manifest, manifest_path), encoding="utf-8")
     shutil.copyfile(source_layout.find_template("dset.toml"), stage / "dset.toml")
     _materialize_package(
         source_layout,
@@ -304,13 +304,15 @@ def _stage_project(
         gov / "artifact-types.yaml",
     )
     shutil.copyfile(source_layout.find_template("intake.yaml"), gov / "intake.yaml")
-    (gov / "provenance.yaml").write_text(
+    provenance_path = gov / "provenance.yaml"
+    provenance_path.write_text(
         dump(
             {
                 "schema_version": 1.0,
                 "project_license": project_license,
                 "sources": [],
-            }
+            },
+            provenance_path,
         ),
         encoding="utf-8",
     )
@@ -331,7 +333,8 @@ def _stage_project(
     )
     history = ops / "history"
     history.mkdir()
-    (history / "pull-requests.yaml").write_text(
+    history_path = history / "pull-requests.yaml"
+    history_path.write_text(
         dump(
             {
                 "schema_version": 1.0,
@@ -339,7 +342,8 @@ def _stage_project(
                 "authoritative_source": "github",
                 "observed_on": date.today().isoformat(),
                 "pull_requests": [],
-            }
+            },
+            history_path,
         ),
         encoding="utf-8",
     )

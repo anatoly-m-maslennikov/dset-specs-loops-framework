@@ -7,9 +7,11 @@ from pathlib import Path
 from typing import Any
 
 from .diagnostics import Diagnostic
+from .frontmatter import FrontmatterError
+from .frontmatter import metadata as frontmatter_metadata
 from .layout import discover_layout
 from .semantic_types import SEMANTIC_SUBTYPES
-from .yaml_subset import YamlSubsetError, load, loads
+from .yaml_subset import YamlSubsetError, load
 
 ID_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
 SESSION_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
@@ -745,15 +747,8 @@ def _package_ids(path: Path) -> set[str]:
 
 def _frontmatter(path: Path) -> dict[str, Any] | None:
     try:
-        lines = path.read_text(encoding="utf-8").splitlines()
-    except (OSError, UnicodeError):
-        return None
-    if not lines or lines[0].strip() != "---":
-        return None
-    try:
-        end = lines.index("---", 1)
-        data = loads("\n".join(lines[1:end]))
-    except (ValueError, YamlSubsetError):
+        data = frontmatter_metadata(path)
+    except (OSError, UnicodeError, FrontmatterError):
         return None
     return data if isinstance(data, dict) else None
 

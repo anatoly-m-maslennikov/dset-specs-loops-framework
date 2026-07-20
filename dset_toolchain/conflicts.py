@@ -7,9 +7,9 @@ from pathlib import Path
 from typing import Any
 
 from .artifact_emission import assess_artifact_candidate
+from .frontmatter import render as render_frontmatter
 from .semantic_atoms import collect_semantic_atoms, effective_priority, seal_atom
 from .settings import load_project_settings
-from .yaml_subset import dump
 
 ROLES = frozenset(
     {
@@ -259,6 +259,11 @@ def emit_conflict_atom(
             f"conflict atom emission is blocked: {detail or 'invalid candidate'}"
         )
 
+    promotion = atom.get("promotion")
+    if isinstance(promotion, dict) and promotion.get("parent_scope") is None:
+        promotion = {
+            key: value for key, value in promotion.items() if key != "parent_scope"
+        }
     frontmatter: dict[str, Any] = {
         "artifact_type": "atomic_record",
         "artifact_id": _required_text(atom, "artifact_id"),
@@ -270,7 +275,7 @@ def emit_conflict_atom(
         "authority": _required_text(atom, "authority"),
         "claim": _required_text(atom, "claim"),
         "scope": atom.get("scope"),
-        "promotion": atom.get("promotion"),
+        "promotion": promotion,
         "relations": [
             {"type": "relates_to", "target": parent} for parent in parents
         ],
@@ -292,7 +297,7 @@ def emit_conflict_atom(
     body = _conflict_body(claim, result)
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(f"---\n{dump(frontmatter)}---\n\n{body}", encoding="utf-8")
+    temporary.write_text(render_frontmatter(frontmatter, f"\n{body}"), encoding="utf-8")
     temporary.replace(path)
     try:
         seal_atom(root, path)

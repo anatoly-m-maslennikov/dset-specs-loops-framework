@@ -510,7 +510,7 @@ def materialize_governance(
             "workflows": rendered_workflows,
             "wrappers": wrappers,
         }
-        registry_path.write_text(dump(registry), encoding="utf-8")
+        registry_path.write_text(dump(registry, registry_path), encoding="utf-8")
     except Exception:
         if registry_path.exists():
             registry_path.unlink()
@@ -552,7 +552,7 @@ def refresh_customization(root: Path) -> Path:
     cast(dict[str, Any], data["profile"])["customization"] = (
         "custom" if custom else "unmodified"
     )
-    path.write_text(dump(data), encoding="utf-8")
+    path.write_text(dump(data, path), encoding="utf-8")
     return path
 
 

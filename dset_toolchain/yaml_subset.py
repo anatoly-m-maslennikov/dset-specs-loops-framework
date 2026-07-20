@@ -5,13 +5,33 @@ import re
 from pathlib import Path
 from typing import Any
 
+from .toml_codec import TomlCodecError
+from .toml_codec import dumps as dump_toml
+from .toml_codec import loads as load_toml
+
 
 class YamlSubsetError(ValueError):
     """Raised when a file exceeds the documented DSET YAML subset."""
 
 
 def load(path: Path) -> Any:
-    return loads(path.read_text(encoding="utf-8"))
+    """Load the documented structured-data format selected by ``path``.
+
+    The module keeps its historical name so existing DSET callers remain
+    source-compatible while a migrated repository can use the same boundary
+    for TOML.  Calls without a path intentionally remain YAML-only for legacy
+    fixtures and callers that are parsing an explicitly YAML payload.
+    """
+
+    text = path.read_text(encoding="utf-8")
+    if path.suffix.lower() == ".toml":
+        try:
+            return load_toml(text)
+        except TomlCodecError as error:
+            raise YamlSubsetError(str(error)) from error
+    if path.suffix.lower() not in {".yaml", ".yml"}:
+        raise YamlSubsetError(f"unsupported structured-data suffix: {path.suffix}")
+    return loads(text)
 
 
 def loads(text: str) -> Any:
@@ -59,10 +79,29 @@ def loads(text: str) -> Any:
     return root
 
 
-def dump(data: Any) -> str:
+def dump(data: Any, path: Path | None = None) -> str:
+    """Render data in the structured format selected by ``path``.
+
+    A missing path preserves the legacy YAML rendering contract.  Production
+    writers pass their destination path, ensuring rewritten ``.toml`` targets
+    cannot accidentally receive YAML text.
+    """
+
+    if path is not None and path.suffix.lower() == ".toml":
+        try:
+            return dump_toml(data)
+        except TomlCodecError as error:
+            raise YamlSubsetError(str(error)) from error
     lines: list[str] = []
     _emit(data, 0, lines)
     return "\n".join(lines) + "\n"
+
+
+def write(path: Path, data: Any) -> None:
+    """Write a structured document using the format selected by its path."""
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(dump(data, path), encoding="utf-8")
 
 
 def _entries(text: str) -> list[tuple[int, str, int]]:

@@ -10,8 +10,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from .frontmatter import FrontmatterError
+from .frontmatter import parse as parse_frontmatter
 from .layout import discover_layout
-from .yaml_subset import dump, load, loads
+from .yaml_subset import dump, load
 
 _SEMVER = re.compile(
     r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)"
@@ -303,7 +305,7 @@ def prepare_release(root: Path, *, execute: bool = False) -> ReleasePreparation:
         package = _mapping(version_data.get("python_package"), "package version")
         framework["version"] = plan.target
         package["version"] = plan.python_target
-        _atomic_replace_text(version_path, dump(version_data))
+        _atomic_replace_text(version_path, dump(version_data, version_path))
         changed.append(version_path.relative_to(root).as_posix())
     pyproject = root / "pyproject.toml"
     if pyproject.relative_to(root).as_posix() in plan.changes:
@@ -388,16 +390,14 @@ def _current_product_version(version_path: Path) -> str:
 
 def _readiness_passed(path: Path, candidate_commit: str) -> bool:
     try:
-        lines = path.read_text(encoding="utf-8").splitlines()
+        parsed = parse_frontmatter(path.read_text(encoding="utf-8"))
     except (OSError, UnicodeError) as error:
         raise ReleaseError(f"cannot read Readiness Record: {path}") from error
-    if not lines or lines[0].strip() != "---":
-        raise ReleaseError("Readiness Record requires YAML frontmatter")
-    try:
-        end = lines.index("---", 1)
-        data = loads("\n".join(lines[1:end]))
-    except (ValueError, TypeError) as error:
+    except FrontmatterError as error:
         raise ReleaseError("Readiness Record frontmatter is invalid") from error
+    if parsed is None:
+        raise ReleaseError("Readiness Record requires TOML or YAML frontmatter")
+    data, _body, _format = parsed
     if (
         not isinstance(data, dict)
         or data.get("artifact_type") != "delivery"

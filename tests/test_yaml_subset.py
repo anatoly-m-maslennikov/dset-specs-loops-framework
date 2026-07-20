@@ -3,7 +3,10 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
+from dset_toolchain.frontmatter import parse as parse_frontmatter
+from dset_toolchain.frontmatter import render as render_frontmatter
 from dset_toolchain.layout import discover_layout
+from dset_toolchain.toml_codec import loads as load_toml
 from dset_toolchain.yaml_subset import dump, load, loads
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,6 +37,23 @@ class YamlSubsetTests(unittest.TestCase):
         }
 
         self.assertEqual(loads(dump(value)), value)
+
+    def test_path_aware_dump_and_load_select_toml(self) -> None:
+        value = {"schema_version": "1.0", "items": [{"id": "DSET-ITEM-001"}]}
+        path = Path("authority.toml")
+
+        self.assertEqual(load_toml(dump(value, path)), value)
+
+    def test_frontmatter_reads_legacy_yaml_and_renders_toml(self) -> None:
+        legacy = "---\nid: DSET-ITEM-001\n---\nBody\n"
+        parsed = parse_frontmatter(legacy)
+        assert parsed is not None
+        self.assertEqual(parsed[0]["id"], "DSET-ITEM-001")
+        self.assertEqual(parsed[2], "yaml")
+
+        rendered = render_frontmatter({"id": "DSET-ITEM-001"}, "Body\n")
+        self.assertTrue(rendered.startswith("+++\n"))
+        self.assertEqual(parse_frontmatter(rendered)[2], "toml")  # type: ignore[index]
 
 
 if __name__ == "__main__":

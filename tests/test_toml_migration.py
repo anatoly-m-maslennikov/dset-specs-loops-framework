@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import shutil
 import tempfile
 import unittest
 from contextlib import redirect_stdout
@@ -10,12 +11,14 @@ from pathlib import Path
 from typing import cast
 from unittest.mock import patch
 
+import dset_toolchain.toml_migration as toml_migration
 from dset_toolchain.cli import main
 from dset_toolchain.toml_codec import loads as load_toml
 from dset_toolchain.toml_migration import (
     MigrationPlan,
     apply_toml_migration,
     plan_toml_migration,
+    prove_runtime_readiness,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -278,21 +281,23 @@ class TomlMigrationTests(unittest.TestCase):
             any(item.startswith("runtime-readiness:") for item in missing.blockers)
         )
 
-        targets = {
-            entry.target.relative_to(self.root).as_posix(): entry.target_digest
-            for entry in missing.entries
-            if entry.source != entry.target
-        }
+        targets = toml_migration._target_digests(
+            self.root, list(missing.entries), list(missing.references)
+        )
         self.write(
             ".dset/toml-migration-runtime-readiness.json",
-            json.dumps({"targets": targets}),
+            json.dumps(
+                {
+                    "targets": targets,
+                    "source_tool_sha256": toml_migration._tool_digest(self.root),
+                    "source_commit": toml_migration._git_head(self.root),
+                }
+            ),
         )
         self.write("dset_toolchain/bootstrap_bundle.json", "{}\n")
         gated = plan_toml_migration(self.root)
         self.assertEqual(gated.runtime_readiness["status"], "current")
-        self.assertTrue(
-            any(item.startswith("regeneration-boundary:") for item in gated.blockers)
-        )
+        self.assertTrue(gated.ready)
 
     def test_cli_apply_on_blocked_plan_prints_the_plan_without_applying(self) -> None:
         blocked = MigrationPlan(
@@ -315,6 +320,109 @@ class TomlMigrationTests(unittest.TestCase):
         self.assertIn("DRY RUN TOML migration blocked", output.getvalue())
         self.assertIn("BLOCKED conversion: test blocker", output.getvalue())
         apply.assert_not_called()
+
+    def test_apply_regenerates_bundle_and_rolls_back_after_runtime_failure(
+        self,
+    ) -> None:
+        self.standard_fixture()
+        self.write("dset_toolchain/bootstrap_bundle.json", "old bundle\n")
+        self.write("scripts/build_bootstrap_bundle.py", "# builder placeholder\n")
+        bundle = self.root / "dset_toolchain/bootstrap_bundle.json"
+        original = bundle.read_text(encoding="utf-8")
+
+        with (
+            patch(
+                "dset_toolchain.toml_migration._render_bootstrap_bundle",
+                return_value="new bundle\n",
+            ),
+            patch(
+                "dset_toolchain.toml_migration._validate_migrated_runtime",
+                side_effect=ValueError("runtime failed"),
+            ),
+            self.assertRaisesRegex(ValueError, "rolled back"),
+        ):
+            apply_toml_migration(self.root, bypass_runtime_readiness=True)
+
+        self.assertTrue((self.root / "dset/scopes/gov/items.yaml").is_file())
+        self.assertFalse((self.root / "dset/scopes/gov/items.toml").exists())
+        self.assertEqual(bundle.read_text(encoding="utf-8"), original)
+
+    def test_runtime_proof_writes_evidence_without_migrating_the_source(self) -> None:
+        self.standard_fixture()
+        (self.root / "dset_toolchain").mkdir()
+        source = self.root / "dset/scopes/gov/items.yaml"
+
+        with (
+            patch(
+                "dset_toolchain.toml_migration.apply_toml_migration",
+                return_value=plan_toml_migration(
+                    self.root, bypass_runtime_readiness=True
+                ),
+            ) as apply,
+            patch(
+                "dset_toolchain.toml_migration._proof_commands",
+                return_value=[{"argv": ["test"], "returncode": 0}],
+            ),
+        ):
+            evidence = prove_runtime_readiness(self.root)
+
+        self.assertTrue(source.is_file())
+        self.assertFalse(source.with_suffix(".toml").exists())
+        self.assertEqual(apply.call_args.kwargs["bypass_runtime_readiness"], True)
+        stored = json.loads(
+            (self.root / ".dset/toml-migration-runtime-readiness.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(stored["targets"], evidence["targets"])
+
+    def test_runtime_mapping_covers_in_place_and_reference_only_writes(self) -> None:
+        self.standard_fixture()
+        document = self.write(
+            "dset/scopes/gov/record.md",
+            "---\nid: DSET-ITEM-001\n---\nSee items.yaml.\n",
+        )
+        reference = self.write("README.md", "See dset/scopes/gov/items.yaml.\n")
+
+        plan = plan_toml_migration(self.root, bypass_runtime_readiness=True)
+        targets = toml_migration._target_digests(
+            self.root, list(plan.entries), list(plan.references)
+        )
+
+        self.assertIn(document.relative_to(self.root).as_posix(), targets)
+        self.assertIn(reference.relative_to(self.root).as_posix(), targets)
+
+    def test_full_staged_tree_converts_and_regenerates_its_bundle(self) -> None:
+        staged = self.root / "staged"
+        excluded = {
+            ".git",
+            ".venv",
+            ".dset",
+            ".cache",
+            "__pycache__",
+            ".mypy_cache",
+            ".pytest_cache",
+            ".ruff_cache",
+            "build",
+            "dist",
+        }
+        shutil.copytree(
+            ROOT,
+            staged,
+            ignore=lambda _directory, names: set(names) & excluded,
+        )
+        with patch("dset_toolchain.toml_migration._validate_migrated_runtime"):
+            apply_toml_migration(staged, bypass_runtime_readiness=True)
+
+        self.assertFalse((staged / "dset/scopes/meta/dset.yaml").exists())
+        self.assertTrue((staged / "dset/scopes/meta/dset.toml").is_file())
+        bundle = json.loads(
+            (staged / "dset_toolchain/bootstrap_bundle.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertIn("dset/scopes/meta/dset.toml", bundle["files"])
+        self.assertEqual(apply_toml_migration(staged).entries, ())
 
 
 if __name__ == "__main__":
