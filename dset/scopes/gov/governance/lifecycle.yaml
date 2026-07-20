@@ -124,3 +124,14 @@ events:
     llm_session_ids:
       - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
     rationale: Role-aware classification, guarded Conflict emission, result invalidation, lifecycle events, archive lookup, and derived-view propagation are executable and covered.
+  -
+    id: DSET-LIFECYCLE-EVENT-013
+    atom_id: DSET-PROBLEM-GOV-007
+    event: resolved
+    occurred_at: 2026-07-20T00:00:00+04:00
+    related:
+      - DSET-DECISION-GOV-008
+      - DSET-REQUIREMENT-GOV-027
+    llm_session_ids:
+      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+    rationale: Native atom enforcement and compatibility-preserving legacy classification now share one flat four-Type runtime across validation, traceability, health, and skill routing.
