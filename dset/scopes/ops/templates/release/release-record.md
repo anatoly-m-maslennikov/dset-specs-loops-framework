@@ -3,7 +3,7 @@ artifact_type: release_record
 artifact_id: "{{project_key}}-RELEASE-RECORD-{{sequence}}"
 version_scope_ref: "{{project_key}}-SPECIFICATION-{{version_scope_sequence}}"
 release_plan_ref: "{{project_key}}-PLAN-{{release_plan_sequence}}"
-readiness_record_ref: "{{project_key}}-READINESS-{{readiness_sequence}}"
+readiness_record_ref: "{{project_key}}-READINESS-RECORD-{{readiness_sequence}}"
 released_version: "{{released_version}}"
 published_at: pending
 llm_session_ids: []

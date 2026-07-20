@@ -1,6 +1,6 @@
 ---
 artifact_type: readiness_record
-artifact_id: "{{project_key}}-READINESS-{{sequence}}"
+artifact_id: "{{project_key}}-READINESS-RECORD-{{sequence}}"
 version_scope_ref: "{{project_key}}-SPECIFICATION-{{version_scope_sequence}}"
 release_plan_ref: "{{project_key}}-PLAN-{{release_plan_sequence}}"
 candidate_sha: pending

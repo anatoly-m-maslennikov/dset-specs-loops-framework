@@ -17,7 +17,7 @@ release:
     commit: pending
     version: pending
   target: pending
-  readiness: verification.md
+  readiness: TEST-READINESS-RECORD-001-release.md
   candidate_commit: pending
 intake: []
 requirements:

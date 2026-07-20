@@ -18,7 +18,7 @@ release:
     commit: pending
     version: pending
   target: pending
-  readiness: verification.md
+  readiness: pending
   candidate_commit: pending
 intake: []
 requirements:

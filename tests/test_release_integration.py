@@ -110,6 +110,12 @@ class ReleaseIntegrationTests(unittest.TestCase):
         duplicate = self.root / "dset/scopes/tool/changes/duplicate"
         duplicate.mkdir(parents=True)
         (duplicate / "verification.md").write_text("ready\n", encoding="utf-8")
+        (duplicate / "TEST-READINESS-RECORD-001-release.md").write_text(
+            (self.change / "TEST-READINESS-RECORD-001-release.md").read_text(
+                encoding="utf-8"
+            ),
+            encoding="utf-8",
+        )
         (duplicate / "change.yaml").write_text(
             manifest.read_text(encoding="utf-8").replace(
                 "TEST-CHANGE-OPS-001", "TEST-CHANGE-TOOL-001"
@@ -117,6 +123,30 @@ class ReleaseIntegrationTests(unittest.TestCase):
             encoding="utf-8",
         )
         with self.assertRaisesRegex(ReleaseError, "exactly one owner"):
+            plan_release(self.root)
+
+    def test_readiness_record_is_the_only_release_gate_authority(self) -> None:
+        readiness = self.change / "TEST-READINESS-RECORD-001-release.md"
+        ready_text = readiness.read_text(encoding="utf-8")
+        readiness.write_text(
+            ready_text.replace("disposition: ready", "disposition: blocked"),
+            encoding="utf-8",
+        )
+        with self.assertRaisesRegex(ReleaseError, "blocks this release"):
+            plan_release(self.root)
+
+        readiness.write_text(
+            ready_text.replace(
+                'candidate_sha: "2222222222222222222222222222222222222222"',
+                'candidate_sha: "3333333333333333333333333333333333333333"',
+            ),
+            encoding="utf-8",
+        )
+        with self.assertRaisesRegex(ReleaseError, "candidate does not match"):
+            plan_release(self.root)
+
+        readiness.write_text("# Verification says ready\n", encoding="utf-8")
+        with self.assertRaisesRegex(ReleaseError, "YAML frontmatter"):
             plan_release(self.root)
 
     def test_archived_prepared_owner_remains_publishable(self) -> None:
@@ -202,7 +232,22 @@ version = "independent"
         )
         change = scopes / "ops" / "changes" / "release"
         change.mkdir()
-        (change / "verification.md").write_text("# Readiness\n", encoding="utf-8")
+        (change / "verification.md").write_text("# Verification\n", encoding="utf-8")
+        (change / "TEST-READINESS-RECORD-001-release.md").write_text(
+            '''---
+artifact_type: readiness_record
+artifact_id: TEST-READINESS-RECORD-001
+version_scope_ref: TEST-SPECIFICATION-001
+release_plan_ref: TEST-PLAN-001
+candidate_sha: "2222222222222222222222222222222222222222"
+disposition: ready
+llm_session_ids: []
+---
+
+# Readiness Record
+''',
+            encoding="utf-8",
+        )
         (change / "change.yaml").write_text(
             """schema_version: "1.2"
 id: TEST-CHANGE-OPS-001
@@ -215,7 +260,7 @@ release:
     commit: "1111111111111111111111111111111111111111"
     version: 0.3.1
   target: 0.4.0
-  readiness: verification.md
+  readiness: TEST-READINESS-RECORD-001-release.md
   candidate_commit: "2222222222222222222222222222222222222222"
 """,
             encoding="utf-8",

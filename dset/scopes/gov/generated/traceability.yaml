@@ -561,6 +561,18 @@ lineage:
     child_of: []
     parent_to: []
   -
+    id: DSET-PLAN-002
+    artifact_id: DSET-PLAN-002
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-PLAN-002-0-3-1-release.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-READINESS-RECORD-001
+    artifact_id: DSET-READINESS-RECORD-001
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-READINESS-RECORD-001-0-3-1.md
+    child_of: []
+    parent_to: []
+  -
     id: DSET-REQUIREMENT-GOV-030
     artifact_id: DSET-ATOMIC-RECORD-001
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-001-artifact-type-name-policy.md

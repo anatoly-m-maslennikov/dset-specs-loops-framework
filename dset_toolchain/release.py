@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from .layout import discover_layout
-from .yaml_subset import dump, load
+from .yaml_subset import dump, load, loads
 
 _SEMVER = re.compile(
     r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)"
@@ -218,20 +218,16 @@ def plan_release(root: Path) -> ReleasePlan:
     if _FULL_SHA.fullmatch(candidate_commit) is None:
         raise ReleaseError("release candidate commit must be a full SHA")
     readiness = _contained_file(owner_path, readiness_relative, "readiness")
+    readiness_passed = _readiness_passed(readiness, candidate_commit)
 
     try:
         computed = expected_target(
             base_version,
             release_class,
             bootstrap_target=target if release_class == "bootstrap" else None,
-            readiness_passed=False,
+            readiness_passed=readiness_passed,
         )
     except ValueError as error:
-        if release_class in {"rc", "final"}:
-            raise ReleaseError(
-                "RC/final preparation requires machine-verifiable readiness; "
-                "the transition engine exists but the readiness integration is pending"
-            ) from error
         raise ReleaseError(str(error)) from error
     if computed.semver != target:
         raise ReleaseError(
@@ -388,6 +384,36 @@ def _current_product_version(version_path: Path) -> str:
     version_data = _mapping(load(version_path), "version contract")
     framework = _mapping(version_data.get("framework"), "framework version")
     return _required_string(framework, "version")
+
+
+def _readiness_passed(path: Path, candidate_commit: str) -> bool:
+    try:
+        lines = path.read_text(encoding="utf-8").splitlines()
+    except (OSError, UnicodeError) as error:
+        raise ReleaseError(f"cannot read Readiness Record: {path}") from error
+    if not lines or lines[0].strip() != "---":
+        raise ReleaseError("Readiness Record requires YAML frontmatter")
+    try:
+        end = lines.index("---", 1)
+        data = loads("\n".join(lines[1:end]))
+    except (ValueError, TypeError) as error:
+        raise ReleaseError("Readiness Record frontmatter is invalid") from error
+    if not isinstance(data, dict) or data.get("artifact_type") != "readiness_record":
+        raise ReleaseError("release readiness must use a Readiness Record")
+    if data.get("candidate_sha") != candidate_commit:
+        raise ReleaseError(
+            "Readiness Record candidate does not match release candidate"
+        )
+    for field in ("artifact_id", "version_scope_ref", "release_plan_ref"):
+        value = data.get(field)
+        if not isinstance(value, str) or not value or value == "pending":
+            raise ReleaseError(f"Readiness Record field is incomplete: {field}")
+    disposition = data.get("disposition")
+    if disposition not in {"ready", "blocked"}:
+        raise ReleaseError("Readiness Record disposition must be ready or blocked")
+    if disposition != "ready":
+        raise ReleaseError("Readiness Record blocks this release candidate")
+    return True
 
 
 def _read_version_surfaces(root: Path, version_path: Path) -> dict[str, str]:

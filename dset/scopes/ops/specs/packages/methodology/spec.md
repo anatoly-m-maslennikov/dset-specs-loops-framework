@@ -34,7 +34,7 @@ Each applicable project must configure an integration branch, protected release 
 
 ## DSET-REQUIREMENT-OPS-006 — RC and final releases are fully working gates
 
-`1.0.0-rc.N` may begin only when the declared 1.0 scope is feature-complete, self-hosted, documented, supportable, migration-ready, green under every deterministic test and applicable eval, verified in required adopters or pilots, and free of known release-blocking defects. The change's committed `verification.md`, anchored to the exact candidate SHA, owns applicable/not-applicable gate dispositions, evidence links, and the blocker register. Final promotion allows only release metadata/evidence-link updates; any substantive change requires `rc.N+1` and fresh proof. Time or accumulated increments cannot replace readiness.
+`1.0.0-rc.N` may begin only when the declared 1.0 scope is feature-complete, self-hosted, documented, supportable, migration-ready, green under every deterministic test and applicable eval, verified in required adopters or pilots, and free of known release-blocking defects. The change's committed Readiness Record, anchored to the exact candidate SHA, owns applicable/not-applicable gate dispositions, evidence links, the blocker register, and the explicit ready-or-blocked conclusion. `verification.md` is linked assurance evidence and cannot authorize release. Final promotion allows only release metadata/evidence-link updates; any substantive change requires `rc.N+1` and fresh proof. Time or accumulated increments cannot replace readiness.
 
 **Scenario DSET-SCENARIO-OPS-007:** A green candidate with one required pilot unfinished remains `0.y.z`; a fully working `1.0.0-rc.2` may promote to `1.0.0` only after final evidence passes and without adding features.
 

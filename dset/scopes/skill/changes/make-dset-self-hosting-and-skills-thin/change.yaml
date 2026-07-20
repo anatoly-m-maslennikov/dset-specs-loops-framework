@@ -92,7 +92,7 @@ release:
     commit: b874504c25e42329eae19ed14f2b50a3d922d64e
     version: unversioned
   target: 0.3.1
-  readiness: verification.md
+  readiness: DSET-READINESS-RECORD-001-0-3-1.md
   candidate_commit: a6738bfed4c222f8e984d615a20be4a6e0d56767
 intake:
   - DSET-PROBLEM-TOOL-001

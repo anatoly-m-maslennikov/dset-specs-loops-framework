@@ -164,7 +164,12 @@
           "additionalProperties": false
         },
         "target": {"oneOf": [{"const": "pending"}, {"$ref": "#/$defs/semver"}]},
-        "readiness": {"const": "verification.md"},
+        "readiness": {
+          "oneOf": [
+            {"const": "pending"},
+            {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*\\.md$"}
+          ]
+        },
         "candidate_commit": {"oneOf": [{"type": "string", "pattern": "^[0-9a-f]{40}$"}, {"const": "pending"}]}
       },
       "additionalProperties": false
@@ -191,7 +196,12 @@
         "class": {"enum": ["pending", "bootstrap", "small", "normal", "rc", "final", "breaking"]},
         "base": {"$ref": "#/$defs/release_base"},
         "target": {"oneOf": [{"const": "pending"}, {"$ref": "#/$defs/semver"}]},
-        "readiness": {"const": "verification.md"},
+        "readiness": {
+          "oneOf": [
+            {"const": "pending"},
+            {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*\\.md$"}
+          ]
+        },
         "candidate_commit": {"$ref": "#/$defs/sha_or_pending"}
       },
       "additionalProperties": false

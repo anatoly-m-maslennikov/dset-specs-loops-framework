@@ -448,7 +448,7 @@ class LayeredValidationTests(unittest.TestCase):
                 "version": "0.3.0",
             },
             "target": "0.3.1",
-            "readiness": "verification.md",
+            "readiness": "TEST-READINESS-RECORD-001-release.md",
             "candidate_commit": "c" * 40,
         }
         data["status"] = "in-progress"
