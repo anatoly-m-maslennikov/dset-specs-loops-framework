@@ -16,7 +16,7 @@
           "atom_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"},
           "event": {"enum": ["accepted", "answered", "absorbed", "confirmed", "priority_changed", "reopened", "rejected", "resolved", "retired", "withdrawn"]},
           "occurred_at": {"type": "string", "format": "date-time"},
-          "priority": {"enum": ["critical", "high", "medium", "low", "deferred"]},
+          "priority": {"type": "string", "minLength": 1},
           "related": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"}},
           "llm_session_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$"}},
           "rationale": {"type": "string", "minLength": 1, "maxLength": 4096}

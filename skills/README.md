@@ -18,7 +18,7 @@ project policy is retained or copied across that boundary.
 
 ### Base operator surface
 
-- [`dset`](dset/SKILL.md) — reach a general or uncertain governed outcome without choosing prerequisite skills manually.
+- [`dset`](dset/SKILL.md) — route a general or uncertain request to one governed mode and specialist handoff.
 - [`dset-init`](dset-init/SKILL.md) — preview and, only when authorized, initialize a repository or monorepo Work Area.
 - [`dset-implement`](dset-implement/SKILL.md) — follows the repository's documented `workflows.implement.mode`: lazy preparation closes only governed missing criteria, while strict is implementation-only and stops on insufficient inputs.
 - [`dset-verify`](dset-verify/SKILL.md) — check implementation and governance against accepted truth and proof plans.
@@ -35,15 +35,17 @@ project policy is retained or copied across that boundary.
 - [`dset-decisions`](dset-decisions/SKILL.md) — reconcile accepted session intent into immutable atomic records and compiled handoffs.
 - [`dset-plan-proof`](dset-plan-proof/SKILL.md) — maintain separate deterministic test and qualitative eval plans.
 - [`dset-plan-implementation`](dset-plan-implementation/SKILL.md) — create dependency-ordered implementation work and Change tasks.
-- [`dset-triage`](dset-triage/SKILL.md) — classify and route Problems, Opportunities, Questions, and Conflicts.
+- [`dset-triage`](dset-triage/SKILL.md) — classify and route Questions, including Conflicts and Opportunities, and Problems.
 - [`dset-complete`](dset-complete/SKILL.md) — confirm terminal state and report residual obligations without inventing work.
 
-The base skills accept desired outcomes; repository-local entry criteria chain
-the direct skills only when needed. These 16 folders are the exact implemented
-source catalog. Fourteen wrappers
+The base skills accept desired outcomes. `dset` routes an uncertain request to
+one next mode and handoff; it does not execute the selected specialist.
+Specialist entrypoints may traverse only their registered prerequisite closure,
+notably the lazy `dset-implement` workflow. These 16 folders are the exact
+implemented source catalog. Fourteen wrappers
 resolve repository-local workflows; `dset-init` and
 `dset-repair-governance` are the only bounded pre-resolution exceptions. The
-primary orchestrator owns the shared session checkpoint/resume boundary; there
+primary router owns the shared session checkpoint/resume boundary; there
 is no separate session-management skill. Source availability does not prove a
 real host invocation, release publication, or cross-platform execution until
 those separate gates pass.

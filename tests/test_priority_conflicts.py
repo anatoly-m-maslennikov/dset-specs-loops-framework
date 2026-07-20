@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -23,23 +25,45 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class PriorityConflictTests(unittest.TestCase):
-    def test_source_beats_projection_before_priority(self) -> None:
-        candidate = self._candidate("atomic_authority", "evergreen_projection")
-        candidate["relation"] = "source_projection"
-        candidate["left"]["priority"] = "low"
-        candidate["right"]["priority"] = "critical"
+    def setUp(self) -> None:
+        self.temporary = tempfile.TemporaryDirectory(dir=ROOT.parent)
+        self.root = Path(self.temporary.name)
+        (self.root / "README.md").write_text("# Conflict evidence\n", encoding="utf-8")
 
-        result = resolve_conflict(ROOT, candidate)
+    def tearDown(self) -> None:
+        self.temporary.cleanup()
+
+    def test_source_projection_relation_is_derived_before_priority(self) -> None:
+        root = create_adopter(ROOT, self.root / "adopter")
+        self._seed_parties(root)
+        projection = self._write_fact(
+            root,
+            "DSET-SPECIFICATION-099",
+            artifact_type="specification",
+            priority="critical",
+            scope={"kind": "project", "id": "dset-temporary-adopter"},
+            relations=[{"type": "projection_of", "target": "DSET-DECISION-001"}],
+        )
+        candidate = self._atomic_candidate(root)
+        candidate["right"] = {
+            "id": "DSET-SPECIFICATION-099",
+            "source": projection,
+        }
+
+        result = resolve_conflict(root, candidate)
 
         self.assertEqual(result["conflict_class"], "source_projection_drift")
         self.assertEqual(result["disposition"], "recompile_projection")
-        self.assertEqual(result["selected_id"], "APP-DECISION-001")
-        self.assertFalse(result["conflict_atom_required"])
+        self.assertEqual(result["selected_id"], "DSET-DECISION-001")
+        self.assertEqual(result["left"]["role"], "atomic_authority")
+        self.assertEqual(result["right"]["role"], "evergreen_projection")
 
     def test_assurance_and_implementation_differences_are_not_conflicts(self) -> None:
-        assurance = resolve_conflict(ROOT, self._candidate("atomic_authority", "qa"))
+        assurance = resolve_conflict(
+            self.root, self._candidate("atomic_authority", "qa")
+        )
         conformance = resolve_conflict(
-            ROOT, self._candidate("atomic_authority", "implementation")
+            self.root, self._candidate("atomic_authority", "implementation")
         )
 
         self.assertEqual(assurance["disposition"], "update_assurance_and_relying_gate")
@@ -47,59 +71,144 @@ class PriorityConflictTests(unittest.TestCase):
         self.assertFalse(assurance["conflict_atom_required"])
         self.assertFalse(conformance["conflict_atom_required"])
 
-    def test_selectable_policy_uses_precedence_then_priority(self) -> None:
-        candidate = self._candidate("atomic_authority", "atomic_authority")
-        candidate["selectable"] = True
-        candidate["left"]["priority"] = "low"
-        candidate["right"]["priority"] = "high"
+    def test_selectable_policy_uses_registered_precedence_then_priority(self) -> None:
+        priority_candidate = self._candidate(
+            "atomic_authority",
+            "atomic_authority",
+            left_priority="low",
+            right_priority="high",
+            selectable=True,
+        )
+        priority = resolve_conflict(self.root, priority_candidate)
 
-        priority = resolve_conflict(ROOT, candidate)
-        candidate["precedence"] = "APP-DECISION-001"
-        precedence = resolve_conflict(ROOT, candidate)
+        rules = self.root / "rules"
+        rules.mkdir()
+        (rules / "left.md").write_text("# Left rule\n", encoding="utf-8")
+        (rules / "right.md").write_text("# Right rule\n", encoding="utf-8")
+        governance = self.root / "dset/governance.yaml"
+        governance.parent.mkdir(parents=True)
+        governance.write_text(
+            "schema_version: 1.0\n"
+            "rules:\n"
+            "  - id: APP-RULE-LEFT-001\n"
+            "    path: rules/left.md\n"
+            "    applicability: applicable\n"
+            "    precedence_over:\n"
+            "      - APP-RULE-RIGHT-002\n"
+            "  - id: APP-RULE-RIGHT-002\n"
+            "    path: rules/right.md\n"
+            "    applicability: applicable\n"
+            "    precedence_over: []\n",
+            encoding="utf-8",
+        )
+        precedence_candidate = {
+            "left": {"id": "APP-RULE-LEFT-001"},
+            "right": {"id": "APP-RULE-RIGHT-002"},
+            "context": self._context(self.root),
+            "selectable": True,
+        }
+        precedence = resolve_conflict(self.root, precedence_candidate)
 
-        self.assertEqual(priority["selected_id"], "APP-CONTRACT-001")
+        self.assertEqual(priority["selected_id"], "APP-RIGHT-002")
         self.assertEqual(priority["disposition"], "selected_by_priority")
-        self.assertEqual(precedence["selected_id"], "APP-DECISION-001")
+        self.assertEqual(precedence["selected_id"], "APP-RULE-LEFT-001")
         self.assertEqual(precedence["disposition"], "selected_by_precedence")
-        self.assertTrue(priority["conflict_atom_required"])
         self.assertTrue(priority["resolution_event_required"])
 
     def test_equal_or_immutable_unsatisfiable_authority_stops(self) -> None:
-        equal = self._candidate("atomic_authority", "atomic_authority")
-        equal["selectable"] = True
-        equal["left"]["priority"] = "high"
-        equal["right"]["priority"] = "high"
-        stopped = resolve_conflict(ROOT, equal)
-
-        immutable = self._candidate("external_authority", "external_authority")
-        immutable["left"].update({"immutable": True, "external": True})
-        immutable["right"].update({"immutable": True, "external": True})
-        unsatisfiable = resolve_conflict(ROOT, immutable)
-
-        self.assertIn("stop_on_equal", stopped["disposition"])
-        self.assertEqual(
-            unsatisfiable["conflict_class"],
-            "unsatisfiable_immutable_authority",
+        equal = resolve_conflict(
+            self.root,
+            self._candidate(
+                "atomic_authority",
+                "atomic_authority",
+                left_priority="high",
+                right_priority="high",
+                selectable=True,
+            ),
         )
-        self.assertIsNone(unsatisfiable["selected_id"])
+        immutable = resolve_conflict(
+            self.root,
+            self._candidate(
+                "external_authority",
+                "external_authority",
+                left_immutable=True,
+                right_immutable=True,
+                left_external=True,
+                right_external=True,
+            ),
+        )
 
-    def test_inapplicable_candidate_does_not_emit_conflict(self) -> None:
-        candidate = self._candidate("atomic_authority", "atomic_authority")
-        candidate["context"]["applicable"] = False
+        self.assertIn("stop_on_equal", equal["disposition"])
+        self.assertEqual(
+            immutable["conflict_class"], "unsatisfiable_immutable_authority"
+        )
+        self.assertIsNone(immutable["selected_id"])
 
-        result = resolve_conflict(ROOT, candidate)
+    def test_inapplicable_state_is_derived(self) -> None:
+        candidate = self._candidate(
+            "atomic_authority", "atomic_authority", left_applicable=False
+        )
+
+        result = resolve_conflict(self.root, candidate)
 
         self.assertEqual(result["conflict_class"], "not_a_conflict")
         self.assertFalse(result["conflict_atom_required"])
+
+    def test_unresolved_party_and_fabricated_facts_are_rejected(self) -> None:
+        candidate = self._candidate(
+            "atomic_authority", "atomic_authority", left_immutable=True
+        )
+        candidate["left"]["immutable"] = False
+        with self.assertRaisesRegex(ValueError, "mismatches repository truth"):
+            resolve_conflict(self.root, candidate)
+
+        candidate["left"] = {"id": "APP-UNKNOWN-099"}
+        with self.assertRaisesRegex(ValueError, "party source requires"):
+            resolve_conflict(self.root, candidate)
+
+    def test_stale_party_and_context_evidence_are_rejected(self) -> None:
+        candidate = self._candidate("atomic_authority", "atomic_authority")
+        recorded = resolve_conflict(self.root, candidate)
+        left_path = self.root / str(candidate["left"]["source"]["path"])
+        left_path.write_text("{}\n", encoding="utf-8")
+        self.assertFalse(conflict_result_is_fresh(self.root, candidate, recorded))
+        with self.assertRaisesRegex(ValueError, "party source is stale"):
+            resolve_conflict(self.root, candidate)
+
+        candidate = self._candidate("atomic_authority", "atomic_authority")
+        recorded = resolve_conflict(self.root, candidate)
+        (self.root / "README.md").write_text("# Changed evidence\n", encoding="utf-8")
+        self.assertFalse(conflict_result_is_fresh(self.root, candidate, recorded))
+        with self.assertRaisesRegex(ValueError, "context evidence is stale"):
+            resolve_conflict(self.root, candidate)
+
+    def test_relation_and_precedence_assertion_mismatches_are_rejected(self) -> None:
+        candidate = self._candidate("atomic_authority", "atomic_authority")
+        candidate["relation"] = "absorption"
+        candidate["relation_winner"] = "APP-LEFT-001"
+        with self.assertRaisesRegex(ValueError, "relation assertion mismatches"):
+            resolve_conflict(self.root, candidate)
+
+        candidate = self._candidate("atomic_authority", "atomic_authority")
+        candidate["precedence"] = "APP-LEFT-001"
+        with self.assertRaisesRegex(ValueError, "precedence assertion mismatches"):
+            resolve_conflict(self.root, candidate)
+
+    def test_conflict_party_priority_must_use_the_project_vocabulary(self) -> None:
+        candidate = self._candidate(
+            "atomic_authority",
+            "atomic_authority",
+            left_priority="unregistered",
+        )
+
+        with self.assertRaisesRegex(ValueError, "not in the project scale"):
+            resolve_conflict(self.root, candidate)
 
     def test_every_role_pair_has_a_deterministic_nonempty_disposition(self) -> None:
         for left in sorted(ROLES):
             for right in sorted(ROLES):
                 with self.subTest(left=left, right=right):
-                    candidate = self._candidate(left, right)
-                    candidate["left"]["id"] = f"APP-LEFT-{left.upper()}-001"
-                    candidate["right"]["id"] = f"APP-RIGHT-{right.upper()}-002"
-                    result = resolve_conflict(ROOT, candidate)
+                    result = resolve_conflict(self.root, self._candidate(left, right))
                     self.assertTrue(result["conflict_class"])
                     self.assertTrue(result["disposition"])
                     if result["conflict_atom_required"]:
@@ -111,124 +220,188 @@ class PriorityConflictTests(unittest.TestCase):
 
     def test_explicit_result_write_refuses_external_or_existing_path(self) -> None:
         result = resolve_conflict(
-            ROOT, self._candidate("atomic_authority", "atomic_authority")
+            self.root, self._candidate("atomic_authority", "atomic_authority")
         )
-        with tempfile.TemporaryDirectory(dir=ROOT) as raw:
-            root = Path(raw)
-            output = root / "result.json"
-            self.assertEqual(write_conflict_result(root, output, result), output)
-            with self.assertRaises(FileExistsError):
-                write_conflict_result(root, output, result)
-            with self.assertRaisesRegex(ValueError, "inside the repository"):
-                write_conflict_result(root, ROOT.parent / "outside.json", result)
+        output = self.root / "result.json"
+        self.assertEqual(write_conflict_result(self.root, output, result), output)
+        with self.assertRaises(FileExistsError):
+            write_conflict_result(self.root, output, result)
+        with self.assertRaisesRegex(ValueError, "inside the repository"):
+            write_conflict_result(
+                self.root, self.root.parent / "outside-conflict-result.json", result
+            )
 
     def test_first_class_conflict_is_assessed_emitted_and_sealed(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
-            root = create_adopter(ROOT, Path(raw) / "adopter")
-            self._seed_parties(root)
-            candidate = self._emission_candidate()
-            output = root / "dset/changes/DSET-ATOMIC-RECORD-003-conflict.md"
+        root = create_adopter(ROOT, self.root / "adopter")
+        self._seed_parties(root)
+        candidate = self._emission_candidate(root)
+        output = root / "dset/changes/DSET-ATOMIC-RECORD-003-conflict.md"
 
-            path, result = emit_conflict_atom(root, output, candidate)
+        path, result = emit_conflict_atom(root, output, candidate)
 
-            atoms, diagnostics = collect_semantic_atoms(root)
-            self.assertEqual(diagnostics, [])
-            self.assertEqual(path, output)
-            self.assertTrue(result["conflict_atom_required"])
-            self.assertEqual(atoms["DSET-CONFLICT-003"].subtype, "conflict")
-            relations = atoms["DSET-CONFLICT-003"].relations
-            self.assertEqual(
-                [(item.type, item.target) for item in relations],
-                [
-                    ("relates_to", "DSET-DECISION-001"),
-                    ("relates_to", "DSET-CONTRACT-002"),
-                ],
-            )
+        atoms, diagnostics = collect_semantic_atoms(root)
+        self.assertEqual(diagnostics, [])
+        self.assertEqual(path, output)
+        self.assertTrue(result["conflict_atom_required"])
+        self.assertEqual(atoms["DSET-CONFLICT-003"].subtype, "conflict")
 
-    def test_priority_change_invalidates_recorded_conflict_result(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
-            root = create_adopter(ROOT, Path(raw) / "adopter")
-            self._seed_parties(root)
-            candidate = self._emission_candidate()
-            recorded = resolve_conflict(root, candidate)
-            self.assertTrue(conflict_result_is_fresh(root, candidate, recorded))
+    def test_absorption_and_priority_lifecycle_are_repository_derived(self) -> None:
+        root = create_adopter(ROOT, self.root / "adopter")
+        self._seed_parties(root, replacement=True)
+        candidate = self._atomic_candidate(root)
+        recorded = resolve_conflict(root, candidate)
+        self.assertTrue(conflict_result_is_fresh(root, candidate, recorded))
 
-            append_lifecycle_event(
-                root,
-                {
-                    "id": "DSET-LIFECYCLE-EVENT-001",
-                    "atom_id": "DSET-DECISION-001",
-                    "event": "priority_changed",
-                    "occurred_at": "2026-07-20T00:00:00+04:00",
-                    "priority": "critical",
-                    "related": [],
-                    "llm_session_ids": ["codex:test-session"],
-                },
-            )
+        append_lifecycle_event(
+            root,
+            {
+                "id": "DSET-LIFECYCLE-EVENT-001",
+                "atom_id": "DSET-DECISION-001",
+                "event": "priority_changed",
+                "occurred_at": "2026-07-20T00:00:00+04:00",
+                "priority": "critical",
+                "related": [],
+                "llm_session_ids": ["codex:test-session"],
+            },
+        )
+        self.assertFalse(conflict_result_is_fresh(root, candidate, recorded))
 
-            self.assertFalse(conflict_result_is_fresh(root, candidate, recorded))
+        append_lifecycle_event(
+            root,
+            {
+                "id": "DSET-LIFECYCLE-EVENT-002",
+                "atom_id": "DSET-DECISION-001",
+                "event": "absorbed",
+                "occurred_at": "2026-07-20T01:00:00+04:00",
+                "related": ["DSET-CONTRACT-002"],
+                "llm_session_ids": ["codex:test-session"],
+            },
+        )
+        candidate["context"]["applicable"] = False
+        absorbed = resolve_conflict(root, candidate)
+        self.assertEqual(absorbed["conflict_class"], "absorption")
+        self.assertEqual(absorbed["selected_id"], "DSET-CONTRACT-002")
+
+    def _candidate(
+        self,
+        left_role: str,
+        right_role: str,
+        *,
+        left_priority: str = "medium",
+        right_priority: str = "medium",
+        left_immutable: bool = False,
+        right_immutable: bool = False,
+        left_external: bool = False,
+        right_external: bool = False,
+        left_applicable: bool = True,
+        right_applicable: bool = True,
+        selectable: bool = False,
+    ) -> dict[str, Any]:
+        left = self._write_fact(
+            self.root,
+            "APP-LEFT-001",
+            conflict_role=left_role,
+            priority=left_priority,
+            immutable=left_immutable,
+            external=left_external,
+            applicability=left_applicable,
+        )
+        right = self._write_fact(
+            self.root,
+            "APP-RIGHT-002",
+            conflict_role=right_role,
+            priority=right_priority,
+            immutable=right_immutable,
+            external=right_external,
+            applicability=right_applicable,
+        )
+        context = self._context(self.root)
+        context["applicable"] = left_applicable and right_applicable
+        return {
+            "left": {"id": "APP-LEFT-001", "source": left},
+            "right": {"id": "APP-RIGHT-002", "source": right},
+            "context": context,
+            "selectable": selectable,
+        }
 
     @staticmethod
-    def _candidate(left_role: str, right_role: str) -> dict[str, Any]:
+    def _write_fact(
+        root: Path,
+        identifier: str,
+        **facts: Any,
+    ) -> dict[str, str]:
+        directory = root / "conflict-facts"
+        directory.mkdir(exist_ok=True)
+        path = directory / f"{identifier.lower()}.json"
+        metadata = {
+            "artifact_id": identifier,
+            "artifact_type": "conflict_party_fact",
+            "scope": {"kind": "project", "id": "conflict-fixture"},
+            "current_status": "accepted",
+            **facts,
+        }
+        path.write_text(json.dumps(metadata, sort_keys=True) + "\n", encoding="utf-8")
+        return PriorityConflictTests._identity(root, path)
+
+    @staticmethod
+    def _context(root: Path) -> dict[str, Any]:
+        evidence_path = root / "README.md"
         return {
-            "left": {
-                "id": "APP-DECISION-001",
-                "role": left_role,
-                "priority": "medium",
-                "priority_source": "atom:APP-DECISION-001",
-                "immutable": False,
-                "external": False,
-            },
-            "right": {
-                "id": "APP-CONTRACT-001",
-                "role": right_role,
-                "priority": "medium",
-                "priority_source": "atom:APP-CONTRACT-001",
-                "immutable": False,
-                "external": False,
-            },
-            "context": {
-                "applicable": True,
-                "same_scope": True,
-                "same_concern": True,
-                "same_effective_time": True,
-            },
-            "relation": "none",
+            "applicable": True,
+            "same_scope": True,
+            "same_concern": True,
+            "same_effective_time": True,
+            "evidence": [PriorityConflictTests._identity(root, evidence_path)],
+        }
+
+    @staticmethod
+    def _identity(root: Path, path: Path) -> dict[str, str]:
+        return {
+            "path": path.relative_to(root).as_posix(),
+            "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        }
+
+    @classmethod
+    def _atomic_candidate(cls, root: Path) -> dict[str, Any]:
+        return {
+            "left": {"id": "DSET-DECISION-001"},
+            "right": {"id": "DSET-CONTRACT-002"},
+            "context": cls._context(root),
             "selectable": False,
         }
 
     @classmethod
-    def _emission_candidate(cls) -> dict[str, Any]:
-        candidate = cls._candidate("atomic_authority", "atomic_authority")
-        candidate["left"]["id"] = "DSET-DECISION-001"
-        candidate["right"]["id"] = "DSET-CONTRACT-002"
+    def _emission_candidate(cls, root: Path) -> dict[str, Any]:
+        candidate = cls._atomic_candidate(root)
         candidate["conflict_atom"] = {
             "artifact_id": "DSET-ATOMIC-RECORD-003",
             "semantic_id": "DSET-CONFLICT-003",
             "authority": "operator:test-operator",
             "claim": "The two active authority claims cannot both govern this scope.",
-            "scope": {
-                "kind": "project",
-                "id": "dset-temporary-adopter",
-            },
+            "scope": {"kind": "project", "id": "dset-temporary-adopter"},
             "llm_session_ids": ["codex:test-session"],
             "material_links": ["DSET-DECISION-001", "DSET-CONTRACT-002"],
             "promotion": {"parent_scope": None},
             "acceptance": "proposed",
             "priority": "high",
             "lineage": ["DSET-DECISION-001", "DSET-CONTRACT-002"],
-            "rationale": "Preserve the unresolved specification-level incompatibility.",
+            "rationale": "Preserve the unresolved incompatibility.",
         }
         return candidate
 
     @staticmethod
-    def _seed_parties(root: Path) -> None:
+    def _seed_parties(root: Path, *, replacement: bool = False) -> None:
         for carrier, semantic, subtype, priority in (
             ("001", "DSET-DECISION-001", None, "medium"),
             ("002", "DSET-CONTRACT-002", "contract", "high"),
         ):
             path = root / f"dset/changes/DSET-ATOMIC-RECORD-{carrier}-party.md"
             subtype_line = f"subtype: {subtype}\n" if subtype else ""
+            relation = (
+                "relations:\n  - type: replacement_of\n    target: DSET-DECISION-001\n"
+                if replacement and semantic == "DSET-CONTRACT-002"
+                else ""
+            )
             path.write_text(
                 "---\n"
                 "artifact_type: atomic_record\n"
@@ -245,6 +418,7 @@ class PriorityConflictTests(unittest.TestCase):
                 "  id: dset-temporary-adopter\n"
                 "promotion:\n"
                 "  parent_scope: null\n"
+                f"{relation}"
                 "llm_session_ids:\n"
                 '  - "codex:test-session"\n'
                 "---\n\n# Authority\n",

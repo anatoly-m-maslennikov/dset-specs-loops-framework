@@ -1,6 +1,6 @@
 ---
 name: dset
-description: Reach a general, multi-stage, or uncertain DSET outcome through repository-local governance. Use when the operator wants progress without choosing prerequisite skills manually; prefer a direct skill only when its desired outcome is already clear.
+description: Route a general or uncertain request to one governed DSET mode through repository-local governance. Use when the operator does not know which specialist skill applies; return the mode, evidence, and authorized handoff without performing the specialist workflow.
 ---
 
 # DSET
@@ -16,4 +16,8 @@ This is the thin primary wrapper for `lifecycle-orchestration`; resolved reposit
 
 ## Route and hand off
 
-Follow only the returned local rules and session handoff. Preserve one session and route writes through resolved owners; never edit an emitted atom. Stop exactly where the resolved lifecycle contract stops.
+Follow only the returned local rules and session handoff. Return one mode, its
+evidence, and the next authorized specialist handoff; do not perform that
+specialist workflow. Preserve one session and route writes through resolved
+owners; never edit an emitted atom. Stop exactly where the resolved lifecycle
+contract stops.

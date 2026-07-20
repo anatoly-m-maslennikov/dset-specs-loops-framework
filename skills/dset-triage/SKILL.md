@@ -1,6 +1,6 @@
 ---
 name: dset-triage
-description: Classify and route durable DSET Problems, Opportunities, Questions, and Conflicts without defining type from workflow. Use when an artifact is unclassified, lacks priority/owner/Change linkage, or needs the next governed route; stop before diagnosis, decision, or implementation.
+description: Classify and route durable DSET Questions, including Conflicts and Opportunities, and Problems without defining type from workflow. Use when an artifact is unclassified, lacks priority/owner/Change linkage, or needs the next governed route; stop before diagnosis, decision, or implementation.
 ---
 
 # DSET Triage

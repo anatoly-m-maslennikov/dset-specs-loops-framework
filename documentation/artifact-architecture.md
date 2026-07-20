@@ -19,9 +19,11 @@ A project selects each applicable axis explicitly. Selecting `documentation-v1` 
 
 Every governed carrier has one primary artifact type from the project-local
 MECE registry. Atomic Record, Analysis Report, Specification, Procedure, Plan,
-Change, Implementation, Evidence Record, Verification, Readiness Record,
-Release Record, Derived View, and Navigation cover the development lifecycle
-without changing the four semantic Types—Decision, Question, Problem, and QA.
+Delivery, Implementation, Evidence Record, Verification, Derived View, and
+Navigation cover the development lifecycle without changing the four semantic
+Types—Decision, Question, Problem, and QA. Delivery's direct subtypes are
+Roadmap, Version Scope, Change, Release Plan, Readiness Record, and Release
+Record.
 
 Artifact type answers what job the carrier performs. Semantic Type answers what
 an Atomic Record means. Workflow, queue, skill, tool, host, filename, folder,

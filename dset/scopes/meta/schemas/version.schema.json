@@ -47,8 +47,8 @@
         "properties": {
           "bootstrap": {
             "properties": {
-              "manifest": {"const": "dset/scopes/meta/dset.yaml"},
-              "governance_registry": {"const": "dset/scopes/gov/governance.yaml"}
+              "manifest": {"enum": ["dset/scopes/meta/dset.toml", "dset/scopes/meta/dset.yaml"]},
+              "governance_registry": {"enum": ["dset/scopes/gov/governance.toml", "dset/scopes/gov/governance.yaml"]}
             }
           }
         }
@@ -57,8 +57,8 @@
         "properties": {
           "bootstrap": {
             "properties": {
-              "manifest": {"const": "dset/dset.yaml"},
-              "governance_registry": {"const": "dset/governance.yaml"}
+              "manifest": {"enum": ["dset/dset.toml", "dset/dset.yaml"]},
+              "governance_registry": {"enum": ["dset/governance.toml", "dset/governance.yaml"]}
             }
           }
         }

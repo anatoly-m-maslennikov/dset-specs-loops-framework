@@ -12,6 +12,7 @@ from .frontmatter import FrontmatterError
 from .frontmatter import parse as parse_frontmatter
 from .frontmatter import render as render_frontmatter
 from .layout import discover_layout
+from .settings import load_project_settings
 from .yaml_subset import load
 
 ID_PATTERN = re.compile(r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$")
@@ -87,7 +88,11 @@ def validate_review_report(
     packet, _ = _read_markdown(packet_path)
     report, body = _read_markdown(report_path)
     _validate_packet(root, packet)
-    _validate_report(packet, report, body)
+    settings, issues = load_project_settings(root)
+    if issues:
+        raise ValueError(issues[0])
+    allowed_priorities = {*settings.priority_scale, "unknown"}
+    _validate_report(packet, report, body, allowed_priorities)
     return {
         "report_id": report["artifact_id"],
         "packet_id": report["packet_id"],
@@ -205,7 +210,12 @@ def _validate_packet(root: Path, packet: dict[str, Any]) -> None:
             raise ValueError("review packet rule identity is invalid")
 
 
-def _validate_report(packet: dict[str, Any], report: dict[str, Any], body: str) -> None:
+def _validate_report(
+    packet: dict[str, Any],
+    report: dict[str, Any],
+    body: str,
+    allowed_priorities: set[str],
+) -> None:
     required = {
         "schema_version",
         "artifact_type",
@@ -235,14 +245,7 @@ def _validate_report(packet: dict[str, Any], report: dict[str, Any], body: str) 
         raise ValueError("review report commit does not match the packet")
     if report.get("reviewed_inputs") != packet.get("reviewed_inputs"):
         raise ValueError("review report inputs do not match the packet")
-    if report.get("priority") not in {
-        "critical",
-        "high",
-        "medium",
-        "low",
-        "deferred",
-        "unknown",
-    }:
+    if report.get("priority") not in allowed_priorities:
         raise ValueError("review report priority is invalid")
     reviewer = report.get("reviewer")
     reviewer_keys = {"identity", "host", "model", "tool_version"}
@@ -266,7 +269,7 @@ def _validate_report(packet: dict[str, Any], report: dict[str, Any], body: str) 
         raise ValueError("review report findings must be a list")
     finding_ids: list[str] = []
     for finding in findings:
-        _validate_finding(finding)
+        _validate_finding(finding, allowed_priorities)
         assert isinstance(finding, dict)
         finding_ids.append(str(finding["id"]))
     if len(finding_ids) != len(set(finding_ids)):
@@ -275,7 +278,7 @@ def _validate_report(packet: dict[str, Any], report: dict[str, Any], body: str) 
         raise ValueError("review report requires a findings body")
 
 
-def _validate_finding(finding: object) -> None:
+def _validate_finding(finding: object, allowed_priorities: set[str]) -> None:
     fields = {
         "id",
         "priority",
@@ -289,14 +292,7 @@ def _validate_finding(finding: object) -> None:
     identifier = finding.get("id")
     if not isinstance(identifier, str) or not FINDING_PATTERN.fullmatch(identifier):
         raise ValueError("review finding ID is invalid")
-    if finding.get("priority") not in {
-        "critical",
-        "high",
-        "medium",
-        "low",
-        "deferred",
-        "unknown",
-    }:
+    if finding.get("priority") not in allowed_priorities:
         raise ValueError("review finding priority is invalid")
     if finding.get("confidence") not in {"low", "medium", "high"}:
         raise ValueError("review finding confidence is invalid")

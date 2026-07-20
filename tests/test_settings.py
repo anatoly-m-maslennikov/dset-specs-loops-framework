@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -186,6 +187,37 @@ class ProjectSettingsTests(unittest.TestCase):
             "delegation.budget_profile must be low, medium, or high",
             issues,
         )
+
+    def test_published_priority_schemas_defer_vocabulary_to_settings(self) -> None:
+        paths = {
+            "atom": ROOT / "dset/scopes/gov/schemas/atom.schema.json",
+            "change": ROOT / "dset/scopes/gov/schemas/change.schema.json",
+            "review": ROOT / "dset/scopes/gov/schemas/review-report.schema.json",
+            "conflict": (
+                ROOT / "dset/scopes/gov/schemas/conflict-candidate.schema.json"
+            ),
+            "lifecycle": ROOT / "dset/scopes/gov/schemas/lifecycle.schema.json",
+            "traceability": (
+                ROOT / "dset/scopes/tool/schemas/traceability.schema.json"
+            ),
+        }
+        schemas = {
+            name: json.loads(path.read_text(encoding="utf-8"))
+            for name, path in paths.items()
+        }
+        definitions = (
+            schemas["atom"]["properties"]["priority"],
+            schemas["change"]["$defs"]["priority"],
+            schemas["review"]["properties"]["priority"],
+            schemas["review"]["$defs"]["finding"]["properties"]["priority"],
+            schemas["conflict"]["$defs"]["priority"],
+            schemas["lifecycle"]["properties"]["events"]["items"]["properties"][
+                "priority"
+            ],
+            schemas["traceability"]["$defs"]["semantic_atom"]["properties"]["priority"],
+        )
+        for definition in definitions:
+            self.assertEqual(definition, {"type": "string", "minLength": 1})
 
 
 if __name__ == "__main__":

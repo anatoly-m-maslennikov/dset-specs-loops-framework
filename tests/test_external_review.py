@@ -4,7 +4,9 @@ import hashlib
 import json
 import tempfile
 import unittest
+from dataclasses import replace
 from pathlib import Path
+from unittest.mock import patch
 
 from dset_toolchain.external_review import (
     create_review_packet,
@@ -14,6 +16,7 @@ from dset_toolchain.external_review import (
 )
 from dset_toolchain.frontmatter import parse as parse_frontmatter
 from dset_toolchain.frontmatter import render as render_frontmatter
+from dset_toolchain.settings import load_project_settings
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -99,7 +102,28 @@ class ExternalReviewTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "inputs do not match"):
             validate_review_report(ROOT, self.packet, report)
 
-    def _write_report(self, *, reviewed_inputs: object | None = None) -> Path:
+    def test_report_priority_uses_the_project_vocabulary(self) -> None:
+        settings, issues = load_project_settings(ROOT)
+        self.assertEqual(issues, ())
+        configured = replace(
+            settings,
+            priority_scale=("urgent", "normal", "later"),
+            default_priority="normal",
+        )
+        report = self._write_report(priority="urgent")
+        with patch(
+            "dset_toolchain.external_review.load_project_settings",
+            return_value=(configured, ()),
+        ):
+            result = validate_review_report(ROOT, self.packet, report)
+        self.assertEqual(result["finding_ids"], ["DSET-REVIEW-FINDING-001"])
+
+    def _write_report(
+        self,
+        *,
+        reviewed_inputs: object | None = None,
+        priority: str = "high",
+    ) -> Path:
         packet = self._metadata(self.packet)
         report = self.work / "review-report.md"
         metadata = {
@@ -108,7 +132,7 @@ class ExternalReviewTests(unittest.TestCase):
             "artifact_subtype": "review_report",
             "artifact_id": "DSET-EVIDENCE-RECORD-099",
             "packet_id": packet["packet_id"],
-            "priority": "high",
+            "priority": priority,
             "reviewer": {
                 "identity": "independent-reviewer",
                 "host": "claude-code",
@@ -128,7 +152,7 @@ class ExternalReviewTests(unittest.TestCase):
             "findings": [
                 {
                     "id": "DSET-REVIEW-FINDING-001",
-                    "priority": "high",
+                    "priority": priority,
                     "evidence": "README line and accepted rule disagree",
                     "confidence": "high",
                     "impact": "Operator may follow stale behavior",

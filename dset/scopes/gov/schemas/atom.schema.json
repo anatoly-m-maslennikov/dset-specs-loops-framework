@@ -11,7 +11,7 @@
     "subtype": {"enum": ["requirement", "constraint", "contract", "user_story", "outcome", "scenario", "invariant", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
     "semantic_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"},
     "status": {"enum": ["proposed", "accepted"]},
-    "priority": {"enum": ["critical", "high", "medium", "low", "deferred", "unknown"]},
+    "priority": {"type": "string", "minLength": 1},
     "authority": {"type": "string", "pattern": "^(operator|repository|external):[A-Za-z0-9._:-]+$"},
     "claim": {"type": "string", "minLength": 1},
     "scope": {

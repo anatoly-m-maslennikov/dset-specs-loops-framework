@@ -86,7 +86,7 @@
         "subtype": {"enum": ["none", "requirement", "constraint", "contract", "user_story", "outcome", "scenario", "invariant", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
         "emission_status": {"enum": ["proposed", "accepted"]},
         "current_status": {"enum": ["proposed", "accepted", "answered", "absorbed", "confirmed", "reopened", "rejected", "resolved", "retired", "withdrawn"]},
-        "priority": {"enum": ["critical", "high", "medium", "low", "deferred", "unknown"]},
+        "priority": {"type": "string", "minLength": 1},
         "priority_source": {"type": "string", "minLength": 1},
         "relations": {"type": "array", "items": {"$ref": "#/$defs/atom_relation"}},
         "lifecycle_events": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-LIFECYCLE-EVENT-[0-9]{3,}$"}},

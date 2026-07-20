@@ -246,8 +246,9 @@ the remaining native and hosted evidence gaps without overstating them:
   runner against the same commit;
 - exercise the guarded publisher through a real version-changing `dev` to
   `main` delivery, including retry, partial-recovery, and collision evidence;
-- finish the next-action heuristic, RC/final readiness integration, generated
-  project-health view, and external-review reconciliation flow;
+- finish the next-action heuristic and RC/final readiness integration; refresh
+  the generated project-health view when its sources change, and complete
+  authenticated independent-review and reconciliation usefulness evidence;
 - add the JavaScript/TypeScript applied profile while keeping documentation and
   methodology as first-class Work Areas and implementation roles;
 - harden release automation, pinned distribution, hosted exact-head proofs, and

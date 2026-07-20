@@ -10,7 +10,7 @@
     "artifact_subtype": {"const": "review_report"},
     "artifact_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-EVIDENCE-RECORD-[0-9]{3,}$"},
     "packet_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-REVIEW-PACKET-[0-9]{3,}$"},
-    "priority": {"enum": ["critical", "high", "medium", "low", "deferred", "unknown"]},
+    "priority": {"type": "string", "minLength": 1},
     "reviewer": {
       "type": "object",
       "required": ["identity", "host", "model", "tool_version"],
@@ -42,7 +42,7 @@
       "required": ["id", "priority", "evidence", "confidence", "impact", "proposed_disposition"],
       "properties": {
         "id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-REVIEW-FINDING-[0-9]{3,}$"},
-        "priority": {"enum": ["critical", "high", "medium", "low", "deferred", "unknown"]},
+        "priority": {"type": "string", "minLength": 1},
         "evidence": {"type": "string", "minLength": 1},
         "confidence": {"enum": ["low", "medium", "high"]},
         "impact": {"type": "string", "minLength": 1},
