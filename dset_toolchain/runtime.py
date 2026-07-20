@@ -172,6 +172,7 @@ def start_run(
     authorization_class: str = "read-only",
     authorization_state: str = "not-granted",
     authority_snapshot: Mapping[str, Any] | None = None,
+    implementation_mode: str = "lazy",
 ) -> RuntimeInvocation:
     """Start one invocation and its resumable checkpoint.
 
@@ -294,7 +295,11 @@ def start_run(
     closure = (
         copy.deepcopy(resumed["closure"])
         if resumed is not None and isinstance(resumed.get("closure"), dict)
-        else initial_closure(public_entrypoint, mode_id)
+        else initial_closure(
+            public_entrypoint,
+            mode_id,
+            implementation_mode=implementation_mode,
+        )
     )
     active_run_ids = _active_run_ids(resumed)
     active_run_ids.append(run_id)

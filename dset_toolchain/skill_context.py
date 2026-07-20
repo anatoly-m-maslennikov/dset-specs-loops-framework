@@ -38,6 +38,9 @@ def resolve_skill_context(
     if skill_id == "dset-repair-governance":
         return _repair_context(requested, root, skill_id)
 
+    settings, settings_issues = load_project_settings(root)
+    if settings_issues:
+        raise ValueError("; ".join(settings_issues))
     scope, work_area = _target_scope(root, requested)
     started = start_runtime(
         root,
@@ -48,14 +51,14 @@ def resolve_skill_context(
         session_id=session_id,
         llm_session_ids=llm_session_ids,
         scope=scope,
+        implementation_mode=(
+            settings.implementation_mode if skill_id == "dset-implement" else None
+        ),
     )
     resolved = started["resolved"]
     assert isinstance(resolved, dict)
     checkpoint = started["checkpoint"]
     assert isinstance(checkpoint, dict)
-    settings, settings_issues = load_project_settings(root)
-    if settings_issues:
-        raise ValueError("; ".join(settings_issues))
     semantic_index = build_semantic_classification_index(root)
     return {
         "schema_version": CONTEXT_SCHEMA_VERSION,
@@ -72,6 +75,7 @@ def resolve_skill_context(
         .as_posix(),
         "ruleset_identity": _run_ruleset_identity(started["run"]),
         "artifact_creation_strictness": settings.artifact_creation_strictness,
+        "implementation_preparation_mode": settings.implementation_mode,
         "semantic_routing": {
             "types": ["decision", "question", "problem", "qa"],
             "classification_count": len(semantic_index),

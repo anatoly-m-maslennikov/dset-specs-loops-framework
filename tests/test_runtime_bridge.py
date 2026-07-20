@@ -146,6 +146,43 @@ class RuntimeBridgeTests(unittest.TestCase):
             run = cast(dict[str, Any], context["run"])
             finish_runtime(adopter, str(run["run_id"]), status="succeeded")
 
+    def test_context_applies_strict_implementation_mode_without_prerequisites(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+            adopter = Path(raw) / "adopter"
+            create_adopter(ROOT, adopter)
+            settings = adopter / "dset.toml"
+            settings.write_text(
+                settings.read_text(encoding="utf-8").replace(
+                    'mode = "lazy"', 'mode = "strict"'
+                ),
+                encoding="utf-8",
+            )
+
+            context = resolve_skill_context(
+                adopter,
+                skill_id="dset-implement",
+                objective="Implement only from prepared authority",
+                session_id="session-context-strict",
+                llm_session_ids=("codex:test-session",),
+            )
+
+            self.assertEqual(context["implementation_preparation_mode"], "strict")
+            closure = cast(dict[str, Any], context["closure"])
+            self.assertEqual(closure["implementation_mode"], "strict")
+            self.assertEqual(closure["next_workflow"], "implement")
+            with self.assertRaisesRegex(ValueError, "workflow mismatch"):
+                start_child_runtime(
+                    adopter,
+                    session_id="session-context-strict",
+                    workflow_id="decisions",
+                    objective="Must not repair prerequisites",
+                    llm_session_ids=("codex:test-session",),
+                )
+            run = cast(dict[str, Any], context["run"])
+            finish_runtime(adopter, str(run["run_id"]), status="stopped")
+
     def test_context_returns_rootless_initialization_without_writing(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
             target = Path(raw) / "new-project"

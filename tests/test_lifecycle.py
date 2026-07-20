@@ -86,6 +86,36 @@ class LifecycleClosureTests(unittest.TestCase):
         with self.assertRaisesRegex(LifecycleClosureError, "no prerequisite"):
             advance_closure(direct, workflow_id="verify")
 
+    def test_strict_implementation_allows_only_implementation_or_exact_stop(
+        self,
+    ) -> None:
+        strict = initial_closure(
+            "dset-implement", "implement", implementation_mode="strict"
+        )
+        self.assertEqual(strict["implementation_mode"], "strict")
+        self.assertEqual(strict["next_workflow"], "implement")
+        with self.assertRaisesRegex(LifecycleClosureError, "only implement"):
+            advance_closure(strict, workflow_id="decisions")
+
+        insufficient = advance_closure(
+            strict, observations={"proof_plan_complete": False}
+        )
+        self.assertEqual(insufficient["status"], "stopped")
+        self.assertEqual(
+            insufficient["reason_code"], "DSET-RUNTIME-STRICT-INPUTS-INSUFFICIENT"
+        )
+
+        authorization = advance_closure(
+            initial_closure(
+                "dset-implement", "implement", implementation_mode="strict"
+            ),
+            observations={"implementation_authorized": False},
+        )
+        self.assertEqual(authorization["status"], "authorization-required")
+        self.assertEqual(
+            authorization["reason_code"], "DSET-RUNTIME-AUTHORIZATION-REQUIRED"
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

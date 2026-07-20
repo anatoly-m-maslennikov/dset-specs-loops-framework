@@ -19,6 +19,7 @@ IMPLEMENT_WORKFLOWS = (
     "plan-implementation",
     "implement",
 )
+IMPLEMENTATION_MODES = frozenset({"lazy", "strict"})
 WORKFLOW_PROGRESS = {
     "decisions": "decisions_reconciled",
     "plan-proof": "proof_plan_complete",
@@ -31,7 +32,12 @@ class LifecycleClosureError(ValueError):
     pass
 
 
-def initial_closure(public_entrypoint: str, mode_id: str | None) -> dict[str, Any]:
+def initial_closure(
+    public_entrypoint: str,
+    mode_id: str | None,
+    *,
+    implementation_mode: str = "lazy",
+) -> dict[str, Any]:
     if public_entrypoint != "dset-implement":
         return {
             "schema_version": "1.0",
@@ -43,9 +49,17 @@ def initial_closure(public_entrypoint: str, mode_id: str | None) -> dict[str, An
             "history": [],
             "visited_states": [],
         }
+    if implementation_mode not in IMPLEMENTATION_MODES:
+        raise LifecycleClosureError(
+            "implementation preparation mode must be lazy or strict"
+        )
+    if implementation_mode == "strict":
+        return _strict_closure()
+
     closure = {
         "schema_version": "1.0",
         "requested_mode": "implement",
+        "implementation_mode": "lazy",
         "status": "active",
         "criteria": {
             "decisions_reconciled": False,
@@ -73,6 +87,13 @@ def advance_closure(
     closure = _validated_copy(raw)
     if closure["requested_mode"] != "implement":
         raise LifecycleClosureError("direct workflow has no prerequisite closure")
+    if closure["implementation_mode"] == "strict":
+        return _advance_strict_closure(
+            closure,
+            workflow_id=workflow_id,
+            child_status=child_status,
+            observations=observations,
+        )
     if closure["status"] in {"completed", "stopped"}:
         raise LifecycleClosureError("closure is terminal")
     expected = closure.get("next_workflow")
@@ -166,6 +187,139 @@ def _select_next(closure: dict[str, Any]) -> None:
         _set_next(closure, "completed", None, "DSET-RUNTIME-COMPLETE")
 
 
+def _strict_closure() -> dict[str, Any]:
+    """Return the implementation-only boundary without a prerequisite chain.
+
+    Readiness is deliberately determined by the selected local implementation
+    workflow.  A caller can record a failed authoritative check as an
+    observation, but this runtime never substitutes decisions or planning
+    work for that stop.
+    """
+
+    closure = {
+        "schema_version": "1.0",
+        "requested_mode": "implement",
+        "implementation_mode": "strict",
+        "status": "ready",
+        "criteria": {
+            "decisions_reconciled": None,
+            "proof_plan_complete": None,
+            "implementation_plan_complete": None,
+            "implementation_authorized": None,
+            "implementation_complete": False,
+        },
+        "next_workflow": "implement",
+        "reason_code": "DSET-RUNTIME-STRICT-IMPLEMENT",
+        "history": [],
+        "visited_states": [],
+    }
+    closure["visited_states"] = [_state_fingerprint(closure)]
+    return closure
+
+
+def _advance_strict_closure(
+    closure: dict[str, Any],
+    *,
+    workflow_id: str | None,
+    child_status: str,
+    observations: Mapping[str, bool | None] | None,
+) -> dict[str, Any]:
+    """Advance only the direct implementation or record an exact stop.
+
+    Strict mode accepts no prerequisite child workflow.  The governing
+    implementation workflow reports any missing/ambiguous accepted input as
+    an observation, preserving its detail in the caller's handoff while this
+    runtime provides a stable, machine-readable stop class.
+    """
+
+    if closure["status"] in {"completed", "stopped"}:
+        raise LifecycleClosureError("closure is terminal")
+    if child_status not in {"succeeded", "failed", "stopped", "ambiguous"}:
+        raise LifecycleClosureError("invalid child status")
+    if workflow_id not in {None, "implement"}:
+        raise LifecycleClosureError(
+            "strict implementation accepts only implement, received "
+            f"{workflow_id}"
+        )
+    if workflow_id == "implement" and child_status != "succeeded":
+        closure["status"] = "stopped"
+        closure["next_workflow"] = None
+        closure["reason_code"] = {
+            "failed": "DSET-RUNTIME-CHILD-FAILED",
+            "stopped": "DSET-RUNTIME-CHILD-STOPPED",
+            "ambiguous": "DSET-RUNTIME-AMBIGUOUS",
+        }[child_status]
+        closure["history"].append(
+            {"workflow_id": workflow_id, "status": child_status, "progress": []}
+        )
+        return closure
+
+    before = copy.deepcopy(closure["criteria"])
+    if observations:
+        for key, value in observations.items():
+            if key not in IMPLEMENT_CRITERIA:
+                raise LifecycleClosureError(f"unknown entry criterion: {key}")
+            if value not in {True, False, None}:
+                raise LifecycleClosureError(f"invalid criterion value: {key}")
+            closure["criteria"][key] = value
+
+    if _strict_inputs_insufficient(closure["criteria"]):
+        _set_next(
+            closure,
+            "stopped",
+            None,
+            "DSET-RUNTIME-STRICT-INPUTS-INSUFFICIENT",
+        )
+    elif closure["criteria"]["implementation_authorized"] is False:
+        _set_next(
+            closure,
+            "authorization-required",
+            None,
+            "DSET-RUNTIME-AUTHORIZATION-REQUIRED",
+        )
+    elif workflow_id == "implement":
+        closure["criteria"]["implementation_complete"] = True
+        _set_next(closure, "completed", None, "DSET-RUNTIME-COMPLETE")
+    elif observations:
+        _set_next(
+            closure,
+            "ready",
+            "implement",
+            "DSET-RUNTIME-STRICT-IMPLEMENT",
+        )
+    else:
+        raise LifecycleClosureError("an observation or completed workflow is required")
+
+    progress = [
+        key
+        for key in IMPLEMENT_CRITERIA
+        if before.get(key) != closure["criteria"].get(key)
+    ]
+    if workflow_id is not None:
+        closure["history"].append(
+            {"workflow_id": workflow_id, "status": child_status, "progress": progress}
+        )
+    fingerprint = _state_fingerprint(closure)
+    if closure["status"] != "stopped" and fingerprint in closure["visited_states"]:
+        closure["status"] = "stopped"
+        closure["next_workflow"] = None
+        closure["reason_code"] = "DSET-RUNTIME-REPEATED-STATE"
+    elif fingerprint not in closure["visited_states"]:
+        closure["visited_states"].append(fingerprint)
+    return closure
+
+
+def _strict_inputs_insufficient(criteria: Mapping[str, object]) -> bool:
+    return any(
+        criteria.get(name) is False
+        for name in (
+            "decisions_reconciled",
+            "proof_plan_complete",
+            "implementation_plan_complete",
+        )
+    )
+
+
 def _set_next(
     closure: dict[str, Any], status: str, workflow: str | None, reason: str
 ) -> None:
@@ -185,12 +339,16 @@ def _validated_copy(raw: Mapping[str, Any]) -> dict[str, Any]:
         raise LifecycleClosureError("closure criteria are invalid")
     if not isinstance(history, list) or not isinstance(visited, list):
         raise LifecycleClosureError("closure history is invalid")
+    implementation_mode = closure.setdefault("implementation_mode", "lazy")
+    if implementation_mode not in IMPLEMENTATION_MODES:
+        raise LifecycleClosureError("invalid implementation preparation mode")
     return closure
 
 
 def _state_fingerprint(closure: Mapping[str, Any]) -> str:
     payload = {
         "requested_mode": closure["requested_mode"],
+        "implementation_mode": closure.get("implementation_mode", "lazy"),
         "criteria": closure["criteria"],
         "status": closure["status"],
         "next_workflow": closure["next_workflow"],

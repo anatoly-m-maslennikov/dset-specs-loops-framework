@@ -20,7 +20,7 @@ project policy is retained or copied across that boundary.
 
 - [`dset`](dset/SKILL.md) — reach a general or uncertain governed outcome without choosing prerequisite skills manually.
 - [`dset-init`](dset-init/SKILL.md) — preview and, only when authorized, initialize a repository or monorepo Work Area.
-- [`dset-implement`](dset-implement/SKILL.md) — reconcile accepted intent, prepare missing proof/build plans, then implement within one governed session.
+- [`dset-implement`](dset-implement/SKILL.md) — follows the repository's documented `workflows.implement.mode`: lazy preparation closes only governed missing criteria, while strict is implementation-only and stops on insufficient inputs.
 - [`dset-verify`](dset-verify/SKILL.md) — check implementation and governance against accepted truth and proof plans.
 - [`dset-release`](dset-release/SKILL.md) — prepare or verify a release and publish only under separate explicit authority.
 

@@ -1,9 +1,26 @@
-schema_version = "1.0"
+# DSET settings schema. Accepted value: "1.1"; selects this settings contract.
+# Default: "1.1".
+schema_version = "1.1"
 
-[optional_capabilities]
-artifact_subtype_in_names = false
-artifact_creation_strictness = "medium"
+[artifacts]
+# Include direct artifact subtypes in newly emitted names. Accepted: true or false;
+# false keeps names type-based. Default: false.
+subtype_in_names = false
+# Set the artifact-creation gate. Accepted: "medium" or "high"; medium requires
+# clear core fields, while high requires every material question resolved.
+# Default: "medium".
+creation_strictness = "medium"
+
+[workflows.implement]
+# Choose implementation preparation. Accepted: "lazy" or "strict"; lazy closes
+# missing Decisions and proof/build plans first, while strict invokes only
+# implementation and stops when accepted inputs are insufficient. Default: "lazy".
+mode = "lazy"
 
 [priority]
-scale = "critical,high,medium,low,deferred"
+# Define the highest-to-lowest project priority vocabulary. Accepted: an array
+# of at least two unique strings. Default: the five values below.
+scale = ["critical", "high", "medium", "low", "deferred"]
+# Priority assigned when an artifact has no explicit value. Accepted:
+# one value from priority.scale. Default: "medium".
 default = "medium"

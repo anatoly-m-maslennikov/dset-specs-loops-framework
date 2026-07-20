@@ -14,6 +14,7 @@ from .runtime import (
     start_run,
     update_checkpoint,
 )
+from .settings import IMPLEMENTATION_MODES, load_project_settings
 from .skill_catalog import PUBLIC_SKILL_MODES, PUBLIC_SKILL_WORKFLOWS
 
 
@@ -35,6 +36,7 @@ def start_runtime(
     authorization_class: str = "read-only",
     authorization_state: str = "not-granted",
     authority_snapshot: Mapping[str, Any] | None = None,
+    implementation_mode: str | None = None,
 ) -> dict[str, object]:
     expected = PUBLIC_SKILL_WORKFLOWS.get(public_entrypoint)
     if expected is None:
@@ -57,6 +59,18 @@ def start_runtime(
     assert resolved is not None
     identity = _ruleset_identity(resolved)
     selected_mode = mode_id if mode_id is not None else expected_mode
+    selected_implementation_mode = "lazy"
+    if public_entrypoint == "dset-implement":
+        settings, issues = load_project_settings(root)
+        if issues:
+            raise ValueError("; ".join(issues))
+        selected_implementation_mode = (
+            implementation_mode
+            if implementation_mode is not None
+            else settings.implementation_mode
+        )
+        if selected_implementation_mode not in IMPLEMENTATION_MODES:
+            raise ValueError("implementation preparation mode must be lazy or strict")
     invocation = start_run(
         root,
         public_entrypoint=public_entrypoint,
@@ -77,6 +91,7 @@ def start_runtime(
         authorization_class=authorization_class,
         authorization_state=authorization_state,
         authority_snapshot=authority_snapshot,
+        implementation_mode=selected_implementation_mode,
     )
     return {
         "run": invocation.run,
@@ -149,6 +164,11 @@ def start_child_runtime(
         invocation_source="chained-skill",
         root_run_id=str(checkpoint["root_run_id"]),
         scope=scope,
+        implementation_mode=(
+            str(closure.get("implementation_mode", "lazy"))
+            if workflow_id == "implement"
+            else None
+        ),
     )
 
 

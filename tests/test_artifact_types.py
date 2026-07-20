@@ -250,8 +250,8 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
             encoding="utf-8"
         )
         self.assertEqual(settings, template)
-        self.assertIn("artifact_subtype_in_names = false", settings)
-        self.assertIn('artifact_creation_strictness = "medium"', settings)
+        self.assertIn("subtype_in_names = false", settings)
+        self.assertIn('creation_strictness = "medium"', settings)
 
     def test_release_lifecycle_projection_is_compiled(self) -> None:
         rule = (

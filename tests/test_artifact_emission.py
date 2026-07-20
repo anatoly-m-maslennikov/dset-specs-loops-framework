@@ -49,8 +49,8 @@ class ArtifactEmissionTests(unittest.TestCase):
         path = self.root / "dset.toml"
         path.write_text(
             path.read_text(encoding="utf-8").replace(
-                'artifact_creation_strictness = "medium"',
-                'artifact_creation_strictness = "high"',
+                'creation_strictness = "medium"',
+                'creation_strictness = "high"',
             ),
             encoding="utf-8",
         )
@@ -76,7 +76,7 @@ class ArtifactEmissionTests(unittest.TestCase):
         path = self.root / "dset.toml"
         path.write_text(
             path.read_text(encoding="utf-8").replace(
-                'artifact_creation_strictness = "medium"\n', ""
+                'creation_strictness = "medium"\n', ""
             ),
             encoding="utf-8",
         )
@@ -86,9 +86,8 @@ class ArtifactEmissionTests(unittest.TestCase):
 
         path.write_text(
             path.read_text(encoding="utf-8").replace(
-                "artifact_subtype_in_names = false\n",
-                "artifact_subtype_in_names = false\n"
-                'artifact_creation_strictness = "maximum"\n',
+                "[workflows.implement]",
+                'creation_strictness = "maximum"\n\n[workflows.implement]',
             ),
             encoding="utf-8",
         )
