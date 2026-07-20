@@ -1,5 +1,24 @@
 # Methodology GOV specification
 
+## Active Decision source compilation
+
+This evergreen GOV projection compiles the active consequences of these
+general Decisions. Their immutable carriers retain rationale and history; this
+specification and the registered governing rules own the current executable
+presentation.
+
+| Decision | Compiled consequence |
+|---|---|
+| `DSET-DECISION-GOV-001` | Separate atomic authority, evergreen projections, transactional context/evidence, implementation, commit provenance, and session provenance |
+| `DSET-DECISION-GOV-002` | Use one constitutional governance root; separate dependency from precedence and authority from assurance |
+| `DSET-DECISION-GOV-003` | Keep semantic atoms immutable and resolve conflicts by role and lifecycle before priority |
+| `DSET-DECISION-GOV-008` | Use four application-level Types with at most one direct subtype and explicit act/content/carrier/work/evidence boundaries |
+| `DSET-DECISION-GOV-009` | Classify artifact role independently from semantic Type, including Analysis Report and release roles |
+| `DSET-DECISION-GOV-010` | Use the bounded `critical`, `high`, `medium`, `low`, `deferred` priority profile with `medium` as default |
+
+Absorbed predecessors remain immutable history and are excluded from the active
+compilation set by append-only lifecycle events.
+
 ## DSET-REQUIREMENT-GOV-001 — Enforcement is language-neutral and profile-applied
 
 The methodology must define six neutral gate categories and keep concrete tools, source scopes, thresholds, exclusions, and ratchets in versioned applied profiles.

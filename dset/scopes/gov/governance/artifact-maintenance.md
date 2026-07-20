@@ -65,6 +65,7 @@ The executable boundary is explicit:
 dset atom seal ROOT --file ATOM.md
 dset atom event ROOT --candidate EVENT.json
 dset conflict ROOT --candidate CONFLICT.json
+dset compile ROOT --write
 ```
 
 Sealing refuses an already registered semantic ID and records the carrier's
@@ -74,6 +75,12 @@ unresolved targets or absorption cycles. Conflict resolution classifies role
 and applicability before consulting explicit precedence or effective priority;
 it reports whether a first-class open Conflict atom and later resolution event
 are required, but never edits an atom.
+
+Compilation generates a digest-bound index from every active authority source
+to one or more evergreen governing projections. `dset compile ROOT --check`
+fails when the active source set, a source digest, or a recorded projection
+digest changes. The index is evidence of compilation, not another authority
+source.
 
 ## Rationale
 

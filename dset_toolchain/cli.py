@@ -12,6 +12,12 @@ from . import __version__
 from .archive import archive_plan, execute_archive
 from .artifact_emission import assess_artifact_candidate
 from .bootstrap import initialize_project, parse_work_area
+from .compilation import (
+    compilation_is_fresh,
+    compilation_path,
+    rendered_compilation,
+    write_compilation,
+)
 from .conflicts import resolve_conflict, write_conflict_result
 from .dependencies import dependency_summary
 from .diagnostics import Diagnostic
@@ -205,6 +211,14 @@ def build_parser() -> argparse.ArgumentParser:
     health_mode = health.add_mutually_exclusive_group()
     health_mode.add_argument("--write", action="store_true")
     health_mode.add_argument("--check", action="store_true")
+
+    compilation = commands.add_parser(
+        "compile", help="seal active Decision authority into evergreen projections"
+    )
+    _root_argument(compilation)
+    compilation_mode = compilation.add_mutually_exclusive_group()
+    compilation_mode.add_argument("--write", action="store_true")
+    compilation_mode.add_argument("--check", action="store_true")
 
     dependencies = commands.add_parser(
         "dependencies", help="enforce exact dependency policy and lock authority"
@@ -503,6 +517,21 @@ def main(argv: list[str] | None = None) -> int:
                 print(path.relative_to(root).as_posix())
                 return 0
             sys.stdout.write(render_health(root))
+            return 0
+        if args.command == "compile":
+            root = _repository_root(args.root)
+            if args.check:
+                if compilation_is_fresh(root):
+                    print("DSET active authority compilation is fresh")
+                    return 0
+                path = compilation_path(root).relative_to(root)
+                print(f"DSET-E164 {path}: compilation is stale or incomplete")
+                return 1
+            if args.write:
+                path = write_compilation(root)
+                print(path.relative_to(root).as_posix())
+                return 0
+            sys.stdout.write(rendered_compilation(root))
             return 0
         if args.command == "dependencies":
             root = _repository_root(args.root)

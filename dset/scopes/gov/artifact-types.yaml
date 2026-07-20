@@ -322,6 +322,10 @@ path_rules:
     artifact_type: derived_view
     artifact_subtype: traceability_index
   -
+    pattern: "**/generated/compilation.yaml"
+    artifact_type: derived_view
+    artifact_subtype: traceability_index
+  -
     pattern: "**/README.md"
     artifact_type: navigation
     artifact_subtype: hub

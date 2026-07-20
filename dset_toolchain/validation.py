@@ -8,6 +8,7 @@ from typing import Any
 from urllib.parse import unquote
 
 from . import __version__
+from .compilation import compilation_is_fresh, compilation_path
 from .dependencies import validate_dependency_policy
 from .diagnostics import Diagnostic
 from .governance import validate_governance
@@ -172,6 +173,14 @@ def validate_repository(root: Path) -> list[Diagnostic]:
     if health_path(root).is_file() and not health_is_fresh(root):
         diagnostics.append(
             _diag("DSET-E162", health_path(root), "project health is stale")
+        )
+    if compilation_path(root).is_file() and not compilation_is_fresh(root):
+        diagnostics.append(
+            _diag(
+                "DSET-E164",
+                compilation_path(root),
+                "active authority compilation is stale or incomplete",
+            )
         )
     return sorted(set(diagnostics))
 

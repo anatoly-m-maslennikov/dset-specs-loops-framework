@@ -35,4 +35,5 @@ flowchart TB
 - [Templates](templates/README.md)
 - [Changes](changes/README.md)
 - [Generated project health](generated/DSET-DERIVED-VIEW-001-project-health.md)
+- [Generated authority compilation](generated/compilation.yaml)
 - [Generated traceability](generated/traceability.yaml)

@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from typing import Any
 
+from .compilation import active_authority_ids
 from .layout import discover_layout
 from .semantic_atoms import collect_semantic_atoms, effective_priority
 from .settings import load_project_settings
@@ -67,11 +68,13 @@ def build_health_model(root: Path) -> dict[str, Any]:
         raise ValueError(atom_diagnostics[0].message)
     lifecycle = _lifecycle_events(root)
     intake = _intake_items(root, layout.intake_path, lifecycle)
-    authorities = _authority_ids(root, atoms)
+    authorities = active_authority_ids(root)
     modern_authorities = {
         atom.semantic_id
         for atom in atoms.values()
-        if atom.semantic_type == "decision" and atom.emission_status == "accepted"
+        if atom.semantic_type == "decision"
+        and atom.emission_status == "accepted"
+        and atom.semantic_id in authorities
     }
     qa_ids = _qa_ids(root, atoms)
     projections = _evergreen_text(root)
@@ -322,39 +325,6 @@ def _classified_artifacts(root: Path) -> list[dict[str, Any]]:
         }
     )
     return artifacts
-
-
-def _authority_ids(root: Path, atoms: dict[str, Any]) -> set[str]:
-    identifiers = {
-        atom.semantic_id
-        for atom in atoms.values()
-        if atom.semantic_type == "decision" and atom.emission_status == "accepted"
-    }
-    for path in root.rglob("package.yaml"):
-        if not _canonical_package_manifest(root, path):
-            continue
-        try:
-            data = load(path)
-        except (OSError, UnicodeError, YamlSubsetError):
-            continue
-        if not isinstance(data, dict):
-            continue
-        for field in ("requirements", "contracts", "stories", "outcomes"):
-            values = data.get(field, [])
-            if isinstance(values, list):
-                identifiers.update(
-                    str(item) for item in values if isinstance(item, str)
-                )
-    for path in root.rglob("decision-*.md"):
-        if _path_ignored(root, path) or not _in_project_scope(
-            root, path.relative_to(root)
-        ):
-            continue
-        text = path.read_text(encoding="utf-8")
-        match = re.search(r"\*\*Decision ID:\*\*\s*`([^`]+)`", text)
-        if match and "**Status:** accepted" in text:
-            identifiers.add(match.group(1))
-    return identifiers
 
 
 def _qa_ids(root: Path, atoms: dict[str, Any]) -> set[str]:

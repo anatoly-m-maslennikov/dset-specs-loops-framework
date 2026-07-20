@@ -66,6 +66,7 @@ targets either the whole repository or one or more declared Work Areas.
 | `python -m dset_toolchain rules resolve <workflow-id> . --format json` | Print the ordered local rules used by a thin wrapper |
 | `python -m dset_toolchain self-host .` | Run the bounded released-to-candidate fixed point |
 | `uv run dset new <slug> --package <package-id> --profile <profile> --layer <layer> [--work-area <id> ...] [--workspace branch-worktree]` | Allocate a stable layer-qualified Change ID; use the integration branch by default or opt into an isolated worktree |
+| `uv run dset compile . --write` | Compile active atomic authority into a digest-bound projection index; use `--check` in gates |
 | `uv run dset trace . --write` | Regenerate deterministic relationship evidence |
 | `uv run dset health . --write` | Regenerate the portable project-health dashboard; use `--check` in gates |
 | `uv run dset dependencies .` | Enforce exact allow/deny, registry, version, license, provenance, lockfile, and exception policy |

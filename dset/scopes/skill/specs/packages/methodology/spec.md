@@ -1,5 +1,12 @@
 # Methodology SKILL specification
 
+## Active Decision source compilation
+
+- `DSET-DECISION-SKILL-001` compiles as the repository-local, self-hosting,
+  thin-wrapper, bounded-session, integration-first DSET 0.3 operating shape.
+- `DSET-DECISION-SKILL-002` compiles as the public catch-all `dset` wrapper plus
+  one thin direct wrapper for every registered stable lifecycle mode.
+
 ## DSET-REQUIREMENT-SKILL-001 — Workflow skills remain focused
 
 The framework must publish distinct portable skills for pre-spec domain clarification, evidence-first diagnosis, and disposable prototyping. Each owns one trigger/output/verification/stop boundary. It writes durable conclusions to the active DSET change only when artifact writes are authorized; otherwise it returns the same bounded handoff without modifying the repository.
