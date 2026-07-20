@@ -29,7 +29,7 @@ flowchart TB
 
 - [Lifecycle orchestration](governance/lifecycle-orchestration.md)
 - [Run and session continuity](governance/skill-runs.md)
-- [Delegation budget](budget.yaml)
+- [Delegation budget](budget.toml)
 - [Methodology package fragment](specs/packages/methodology/README.md)
 - [Schemas](schemas/README.md)
 - [Templates](templates/README.md)

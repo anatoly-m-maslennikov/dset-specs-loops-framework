@@ -1,12 +1,11 @@
----
-artifact_type: delivery
-artifact_subtype: version_scope
-artifact_id: DSET-DELIVERY-001
-version_line: "0.3"
-status: published-snapshot
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "delivery"
+artifact_subtype = "version_scope"
+artifact_id = "DSET-DELIVERY-001"
+version_line = "0.3"
+status = "published-snapshot"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
++++
 
 # Version Scope — DSET 0.3 foundation
 

@@ -1,12 +1,11 @@
----
-artifact_type: delivery
-artifact_subtype: version_scope
-artifact_id: DSET-DELIVERY-002
-version_line: "0.4"
-status: active
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "delivery"
+artifact_subtype = "version_scope"
+artifact_id = "DSET-DELIVERY-002"
+version_line = "0.4"
+status = "active"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
++++
 
 # Version Scope — DSET 0.4 self-hosted core
 

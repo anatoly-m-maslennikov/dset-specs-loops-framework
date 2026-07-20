@@ -75,9 +75,7 @@ class ArtifactRelationTests(unittest.TestCase):
                 self._atom(root, 3, "APP-DECISION-TOOL-003")
                 self._projection(root, through=through)
 
-                messages = [
-                    item.message for item in validate_artifact_relations(root)
-                ]
+                messages = [item.message for item in validate_artifact_relations(root)]
 
                 self.assertTrue(any(expected in item for item in messages), messages)
 
@@ -113,9 +111,7 @@ class ArtifactRelationTests(unittest.TestCase):
                 root = Path(raw)
                 self._artifact(root, "TARGET", "APP-DECISION-001")
                 self._artifact(root, "SOURCE", "APP-DECISION-002", extra=extra)
-                messages = [
-                    item.message for item in validate_artifact_relations(root)
-                ]
+                messages = [item.message for item in validate_artifact_relations(root)]
                 self.assertTrue(any(expected in item for item in messages), messages)
 
     def test_self_relations_and_structural_cycles_fail_closed(self) -> None:
@@ -155,9 +151,7 @@ class ArtifactRelationTests(unittest.TestCase):
                 "APP-DECISION-002",
                 artifact_type="atomic_record",
                 semantic_type="decision",
-                relations=[
-                    {"type": "replacement_of", "target": "APP-DECISION-001"}
-                ],
+                relations=[{"type": "replacement_of", "target": "APP-DECISION-001"}],
             )
             messages = [item.message for item in validate_artifact_relations(root)]
             self.assertTrue(
@@ -192,9 +186,7 @@ class ArtifactRelationTests(unittest.TestCase):
     def test_commit_trailers_form_typed_implementation_relations(self) -> None:
         root = Path(__file__).resolve().parents[1]
         rows = build_commit_implementation_relations(root)
-        matching = [
-            row for row in rows if row["target"] == "DSET-REQUIREMENT-GOV-024"
-        ]
+        matching = [row for row in rows if row["target"] == "DSET-REQUIREMENT-GOV-024"]
         self.assertTrue(matching)
         self.assertTrue(all(row["type"] == "implementation_of" for row in rows))
         self.assertTrue(matching[0]["llm_session_ids"])
@@ -216,9 +208,7 @@ class ArtifactRelationTests(unittest.TestCase):
             artifact_type="atomic_record",
             semantic_type="qa",
             subtype="test",
-            relations=[
-                {"type": "replacement_of", "target": "APP-TEST-GOV-020"}
-            ],
+            relations=[{"type": "replacement_of", "target": "APP-TEST-GOV-020"}],
         )
         cls._lifecycle(root, "APP-TEST-GOV-020", "APP-TEST-GOV-021")
 

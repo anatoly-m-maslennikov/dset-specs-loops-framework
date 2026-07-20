@@ -1,12 +1,12 @@
----
-artifact_type: delivery
-artifact_subtype: release_plan
-artifact_id: "{{project_key}}-DELIVERY-{{sequence}}"
-version_scope_ref: "{{project_key}}-DELIVERY-{{version_scope_sequence}}"
-proposed_version: "{{proposed_version}}"
-status: preparing
-llm_session_ids: []
----
++++
+artifact_type = "delivery"
+artifact_subtype = "release_plan"
+artifact_id = "{{project_key}}-DELIVERY-{{sequence}}"
+version_scope_ref = "{{project_key}}-DELIVERY-{{version_scope_sequence}}"
+proposed_version = "{{proposed_version}}"
+status = "preparing"
+llm_session_ids = []
++++
 
 # Release Plan — {{proposed_version}}
 

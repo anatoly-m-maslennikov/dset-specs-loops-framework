@@ -16,7 +16,7 @@ README.md                         repository root hub
 ├── dset/README.md               project-control hub
 └── skills/README.md             agent-workflow hub
 
-dset/artifacts.yaml              repository adoption and governed-area graph
+dset/artifacts.toml              repository adoption and governed-area graph
 dset/schemas/artifacts.schema.json
 ```
 
@@ -26,8 +26,8 @@ The documentation area is a framework surface, not pipeline stage 7. `methodolog
 
 | Concern | Authority | Writer model | Refresh boundary | Failure/recovery proof |
 |---|---|---|---|---|
-| Artifact-profile selection | `dset/dset.yaml` | Reviewed repository change | Every validation run | DSET-TEST-GOV-007 |
-| Governed area graph | `dset/artifacts.yaml` | Reviewed repository change | Every validation run | `DSET-TEST-TOOL-006`, `DSET-TEST-GOV-008` |
+| Artifact-profile selection | `dset/dset.toml` | Reviewed repository change | Every validation run | DSET-TEST-GOV-007 |
+| Governed area graph | `dset/artifacts.toml` | Reviewed repository change | Every validation run | `DSET-TEST-TOOL-006`, `DSET-TEST-GOV-008` |
 | Artifact-type rules | `documentation/` normative docs | Reviewed methodology change | When rules change | `DSET-TEST-META-003`, `DSET-EVAL-META-002`, `DSET-EVAL-META-003` |
 | Rationale | `documentation/rationale.md` | Reviewed methodology change | When reasoning changes | Link and navigation checks |
 | Runtime evidence | GitHub checks and archived DSET proof | GitHub plus evidence-only commits | Per PR head | DSET-TEST-TOOL-008 |

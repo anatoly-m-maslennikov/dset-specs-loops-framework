@@ -1,7 +1,7 @@
----
-artifact_type: analysis_report
-llm_session_ids: []
----
++++
+artifact_type = "analysis_report"
+llm_session_ids = []
++++
 
 # Analysis report — {{title}}
 

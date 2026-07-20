@@ -4,7 +4,7 @@
 
 The adopting project configures one integration branch, one protected release
 branch, one forge publisher, and one exact tag pattern in its discovered project
-manifest: schema 1.2 `dset/scopes/meta/dset.yaml` or the legacy central path.
+manifest: schema 1.2 `dset/scopes/meta/dset.toml` or the legacy central path.
 Generic DSET skills use configured roles, never hard-coded branch or forge
 names.
 

@@ -14,4 +14,4 @@ system state. An output, deliverable, or feature is not itself an Outcome.
 - **Linked Evals:** Link the evaluation that determines attainment.
 
 If no measurable state change is owned, remove the example and leave
-`outcomes: []` in `package.yaml`; do not relabel an output as an Outcome.
+`outcomes: []` in `package.toml`; do not relabel an output as an Outcome.

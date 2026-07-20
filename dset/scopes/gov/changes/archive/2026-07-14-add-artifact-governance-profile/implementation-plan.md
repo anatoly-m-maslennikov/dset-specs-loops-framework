@@ -17,8 +17,8 @@
 
 ## Batch 3 — Executable profile
 
-- Add `dset/artifacts.yaml`, its JSON Schema, stable diagnostics, repository validation, and unit/fixture coverage.
-- Activate `documentation-v1` independently from `python-v1` in `dset/dset.yaml` and the project schema.
+- Add `dset/artifacts.toml`, its JSON Schema, stable diagnostics, repository validation, and unit/fixture coverage.
+- Activate `documentation-v1` independently from `python-v1` in `dset/dset.toml` and the project schema.
 - IDs: `DSET-REQUIREMENT-GOV-004..006`, `DSET-REQUIREMENT-TOOL-005`; `DSET-TEST-GOV-007`, `DSET-TEST-TOOL-006..007`.
 
 ## Batch 4 — Reconciliation and evidence

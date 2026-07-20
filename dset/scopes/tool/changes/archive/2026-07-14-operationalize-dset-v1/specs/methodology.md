@@ -14,7 +14,7 @@ The framework must release versioned schemas, templates, and fixtures for the pr
 
 ## ADDED — DSET-REQUIREMENT-TOOL-003 Deterministic PR traceability
 
-The toolchain must generate a stably ordered `dset/traceability.yaml` from committed change metadata and repository-qualified PR references. The index may cache PR number, URL, state, merge commit, requirements, tests, evals, Decisions, and evidence paths, but GitHub remains authoritative for PR state and code diffs.
+The toolchain must generate a stably ordered `dset/traceability.toml` from committed change metadata and repository-qualified PR references. The index may cache PR number, URL, state, merge commit, requirements, tests, evals, Decisions, and evidence paths, but GitHub remains authoritative for PR state and code diffs.
 
 **Scenario DSET-SCENARIO-TOOL-003:** Regenerating traceability without source changes produces no diff, and archived changes resolve to the PRs that own their implementation history.
 

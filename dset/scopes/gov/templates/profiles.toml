@@ -1,0 +1,25 @@
+schema_version = 1.0
+
+[profiles]
+
+[profiles.small]
+documents = ["proposal.md", "test-plan.md", "eval-plan.md", "tasks.md", "verification.md"]
+directories = ["specs", "proofs"]
+
+[profiles.standard]
+documents = ["proposal.md", "test-plan.md", "eval-plan.md", "solution-landscape.md", "design.md", "implementation-plan.md", "tasks.md", "verification.md"]
+directories = ["specs", "proofs"]
+
+[profiles.large]
+extends = "standard"
+documents = ["global-impact.md"]
+files = ["dependency-map.toml"]
+
+[profiles.defect]
+extends = "standard"
+documents = ["root-cause.md"]
+
+[profiles.adoption]
+extends = "standard"
+documents = ["adoption-decision.md"]
+directories = ["proofs/candidate-fit"]

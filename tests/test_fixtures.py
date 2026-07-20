@@ -12,7 +12,8 @@ from dset_toolchain.validation import validate_change
 from dset_toolchain.yaml_subset import dump, load
 
 ROOT = Path(__file__).resolve().parents[1]
-FIXTURES = discover_layout(ROOT).fixtures_root
+LAYOUT = discover_layout(ROOT)
+FIXTURES = LAYOUT.fixtures_root
 
 
 class FixtureCase(TypedDict, total=False):
@@ -28,7 +29,9 @@ class FixtureCase(TypedDict, total=False):
 
 class FixtureTests(unittest.TestCase):
     def test_fixture_matrix(self) -> None:
-        matrix = cast(dict[str, Any], load(FIXTURES / "cases.yaml"))
+        matrix = cast(
+            dict[str, Any], load(LAYOUT.structured_file(FIXTURES, "cases.toml"))
+        )
         cases = cast(list[FixtureCase], matrix["cases"])
         for case in cases:
             with self.subTest(case=case["id"]), tempfile.TemporaryDirectory() as raw:
@@ -61,19 +64,19 @@ class FixtureTests(unittest.TestCase):
             source = FIXTURES / "bases" / "small"
             change = target / "fixture-small"
             shutil.copytree(source, change)
-            manifest = change / "change.yaml"
+            manifest = discover_layout(project).structured_file(change, "change.toml")
             data = cast(dict[str, Any], load(manifest))
             data["schema_version"] = 1.0
             for field in ("release", "intake", "decisions", "contracts"):
                 data.pop(field, None)
             data["adrs"] = []
-            manifest.write_text(dump(data), encoding="utf-8")
+            manifest.write_text(dump(data, manifest), encoding="utf-8")
             self.assertEqual(validate_change(project, change, archived=False), [])
 
             data["schema_version"] = 1.1
             data["decisions"] = []
             data["contracts"] = []
-            manifest.write_text(dump(data), encoding="utf-8")
+            manifest.write_text(dump(data, manifest), encoding="utf-8")
             self.assertIn(
                 "DSET-E106",
                 {
@@ -84,10 +87,10 @@ class FixtureTests(unittest.TestCase):
 
     def _materialize(self, case: FixtureCase, target: Path) -> Path:
         source = FIXTURES / "bases" / case["base"]
-        data = cast(dict[str, Any], load(source / "change.yaml"))
+        data = cast(dict[str, Any], load(LAYOUT.structured_file(source, "change.toml")))
         change = target / cast(str, data["id"])
         shutil.copytree(source, change)
-        manifest = change / "change.yaml"
+        manifest = LAYOUT.structured_file(change, "change.toml")
         data = cast(dict[str, Any], load(manifest))
         if "status" in case:
             data["status"] = case["status"]
@@ -102,7 +105,7 @@ class FixtureTests(unittest.TestCase):
                 "date": date,
                 "path": f"dset/changes/archive/{date}-{data['id']}",
             }
-        manifest.write_text(dump(data), encoding="utf-8")
+        manifest.write_text(dump(data, manifest), encoding="utf-8")
         for relative in case.get("remove", []):
             path = change / relative
             if path.is_dir():

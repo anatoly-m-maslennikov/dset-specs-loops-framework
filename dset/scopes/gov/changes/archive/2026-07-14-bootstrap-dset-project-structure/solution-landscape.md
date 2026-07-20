@@ -20,4 +20,4 @@
 
 ## Decision
 
-Adopt the explicit one-package tree and a small `dset/dset.yaml` registry. Keep all contracts repository-native. No external framework or proof-of-fit spike is required for this filesystem-only bootstrap.
+Adopt the explicit one-package tree and a small `dset/dset.toml` registry. Keep all contracts repository-native. No external framework or proof-of-fit spike is required for this filesystem-only bootstrap.

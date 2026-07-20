@@ -6,7 +6,7 @@ Route governed agent workflows to the repository-local documents that own their 
 
 ## Boundaries
 
-This hub owns navigation only. `governance.yaml` owns machine-readable resolution metadata, and each linked document owns its registered normative rule IDs. Source templates are provenance after materialization, not live rule authorities.
+This hub owns navigation only. `governance.toml` owns machine-readable resolution metadata, and each linked document owns its registered normative rule IDs. Source templates are provenance after materialization, not live rule authorities.
 
 ## Start here
 

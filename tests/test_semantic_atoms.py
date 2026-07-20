@@ -116,9 +116,7 @@ class SemanticAtomTests(unittest.TestCase):
             self.assertTrue(rows["DSET-CONTRACT-GOV-001"]["compatibility"])
 
             historical.write_text("contracts: []\n", encoding="utf-8")
-            messages = [
-                item.message for item in validate_legacy_authority_ledger(root)
-            ]
+            messages = [item.message for item in validate_legacy_authority_ledger(root)]
             self.assertIn(
                 "legacy Decision authority changed without native successors",
                 messages,
@@ -157,8 +155,7 @@ class SemanticAtomTests(unittest.TestCase):
     def test_new_atom_cannot_seal_legacy_child_of(self) -> None:
         text = self._write_atom().replace(
             "promotion:\n  parent_scope: null\n",
-            "promotion:\n  parent_scope: null\nchild_of:\n"
-            "  - DSET-REQUIREMENT-001\n",
+            "promotion:\n  parent_scope: null\nchild_of:\n  - DSET-REQUIREMENT-001\n",
         )
         self.atom_path.write_text(text, encoding="utf-8")
 

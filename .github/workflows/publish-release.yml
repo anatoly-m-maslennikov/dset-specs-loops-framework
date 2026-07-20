@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - dset/scopes/meta/version.yaml
+      - dset/scopes/meta/version.toml
 
 permissions:
   contents: write
@@ -40,8 +40,8 @@ jobs:
           test "$GITHUB_REF" = "$EXPECTED_REF"
           test "$(git rev-parse HEAD)" = "$MERGE_SHA"
           python -m dset_toolchain release check . --format json > "$RUNNER_TEMP/release-plan.json"
-          if git show "$MERGE_SHA^1:dset/scopes/meta/version.yaml" > "$RUNNER_TEMP/prior-version.yaml"; then
-            prior="$RUNNER_TEMP/prior-version.yaml"
+          if git show "$MERGE_SHA^1:dset/scopes/meta/version.toml" > "$RUNNER_TEMP/prior-version.toml"; then
+            prior="$RUNNER_TEMP/prior-version.toml"
           else
             prior=""
           fi

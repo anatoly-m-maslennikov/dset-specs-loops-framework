@@ -225,9 +225,7 @@ def _parse_corrections(
 def _valid_id_list(value: object, *, allow_empty: bool) -> bool:
     if not isinstance(value, list) or (not allow_empty and not value):
         return False
-    if not all(
-        isinstance(item, str) and ID_PATTERN.fullmatch(item) for item in value
-    ):
+    if not all(isinstance(item, str) and ID_PATTERN.fullmatch(item) for item in value):
         return False
     return len(value) == len(set(value))
 

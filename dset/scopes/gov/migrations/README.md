@@ -12,7 +12,7 @@ Changes retain their original fields and prose and are not rewritten.
 
 ## 1. Inventory before writing
 
-Record every existing artifact root, owner, current writer, consumers, accepted/current status, and retention decision in a copy of [`migration-map.template.yaml`](migration-map.template.yaml). Stop if two roots claim current truth for the same concern.
+Record every existing artifact root, owner, current writer, consumers, accepted/current status, and retention decision in a copy of [`migration-map.template.toml`](migration-map.template.toml). Stop if two roots claim current truth for the same concern.
 
 ## 2. Choose package boundaries
 

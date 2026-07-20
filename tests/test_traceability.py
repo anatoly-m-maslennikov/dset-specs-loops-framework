@@ -103,8 +103,8 @@ class TraceabilityTests(unittest.TestCase):
         self.assertEqual(
             {item["through"] for item in projection_ranges},
             {
-                "DSET-ATOMIC-RECORD-048",
-                "DSET-ATOMIC-RECORD-049",
+                "DSET-ATOMIC-RECORD-062",
+                "DSET-ATOMIC-RECORD-063",
                 "DSET-ATOMIC-RECORD-050",
             },
         )

@@ -23,7 +23,7 @@ Release a dependency-light, cross-platform DSET v1 toolchain that can create, va
 - Valid and invalid fixtures covering active, failed, archived, and malformed changes.
 - A standard-library Python CLI with `new`, `check`, `verify`, `trace`, and `archive` commands.
 - Deterministic unit and integration tests plus GitHub Actions enforcement.
-- Generated `dset/traceability.yaml` using real PRs and archive evidence.
+- Generated `dset/traceability.toml` using real PRs and archive evidence.
 - Migration guidance for existing spec/test/eval/implementation roots.
 - Repository-native `dset-grill`, `dset-diagnose`, and `dset-prototype` skills.
 - Reconciled methodology truth, project manifest, navigation, and roadmap status.

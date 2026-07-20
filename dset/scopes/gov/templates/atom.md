@@ -1,23 +1,19 @@
----
-artifact_type: atomic_record
-artifact_id: "{{project_key}}-ATOMIC-RECORD-{{carrier_sequence}}"
-type: "{{type}}"
-# subtype: "{{subtype}}" # omit for a general Decision, Question, or Problem
-semantic_id: "{{semantic_id}}"
-status: proposed
-priority: medium
-authority: "operator:{{operator_id}}"
-claim: "{{one_primary_claim}}"
-scope:
-  kind: project
-  id: "{{project_id}}"
-promotion:
-  parent_scope: null
-# relations:
-#   - type: child_of
-#     target: "{{parent_semantic_id}}"
-llm_session_ids: []
----
++++
+artifact_type = "atomic_record"
+artifact_id = "{{project_key}}-ATOMIC-RECORD-{{carrier_sequence}}"
+type = "{{type}}"
+semantic_id = "{{semantic_id}}"
+status = "proposed"
+priority = "medium"
+authority = "operator:{{operator_id}}"
+claim = "{{one_primary_claim}}"
+promotion = {}
+llm_session_ids = []
+
+[scope]
+kind = "project"
+id = "{{project_id}}"
++++
 
 # {{title}}
 

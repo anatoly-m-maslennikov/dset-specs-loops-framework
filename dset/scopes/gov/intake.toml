@@ -1,0 +1,404 @@
+schema_version = "1.1"
+
+[[items]]
+id = "DSET-PROBLEM-TOOL-001"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "tool"
+type = "problem"
+status = "open"
+title = "Released validator cannot parse schema 1.2"
+statement = "The previous released validator predates layered schema 1.2, so the current fixed point uses the exact migration commit as a clearly labeled non-release transition baseline. Release assurance remains degraded until a published compatible validator checks a later candidate or an accepted compatibility proof closes the gap."
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = ["https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9"]
+
+[[items]]
+id = "DSET-QUESTION-GOV-001"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "gov"
+type = "question"
+status = "open"
+title = "Should Action become a first-class entity?"
+statement = "Should a later DSET version promote Action into a first-class entity, or are executable tasks inside a DSET Change sufficient?"
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = []
+
+[[items]]
+id = "DSET-QUESTION-META-001"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "meta"
+type = "question"
+status = "open"
+title = "Should DSET standardize Journey?"
+statement = "Should a later DSET version define a Journey artifact for a stakeholder experience that spans multiple changes?"
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = []
+
+[[items]]
+id = "DSET-QUESTION-META-002"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "meta"
+type = "question"
+status = "open"
+title = "Should DSET standardize Actor and Persona?"
+statement = "Should a later DSET version define Actor and Persona as separate artifact types, fields on existing entities, or optional project vocabulary?"
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = []
+
+[[items]]
+id = "DSET-QUESTION-META-003"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "meta"
+type = "question"
+status = "open"
+title = "Should DSET standardize Hypothesis and Experiment?"
+statement = "Should a later DSET version define Hypothesis and Experiment artifacts, and how should they differ from prototypes, evals, and Decisions?"
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = []
+
+[[items]]
+id = "DSET-QUESTION-GOV-002"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "gov"
+type = "question"
+status = "open"
+title = "Which priority scale should DSET standardize?"
+statement = "The framework now uses priority as its only generic ordered rank for every governed artifact, orders remediation across every conflict class, and selects claims only for declared selectable policy conflicts after immutable authority and explicit precedence, but should core-v1 standardize one bounded scale and inheritance/override/conflict-classification policy, provide replaceable defaults, or require every project to declare them?"
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = []
+
+[[items]]
+id = "DSET-QUESTION-OPS-001"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "ops"
+type = "question"
+status = "open"
+title = "Should DSET standardize feedback and analytics evidence?"
+statement = "Should a later DSET version define how product feedback and analytics become bounded evidence for Outcomes, Problems, Opportunities, and Changes?"
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = []
+
+[[items]]
+id = "DSET-QUESTION-GOV-003"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "gov"
+type = "question"
+status = "open"
+title = "Should DSET generate roadmap and release views?"
+statement = "Should a later DSET version generate roadmap and release views from canonical Changes, Outcomes, Decisions, and evidence without making the views new authorities?"
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = []
+
+[[items]]
+id = "DSET-PROBLEM-TOOL-002"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "tool"
+type = "problem"
+status = "open"
+title = "Generated adopter does not exercise current schema 1.2"
+statement = "The bounded temporary adopter proves legacy schema 1.1 compatibility, but DSET lacks a second generated adopter that exercises the current layered schema 1.2 layout, Work Areas, integration-branch default, and optional worktree mode."
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = ["https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9"]
+
+[[items]]
+id = "DSET-PROBLEM-SKILL-001"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "skill"
+type = "problem"
+status = "open"
+title = "Core skill runtime is incomplete"
+statement = "DSET now publishes all five repository-native source wrappers, but the run writer, session checkpoint/resume runtime, executable release publisher, and host-native proof remain unimplemented, so the declared continuity and release contracts are not yet usable end to end."
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = ["https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9"]
+
+[[items]]
+id = "DSET-PROBLEM-OPS-001"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "ops"
+type = "problem"
+status = "open"
+title = "Current exact-head hosted proof is missing"
+statement = "Local dev contains unpushed commits beyond remote dev, while the recorded hosted fixed-point proof belongs to an older PR head. Release and adoption-readiness claims therefore lack current GitHub workflow, check, and protected-target evidence for the actual candidate SHA."
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = ["https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9"]
+
+[[items]]
+id = "DSET-PROBLEM-OPS-002"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "ops"
+type = "problem"
+status = "open"
+title = "Release-planning enforcement is not implemented"
+statement = "DSET can define and self-apply Version Target and next-minor Roadmap documents with templates and structural regression checks, but the schema, initializer, validator, traceability model, overview, and release CLI do not yet require, create, or validate exactly one current target catalog and one active next-minor Roadmap for every release-applicable adopter."
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "DSET-DECISION-OPS-001"
+external_refs = []
+
+[[items]]
+id = "DSET-PROBLEM-GOV-001"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "gov"
+type = "problem"
+status = "resolved"
+title = "Active deltas and accepted truth reuse IDs inconsistently"
+statement = "The active 0.3 Change formerly retained pre-layer IDs whose accepted owners now used those IDs differently. The live delta, manifest, proof plans, solution landscape, and verification now reference the current accepted layer-owned IDs and retain only genuinely unaccepted deltas."
+owner_change = "DSET-CHANGE-SKILL-001"
+external_refs = ["https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9"]
+
+[[items]]
+id = "DSET-QUESTION-META-004"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "meta"
+type = "question"
+status = "open"
+title = "Should evidence context be separate from Work Area?"
+statement = "Should DSET add a compact execution and evidence context for version, environment, assumptions, and time while keeping Work Area only as the repository ownership and target boundary?"
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = []
+
+[[items]]
+id = "DSET-QUESTION-META-005"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "meta"
+type = "question"
+status = "open"
+title = "Should Work Areas expose optional descriptive tags?"
+statement = "Should a later schema allow explicitly non-authoritative Work Area tags or capabilities for discovery, or should Work Areas remain only ID and path to avoid content classification drift?"
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = []
+
+[[items]]
+id = "DSET-QUESTION-GOV-004"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "gov"
+type = "question"
+status = "resolved"
+title = "Should traceability use typed relation edges?"
+statement = "Should DSET replace or supplement untyped ID buckets with a small typed-edge registry that distinguishes verifies, evaluates, constrains, discharges, supersedes, supports, rebuts, and undercuts while preserving simple generated views?"
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "DSET-DECISION-GOV-013"
+external_refs = []
+
+[[items]]
+id = "DSET-QUESTION-GOV-005"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "gov"
+type = "question"
+status = "open"
+title = "Should Decision lifecycle be schema-enforced?"
+statement = "Should Decision status, date, evidence basis, supersedes and superseded-by links, confirmation or violation evidence, and reopen conditions become a validated record instead of remaining a governing template contract?"
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = []
+
+[[items]]
+id = "DSET-PROBLEM-GOV-002"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "gov"
+type = "problem"
+status = "resolved"
+title = "Roadmap redeclared accepted Test and Eval IDs"
+statement = "The active roadmap formerly assigned already-owned Test and Eval IDs to different assertions, creating duplicate semantic owners. Sections 8 and 9 now link to the layer-owned proof plans and the active Change execution plans without redefining those entities."
+owner_change = "DSET-CHANGE-SKILL-001"
+external_refs = ["https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9"]
+
+[[items]]
+id = "DSET-QUESTION-SKILL-001"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "skill"
+type = "question"
+status = "resolved"
+title = "Which operating shape should DSET 0.3 adopt?"
+statement = "Which rule-authority, skill-topology, self-hosting, release, intake, and delegation-budget shape should DSET 0.3 adopt without presenting incomplete runtime or pilot behavior as implemented?"
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "DSET-DECISION-SKILL-001"
+external_refs = ["https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9"]
+
+[[items]]
+id = "DSET-PROBLEM-TOOL-003"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "tool"
+type = "problem"
+status = "resolved"
+title = "Distributed manifest templates obscured schema ownership"
+statement = "Change and package manifest seeds formerly exposed legacy shapes as unsuffixed current templates, and the legacy Change seed referenced a layered release-policy path. Legacy and layered template families are now explicit, hubs label their compatibility, and scaffolding selects by discovered repository layout."
+owner_change = "DSET-CHANGE-SKILL-001"
+external_refs = ["https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9"]
+
+[[items]]
+id = "DSET-PROBLEM-GOV-003"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "gov"
+type = "problem"
+status = "resolved"
+title = "Verification promoted proofs after their reopen conditions fired"
+statement = "The verification matrix continued to present the pre-layer invariant proof and the 0.3.0 Work Area proof as current after IDs, schemas, version, validation, and tests changed. Both records are now explicitly historical, and current use requires replacement exact-commit evidence."
+owner_change = "DSET-CHANGE-SKILL-001"
+external_refs = ["https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9"]
+
+[[items]]
+id = "DSET-PROBLEM-GOV-004"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "gov"
+type = "problem"
+status = "open"
+title = "The declared Your Harness pilot has not adopted DSET"
+statement = "The first owned pilot has no DSET root, schema 1.2 control plane, repository-owned rule registry, Work Areas, split Test/Eval ownership, DSET delivery contract, supportability proof, or lifecycle evidence. Its current CLAUDE and spec surfaces remain the old authority, so this is an open adoption-readiness gap rather than a failed rollout or partial DSET adoption."
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = ["https://github.com/anatoly-m-maslennikov/obsidian-your-harness", "https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9"]
+
+[[items]]
+id = "DSET-QUESTION-GOV-006"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "gov"
+type = "question"
+status = "open"
+title = "Should proof dependency closures become machine-readable?"
+statement = "Should promoted proofs declare structured dependencies and reopen triggers that let DSET detect stale claim closures automatically, or should currentness remain a prose contract plus reviewer judgment?"
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = []
+
+[[items]]
+id = "DSET-OPPORTUNITY-GOV-001"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "gov"
+type = "opportunity"
+status = "open"
+title = "Generate a proof-currentness review view"
+statement = "DSET could generate a non-authoritative view of proof dependencies, last evaluated identities, declared reopen triggers, and suspected stale closures while returning reviewers to the canonical proof records."
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = []
+
+[[items]]
+id = "DSET-OPPORTUNITY-TOOL-001"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "tool"
+type = "opportunity"
+status = "open"
+title = "Expand schema template validation into a compatibility matrix"
+statement = "Beyond the current schema-specific scaffold regressions, DSET could materialize every supported template/profile/schema combination and validate each filled output as a generated compatibility matrix."
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = []
+
+[[items]]
+id = "DSET-OPPORTUNITY-OPS-001"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "ops"
+type = "opportunity"
+status = "open"
+title = "Generate a cross-repository adoption status view"
+statement = "DSET could generate a helicopter view of framework, fixture, pilot, and clean-room adoption status from each repository's own manifests and exact proof links without making the central view a new authority."
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = []
+
+[[items]]
+id = "DSET-PROBLEM-TOOL-004"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "tool"
+type = "problem"
+status = "open"
+title = "Project health renderer is not implemented"
+statement = "Accepted methodology now requires a deterministic Markdown project-health view with explicit coverage denominators, applicability, freshness, and canonical return links, but the CLI has no health model, renderer, refresh command, or staleness check."
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = []
+
+[[items]]
+id = "DSET-PROBLEM-GOV-005"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "gov"
+type = "problem"
+status = "open"
+title = "External review handoff has no executable artifact flow"
+statement = "DSET defines independent review as transactional evidence, but it lacks a review-packet template, report envelope/schema, stable finding IDs, and an import/reconciliation flow that routes Codex, Claude, or human findings without silently authorizing fixes."
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = []
+
+[[items]]
+id = "DSET-QUESTION-TOOL-001"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "tool"
+type = "question"
+status = "open"
+title = "When should project health gain an interactive renderer?"
+statement = "After the portable Markdown baseline works, what evidence would justify a local or hosted interactive dashboard rather than continuing with the generated Markdown view alone?"
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = []
+
+[[items]]
+id = "DSET-QUESTION-GOV-007"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "gov"
+type = "question"
+status = "open"
+title = "How strictly should external review reports be schema-enforced?"
+statement = "Should DSET 0.3 enforce the entire review report structurally, or validate only a mandatory identity/provenance/finding envelope while keeping the analysis body free-form?"
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = []
+
+[[items]]
+id = "DSET-PROBLEM-TOOL-005"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "tool"
+type = "problem"
+status = "open"
+title = "Priority conflict resolver is not implemented"
+statement = "Accepted methodology now requires deterministic role-aware handling for every governed artifact conflict pairing and uses effective priority to select claims only for declared selectable policy conflicts after immutable authority and explicit precedence, but no artifact-priority schema, inheritance graph, pairwise conflict matrix, conflict registry, deterministic resolver, resolution record, or invalidation check exists."
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = []
+
+[[items]]
+id = "DSET-PROBLEM-GOV-006"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "gov"
+type = "problem"
+status = "open"
+title = "Immutable atomic lifecycle is not enforced"
+statement = "Accepted methodology now makes every emitted atomic artifact immutable and requires append-only lifecycle events, explicit acyclic absorption, derived current state, and byte-stable archival only after full retirement, but current schemas and validators still permit in-place mutation and do not maintain canonical ID/digest lookup across archive moves."
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "pending"
+external_refs = []
+
+[[items]]
+id = "DSET-PROBLEM-GOV-007"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "gov"
+type = "problem"
+status = "open"
+title = "Canonical flat Type model is not schema-enforced"
+statement = "DSET-DECISION-GOV-007 and current governing/specification projections define exactly four Types with one direct subtype level, but current schemas, validators, templates, traceability, skills, and emitted legacy atoms still encode standalone Opportunity and Conflict Types, Risk as Problem, separate Decision/Requirement/Contract representations, EVAL IDs, and no general Type/subtype envelope. End-to-end conformance remains unimplemented until a provenance-preserving successor schema, compatibility resolver, lifecycle events, fixtures, and migration proof exist."
+owner_change = "DSET-CHANGE-SKILL-001"
+decision = "DSET-DECISION-GOV-007"
+external_refs = []
+
+[[items]]
+id = "DSET-PROBLEM-TOOL-006"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+scope = "tool"
+type = "problem"
+status = "resolved"
+title = "Initializer contradicts active automation"
+statement = "Repositories with active GitHub workflows were initialized with supportability marked not applicable, so the initializer's own post-write validator rejected and rolled back an otherwise valid initialization. Bootstrap now detects active hosted automation and emits applicable supportability with a bounded incomplete-runbook warning."
+owner_change = "DSET-CHANGE-SKILL-001"
+external_refs = []

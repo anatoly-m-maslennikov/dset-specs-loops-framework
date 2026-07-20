@@ -5,8 +5,8 @@
 ## Authority
 
 The adopting repository's discovered project manifest selects a local governance
-profile. Schema 1.2 owns that manifest at `dset/scopes/meta/dset.yaml` and the
-governance registry at `dset/scopes/gov/governance.yaml`; legacy schema 1.0/1.1
+profile. Schema 1.2 owns that manifest at `dset/scopes/meta/dset.toml` and the
+governance registry at `dset/scopes/gov/governance.toml`; legacy schema 1.0/1.1
 owns the compatible central paths. The discovered registry maps workflow and
 rule IDs to exactly one compiled governing document and its active atomic
 sources inside the repository. An active source atom is authority; the
@@ -55,7 +55,7 @@ transaction. It cannot pretend that a local registry already exists or
 continue into governed work. `DSET-RULE-LIFECYCLE` governs later local routing,
 not the pre-root bootstrap command.
 
-1. Walk upward from the working path until exactly one supported manifest is found: schema 1.2 `dset/scopes/meta/dset.yaml` or legacy `dset/dset.yaml`. Duplicate authorities fail.
+1. Walk upward from the working path until exactly one supported manifest is found: schema 1.2 `dset/scopes/meta/dset.toml` or legacy `dset/dset.toml`. Duplicate authorities fail.
 2. Read the selected `repository_governance` profile.
 3. Discover and validate the layout-owned governance registry, local ownership, dependencies, documents, applicability, customization, and wrapper identity.
 4. Resolve the requested workflow in registry order.

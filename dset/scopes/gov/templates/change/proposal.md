@@ -1,8 +1,8 @@
----
-artifact_type: analysis_report
-artifact_subtype: proposal
-llm_session_ids: []
----
++++
+artifact_type = "analysis_report"
+artifact_subtype = "proposal"
+llm_session_ids = []
++++
 
 # Proposal — {{title}}
 

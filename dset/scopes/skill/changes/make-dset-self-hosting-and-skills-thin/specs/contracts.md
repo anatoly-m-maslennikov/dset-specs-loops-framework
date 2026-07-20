@@ -17,7 +17,7 @@ does not restate them.
 
 | Field | Value |
 |---|---|
-| Authority | Project release and Change contract in `dset/scopes/meta/dset.yaml` |
+| Authority | Project release and Change contract in `dset/scopes/meta/dset.toml` |
 | Source | Schema 1.2 project and Change workspace declarations |
 | Version or digest | `1.2` |
 | Direction | Local integration branch to remote integration branch to protected release PR; optional isolated Change branch/worktree to integration branch first |

@@ -3,8 +3,8 @@
 Package and specification-governance templates owned by META.
 
 - [Project behavior settings](dset_settings.toml)
-- [Legacy schema 1.0 package manifest](package/legacy/package.yaml)
-- [Layered schema 1.2 package fragment](package/layered/package.yaml)
+- [Legacy schema 1.0 package manifest](package/legacy/package.toml)
+- [Layered schema 1.2 package fragment](package/layered/package.toml)
 
 Select the template that matches the repository layout. A layered package has
 one fragment per participating semantic layer; the legacy package has one

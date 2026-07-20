@@ -1,0 +1,1498 @@
+schema_version = "1.0"
+
+[[records]]
+id = "DSET-CONTRACT-META-001"
+
+[records.source]
+path = "dset/scopes/meta/specs/packages/methodology/package.toml"
+sha256 = "70e2bcb0ec0660393f9729b488010442a18153f43dafa9fb4eac06a76466ae22"
+
+[[records.projections]]
+path = "dset/scopes/meta/specs/packages/methodology/contracts.md"
+sha256 = "95cc308d32e7abc65c3ef39bf84414a3c23a44efd695faf0ecb2cfad9bdca3d1"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 63
+sha256 = "a57925934654636b86a9b9b967114ba31ef0c29864be1cb2ad5955e3acd40772"
+
+[[records]]
+id = "DSET-CONTRACT-OPS-001"
+
+[records.source]
+path = "dset/scopes/ops/specs/packages/methodology/package.toml"
+sha256 = "226f598e72341c30efee5c581f2ba00eb29490f175bb948f2992993aa9b80594"
+
+[[records.projections]]
+path = "dset/scopes/ops/specs/packages/methodology/contracts.md"
+sha256 = "a271dc01fa9871dd5958696a08d31658f202ec3832093dcf2051f2484ef13e5d"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 7
+sha256 = "8b1080a9699495ed6630a4cf2112739d8f59550aa5c9e6db38118e4f1bab0b3f"
+
+[[records]]
+id = "DSET-CONTRACT-SKILL-001"
+
+[records.source]
+path = "dset/scopes/skill/specs/packages/methodology/package.toml"
+sha256 = "f2eb007a3c07a165e96d1538a4923d982a579b7a5e91c2d780c3421edbe297ff"
+
+[[records.projections]]
+path = "dset/scopes/skill/specs/packages/methodology/contracts.md"
+sha256 = "c1cac592048b9b839201b14bc6d927ca5324b248c3728b60fafbcf93056b6b89"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 26
+sha256 = "1e106d74f5cac7d0a77d63a95d943c4c80fb40d7844be2a5c554a40d4de29ec7"
+
+[[records]]
+id = "DSET-CONTRACT-SKILL-002"
+
+[records.source]
+path = "dset/scopes/skill/specs/packages/methodology/package.toml"
+sha256 = "f2eb007a3c07a165e96d1538a4923d982a579b7a5e91c2d780c3421edbe297ff"
+
+[[records.projections]]
+path = "dset/scopes/skill/specs/packages/methodology/contracts.md"
+sha256 = "c1cac592048b9b839201b14bc6d927ca5324b248c3728b60fafbcf93056b6b89"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 40
+sha256 = "2563d71b006f70f4e5b2b137d1860edc9b4fe0cfba3a800c057beea22c7713e9"
+
+[[records]]
+id = "DSET-CONTRACT-TOOL-001"
+
+[records.source]
+path = "dset/scopes/tool/specs/packages/methodology/package.toml"
+sha256 = "b27d258cb329db47624626f69200906e4673214ef0b71d75c8972db9ef265af0"
+
+[[records.projections]]
+path = "dset/scopes/tool/specs/packages/methodology/contracts.md"
+sha256 = "6630ef53416e506f0206ce376d4a6f7682d8cc1696d68f9ccfcf978f6adffbf1"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 20
+sha256 = "e00c017da23b8ac4c0ff6785e78a311bb07834ea04576f9a556918ce955e5e07"
+
+[[records]]
+id = "DSET-CONTRACT-TOOL-002"
+
+[records.source]
+path = "dset/scopes/tool/specs/packages/methodology/package.toml"
+sha256 = "b27d258cb329db47624626f69200906e4673214ef0b71d75c8972db9ef265af0"
+
+[[records.projections]]
+path = "dset/scopes/tool/specs/packages/methodology/contracts.md"
+sha256 = "6630ef53416e506f0206ce376d4a6f7682d8cc1696d68f9ccfcf978f6adffbf1"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 34
+sha256 = "ea935467b426f322e69d2f5fd7215cdfa131c7afb140122dbaf04c751ce26701"
+
+[[records]]
+id = "DSET-DECISION-GOV-001"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-001.md"
+sha256 = "5c0c738fbf89c42e62986979110a6feeb6ceffacaea9d51c5c288d1295bdffb2"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "table-row"
+line = 12
+sha256 = "67a21e67dc7f08f5dce13044dad0c60c863b35afb15822bb567f2b8ca1c91fb4"
+
+[[records]]
+id = "DSET-DECISION-GOV-002"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-002.md"
+sha256 = "4ac80c2b20e979d73e8321f55df074f3f2338481bfa68d8674506dbb50e354d6"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "table-row"
+line = 13
+sha256 = "7e747c487daeeb43c8d37fba72ce07066029ae7dafce76f20a469bf44c81e2af"
+
+[[records]]
+id = "DSET-DECISION-GOV-003"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-003.md"
+sha256 = "f97871ec9ad418d14591e44e0cfaf4656265d9879474ea8ba313cb14ae5c85aa"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "table-row"
+line = 14
+sha256 = "d24c29a1688f71e2202966e46ccca10b7df6defe5863fb46c1ae2680d80036c3"
+
+[[records]]
+id = "DSET-DECISION-GOV-008"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-008.md"
+sha256 = "5fa7552e48c58c21f8b4fba08130661ad8038de731c1841190b7e285778bfcd0"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "table-row"
+line = 15
+sha256 = "2fb2fe364ab08aaf0bb5566709966ef8a47030bf47c87d2b2dc8e0e7fc42c3ee"
+
+[[records]]
+id = "DSET-DECISION-GOV-010"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-009-priority-profile.md"
+sha256 = "7ce545c825d004d1870742906b4eae10441082344d994e5e447d224b24624a98"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "table-row"
+line = 16
+sha256 = "18f804c3e8b1a3d5445db6aefb56bf35193cf9f92c8a13024da9f6b651e2e8fe"
+
+[[records]]
+id = "DSET-DECISION-GOV-012"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-033-delivery-artifact-type.md"
+sha256 = "38dbc1ca184d4eae2e7de28c5a8fb88bb6f332f17862704c1f2cddcfe27969b0"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "table-row"
+line = 17
+sha256 = "3902797838ccf4ba321292fbf609040eaf826cd1a78f4eab32b9e493b8b4d547"
+
+[[records]]
+id = "DSET-DECISION-GOV-013"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-035-typed-artifact-relations.md"
+sha256 = "4cc08243f3eb5d2f560507e3b140d8c8c7cac1f94df586e326cb455cdd8ac5e6"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "table-row"
+line = 18
+sha256 = "d51b6e37108e28d199f30ada854ddc75cec1e6ebe5f03234afb959452c92641c"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 634
+sha256 = "897a7d341db447da144a3b431ff6dccb7b26470f3cc07a45742a22932a2e5164"
+
+[[records]]
+id = "DSET-DECISION-GOV-014"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-046-toml-optional-unset-normalization.md"
+sha256 = "608f02e358b8654296f4ed7f25cc4b800a1347086153d1e3eab081acb545e2c5"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "table-row"
+line = 19
+sha256 = "e237cc47e3b68b6691c9a340ad5aec418577593bd932646b6f6924b2d553a407"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 766
+sha256 = "40fd44d5f4972f86fb4710bb06d32f53f00e0b931ceebb8893c045995157621e"
+
+[[records]]
+id = "DSET-DECISION-GOV-015"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-047-json-schema-boundary.md"
+sha256 = "616d99210390a7c3e5be98af437e36ac539ab7d06a3e9663732d84b42145c806"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "table-row"
+line = 20
+sha256 = "934fb2e9cf61334380823f0cd1bb1bbcc93e2d5db1d7d68252d725d34c56d51c"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 776
+sha256 = "9a6b6ec162d4b98085fda5bfefea14e1fe3b3c05070b3c9ed7897132a3a6b36f"
+
+[[records]]
+id = "DSET-DECISION-GOV-016"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-060-native-package-successors.md"
+sha256 = "df9c27d9313cf99d34a2155b3f87ddbb41f8f094e8807b528a81fb9cdd51a1e7"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "table-row"
+line = 21
+sha256 = "5c21cb20f171bfb867e5e2e151378706e3673cd9a93697f58b68520b2ead609d"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 785
+sha256 = "1e477174f7b1c4b8d1cf1cfbb80319b7758dafb90b404b9b9c602c9d0a5d11f2"
+
+[[records]]
+id = "DSET-DECISION-GOV-017"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-062-legacy-structured-snapshots.md"
+sha256 = "44488b55a3c9b56a3bd653026e9634ea5337a367020918c61d53b41fae78d4ad"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "table-row"
+line = 22
+sha256 = "174afefa5171b8a3a4809aaa7e8fb4444a3cfdb437b7381bf6af9b9cd4fe1e29"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 799
+sha256 = "fb73136c47197a72d900b0dc2aa6e8caf0a0c3211b43988b9f2d928f9558cd47"
+
+[[records]]
+id = "DSET-DECISION-OPS-006"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-034-delivery-lifecycle.md"
+sha256 = "c268399053fe389faaa9479e3b8118450d8e4d3a0397ccd700ad5d940ed80c09"
+
+[[records.projections]]
+path = "dset/scopes/ops/specs/packages/methodology/spec.md"
+sha256 = "13fa378d29a8eeaad30afa5dda196999a61a50b4fda94643899aa41711808265"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 5
+sha256 = "d9f45390bb006677750937ccffff867c8d016ddee5d14af20d0efc5c3dfab441"
+
+[[records]]
+id = "DSET-DECISION-SKILL-001"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-SKILL-001.md"
+sha256 = "e749f7df4c9e05ccb7c48badbe645cb5a78d641a0f748b89593cdf2e295ea2fc"
+
+[[records.projections]]
+path = "dset/scopes/skill/specs/packages/methodology/spec.md"
+sha256 = "112102a864672152c7107acbdabd1a5af94137d1fc1ef96c1094975b16982dee"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 5
+sha256 = "aab6b8eb4398dc593a7bddd65d791920dbf277c17fbdc636e648aecd5a9ab5a0"
+
+[[records]]
+id = "DSET-DECISION-SKILL-002"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-SKILL-002.md"
+sha256 = "e6773062cedb59c7afeecdf339843b9e8ec3834b691fd1a29027bdd84952700d"
+
+[[records.projections]]
+path = "dset/scopes/skill/specs/packages/methodology/spec.md"
+sha256 = "112102a864672152c7107acbdabd1a5af94137d1fc1ef96c1094975b16982dee"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 10
+sha256 = "5bfd62488a555da764d8d52c9c888952a4a3a25f4826154c28dad09d88a05ac4"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-001"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 27
+sha256 = "a7dbda78d94fc2a2e85ddfa66f070092bc452c5eacd86661e62ccb3166edc49a"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-002"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 33
+sha256 = "98cbb78cd45c011deb038a4ce6094e1feb192a15f31583874b2b59a63a6fac16"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-003"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 41
+sha256 = "b05b912222bedcd43e2cfc8eeaa261edc9bb5567ef14849be9d0b204cf2c59e1"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-004"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 47
+sha256 = "14126bbb89c8c1127c7495d94afb17851b20059292893de97041e38105bc731f"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-005"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 53
+sha256 = "8e6bdc3c34a057695216b47017de6867cddf4524f73266f5ca28c0b8358cb37d"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-006"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 59
+sha256 = "4321a164ee17d0a0d49bcd07b16b4bb11306570ff0a2fe878f36063060059871"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-007"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 65
+sha256 = "ca1a83b13a2475fe249f33d6ae6a210413b2eaa7cf67fa13bbf47878e9b57689"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-008"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 71
+sha256 = "f122d1c4fbefcc57ab58970f909ab25e7dda237847b365982f17088d00171621"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-009"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 77
+sha256 = "3d41e354a13d7d00d015f10c55a7107ed4f1b42c47acc845a3343c5ec87e3dd2"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-010"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 83
+sha256 = "b3e91ff1032234430d9dce8546b19b270b0b958e49e82ff3db7855f3d2ad10aa"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-011"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 99
+sha256 = "7180a0dbae3cc4d623f6057bfe686878fd80e528d85870d53927ed8f3a2c91b7"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-012"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 105
+sha256 = "bf9417b916b8f3ce99265475e2a33ac4a9d26cc99c349141e3a7d36f2cfccff9"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-013"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 111
+sha256 = "112421d2483b1c04f180d53fbd5b7315fd7394e01788f24a7fbddab950814a20"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-014"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 117
+sha256 = "48642538a8b7073c1b12f4961697fd27d4c858d6a227f7278e3ddb6a65526041"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-015"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 123
+sha256 = "1092b46a0da9c60678991da4747992e6a3267607991fac591bf4fc9d045db269"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-016"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 129
+sha256 = "2c7197b2dca40e69d7606adb063560f1c654379e53c8e21f110e536c1c7dc0ac"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-017"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 135
+sha256 = "11da7f0e6af386ca32ea480a9caa47c029484617b041b3db0f7f95a29441930a"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-018"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 141
+sha256 = "a3c34a6f9e1292bbb7b900f0bb46a57a19374b6d40114a88532997bb253b615c"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-019"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 161
+sha256 = "9fe5f7f71e17be2ce365b977fc988bf8d0dcdf69db5b9c4a3b54c8b3b8d7cc8b"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-020"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 183
+sha256 = "64346176344f34fa069674a30f4a80040778211086ec8bfe6f79623990c47005"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-021"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 209
+sha256 = "f39becf1670cbb59212105130c5fbce15f4f1dac3e6dfe91672bb685cab7aa57"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-022"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 261
+sha256 = "e39ea409d54020442d2e933e6f2bc01fea358f8a7711196a82347b1268e16729"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-023"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 291
+sha256 = "70b93d7e044197d1a524d472e990bfd5a1c9a5f4db606cbfd9db7d126ea31c42"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-024"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 316
+sha256 = "9ee31e41b8b1aa002f3df74866b2a0e0225b7be028981ff9155f325803b5bca6"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-025"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 340
+sha256 = "02671027177c7d8114912aa26276f9da9a7362b2193996a1b71a6c840a5b76bd"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-026"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 364
+sha256 = "cd48b56ccbf08c4aa37a0e19a36aff2902827da3d1a50025832645ce9c017e87"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-027"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 429
+sha256 = "71c43a7ac5a03392d479ae22ee9130660741bebc9314ade6a20f6e6fda9f3e8c"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-028"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 512
+sha256 = "a94d62b9975f6942311c11b2790674027ac80dea54f9df1b34e13d5a783c0dbd"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-029"
+
+[records.source]
+path = "dset/scopes/gov/specs/packages/methodology/package.toml"
+sha256 = "5445f9d0cb3c235fc12e767600e78f57d2a814f4cedfed8c6ae217d76a512ccc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 537
+sha256 = "3b7f0a264bcdac8ef64ba6bff9ebc2331d3ed9f56a5f459e8fa8c15c37305769"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-031"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-002-multilevel-architecture-views.md"
+sha256 = "6ff98586cdbd23a5e7a747fa6cc451de4e1de98247029b232b94d0020d22b726"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 590
+sha256 = "b025c94fdc1549fec5e8233e8cf30deee4c2d8a03d87927ff0ddb01761d209ff"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-032"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-003-project-scope-ownership.md"
+sha256 = "9f367bbaa2ab3c153320c359217bb83efd0879b57910c07de0ce3fed18a02dc0"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 606
+sha256 = "d1030e3eb5c9ca4b6d2105ff8308aeb362bba501f014ae934f98d00285864760"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-037"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-048-verbose-project-settings.md"
+sha256 = "cc5958bc9d829dcd5438660e3424ea43963ad212357e3cd5b6bd8e7cd36f83dc"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 717
+sha256 = "7ca440f83ecd335b51df6c2e4c951551c583f4cec29edaa24a1bdeee457616b3"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-038"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-051-artifact-naming-setting.md"
+sha256 = "a8175d524b7b6133949f185f027e6c8e043537d44af3703267d79518813204c4"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 570
+sha256 = "e70597609b89874487f43aaaec24c8461c6c7543f542d05eaf08b69baf1534a2"
+
+[[records]]
+id = "DSET-REQUIREMENT-GOV-039"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-052-artifact-creation-setting.md"
+sha256 = "cb7534d722783c7915ff394b02bb5485db0d27fe4df45631f0cc640b56681398"
+
+[[records.projections]]
+path = "dset/scopes/gov/specs/packages/methodology/spec.md"
+sha256 = "e96291eb6f991e927cfa7c81bdfb8f0c6057f54725ea509f9dd872cc9acabf3a"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 681
+sha256 = "f15422195976b0519a42527b7712c2adf704a13d742189b4db579742faa7b826"
+
+[[records]]
+id = "DSET-REQUIREMENT-META-001"
+
+[records.source]
+path = "dset/scopes/meta/specs/packages/methodology/package.toml"
+sha256 = "70e2bcb0ec0660393f9729b488010442a18153f43dafa9fb4eac06a76466ae22"
+
+[[records.projections]]
+path = "dset/scopes/meta/specs/packages/methodology/spec.md"
+sha256 = "011b015197059e6a888c506c76f85d4d4ae862559cb33cf57740c7f28683881c"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 3
+sha256 = "1ae220714cbf0505a3e27a74e3664d2d07058bb2dbcf4ef5e0183792ce1d238c"
+
+[[records]]
+id = "DSET-REQUIREMENT-META-002"
+
+[records.source]
+path = "dset/scopes/meta/specs/packages/methodology/package.toml"
+sha256 = "70e2bcb0ec0660393f9729b488010442a18153f43dafa9fb4eac06a76466ae22"
+
+[[records.projections]]
+path = "dset/scopes/meta/specs/packages/methodology/spec.md"
+sha256 = "011b015197059e6a888c506c76f85d4d4ae862559cb33cf57740c7f28683881c"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 9
+sha256 = "d8622e5b503c1adf575a013f7e908908a2aedc9190ca716b5af070b32eadac09"
+
+[[records]]
+id = "DSET-REQUIREMENT-META-003"
+
+[records.source]
+path = "dset/scopes/meta/specs/packages/methodology/package.toml"
+sha256 = "70e2bcb0ec0660393f9729b488010442a18153f43dafa9fb4eac06a76466ae22"
+
+[[records.projections]]
+path = "dset/scopes/meta/specs/packages/methodology/spec.md"
+sha256 = "011b015197059e6a888c506c76f85d4d4ae862559cb33cf57740c7f28683881c"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 15
+sha256 = "55056dd3290d175de6eda2188ea46969b561712ef92e50ecc7aaca69be5d7f89"
+
+[[records]]
+id = "DSET-REQUIREMENT-META-004"
+
+[records.source]
+path = "dset/scopes/meta/specs/packages/methodology/package.toml"
+sha256 = "70e2bcb0ec0660393f9729b488010442a18153f43dafa9fb4eac06a76466ae22"
+
+[[records.projections]]
+path = "dset/scopes/meta/specs/packages/methodology/spec.md"
+sha256 = "011b015197059e6a888c506c76f85d4d4ae862559cb33cf57740c7f28683881c"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 23
+sha256 = "3df65713d69b35264aaeffa704141ca1bd40e5fb65828d74531279b018af4184"
+
+[[records]]
+id = "DSET-REQUIREMENT-META-005"
+
+[records.source]
+path = "dset/scopes/meta/specs/packages/methodology/package.toml"
+sha256 = "70e2bcb0ec0660393f9729b488010442a18153f43dafa9fb4eac06a76466ae22"
+
+[[records.projections]]
+path = "dset/scopes/meta/specs/packages/methodology/spec.md"
+sha256 = "011b015197059e6a888c506c76f85d4d4ae862559cb33cf57740c7f28683881c"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 29
+sha256 = "47e78e00378c79aaba7a97e245aab94e52f9e3126d65ed192edf4eb8491feb35"
+
+[[records]]
+id = "DSET-REQUIREMENT-META-006"
+
+[records.source]
+path = "dset/scopes/meta/specs/packages/methodology/package.toml"
+sha256 = "70e2bcb0ec0660393f9729b488010442a18153f43dafa9fb4eac06a76466ae22"
+
+[[records.projections]]
+path = "dset/scopes/meta/specs/packages/methodology/spec.md"
+sha256 = "011b015197059e6a888c506c76f85d4d4ae862559cb33cf57740c7f28683881c"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 35
+sha256 = "8f045885539dd7022f422ff1db4d07c9bdc38d911ab34a033084764b77ce2bea"
+
+[[records]]
+id = "DSET-REQUIREMENT-META-007"
+
+[records.source]
+path = "dset/scopes/meta/specs/packages/methodology/package.toml"
+sha256 = "70e2bcb0ec0660393f9729b488010442a18153f43dafa9fb4eac06a76466ae22"
+
+[[records.projections]]
+path = "dset/scopes/meta/specs/packages/methodology/spec.md"
+sha256 = "011b015197059e6a888c506c76f85d4d4ae862559cb33cf57740c7f28683881c"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 41
+sha256 = "cbcf1ad4db15f2fa83916b10202e8939788ab032ba7e4a490847ba2f05e1b0d3"
+
+[[records]]
+id = "DSET-REQUIREMENT-META-008"
+
+[records.source]
+path = "dset/scopes/meta/specs/packages/methodology/package.toml"
+sha256 = "70e2bcb0ec0660393f9729b488010442a18153f43dafa9fb4eac06a76466ae22"
+
+[[records.projections]]
+path = "dset/scopes/meta/specs/packages/methodology/spec.md"
+sha256 = "011b015197059e6a888c506c76f85d4d4ae862559cb33cf57740c7f28683881c"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 47
+sha256 = "85c105e874e3ef8a60c08c294ae2694c6404432b3b236125a11ed3cafeb0c01f"
+
+[[records]]
+id = "DSET-REQUIREMENT-META-009"
+
+[records.source]
+path = "dset/scopes/meta/specs/packages/methodology/package.toml"
+sha256 = "70e2bcb0ec0660393f9729b488010442a18153f43dafa9fb4eac06a76466ae22"
+
+[[records.projections]]
+path = "dset/scopes/meta/specs/packages/methodology/spec.md"
+sha256 = "011b015197059e6a888c506c76f85d4d4ae862559cb33cf57740c7f28683881c"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 73
+sha256 = "734d16672fd59bc363b8709bb06e4aafd7d154b38308229b78a180e658e566a8"
+
+[[records]]
+id = "DSET-REQUIREMENT-META-010"
+
+[records.source]
+path = "dset/scopes/meta/specs/packages/methodology/package.toml"
+sha256 = "70e2bcb0ec0660393f9729b488010442a18153f43dafa9fb4eac06a76466ae22"
+
+[[records.projections]]
+path = "dset/scopes/meta/specs/packages/methodology/spec.md"
+sha256 = "011b015197059e6a888c506c76f85d4d4ae862559cb33cf57740c7f28683881c"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 98
+sha256 = "8b1d5f4b53415ea65c7fd1b097d554379d47e7ea7ab47babf564cb7a2cdcc441"
+
+[[records]]
+id = "DSET-REQUIREMENT-META-011"
+
+[records.source]
+path = "dset/scopes/meta/specs/packages/methodology/package.toml"
+sha256 = "70e2bcb0ec0660393f9729b488010442a18153f43dafa9fb4eac06a76466ae22"
+
+[[records.projections]]
+path = "dset/scopes/meta/specs/packages/methodology/spec.md"
+sha256 = "011b015197059e6a888c506c76f85d4d4ae862559cb33cf57740c7f28683881c"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 123
+sha256 = "78a4858efcce8dd01895969a614a18c1ab1404788aec9c5b351e98fbf40832e5"
+
+[[records]]
+id = "DSET-REQUIREMENT-OPS-001"
+
+[records.source]
+path = "dset/scopes/ops/specs/packages/methodology/package.toml"
+sha256 = "226f598e72341c30efee5c581f2ba00eb29490f175bb948f2992993aa9b80594"
+
+[[records.projections]]
+path = "dset/scopes/ops/specs/packages/methodology/spec.md"
+sha256 = "13fa378d29a8eeaad30afa5dda196999a61a50b4fda94643899aa41711808265"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 13
+sha256 = "d6f85434567b1822c4a7eed6523df824020ac803df7d29999ffba55d74a1cb0f"
+
+[[records]]
+id = "DSET-REQUIREMENT-OPS-002"
+
+[records.source]
+path = "dset/scopes/ops/specs/packages/methodology/package.toml"
+sha256 = "226f598e72341c30efee5c581f2ba00eb29490f175bb948f2992993aa9b80594"
+
+[[records.projections]]
+path = "dset/scopes/ops/specs/packages/methodology/spec.md"
+sha256 = "13fa378d29a8eeaad30afa5dda196999a61a50b4fda94643899aa41711808265"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 21
+sha256 = "c757e5656644f827b35c1ef842c84b089b8bd4b0c8dd8bbe36f3fb2e460a9697"
+
+[[records]]
+id = "DSET-REQUIREMENT-OPS-003"
+
+[records.source]
+path = "dset/scopes/ops/specs/packages/methodology/package.toml"
+sha256 = "226f598e72341c30efee5c581f2ba00eb29490f175bb948f2992993aa9b80594"
+
+[[records.projections]]
+path = "dset/scopes/ops/specs/packages/methodology/spec.md"
+sha256 = "13fa378d29a8eeaad30afa5dda196999a61a50b4fda94643899aa41711808265"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 27
+sha256 = "cf435fcafb0d3f219fc1fecdb4f363932ab81843298e43a37dd203307d4392e1"
+
+[[records]]
+id = "DSET-REQUIREMENT-OPS-004"
+
+[records.source]
+path = "dset/scopes/ops/specs/packages/methodology/package.toml"
+sha256 = "226f598e72341c30efee5c581f2ba00eb29490f175bb948f2992993aa9b80594"
+
+[[records.projections]]
+path = "dset/scopes/ops/specs/packages/methodology/spec.md"
+sha256 = "13fa378d29a8eeaad30afa5dda196999a61a50b4fda94643899aa41711808265"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 33
+sha256 = "1bb9c15c37d266606fe5b83daf8e3a6db3b0fc1e3454ebde6dda89c468534fe6"
+
+[[records]]
+id = "DSET-REQUIREMENT-OPS-005"
+
+[records.source]
+path = "dset/scopes/ops/specs/packages/methodology/package.toml"
+sha256 = "226f598e72341c30efee5c581f2ba00eb29490f175bb948f2992993aa9b80594"
+
+[[records.projections]]
+path = "dset/scopes/ops/specs/packages/methodology/spec.md"
+sha256 = "13fa378d29a8eeaad30afa5dda196999a61a50b4fda94643899aa41711808265"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 39
+sha256 = "0a172aca78ebcccae329b4c0fab02d8545633f1d1952f3550e5baf0f2b087b7d"
+
+[[records]]
+id = "DSET-REQUIREMENT-OPS-006"
+
+[records.source]
+path = "dset/scopes/ops/specs/packages/methodology/package.toml"
+sha256 = "226f598e72341c30efee5c581f2ba00eb29490f175bb948f2992993aa9b80594"
+
+[[records.projections]]
+path = "dset/scopes/ops/specs/packages/methodology/spec.md"
+sha256 = "13fa378d29a8eeaad30afa5dda196999a61a50b4fda94643899aa41711808265"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 45
+sha256 = "3bdb4f421363ec544e5031fa1d099927384bb66c58648858ed4c14cfd0dda879"
+
+[[records]]
+id = "DSET-REQUIREMENT-OPS-007"
+
+[records.source]
+path = "dset/scopes/ops/specs/packages/methodology/package.toml"
+sha256 = "226f598e72341c30efee5c581f2ba00eb29490f175bb948f2992993aa9b80594"
+
+[[records.projections]]
+path = "dset/scopes/ops/specs/packages/methodology/spec.md"
+sha256 = "13fa378d29a8eeaad30afa5dda196999a61a50b4fda94643899aa41711808265"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 51
+sha256 = "9823f838b28a4a62067fb9b8bf795949db9936415c485191bd2b3a83c813cde8"
+
+[[records]]
+id = "DSET-REQUIREMENT-OPS-013"
+
+[records.source]
+path = "dset/scopes/ops/specs/packages/methodology/package.toml"
+sha256 = "226f598e72341c30efee5c581f2ba00eb29490f175bb948f2992993aa9b80594"
+
+[[records.projections]]
+path = "dset/scopes/ops/specs/packages/methodology/spec.md"
+sha256 = "13fa378d29a8eeaad30afa5dda196999a61a50b4fda94643899aa41711808265"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 57
+sha256 = "0944c1bf93d6427064231fd9dc4ebbd8ed613282c910f71a5ce1756f5b8451cd"
+
+[[records]]
+id = "DSET-REQUIREMENT-SKILL-001"
+
+[records.source]
+path = "dset/scopes/skill/specs/packages/methodology/package.toml"
+sha256 = "f2eb007a3c07a165e96d1538a4923d982a579b7a5e91c2d780c3421edbe297ff"
+
+[[records.projections]]
+path = "dset/scopes/skill/specs/packages/methodology/spec.md"
+sha256 = "112102a864672152c7107acbdabd1a5af94137d1fc1ef96c1094975b16982dee"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 15
+sha256 = "20775596a973e07c9e4c7aced1bbb1eb73782ca6c844c988d11506641dcc6004"
+
+[[records]]
+id = "DSET-REQUIREMENT-SKILL-002"
+
+[records.source]
+path = "dset/scopes/skill/specs/packages/methodology/package.toml"
+sha256 = "f2eb007a3c07a165e96d1538a4923d982a579b7a5e91c2d780c3421edbe297ff"
+
+[[records.projections]]
+path = "dset/scopes/skill/specs/packages/methodology/spec.md"
+sha256 = "112102a864672152c7107acbdabd1a5af94137d1fc1ef96c1094975b16982dee"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 21
+sha256 = "6350318a68910624ccb2bb86f86a576ece354d684b244c1c03f4a3885417eac0"
+
+[[records]]
+id = "DSET-REQUIREMENT-SKILL-003"
+
+[records.source]
+path = "dset/scopes/skill/specs/packages/methodology/package.toml"
+sha256 = "f2eb007a3c07a165e96d1538a4923d982a579b7a5e91c2d780c3421edbe297ff"
+
+[[records.projections]]
+path = "dset/scopes/skill/specs/packages/methodology/spec.md"
+sha256 = "112102a864672152c7107acbdabd1a5af94137d1fc1ef96c1094975b16982dee"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 27
+sha256 = "6737ec27a1f86807e558f71741d2951cde331d460d5a40bcad55a7246404797a"
+
+[[records]]
+id = "DSET-REQUIREMENT-SKILL-004"
+
+[records.source]
+path = "dset/scopes/skill/specs/packages/methodology/package.toml"
+sha256 = "f2eb007a3c07a165e96d1538a4923d982a579b7a5e91c2d780c3421edbe297ff"
+
+[[records.projections]]
+path = "dset/scopes/skill/specs/packages/methodology/spec.md"
+sha256 = "112102a864672152c7107acbdabd1a5af94137d1fc1ef96c1094975b16982dee"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 50
+sha256 = "1796a49a9b46a09a4b67561023dffd3a6a1f1911827b1e72db47ba2719eacfed"
+
+[[records]]
+id = "DSET-REQUIREMENT-SKILL-005"
+
+[records.source]
+path = "dset/scopes/skill/specs/packages/methodology/package.toml"
+sha256 = "f2eb007a3c07a165e96d1538a4923d982a579b7a5e91c2d780c3421edbe297ff"
+
+[[records.projections]]
+path = "dset/scopes/skill/specs/packages/methodology/spec.md"
+sha256 = "112102a864672152c7107acbdabd1a5af94137d1fc1ef96c1094975b16982dee"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 56
+sha256 = "e6efc49e5905cbd49208b01b91cc7e6d542bc7e85bfa1bbd79a17a6cbf3342b4"
+
+[[records]]
+id = "DSET-REQUIREMENT-SKILL-006"
+
+[records.source]
+path = "dset/scopes/skill/specs/packages/methodology/package.toml"
+sha256 = "f2eb007a3c07a165e96d1538a4923d982a579b7a5e91c2d780c3421edbe297ff"
+
+[[records.projections]]
+path = "dset/scopes/skill/specs/packages/methodology/spec.md"
+sha256 = "112102a864672152c7107acbdabd1a5af94137d1fc1ef96c1094975b16982dee"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 64
+sha256 = "9d82ee48c8606cfc3b4758f6c8561299f3058e17b893f2658acf09e365ffae11"
+
+[[records]]
+id = "DSET-REQUIREMENT-SKILL-007"
+
+[records.source]
+path = "dset/scopes/skill/specs/packages/methodology/package.toml"
+sha256 = "f2eb007a3c07a165e96d1538a4923d982a579b7a5e91c2d780c3421edbe297ff"
+
+[[records.projections]]
+path = "dset/scopes/skill/specs/packages/methodology/spec.md"
+sha256 = "112102a864672152c7107acbdabd1a5af94137d1fc1ef96c1094975b16982dee"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 70
+sha256 = "bdba2e85d853f1da44121cf541600bcac0c2908015f82bbfa08130284d4c9863"
+
+[[records]]
+id = "DSET-REQUIREMENT-SKILL-008"
+
+[records.source]
+path = "dset/scopes/skill/specs/packages/methodology/package.toml"
+sha256 = "f2eb007a3c07a165e96d1538a4923d982a579b7a5e91c2d780c3421edbe297ff"
+
+[[records.projections]]
+path = "dset/scopes/skill/specs/packages/methodology/spec.md"
+sha256 = "112102a864672152c7107acbdabd1a5af94137d1fc1ef96c1094975b16982dee"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 76
+sha256 = "285f6969ff9c1835c4e3560d3cb884779416dc3a688e2252a8be1834d681a2ce"
+
+[[records]]
+id = "DSET-REQUIREMENT-SKILL-009"
+
+[records.source]
+path = "dset/scopes/skill/specs/packages/methodology/package.toml"
+sha256 = "f2eb007a3c07a165e96d1538a4923d982a579b7a5e91c2d780c3421edbe297ff"
+
+[[records.projections]]
+path = "dset/scopes/skill/specs/packages/methodology/spec.md"
+sha256 = "112102a864672152c7107acbdabd1a5af94137d1fc1ef96c1094975b16982dee"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 84
+sha256 = "f423f84147c2d4946227dd140142c9be6bb85ea2a6787131a9a8e37cc98cd1e5"
+
+[[records]]
+id = "DSET-REQUIREMENT-SKILL-011"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-007-shared-skill-runtime.md"
+sha256 = "b6d69a52b9d02a90ab137605bc197993d7180c0d9ef466f7911e608dd514b6d7"
+
+[[records.projections]]
+path = "dset/scopes/skill/specs/packages/methodology/spec.md"
+sha256 = "112102a864672152c7107acbdabd1a5af94137d1fc1ef96c1094975b16982dee"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 131
+sha256 = "d318908a4fe8e23dd31e9e1266656a5296adabcac08d1d3b9999ff8bb27e386d"
+
+[[records]]
+id = "DSET-REQUIREMENT-SKILL-013"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-053-implementation-mode-setting.md"
+sha256 = "fbbdad86c9d7ca34c5dc023740b04cb6b5b939361e3ff909f495ea83d5d7470b"
+
+[[records.projections]]
+path = "dset/scopes/skill/specs/packages/methodology/spec.md"
+sha256 = "112102a864672152c7107acbdabd1a5af94137d1fc1ef96c1094975b16982dee"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 92
+sha256 = "53d343ac4e716ffcebf6e1d5c890fee39badf12c946b19ff3472bb57175ad2ea"
+
+[[records]]
+id = "DSET-REQUIREMENT-TOOL-001"
+
+[records.source]
+path = "dset/scopes/tool/specs/packages/methodology/package.toml"
+sha256 = "b27d258cb329db47624626f69200906e4673214ef0b71d75c8972db9ef265af0"
+
+[[records.projections]]
+path = "dset/scopes/tool/specs/packages/methodology/spec.md"
+sha256 = "fc42cc5e8e543518aacdb2de89257ad93600a7de3ac2f361015df38c1ea8a226"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 3
+sha256 = "ec48a1f9c6c82a4ee446724e419c93b40eaa566d4ed7f172d6bbffb6af34224f"
+
+[[records]]
+id = "DSET-REQUIREMENT-TOOL-002"
+
+[records.source]
+path = "dset/scopes/tool/specs/packages/methodology/package.toml"
+sha256 = "b27d258cb329db47624626f69200906e4673214ef0b71d75c8972db9ef265af0"
+
+[[records.projections]]
+path = "dset/scopes/tool/specs/packages/methodology/spec.md"
+sha256 = "fc42cc5e8e543518aacdb2de89257ad93600a7de3ac2f361015df38c1ea8a226"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 9
+sha256 = "520e8536ff4db790fc1707e3236a0acbb179a42041d3b8081a8237fe70991dbd"
+
+[[records]]
+id = "DSET-REQUIREMENT-TOOL-003"
+
+[records.source]
+path = "dset/scopes/tool/specs/packages/methodology/package.toml"
+sha256 = "b27d258cb329db47624626f69200906e4673214ef0b71d75c8972db9ef265af0"
+
+[[records.projections]]
+path = "dset/scopes/tool/specs/packages/methodology/spec.md"
+sha256 = "fc42cc5e8e543518aacdb2de89257ad93600a7de3ac2f361015df38c1ea8a226"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 15
+sha256 = "b040cc8907e296256168ddd029e7911bc228863e67b4feaa4cc4ba1b80906ff2"
+
+[[records]]
+id = "DSET-REQUIREMENT-TOOL-004"
+
+[records.source]
+path = "dset/scopes/tool/specs/packages/methodology/package.toml"
+sha256 = "b27d258cb329db47624626f69200906e4673214ef0b71d75c8972db9ef265af0"
+
+[[records.projections]]
+path = "dset/scopes/tool/specs/packages/methodology/spec.md"
+sha256 = "fc42cc5e8e543518aacdb2de89257ad93600a7de3ac2f361015df38c1ea8a226"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 21
+sha256 = "a24bf980180954ba2083c499e4e6306d23a0cf250e3eea0b601d906b956e8805"
+
+[[records]]
+id = "DSET-REQUIREMENT-TOOL-018"
+
+[records.source]
+path = "dset/scopes/tool/specs/packages/methodology/package.toml"
+sha256 = "b27d258cb329db47624626f69200906e4673214ef0b71d75c8972db9ef265af0"
+
+[[records.projections]]
+path = "dset/scopes/tool/specs/packages/methodology/spec.md"
+sha256 = "fc42cc5e8e543518aacdb2de89257ad93600a7de3ac2f361015df38c1ea8a226"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 36
+sha256 = "bd0caf697a6e03629d7c3d32e4e50b242229bab385b463138142359f9a9edaa0"
+
+[[records]]
+id = "DSET-REQUIREMENT-TOOL-019"
+
+[records.source]
+path = "dset/scopes/tool/specs/packages/methodology/package.toml"
+sha256 = "b27d258cb329db47624626f69200906e4673214ef0b71d75c8972db9ef265af0"
+
+[[records.projections]]
+path = "dset/scopes/tool/specs/packages/methodology/spec.md"
+sha256 = "fc42cc5e8e543518aacdb2de89257ad93600a7de3ac2f361015df38c1ea8a226"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 51
+sha256 = "40c0c894d2ac760a20529e697966c773219e1d008e5b512bffeed44f69a696da"
+
+[[records]]
+id = "DSET-REQUIREMENT-TOOL-021"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-013-typescript-candidate-profile.md"
+sha256 = "d3c822b79966626f0f581dd955b95de17732b482b5c1e24f8ef7bd0a45e1aaa6"
+
+[[records.projections]]
+path = "dset/scopes/tool/specs/packages/methodology/spec.md"
+sha256 = "fc42cc5e8e543518aacdb2de89257ad93600a7de3ac2f361015df38c1ea8a226"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 113
+sha256 = "0600c39c854c9cdc6c7fefa5df2b35d60dd8cee4531c68c130778c2e45e4dbe5"
+
+[[records]]
+id = "DSET-REQUIREMENT-TOOL-022"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-017-typescript-profile-instantiation.md"
+sha256 = "b1da13680501f566a532b1adb298f7b833a37cc241c3a301273ec0da44ca3348"
+
+[[records.projections]]
+path = "dset/scopes/tool/specs/packages/methodology/spec.md"
+sha256 = "fc42cc5e8e543518aacdb2de89257ad93600a7de3ac2f361015df38c1ea8a226"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 133
+sha256 = "d7e1585c8b096e03fbf6a20f26ee87a794897ce40d639496d5454a30e372354a"

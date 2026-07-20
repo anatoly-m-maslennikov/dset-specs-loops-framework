@@ -4,7 +4,7 @@
 
 ```text
 dset/
-├── dset.yaml
+├── dset.toml
 ├── specs/packages/methodology/
 │   ├── README.md
 │   ├── domain.md

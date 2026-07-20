@@ -7,7 +7,7 @@ work and must not be executed as a second backlog.
 Current planning is owned by
 [TODO — DSET 0.3: Self-Hosting and Repository-Governed Skills](TODO%20%E2%80%94%20DSET%200.3%20Self-Hosting%20and%20Repository-Governed%20Skills.md),
 current project intake is owned by
-[`dset/scopes/gov/intake.yaml`](../dset/scopes/gov/intake.yaml), and active work
+[`dset/scopes/gov/intake.toml`](../dset/scopes/gov/intake.toml), and active work
 is owned by the layer-qualified Change roots under `dset/scopes/`.
 
 The repository history and archived Changes preserve the original design and

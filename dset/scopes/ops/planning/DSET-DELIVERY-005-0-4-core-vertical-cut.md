@@ -1,13 +1,12 @@
----
-artifact_type: delivery
-artifact_subtype: roadmap
-artifact_id: DSET-DELIVERY-005
-version_scope_ref: DSET-DELIVERY-002
-published_baseline: 0.3.1
-status: active
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "delivery"
+artifact_subtype = "roadmap"
+artifact_id = "DSET-DELIVERY-005"
+version_scope_ref = "DSET-DELIVERY-002"
+published_baseline = "0.3.1"
+status = "active"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
++++
 
 # DSET 0.4 Roadmap — core vertical cut
 

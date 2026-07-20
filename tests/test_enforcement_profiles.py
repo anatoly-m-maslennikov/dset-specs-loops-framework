@@ -15,11 +15,12 @@ from dset_toolchain.enforcement_profiles import (
     validate_profile_data,
     validate_profile_file,
 )
+from dset_toolchain.yaml_subset import dump
 
 ROOT = Path(__file__).resolve().parents[1]
 PROFILE = (
     ROOT / "dset/scopes/tool/templates/enforcement-profiles/"
-    "typescript-v1-candidate.yaml"
+    "typescript-v1-candidate.toml"
 )
 
 
@@ -194,11 +195,18 @@ class EnforcementProfileTests(unittest.TestCase):
             for layer in ("meta", "gov", "tool", "skill", "ops"):
                 (target / "dset/scopes" / layer).mkdir(parents=True)
             template.parent.mkdir(parents=True)
-            (meta / "dset.yaml").write_text(
-                'schema_version: "1.2"\n'
-                "project:\n"
-                "  key: SAMPLE\n"
-                "  repository_role: adopter\n",
+            manifest = meta / "dset.toml"
+            manifest.write_text(
+                dump(
+                    {
+                        "schema_version": "1.2",
+                        "project": {
+                            "key": "SAMPLE",
+                            "repository_role": "adopter",
+                        },
+                    },
+                    manifest,
+                ),
                 encoding="utf-8",
             )
             template.write_text(PROFILE.read_text(encoding="utf-8"), encoding="utf-8")
@@ -207,17 +215,14 @@ class EnforcementProfileTests(unittest.TestCase):
                 resolve_profile_path(target, "typescript-v1-candidate")
 
             applied = (
-                target / "dset/scopes/tool/profiles" / "typescript-v1-candidate.yaml"
+                target / "dset/scopes/tool/profiles" / "typescript-v1-candidate.toml"
             )
             applied.parent.mkdir(parents=True)
+            applied_profile = copy.deepcopy(self.profile)
+            applied_profile["profile_role"] = "applied"
+            applied_profile["derived_from"] = "typescript-v1-candidate@0.1"
             applied.write_text(
-                PROFILE.read_text(encoding="utf-8")
-                .replace("profile_role: reference", "profile_role: applied")
-                .replace(
-                    "language_family: javascript-typescript",
-                    "derived_from: typescript-v1-candidate@0.1\n"
-                    "language_family: javascript-typescript",
-                ),
+                dump(applied_profile, applied),
                 encoding="utf-8",
             )
             self.assertEqual(

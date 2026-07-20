@@ -1,0 +1,51 @@
+schema_version = 1.0
+project = "{{project_id}}"
+target_root = "dset"
+
+[cutover]
+change_id = "{{change_id}}"
+pull_request = "pending"
+verification = "pending"
+
+[[surface_catalog]]
+type = "agent-guidance"
+examples = ["AGENTS.md", "CLAUDE.md"]
+target_kind = "concise-wrapper-or-hub"
+
+[[surface_catalog]]
+type = "project-rules"
+examples = ["architecture", "build", "authoring", "supportability"]
+target_kind = "registered-governing-document"
+
+[[surface_catalog]]
+type = "accepted-specification"
+examples = ["domain", "behavior", "contracts"]
+target_kind = "accepted-package-truth"
+
+[[surface_catalog]]
+type = "deterministic-proof"
+examples = ["test-plan", "regression-plan"]
+target_kind = "test-plan"
+
+[[surface_catalog]]
+type = "qualitative-proof"
+examples = ["eval-plan", "rubric"]
+target_kind = "eval-plan"
+
+[[surface_catalog]]
+type = "delivery-history"
+examples = ["implementation-plan", "Decision-or-legacy-ADR", "runbook", "evidence"]
+target_kind = "active-change-decision-runbook-or-read-only-history"
+
+[[sources]]
+path = "{{existing_artifact_root}}"
+concern = "{{owned_concern}}"
+owner = "{{owner}}"
+current_writer = "{{writer}}"
+consumers = ["{{consumer}}"]
+current_status = "{{accepted_current_active_or_historical}}"
+target = "dset/scopes/{{layer}}/specs/packages/{{package_id}}"
+target_artifacts = ["{{target_artifact}}"]
+disposition = "pending"
+retention = "{{retention_decision}}"
+read_only_after_cutover = true

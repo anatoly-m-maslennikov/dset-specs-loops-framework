@@ -10,6 +10,7 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 
 from dset_toolchain.frontmatter import metadata as frontmatter_metadata
+from dset_toolchain.frontmatter import render as render_frontmatter
 from dset_toolchain.layout import discover_layout
 from dset_toolchain.validation import (
     ARTIFACT_TYPE_SUBTYPES,
@@ -138,11 +139,10 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
         }
         for name, subtype in expected.items():
             with self.subTest(name=name):
-                content = (template_root / name).read_text(encoding="utf-8")
-                self.assertTrue(
-                    content.startswith("---\nartifact_type: analysis_report")
-                )
-                self.assertIn(f"artifact_subtype: {subtype}", content)
+                metadata = frontmatter_metadata(template_root / name)
+                assert metadata is not None
+                self.assertEqual(metadata["artifact_type"], "analysis_report")
+                self.assertEqual(metadata["artifact_subtype"], subtype)
 
     def test_every_distributed_template_has_one_effective_classification(self) -> None:
         template_files = sorted(
@@ -401,11 +401,14 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
     @staticmethod
     def _write_classified(path: Path, artifact_id: str) -> None:
         path.write_text(
-            "---\n"
-            "artifact_type: delivery\n"
-            "artifact_subtype: version_scope\n"
-            f"artifact_id: {artifact_id}\n"
-            "---\n",
+            render_frontmatter(
+                {
+                    "artifact_type": "delivery",
+                    "artifact_subtype": "version_scope",
+                    "artifact_id": artifact_id,
+                },
+                "",
+            ),
             encoding="utf-8",
         )
 

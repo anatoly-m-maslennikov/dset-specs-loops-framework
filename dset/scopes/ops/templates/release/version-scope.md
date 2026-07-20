@@ -1,11 +1,11 @@
----
-artifact_type: delivery
-artifact_subtype: version_scope
-artifact_id: "{{project_key}}-DELIVERY-{{sequence}}"
-version_line: "{{version_line}}"
-status: draft
-llm_session_ids: []
----
++++
+artifact_type = "delivery"
+artifact_subtype = "version_scope"
+artifact_id = "{{project_key}}-DELIVERY-{{sequence}}"
+version_line = "{{version_line}}"
+status = "draft"
+llm_session_ids = []
++++
 
 # Version Scope — {{version_line}}
 

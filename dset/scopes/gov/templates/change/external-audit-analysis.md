@@ -1,8 +1,8 @@
----
-artifact_type: analysis_report
-artifact_subtype: external_audit_analysis
-llm_session_ids: []
----
++++
+artifact_type = "analysis_report"
+artifact_subtype = "external_audit_analysis"
+llm_session_ids = []
++++
 
 # External audit analysis — {{title}}
 

@@ -2,7 +2,7 @@
 #
 # This file selects operator-controlled DSET behavior for this repository.
 # It is intentionally separate from:
-# - dset/scopes/meta/dset.yaml, which records facts about the project, such as
+# - dset/scopes/meta/dset.toml, which records facts about the project, such as
 #   identity, Work Areas, runtime topology, release targets, verification, and
 #   commit-provenance boundaries; and
 # - repository-local governing documents, which define the policies and values
@@ -103,7 +103,7 @@ default_workspace = "integration-branch"
 # exploration/review breadth, never the accepted scope, safety boundary, or
 # required Tests/Evaluations. Operator instructions override the profile.
 #
-# Accepted profiles are defined in dset/scopes/skill/budget.yaml:
+# Accepted profiles are defined in dset/scopes/skill/budget.toml:
 # - "low": 0-1 subagents, depth 1, one round.
 # - "medium" (default): target 2 and maximum 3 subagents, depth 1, two rounds.
 # - "high": 4-6 subagents, depth 2, three rounds.

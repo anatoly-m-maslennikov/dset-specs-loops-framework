@@ -1,8 +1,8 @@
----
-artifact_type: analysis_report
-artifact_subtype: solution_landscape
-llm_session_ids: []
----
++++
+artifact_type = "analysis_report"
+artifact_subtype = "solution_landscape"
+llm_session_ids = []
++++
 
 # Solution landscape — {{title}}
 

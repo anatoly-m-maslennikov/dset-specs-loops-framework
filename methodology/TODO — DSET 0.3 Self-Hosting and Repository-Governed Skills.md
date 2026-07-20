@@ -49,7 +49,7 @@ remain mislabeled as roadmap-only work.
 
 **Measured outcome:** [`DSET-OUTCOME-META-001`](../dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/outcomes.md) defines adoption readiness as a baseline-to-target state change proven by test, eval, hosted, pilot, and blocker evidence. Completing features or roadmap tasks alone does not satisfy it.
 
-**Deferred product-practice questions:** `DSET-QUESTION-META-001..003`, `DSET-QUESTION-GOV-002..003`, and `DSET-QUESTION-OPS-001` in [`dset/scopes/gov/intake.yaml`](../dset/scopes/gov/intake.yaml) defer Journey, Actor/Persona, Hypothesis/Experiment, prioritization, feedback/analytics, and generated roadmap/release views. DSET 0.3 creates no corresponding artifact type or intake queue.
+**Deferred product-practice questions:** `DSET-QUESTION-META-001..003`, `DSET-QUESTION-GOV-002..003`, and `DSET-QUESTION-OPS-001` in [`dset/scopes/gov/intake.toml`](../dset/scopes/gov/intake.toml) defer Journey, Actor/Persona, Hypothesis/Experiment, prioritization, feedback/analytics, and generated roadmap/release views. DSET 0.3 creates no corresponding artifact type or intake queue.
 
 ## Scope
 
@@ -75,12 +75,12 @@ remain mislabeled as roadmap-only work.
 
 - [x] **DSET-TASK-OPS-016:** Establish corrected coordinated DSET product/CLI-package `0.3.1`, keep schema/profile/template versions independent, supersede the unpublished `0.3.0` draft, incomplete `0.2.0` target, and unreleased package `1.0.0` candidate before merge, and preserve archived evidence unchanged.
 - [x] **DSET-TASK-TOOL-011:** Define the last-released-validator versus candidate-validator contract so a candidate is never its own only judge.
-- [x] **DSET-TASK-SKILL-004:** Define the minimum non-project bootstrap protocol that wrappers may contain: locate the repository root, locate schema 1.2 `dset/scopes/meta/dset.yaml` or a legacy central manifest, resolve the layout-owned governance registry, and fail closed on duplicate authority.
+- [x] **DSET-TASK-SKILL-004:** Define the minimum non-project bootstrap protocol that wrappers may contain: locate the repository root, locate schema 1.2 `dset/scopes/meta/dset.toml` or a legacy central manifest, resolve the layout-owned governance registry, and fail closed on duplicate authority.
 - [x] **DSET-TASK-GOV-014:** Open one standard DSET change, `make-dset-self-hosting-and-skills-thin`, with separate requirements, test plan, eval plan, design, implementation batches, evidence, and PR identity.
 
 ## §1 | Add the repository-local governance registry
 
-- [x] **DSET-TASK-GOV-015:** Define schema 1.2 `dset/scopes/gov/governance.yaml` as the machine-readable resolver surface while retaining legacy `dset/governance.yaml` compatibility; it points to governing documents but does not restate their rules.
+- [x] **DSET-TASK-GOV-015:** Define schema 1.2 `dset/scopes/gov/governance.toml` as the machine-readable resolver surface while retaining legacy `dset/governance.toml` compatibility; it points to governing documents but does not restate their rules.
 - [x] **DSET-TASK-TOOL-012:** Publish a JSON Schema covering registry version, workflow IDs, rule IDs, one owner per rule, ordered dependencies, applicability, local path, source profile/version, and customization status.
 - [x] **DSET-TASK-GOV-016:** Require every normative path to remain inside the repository. External sources may supply provenance or rationale but cannot be a live writable project-rule owner.
 - [x] **DSET-TASK-GOV-017:** Define deterministic precedence without implicit fallback: project-local accepted rule → explicitly selected local profile → failure. A wrapper must not silently fall back to embedded prose or a remote framework checkout.
@@ -96,10 +96,10 @@ remain mislabeled as roadmap-only work.
 dset/
 └── scopes/
     ├── meta/
-    │   ├── dset.yaml
+    │   ├── dset.toml
     │   └── governance/
     ├── gov/
-    │   ├── governance.yaml
+    │   ├── governance.toml
     │   └── governance/
     ├── tool/governance/
     ├── skill/governance/
@@ -233,7 +233,7 @@ gate. `DSET-DELIVERY-002` owns the current DSET-only `0.4` exit criteria;
 external-adopter rows below are preserved only as historical routing context.
 
 - [ ] The released validator checks the candidate change, and the candidate checks both this repository and one generated adopter.
-- [x] `dset/scopes/gov/governance.yaml`, its GOV-owned schema, resolver commands, stable diagnostics, distributed templates, and migrations are public and versioned; legacy central paths remain validated compatibility surfaces.
+- [x] `dset/scopes/gov/governance.toml`, its GOV-owned schema, resolver commands, stable diagnostics, distributed templates, and migrations are public and versioned; legacy central paths remain validated compatibility surfaces.
 - [x] All first-wave skills are thin wrappers; no substantive governing rule exists only or independently inside a skill.
 - [x] The primary operator surface is `dset`, `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release`; the complete distribution exposes the exact 16 accepted thin lifecycle wrappers, with non-primary wrappers acting only as direct shortcuts to the same governed modes.
 - [x] Bounded redacted local run records support investigation and next-step heuristics without becoming project truth.

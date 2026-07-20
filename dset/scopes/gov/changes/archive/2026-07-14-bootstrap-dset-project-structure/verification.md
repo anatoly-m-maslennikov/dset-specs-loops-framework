@@ -8,7 +8,7 @@
 
 | Check | Result |
 |---|---|
-| Parse `dset/dset.yaml` with `yq` | Pass |
+| Parse `dset/dset.toml` with `yq` | Pass |
 | Active change artifact set | Pass: eight top-level documents plus `specs/` and `proofs/` |
 | Accepted package shape | Pass: six methodology current-truth documents, one registered package, no premature global root |
 | Resolve local links and balance fences/details | Final pass: 32 Markdown files, 148 links, and 29 collapsed details blocks |
@@ -29,7 +29,7 @@
 - Remote identity: local `HEAD`, remote branch, and live PR head all equaled evaluated candidate `02812a1`; the PR was open, draft, mergeable, and unmerged.
 - Reconciliation: DSET-REQUIREMENT-GOV-001 through DSET-REQUIREMENT-GOV-003 are represented in accepted methodology truth and deterministic proof rows.
 - Structure: the dated change contains eight documents plus `specs/` and `proofs/`; no stale active directory or active-path link remains.
-- Project shape: `dset/dset.yaml` parses, registers one `methodology` package, and keeps `global_truth_root: null`.
+- Project shape: `dset/dset.toml` parses, registers one `methodology` package, and keeps `global_truth_root: null`.
 - Markdown: local links resolve, fences/details balance, and no wiki links or unsupported callouts exist.
 - Availability: `documentation-v1-pending` and `canonical_command: pending` are reported honestly; no CI, validator, or generated-traceability pass is claimed.
 - Tasks: DSET-TASK-GOV-001 through DSET-TASK-OPS-002 are complete.

@@ -1,0 +1,41 @@
+schema_version = "1.2"
+id = "DSET-CHANGE-OPS-001"
+slug = "make-supportability-first-class"
+profile = "standard"
+status = "archived"
+primary_layer = "ops"
+affected_layers = ["meta", "gov", "ops"]
+dependencies = []
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+packages = ["methodology"]
+intake = []
+decisions = []
+contracts = []
+stories = []
+outcomes = []
+requirements = ["DSET-REQUIREMENT-META-002", "DSET-REQUIREMENT-OPS-002", "DSET-REQUIREMENT-OPS-003", "DSET-REQUIREMENT-OPS-004", "DSET-REQUIREMENT-OPS-005", "DSET-REQUIREMENT-OPS-006"]
+tests = ["DSET-TEST-META-002", "DSET-TEST-OPS-002", "DSET-TEST-OPS-003", "DSET-TEST-OPS-004", "DSET-TEST-OPS-005", "DSET-TEST-OPS-006", "DSET-TEST-GOV-005"]
+evals = ["DSET-EVAL-OPS-001", "DSET-EVAL-OPS-002", "DSET-EVAL-OPS-003", "DSET-EVAL-OPS-004", "DSET-EVAL-META-001"]
+
+[workspace]
+isolation = "branch-worktree"
+branch = "dev"
+base_ref = "main"
+base_commit = "92340e57e508bf896a00dc75a2efb46b6ad680e3"
+head_commit = "636b2d3ae845f320cf4454c5b83903b5e00b68a9"
+
+[target]
+repository = true
+work_areas = []
+
+[pull_request]
+repository = "anatoly-m-maslennikov/dset-specs-loops-framework"
+number = 3
+url = "https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3"
+
+[release]
+owner_change = "DSET-CHANGE-SKILL-001"
+
+[archive]
+date = "2026-07-14"
+path = "dset/scopes/ops/changes/archive/2026-07-14-make-supportability-first-class"

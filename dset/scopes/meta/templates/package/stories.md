@@ -13,4 +13,4 @@ but it is not an intake queue and does not replace normative Requirements.
 - **Linked Scenarios:** Link observable behavior examples.
 
 If no meaningful User Story exists, remove the example and leave `stories: []`
-in `package.yaml`; do not invent one.
+in `package.toml`; do not invent one.

@@ -1,13 +1,12 @@
----
-artifact_type: delivery
-artifact_subtype: release_plan
-artifact_id: DSET-DELIVERY-006
-version_scope_ref: DSET-DELIVERY-001
-proposed_version: 0.3.1
-status: closed_blocked
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "delivery"
+artifact_subtype = "release_plan"
+artifact_id = "DSET-DELIVERY-006"
+version_scope_ref = "DSET-DELIVERY-001"
+proposed_version = "0.3.1"
+status = "closed_blocked"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
++++
 
 # Historical Release Plan — blocked DSET 0.3.1 candidate
 

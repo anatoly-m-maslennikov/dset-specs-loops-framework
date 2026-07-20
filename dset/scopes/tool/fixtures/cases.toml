@@ -1,0 +1,48 @@
+schema_version = 1.0
+
+[[cases]]
+id = "valid-small-fix"
+base = "small"
+expected = "pass"
+
+[[cases]]
+id = "valid-standard-change"
+base = "standard"
+expected = "pass"
+
+[[cases]]
+id = "valid-failed-unarchived-change"
+base = "standard"
+status = "failed"
+expected = "pass"
+
+[[cases]]
+id = "valid-archived-change"
+base = "standard"
+status = "archived"
+pull_request_number = 42
+archive_date = "2026-07-14"
+expected = "pass"
+
+[[cases]]
+id = "invalid-missing-test-plan"
+base = "small"
+remove = ["test-plan.md"]
+expected = "DSET-E104"
+
+[[cases]]
+id = "invalid-merged-test-eval"
+base = "small"
+remove = ["eval-plan.md"]
+expected = "DSET-E105"
+
+[cases.rename]
+from = "test-plan.md"
+to = "test-eval-plan.md"
+
+[[cases]]
+id = "invalid-archive-without-pr"
+base = "standard"
+status = "archived"
+archive_date = "2026-07-14"
+expected = "DSET-E107"

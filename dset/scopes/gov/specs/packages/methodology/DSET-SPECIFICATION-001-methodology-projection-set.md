@@ -1,40 +1,51 @@
----
-artifact_type: specification
-artifact_subtype: governance
-artifact_id: DSET-SPECIFICATION-001
-scope:
-  kind: project
-  id: dset-specs-loops-framework
-relations:
-  - type: projection_of
-    range:
-      semantic_type: decision
-      layer: gov
-      scope:
-        kind: project
-        id: dset-specs-loops-framework
-      through: DSET-ATOMIC-RECORD-062
-  - type: projection_of
-    range:
-      semantic_type: qa
-      subtype: test
-      layer: gov
-      scope:
-        kind: project
-        id: dset-specs-loops-framework
-      through: DSET-ATOMIC-RECORD-063
-  - type: projection_of
-    range:
-      semantic_type: qa
-      subtype: evaluation
-      layer: gov
-      scope:
-        kind: project
-        id: dset-specs-loops-framework
-      through: DSET-ATOMIC-RECORD-050
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "specification"
+artifact_subtype = "governance"
+artifact_id = "DSET-SPECIFICATION-001"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+
+[scope]
+kind = "project"
+id = "dset-specs-loops-framework"
+
+[[relations]]
+type = "projection_of"
+
+[relations.range]
+semantic_type = "decision"
+layer = "gov"
+through = "DSET-ATOMIC-RECORD-062"
+
+[relations.range.scope]
+kind = "project"
+id = "dset-specs-loops-framework"
+
+[[relations]]
+type = "projection_of"
+
+[relations.range]
+semantic_type = "qa"
+subtype = "test"
+layer = "gov"
+through = "DSET-ATOMIC-RECORD-063"
+
+[relations.range.scope]
+kind = "project"
+id = "dset-specs-loops-framework"
+
+[[relations]]
+type = "projection_of"
+
+[relations.range]
+semantic_type = "qa"
+subtype = "evaluation"
+layer = "gov"
+through = "DSET-ATOMIC-RECORD-050"
+
+[relations.range.scope]
+kind = "project"
+id = "dset-specs-loops-framework"
++++
 
 # Methodology projection set
 

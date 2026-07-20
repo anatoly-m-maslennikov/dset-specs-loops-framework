@@ -20,7 +20,7 @@ class ProfileTests(unittest.TestCase):
         defect_files, _ = required_artifacts(ROOT, "defect")
         adoption_files, adoption_dirs = required_artifacts(ROOT, "adoption")
         self.assertIn("global-impact.md", large_files)
-        self.assertIn("dependency-map.yaml", large_files)
+        self.assertIn("dependency-map.toml", large_files)
         self.assertIn("root-cause.md", defect_files)
         self.assertIn("adoption-decision.md", adoption_files)
         adoption_template = (

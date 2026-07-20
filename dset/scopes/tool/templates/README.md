@@ -2,4 +2,4 @@
 
 Executable build-rule templates owned by TOOL.
 
-- [Exact dependency policy](dependency-policy.yaml)
+- [Exact dependency policy](dependency-policy.toml)

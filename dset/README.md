@@ -36,7 +36,7 @@ flowchart LR
 - [SKILL](scopes/skill/README.md) — agent workflows, delegation, and local run evidence.
 - [OPS](scopes/ops/README.md) — delivery, release, supportability, and hosted evidence.
 
-Each scope has a hub and may own governing rules, schemas, templates, a fragment of the logical `methodology` package, and Changes. The project manifest is [META-owned](scopes/meta/dset.yaml). The single governance and intake registries are [GOV-owned](scopes/gov/governance.yaml) and [GOV-owned](scopes/gov/intake.yaml). Generated [traceability](scopes/gov/generated/traceability.yaml) is a non-authoritative relationship view.
+Each scope has a hub and may own governing rules, schemas, templates, a fragment of the logical `methodology` package, and Changes. The project manifest is [META-owned](scopes/meta/dset.toml). The single governance and intake registries are [GOV-owned](scopes/gov/governance.toml) and [GOV-owned](scopes/gov/intake.toml). Generated [traceability](scopes/gov/generated/traceability.toml) is a non-authoritative relationship view.
 
 ## Ownership
 

@@ -28,9 +28,7 @@ class RuntimeTests(unittest.TestCase):
         self.root = Path(self.temporary.name)
         manifest = self.root / "dset" / "scopes" / "meta" / "dset.toml"
         manifest.parent.mkdir(parents=True)
-        manifest.write_text(
-            dump({"schema_version": "1.2"}, manifest), encoding="utf-8"
-        )
+        manifest.write_text(dump({"schema_version": "1.2"}, manifest), encoding="utf-8")
 
     def tearDown(self) -> None:
         self.temporary.cleanup()

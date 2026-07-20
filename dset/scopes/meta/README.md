@@ -26,7 +26,7 @@ flowchart TB
 
 ## Start here
 
-- [Project manifest](dset.yaml)
+- [Project manifest](dset.toml)
 - [Methodology package fragment](specs/packages/methodology/README.md)
 - [Governing rules](governance/domain-spec-authoring.md)
 - [Schemas](schemas/README.md)

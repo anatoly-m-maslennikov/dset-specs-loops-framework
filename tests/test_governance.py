@@ -317,7 +317,7 @@ class GovernanceTests(unittest.TestCase):
         profile = cast(
             dict[str, Any],
             load(
-                discover_layout(ROOT).find_template("governance/core-v1/profile.yaml")
+                discover_layout(ROOT).find_template("governance/core-v1/profile.toml")
             ),
         )
         self.assertEqual(profile["schema_version"], 1.1)
@@ -378,7 +378,7 @@ class GovernanceTests(unittest.TestCase):
             self._make_layered_project(source)
             self._make_layered_project(target)
             layout = discover_layout(ROOT)
-            profile_path = layout.find_template("governance/core-v1/profile.yaml")
+            profile_path = layout.find_template("governance/core-v1/profile.toml")
             profile = cast(dict[str, Any], load(profile_path))
             profile_root = (
                 source
@@ -390,7 +390,7 @@ class GovernanceTests(unittest.TestCase):
                 / "core-v1"
             )
             profile_root.mkdir(parents=True)
-            shutil.copyfile(profile_path, profile_root / "profile.yaml")
+            shutil.copyfile(profile_path, profile_root / profile_path.name)
             shutil.copyfile(
                 layout.find_template("governance/core-v1/README.md"),
                 profile_root / "README.md",
@@ -885,9 +885,7 @@ class GovernanceTests(unittest.TestCase):
         self.assertIn("layer", layered_package)
 
     def test_fpf_provenance_bounds_each_adaptation(self) -> None:
-        provenance = cast(
-            dict[str, Any], load(discover_layout(ROOT).provenance_path)
-        )
+        provenance = cast(dict[str, Any], load(discover_layout(ROOT).provenance_path))
         fpf = next(
             source
             for source in cast(list[dict[str, Any]], provenance["sources"])

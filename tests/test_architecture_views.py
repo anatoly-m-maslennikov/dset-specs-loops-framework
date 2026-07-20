@@ -3,6 +3,8 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
+from dset_toolchain.frontmatter import metadata as frontmatter_metadata
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -41,9 +43,12 @@ class ArchitectureViewTests(unittest.TestCase):
         )
         for name in expected:
             with self.subTest(name=name):
-                content = (root / name).read_text(encoding="utf-8")
-                self.assertIn("artifact_type: specification", content)
-                self.assertIn("artifact_subtype: architecture", content)
+                path = root / name
+                content = path.read_text(encoding="utf-8")
+                metadata = frontmatter_metadata(path)
+                assert metadata is not None
+                self.assertEqual(metadata["artifact_type"], "specification")
+                self.assertEqual(metadata["artifact_subtype"], "architecture")
                 self.assertIn("```mermaid", content)
 
     def test_governance_requires_one_level_down_without_placeholders(self) -> None:

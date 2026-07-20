@@ -1,0 +1,111 @@
+schema_version = "1.2"
+canonical_command = "python -m dset_toolchain verify ."
+
+[project]
+key = "DSET"
+id = "dset-specs-loops-framework"
+name = "DSET Spec Loops"
+repository_slug = "dset-specs-loops-framework"
+repository_role = "framework-source-and-adopter"
+
+[supportability]
+status = "applicable"
+reason = "GitHub Actions and repository rules operate the production delivery path from dev to main"
+authority = "github"
+runbook = "dset/scopes/ops/supportability/delivery-runbook.md"
+
+[release]
+status = "applicable"
+integration_branch = "dev"
+protected_branch = "main"
+publisher = "github"
+tag_pattern = "v{product_version}"
+
+[work_items]
+registry = "dset/scopes/gov/intake.toml"
+
+[structure]
+layout = "layered-v1"
+
+[profiles]
+runtime_risk = "low-risk-hosted-automation"
+durability_topology = "external-platform"
+enforcement = "python-v1"
+artifact = "documentation-v1"
+repository_governance = "core-v1"
+
+[change_contract]
+change_id_format = "project-type-layer-sequence"
+change_slug_format = "kebab-case"
+pull_request_required_before_archive = true
+archive_requires_fresh_verification = true
+keep_pull_request_draft_until_archive_ready = true
+
+[commit_provenance]
+start_commit = "96800941678c9b665abac9d3838a8a4b36db02e2"
+
+[[commit_provenance.corrections]]
+commit = "00fb9c666efd9a40efd013a815c6eca7be2b6c90"
+original_message_sha256 = "e48025512aceb574b1145dda3d1d9e5986ac8680cb42a273427e239f66ff1aca"
+mode = "implementation"
+decision_ids = ["DSET-DECISION-GOV-015", "DSET-DECISION-GOV-017"]
+verifies = []
+resolves = ["DSET-DEFECT-TOOL-004"]
+session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+rationale = "Preserve the immutable commit while replacing its legacy Decision trailer with implementation provenance."
+
+[[commit_provenance.corrections]]
+commit = "4096ce125aed225b1a4d27fda2db8fa899b6a749"
+original_message_sha256 = "37f52517c358b1fb0c33083c79b1147731ad981f7bcacd3ba15ed39b48ee71d6"
+mode = "implementation"
+decision_ids = ["DSET-DECISION-GOV-017"]
+verifies = []
+resolves = []
+session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+rationale = "Preserve the immutable commit while removing a Test ID from implementation authority."
+
+[[commit_provenance.corrections]]
+commit = "f9bff423cbb4cc0a58518bfd174ed0cf892d7911"
+original_message_sha256 = "e99f33e601546052035242b0c97414440a98a0b02e4cb97f5873e3d5c69ce42c"
+mode = "implementation"
+decision_ids = ["DSET-DECISION-GOV-016"]
+verifies = []
+resolves = []
+session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+rationale = "Preserve the immutable commit while removing a Test ID from implementation authority."
+
+[verification]
+commands = ["uv run ruff format --check dset_toolchain tests", "uv run ruff check dset_toolchain tests", "uv run mypy dset_toolchain tests", "{python} -m unittest discover -s tests -v", "git diff --check"]
+
+[[work_areas]]
+id = "methodology"
+path = "methodology"
+
+[[work_areas]]
+id = "documentation"
+path = "documentation"
+
+[[work_areas]]
+id = "project-control"
+path = "dset"
+
+[[work_areas]]
+id = "toolchain"
+path = "dset_toolchain"
+
+[[work_areas]]
+id = "skills"
+path = "skills"
+
+[[work_areas]]
+id = "tests"
+path = "tests"
+
+[[work_areas]]
+id = "delivery"
+path = ".github"
+
+[[packages]]
+id = "methodology"
+status = "active"
+layers = ["meta", "gov", "tool", "skill", "ops"]

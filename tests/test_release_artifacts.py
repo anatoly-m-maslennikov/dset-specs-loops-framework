@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 from typing import Any
 
-from dset_toolchain.yaml_subset import loads
+from dset_toolchain.frontmatter import metadata as frontmatter_metadata
 
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATES = ROOT / "dset/scopes/ops/templates/release"
@@ -126,13 +126,9 @@ class ReleaseArtifactTests(unittest.TestCase):
 
     @staticmethod
     def _frontmatter(path: Path) -> dict[str, Any]:
-        lines = path.read_text(encoding="utf-8").splitlines()
-        if not lines or lines[0] != "---":
+        metadata = frontmatter_metadata(path)
+        if metadata is None:
             raise AssertionError(f"missing frontmatter: {path}")
-        end = lines.index("---", 1)
-        metadata = loads("\n".join(lines[1:end]))
-        if not isinstance(metadata, dict):
-            raise AssertionError(f"invalid frontmatter: {path}")
         return metadata
 
 

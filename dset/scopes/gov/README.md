@@ -26,14 +26,14 @@ flowchart TB
 
 ## Start here
 
-- [Governance registry](governance.yaml)
-- [Artifact-type registry](artifact-types.yaml)
+- [Governance registry](governance.toml)
+- [Artifact-type registry](artifact-types.toml)
 - [Governing rules](governance/README.md)
-- [Intake](intake.yaml)
+- [Intake](intake.toml)
 - [Methodology package fragment](specs/packages/methodology/README.md)
 - [Schemas](schemas/README.md)
 - [Templates](templates/README.md)
 - [Changes](changes/README.md)
 - [Generated project health](generated/DSET-DERIVED-VIEW-001-project-health.md)
-- [Generated authority compilation](generated/compilation.yaml)
-- [Generated traceability](generated/traceability.yaml)
+- [Generated authority compilation](generated/compilation.toml)
+- [Generated traceability](generated/traceability.toml)

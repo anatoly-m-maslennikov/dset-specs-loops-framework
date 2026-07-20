@@ -9,9 +9,9 @@ allowed direct `artifact_subtype`. Atomic records separately use semantic
 `type` and `subtype`. Artifact classification never creates a fifth semantic
 Type or derives semantic meaning from a filename, folder, workflow, or tool.
 
-The project-local `dset/scopes/gov/artifact-types.yaml` registry owns the
+The project-local `dset/scopes/gov/artifact-types.toml` registry owns the
 machine-readable artifact vocabulary for schema 1.2. The legacy equivalent is
-`dset/artifact-types.yaml`. The selected artifact profile must validate the
+`dset/artifact-types.toml`. The selected artifact profile must validate the
 registry before relying on classification.
 
 ## Classification order

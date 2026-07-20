@@ -4,8 +4,8 @@
 
 ```text
 dset/                         committed project truth and released assets
-├── dset.yaml                 project configuration
-├── traceability.yaml         generated committed index
+├── dset.toml                 project configuration
+├── traceability.toml         generated committed index
 ├── schemas/                  JSON Schemas
 ├── templates/                change and package templates
 ├── fixtures/                 pass/fail contract examples
@@ -37,7 +37,7 @@ The canonical implementation uses Python's standard library. The YAML reader sup
 | Accepted behavior | `dset/specs/` |
 | Active intent and evidence | `dset/changes/<change-id>/` |
 | PR state, checks, diffs, merge result | GitHub |
-| Generated relationship view | `dset/traceability.yaml` |
+| Generated relationship view | `dset/traceability.toml` |
 | Local caches | optional `.dset/`; never committed truth |
 
 Traceability stores repository-qualified PR evidence but does not replace GitHub. The GitHub-hosted delivery workflow is a production automation surface, so its supportability contract uses PR/check/run/ruleset identities rather than a local WAL.

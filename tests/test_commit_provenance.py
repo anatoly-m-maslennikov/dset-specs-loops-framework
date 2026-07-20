@@ -109,9 +109,7 @@ class CommitProvenanceTests(unittest.TestCase):
         invalid = self._record("e" * 40, "fix: no trailers\n")
         correction = self._correction(invalid)
         correction["decision_ids"] = ["APP-TEST-001"]
-        semantic_problems = validate_commit_history(
-            [invalid], self.known, [correction]
-        )
+        semantic_problems = validate_commit_history([invalid], self.known, [correction])
         self.assertIn(
             f"correction for commit {invalid.commit}: Implements must reference "
             "a Decision: APP-TEST-001",

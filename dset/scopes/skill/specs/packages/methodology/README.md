@@ -6,7 +6,7 @@ Own the SKILL portion of the logical methodology package without duplicating ano
 
 ## Boundaries
 
-The fragment owns only IDs listed in `package.yaml`. Cross-layer connections use stable IDs and links.
+The fragment owns only IDs listed in `package.toml`. Cross-layer connections use stable IDs and links.
 
 ## Start here
 

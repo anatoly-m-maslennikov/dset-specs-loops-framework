@@ -12,7 +12,7 @@
 - A GitHub-portable public methodology under `methodology/`.
 - A repository navigation map in `README.md`, stable area hubs, and methodology document 00.
 - Artifact architecture, type, authoring, hub, maintenance, and rationale references under `documentation/`.
-- Independently selected implementation-language and artifact-governance profiles, including the `documentation-v1` registry under `dset/scopes/gov/artifacts.yaml`.
+- Independently selected implementation-language and artifact-governance profiles, including the `documentation-v1` registry under `dset/scopes/gov/artifacts.toml`.
 - Accepted package truth in layer-owned fragments under `dset/scopes/<layer>/specs/`.
 - Bounded, PR-traceable Changes under `dset/scopes/<primary-layer>/changes/`.
 - Versioned schemas, templates, fixtures, migration guidance, provenance, and generated traceability under `dset/`.

@@ -19,7 +19,7 @@ Investigate when a valid delivery remains blocked after its checks should finish
 | Product release declaration | Active DSET change manifest | change ID, class, protected base, and target version |
 | Release tag | GitHub Git ref `refs/tags/v<product-semver>` | exact product version and protected merge SHA |
 | Release object | GitHub Release | tag name, release ID, target SHA, and workflow run ID |
-| DSET relationship view | `dset/scopes/gov/generated/traceability.yaml` | change ID and PR URL; GitHub remains authoritative |
+| DSET relationship view | `dset/scopes/gov/generated/traceability.toml` | change ID and PR URL; GitHub remains authoritative |
 
 Local files are source for workflow definitions and DSET contracts, not authoritative runtime state for GitHub checks, queues, or merges.
 
@@ -50,7 +50,7 @@ Use `gh pr view`, `gh pr checks`, `gh run view`, and read-only ruleset/API queri
 
 ## Release publication activation
 
-The repository now contains the guarded `Publish DSET release` workflow and deterministic local `dset release plan`, `check`, and explicit `prepare --execute` transaction. The publisher runs only after a protected `main` push that changed `dset/scopes/meta/version.yaml`; it checks the committed declaration, verifies the checkout SHA, creates only missing GitHub objects, and stops on tag identity or SHA collisions without a post-merge content write.
+The repository now contains the guarded `Publish DSET release` workflow and deterministic local `dset release plan`, `check`, and explicit `prepare --execute` transaction. The publisher runs only after a protected `main` push that changed `dset/scopes/meta/version.toml`; it checks the committed declaration, verifies the checkout SHA, creates only missing GitHub objects, and stops on tag identity or SHA collisions without a post-merge content write.
 
 This source implementation is not hosted proof. Until an actual version-changing `dev → main` PR demonstrates the workflow at its merge SHA—including already-correct retry, tag-only and release-only recovery, and collision stops—the hosted publication gate remains pending and no local check may claim that GitHub published a release.
 

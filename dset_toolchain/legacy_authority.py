@@ -145,8 +145,7 @@ def legacy_authority_ids(root: Path) -> set[str]:
         identifiers.update(
             str(record["semantic_id"])
             for record in records
-            if isinstance(record, dict)
-            and isinstance(record.get("semantic_id"), str)
+            if isinstance(record, dict) and isinstance(record.get("semantic_id"), str)
         )
     return identifiers
 

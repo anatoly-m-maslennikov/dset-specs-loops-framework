@@ -1,14 +1,13 @@
----
-artifact_type: delivery
-artifact_subtype: readiness_record
-artifact_id: DSET-DELIVERY-007
-version_scope_ref: DSET-DELIVERY-001
-release_plan_ref: DSET-DELIVERY-006
-candidate_sha: a6738bfed4c222f8e984d615a20be4a6e0d56767
-disposition: blocked
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "delivery"
+artifact_subtype = "readiness_record"
+artifact_id = "DSET-DELIVERY-007"
+version_scope_ref = "DSET-DELIVERY-001"
+release_plan_ref = "DSET-DELIVERY-006"
+candidate_sha = "a6738bfed4c222f8e984d615a20be4a6e0d56767"
+disposition = "blocked"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
++++
 
 # Readiness Record — DSET 0.3.1
 

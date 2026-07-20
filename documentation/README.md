@@ -29,5 +29,5 @@ This area owns artifact types, authoring boundaries, hub/navigation rules, and t
 
 This hub lists stable owning documents, not every Markdown file. Governed areas
 and parent relationships are declared in
-`dset/scopes/gov/artifacts.yaml`; the canonical DSET command validates their
+`dset/scopes/gov/artifacts.toml`; the canonical DSET command validates their
 structure and links.

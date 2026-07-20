@@ -18,7 +18,7 @@ class YamlSubsetTests(unittest.TestCase):
     def test_parses_repository_manifests(self) -> None:
         layout = discover_layout(ROOT)
         provenance = load(layout.provenance_path)
-        cases = load(layout.fixtures_root / "cases.yaml")
+        cases = load(layout.structured_file(layout.fixtures_root, "cases.toml"))
         self.assertEqual(provenance["project_license"], "Apache-2.0")
         self.assertEqual(cases["cases"][0]["id"], "valid-small-fix")
 
@@ -63,8 +63,8 @@ class YamlSubsetTests(unittest.TestCase):
             document = root / "dset" / "record.md"
             document.parent.mkdir()
             document.write_text(
-                "+++\n[[relations]]\ntype = \"check_of\"\n"
-                "target = \"DSET-REQUIREMENT-001\"\n+++\n\nBody.\n",
+                '+++\n[[relations]]\ntype = "check_of"\n'
+                'target = "DSET-REQUIREMENT-001"\n+++\n\nBody.\n',
                 encoding="utf-8",
             )
 

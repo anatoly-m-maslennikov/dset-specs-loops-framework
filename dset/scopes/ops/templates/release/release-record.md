@@ -1,14 +1,14 @@
----
-artifact_type: delivery
-artifact_subtype: release_record
-artifact_id: "{{project_key}}-DELIVERY-{{sequence}}"
-version_scope_ref: "{{project_key}}-DELIVERY-{{version_scope_sequence}}"
-release_plan_ref: "{{project_key}}-DELIVERY-{{release_plan_sequence}}"
-readiness_record_ref: "{{project_key}}-DELIVERY-{{readiness_sequence}}"
-released_version: "{{released_version}}"
-published_at: pending
-llm_session_ids: []
----
++++
+artifact_type = "delivery"
+artifact_subtype = "release_record"
+artifact_id = "{{project_key}}-DELIVERY-{{sequence}}"
+version_scope_ref = "{{project_key}}-DELIVERY-{{version_scope_sequence}}"
+release_plan_ref = "{{project_key}}-DELIVERY-{{release_plan_sequence}}"
+readiness_record_ref = "{{project_key}}-DELIVERY-{{readiness_sequence}}"
+released_version = "{{released_version}}"
+published_at = "pending"
+llm_session_ids = []
++++
 
 # Release Record — {{released_version}}
 

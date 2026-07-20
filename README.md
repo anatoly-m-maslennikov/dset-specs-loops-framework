@@ -19,7 +19,7 @@ Framework rules and release assets live here. Each adopting repository owns its 
 Repository behavior is selected in the self-documenting
 [`dset_settings.toml`](dset_settings.toml). Project identity, topology,
 contracts, release targets, verification commands, and provenance boundaries
-remain separate in the [META-owned project manifest](dset/scopes/meta/dset.yaml).
+remain separate in the [META-owned project manifest](dset/scopes/meta/dset.toml).
 
 ## Project architecture map
 
