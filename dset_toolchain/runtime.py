@@ -14,6 +14,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
+from .skill_catalog import PUBLIC_SKILL_MODES, PUBLIC_SKILL_WORKFLOWS
 from .yaml_subset import load
 
 RUN_SCHEMA_VERSION = "1.2"
@@ -26,13 +27,7 @@ MAX_RUN_BYTES = 20 * 1024 * 1024
 _ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
 _LLM_SESSION_ID = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
 _STABLE_CODE = re.compile(r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+){1,5}$")
-_PUBLIC_ENTRYPOINTS = {
-    "dset",
-    "dset-clarify",
-    "dset-diagnose",
-    "dset-prototype",
-    "dset-release",
-}
+_PUBLIC_ENTRYPOINTS = frozenset(PUBLIC_SKILL_WORKFLOWS)
 _INVOCATION_SOURCES = {
     "operator",
     "public-skill",
@@ -186,6 +181,16 @@ def start_run(
     """
 
     _require(public_entrypoint in _PUBLIC_ENTRYPOINTS, "unknown public entrypoint")
+    expected_workflow = PUBLIC_SKILL_WORKFLOWS[public_entrypoint]
+    _require(
+        workflow_id is None or workflow_id == expected_workflow,
+        "public entrypoint and workflow do not match",
+    )
+    expected_mode = PUBLIC_SKILL_MODES[public_entrypoint]
+    _require(
+        mode_id is None or public_entrypoint == "dset" or mode_id == expected_mode,
+        "public entrypoint and mode do not match",
+    )
     _require(invocation_source in _INVOCATION_SOURCES, "unknown invocation source")
     _require(0 < len(objective) <= 1024, "objective must contain 1..1024 characters")
     _require(next_mode in _NEXT_MODES, "unknown next mode")
@@ -696,6 +701,7 @@ def _repository_identity(root: Path) -> str:
 def _run_scope(scope: Mapping[str, Any]) -> dict[str, Any]:
     return {
         "repository": scope["repository"],
+        "workspace": scope["workspace"],
         "project": scope["project"],
         "package": scope["package"],
         "change": scope["change"],

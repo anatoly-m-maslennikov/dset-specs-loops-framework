@@ -14,6 +14,7 @@ from typing import Any
 
 from .bootstrap import distribution_source
 from .skill_catalog import PUBLIC_SKILL_WORKFLOWS, SKILL_INVOCATION_MARKERS
+from .skill_context import resolve_skill_context
 
 SKILL_WORKFLOWS = PUBLIC_SKILL_WORKFLOWS
 HOSTS = {"claude", "codex"}
@@ -368,18 +369,34 @@ def _parser() -> argparse.ArgumentParser:
             item.add_argument("--skill", choices=sorted(SKILL_WORKFLOWS), required=True)
         if command == "verify-invocation":
             item.add_argument("--receipt", type=Path, required=True)
+    context = subparsers.add_parser("context")
+    context.add_argument("--skill", choices=sorted(SKILL_WORKFLOWS), required=True)
+    context.add_argument("--target", type=Path, required=True)
+    context.add_argument("--objective", default="Resolve the governed DSET context")
+    context.add_argument("--session-id")
+    context.add_argument("--llm-session-id", action="append", default=[])
     return parser
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     arguments = _parser().parse_args(argv)
-    host = str(arguments.host)
-    destination = (
-        default_destination(host)
-        if arguments.destination is None
-        else Path(arguments.destination)
-    )
     try:
+        if arguments.command == "context":
+            context_result = resolve_skill_context(
+                Path(arguments.target),
+                skill_id=str(arguments.skill),
+                objective=str(arguments.objective),
+                session_id=arguments.session_id,
+                llm_session_ids=arguments.llm_session_id,
+            )
+            print(json.dumps(context_result, indent=2, sort_keys=True))
+            return 0
+        host = str(arguments.host)
+        destination = (
+            default_destination(host)
+            if arguments.destination is None
+            else Path(arguments.destination)
+        )
         result: Any
         actions: list[InstallAction] = []
         if arguments.command == "install":

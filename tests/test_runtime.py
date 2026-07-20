@@ -47,6 +47,7 @@ class RuntimeTests(unittest.TestCase):
         self.assertEqual(invocation.run["schema_version"], "1.2")
         self.assertEqual(invocation.run["status"], "running")
         self.assertEqual(invocation.run["persistence"], "persisted")
+        self.assertIn("workspace", invocation.run["scope"])
         self.assertIsNotNone(invocation.running_path)
         assert invocation.running_path is not None
         self.assertTrue(invocation.running_path.is_file())

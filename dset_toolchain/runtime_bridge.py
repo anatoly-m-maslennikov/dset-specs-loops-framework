@@ -13,6 +13,7 @@ from .runtime import (
     start_run,
     update_checkpoint,
 )
+from .skill_catalog import PUBLIC_SKILL_MODES, PUBLIC_SKILL_WORKFLOWS
 
 
 def start_runtime(
@@ -24,34 +25,85 @@ def start_runtime(
     mode_id: str | None = None,
     session_id: str | None = None,
     llm_session_ids: Sequence[str] = (),
+    invocation_source: str = "public-skill",
+    parent_run_id: str | None = None,
+    root_run_id: str | None = None,
+    scope: Mapping[str, Any] | None = None,
+    parameters: Sequence[Mapping[str, Any]] = (),
+    budget: Mapping[str, Any] | None = None,
+    authorization_class: str = "read-only",
+    authorization_state: str = "not-granted",
+    authority_snapshot: Mapping[str, Any] | None = None,
 ) -> dict[str, object]:
+    expected = PUBLIC_SKILL_WORKFLOWS.get(public_entrypoint)
+    if expected is None:
+        raise ValueError(f"unknown public skill: {public_entrypoint}")
+    if expected != workflow_id:
+        raise ValueError(
+            "public skill/workflow mismatch: "
+            f"{public_entrypoint} requires {expected}, received {workflow_id}"
+        )
+    expected_mode = PUBLIC_SKILL_MODES[public_entrypoint]
+    if mode_id is not None and public_entrypoint != "dset" and mode_id != expected_mode:
+        raise ValueError(
+            "public skill/mode mismatch: "
+            f"{public_entrypoint} requires {expected_mode}, received {mode_id}"
+        )
     resolved, diagnostics = resolve_workflow(root, workflow_id)
     if diagnostics:
         diagnostic = diagnostics[0]
         raise DsetCommandError(diagnostic.code, diagnostic.path, diagnostic.message)
     assert resolved is not None
-    profile = resolved["profile"]
-    profile_version = resolved["profile_version"]
-    customization = resolved["customization"]
-    identity = f"{profile}:{profile_version}:{customization}"
+    identity = _ruleset_identity(resolved)
+    selected_mode = mode_id if mode_id is not None else expected_mode
     invocation = start_run(
         root,
         public_entrypoint=public_entrypoint,
         objective=objective,
         workflow_id=workflow_id,
-        mode_id=mode_id,
+        mode_id=selected_mode,
         session_id=session_id,
         llm_session_ids=llm_session_ids,
-        invocation_source="public-skill",
+        invocation_source=invocation_source,
+        parent_run_id=parent_run_id,
+        root_run_id=root_run_id,
         ruleset_identity=identity,
-        next_mode=mode_id or "complete",
+        scope=scope,
+        parameters=parameters,
+        budget=budget,
+        next_mode=selected_mode or "complete",
         next_reason_code="DSET-RUNTIME-HOST-BRIDGE",
+        authorization_class=authorization_class,
+        authorization_state=authorization_state,
+        authority_snapshot=authority_snapshot,
     )
     return {
         "run": invocation.run,
         "checkpoint": invocation.checkpoint,
         "resolved": resolved,
     }
+
+
+def _ruleset_identity(resolved: Mapping[str, Any]) -> str:
+    import hashlib
+    import json
+
+    payload = {
+        "workflow_id": resolved["workflow_id"],
+        "profile": resolved["profile"],
+        "profile_version": resolved["profile_version"],
+        "customization": resolved["customization"],
+        "rules": [
+            {
+                "id": rule["id"],
+                "path": rule["path"],
+                "sha256": rule["sha256"],
+            }
+            for rule in resolved["rules"]
+        ],
+    }
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return f"ruleset:{hashlib.sha256(encoded).hexdigest()}"
 
 
 def read_runtime(

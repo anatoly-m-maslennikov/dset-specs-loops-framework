@@ -20,9 +20,10 @@
     "persistence": {"enum": ["persisted", "unavailable"]},
     "scope": {
       "type": "object",
-      "required": ["repository", "project", "package", "change", "target"],
+      "required": ["repository", "workspace", "project", "package", "change", "target"],
       "properties": {
         "repository": {"$ref": "#/$defs/nullable_scope"},
+        "workspace": {"$ref": "#/$defs/nullable_scope"},
         "project": {"$ref": "#/$defs/nullable_scope"},
         "package": {"$ref": "#/$defs/nullable_scope"},
         "change": {"$ref": "#/$defs/nullable_scope"},

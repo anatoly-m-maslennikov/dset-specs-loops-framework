@@ -31,6 +31,7 @@ from .runtime_bridge import (
 )
 from .scaffold import create_change
 from .self_host import run_self_host
+from .skill_catalog import PUBLIC_SKILL_WORKFLOWS
 from .skill_distribution import main as skill_distribution_main
 from .traceability import (
     rendered_traceability,
@@ -165,13 +166,7 @@ def build_parser() -> argparse.ArgumentParser:
     _root_argument(runtime_start)
     runtime_start.add_argument(
         "--entrypoint",
-        choices=[
-            "dset",
-            "dset-clarify",
-            "dset-diagnose",
-            "dset-prototype",
-            "dset-release",
-        ],
+        choices=sorted(PUBLIC_SKILL_WORKFLOWS),
         required=True,
     )
     runtime_start.add_argument("--objective", required=True)

@@ -19,6 +19,25 @@ PUBLIC_SKILL_WORKFLOWS = {
     "dset-complete": "complete",
 }
 
+PUBLIC_SKILL_MODES = {
+    "dset": None,
+    "dset-init": "initialize",
+    "dset-repair-governance": "repair-governance",
+    "dset-decompose": "decompose",
+    "dset-diagnose": "diagnose",
+    "dset-clarify": "clarify",
+    "dset-landscape": "landscape",
+    "dset-prototype": "prototype",
+    "dset-decisions": "decisions",
+    "dset-plan-proof": "plan-proof",
+    "dset-plan-implementation": "plan-implementation",
+    "dset-implement": "implement",
+    "dset-verify": "verify",
+    "dset-triage": "triage-work",
+    "dset-release": "release",
+    "dset-complete": "complete",
+}
+
 PRE_RESOLUTION_SKILLS = frozenset({"dset-init", "dset-repair-governance"})
 
 SKILL_INVOCATION_MARKERS = {
