@@ -10,6 +10,8 @@
 - [Governance profile and GOV rule templates](governance/core-v1/README.md)
 - [Artifact-type registry](artifact-types.yaml)
 - [Semantic atom carrier](atom.md)
+- [External review packet](review-packet.md)
+- [External review report](review-report.md)
 - [Intake template](intake.yaml)
 - [Change profiles](profiles.yaml)
 

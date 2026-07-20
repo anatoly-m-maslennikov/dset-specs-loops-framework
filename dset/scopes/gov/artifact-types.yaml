@@ -307,6 +307,13 @@ path_rules:
     pattern: "**/verification.md"
     artifact_type: verification
   -
+    pattern: "**/review-packet.md"
+    artifact_type: plan
+  -
+    pattern: "**/review-report.md"
+    artifact_type: evidence_record
+    artifact_subtype: review_report
+  -
     pattern: "**/generated/traceability.yaml"
     artifact_type: derived_view
     artifact_subtype: traceability_index

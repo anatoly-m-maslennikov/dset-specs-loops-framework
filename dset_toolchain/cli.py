@@ -15,6 +15,12 @@ from .bootstrap import initialize_project, parse_work_area
 from .conflicts import resolve_conflict, write_conflict_result
 from .diagnostics import Diagnostic
 from .errors import DsetCommandError
+from .external_review import (
+    create_review_packet,
+    reconcile_review,
+    validate_review_report,
+    write_reconciliation,
+)
 from .governance import (
     diff_governance,
     find_repository,
@@ -198,6 +204,32 @@ def build_parser() -> argparse.ArgumentParser:
     health_mode = health.add_mutually_exclusive_group()
     health_mode.add_argument("--write", action="store_true")
     health_mode.add_argument("--check", action="store_true")
+
+    review = commands.add_parser("review", help="exchange bounded external reviews")
+    review_commands = review.add_subparsers(dest="review_command", required=True)
+    review_packet = review_commands.add_parser(
+        "packet", help="create an exact read-only review packet"
+    )
+    _root_argument(review_packet)
+    review_packet.add_argument("--output", type=Path, required=True)
+    review_packet.add_argument("--packet-id", required=True)
+    review_packet.add_argument("--artifact", action="append", default=[])
+    review_packet.add_argument("--criterion", action="append", default=[])
+    review_packet.add_argument("--scope", required=True)
+    review_validate = review_commands.add_parser(
+        "validate", help="validate a report against its exact packet"
+    )
+    _root_argument(review_validate)
+    review_validate.add_argument("--packet", type=Path, required=True)
+    review_validate.add_argument("--report", type=Path, required=True)
+    review_reconcile = review_commands.add_parser(
+        "reconcile", help="validate explicit dispositions for every finding"
+    )
+    _root_argument(review_reconcile)
+    review_reconcile.add_argument("--packet", type=Path, required=True)
+    review_reconcile.add_argument("--report", type=Path, required=True)
+    review_reconcile.add_argument("--candidate", type=Path, required=True)
+    review_reconcile.add_argument("--output", type=Path)
 
     runtime = commands.add_parser("runtime", help="bridge host skill run state")
     runtime_commands = runtime.add_subparsers(dest="runtime_command", required=True)
@@ -464,6 +496,31 @@ def main(argv: list[str] | None = None) -> int:
                 print(path.relative_to(root).as_posix())
                 return 0
             sys.stdout.write(render_health(root))
+            return 0
+        if args.command == "review":
+            root = _repository_root(args.root)
+            if args.review_command == "packet":
+                path = create_review_packet(
+                    root,
+                    args.output,
+                    packet_id=args.packet_id,
+                    artifacts=args.artifact,
+                    criteria=args.criterion,
+                    scope=args.scope,
+                )
+                print(path)
+                return 0
+            if args.review_command == "validate":
+                result = validate_review_report(root, args.packet, args.report)
+            else:
+                result = reconcile_review(
+                    root, args.packet, args.report, args.candidate
+                )
+                if args.output is not None:
+                    path = write_reconciliation(root, args.output, result)
+                    print(path.relative_to(root).as_posix())
+                    return 0
+            print(json.dumps(result, indent=2, sort_keys=True))
             return 0
         if args.command == "runtime":
             root = _repository_root(args.root)

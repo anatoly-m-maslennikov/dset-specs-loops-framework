@@ -138,7 +138,8 @@ methodology document set. The current `0.3.1` state includes:
 - a dependency-light Python toolchain with packaged `init`, repository checks,
   Change scaffolding/archive, traceability, governance resolution, bounded
   self-hosting, persistent runtime checkpoints, host skill distribution, and
-  coordinated release preparation;
+  coordinated release preparation, plus portable external-review packet,
+  report-validation, and finding-reconciliation commands;
 - schemas, templates, fixtures, migration guidance, generated traceability, and
   provenance records, plus a deterministic Markdown project-health view with
   explicit coverage denominators and stale/unknown dispositions;

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/scopes/gov/schemas/review-reconciliation.schema.json",
+  "title": "DSET external review reconciliation record",
+  "type": "object",
+  "required": ["schema_version", "report_id", "report_sha256", "reconciled_at", "llm_session_ids", "findings"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "report_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-EVIDENCE-RECORD-[0-9]{3,}$"},
+    "report_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "reconciled_at": {"type": "string", "format": "date-time"},
+    "llm_session_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$"}},
+    "findings": {"type": "array", "items": {"$ref": "#/$defs/finding"}}
+  },
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "required": ["finding_id", "disposition", "rationale"],
+      "properties": {
+        "finding_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-REVIEW-FINDING-[0-9]{3,}$"},
+        "disposition": {"enum": ["reject", "defer", "route_problem", "route_question", "route_decision", "route_change", "route_evergreen", "route_proof"]},
+        "rationale": {"type": "string", "minLength": 1},
+        "target_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"},
+        "reopen_proof": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"}}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
