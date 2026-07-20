@@ -119,6 +119,10 @@ def seal_atom(root: Path, path: Path) -> Path:
         raise ValueError("project settings must pass before sealing an atom")
     if metadata is None:
         raise ValueError("atom carrier requires YAML frontmatter")
+    if "child_of" in metadata:
+        raise ValueError(
+            "new atoms must use relations; child_of is sealed compatibility input only"
+        )
     atom, diagnostics = _parse_atom(
         root, path, metadata, {*settings.priority_scale, "unknown"}
     )

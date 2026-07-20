@@ -89,6 +89,17 @@ class SemanticAtomTests(unittest.TestCase):
         ):
             seal_atom(self.root, self.atom_path)
 
+    def test_new_atom_cannot_seal_legacy_child_of(self) -> None:
+        text = self._write_atom().replace(
+            "promotion:\n  parent_scope: null\n",
+            "promotion:\n  parent_scope: null\nchild_of:\n"
+            "  - DSET-REQUIREMENT-001\n",
+        )
+        self.atom_path.write_text(text, encoding="utf-8")
+
+        with self.assertRaisesRegex(ValueError, "sealed compatibility input only"):
+            seal_atom(self.root, self.atom_path)
+
     def test_invalid_nested_or_qa_empty_subtype_fails(self) -> None:
         self._write_atom()
         self.atom_path.write_text(

@@ -388,3 +388,13 @@ events:
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: The operator selected a bounded MECE artifact-relation vocabulary, derived inverses, and range-based evergreen projection frontiers.
+  -
+    id: DSET-LIFECYCLE-EVENT-039
+    atom_id: DSET-DEFECT-TOOL-002
+    event: resolved
+    occurred_at: 2026-07-20T19:00:00+04:00
+    related:
+      - DSET-DECISION-GOV-013
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: New atom sealing now rejects legacy child_of metadata while validation continues to accept already sealed compatibility carriers.

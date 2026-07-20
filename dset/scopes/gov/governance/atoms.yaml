@@ -92,6 +92,13 @@ records:
     type: problem
     subtype: defect
   -
+    semantic_id: DSET-DEFECT-TOOL-002
+    carrier_id: DSET-ATOMIC-RECORD-038
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-038-legacy-relation-sealing.md
+    sha256: 63b8b80f6d91813d060c73c068ff80fcb18927b4a891d348c1820bf541635647
+    type: problem
+    subtype: defect
+  -
     semantic_id: DSET-EVALUATION-GOV-026
     carrier_id: DSET-ATOMIC-RECORD-037
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-037-typed-artifact-relations-evaluation.md

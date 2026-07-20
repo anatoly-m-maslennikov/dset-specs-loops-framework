@@ -958,6 +958,19 @@ semantic_classifications:
       - DSET-LIFECYCLE-EVENT-021
       - DSET-LIFECYCLE-EVENT-022
   -
+    id: DSET-DEFECT-TOOL-002
+    type: problem
+    subtype: defect
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-038-legacy-relation-sealing.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-039
+  -
     id: DSET-EVAL-GOV-001
     type: qa
     subtype: evaluation
@@ -4077,6 +4090,26 @@ semantic_atoms:
     absorbed_by: []
     archived: false
   -
+    id: DSET-DEFECT-TOOL-002
+    carrier_id: DSET-ATOMIC-RECORD-038
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-038-legacy-relation-sealing.md
+    sha256: 63b8b80f6d91813d060c73c068ff80fcb18927b4a891d348c1820bf541635647
+    type: problem
+    subtype: defect
+    emission_status: accepted
+    current_status: resolved
+    priority: high
+    priority_source: atom:DSET-DEFECT-TOOL-002
+    relations:
+      -
+        type: relates_to
+        origin: authored
+        target: DSET-DECISION-GOV-013
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-039
+    absorbed_by: []
+    archived: false
+  -
     id: DSET-EVALUATION-GOV-026
     carrier_id: DSET-ATOMIC-RECORD-037
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-037-typed-artifact-relations-evaluation.md
@@ -5555,6 +5588,15 @@ relations:
     type: child_of
     origin: legacy_child_of
     target: DSET-DECISION-OPS-004
+    llm_session_ids: []
+  -
+    source: DSET-DEFECT-TOOL-002
+    source_kind: artifact
+    source_artifact_id: DSET-ATOMIC-RECORD-038
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-038-legacy-relation-sealing.md
+    type: relates_to
+    origin: authored
+    target: DSET-DECISION-GOV-013
     llm_session_ids: []
   -
     source: DSET-EVALUATION-GOV-026
