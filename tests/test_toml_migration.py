@@ -106,26 +106,15 @@ class TomlMigrationTests(unittest.TestCase):
         second = apply_toml_migration(self.root)
         self.assertEqual(second.entries, ())
 
-    def test_explicit_exceptions_are_retained_and_schema_freshness_is_checked(
+    def test_explicit_exceptions_retain_the_json_schema_contract_boundary(
         self,
     ) -> None:
         self.write(".github/workflows/test.yaml", "name: test\n")
         self.write("skills/dset/agents/openai.yaml", "interface: host\n")
         self.write("skills/dset/SKILL.md", "---\nname: dset\n---\n# DSET\n")
-        canonical = self.write(
-            "dset/scopes/gov/schema.toml", 'name = "source"\n'
-        )
-        digest = hashlib.sha256(
-            canonical.read_text(encoding="utf-8").encode()
-        ).hexdigest()
         self.write(
             "dset/scopes/gov/schemas/example.schema.json",
-            json.dumps(
-                {
-                    "x-dset-canonical-source": "dset/scopes/gov/schema.toml",
-                    "x-dset-canonical-source-sha256": digest,
-                }
-            ),
+            json.dumps({"$schema": "https://json-schema.org/draft/2020-12/schema"}),
         )
         plan = plan_toml_migration(self.root)
         report = plan.report()
@@ -138,15 +127,17 @@ class TomlMigrationTests(unittest.TestCase):
                 "github-actions",
                 "host-skill-metadata",
                 "host-skill-frontmatter",
-                "generated-json-schema-adapter",
+                "external-json-schema",
             }.issubset(categories)
         )
         self.assertTrue(plan.ready)
-
-        canonical.write_text('name = "changed"\n', encoding="utf-8")
-        stale = plan_toml_migration(self.root)
-        self.assertFalse(stale.ready)
-        self.assertIn("generated JSON Schema adapter is not fresh", stale.blockers[0])
+        schema = next(
+            item
+            for item in cast(list[dict[str, object]], report["exceptions"])
+            if item["category"] == "external-json-schema"
+        )
+        self.assertEqual(schema["authority"], "canonical-external-contract")
+        self.assertFalse(schema["editable_toml_duplicate"])
 
     def test_references_cover_root_relative_bare_and_retained_carriers(self) -> None:
         self.standard_fixture()

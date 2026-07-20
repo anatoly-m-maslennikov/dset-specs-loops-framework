@@ -2,9 +2,9 @@
 
 The migration command intentionally does not guess ownership.  It converts
 DSET-owned structured YAML/JSON and DSET Markdown YAML frontmatter only after
-building a complete source/target/digest/reference plan.  Host carriers,
-runtime journals, wire payloads, and JSON Schema adapters are retained as
-explicit non-authoritative exceptions.
+building a complete source/target/digest/reference plan. Host carriers,
+runtime journals, wire payloads, and standard JSON Schema contracts remain
+explicit boundary-format exceptions.
 """
 
 from __future__ import annotations
@@ -31,7 +31,7 @@ _IGNORED_TOP_LEVEL = {".git", ".cache", ".venv", "build", "dist", "__pycache__"}
 _RUNTIME_READINESS_PATH = ".dset/toml-migration-runtime-readiness.json"
 _NON_REWRITABLE_EXCEPTIONS = {
     "cli-wire-json",
-    "generated-json-schema-adapter",
+    "external-json-schema",
     "machine-local-runtime-journal",
     "retained-symlink",
 }
@@ -164,13 +164,6 @@ def plan_toml_migration(root: Path) -> MigrationPlan:
         classification = _exception_classification(root, path)
         if classification is not None:
             exceptions.append(classification)
-            if classification["category"] == "generated-json-schema-adapter" and (
-                classification.get("freshness") != "current"
-            ):
-                blockers.append(
-                    "adapter-mapping: generated JSON Schema adapter is not fresh: "
-                    f"{classification['path']} ({classification.get('freshness')})"
-                )
             if classification["category"] == "cli-wire-json":
                 blockers.append(
                     "regeneration-boundary: generated CLI/wire bundle must be "
@@ -316,7 +309,7 @@ def _exception_classification(root: Path, path: Path) -> dict[str, object] | Non
             "migration_action": "regenerate-outside-migration",
         }
     if suffix == ".json" and "schemas" in parts and path.name.endswith(".schema.json"):
-        return _schema_adapter_exception(root, path)
+        return _external_contract_exception(root, path, "external-json-schema")
     return None
 
 
@@ -329,37 +322,16 @@ def _exception(root: Path, path: Path, category: str) -> dict[str, object]:
     }
 
 
-def _schema_adapter_exception(root: Path, path: Path) -> dict[str, object]:
-    result = _exception(root, path, "generated-json-schema-adapter")
-    try:
-        value = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, UnicodeError, json.JSONDecodeError) as error:
-        result["freshness"] = "invalid"
-        result["detail"] = str(error)
-        return result
-    source = (
-        value.get("x-dset-canonical-source") if isinstance(value, dict) else None
-    )
-    digest = (
-        value.get("x-dset-canonical-source-sha256")
-        if isinstance(value, dict)
-        else None
-    )
-    if not isinstance(source, str) or not isinstance(digest, str):
-        result["freshness"] = "unmapped"
-        result["canonical_source"] = None
-        return result
-    canonical = (root / source).resolve()
-    result["canonical_source"] = source
-    if not source.endswith(".toml") or not _is_within_root(root, canonical):
-        result["freshness"] = "invalid-source"
-    elif not canonical.is_file() or canonical.is_symlink():
-        result["freshness"] = "missing-source"
-    elif _sha256(canonical.read_text(encoding="utf-8")) != digest:
-        result["freshness"] = "stale"
-    else:
-        result["freshness"] = "current"
-    return result
+def _external_contract_exception(
+    root: Path, path: Path, category: str
+) -> dict[str, object]:
+    return {
+        "path": _relative(root, path),
+        "category": category,
+        "authority": "canonical-external-contract",
+        "retained": True,
+        "editable_toml_duplicate": False,
+    }
 
 
 def _is_owned_structured(root: Path, path: Path) -> bool:

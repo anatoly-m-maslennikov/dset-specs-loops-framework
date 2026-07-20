@@ -12,7 +12,7 @@ llm_session_ids: []
 > This generated view is not authority. Follow each link to its canonical
 > owner and refresh explicitly after source changes.
 
-- **Source digest:** `53905a2f71a6fd95b48582bed1b968534c0b85ed65c314c2f66841c00d514273`
+- **Source digest:** `bef592b8654c2362e6e5666047483f1b50b2ef9749e7e57bdb44529117126109`
 - **Renderer:** `dset health` schema 1.0
 
 ## Coverage
@@ -20,14 +20,14 @@ llm_session_ids: []
 | Closure | Numerator | Denominator | Excluded | N/A | Unknown | Stale |
 |---|---:|---:|---:|---:|---:|---:|
 | Decision authority compiled into evergreen truth | 90 | 90 | 0 | 0 | 0 | 0 |
-| Decision authority linked from implementation commits | 14 | 15 | 75 | 0 | 1 | 0 |
+| Decision authority linked from implementation commits | 15 | 15 | 75 | 0 | 0 | 0 |
 | Applicable authority connected to Test or Evaluation | 88 | 90 | 0 | 0 | 2 | 0 |
 | QA definitions connected to current evidence | 56 | 128 | 0 | 0 | 71 | 1 |
 
 ### Coverage gaps
 
 - **Decision authority compiled into evergreen truth:** none
-- **Decision authority linked from implementation commits:** `DSET-DECISION-GOV-015`
+- **Decision authority linked from implementation commits:** none
 - **Applicable authority connected to Test or Evaluation:** `DSET-DECISION-GOV-014`, `DSET-DECISION-GOV-015`
 - **QA definitions connected to current evidence:** `DSET-EVAL-GOV-010`, `DSET-EVAL-GOV-011`, `DSET-EVAL-GOV-012`, `DSET-EVAL-GOV-013`, `DSET-EVAL-GOV-014`, `DSET-EVAL-GOV-015`, `DSET-EVAL-GOV-016`, `DSET-EVAL-GOV-018`, `DSET-EVAL-GOV-020`, `DSET-EVAL-GOV-021`, `DSET-EVAL-GOV-023`, `DSET-EVAL-META-004`, `DSET-EVAL-META-005`, `DSET-EVAL-META-006`, `DSET-EVAL-META-007`, `DSET-EVAL-META-008`, `DSET-EVAL-META-009`, `DSET-EVAL-SKILL-003`, `DSET-EVAL-SKILL-004`, `DSET-EVAL-SKILL-005`, `DSET-EVAL-SKILL-006`, `DSET-EVAL-SKILL-007`, `DSET-EVAL-SKILL-008`, `DSET-EVALUATION-GOV-027`, `DSET-EVALUATION-SKILL-012`, `DSET-EVALUATION-TOOL-002`, `DSET-EVALUATION-TOOL-004`, `DSET-TEST-GOV-001`, `DSET-TEST-GOV-002`, `DSET-TEST-GOV-003`, `DSET-TEST-GOV-004`, `DSET-TEST-GOV-010`, `DSET-TEST-GOV-011`, `DSET-TEST-GOV-012`, `DSET-TEST-GOV-013`, `DSET-TEST-GOV-014`, `DSET-TEST-GOV-015`, `DSET-TEST-GOV-016`, `DSET-TEST-GOV-018`, `DSET-TEST-GOV-019`, `DSET-TEST-GOV-020`, `DSET-TEST-GOV-021`, `DSET-TEST-GOV-023`, `DSET-TEST-GOV-024`, `DSET-TEST-GOV-025`, `DSET-TEST-GOV-028`, `DSET-TEST-GOV-029`, `DSET-TEST-GOV-030`, `DSET-TEST-GOV-031`, `DSET-TEST-GOV-033`, `DSET-TEST-GOV-037`, `DSET-TEST-META-001`, `DSET-TEST-META-005`, `DSET-TEST-META-006`, `DSET-TEST-META-007`, `DSET-TEST-META-008`, `DSET-TEST-META-009`, `DSET-TEST-META-010`, `DSET-TEST-META-011`, `DSET-TEST-OPS-001`, `DSET-TEST-OPS-016`, `DSET-TEST-SKILL-003`, `DSET-TEST-SKILL-004`, `DSET-TEST-SKILL-005`, `DSET-TEST-SKILL-006`, `DSET-TEST-SKILL-007`, `DSET-TEST-SKILL-008`, `DSET-TEST-SKILL-009`, `DSET-TEST-SKILL-014`, `DSET-TEST-TOOL-018`, `DSET-TEST-TOOL-020`
 
@@ -51,10 +51,10 @@ llm_session_ids: []
 
 ## Typed relation inventory
 
-- **Forward relations:** 260
-- **By type:** check_of=6, child_of=33, evidence_for=2, implementation_of=206, projection_of=3, relates_to=4, replacement_of=5, resolution_of=1
-- **By origin:** authored=23, commit_trailer=206, legacy_child_of=31
-- **By source kind:** artifact=54, commit=206
+- **Forward relations:** 262
+- **By type:** check_of=6, child_of=33, evidence_for=2, implementation_of=208, projection_of=3, relates_to=4, replacement_of=5, resolution_of=1
+- **By origin:** authored=23, commit_trailer=208, legacy_child_of=31
+- **By source kind:** artifact=54, commit=208
 
 ## Unresolved work
 
