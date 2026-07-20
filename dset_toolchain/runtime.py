@@ -14,11 +14,12 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
+from .lifecycle import advance_closure, initial_closure
 from .skill_catalog import PUBLIC_SKILL_MODES, PUBLIC_SKILL_WORKFLOWS
 from .yaml_subset import load
 
 RUN_SCHEMA_VERSION = "1.2"
-CHECKPOINT_SCHEMA_VERSION = "1.1"
+CHECKPOINT_SCHEMA_VERSION = "1.2"
 MAX_RECORD_BYTES = 64 * 1024
 MAX_RUN_AGE = timedelta(days=30)
 MAX_RUN_COUNT = 200
@@ -285,6 +286,11 @@ def start_run(
     completed = copy.deepcopy(resumed.get("completed", [])) if resumed else []
     pending = copy.deepcopy(resumed.get("pending", [])) if resumed else []
     touched = copy.deepcopy(resumed.get("touched_paths", [])) if resumed else []
+    closure = (
+        copy.deepcopy(resumed["closure"])
+        if resumed is not None and isinstance(resumed.get("closure"), dict)
+        else initial_closure(public_entrypoint, mode_id)
+    )
     checkpoint = {
         "schema_version": CHECKPOINT_SCHEMA_VERSION,
         "session_id": selected_session_id,
@@ -313,6 +319,7 @@ def start_run(
         },
         "touched_paths": touched,
         "authority_snapshot": normalized_snapshot,
+        "closure": closure,
         "next": {
             "mode": next_mode,
             "reason_code": next_reason_code,
@@ -358,6 +365,51 @@ def resume_checkpoint(
         return _load_explicit_checkpoint(storage, session_id)
     normalized_scope = _checkpoint_scope(_normalize_scope(root, scope))
     return _select_implicit_checkpoint(storage, normalized_scope)
+
+
+def advance_session_closure(
+    root: Path,
+    session_id: str,
+    *,
+    workflow_id: str | None = None,
+    child_status: str = "succeeded",
+    observations: Mapping[str, bool | None] | None = None,
+) -> dict[str, Any]:
+    """Advance one persisted entry-criteria closure after an authoritative read."""
+
+    _require_id(session_id)
+    storage = _existing_storage(root)
+    if storage is None:
+        raise RuntimeStateError("runtime storage is unavailable")
+    path = storage.sessions / f"{session_id}.json"
+    checkpoint = _read_checkpoint(path)
+    if checkpoint.get("status") not in {"active", "paused"}:
+        raise RuntimeStateError(f"session is not active: {session_id}")
+    raw_closure = checkpoint.get("closure")
+    if not isinstance(raw_closure, Mapping):
+        raise RuntimeStateError("session closure is unavailable")
+    closure = advance_closure(
+        raw_closure,
+        workflow_id=workflow_id,
+        child_status=child_status,
+        observations=observations,
+    )
+    checkpoint["closure"] = closure
+    checkpoint["sequence"] = int(checkpoint["sequence"]) + 1
+    checkpoint["updated_at"] = _utc_now()
+    checkpoint["next"] = {
+        "mode": closure.get("next_workflow") or "complete",
+        "reason_code": closure["reason_code"],
+        "requires_authorization": (
+            "repository-write"
+            if closure["status"] == "authorization-required"
+            else "none"
+        ),
+    }
+    if closure["status"] == "stopped":
+        checkpoint["status"] = "stopped"
+    _replace_json(path, checkpoint)
+    return copy.deepcopy(checkpoint)
 
 
 def update_checkpoint(
@@ -612,9 +664,26 @@ def _read_checkpoint(path: Path) -> dict[str, Any]:
         data = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, UnicodeError, json.JSONDecodeError) as error:
         raise RuntimeStateError(f"invalid checkpoint: {path.name}") from error
-    if not isinstance(data, dict) or data.get("schema_version") != "1.1":
+    if not isinstance(data, dict) or data.get("schema_version") not in {
+        "1.1",
+        CHECKPOINT_SCHEMA_VERSION,
+    }:
         raise RuntimeStateError(f"invalid checkpoint: {path.name}")
+    if data["schema_version"] == "1.1":
+        data["schema_version"] = CHECKPOINT_SCHEMA_VERSION
+        data["closure"] = initial_closure(
+            str(data.get("public_entrypoint", "dset")),
+            _checkpoint_mode(data),
+        )
     return data
+
+
+def _checkpoint_mode(checkpoint: Mapping[str, Any]) -> str | None:
+    next_value = checkpoint.get("next")
+    if not isinstance(next_value, Mapping):
+        return None
+    mode = next_value.get("mode")
+    return str(mode) if isinstance(mode, str) else None
 
 
 def _read_running_record(path: Path) -> dict[str, Any]:

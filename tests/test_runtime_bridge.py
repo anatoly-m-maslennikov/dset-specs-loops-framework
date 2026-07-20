@@ -9,9 +9,11 @@ from typing import Any, cast
 from dset_toolchain.adopter import create_adopter
 from dset_toolchain.runtime import RuntimeStateError, load_invocation
 from dset_toolchain.runtime_bridge import (
+    advance_runtime_closure,
     checkpoint_runtime,
     finish_runtime,
     read_runtime,
+    start_child_runtime,
     start_runtime,
 )
 from dset_toolchain.skill_catalog import PUBLIC_SKILL_WORKFLOWS
@@ -109,6 +111,8 @@ class RuntimeBridgeTests(unittest.TestCase):
         self.assertEqual(context["workflow_id"], "implement")
         self.assertEqual(context["artifact_creation_strictness"], "medium")
         self.assertTrue(str(context["ruleset_identity"]).startswith("ruleset:"))
+        closure = cast(dict[str, Any], context["closure"])
+        self.assertEqual(closure["next_workflow"], "decisions")
         resolved = cast(dict[str, Any], context["resolved"])
         self.assertEqual(resolved["workflow_id"], "implement")
 
@@ -138,6 +142,57 @@ class RuntimeBridgeTests(unittest.TestCase):
                     skill_id="dset-implement",
                     objective="Reject ambiguous authority",
                 )
+
+    def test_child_runs_advance_one_persisted_implementation_closure(self) -> None:
+        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+            adopter = Path(raw) / "adopter"
+            create_adopter(ROOT, adopter)
+            started = start_runtime(
+                adopter,
+                public_entrypoint="dset-implement",
+                workflow_id="implement",
+                objective="Implement the bounded change",
+                session_id="session-closure",
+            )
+            root_run = cast(dict[str, Any], started["run"])
+            child = start_child_runtime(
+                adopter,
+                session_id="session-closure",
+                workflow_id="decisions",
+                objective="Reconcile accepted directives",
+            )
+            child_run = cast(dict[str, Any], child["run"])
+            self.assertEqual(child_run["root_run_id"], root_run["run_id"])
+            self.assertEqual(child_run["parent_run_id"], root_run["run_id"])
+            self.assertEqual(child_run["invocation_source"], "chained-skill")
+            finish_runtime(
+                adopter,
+                str(child_run["run_id"]),
+                status="succeeded",
+                session_status="active",
+            )
+
+            checkpoint = advance_runtime_closure(
+                adopter,
+                session_id="session-closure",
+                workflow_id="decisions",
+                observations={
+                    "proof_plan_complete": False,
+                    "implementation_plan_complete": False,
+                    "implementation_authorized": False,
+                },
+            )
+            self.assertEqual(
+                checkpoint["closure"]["next_workflow"], "plan-proof"
+            )
+            second = start_child_runtime(
+                adopter,
+                session_id="session-closure",
+                workflow_id="plan-proof",
+                objective="Complete proof plans",
+            )
+            second_run = cast(dict[str, Any], second["run"])
+            self.assertEqual(second_run["parent_run_id"], child_run["run_id"])
 
 
 if __name__ == "__main__":

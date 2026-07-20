@@ -122,6 +122,26 @@ The `implement` closure is ordered:
 4. invoke `implement` only when all resolved entry criteria and authorization
    are satisfied.
 
+`dset skills context --skill dset-implement ...` starts or resumes this closure
+and returns its persisted criterion state and exact `next_workflow`. Start a
+returned prerequisite as a child with
+`dset runtime child SESSION WORKFLOW ROOT --objective OBJECTIVE`, finish that
+child with the session left `active`, then report the authoritative reread with
+`dset runtime closure SESSION ROOT --workflow WORKFLOW --criterion NAME=VALUE`.
+Criteria use `true`, `false`, or `unknown`. An observation-only closure update
+omits `--workflow`; it is the only way to resume after missing evidence or
+newly granted implementation authority.
+
+The runtime marks successful `decisions`, `plan-proof`,
+`plan-implementation`, and `implement` transitions as satisfying their owned
+criterion. It rejects an unexpected workflow, records parent/root run links,
+and persists visited criterion states through compaction. Failed, stopped, or
+ambiguous children; unchanged/repeated states; unknown required criteria; and
+missing repository-write authorization stop or block with stable reason codes.
+The runtime chooses the next registered workflow but never judges proof-plan
+completeness, implementation-plan completeness, or operator authorization; the
+caller supplies those observations from the governing repository and host.
+
 The `decisions` workflow treats session/checkpoint/run content as candidate
 evidence, never authority. It emits only accepted atomic directives, preserves
 session and LLM-session provenance, compiles required current projections, and

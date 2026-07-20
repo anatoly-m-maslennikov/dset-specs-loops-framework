@@ -3,9 +3,9 @@
   "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/scopes/skill/schemas/session-checkpoint.schema.json",
   "title": "DSET local session checkpoint",
   "type": "object",
-  "required": ["schema_version", "session_id", "llm_session_ids", "sequence", "updated_at", "status", "persistence", "public_entrypoint", "root_run_id", "latest_run_id", "scope", "objective", "ruleset_identity", "completed", "pending", "authorization", "touched_paths", "authority_snapshot", "next"],
+  "required": ["schema_version", "session_id", "llm_session_ids", "sequence", "updated_at", "status", "persistence", "public_entrypoint", "root_run_id", "latest_run_id", "scope", "objective", "ruleset_identity", "completed", "pending", "authorization", "touched_paths", "authority_snapshot", "closure", "next"],
   "properties": {
-    "schema_version": {"const": "1.1"},
+    "schema_version": {"const": "1.2"},
     "session_id": {"$ref": "#/$defs/id"},
     "llm_session_ids": {"type": "array", "maxItems": 8, "uniqueItems": true, "items": {"$ref": "#/$defs/llm_session_id"}},
     "rationale": {"$ref": "#/$defs/rationale"},
@@ -53,6 +53,34 @@
         "change_manifest": {"oneOf": [{"$ref": "#/$defs/relative_path"}, {"type": "null"}]},
         "proof_ids": {"type": "array", "maxItems": 32, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
         "hosted_refs": {"type": "array", "maxItems": 16, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}}
+      },
+      "additionalProperties": false
+    },
+    "closure": {
+      "type": "object",
+      "required": ["schema_version", "requested_mode", "status", "criteria", "next_workflow", "reason_code", "history", "visited_states"],
+      "properties": {
+        "schema_version": {"const": "1.0"},
+        "requested_mode": {"oneOf": [{"$ref": "#/$defs/id"}, {"type": "null"}]},
+        "status": {"enum": ["direct", "active", "blocked", "authorization-required", "ready", "completed", "stopped"]},
+        "criteria": {"type": "object", "additionalProperties": {"type": ["boolean", "null"]}, "maxProperties": 16},
+        "next_workflow": {"oneOf": [{"$ref": "#/$defs/id"}, {"type": "null"}]},
+        "reason_code": {"$ref": "#/$defs/id"},
+        "history": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "type": "object",
+            "required": ["workflow_id", "status", "progress"],
+            "properties": {
+              "workflow_id": {"$ref": "#/$defs/id"},
+              "status": {"enum": ["succeeded", "failed", "stopped", "ambiguous"]},
+              "progress": {"type": "array", "maxItems": 16, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}}
+            },
+            "additionalProperties": false
+          }
+        },
+        "visited_states": {"type": "array", "maxItems": 32, "uniqueItems": true, "items": {"type": "string", "pattern": "^state:[0-9a-f]{64}$"}}
       },
       "additionalProperties": false
     },

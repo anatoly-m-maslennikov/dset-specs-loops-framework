@@ -55,8 +55,9 @@ class RuntimeTests(unittest.TestCase):
             self.root / ".dset" / "sessions" / f"{invocation.session_id}.json"
         )
         first_checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
-        self.assertEqual(first_checkpoint["schema_version"], "1.1")
+        self.assertEqual(first_checkpoint["schema_version"], "1.2")
         self.assertEqual(first_checkpoint["latest_run_id"], invocation.run_id)
+        self.assertIn("closure", first_checkpoint)
 
         updated = update_checkpoint(
             invocation,

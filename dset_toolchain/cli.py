@@ -25,9 +25,11 @@ from .governance import (
 from .layout import discover_layout
 from .release import check_release, plan_release, prepare_release
 from .runtime_bridge import (
+    advance_runtime_closure,
     checkpoint_runtime,
     finish_runtime,
     read_runtime,
+    start_child_runtime,
     start_runtime,
 )
 from .scaffold import create_change
@@ -218,6 +220,22 @@ def build_parser() -> argparse.ArgumentParser:
     runtime_finish.add_argument(
         "--session-status", choices=["active", "paused", "completed", "stopped"]
     )
+    runtime_child = runtime_commands.add_parser("child")
+    runtime_child.add_argument("session_id")
+    runtime_child.add_argument("workflow_id")
+    _root_argument(runtime_child)
+    runtime_child.add_argument("--objective", required=True)
+    runtime_child.add_argument("--llm-session-id", action="append", default=[])
+    runtime_closure = runtime_commands.add_parser("closure")
+    runtime_closure.add_argument("session_id")
+    _root_argument(runtime_closure)
+    runtime_closure.add_argument("--workflow")
+    runtime_closure.add_argument(
+        "--status",
+        choices=["succeeded", "failed", "stopped", "ambiguous"],
+        default="succeeded",
+    )
+    runtime_closure.add_argument("--criterion", action="append", default=[])
 
     skills = commands.add_parser(
         "skills",
@@ -409,7 +427,7 @@ def main(argv: list[str] | None = None) -> int:
                     next_reason_code=args.reason_code,
                     requires_authorization=args.requires_authorization,
                 )
-            else:
+            elif args.runtime_command == "finish":
                 runtime_result = finish_runtime(
                     root,
                     args.run_id,
@@ -418,6 +436,22 @@ def main(argv: list[str] | None = None) -> int:
                     diagnostics=args.diagnostic,
                     next_signals=args.next_signal,
                     session_status=args.session_status,
+                )
+            elif args.runtime_command == "child":
+                runtime_result = start_child_runtime(
+                    root,
+                    session_id=args.session_id,
+                    workflow_id=args.workflow_id,
+                    objective=args.objective,
+                    llm_session_ids=args.llm_session_id,
+                )
+            else:
+                runtime_result = advance_runtime_closure(
+                    root,
+                    session_id=args.session_id,
+                    workflow_id=args.workflow,
+                    child_status=args.status,
+                    observations=_parse_criteria(args.criterion),
                 )
             print(json.dumps(runtime_result, indent=2, sort_keys=True))
             return 0
@@ -434,6 +468,23 @@ def main(argv: list[str] | None = None) -> int:
 
 def _root_argument(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("root", nargs="?", type=Path)
+
+
+def _parse_criteria(values: Sequence[str]) -> dict[str, bool | None]:
+    parsed: dict[str, bool | None] = {}
+    for raw in values:
+        name, separator, value = raw.partition("=")
+        if not separator or not name or name in parsed:
+            raise ValueError(f"criterion must be unique NAME=VALUE: {raw}")
+        if value == "true":
+            parsed[name] = True
+        elif value == "false":
+            parsed[name] = False
+        elif value == "unknown":
+            parsed[name] = None
+        else:
+            raise ValueError(f"criterion value must be true, false, or unknown: {raw}")
+    return parsed
 
 
 def _self_host_temp_parent(root: Path) -> str | None:

@@ -50,6 +50,8 @@ def resolve_skill_context(
     )
     resolved = started["resolved"]
     assert isinstance(resolved, dict)
+    checkpoint = started["checkpoint"]
+    assert isinstance(checkpoint, dict)
     settings, settings_issues = load_project_settings(root)
     if settings_issues:
         raise ValueError("; ".join(settings_issues))
@@ -70,7 +72,8 @@ def resolve_skill_context(
         "artifact_creation_strictness": settings.artifact_creation_strictness,
         "resolved": resolved,
         "run": started["run"],
-        "checkpoint": started["checkpoint"],
+        "checkpoint": checkpoint,
+        "closure": checkpoint["closure"],
     }
 
 

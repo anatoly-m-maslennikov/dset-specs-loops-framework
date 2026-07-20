@@ -7,6 +7,7 @@ from typing import Any
 from .errors import DsetCommandError
 from .governance import resolve_workflow
 from .runtime import (
+    advance_session_closure,
     finish_run,
     load_invocation,
     resume_checkpoint,
@@ -114,6 +115,60 @@ def read_runtime(
     return resume_checkpoint(root, session_id=session_id)
 
 
+def start_child_runtime(
+    root: Path,
+    *,
+    session_id: str,
+    workflow_id: str,
+    objective: str,
+    llm_session_ids: Sequence[str] = (),
+) -> dict[str, object]:
+    checkpoint = resume_checkpoint(root, session_id=session_id)
+    if checkpoint is None or checkpoint.get("status") not in {"active", "paused"}:
+        raise ValueError(f"active session is unavailable: {session_id}")
+    closure = checkpoint.get("closure")
+    if not isinstance(closure, Mapping):
+        raise ValueError("session closure is unavailable")
+    if closure.get("next_workflow") != workflow_id:
+        raise ValueError(
+            "closure workflow mismatch: "
+            f"expected {closure.get('next_workflow')}, received {workflow_id}"
+        )
+    skill_id = _skill_for_workflow(workflow_id)
+    scope = checkpoint.get("scope")
+    if not isinstance(scope, Mapping):
+        raise ValueError("session scope is unavailable")
+    return start_runtime(
+        root,
+        public_entrypoint=skill_id,
+        workflow_id=workflow_id,
+        objective=objective,
+        mode_id=PUBLIC_SKILL_MODES[skill_id],
+        session_id=session_id,
+        llm_session_ids=llm_session_ids,
+        invocation_source="chained-skill",
+        root_run_id=str(checkpoint["root_run_id"]),
+        scope=scope,
+    )
+
+
+def advance_runtime_closure(
+    root: Path,
+    *,
+    session_id: str,
+    workflow_id: str | None = None,
+    child_status: str = "succeeded",
+    observations: Mapping[str, bool | None] | None = None,
+) -> dict[str, Any]:
+    return advance_session_closure(
+        root,
+        session_id,
+        workflow_id=workflow_id,
+        child_status=child_status,
+        observations=observations,
+    )
+
+
 def checkpoint_runtime(
     root: Path,
     run_id: str,
@@ -156,3 +211,14 @@ def finish_runtime(
         session_status=session_status,
         usage=usage,
     )
+
+
+def _skill_for_workflow(workflow_id: str) -> str:
+    matches = [
+        skill_id
+        for skill_id, registered in PUBLIC_SKILL_WORKFLOWS.items()
+        if registered == workflow_id
+    ]
+    if len(matches) != 1:
+        raise ValueError(f"workflow has no unique public skill: {workflow_id}")
+    return matches[0]
