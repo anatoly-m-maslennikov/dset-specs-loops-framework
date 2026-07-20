@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/scopes/gov/schemas/atom-ledger.schema.json",
+  "title": "DSET immutable atom ledger",
+  "type": "object",
+  "required": ["schema_version", "records"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["semantic_id", "carrier_id", "path", "sha256", "type", "subtype"],
+        "properties": {
+          "semantic_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"},
+          "carrier_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-ATOMIC-RECORD-[0-9]{3,}$"},
+          "path": {"type": "string", "minLength": 1},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "type": {"enum": ["decision", "question", "problem", "qa"]},
+          "subtype": {"enum": ["none", "requirement", "constraint", "contract", "user_story", "outcome", "scenario", "invariant", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,558 @@
+from __future__ import annotations
+
+import hashlib
+import re
+from dataclasses import dataclass
+from datetime import datetime
+from pathlib import Path
+from typing import Any
+
+from .diagnostics import Diagnostic
+from .layout import discover_layout
+from .settings import load_project_settings
+from .yaml_subset import YamlSubsetError, dump, load, loads
+
+SEMANTIC_SUBTYPES: dict[str, frozenset[str]] = {
+    "decision": frozenset(
+        {
+            "requirement",
+            "constraint",
+            "contract",
+            "user_story",
+            "outcome",
+            "scenario",
+            "invariant",
+        }
+    ),
+    "question": frozenset({"conflict", "risk", "opportunity"}),
+    "problem": frozenset({"defect", "gap", "debt"}),
+    "qa": frozenset({"test", "evaluation"}),
+}
+SEMANTIC_ID_KINDS = {
+    ("decision", None): "DECISION",
+    ("decision", "requirement"): "REQUIREMENT",
+    ("decision", "constraint"): "CONSTRAINT",
+    ("decision", "contract"): "CONTRACT",
+    ("decision", "user_story"): "STORY",
+    ("decision", "outcome"): "OUTCOME",
+    ("decision", "scenario"): "SCENARIO",
+    ("decision", "invariant"): "INVARIANT",
+    ("question", None): "QUESTION",
+    ("question", "conflict"): "CONFLICT",
+    ("question", "risk"): "RISK",
+    ("question", "opportunity"): "OPPORTUNITY",
+    ("problem", None): "PROBLEM",
+    ("problem", "defect"): "DEFECT",
+    ("problem", "gap"): "GAP",
+    ("problem", "debt"): "DEBT",
+    ("qa", "test"): "TEST",
+    ("qa", "evaluation"): "EVALUATION",
+}
+ID_PATTERN = re.compile(r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$")
+SESSION_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
+EVENTS = frozenset(
+    {
+        "accepted",
+        "answered",
+        "absorbed",
+        "confirmed",
+        "priority_changed",
+        "reopened",
+        "rejected",
+        "resolved",
+        "retired",
+        "withdrawn",
+    }
+)
+
+
+@dataclass(frozen=True)
+class SemanticAtom:
+    semantic_id: str
+    carrier_id: str
+    path: str
+    semantic_type: str
+    subtype: str | None
+    emission_status: str
+    priority: str
+    llm_session_ids: tuple[str, ...]
+    child_of: tuple[str, ...]
+    sha256: str
+
+
+def collect_semantic_atoms(
+    root: Path,
+) -> tuple[dict[str, SemanticAtom], list[Diagnostic]]:
+    root = root.resolve()
+    atoms: dict[str, SemanticAtom] = {}
+    diagnostics: list[Diagnostic] = []
+    settings, _ = load_project_settings(root)
+    allowed_priorities = {*settings.priority_scale, "unknown"}
+    for path in sorted(root.rglob("*.md")):
+        relative = path.relative_to(root)
+        if _ignored(relative) or "templates" in relative.parts:
+            continue
+        metadata = _frontmatter(path)
+        if metadata is None or metadata.get("artifact_type") != "atomic_record":
+            continue
+        atom, issues = _parse_atom(root, path, metadata, allowed_priorities)
+        diagnostics.extend(issues)
+        if atom is None:
+            continue
+        previous = atoms.get(atom.semantic_id)
+        if previous is not None:
+            diagnostics.append(
+                Diagnostic(
+                    "DSET-E159",
+                    path,
+                    f"duplicate semantic atom ID: {atom.semantic_id}",
+                )
+            )
+            continue
+        atoms[atom.semantic_id] = atom
+    return atoms, diagnostics
+
+
+def validate_semantic_atoms(root: Path) -> list[Diagnostic]:
+    atoms, diagnostics = collect_semantic_atoms(root)
+    diagnostics.extend(_validate_lifecycle(root, _known_semantic_ids(root, atoms)))
+    diagnostics.extend(_validate_ledger(root, atoms))
+    return sorted(set(diagnostics))
+
+
+def seal_atom(root: Path, path: Path) -> Path:
+    root = root.resolve()
+    path = path.resolve()
+    try:
+        path.relative_to(root)
+    except ValueError as error:
+        raise ValueError("atom carrier must be inside the repository") from error
+    metadata = _frontmatter(path)
+    settings, issues = load_project_settings(root)
+    if issues:
+        raise ValueError("project settings must pass before sealing an atom")
+    if metadata is None:
+        raise ValueError("atom carrier requires YAML frontmatter")
+    atom, diagnostics = _parse_atom(
+        root, path, metadata, {*settings.priority_scale, "unknown"}
+    )
+    if diagnostics or atom is None:
+        message = diagnostics[0].message if diagnostics else "invalid atom"
+        raise ValueError(message)
+    ledger_path = _ledger_path(root)
+    data = _load_or_empty(ledger_path, "records")
+    records = data["records"]
+    assert isinstance(records, list)
+    if any(
+        isinstance(item, dict) and item.get("semantic_id") == atom.semantic_id
+        for item in records
+    ):
+        raise FileExistsError(f"atom is already sealed: {atom.semantic_id}")
+    records.append(_ledger_record(atom))
+    records.sort(key=lambda item: str(item.get("semantic_id", "")))
+    _atomic_dump(ledger_path, data)
+    return ledger_path
+
+
+def append_lifecycle_event(root: Path, event: dict[str, Any]) -> Path:
+    root = root.resolve()
+    atoms, diagnostics = collect_semantic_atoms(root)
+    if diagnostics:
+        raise ValueError(diagnostics[0].message)
+    known_ids = _known_semantic_ids(root, atoms)
+    normalized = _validate_event(root, event, known_ids)
+    lifecycle_path = _lifecycle_path(root)
+    data = _load_or_empty(lifecycle_path, "events")
+    events = data["events"]
+    assert isinstance(events, list)
+    event_id = normalized["id"]
+    if any(isinstance(item, dict) and item.get("id") == event_id for item in events):
+        raise FileExistsError(f"lifecycle event already exists: {event_id}")
+    events.append(normalized)
+    _validate_event_graph(events)
+    _atomic_dump(lifecycle_path, data)
+    return lifecycle_path
+
+
+def effective_priority(root: Path, atom: SemanticAtom) -> tuple[str, str]:
+    lifecycle_path = _lifecycle_path(root)
+    if lifecycle_path.is_file():
+        data = load(lifecycle_path)
+        events = data.get("events", []) if isinstance(data, dict) else []
+        changes = [
+            item
+            for item in events
+            if isinstance(item, dict)
+            and item.get("atom_id") == atom.semantic_id
+            and item.get("event") == "priority_changed"
+        ]
+        if changes:
+            latest = changes[-1]
+            return str(latest["priority"]), f"lifecycle:{latest['id']}"
+    if atom.priority == "unknown":
+        return "unknown", f"atom:{atom.semantic_id}"
+    return atom.priority, f"atom:{atom.semantic_id}"
+
+
+def _parse_atom(
+    root: Path,
+    path: Path,
+    data: dict[str, Any],
+    allowed_priorities: set[str],
+) -> tuple[SemanticAtom | None, list[Diagnostic]]:
+    diagnostics: list[Diagnostic] = []
+    semantic_type = data.get("type")
+    subtype = data.get("subtype")
+    semantic_id = data.get("semantic_id")
+    carrier_id = data.get("artifact_id")
+    status = data.get("status")
+    priority = data.get("priority")
+    sessions = data.get("llm_session_ids")
+    if semantic_type not in SEMANTIC_SUBTYPES:
+        diagnostics.append(_atom_diag(path, "atom requires one of the four Types"))
+    elif subtype is not None and subtype not in SEMANTIC_SUBTYPES[semantic_type]:
+        diagnostics.append(_atom_diag(path, "atom has an invalid direct subtype"))
+    elif semantic_type == "qa" and subtype not in {"test", "evaluation"}:
+        diagnostics.append(_atom_diag(path, "QA atom requires test or evaluation"))
+    if not isinstance(semantic_id, str) or not ID_PATTERN.fullmatch(semantic_id):
+        diagnostics.append(_atom_diag(path, "atom requires a canonical semantic_id"))
+    elif semantic_type in SEMANTIC_SUBTYPES:
+        expected = SEMANTIC_ID_KINDS.get((semantic_type, subtype))
+        segments = semantic_id.split("-")
+        if expected is None or expected not in segments:
+            diagnostics.append(
+                _atom_diag(path, f"semantic_id must use the {expected} kind")
+            )
+    if not isinstance(carrier_id, str) or not ID_PATTERN.fullmatch(carrier_id):
+        diagnostics.append(_atom_diag(path, "atom requires a canonical artifact_id"))
+    if status not in {"proposed", "accepted"}:
+        diagnostics.append(
+            _atom_diag(path, "emission status must be proposed or accepted")
+        )
+    if priority not in allowed_priorities:
+        diagnostics.append(_atom_diag(path, "atom priority is not in project scale"))
+    if not _valid_sessions(sessions):
+        diagnostics.append(
+            _atom_diag(path, "atom requires unique host-prefixed llm_session_ids")
+        )
+    child_of = data.get("child_of", [])
+    if child_of is None:
+        child_of = []
+    if not isinstance(child_of, list) or not all(
+        isinstance(item, str) and ID_PATTERN.fullmatch(item) for item in child_of
+    ):
+        diagnostics.append(_atom_diag(path, "child_of must contain canonical IDs"))
+        child_of = []
+    if diagnostics:
+        return None, diagnostics
+    assert isinstance(semantic_id, str)
+    assert isinstance(carrier_id, str)
+    assert isinstance(semantic_type, str)
+    assert isinstance(status, str)
+    assert isinstance(priority, str)
+    assert isinstance(sessions, list)
+    return (
+        SemanticAtom(
+            semantic_id=semantic_id,
+            carrier_id=carrier_id,
+            path=path.relative_to(root).as_posix(),
+            semantic_type=semantic_type,
+            subtype=str(subtype) if subtype is not None else None,
+            emission_status=status,
+            priority=priority,
+            llm_session_ids=tuple(str(item) for item in sessions),
+            child_of=tuple(str(item) for item in child_of),
+            sha256=_digest(path),
+        ),
+        diagnostics,
+    )
+
+
+def _validate_lifecycle(root: Path, known_ids: set[str]) -> list[Diagnostic]:
+    path = _lifecycle_path(root)
+    if not path.is_file():
+        return []
+    try:
+        data = load(path)
+    except (OSError, UnicodeError, YamlSubsetError) as error:
+        return [Diagnostic("DSET-E160", path, f"invalid lifecycle registry: {error}")]
+    events = data.get("events") if isinstance(data, dict) else None
+    if not isinstance(data, dict) or str(data.get("schema_version")) != "1.0":
+        return [Diagnostic("DSET-E160", path, "lifecycle schema_version must be 1.0")]
+    if not isinstance(events, list):
+        return [Diagnostic("DSET-E160", path, "lifecycle events must be a list")]
+    diagnostics: list[Diagnostic] = []
+    seen: set[str] = set()
+    for event in events:
+        try:
+            normalized = _validate_event(root, event, known_ids)
+        except ValueError as error:
+            diagnostics.append(Diagnostic("DSET-E160", path, str(error)))
+            continue
+        event_id = str(normalized["id"])
+        if event_id in seen:
+            diagnostics.append(
+                Diagnostic("DSET-E160", path, f"duplicate lifecycle event: {event_id}")
+            )
+        seen.add(event_id)
+    try:
+        _validate_event_graph(events)
+    except ValueError as error:
+        diagnostics.append(Diagnostic("DSET-E160", path, str(error)))
+    return diagnostics
+
+
+def _validate_event(
+    root: Path, event: object, known_ids: set[str]
+) -> dict[str, Any]:
+    if not isinstance(event, dict):
+        raise ValueError("every lifecycle event must be a mapping")
+    event_id = event.get("id")
+    atom_id = event.get("atom_id")
+    event_kind = event.get("event")
+    allowed_fields = {
+        "id",
+        "atom_id",
+        "event",
+        "occurred_at",
+        "priority",
+        "related",
+        "llm_session_ids",
+        "rationale",
+    }
+    unknown_fields = sorted(set(event) - allowed_fields)
+    if unknown_fields:
+        raise ValueError(
+            "lifecycle event has unknown fields: " + ", ".join(unknown_fields)
+        )
+    if not isinstance(event_id, str) or not re.fullmatch(
+        r"[A-Z][A-Z0-9]*-LIFECYCLE-EVENT-[0-9]{3,}", event_id
+    ):
+        raise ValueError("lifecycle event requires a canonical ID")
+    if not isinstance(atom_id, str) or atom_id not in known_ids:
+        raise ValueError(f"lifecycle event has unresolved atom_id: {atom_id}")
+    if event_kind not in EVENTS:
+        raise ValueError(f"unknown lifecycle event: {event_kind}")
+    occurred_at = event.get("occurred_at")
+    try:
+        observed = datetime.fromisoformat(str(occurred_at))
+    except ValueError as error:
+        raise ValueError("lifecycle event requires an ISO timestamp") from error
+    if observed.tzinfo is None:
+        raise ValueError("lifecycle event timestamp requires a timezone")
+    if not _valid_sessions(event.get("llm_session_ids")):
+        raise ValueError("lifecycle event requires valid llm_session_ids")
+    related = event.get("related", [])
+    if not isinstance(related, list) or not all(
+        isinstance(item, str) and ID_PATTERN.fullmatch(item) for item in related
+    ):
+        raise ValueError("lifecycle related IDs must be canonical")
+    if event_kind == "absorbed" and (
+        len(related) != 1 or related[0] not in known_ids
+    ):
+        raise ValueError("absorbed event requires one resolving atom")
+    if event_kind == "priority_changed":
+        settings, _ = load_project_settings(root)
+        if event.get("priority") not in settings.priority_scale:
+            raise ValueError("priority_changed requires a project priority value")
+    elif "priority" in event:
+        raise ValueError("priority is valid only for priority_changed events")
+    rationale = event.get("rationale")
+    if rationale is not None and (
+        not isinstance(rationale, str) or not 1 <= len(rationale) <= 4096
+    ):
+        raise ValueError("lifecycle rationale must be non-empty and bounded")
+    return dict(event)
+
+
+def _validate_event_graph(events: list[object]) -> None:
+    edges: dict[str, str] = {}
+    for event in events:
+        if not isinstance(event, dict) or event.get("event") != "absorbed":
+            continue
+        related = event.get("related")
+        if isinstance(related, list) and len(related) == 1:
+            edges[str(event.get("atom_id"))] = str(related[0])
+    for start in edges:
+        seen: set[str] = set()
+        current = start
+        while current in edges:
+            if current in seen:
+                raise ValueError(f"atom absorption cycle includes {current}")
+            seen.add(current)
+            current = edges[current]
+
+
+def _known_semantic_ids(
+    root: Path, atoms: dict[str, SemanticAtom]
+) -> set[str]:
+    identifiers = set(atoms)
+    layout = discover_layout(root)
+    if layout.intake_path.is_file():
+        data = load(layout.intake_path)
+        items = data.get("items", []) if isinstance(data, dict) else []
+        identifiers.update(
+            str(item["id"])
+            for item in items
+            if isinstance(item, dict) and isinstance(item.get("id"), str)
+        )
+    for path in sorted(root.rglob("decision-*.md")):
+        text = path.read_text(encoding="utf-8")
+        match = re.search(r"-\s*\*\*Decision ID:\*\*\s*`([^`]+)`", text)
+        if match:
+            identifiers.add(match.group(1))
+    for path in sorted(root.rglob("package.yaml")):
+        try:
+            data = load(path)
+        except (OSError, UnicodeError, YamlSubsetError):
+            continue
+        if not isinstance(data, dict):
+            continue
+        fields = (
+            "requirements",
+            "tests",
+            "evals",
+            "contracts",
+            "stories",
+            "outcomes",
+        )
+        for field in fields:
+            values = data.get(field, [])
+            if isinstance(values, list):
+                identifiers.update(
+                    str(item) for item in values if isinstance(item, str)
+                )
+    return identifiers
+
+
+def _validate_ledger(
+    root: Path, atoms: dict[str, SemanticAtom]
+) -> list[Diagnostic]:
+    path = _ledger_path(root)
+    if not path.is_file():
+        if atoms:
+            return [Diagnostic("DSET-E161", path, "semantic atom ledger is missing")]
+        return []
+    try:
+        data = load(path)
+    except (OSError, UnicodeError, YamlSubsetError) as error:
+        return [Diagnostic("DSET-E161", path, f"invalid atom ledger: {error}")]
+    records = data.get("records") if isinstance(data, dict) else None
+    if not isinstance(data, dict) or str(data.get("schema_version")) != "1.0":
+        return [Diagnostic("DSET-E161", path, "atom ledger schema_version must be 1.0")]
+    if not isinstance(records, list):
+        return [Diagnostic("DSET-E161", path, "atom ledger records must be a list")]
+    diagnostics: list[Diagnostic] = []
+    indexed: dict[str, dict[str, Any]] = {}
+    for record in records:
+        if not isinstance(record, dict) or not isinstance(
+            record.get("semantic_id"), str
+        ):
+            diagnostics.append(Diagnostic("DSET-E161", path, "invalid ledger record"))
+            continue
+        identifier = str(record["semantic_id"])
+        if identifier in indexed:
+            diagnostics.append(
+                Diagnostic("DSET-E161", path, f"duplicate ledger atom: {identifier}")
+            )
+        indexed[identifier] = record
+    for identifier, atom in atoms.items():
+        record = indexed.get(identifier)
+        if record is None:
+            diagnostics.append(
+                Diagnostic("DSET-E161", root / atom.path, "emitted atom is not sealed")
+            )
+            continue
+        expected = _ledger_record(atom)
+        for field in ("carrier_id", "path", "sha256", "type", "subtype"):
+            if record.get(field) != expected.get(field):
+                diagnostics.append(
+                    Diagnostic(
+                        "DSET-E161",
+                        root / atom.path,
+                        f"sealed atom {field} changed: {identifier}",
+                    )
+                )
+    for identifier in sorted(set(indexed) - set(atoms)):
+        record_path = indexed[identifier].get("path")
+        if not isinstance(record_path, str) or not (root / record_path).is_file():
+            diagnostics.append(
+                Diagnostic("DSET-E161", path, f"sealed atom is missing: {identifier}")
+            )
+    return diagnostics
+
+
+def _ledger_record(atom: SemanticAtom) -> dict[str, Any]:
+    return {
+        "semantic_id": atom.semantic_id,
+        "carrier_id": atom.carrier_id,
+        "path": atom.path,
+        "sha256": atom.sha256,
+        "type": atom.semantic_type,
+        "subtype": atom.subtype if atom.subtype is not None else "none",
+    }
+
+
+def _load_or_empty(path: Path, field: str) -> dict[str, Any]:
+    if not path.is_file():
+        return {"schema_version": "1.0", field: []}
+    data = load(path)
+    if not isinstance(data, dict) or str(data.get("schema_version")) != "1.0":
+        raise ValueError(f"invalid registry: {path}")
+    values = data.get(field)
+    if not isinstance(values, list):
+        raise ValueError(f"registry field must be a list: {field}")
+    return data
+
+
+def _atomic_dump(path: Path, data: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    temporary.write_text(dump(data), encoding="utf-8")
+    temporary.replace(path)
+
+
+def _frontmatter(path: Path) -> dict[str, Any] | None:
+    try:
+        lines = path.read_text(encoding="utf-8").splitlines()
+    except (OSError, UnicodeError):
+        return None
+    if not lines or lines[0].strip() != "---":
+        return None
+    try:
+        end = lines.index("---", 1)
+        data = loads("\n".join(lines[1:end]))
+    except (ValueError, YamlSubsetError):
+        return None
+    return data if isinstance(data, dict) else None
+
+
+def _valid_sessions(value: object) -> bool:
+    return (
+        isinstance(value, list)
+        and len(value) == len(set(str(item) for item in value))
+        and all(
+            isinstance(item, str) and SESSION_PATTERN.fullmatch(item) for item in value
+        )
+    )
+
+
+def _ignored(relative: Path) -> bool:
+    ignored = {".git", ".venv", "__pycache__", "dist", ".dset"}
+    return any(part in ignored for part in relative.parts)
+
+
+def _digest(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _ledger_path(root: Path) -> Path:
+    return discover_layout(root).governance_root / "atoms.yaml"
+
+
+def _lifecycle_path(root: Path) -> Path:
+    return discover_layout(root).governance_root / "lifecycle.yaml"
+
+
+def _atom_diag(path: Path, message: str) -> Diagnostic:
+    return Diagnostic("DSET-E159", path, message)

@@ -9,6 +9,7 @@
   schema-neutral current manifest.
 - [Governance profile and GOV rule templates](governance/core-v1/README.md)
 - [Artifact-type registry](artifact-types.yaml)
+- [Semantic atom carrier](atom.md)
 - [Intake template](intake.yaml)
 - [Change profiles](profiles.yaml)
 

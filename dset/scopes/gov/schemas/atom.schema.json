@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/scopes/gov/schemas/atom.schema.json",
+  "title": "DSET semantic atom frontmatter",
+  "type": "object",
+  "required": ["artifact_type", "artifact_id", "type", "semantic_id", "status", "priority", "llm_session_ids"],
+  "properties": {
+    "artifact_type": {"const": "atomic_record"},
+    "artifact_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-ATOMIC-RECORD-[0-9]{3,}$"},
+    "type": {"enum": ["decision", "question", "problem", "qa"]},
+    "subtype": {"enum": ["requirement", "constraint", "contract", "user_story", "outcome", "scenario", "invariant", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
+    "semantic_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"},
+    "status": {"enum": ["proposed", "accepted"]},
+    "priority": {"enum": ["critical", "high", "medium", "low", "deferred", "unknown"]},
+    "child_of": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"}},
+    "llm_session_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$"}},
+    "rationale": {"type": "string", "minLength": 1, "maxLength": 4096}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"type": {"const": "qa"}}, "required": ["type"]},
+      "then": {"required": ["subtype"], "properties": {"subtype": {"enum": ["test", "evaluation"]}}}
+    },
+    {
+      "if": {"properties": {"type": {"const": "decision"}}, "required": ["type", "subtype"]},
+      "then": {"properties": {"subtype": {"enum": ["requirement", "constraint", "contract", "user_story", "outcome", "scenario", "invariant"]}}}
+    },
+    {
+      "if": {"properties": {"type": {"const": "question"}}, "required": ["type", "subtype"]},
+      "then": {"properties": {"subtype": {"enum": ["conflict", "risk", "opportunity"]}}}
+    },
+    {
+      "if": {"properties": {"type": {"const": "problem"}}, "required": ["type", "subtype"]},
+      "then": {"properties": {"subtype": {"enum": ["defect", "gap", "debt"]}}}
+    }
+  ],
+  "additionalProperties": false
+}

@@ -34,6 +34,7 @@ from .runtime_bridge import (
 )
 from .scaffold import create_change
 from .self_host import run_self_host
+from .semantic_atoms import append_lifecycle_event, seal_atom
 from .skill_catalog import PUBLIC_SKILL_WORKFLOWS
 from .skill_distribution import main as skill_distribution_main
 from .traceability import (
@@ -173,6 +174,17 @@ def build_parser() -> argparse.ArgumentParser:
     )
     _root_argument(artifact_assess)
     artifact_assess.add_argument("--candidate", type=Path, required=True)
+
+    atom = commands.add_parser("atom", help="seal atoms and append lifecycle events")
+    atom_commands = atom.add_subparsers(dest="atom_command", required=True)
+    atom_seal = atom_commands.add_parser("seal", help="seal an emitted atom carrier")
+    _root_argument(atom_seal)
+    atom_seal.add_argument("--file", type=Path, required=True)
+    atom_event = atom_commands.add_parser(
+        "event", help="append a validated immutable-atom lifecycle event"
+    )
+    _root_argument(atom_event)
+    atom_event.add_argument("--candidate", type=Path, required=True)
 
     runtime = commands.add_parser("runtime", help="bridge host skill run state")
     runtime_commands = runtime.add_subparsers(dest="runtime_command", required=True)
@@ -402,6 +414,17 @@ def main(argv: list[str] | None = None) -> int:
             assessment = assess_artifact_candidate(root, candidate)
             print(json.dumps(assessment, indent=2, sort_keys=True))
             return 0 if assessment["emission_allowed"] is True else 2
+        if args.command == "atom":
+            root = _repository_root(args.root)
+            if args.atom_command == "seal":
+                path = seal_atom(root, args.file)
+            else:
+                event = json.loads(args.candidate.read_text(encoding="utf-8"))
+                if not isinstance(event, dict):
+                    raise ValueError("lifecycle candidate must be a JSON object")
+                path = append_lifecycle_event(root, event)
+            print(path.relative_to(root).as_posix())
+            return 0
         if args.command == "runtime":
             root = _repository_root(args.root)
             runtime_result: object

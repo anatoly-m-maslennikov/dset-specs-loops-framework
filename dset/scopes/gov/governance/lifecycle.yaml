@@ -1,0 +1,32 @@
+schema_version: "1.0"
+events:
+  -
+    id: DSET-LIFECYCLE-EVENT-001
+    atom_id: DSET-QUESTION-GOV-002
+    event: resolved
+    occurred_at: 2026-07-20T00:00:00+04:00
+    related:
+      - DSET-DECISION-GOV-010
+    llm_session_ids:
+      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+    rationale: The accepted core-v1 priority Decision answers the open scale question without rewriting the legacy intake carrier.
+  -
+    id: DSET-LIFECYCLE-EVENT-002
+    atom_id: DSET-DECISION-GOV-004
+    event: absorbed
+    occurred_at: 2026-07-20T00:00:00+04:00
+    related:
+      - DSET-DECISION-GOV-005
+    llm_session_ids:
+      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+    rationale: Preserve the already-declared full absorption as append-only lifecycle state.
+  -
+    id: DSET-LIFECYCLE-EVENT-003
+    atom_id: DSET-DECISION-GOV-007
+    event: absorbed
+    occurred_at: 2026-07-20T00:00:00+04:00
+    related:
+      - DSET-DECISION-GOV-008
+    llm_session_ids:
+      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+    rationale: Preserve the FPF boundary Decision's declared full absorption without editing either Decision carrier.
