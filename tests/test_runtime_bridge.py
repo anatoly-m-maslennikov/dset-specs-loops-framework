@@ -115,7 +115,10 @@ class RuntimeBridgeTests(unittest.TestCase):
             semantic_routing["types"], ["decision", "question", "problem", "qa"]
         )
         self.assertGreater(semantic_routing["classification_count"], 0)
-        self.assertIn("work-items.md", semantic_routing["source"])
+        self.assertEqual(
+            semantic_routing["source"],
+            "dset/scopes/gov/governance/work-items.md",
+        )
         self.assertTrue(str(context["ruleset_identity"]).startswith("ruleset:"))
         closure = cast(dict[str, Any], context["closure"])
         self.assertEqual(closure["next_workflow"], "decisions")

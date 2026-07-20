@@ -37,5 +37,5 @@ withdrawal, and retirement are append-only lifecycle events. A successor points
 backward with `Absorbs`; reverse links and current state are derived. A fully
 retired Decision may move byte-for-byte to `archive/` with stable ID, digest,
 and lookup. This adoption specialization uses the same lifecycle as the neutral
-[`decision.md`](decision.md) template; it adds candidate version, license,
+[`decision.md`](../../templates/change/decision.md) template; it adds candidate version, license,
 lock-in, replacement, and upgrade concerns.

@@ -23,6 +23,10 @@ class ProfileTests(unittest.TestCase):
         self.assertIn("dependency-map.yaml", large_files)
         self.assertIn("root-cause.md", defect_files)
         self.assertIn("adoption-decision.md", adoption_files)
+        adoption_template = (
+            ROOT / "dset/scopes/gov/templates/change/adoption-decision.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn("(../../templates/change/decision.md)", adoption_template)
         self.assertIn("proofs/candidate-fit", adoption_dirs)
 
 

@@ -79,7 +79,7 @@ def resolve_skill_context(
                 1 for item in semantic_index if item["compatibility"]
             ),
             "source": discover_layout(root)
-            .governance_root.joinpath("governance/work-items.md")
+            .governance_root.joinpath("work-items.md")
             .relative_to(root)
             .as_posix(),
         },
