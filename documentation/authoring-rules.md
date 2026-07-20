@@ -92,10 +92,12 @@ When two entities are mutually related, define each independently first using sh
   QA, cross-cutting Invariants/Constraints, integration architecture, release
   readiness, and cross-owner Questions or Problems. High-level wording alone
   does not move a child-owned claim upward; parents link rather than duplicate.
-- For inheritance, write `child_of` on the new local artifact and derive
-  `parent_to`; never edit an immutable parent to add a child. With no child, the
-  inherited parent applies directly. A local child Decision may implement,
-  replace, or cancel it only in that subtree. Add no other inheritance relation.
+- For lineage, write a non-empty list of one or more immediate parent IDs in
+  `child_of` on the new child and derive `parent_to`, ancestors, and descendants;
+  never edit an immutable parent to add a child. Multiple parents and children
+  are valid. With no local child, an inherited parent applies directly. A child
+  states whether it implements, refines, replaces, cancels, verifies, or reveals
+  a problem; the neutral link alone does not imply that meaning.
 
 ## Rationale and Decisions
 

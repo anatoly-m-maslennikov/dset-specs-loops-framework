@@ -24,6 +24,7 @@ the implementation scope to its current layer-owned Requirement owners.
 | One-level-down project/group/feature/layer architecture views | `DSET-REQUIREMENT-GOV-031` |
 | Narrowest-common-scope ownership for project, group, feature, and layer truth | `DSET-REQUIREMENT-GOV-032` |
 | Parent-to-child artifact inheritance, local implementation/cancellation, and direct fallback | `DSET-REQUIREMENT-GOV-033` |
+| Many-to-many child-owned lineage and derived reverse/transitive traceability | `DSET-REQUIREMENT-GOV-034` |
 | Five flat Release lifecycle artifacts | `DSET-REQUIREMENT-OPS-013` |
 | Role-aware handling for every governed conflict pairing, with priority selection only where permitted | `DSET-REQUIREMENT-TOOL-019` |
 
@@ -46,6 +47,7 @@ Connected accepted IDs are `DSET-REQUIREMENT-META-007`,
 `DSET-REQUIREMENT-GOV-030`, `DSET-REQUIREMENT-GOV-031`,
 `DSET-REQUIREMENT-GOV-032`,
 `DSET-REQUIREMENT-GOV-033`,
+`DSET-REQUIREMENT-GOV-034`,
 `DSET-REQUIREMENT-TOOL-018`,
 `DSET-REQUIREMENT-TOOL-019`,
 `DSET-REQUIREMENT-SKILL-002`, `DSET-REQUIREMENT-SKILL-003`,
@@ -90,6 +92,16 @@ Artifact inheritance uses only canonical `child_of` and derived reverse
 parent directly. A local child Decision may select implementation, replace, or
 cancel the parent only for its subtree, leaving the immutable parent and sibling
 scopes unchanged. No additional inheritance relation is introduced.
+
+## ADDED — DSET-REQUIREMENT-GOV-034 Artifact lineage
+
+Every governed non-root child stores `child_of` as a non-empty list of one or
+more canonical immediate-parent IDs. Multiple parents and children are valid;
+`parent_to`, ancestry, and descendants are derived without editing parents.
+The neutral relation traces APP-PLAN decomposition through authority, analysis,
+compiled truth, implementation, QA, evidence, Verification, readiness, and
+release. Missing parents, authored reverse links, scalar or empty lists,
+duplicates, self-links, and cycles fail closed.
 
 ## ADDED — DSET-REQUIREMENT-OPS-012 Integration delivery is the default
 

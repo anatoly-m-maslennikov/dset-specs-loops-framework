@@ -591,3 +591,33 @@ TOOL applies it directly. SKILL emits a `child_of` Decision selecting its local
 implementation, while OPS emits a `child_of` Decision cancelling the parent for
 OPS. The derived `parent_to` view shows both children; neither local Decision
 changes TOOL, its sibling, or the immutable project Requirement.
+
+## DSET-REQUIREMENT-GOV-034 — Artifact lineage is many-to-many and child-owned
+
+Every governed artifact that directly descends from another governed artifact
+must store `child_of` as a non-empty, duplicate-free list of one or more
+canonical immediate-parent IDs. Root artifacts omit the field. A parent may
+have any number of children and a child may have multiple parents. Authors and
+generators must never store `parent_to`; it is always the derived reverse view,
+so adding a child never edits an immutable parent.
+
+The same neutral lineage primitive connects APP-PLAN decomposition, atomic
+authority, Analysis Reports, compiled evergreen truth, QA definitions,
+implementation, Evidence, Verification, Readiness, and Release Records. Store
+only immediate causal parents and derive transitive ancestry and descendants.
+The child content determines whether it implements, refines, replaces,
+cancels, verifies, or reveals a problem in a parent; `child_of` alone grants no
+authority and asserts no agreement. Commit `Implements:` trailers contribute
+implementation edges to the derived graph.
+
+Unresolved parent IDs, an empty or non-list `child_of`, duplicate parents,
+self-links, and cycles must fail closed. The derived graph must expose both
+directions without writing reverse links into canonical artifacts.
+
+**Scenario DSET-SCENARIO-GOV-035:** One APP-PLAN emits a Requirement, a
+Constraint, and a Question. A Test is `child_of` both the Requirement and
+Constraint; the Question produces an Analysis Report and then a Decision; an
+implementation commit cites the governing IDs; and Test execution produces an
+Evidence Record. DSET derives every `parent_to` edge and the complete
+APP-PLAN-to-evidence path without modifying any parent or copying every
+ancestor into each child.

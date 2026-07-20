@@ -179,3 +179,19 @@ parent in one scope stop as unresolved authority.
 Inheritance adds no `applies_to`, `realizes`, `implements`, `conforms_to`, or
 override relation. The accepted child directive contains the local effect;
 `child_of` and derived `parent_to` contain the hierarchy.
+
+## Artifact lineage
+
+The same child-owned relation provides end-to-end traceability. Every governed
+non-root child stores `child_of` as a non-empty list of one or more canonical
+immediate-parent IDs. Multiple parents and children are valid. Store only
+immediate causal parents; derive `parent_to`, ancestors, and descendants without
+editing parents or writing reverse links into canonical artifacts.
+
+Lineage connects APP-PLAN decomposition, atomic authority, Analysis Reports,
+compiled truth, implementation, QA, Evidence, Verification, readiness, and
+release. A commit contributes implementation edges through its `Implements:`
+trailers. The relation is neutral: child content states whether it implements,
+refines, replaces, cancels, verifies, or reveals a problem in its parent.
+Unresolved parent IDs, non-list or empty `child_of`, duplicate parents,
+self-links, authored `parent_to`, and cycles fail closed.

@@ -80,12 +80,20 @@ architecture, whole-project release/readiness history, and cross-owner
 Decisions, Questions, Problems, and Analysis Reports. Parent artifacts link to
 child detail instead of duplicating it.
 
-Artifacts may inherit down the same structural tree. A new local artifact
-stores only `child_of`; `parent_to` is the derived reverse view so an immutable
-parent never needs a later edit. If a feature or layer has no child, it applies
-the nearest inherited parent directly. A local child Decision may define its
-implementation, replace it, or cancel it within that subtree without changing
-siblings or ancestors. No other inheritance relation is needed.
+Artifacts may inherit down the same structural tree. Every non-root child
+stores `child_of` as a list of one or more immediate parent IDs; `parent_to` is
+the derived reverse view so an immutable parent never needs a later edit. A
+parent can have many children and a child can have many parents. If a feature
+or layer has no child, it applies the nearest inherited parent directly. A
+local child Decision may define its implementation, replace it, or cancel it
+within that subtree without changing siblings or ancestors.
+
+The same relation traces APP-PLAN decomposition through authority, analysis,
+compiled truth, implementation, QA, evidence, Verification, readiness, and
+release. Record only immediate causal parents and derive transitive paths. The
+child says what the relation means; `child_of` itself does not imply agreement
+or authority. Authored `parent_to`, missing parents, empty or duplicate parent
+lists, self-links, and cycles are invalid.
 
 ## Current truth and history
 
