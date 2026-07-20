@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import io
 import json
 import shutil
@@ -46,6 +47,29 @@ class SkillDistributionTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.temporary.cleanup()
 
+    def install_distribution(
+        self,
+        host: str,
+        destination: Path,
+        package: Path | None = None,
+    ) -> Path:
+        runtime = (
+            destination.parent / f".{destination.name}-packages" / "dset"
+            if package is None
+            else package
+        )
+        actions = plan_install(self.source, host, destination, runtime)
+        runtime_action = plan_runtime_install(
+            self.source,
+            host,
+            runtime,
+            wrapper_source=self.source,
+            skills_destination=destination,
+        )
+        apply_install(actions)
+        apply_runtime_install(runtime_action)
+        return runtime
+
     def test_install_is_dry_run_then_copies_all_public_codex_skills(self) -> None:
         destination = self.root / "codex-skills"
         actions = plan_install(self.source, "codex", destination)
@@ -78,8 +102,8 @@ class SkillDistributionTests(unittest.TestCase):
 
     def test_host_copy_and_default_destinations_are_portable(self) -> None:
         destination = self.root / "claude-skills"
-        apply_install(plan_install(self.source / "skills", "claude", destination))
-        proofs = verify_installation("claude", destination)
+        runtime = self.install_distribution("claude", destination)
+        proofs = verify_installation("claude", destination, runtime)
         self.assertEqual(len(proofs), len(SKILL_WORKFLOWS))
 
         home = self.root / "home"
@@ -240,8 +264,10 @@ class SkillDistributionTests(unittest.TestCase):
 
     def test_invocation_receipt_requires_real_host_observations(self) -> None:
         destination = self.root / "claude-skills"
-        apply_install(plan_install(self.source, "claude", destination))
-        receipt = invocation_receipt_template("claude", "dset-diagnose", destination)
+        runtime = self.install_distribution("claude", destination)
+        receipt = invocation_receipt_template(
+            "claude", "dset-diagnose", destination, runtime
+        )
         receipt.update(
             {
                 "host_version": "test-host-1",
@@ -256,13 +282,123 @@ class SkillDistributionTests(unittest.TestCase):
             }
         )
 
-        verified = verify_invocation_receipt(receipt, "claude", destination)
+        verified = verify_invocation_receipt(receipt, "claude", destination, runtime)
         self.assertEqual(verified["status"], "verified")
         self.assertEqual(verified["workflow_id"], "diagnosis")
 
         receipt["handoff_observed"] = False
         with self.assertRaisesRegex(SkillDistributionError, "handoff_observed"):
-            verify_invocation_receipt(receipt, "claude", destination)
+            verify_invocation_receipt(receipt, "claude", destination, runtime)
+
+    def test_wrapper_verification_rejects_every_tree_mutation_class(self) -> None:
+        destination = self.root / "wrapper-mutation-skills"
+        runtime = self.install_distribution("codex", destination)
+        skill = destination / "dset-diagnose"
+        backup = self.root / "wrapper-backup"
+        shutil.copytree(skill, backup)
+        mutations = ("changed", "added", "removed", "substituted")
+        for mutation in mutations:
+            with self.subTest(mutation=mutation):
+                if mutation == "changed":
+                    path = skill / "SKILL.md"
+                    path.write_text(
+                        path.read_text(encoding="utf-8") + "\nchanged\n",
+                        encoding="utf-8",
+                    )
+                elif mutation == "added":
+                    (skill / "unexpected.txt").write_text("added\n", encoding="utf-8")
+                elif mutation == "removed":
+                    (skill / "agents" / "openai.yaml").unlink()
+                else:
+                    source = destination / "dset-clarify" / "SKILL.md"
+                    (skill / "SKILL.md").write_bytes(source.read_bytes())
+                with self.assertRaises(SkillDistributionError):
+                    verify_installation("codex", destination, runtime)
+                shutil.rmtree(skill)
+                shutil.copytree(backup, skill)
+
+    def test_runtime_verification_rejects_every_payload_mutation_class(self) -> None:
+        destination = self.root / "runtime-mutation-skills"
+        runtime = self.install_distribution("claude", destination)
+        backup = self.root / "runtime-backup"
+        shutil.copytree(runtime, backup)
+        mutations = ("changed", "added", "removed", "substituted")
+        for mutation in mutations:
+            with self.subTest(mutation=mutation):
+                target = runtime / "dset_toolchain" / "cli.py"
+                if mutation == "changed":
+                    target.write_text(
+                        target.read_text(encoding="utf-8") + "\n# changed\n",
+                        encoding="utf-8",
+                    )
+                elif mutation == "added":
+                    (runtime / "unexpected.py").write_text(
+                        "# added\n", encoding="utf-8"
+                    )
+                elif mutation == "removed":
+                    target.unlink()
+                else:
+                    target.write_bytes(
+                        (runtime / "dset_toolchain" / "runtime.py").read_bytes()
+                    )
+                with self.assertRaisesRegex(SkillDistributionError, "runtime payload"):
+                    verify_runtime_installation("claude", runtime)
+                shutil.rmtree(runtime)
+                shutil.copytree(backup, runtime)
+
+    def test_manifest_mutation_removal_and_substitution_are_rejected(self) -> None:
+        destination = self.root / "manifest-mutation-skills"
+        runtime = self.install_distribution("codex", destination)
+        manifest = runtime / "manifest.json"
+        original = manifest.read_bytes()
+        for mutation in ("changed", "removed", "substituted", "added"):
+            with self.subTest(mutation=mutation):
+                if mutation == "changed":
+                    manifest.write_bytes(manifest.read_bytes() + b" ")
+                elif mutation == "removed":
+                    manifest.unlink()
+                elif mutation == "substituted":
+                    replacement = json.loads(original)
+                    replacement["installation"]["runtime_destination"] = "substitute"
+                    manifest.write_text(
+                        json.dumps(replacement, indent=2, sort_keys=True) + "\n",
+                        encoding="utf-8",
+                    )
+                else:
+                    (runtime / "manifest-copy.json").write_bytes(manifest.read_bytes())
+                with self.assertRaises(SkillDistributionError):
+                    verify_runtime_installation("codex", runtime)
+                with self.assertRaises(SkillDistributionError):
+                    verify_installation("codex", destination, runtime)
+                manifest.write_bytes(original)
+                (runtime / "manifest-copy.json").unlink(missing_ok=True)
+
+    def test_receipt_rejects_post_template_distribution_mutation(self) -> None:
+        destination = self.root / "receipt-skills"
+        runtime = self.install_distribution("claude", destination)
+        receipt = invocation_receipt_template(
+            "claude", "dset-diagnose", destination, runtime
+        )
+        receipt.update(
+            {
+                "host_version": "test-host-1",
+                "repository_identity": "fixture-repository@abc123",
+                "host_session_id": "claude:test-session",
+                "discovered": True,
+                "loaded": True,
+                "invoked": True,
+                "local_rules_resolved": True,
+                "handoff_observed": True,
+                "stop_boundary_observed": True,
+            }
+        )
+        wrapper = destination / "dset-diagnose" / "SKILL.md"
+        wrapper.write_text(
+            wrapper.read_text(encoding="utf-8") + "\nchanged\n",
+            encoding="utf-8",
+        )
+        with self.assertRaises(SkillDistributionError):
+            verify_invocation_receipt(receipt, "claude", destination, runtime)
 
     def test_cli_install_defaults_to_dry_run_and_requires_apply(self) -> None:
         destination = self.root / "codex-skills"
@@ -281,9 +417,16 @@ class SkillDistributionTests(unittest.TestCase):
             )
         self.assertEqual(status, 0)
         self.assertFalse(destination.exists())
-        self.assertFalse(json.loads(output.getvalue())["applied"])
+        preview = json.loads(output.getvalue())
+        self.assertFalse(preview["applied"])
+        self.assertEqual(
+            set(preview["expected_manifest"]["wrappers"]),
+            set(SKILL_WORKFLOWS),
+        )
+        self.assertEqual(len(preview["expected_manifest_digest"]), 64)
 
-        with redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
+        applied_output = io.StringIO()
+        with redirect_stdout(applied_output), redirect_stderr(io.StringIO()):
             status = main(
                 [
                     "install",
@@ -300,6 +443,11 @@ class SkillDistributionTests(unittest.TestCase):
         self.assertTrue((destination / "dset" / "SKILL.md").is_file())
         package = destination.parent / "packages" / "dset"
         self.assertTrue((package / "dset.py").is_file())
+        applied = json.loads(applied_output.getvalue())
+        self.assertEqual(
+            applied["expected_manifest_digest"],
+            hashlib.sha256((package / "manifest.json").read_bytes()).hexdigest(),
+        )
 
     def test_combined_install_preflights_runtime_conflict_before_writes(self) -> None:
         destination = self.root / "codex" / "skills"

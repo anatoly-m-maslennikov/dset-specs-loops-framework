@@ -20,8 +20,8 @@ from .skill_context import resolve_skill_context
 
 SKILL_WORKFLOWS = PUBLIC_SKILL_WORKFLOWS
 HOSTS = {"claude", "codex"}
-RECEIPT_SCHEMA_VERSION = "1.0"
-RUNTIME_PACKAGE_SCHEMA_VERSION = "1.0"
+RECEIPT_SCHEMA_VERSION = "1.1"
+RUNTIME_PACKAGE_SCHEMA_VERSION = "2.0"
 RECEIPT_FIELDS = {
     "schema_version",
     "host",
@@ -29,6 +29,7 @@ RECEIPT_FIELDS = {
     "skill_id",
     "workflow_id",
     "installed_digest",
+    "installation_manifest_digest",
     "repository_identity",
     "host_session_id",
     "discovered",
@@ -77,6 +78,9 @@ class RuntimeInstallAction:
     source_digest: str
     installed_digest: str | None
     status: str
+    wrapper_source: str
+    skills_destination: str
+    expected_manifest_digest: str
 
 
 @dataclass(frozen=True)
@@ -126,16 +130,35 @@ def plan_runtime_install(
     source: Path,
     host: str,
     destination: Path | None = None,
+    *,
+    wrapper_source: Path | None = None,
+    skills_destination: Path | None = None,
 ) -> RuntimeInstallAction:
     _require_host(host)
     source_root = _distribution_root(source)
     destination_root = (
         default_package_destination(host) if destination is None else destination
     )
+    wrapper_root = _skills_root(
+        source_root if wrapper_source is None else wrapper_source
+    )
+    skills_root = (
+        _skills_destination_for_runtime(host, destination_root)
+        if skills_destination is None
+        else skills_destination
+    )
     with tempfile.TemporaryDirectory(prefix="dset-runtime-plan-") as raw:
         rendered = Path(raw) / "dset"
-        _render_runtime_package(source_root, host, rendered)
+        _render_runtime_package(
+            source_root,
+            host,
+            rendered,
+            runtime_destination=destination_root,
+            wrapper_source=wrapper_root,
+            skills_destination=skills_root,
+        )
         source_digest = tree_digest(rendered)
+        expected_manifest_digest = _file_digest(rendered / "manifest.json")
     installed_digest = (
         tree_digest(destination_root) if destination_root.is_dir() else None
     )
@@ -154,6 +177,9 @@ def plan_runtime_install(
         source_digest=source_digest,
         installed_digest=installed_digest,
         status=status,
+        wrapper_source=str(wrapper_root),
+        skills_destination=str(skills_root),
+        expected_manifest_digest=expected_manifest_digest,
     )
 
 
@@ -173,47 +199,65 @@ def apply_runtime_install(
             raise SkillDistributionError(
                 f"runtime destination changed after planning: {destination}"
             )
-        return verify_runtime_installation(action.host, destination)
+        return verify_runtime_installation(
+            action.host,
+            destination,
+            expected_manifest_digest=action.expected_manifest_digest,
+        )
     destination.parent.mkdir(parents=True, exist_ok=True)
     staging_parent = Path(
         tempfile.mkdtemp(prefix=".dset-runtime-", dir=destination.parent)
     )
     staged = staging_parent / "dset"
     try:
-        _render_runtime_package(source, action.host, staged)
+        _render_runtime_package(
+            source,
+            action.host,
+            staged,
+            runtime_destination=destination,
+            wrapper_source=Path(action.wrapper_source),
+            skills_destination=Path(action.skills_destination),
+        )
         if tree_digest(staged) != action.source_digest:
             raise SkillDistributionError("runtime source changed after planning")
         staged.replace(destination)
     finally:
         shutil.rmtree(staging_parent, ignore_errors=True)
-    return verify_runtime_installation(action.host, destination)
+    return verify_runtime_installation(
+        action.host,
+        destination,
+        expected_manifest_digest=action.expected_manifest_digest,
+    )
 
 
 def verify_runtime_installation(
-    host: str, destination: Path
+    host: str,
+    destination: Path,
+    *,
+    expected_manifest_digest: str | None = None,
 ) -> RuntimeInstallationProof:
     _require_host(host)
     if destination.is_symlink() or not destination.is_dir():
         raise SkillDistributionError(f"runtime package is missing: {destination}")
-    manifest_path = destination / "manifest.json"
-    try:
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as error:
-        raise SkillDistributionError(
-            f"runtime manifest is invalid: {manifest_path}"
-        ) from error
-    expected = {
-        "schema_version": RUNTIME_PACKAGE_SCHEMA_VERSION,
-        "package": "dset",
-        "version": __version__,
-        "host": host,
-        "entrypoint": "dset.py",
-    }
-    if any(manifest.get(key) != value for key, value in expected.items()):
-        raise SkillDistributionError("runtime manifest identity is stale")
-    for relative in ("dset.py", "dset", "dset.cmd", "dset_toolchain/__init__.py"):
-        if not (destination / relative).is_file():
-            raise SkillDistributionError(f"runtime package file is missing: {relative}")
+    manifest, manifest_digest = _load_installation_manifest(host, destination)
+    if (
+        expected_manifest_digest is not None
+        and manifest_digest != expected_manifest_digest
+    ):
+        raise SkillDistributionError("runtime manifest differs from install preview")
+    installation = _manifest_mapping(manifest, "installation")
+    expected_destination = str(destination.resolve())
+    if installation.get("runtime_destination") != expected_destination:
+        raise SkillDistributionError("runtime manifest destination mismatch")
+    runtime = _manifest_mapping(manifest, "runtime_payload")
+    expected_files = _manifest_file_digests(runtime)
+    actual_files = _file_digests(destination, excluded={"manifest.json"})
+    if actual_files != expected_files:
+        raise SkillDistributionError("runtime payload differs from expected manifest")
+    if runtime.get("sha256") != _digest_file_map(actual_files):
+        raise SkillDistributionError("runtime payload digest mismatch")
+    if manifest.get("source_digest") != _runtime_source_digest(destination):
+        raise SkillDistributionError("runtime source identity mismatch")
     return RuntimeInstallationProof(
         host=host,
         destination=str(destination),
@@ -342,11 +386,67 @@ def apply_install(actions: Sequence[InstallAction]) -> list[InstallationProof]:
             shutil.rmtree(staging_parent, ignore_errors=True)
     first = actions[0]
     destination_root = Path(first.destination).parent
-    return verify_installation(first.host, destination_root)
+    proofs: list[InstallationProof] = []
+    expected = {action.skill_id: action.source_digest for action in actions}
+    for skill_id in sorted(SKILL_WORKFLOWS):
+        skill = destination_root / skill_id
+        digest = tree_digest(skill)
+        if digest != expected[skill_id]:
+            raise SkillDistributionError(
+                f"installed skill differs from install preview: {skill_id}"
+            )
+        text = (skill / "SKILL.md").read_text(encoding="utf-8")
+        proofs.append(
+            InstallationProof(
+                host=first.host,
+                skill_id=skill_id,
+                destination=str(skill),
+                digest=digest,
+                copied_folder=True,
+                discoverable=True,
+                invocation_contract=(SKILL_INVOCATION_MARKERS[skill_id] in text),
+            )
+        )
+    return proofs
 
 
-def verify_installation(host: str, destination: Path) -> list[InstallationProof]:
+def verify_installation(
+    host: str,
+    destination: Path,
+    package_destination: Path | None = None,
+    *,
+    expected_manifest_digest: str | None = None,
+) -> list[InstallationProof]:
     _require_host(host)
+    runtime_destination = (
+        _package_destination_for_skills(host, destination)
+        if package_destination is None
+        else package_destination
+    )
+    verify_runtime_installation(
+        host,
+        runtime_destination,
+        expected_manifest_digest=expected_manifest_digest,
+    )
+    manifest, manifest_digest = _load_installation_manifest(host, runtime_destination)
+    if (
+        expected_manifest_digest is not None
+        and manifest_digest != expected_manifest_digest
+    ):
+        raise SkillDistributionError("skill manifest differs from install preview")
+    installation = _manifest_mapping(manifest, "installation")
+    if installation.get("skills_destination") != str(destination.resolve()):
+        raise SkillDistributionError("skill manifest destination mismatch")
+    wrappers = _manifest_mapping(manifest, "wrappers")
+    if set(wrappers) != set(SKILL_WORKFLOWS):
+        raise SkillDistributionError("skill manifest catalog mismatch")
+    actual_catalog = {
+        path.name
+        for path in destination.iterdir()
+        if path.is_dir() and (path / "SKILL.md").is_file()
+    }
+    if actual_catalog != set(SKILL_WORKFLOWS):
+        raise SkillDistributionError("installed skill catalog differs from manifest")
     proofs: list[InstallationProof] = []
     for skill_id, _workflow in sorted(SKILL_WORKFLOWS.items()):
         skill = destination / skill_id
@@ -354,12 +454,17 @@ def verify_installation(host: str, destination: Path) -> list[InstallationProof]
         if skill.is_symlink():
             raise SkillDistributionError(f"installed skill is a symlink: {skill}")
         text = (skill / "SKILL.md").read_text(encoding="utf-8")
+        digest = tree_digest(skill)
+        if wrappers.get(skill_id) != digest:
+            raise SkillDistributionError(
+                f"installed skill differs from expected manifest: {skill_id}"
+            )
         proofs.append(
             InstallationProof(
                 host=host,
                 skill_id=skill_id,
                 destination=str(skill),
-                digest=tree_digest(skill),
+                digest=digest,
                 copied_folder=True,
                 discoverable=True,
                 invocation_contract=(SKILL_INVOCATION_MARKERS[skill_id] in text),
@@ -372,8 +477,17 @@ def invocation_receipt_template(
     host: str,
     skill_id: str,
     destination: Path,
+    package_destination: Path | None = None,
 ) -> dict[str, object]:
-    proof = _proof_for_skill(verify_installation(host, destination), skill_id)
+    runtime_destination = (
+        _package_destination_for_skills(host, destination)
+        if package_destination is None
+        else package_destination
+    )
+    verify_runtime_installation(host, runtime_destination)
+    proof = _proof_for_skill(
+        verify_installation(host, destination, runtime_destination), skill_id
+    )
     return {
         "schema_version": RECEIPT_SCHEMA_VERSION,
         "host": host,
@@ -381,6 +495,9 @@ def invocation_receipt_template(
         "skill_id": skill_id,
         "workflow_id": SKILL_WORKFLOWS[skill_id],
         "installed_digest": proof.digest,
+        "installation_manifest_digest": _file_digest(
+            runtime_destination / "manifest.json"
+        ),
         "repository_identity": "",
         "host_session_id": "",
         "discovered": False,
@@ -396,6 +513,7 @@ def verify_invocation_receipt(
     receipt: Mapping[str, object],
     host: str,
     destination: Path,
+    package_destination: Path | None = None,
 ) -> dict[str, object]:
     try:
         serialized = json.dumps(receipt, separators=(",", ":")).encode("utf-8")
@@ -418,7 +536,28 @@ def verify_invocation_receipt(
         raise SkillDistributionError("invocation receipt skill is invalid")
     if receipt.get("workflow_id") != SKILL_WORKFLOWS[raw_skill]:
         raise SkillDistributionError("invocation receipt workflow mismatch")
-    proof = _proof_for_skill(verify_installation(host, destination), raw_skill)
+    runtime_destination = (
+        _package_destination_for_skills(host, destination)
+        if package_destination is None
+        else package_destination
+    )
+    manifest_digest = _file_digest(runtime_destination / "manifest.json")
+    if receipt.get("installation_manifest_digest") != manifest_digest:
+        raise SkillDistributionError("invocation receipt manifest is stale")
+    verify_runtime_installation(
+        host,
+        runtime_destination,
+        expected_manifest_digest=manifest_digest,
+    )
+    proof = _proof_for_skill(
+        verify_installation(
+            host,
+            destination,
+            runtime_destination,
+            expected_manifest_digest=manifest_digest,
+        ),
+        raw_skill,
+    )
     if receipt.get("installed_digest") != proof.digest:
         raise SkillDistributionError("invocation receipt digest is stale")
     for field in ("host_version", "repository_identity", "host_session_id"):
@@ -445,6 +584,7 @@ def verify_invocation_receipt(
         "skill_id": raw_skill,
         "workflow_id": SKILL_WORKFLOWS[raw_skill],
         "installed_digest": proof.digest,
+        "installation_manifest_digest": manifest_digest,
         "repository_identity": receipt["repository_identity"],
         "host_session_id": receipt["host_session_id"],
     }
@@ -475,6 +615,155 @@ def tree_digest(root: Path) -> str:
         digest.update(len(content).to_bytes(8, "big"))
         digest.update(content)
     return digest.hexdigest()
+
+
+def _file_digest(path: Path) -> str:
+    if path.is_symlink() or not path.is_file():
+        raise SkillDistributionError(f"installation file is missing: {path}")
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _file_digests(
+    root: Path,
+    *,
+    excluded: set[str] | None = None,
+) -> dict[str, str]:
+    if root.is_symlink() or not root.is_dir():
+        raise SkillDistributionError(f"installation folder is missing: {root}")
+    ignored = excluded or set()
+    files: dict[str, str] = {}
+    for path in root.rglob("*"):
+        relative = path.relative_to(root).as_posix()
+        relative_parts = path.relative_to(root).parts
+        if (
+            relative in ignored
+            or "__pycache__" in relative_parts
+            or path.suffix in {".pyc", ".pyo"}
+        ):
+            continue
+        if path.is_symlink():
+            raise SkillDistributionError(
+                f"symlinks are not portable installation input: {path}"
+            )
+        if path.is_file():
+            files[relative] = hashlib.sha256(path.read_bytes()).hexdigest()
+    return dict(sorted(files.items()))
+
+
+def _digest_file_map(files: Mapping[str, str]) -> str:
+    encoded = json.dumps(
+        dict(sorted(files.items())),
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _canonical_manifest(manifest: Mapping[str, object]) -> bytes:
+    return (json.dumps(manifest, indent=2, sort_keys=True) + "\n").encode("utf-8")
+
+
+def _load_installation_manifest(
+    host: str,
+    runtime_destination: Path,
+) -> tuple[dict[str, object], str]:
+    path = runtime_destination / "manifest.json"
+    if path.is_symlink() or not path.is_file():
+        raise SkillDistributionError(f"runtime manifest is missing: {path}")
+    raw = path.read_bytes()
+    try:
+        decoded = json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise SkillDistributionError(f"runtime manifest is invalid: {path}") from error
+    if not isinstance(decoded, dict) or raw != _canonical_manifest(decoded):
+        raise SkillDistributionError("runtime manifest is not canonical")
+    manifest = dict(decoded)
+    required = {
+        "schema_version",
+        "package",
+        "version",
+        "host",
+        "entrypoint",
+        "source_digest",
+        "installation",
+        "runtime_payload",
+        "wrappers",
+    }
+    if set(manifest) != required:
+        raise SkillDistributionError("runtime manifest fields do not match schema")
+    expected = {
+        "schema_version": RUNTIME_PACKAGE_SCHEMA_VERSION,
+        "package": "dset",
+        "version": __version__,
+        "host": host,
+        "entrypoint": "dset.py",
+    }
+    if any(manifest.get(key) != value for key, value in expected.items()):
+        raise SkillDistributionError("runtime manifest identity is stale")
+    if not _is_sha256(manifest.get("source_digest")):
+        raise SkillDistributionError("runtime manifest source digest is invalid")
+    installation = _manifest_mapping(manifest, "installation")
+    if set(installation) != {"runtime_destination", "skills_destination"} or not all(
+        isinstance(installation.get(key), str) and installation.get(key)
+        for key in ("runtime_destination", "skills_destination")
+    ):
+        raise SkillDistributionError("runtime manifest destinations are invalid")
+    runtime = _manifest_mapping(manifest, "runtime_payload")
+    if set(runtime) != {"sha256", "files"} or not _is_sha256(runtime.get("sha256")):
+        raise SkillDistributionError("runtime payload manifest is invalid")
+    _manifest_file_digests(runtime)
+    wrappers = _manifest_mapping(manifest, "wrappers")
+    if set(wrappers) != set(SKILL_WORKFLOWS) or not all(
+        _is_sha256(value) for value in wrappers.values()
+    ):
+        raise SkillDistributionError("wrapper manifest is invalid")
+    return manifest, hashlib.sha256(raw).hexdigest()
+
+
+def _manifest_mapping(manifest: Mapping[str, object], key: str) -> dict[str, object]:
+    value = manifest.get(key)
+    if not isinstance(value, dict):
+        raise SkillDistributionError(f"runtime manifest field is invalid: {key}")
+    return dict(value)
+
+
+def _manifest_file_digests(runtime: Mapping[str, object]) -> dict[str, str]:
+    raw = runtime.get("files")
+    if not isinstance(raw, dict):
+        raise SkillDistributionError("runtime payload file manifest is invalid")
+    files: dict[str, str] = {}
+    for relative, digest in raw.items():
+        if (
+            not isinstance(relative, str)
+            or not relative
+            or Path(relative).is_absolute()
+            or "\\" in relative
+            or any(part in {"", ".", ".."} for part in Path(relative).parts)
+            or not _is_sha256(digest)
+        ):
+            raise SkillDistributionError("runtime payload file identity is invalid")
+        files[relative] = str(digest)
+    return dict(sorted(files.items()))
+
+
+def _is_sha256(value: object) -> bool:
+    return (
+        isinstance(value, str)
+        and len(value) == 64
+        and all(character in "0123456789abcdef" for character in value)
+    )
+
+
+def _skills_destination_for_runtime(host: str, destination: Path) -> Path:
+    if destination.resolve() == default_package_destination(host).resolve():
+        return default_destination(host)
+    return destination.parent.parent / "skills"
+
+
+def _package_destination_for_skills(host: str, destination: Path) -> Path:
+    if destination.resolve() == default_destination(host).resolve():
+        return default_package_destination(host)
+    return destination.parent / "packages" / "dset"
 
 
 def _skills_root(source: Path) -> Path:
@@ -560,7 +849,15 @@ def _render_skill_package(
     skill_file.write_text(text, encoding="utf-8")
 
 
-def _render_runtime_package(source: Path, host: str, destination: Path) -> None:
+def _render_runtime_package(
+    source: Path,
+    host: str,
+    destination: Path,
+    *,
+    runtime_destination: Path,
+    wrapper_source: Path,
+    skills_destination: Path,
+) -> None:
     _require_host(host)
     source_root = _distribution_root(source)
     package_source = source_root / "dset_toolchain"
@@ -586,26 +883,67 @@ def _render_runtime_package(source: Path, host: str, destination: Path) -> None:
         '@echo off\r\npy -3 "%~dp0dset.py" %*\r\n',
         encoding="utf-8",
     )
-    manifest = {
+    runtime_files = _file_digests(destination)
+    wrappers = {
+        skill_id: _rendered_skill_digest(
+            wrapper_source / skill_id,
+            host,
+            _launcher_command(runtime_destination),
+        )
+        for skill_id in sorted(SKILL_WORKFLOWS)
+    }
+    manifest: dict[str, object] = {
         "schema_version": RUNTIME_PACKAGE_SCHEMA_VERSION,
         "package": "dset",
         "version": __version__,
         "host": host,
         "entrypoint": "dset.py",
         "source_digest": _runtime_source_digest(source_root),
+        "installation": {
+            "runtime_destination": str(runtime_destination.resolve()),
+            "skills_destination": str(skills_destination.resolve()),
+        },
+        "runtime_payload": {
+            "sha256": _digest_file_map(runtime_files),
+            "files": runtime_files,
+        },
+        "wrappers": wrappers,
     }
-    (destination / "manifest.json").write_text(
-        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
+    (destination / "manifest.json").write_bytes(_canonical_manifest(manifest))
 
 
 def _validate_runtime_source(action: RuntimeInstallAction) -> None:
     with tempfile.TemporaryDirectory(prefix="dset-runtime-validate-") as raw:
         rendered = Path(raw) / "dset"
-        _render_runtime_package(Path(action.source), action.host, rendered)
+        _render_runtime_package(
+            Path(action.source),
+            action.host,
+            rendered,
+            runtime_destination=Path(action.destination),
+            wrapper_source=Path(action.wrapper_source),
+            skills_destination=Path(action.skills_destination),
+        )
         if tree_digest(rendered) != action.source_digest:
             raise SkillDistributionError("runtime source changed after planning")
+        if _file_digest(rendered / "manifest.json") != action.expected_manifest_digest:
+            raise SkillDistributionError("runtime manifest changed after planning")
+
+
+def _expected_manifest(action: RuntimeInstallAction) -> dict[str, object]:
+    with tempfile.TemporaryDirectory(prefix="dset-runtime-manifest-") as raw:
+        rendered = Path(raw) / "dset"
+        _render_runtime_package(
+            Path(action.source),
+            action.host,
+            rendered,
+            runtime_destination=Path(action.destination),
+            wrapper_source=Path(action.wrapper_source),
+            skills_destination=Path(action.skills_destination),
+        )
+        manifest, digest = _load_installation_manifest(action.host, rendered)
+        if digest != action.expected_manifest_digest:
+            raise SkillDistributionError("runtime manifest changed after planning")
+        return manifest
 
 
 def _validate_source_surface(skills_root: Path) -> None:
@@ -662,7 +1000,12 @@ def _parser() -> argparse.ArgumentParser:
         item = subparsers.add_parser(command)
         item.add_argument("--host", choices=sorted(HOSTS), required=True)
         item.add_argument("--destination", type=Path)
-        if command in {"install", "verify"}:
+        if command in {
+            "install",
+            "verify",
+            "receipt-template",
+            "verify-invocation",
+        }:
             item.add_argument("--package-destination", type=Path)
         if command == "install":
             item.add_argument("--source", type=Path)
@@ -721,7 +1064,13 @@ def main(argv: Sequence[str] | None = None) -> int:
                     destination,
                     package_destination,
                 )
-                runtime_action = plan_runtime_install(source, host, package_destination)
+                runtime_action = plan_runtime_install(
+                    source,
+                    host,
+                    package_destination,
+                    wrapper_source=source,
+                    skills_destination=destination,
+                )
                 result = _execute_install(
                     actions, runtime_action, apply=arguments.apply
                 )
@@ -737,6 +1086,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                         Path(__file__).resolve().parents[1],
                         host,
                         package_destination,
+                        wrapper_source=selected_source,
+                        skills_destination=destination,
                     )
                     result = _execute_install(
                         actions, runtime_action, apply=arguments.apply
@@ -744,7 +1095,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         elif arguments.command == "verify":
             result = {
                 "proofs": [
-                    asdict(item) for item in verify_installation(host, destination)
+                    asdict(item)
+                    for item in verify_installation(
+                        host, destination, package_destination
+                    )
                 ],
                 "runtime_proof": asdict(
                     verify_runtime_installation(host, package_destination)
@@ -752,7 +1106,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             }
         elif arguments.command == "receipt-template":
             result = invocation_receipt_template(
-                host, str(arguments.skill), destination
+                host,
+                str(arguments.skill),
+                destination,
+                package_destination,
             )
         else:
             receipt_path = Path(arguments.receipt)
@@ -765,7 +1122,12 @@ def main(argv: Sequence[str] | None = None) -> int:
                 raise SkillDistributionError("invocation receipt must be a JSON object")
             if raw.get("skill_id") != arguments.skill:
                 raise SkillDistributionError("receipt and --skill do not match")
-            result = verify_invocation_receipt(raw, host, destination)
+            result = verify_invocation_receipt(
+                raw,
+                host,
+                destination,
+                package_destination,
+            )
     except (OSError, json.JSONDecodeError, SkillDistributionError) as error:
         print(json.dumps({"status": "error", "message": str(error)}), file=sys.stderr)
         return 2
@@ -784,6 +1146,21 @@ def _execute_install(
     *,
     apply: bool,
 ) -> dict[str, object]:
+    expected_manifest = _expected_manifest(runtime_action)
+    manifest_wrappers = _manifest_mapping(expected_manifest, "wrappers")
+    action_wrappers = {action.skill_id: action.source_digest for action in actions}
+    if manifest_wrappers != action_wrappers:
+        raise SkillDistributionError(
+            "skill and runtime plans have different wrapper identities"
+        )
+    installation = _manifest_mapping(expected_manifest, "installation")
+    destinations = {
+        str(Path(action.destination).parent.resolve()) for action in actions
+    }
+    if destinations != {installation.get("skills_destination")}:
+        raise SkillDistributionError(
+            "skill and runtime plans have different destinations"
+        )
     if apply:
         if any(action.status == "conflict" for action in actions):
             raise SkillDistributionError("skill destination conflict blocks install")
@@ -804,8 +1181,14 @@ def _execute_install(
             if not destination.parent.exists()
         }
         try:
-            proofs = apply_install(actions)
+            apply_install(actions)
             runtime_proof = apply_runtime_install(runtime_action)
+            proofs = verify_installation(
+                runtime_action.host,
+                Path(next(iter(actions)).destination).parent,
+                Path(runtime_action.destination),
+                expected_manifest_digest=runtime_action.expected_manifest_digest,
+            )
         except Exception as error:
             rollback_failures = _rollback_created_install(
                 initially_absent, initially_absent_parents
@@ -820,11 +1203,15 @@ def _execute_install(
             "applied": True,
             "proofs": [asdict(item) for item in proofs],
             "runtime_proof": asdict(runtime_proof),
+            "expected_manifest": expected_manifest,
+            "expected_manifest_digest": runtime_action.expected_manifest_digest,
         }
     return {
         "applied": False,
         "actions": [asdict(item) for item in actions],
         "runtime_action": asdict(runtime_action),
+        "expected_manifest": expected_manifest,
+        "expected_manifest_digest": runtime_action.expected_manifest_digest,
     }
 
 
