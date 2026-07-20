@@ -1,6 +1,14 @@
 schema_version = "1.0"
 
 [[records]]
+semantic_id = "DSET-CONFLICT-GOV-001"
+carrier_id = "DSET-ATOMIC-RECORD-070"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-070-all-toml-carrier-conflict.md"
+sha256 = "3c9a42f89de3485d36bddf537181f0766bc4c70fc68542452949dfe4f93d9aa6"
+type = "question"
+subtype = "conflict"
+
+[[records]]
 semantic_id = "DSET-DECISION-GOV-010"
 carrier_id = "DSET-ATOMIC-RECORD-009"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-009-priority-profile.md"

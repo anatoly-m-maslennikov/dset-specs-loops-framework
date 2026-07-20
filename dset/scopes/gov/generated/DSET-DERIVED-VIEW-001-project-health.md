@@ -12,7 +12,7 @@ llm_session_ids = []
 > This generated view is not authority. Follow each link to its canonical
 > owner and refresh explicitly after source changes.
 
-- **Source digest:** `7317570eb378ea903f54353823dafd3277b61a5ed3139e92a7c8d96c9ac9e606`
+- **Source digest:** `6303c16a3c7ce7211af05359ea1605c5cb223cd7d553fd283a96bd14b4a63aaa`
 - **Renderer:** `dset health` schema 1.0
 
 ## Coverage
@@ -33,28 +33,28 @@ llm_session_ids = []
 
 ## Artifact inventory
 
-- **Governed artifacts:** 550
-- **By role:** atomic=95, derived_or_navigation=84, evergreen=164, implementation=162, transactional=45
-- **By type:** analysis_report=23, atomic_record=95, delivery=21, derived_view=1, evidence_record=33, implementation=162, navigation=52, plan=39, procedure=21, specification=95, verification=8
+- **Governed artifacts:** 551
+- **By role:** atomic=96, derived_or_navigation=84, evergreen=164, implementation=162, transactional=45
+- **By type:** analysis_report=23, atomic_record=96, delivery=21, derived_view=1, evidence_record=33, implementation=162, navigation=52, plan=39, procedure=21, specification=95, verification=8
 - **By subtype:** architecture=7, behavior=29, change=9, configuration=76, design=7, domain_model=6, evaluation_plan=14, evaluation_result=2, external_audit_analysis=2, governance=46, health_dashboard=1, hub=52, implementation_plan=9, migration=1, playbook=18, proposal=8, readiness_record=2, release_plan=2, release_record=1, review_report=2, roadmap=2, root_cause_analysis=1, run_record=9, runbook=3, solution_landscape=7, source_code=42, technical_investigation=3, test_implementation=43, test_plan=14, test_result=20, version_scope=5
-- **By layer:** gov=108, meta=36, ops=44, repository=27, skill=196, tool=139
-- **By effective priority:** critical=15, high=43, medium=486, unknown=6
-- **By status:** absorbed=14, accepted=33, open=20, resolved=36
+- **By layer:** gov=108, meta=36, ops=44, repository=27, skill=197, tool=139
+- **By effective priority:** critical=16, high=43, medium=486, unknown=6
+- **By status:** absorbed=14, accepted=34, open=20, resolved=36
 
 ## Semantic inventory
 
-- **Semantic claims:** 302
-- **By Type:** decision=111, problem=37, qa=136, question=18
-- **By direct subtype:** contract=6, defect=17, evaluation=53, gap=4, opportunity=3, requirement=80, test=83
-- **Native immutable atoms:** 69
+- **Semantic claims:** 303
+- **By Type:** decision=111, problem=37, qa=136, question=19
+- **By direct subtype:** conflict=1, contract=6, defect=17, evaluation=53, gap=4, opportunity=3, requirement=80, test=83
+- **Native immutable atoms:** 70
 - **Compatibility-classified legacy IDs:** 233
 
 ## Typed relation inventory
 
-- **Forward relations:** 369
-- **By type:** analysis_of=1, check_of=16, child_of=41, evidence_for=9, implementation_of=270, projection_of=3, relates_to=15, replacement_of=11, resolution_of=3
-- **By origin:** authored=68, commit_trailer=270, legacy_child_of=31
-- **By source kind:** artifact=99, commit=270
+- **Forward relations:** 371
+- **By type:** analysis_of=1, check_of=16, child_of=41, evidence_for=9, implementation_of=270, projection_of=3, relates_to=17, replacement_of=11, resolution_of=3
+- **By origin:** authored=70, commit_trailer=270, legacy_child_of=31
+- **By source kind:** artifact=101, commit=270
 
 ## Unresolved work
 
@@ -81,7 +81,7 @@ llm_session_ids = []
 
 ## Open Conflicts
 
-- None
+- [`DSET-CONFLICT-GOV-001`](../../skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-070-all-toml-carrier-conflict.md) — accepted; priority `critical` from `atom:DSET-CONFLICT-GOV-001`
 
 ## Conflict outcomes
 
@@ -90,7 +90,7 @@ llm_session_ids = []
 ## Drill-downs
 
 - **Packages:** methodology=46
-- **Work Areas:** delivery=5, documentation=8, methodology=10, project-control=449, skills=34, tests=42, toolchain=43
+- **Work Areas:** delivery=5, documentation=8, methodology=10, project-control=450, skills=34, tests=42, toolchain=43
 
 ## Canonical return paths
 

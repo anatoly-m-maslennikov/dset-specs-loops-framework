@@ -220,6 +220,16 @@ base_commit = "f340e28316aa92341784ce8e1a853039abf5acc6"
 head_commit = "c9d29f102df2966af926af2dc9919ea17d049efb"
 
 [[semantic_classifications]]
+id = "DSET-CONFLICT-GOV-001"
+type = "question"
+subtype = "conflict"
+compatibility = false
+origins = ["modern_atom"]
+carriers = ["dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-070-all-toml-carrier-conflict.md"]
+carrier_statuses = ["accepted"]
+lifecycle_events = []
+
+[[semantic_classifications]]
 id = "DSET-CONTRACT-META-001"
 type = "decision"
 subtype = "contract"
@@ -3240,6 +3250,31 @@ carrier_statuses = ["accepted", "defined", "historical"]
 lifecycle_events = []
 
 [[semantic_atoms]]
+id = "DSET-CONFLICT-GOV-001"
+carrier_id = "DSET-ATOMIC-RECORD-070"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-070-all-toml-carrier-conflict.md"
+sha256 = "3c9a42f89de3485d36bddf537181f0766bc4c70fc68542452949dfe4f93d9aa6"
+type = "question"
+subtype = "conflict"
+emission_status = "accepted"
+current_status = "accepted"
+priority = "critical"
+priority_source = "atom:DSET-CONFLICT-GOV-001"
+lifecycle_events = []
+absorbed_by = []
+archived = false
+
+[[semantic_atoms.relations]]
+type = "relates_to"
+origin = "authored"
+target = "DSET-DECISION-GOV-003"
+
+[[semantic_atoms.relations]]
+type = "relates_to"
+origin = "authored"
+target = "DSET-REQUIREMENT-GOV-037"
+
+[[semantic_atoms]]
 id = "DSET-DECISION-GOV-010"
 carrier_id = "DSET-ATOMIC-RECORD-009"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-009-priority-profile.md"
@@ -6138,6 +6173,26 @@ source_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/
 type = "relates_to"
 origin = "authored"
 target = "DSET-DEFECT-TOOL-006"
+llm_session_ids = []
+
+[[relations]]
+source = "DSET-CONFLICT-GOV-001"
+source_kind = "artifact"
+source_artifact_id = "DSET-ATOMIC-RECORD-070"
+source_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-070-all-toml-carrier-conflict.md"
+type = "relates_to"
+origin = "authored"
+target = "DSET-DECISION-GOV-003"
+llm_session_ids = []
+
+[[relations]]
+source = "DSET-CONFLICT-GOV-001"
+source_kind = "artifact"
+source_artifact_id = "DSET-ATOMIC-RECORD-070"
+source_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-070-all-toml-carrier-conflict.md"
+type = "relates_to"
+origin = "authored"
+target = "DSET-REQUIREMENT-GOV-037"
 llm_session_ids = []
 
 [[relations]]
