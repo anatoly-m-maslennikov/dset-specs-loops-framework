@@ -105,7 +105,8 @@ def create_change(
 def _copy_template(source: Path, target: Path, replacements: dict[str, str]) -> None:
     if not source.is_file():
         raise FileNotFoundError(f"template is missing: {source}")
-    if target.suffix == ".toml" and source.suffix in {".toml", ".yaml", ".yml"}:
+    structured = {".toml", ".yaml", ".yml"}
+    if target.suffix in structured and source.suffix in structured:
         data = _replace_values(load(source), replacements)
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(dump(data, target), encoding="utf-8")

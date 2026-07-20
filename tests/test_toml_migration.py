@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import shutil
+import subprocess
 import tempfile
 import unittest
 from contextlib import redirect_stdout
@@ -18,6 +19,7 @@ from dset_toolchain.lineage import validate_artifact_relations
 from dset_toolchain.toml_codec import loads as load_toml
 from dset_toolchain.toml_migration import (
     MigrationPlan,
+    TomlMigrationError,
     apply_toml_migration,
     plan_toml_migration,
     prove_runtime_readiness,
@@ -755,6 +757,48 @@ class TomlMigrationTests(unittest.TestCase):
             )
         )
         self.assertEqual(stored["targets"], evidence["targets"])
+        self.assertEqual(stored["planned_targets"], evidence["planned_targets"])
+
+    def test_runtime_proof_creates_a_deterministic_local_git_head(self) -> None:
+        heads: list[str] = []
+        for name in ("first", "second"):
+            root = self.root / name
+            root.mkdir()
+            (root / "payload.txt").write_text("same payload\n", encoding="utf-8")
+
+            result = toml_migration._initialize_synthetic_proof_head(root)
+
+            self.assertTrue((root / ".git").is_dir())
+            head = subprocess.run(
+                ["git", "rev-parse", "HEAD"],
+                cwd=root,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+            self.assertEqual(result["head"], head)
+            heads.append(head)
+        self.assertEqual(heads[0], heads[1])
+
+    def test_runtime_proof_failure_includes_only_bounded_output_tails(self) -> None:
+        completed = subprocess.CompletedProcess(
+            ["proof"],
+            1,
+            stdout="discard-me\n" + ("x" * 5000) + "stdout-end",
+            stderr="stderr-end",
+        )
+
+        with (
+            patch(
+                "dset_toolchain.toml_migration.subprocess.run",
+                return_value=completed,
+            ),
+            self.assertRaisesRegex(TomlMigrationError, "stdout-end") as captured,
+        ):
+            toml_migration._run_proof_command(self.root, ["proof"])
+
+        self.assertIn("stderr-end", str(captured.exception))
+        self.assertNotIn("discard-me", str(captured.exception))
 
     def test_runtime_mapping_covers_in_place_and_reference_only_writes(self) -> None:
         self.standard_fixture()
@@ -800,9 +844,10 @@ class TomlMigrationTests(unittest.TestCase):
 
         self.assertTrue(plan.ready)
         self.assertEqual(len(plan.package_successors), 5)
-        self.assertTrue(
-            all(item.status == "pending" for item in plan.package_successors)
-        )
+        for successor in plan.package_successors:
+            with self.subTest(target=successor.target):
+                expected = "current" if successor.target.is_file() else "pending"
+                self.assertEqual(successor.status, expected)
         self.assertNotIn(atom, [entry.source for entry in plan.entries])
         self.assertNotIn(atom, [reference.path for reference in plan.references])
         self.assertEqual(atom.read_bytes(), before)

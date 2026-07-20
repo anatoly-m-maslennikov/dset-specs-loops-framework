@@ -70,6 +70,14 @@ class BootstrapTests(unittest.TestCase):
             self.assertEqual(validate_repository(target), [])
             self.assertTrue((target / "skills" / "dset" / "SKILL.md").is_file())
             layout = discover_layout(target)
+            self.assertEqual(
+                layout.manifest_path.suffix,
+                discover_layout(ROOT).manifest_path.suffix,
+            )
+            self.assertEqual(
+                layout.artifact_type_registry_path.suffix,
+                layout.manifest_path.suffix,
+            )
             manifest = load(layout.manifest_path)
             self.assertEqual(manifest["project"]["repository_slug"], "sample-app")
             self.assertNotIn("delegation_budget", manifest["profiles"])
@@ -131,7 +139,8 @@ class BootstrapTests(unittest.TestCase):
     def test_existing_destination_stops_without_partial_write(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             target = Path(raw) / "existing"
-            manifest = target / "dset" / "scopes" / "meta" / "dset.yaml"
+            suffix = discover_layout(ROOT).manifest_path.suffix
+            manifest = target / "dset" / "scopes" / "meta" / f"dset{suffix}"
             manifest.parent.mkdir(parents=True)
             manifest.write_text("existing\n", encoding="utf-8")
             with self.assertRaises(FileExistsError):

@@ -76,6 +76,7 @@ class SessionContractTests(unittest.TestCase):
         ignored = (ROOT / ".gitignore").read_text(encoding="utf-8").splitlines()
         self.assertIn(".dset/runs/", ignored)
         self.assertIn(".dset/sessions/", ignored)
+        self.assertIn(".dset/toml-migration-runtime-readiness.json", ignored)
 
 
 if __name__ == "__main__":

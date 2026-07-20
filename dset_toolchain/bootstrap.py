@@ -14,11 +14,11 @@ from pathlib import Path
 from typing import Any, cast
 
 from .governance import materialize_governance
-from .layout import LAYERS, discover_layout
+from .layout import LAYERS, discover_layout, has_manifest
 from .legacy_authority import write_legacy_authority_ledger
 from .traceability import write_traceability
 from .validation import validate_repository
-from .yaml_subset import dump
+from .yaml_subset import dump, load
 
 _KEBAB = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 _PROJECT_KEY = re.compile(r"^[A-Z][A-Z0-9]*$")
@@ -145,8 +145,7 @@ def distribution_source(source_root: Path | None = None) -> Iterator[tuple[Path,
 
     if source_root is not None:
         source = source_root.resolve()
-        manifest = source / "dset" / "scopes" / "meta" / "dset.yaml"
-        if not manifest.is_file():
+        if not has_manifest(source) or not discover_layout(source).layered:
             raise InitializationError(f"source is not a schema 1.2 DSET root: {source}")
         yield source, f"path:{source.as_posix()}"
         return
@@ -224,6 +223,7 @@ def _stage_project(
     hosted_automation: bool,
 ) -> None:
     source_layout = discover_layout(source)
+    structured_suffix = source_layout.manifest_path.suffix
     for layer in LAYERS:
         layer_root = stage / "dset" / "scopes" / layer
         layer_root.mkdir(parents=True)
@@ -262,7 +262,7 @@ def _stage_project(
                 "bootstrap default; configure a protected publication path explicitly"
             ),
         },
-        "work_items": {"registry": "dset/scopes/gov/intake.yaml"},
+        "work_items": {"registry": f"dset/scopes/gov/intake{structured_suffix}"},
         "structure": {"layout": "layered-v1"},
         "work_areas": [
             {"id": item.identifier, "path": item.path} for item in work_areas
@@ -272,7 +272,6 @@ def _stage_project(
             "runtime_risk": "non-production",
             "durability_topology": "files",
             "enforcement": "none",
-            "artifact": None,
             "repository_governance": profile,
         },
         "change_contract": {
@@ -286,7 +285,7 @@ def _stage_project(
         "verification": {"commands": ["{python} -m dset_toolchain check ."]},
         "canonical_command": "python -m dset_toolchain verify .",
     }
-    manifest_path = stage / "dset" / "scopes" / "meta" / "dset.yaml"
+    manifest_path = stage / "dset" / "scopes" / "meta" / f"dset{structured_suffix}"
     manifest_path.write_text(dump(manifest, manifest_path), encoding="utf-8")
     shutil.copyfile(
         source_layout.find_template("dset_settings.toml"),
@@ -300,12 +299,15 @@ def _stage_project(
         project_name,
     )
     gov = stage / "dset" / "scopes" / "gov"
-    shutil.copyfile(
+    _copy_structured(
         source_layout.find_template("artifact-types.yaml"),
-        gov / "artifact-types.yaml",
+        gov / f"artifact-types{structured_suffix}",
     )
-    shutil.copyfile(source_layout.find_template("intake.yaml"), gov / "intake.yaml")
-    provenance_path = gov / "provenance.yaml"
+    _copy_structured(
+        source_layout.find_template("intake.yaml"),
+        gov / f"intake{structured_suffix}",
+    )
+    provenance_path = gov / f"provenance{structured_suffix}"
     provenance_path.write_text(
         dump(
             {
@@ -318,7 +320,10 @@ def _stage_project(
         encoding="utf-8",
     )
     skill = stage / "dset" / "scopes" / "skill"
-    shutil.copyfile(source_layout.find_template("budget.yaml"), skill / "budget.yaml")
+    _copy_structured(
+        source_layout.find_template("budget.yaml"),
+        skill / f"budget{structured_suffix}",
+    )
     ops = stage / "dset" / "scopes" / "ops"
     supportability = ops / "supportability"
     supportability.mkdir()
@@ -334,7 +339,7 @@ def _stage_project(
     )
     history = ops / "history"
     history.mkdir()
-    history_path = history / "pull-requests.yaml"
+    history_path = history / f"pull-requests{structured_suffix}"
     history_path.write_text(
         dump(
             {
@@ -396,12 +401,30 @@ def _materialize_package(
         for old, new in replacements.items():
             content = content.replace(old, new)
         (destination / name).write_text(content, encoding="utf-8")
-    manifest = source_layout.find_template("package/layered/package.yaml").read_text(
-        encoding="utf-8"
-    )
-    for old, new in replacements.items():
-        manifest = manifest.replace(old, new)
-    (destination / "package.yaml").write_text(manifest, encoding="utf-8")
+    source = source_layout.find_template("package/layered/package.yaml")
+    manifest = _replace_structured_values(load(source), replacements)
+    target = destination / f"package{source_layout.manifest_path.suffix}"
+    target.write_text(dump(manifest, target), encoding="utf-8")
+
+
+def _copy_structured(source: Path, target: Path) -> None:
+    """Copy one structured template without mixing its syntax and suffix."""
+
+    target.write_text(dump(load(source), target), encoding="utf-8")
+
+
+def _replace_structured_values(value: object, replacements: dict[str, str]) -> object:
+    if isinstance(value, dict):
+        return {
+            key: _replace_structured_values(item, replacements)
+            for key, item in value.items()
+        }
+    if isinstance(value, list):
+        return [_replace_structured_values(item, replacements) for item in value]
+    if isinstance(value, str):
+        for old, new in replacements.items():
+            value = value.replace(old, new)
+    return value
 
 
 def _commit_stage(stage: Path, target: Path, paths: Sequence[str]) -> None:

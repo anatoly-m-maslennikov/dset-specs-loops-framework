@@ -209,6 +209,7 @@ tempCodeRunnerFile.py
 # DSET machine-local operational evidence
 .dset/runs/
 .dset/sessions/
+.dset/toml-migration-runtime-readiness.json
 
 # PyPI configuration file
 .pypirc

@@ -1249,6 +1249,17 @@ def _runtime_readiness(
     ):
         result["status"] = "invalid"
         return result, ["runtime-readiness: evidence targets must map paths to digests"]
+    mapped_planned = (
+        evidence.get("planned_targets", mapped) if isinstance(evidence, dict) else None
+    )
+    if not isinstance(mapped_planned, dict) or not all(
+        isinstance(path, str) and isinstance(digest, str)
+        for path, digest in mapped_planned.items()
+    ):
+        result["status"] = "invalid"
+        return result, [
+            "runtime-readiness: evidence planned_targets must map paths to digests"
+        ]
     mapped_preserved = (
         evidence.get("preserved_inputs", {}) if isinstance(evidence, dict) else None
     )
@@ -1263,8 +1274,12 @@ def _runtime_readiness(
     missing_or_stale = sorted(set(targets).symmetric_difference(mapped))
     missing_or_stale.extend(
         path
-        for path in sorted(set(targets) & set(mapped))
-        if path in target_digests and mapped[path] != target_digests[path]
+        for path in sorted(set(target_digests).symmetric_difference(mapped_planned))
+    )
+    missing_or_stale.extend(
+        path
+        for path in sorted(set(target_digests) & set(mapped_planned))
+        if mapped_planned[path] != target_digests[path]
     )
     missing_or_stale.extend(
         f"preserved:{path}"
@@ -1840,6 +1855,12 @@ def prove_runtime_readiness(root: Path) -> dict[str, object]:
         list(source_plan.references),
         source_plan.package_successors,
     )
+    planned_targets = _target_digests(
+        root,
+        list(source_plan.entries),
+        list(source_plan.references),
+        source_plan.package_successors,
+    )
     preserved_inputs = _preserved_input_digests(
         root, source_plan.package_successors, source_plan.preserved_structured
     )
@@ -1864,6 +1885,7 @@ def prove_runtime_readiness(root: Path) -> dict[str, object]:
             "input_sha256": input_digest,
             "migrated_tool_sha256": _tool_digest(staged),
             "preserved_inputs": preserved_inputs,
+            "planned_targets": planned_targets,
             "targets": targets,
             "proof": {
                 "plan_digest": source_plan.digest,
@@ -1934,25 +1956,91 @@ def _copy_proof_tree(root: Path, staged: Path) -> None:
 
 
 def _proof_commands(root: Path) -> list[dict[str, object]]:
-    commands = [
-        [sys.executable, "-m", "dset_toolchain", "check", "."],
-        [
-            sys.executable,
-            "-m",
-            "unittest",
-            "tests.test_settings",
-            "tests.test_layout",
-            "tests.test_layered_validation",
-            "tests.test_semantic_atoms",
-            "tests.test_semantic_types",
-            "tests.test_external_review",
-            "tests.test_scaffold_archive",
-            "tests.test_runtime",
-            "tests.test_bootstrap",
-            "tests.test_toml_migration",
-        ],
+    check = [sys.executable, "-m", "dset_toolchain", "check", "."]
+    tests = [
+        sys.executable,
+        "-m",
+        "unittest",
+        "tests.test_settings",
+        "tests.test_layout",
+        "tests.test_layered_validation",
+        "tests.test_semantic_atoms",
+        "tests.test_semantic_types",
+        "tests.test_external_review",
+        "tests.test_scaffold_archive",
+        "tests.test_runtime",
+        "tests.test_bootstrap",
+        "tests.test_toml_migration",
     ]
-    results: list[dict[str, object]] = []
+    results = [_run_proof_command(root, check)]
+    results.append(_initialize_synthetic_proof_head(root))
+    results.append(_run_proof_command(root, tests))
+    return results
+
+
+def _run_proof_command(root: Path, command: list[str]) -> dict[str, object]:
+    try:
+        completed = subprocess.run(
+            command,
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+    except subprocess.TimeoutExpired as error:
+        details = _proof_output_tail(error.stdout, error.stderr)
+        raise TomlMigrationError(
+            f"runtime readiness proof timed out: {' '.join(command)}{details}"
+        ) from error
+    result = {
+        "argv": command,
+        "returncode": completed.returncode,
+        "stdout_sha256": _sha256(completed.stdout),
+        "stderr_sha256": _sha256(completed.stderr),
+    }
+    if completed.returncode:
+        raise TomlMigrationError(
+            "runtime readiness proof failed: "
+            + " ".join(command)
+            + f" (exit {completed.returncode})"
+            + _proof_output_tail(completed.stdout, completed.stderr)
+        )
+    return result
+
+
+def _initialize_synthetic_proof_head(root: Path) -> dict[str, object]:
+    """Create a deterministic local HEAD without importing the source Git store."""
+
+    environment = dict(os.environ)
+    environment.update(
+        {
+            "GIT_AUTHOR_DATE": "2000-01-01T00:00:00+00:00",
+            "GIT_COMMITTER_DATE": "2000-01-01T00:00:00+00:00",
+            "GIT_CONFIG_GLOBAL": os.devnull,
+            "GIT_CONFIG_SYSTEM": os.devnull,
+            "GIT_ATTR_NOSYSTEM": "1",
+        }
+    )
+    commands = (
+        ["git", "-c", "init.defaultBranch=dset-proof", "init", "-q"],
+        ["git", "-c", "core.autocrlf=false", "add", "-A"],
+        [
+            "git",
+            "-c",
+            "user.name=DSET Runtime Readiness",
+            "-c",
+            "user.email=dset-readiness@example.invalid",
+            "-c",
+            "commit.gpgsign=false",
+            "commit",
+            "-q",
+            "--no-gpg-sign",
+            "-m",
+            "DSET TOML runtime readiness snapshot",
+        ],
+    )
+    output = []
     for command in commands:
         try:
             completed = subprocess.run(
@@ -1961,26 +2049,49 @@ def _proof_commands(root: Path) -> list[dict[str, object]]:
                 check=False,
                 capture_output=True,
                 text=True,
-                timeout=120,
+                timeout=30,
+                env=environment,
             )
         except subprocess.TimeoutExpired as error:
             raise TomlMigrationError(
-                f"runtime readiness proof timed out: {' '.join(command)}"
+                "synthetic readiness Git initialization timed out: "
+                + " ".join(command)
+                + _proof_output_tail(error.stdout, error.stderr)
             ) from error
-        result = {
-            "argv": command,
-            "returncode": completed.returncode,
-            "stdout_sha256": _sha256(completed.stdout),
-            "stderr_sha256": _sha256(completed.stderr),
-        }
-        results.append(result)
+        output.append(completed.stdout + completed.stderr)
         if completed.returncode:
             raise TomlMigrationError(
-                "runtime readiness proof failed: "
+                "synthetic readiness Git initialization failed: "
                 + " ".join(command)
                 + f" (exit {completed.returncode})"
+                + _proof_output_tail(completed.stdout, completed.stderr)
             )
-    return results
+    head = _git_head(root)
+    if head is None:
+        raise TomlMigrationError("synthetic readiness Git HEAD is unavailable")
+    combined = "".join(output)
+    return {
+        "argv": ["git", "synthetic-readiness-head"],
+        "returncode": 0,
+        "stdout_sha256": _sha256(combined),
+        "stderr_sha256": _sha256(""),
+        "head": head,
+    }
+
+
+def _proof_output_tail(stdout: object, stderr: object, *, limit: int = 4000) -> str:
+    sections: list[str] = []
+    for label, raw in (("stdout", stdout), ("stderr", stderr)):
+        if isinstance(raw, bytes):
+            value = raw.decode("utf-8", errors="replace")
+        elif isinstance(raw, str):
+            value = raw
+        else:
+            value = ""
+        value = value.strip()
+        if value:
+            sections.append(f"\n{label} tail:\n{value[-limit:]}")
+    return "".join(sections)
 
 
 def _tool_digest(root: Path) -> str:

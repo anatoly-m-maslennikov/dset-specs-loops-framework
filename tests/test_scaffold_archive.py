@@ -96,11 +96,14 @@ class ScaffoldArchiveTests(unittest.TestCase):
             self._copy_support(target)
             source = target / "dset" / "changes" / "fixture-standard"
             shutil.copytree(FIXTURES / "bases" / "standard", source)
-            data = load(source / "change.yaml")
+            manifest_path = discover_layout(target).structured_file(
+                source, "change.yaml"
+            )
+            data = load(manifest_path)
             data["status"] = "archive-ready"
             data["pull_request"]["number"] = 42
             data["pull_request"]["url"] = "https://github.com/example/project/pull/42"
-            (source / "change.yaml").write_text(dump(data), encoding="utf-8")
+            manifest_path.write_text(dump(data, manifest_path), encoding="utf-8")
             with (source / "verification.md").open("a", encoding="utf-8") as file:
                 file.write("\nAccepted-truth reconciliation: Pass\n")
             source_path, destination = archive_plan(
@@ -111,7 +114,9 @@ class ScaffoldArchiveTests(unittest.TestCase):
             result = execute_archive(target, "fixture-standard", date(2026, 7, 14))
             self.assertTrue(result.is_dir())
             self.assertFalse(source.exists())
-            archived = load(result / "change.yaml")
+            archived = load(
+                discover_layout(target).structured_file(result, "change.yaml")
+            )
             self.assertEqual(archived["status"], "archived")
 
     def _copy_support(self, target: Path) -> None:

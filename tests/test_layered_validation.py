@@ -42,7 +42,7 @@ class LayeredValidationTests(unittest.TestCase):
 
     def test_change_ids_may_be_owned_by_native_atomic_records(self) -> None:
         change = self._write_change("tool", "native-atoms")
-        manifest_path = change / "change.yaml"
+        manifest_path = self._change_manifest(change)
         manifest = load(manifest_path)
         assert isinstance(manifest, dict)
         native_ids = {
@@ -199,7 +199,7 @@ class LayeredValidationTests(unittest.TestCase):
         )
 
         change = self._write_change("gov", "session-provenance", id_layer="GOV")
-        manifest_path = change / "change.yaml"
+        manifest_path = self._change_manifest(change)
         manifest = load(manifest_path)
         assert isinstance(manifest, dict)
         manifest.pop("llm_session_ids")
@@ -251,7 +251,7 @@ class LayeredValidationTests(unittest.TestCase):
 
     def test_change_target_is_repository_or_declared_work_areas(self) -> None:
         change = self._write_change("tool", "targeted-change")
-        path = change / "change.yaml"
+        path = self._change_manifest(change)
         data = load(path)
         assert isinstance(data, dict)
         self.assertEqual(data["target"], {"repository": True, "work_areas": []})
@@ -259,7 +259,7 @@ class LayeredValidationTests(unittest.TestCase):
 
         valid_target = {"repository": False, "work_areas": ["api", "web"]}
         data["target"] = valid_target
-        path.write_text(dump(data), encoding="utf-8")
+        path.write_text(dump(data, path), encoding="utf-8")
         self.assertEqual(validate_change(self.root, change, archived=False), [])
 
         invalid_targets = (
@@ -273,7 +273,7 @@ class LayeredValidationTests(unittest.TestCase):
         for target in invalid_targets:
             with self.subTest(target=target):
                 data["target"] = target
-                path.write_text(dump(data), encoding="utf-8")
+                path.write_text(dump(data, path), encoding="utf-8")
                 self.assertIn(
                     "DSET-E148",
                     {
@@ -287,7 +287,7 @@ class LayeredValidationTests(unittest.TestCase):
         data = load(path)
         assert isinstance(data, dict)
         data["requirements"] = ["DSET-REQUIREMENT-001"]
-        path.write_text(dump(data), encoding="utf-8")
+        path.write_text(dump(data, path), encoding="utf-8")
         (path.parent / "spec.md").write_text(
             "# DSET-REQUIREMENT-001\n", encoding="utf-8"
         )
@@ -307,7 +307,7 @@ class LayeredValidationTests(unittest.TestCase):
         data = load(path)
         assert isinstance(data, dict)
         data["layer"] = "skill"
-        path.write_text(dump(data), encoding="utf-8")
+        path.write_text(dump(data, path), encoding="utf-8")
         self.assertIn(
             "DSET-E145", {item.code for item in validate_repository(self.root)}
         )
@@ -315,11 +315,12 @@ class LayeredValidationTests(unittest.TestCase):
     def test_change_layer_and_duplicate_change_ids_are_rejected(self) -> None:
         first = self._write_change("tool", "layered-change")
         self.assertEqual(validate_change(self.root, first, archived=False), [])
-        data = load(first / "change.yaml")
+        first_manifest = self._change_manifest(first)
+        data = load(first_manifest)
         assert isinstance(data, dict)
         data["primary_layer"] = "skill"
         data["affected_layers"] = ["skill"]
-        (first / "change.yaml").write_text(dump(data), encoding="utf-8")
+        first_manifest.write_text(dump(data, first_manifest), encoding="utf-8")
         self.assertIn(
             "DSET-E148",
             {item.code for item in validate_change(self.root, first, archived=False)},
@@ -471,7 +472,7 @@ class LayeredValidationTests(unittest.TestCase):
 
     def test_native_atomic_record_can_own_a_change_decision(self) -> None:
         change = self._write_change("tool", "native-decision")
-        manifest_path = change / "change.yaml"
+        manifest_path = self._change_manifest(change)
         manifest = load(manifest_path)
         assert isinstance(manifest, dict)
         manifest["decisions"] = ["DSET-DECISION-TOOL-099"]
@@ -497,7 +498,7 @@ class LayeredValidationTests(unittest.TestCase):
 
     def test_workspace_and_dependency_currentness_are_enforced(self) -> None:
         change = self._write_change("tool", "layered-change")
-        path = change / "change.yaml"
+        path = self._change_manifest(change)
         data = load(path)
         assert isinstance(data, dict)
         data["dependencies"] = [
@@ -518,7 +519,7 @@ class LayeredValidationTests(unittest.TestCase):
                 "status": "available",
             }
         ]
-        path.write_text(dump(data), encoding="utf-8")
+        path.write_text(dump(data, path), encoding="utf-8")
         self.assertIn(
             "DSET-E153",
             {item.code for item in validate_change(self.root, change, archived=False)},
@@ -529,12 +530,12 @@ class LayeredValidationTests(unittest.TestCase):
             "url": "https://github.com/example/project/pull/7",
         }
         data["dependencies"][0]["required_commit"] = "a" * 40
-        path.write_text(dump(data), encoding="utf-8")
+        path.write_text(dump(data, path), encoding="utf-8")
         self.assertEqual(validate_change(self.root, change, archived=False), [])
 
     def test_candidate_must_match_workspace_head_only_when_verified(self) -> None:
         change = self._write_change("tool", "candidate-change")
-        path = change / "change.yaml"
+        path = self._change_manifest(change)
         data = load(path)
         assert isinstance(data, dict)
         data["workspace"]["head_commit"] = "a" * 40
@@ -551,13 +552,13 @@ class LayeredValidationTests(unittest.TestCase):
             "candidate_commit": "c" * 40,
         }
         data["status"] = "in-progress"
-        path.write_text(dump(data), encoding="utf-8")
+        path.write_text(dump(data, path), encoding="utf-8")
         self.assertNotIn(
             "DSET-E152",
             {item.code for item in validate_change(self.root, change, archived=False)},
         )
         data["status"] = "verified"
-        path.write_text(dump(data), encoding="utf-8")
+        path.write_text(dump(data, path), encoding="utf-8")
         self.assertIn(
             "DSET-E152",
             {item.code for item in validate_change(self.root, change, archived=False)},
@@ -573,8 +574,8 @@ class LayeredValidationTests(unittest.TestCase):
             self.root, "dependency-check", "sample", "small", layer="tool"
         )
 
-        first_data = load(first / "change.yaml")
-        second_data = load(second / "change.yaml")
+        first_data = load(self._change_manifest(first))
+        second_data = load(self._change_manifest(second))
         assert isinstance(first_data, dict)
         assert isinstance(second_data, dict)
         self.assertEqual(first_data["id"], "DSET-CHANGE-TOOL-001")
@@ -593,7 +594,7 @@ class LayeredValidationTests(unittest.TestCase):
             layer="tool",
             workspace_mode="branch-worktree",
         )
-        isolated_data = load(isolated / "change.yaml")
+        isolated_data = load(self._change_manifest(isolated))
         assert isinstance(isolated_data, dict)
         self.assertEqual(isolated_data["workspace"]["isolation"], "branch-worktree")
         self.assertEqual(isolated_data["workspace"]["branch"], "dset/isolated-change")
@@ -617,7 +618,7 @@ class LayeredValidationTests(unittest.TestCase):
             "small",
             layer="tool",
         )
-        configured_data = load(configured / "change.yaml")
+        configured_data = load(self._change_manifest(configured))
         assert isinstance(configured_data, dict)
         self.assertEqual(configured_data["workspace"]["isolation"], "branch-worktree")
         self.assertEqual(
@@ -633,7 +634,7 @@ class LayeredValidationTests(unittest.TestCase):
             layer="tool",
             work_areas=["web", "api"],
         )
-        targeted_data = load(targeted / "change.yaml")
+        targeted_data = load(self._change_manifest(targeted))
         assert isinstance(targeted_data, dict)
         self.assertEqual(
             targeted_data["target"],
@@ -684,7 +685,7 @@ class LayeredValidationTests(unittest.TestCase):
             )
         self.assertEqual(result, 0)
         change = self.scopes / "tool" / "changes" / "cli-targeted-change"
-        data = load(change / "change.yaml")
+        data = load(self._change_manifest(change))
         assert isinstance(data, dict)
         self.assertEqual(
             data["target"],
@@ -701,29 +702,32 @@ class LayeredValidationTests(unittest.TestCase):
             "tool", "second-change", stable_id="DSET-CHANGE-TOOL-102"
         )
         for change in (first, second):
-            data = load(change / "change.yaml")
+            manifest = self._change_manifest(change)
+            data = load(manifest)
             assert isinstance(data, dict)
             data["pull_request"] = {
                 "repository": "example/project",
                 "number": 13,
                 "url": "https://github.com/example/project/pull/13",
             }
-            (change / "change.yaml").write_text(dump(data), encoding="utf-8")
+            manifest.write_text(dump(data, manifest), encoding="utf-8")
         self.assertNotIn(
             "DSET-E154", {item.code for item in validate_repository(self.root)}
         )
-        first_data = load(first / "change.yaml")
-        second_data = load(second / "change.yaml")
+        first_manifest = self._change_manifest(first)
+        second_manifest = self._change_manifest(second)
+        first_data = load(first_manifest)
+        second_data = load(second_manifest)
         assert isinstance(first_data, dict)
         assert isinstance(second_data, dict)
         first_data["workspace"]["isolation"] = "branch-worktree"
         first_data["workspace"]["branch"] = "dset/first-change"
         first_data["workspace"]["base_ref"] = "dev"
-        (first / "change.yaml").write_text(dump(first_data), encoding="utf-8")
+        first_manifest.write_text(dump(first_data, first_manifest), encoding="utf-8")
         second_data["workspace"]["isolation"] = "branch-worktree"
         second_data["workspace"]["branch"] = "dset/first-change"
         second_data["workspace"]["base_ref"] = "dev"
-        (second / "change.yaml").write_text(dump(second_data), encoding="utf-8")
+        second_manifest.write_text(dump(second_data, second_manifest), encoding="utf-8")
         self.assertIn(
             "DSET-E154", {item.code for item in validate_repository(self.root)}
         )
@@ -905,7 +909,7 @@ class LayeredValidationTests(unittest.TestCase):
         shutil.copytree(source, target)
 
     def _archive_synthetic(self, change: Path, day: str, pr_number: int) -> None:
-        path = change / "change.yaml"
+        path = self._change_manifest(change)
         data = load(path)
         assert isinstance(data, dict)
         layer = str(data["primary_layer"])
@@ -923,8 +927,11 @@ class LayeredValidationTests(unittest.TestCase):
             "date": day,
             "path": destination.relative_to(self.root).as_posix(),
         }
-        path.write_text(dump(data), encoding="utf-8")
+        path.write_text(dump(data, path), encoding="utf-8")
         change.replace(destination)
+
+    def _change_manifest(self, change: Path) -> Path:
+        return discover_layout(self.root).structured_file(change, "change.yaml")
 
 
 if __name__ == "__main__":
