@@ -201,18 +201,26 @@ class ArtifactRelationTests(unittest.TestCase):
 
     @classmethod
     def _replacement_fixture(cls, root: Path) -> None:
-        cls._artifact(root, "OLD-REPLACE", "APP-DECISION-GOV-020")
+        cls._artifact(
+            root,
+            "OLD-REPLACE",
+            "APP-TEST-GOV-020",
+            artifact_type="atomic_record",
+            semantic_type="qa",
+            subtype="test",
+        )
         cls._artifact(
             root,
             "NEW-REPLACE",
-            "APP-DECISION-GOV-021",
+            "APP-TEST-GOV-021",
             artifact_type="atomic_record",
-            semantic_type="decision",
+            semantic_type="qa",
+            subtype="test",
             relations=[
-                {"type": "replacement_of", "target": "APP-DECISION-GOV-020"}
+                {"type": "replacement_of", "target": "APP-TEST-GOV-020"}
             ],
         )
-        cls._lifecycle(root, "APP-DECISION-GOV-020", "APP-DECISION-GOV-021")
+        cls._lifecycle(root, "APP-TEST-GOV-020", "APP-TEST-GOV-021")
 
     @classmethod
     def _projection(cls, root: Path, *, through: str) -> None:

@@ -136,6 +136,25 @@
   resolver. Retain the authenticated independent review and its reconciled
   findings as a separate open Evaluation gate.
 
+## Batch 11 — Implementation modes and canonical TOML — planned
+
+- Add a documented `workflows.implement.mode` setting with `lazy` as the
+  default and `strict` as the implementation-only option.
+- Keep `dset-implement` thin: the resolved lifecycle owns lazy prerequisite
+  closure and strict no-prerequisite behavior.
+- Replace the hand-written settings parser with schema-versioned TOML parsing;
+  keep schema 1.0 read compatibility while emitting documented schema 1.1.
+- Build one portable dry-run-first migration command that inventories owned
+  YAML/JSON and Markdown frontmatter, classifies explicit external boundaries,
+  preserves parsed values/IDs/provenance, rewrites references, emits digest
+  mapping, refuses collisions/unsupported values, and is idempotent.
+- Migrate DSET-owned structured artifacts and Markdown frontmatter to TOML.
+  Keep host skill metadata, GitHub workflows, ecosystem/wire/runtime formats,
+  and generated compatibility adapters non-authoritative and freshness-gated.
+- Commit migration tooling before applying it. Apply the migration as a
+  separate logical commit, then regenerate adapters/derived views and record
+  deterministic evidence after the complete repository and adopter gates pass.
+
 ## Later batches
 
 Complete only the remaining DSET core gates: native authenticated Codex/Claude

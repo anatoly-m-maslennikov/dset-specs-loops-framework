@@ -112,6 +112,11 @@ closure is finite because every transition must remove a missing criterion.
 Writes, external messages, publication, and other consequential effects require
 the same authorization they would require if invoked directly.
 
+Root `dset.toml` selects `workflows.implement.mode = "lazy"` or `"strict"`.
+Missing configuration uses `lazy`.
+
+In lazy mode, the following sequence applies.
+
 The `implement` closure is ordered:
 
 1. invoke `decisions` and reconcile available current host-session history,
@@ -122,9 +127,16 @@ The `implement` closure is ordered:
 4. invoke `implement` only when all resolved entry criteria and authorization
    are satisfied.
 
-`dset skills context --skill dset-implement ...` starts or resumes this closure
-and returns its persisted criterion state and exact `next_workflow`. Start a
-returned prerequisite as a child with
+Strict mode has no prerequisite closure. It invokes only `implement` from
+already sufficient accepted artifacts and authorization. It must not create,
+repair, or compile missing Decisions, Questions, Problems, QA, proof plans, or
+implementation plans and must not fall back to lazy mode. Missing or ambiguous
+input stops with the exact insufficiency.
+
+`dset skills context --skill dset-implement ...` returns the selected
+preparation mode. In lazy mode it starts or resumes the closure and returns its
+persisted criterion state and exact `next_workflow`. Start a returned
+prerequisite as a child with
 `dset runtime child SESSION WORKFLOW ROOT --objective OBJECTIVE`, finish that
 child with the session left `active`, then report the authoritative reread with
 `dset runtime closure SESSION ROOT --workflow WORKFLOW --criterion NAME=VALUE`.
@@ -132,7 +144,7 @@ Criteria use `true`, `false`, or `unknown`. An observation-only closure update
 omits `--workflow`; it is the only way to resume after missing evidence or
 newly granted implementation authority.
 
-The runtime marks successful `decisions`, `plan-proof`,
+The runtime marks successful lazy-mode `decisions`, `plan-proof`,
 `plan-implementation`, and `implement` transitions as satisfying their owned
 criterion. It rejects an unexpected workflow, records parent/root run links,
 and persists visited criterion states through compaction. Failed, stopped, or
@@ -141,6 +153,11 @@ missing repository-write authorization stop or block with stable reason codes.
 The runtime chooses the next registered workflow but never judges proof-plan
 completeness, implementation-plan completeness, or operator authorization; the
 caller supplies those observations from the governing repository and host.
+
+In strict mode the runtime records a direct implementation closure, never
+accepts a prerequisite child workflow, and retains the same run/session,
+authorization, provenance, terminal-finish, Verification, and release
+boundaries as lazy mode.
 
 The `decisions` workflow treats session/checkpoint/run content as candidate
 evidence, never authority. It emits only accepted atomic directives, preserves

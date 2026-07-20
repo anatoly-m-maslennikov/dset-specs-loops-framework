@@ -696,3 +696,29 @@ claim with an ambiguous exception is not emitted until the operator resolves
 the exception. Once precise, DSET notices that the claim applies unchanged to
 every feature in its group and proposes one feature-to-group promotion; it
 does not write at group scope or jump to project scope without acceptance.
+
+## DSET-REQUIREMENT-GOV-036 — DSET-owned structured artifacts use TOML
+
+DSET-owned structured artifact files must use TOML, and DSET Markdown
+artifacts must use TOML frontmatter. Root `dset.toml` must document every
+operator setting, valid value, behavioral effect, and reasonable default in
+the file itself. One canonical source must not coexist with an editable YAML
+or JSON copy.
+
+Externally prescribed carriers may retain their required format: host skill
+metadata, GitHub Actions, ecosystem manifests and lockfiles, wire/CLI output,
+and machine-local runtime journals. Interoperable JSON Schema files may be
+generated from canonical DSET schema sources, but generated adapters are not
+authority and must pass freshness checks.
+
+Migration must inventory every source and reference, preview without writing,
+preserve parsed values and stable IDs, emit old/new digests, refuse collisions
+and unsupported values, rewrite repository references, validate the complete
+migrated tree before cutover, and leave no writable YAML/JSON DSET authority.
+Any adopter compatibility reader is explicit, finite, and never a legacy write
+path.
+
+**Scenario DSET-SCENARIO-GOV-037:** A dry run reports every owned YAML/JSON
+source, TOML destination, reference rewrite, external exception, and digest.
+Apply produces a valid repository and adopter, a second apply is a no-op, and a
+stale generated JSON Schema adapter fails without becoming authority.

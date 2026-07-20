@@ -181,6 +181,7 @@ changes:
       - DSET-REQUIREMENT-GOV-030
       - DSET-REQUIREMENT-GOV-031
       - DSET-REQUIREMENT-GOV-032
+      - DSET-REQUIREMENT-GOV-036
       - DSET-REQUIREMENT-META-007
       - DSET-REQUIREMENT-META-011
       - DSET-REQUIREMENT-OPS-003
@@ -199,6 +200,7 @@ changes:
       - DSET-REQUIREMENT-SKILL-008
       - DSET-REQUIREMENT-SKILL-009
       - DSET-REQUIREMENT-SKILL-010
+      - DSET-REQUIREMENT-SKILL-012
       - DSET-REQUIREMENT-TOOL-004
       - DSET-REQUIREMENT-TOOL-018
       - DSET-REQUIREMENT-TOOL-019
@@ -224,6 +226,7 @@ changes:
       - DSET-TEST-GOV-031
       - DSET-TEST-GOV-032
       - DSET-TEST-GOV-036
+      - DSET-TEST-GOV-037
       - DSET-TEST-META-007
       - DSET-TEST-META-010
       - DSET-TEST-META-011
@@ -246,6 +249,7 @@ changes:
       - DSET-TEST-SKILL-009
       - DSET-TEST-SKILL-011
       - DSET-TEST-SKILL-012
+      - DSET-TEST-SKILL-014
       - DSET-TEST-TOOL-005
       - DSET-TEST-TOOL-016
       - DSET-TEST-TOOL-017
@@ -287,6 +291,8 @@ changes:
       - DSET-EVAL-TOOL-005
       - DSET-EVAL-TOOL-006
       - DSET-EVALUATION-GOV-026
+      - DSET-EVALUATION-GOV-027
+      - DSET-EVALUATION-SKILL-012
       - DSET-EVALUATION-TOOL-003
       - DSET-EVALUATION-TOOL-004
     intake:
@@ -972,6 +978,19 @@ semantic_classifications:
     lifecycle_events:
       - DSET-LIFECYCLE-EVENT-039
   -
+    id: DSET-DEFECT-TOOL-003
+    type: problem
+    subtype: defect
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-045-atomic-replacement-source.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-043
+  -
     id: DSET-EVAL-GOV-001
     type: qa
     subtype: evaluation
@@ -1510,7 +1529,8 @@ semantic_classifications:
       - dset/scopes/skill/specs/packages/methodology/package.yaml
     carrier_statuses:
       - defined
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-042
   -
     id: DSET-EVAL-TOOL-001
     type: qa
@@ -1534,6 +1554,36 @@ semantic_classifications:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-037-typed-artifact-relations-evaluation.md
     carrier_statuses:
       - accepted
+    lifecycle_events: []
+  -
+    id: DSET-EVALUATION-GOV-027
+    type: qa
+    subtype: evaluation
+    compatibility: false
+    origins:
+      - modern_atom
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-044-canonical-toml-artifacts-evaluation.md
+    carrier_statuses:
+      - accepted
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVALUATION-SKILL-012
+    type: qa
+    subtype: evaluation
+    compatibility: false
+    origins:
+      - modern_atom
+      - package:evals
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-043-implementation-preparation-mode-evaluation.md
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - accepted
+      - defined
     lifecycle_events: []
   -
     id: DSET-EVALUATION-TOOL-002
@@ -2485,6 +2535,21 @@ semantic_classifications:
       - accepted
     lifecycle_events: []
   -
+    id: DSET-REQUIREMENT-GOV-036
+    type: decision
+    subtype: requirement
+    compatibility: false
+    origins:
+      - modern_atom
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-040-canonical-toml-artifacts.md
+    carrier_statuses:
+      - accepted
+      - defined
+    lifecycle_events: []
+  -
     id: DSET-REQUIREMENT-META-001
     type: decision
     subtype: requirement
@@ -2834,7 +2899,8 @@ semantic_classifications:
     carrier_statuses:
       - accepted
       - defined
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-040
   -
     id: DSET-REQUIREMENT-SKILL-011
     type: decision
@@ -2846,6 +2912,21 @@ semantic_classifications:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-007-shared-skill-runtime.md
     carrier_statuses:
       - accepted
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-SKILL-012
+    type: decision
+    subtype: requirement
+    compatibility: false
+    origins:
+      - modern_atom
+      - package:requirements
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-039-implementation-preparation-mode.md
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - accepted
+      - defined
     lifecycle_events: []
   -
     id: DSET-REQUIREMENT-TOOL-001
@@ -3371,6 +3452,21 @@ semantic_classifications:
       - accepted
     lifecycle_events: []
   -
+    id: DSET-TEST-GOV-037
+    type: qa
+    subtype: test
+    compatibility: false
+    origins:
+      - modern_atom
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-042-canonical-toml-artifacts-test.md
+    carrier_statuses:
+      - accepted
+      - defined
+    lifecycle_events: []
+  -
     id: DSET-TEST-META-001
     type: qa
     subtype: test
@@ -3728,6 +3824,22 @@ semantic_classifications:
     carriers:
       - dset/scopes/skill/specs/packages/methodology/package.yaml
     carrier_statuses:
+      - defined
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-041
+  -
+    id: DSET-TEST-SKILL-014
+    type: qa
+    subtype: test
+    compatibility: false
+    origins:
+      - modern_atom
+      - package:tests
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-041-implementation-preparation-mode-test.md
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - accepted
       - defined
     lifecycle_events: []
   -
@@ -4111,6 +4223,26 @@ semantic_atoms:
     absorbed_by: []
     archived: false
   -
+    id: DSET-DEFECT-TOOL-003
+    carrier_id: DSET-ATOMIC-RECORD-045
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-045-atomic-replacement-source.md
+    sha256: c30f4999ab306cd1b124f3fec0e222dad27f27bca15b12ff4c2234cbcf8c30f2
+    type: problem
+    subtype: defect
+    emission_status: accepted
+    current_status: resolved
+    priority: high
+    priority_source: atom:DSET-DEFECT-TOOL-003
+    relations:
+      -
+        type: relates_to
+        origin: authored
+        target: DSET-DECISION-GOV-013
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-043
+    absorbed_by: []
+    archived: false
+  -
     id: DSET-EVALUATION-GOV-026
     carrier_id: DSET-ATOMIC-RECORD-037
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-037-typed-artifact-relations-evaluation.md
@@ -4126,6 +4258,48 @@ semantic_atoms:
         type: check_of
         origin: authored
         target: DSET-DECISION-GOV-013
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-EVALUATION-GOV-027
+    carrier_id: DSET-ATOMIC-RECORD-044
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-044-canonical-toml-artifacts-evaluation.md
+    sha256: 0877a3ff29d8f0377e63fe53fc3b7bdda773cbf69ad31300b7b79ba20c79a0f6
+    type: qa
+    subtype: evaluation
+    emission_status: accepted
+    current_status: accepted
+    priority: medium
+    priority_source: atom:DSET-EVALUATION-GOV-027
+    relations:
+      -
+        type: check_of
+        origin: authored
+        target: DSET-REQUIREMENT-GOV-036
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-EVALUATION-SKILL-012
+    carrier_id: DSET-ATOMIC-RECORD-043
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-043-implementation-preparation-mode-evaluation.md
+    sha256: 2f95d1ec62368bd0a5b584ad2af48f32485eb18f7a6f2f9ee88dfc8d2cad2434
+    type: qa
+    subtype: evaluation
+    emission_status: accepted
+    current_status: accepted
+    priority: medium
+    priority_source: atom:DSET-EVALUATION-SKILL-012
+    relations:
+      -
+        type: check_of
+        origin: authored
+        target: DSET-REQUIREMENT-SKILL-012
+      -
+        type: replacement_of
+        origin: authored
+        target: DSET-EVAL-SKILL-010
     lifecycle_events: []
     absorbed_by: []
     archived: false
@@ -4375,6 +4549,21 @@ semantic_atoms:
     absorbed_by: []
     archived: false
   -
+    id: DSET-REQUIREMENT-GOV-036
+    carrier_id: DSET-ATOMIC-RECORD-040
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-040-canonical-toml-artifacts.md
+    sha256: 99e8a1ded652b79ff1e39293058146af35f2b20bc40c995e2b85782649ee09aa
+    type: decision
+    subtype: requirement
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-REQUIREMENT-GOV-036
+    relations: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
     id: DSET-REQUIREMENT-SKILL-010
     carrier_id: DSET-ATOMIC-RECORD-006
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-006-entry-criteria-skill-chains.md
@@ -4382,12 +4571,14 @@ semantic_atoms:
     type: decision
     subtype: requirement
     emission_status: accepted
-    current_status: accepted
+    current_status: absorbed
     priority: unknown
     priority_source: atom:DSET-REQUIREMENT-SKILL-010
     relations: []
-    lifecycle_events: []
-    absorbed_by: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-040
+    absorbed_by:
+      - DSET-REQUIREMENT-SKILL-012
     archived: false
   -
     id: DSET-REQUIREMENT-SKILL-011
@@ -4404,6 +4595,25 @@ semantic_atoms:
       -
         type: child_of
         origin: legacy_child_of
+        target: DSET-REQUIREMENT-SKILL-010
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-REQUIREMENT-SKILL-012
+    carrier_id: DSET-ATOMIC-RECORD-039
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-039-implementation-preparation-mode.md
+    sha256: 62d4935fad190d1b3d3c06c0d99f2b25826f65149bf5307b2b5aff7c843f6529
+    type: decision
+    subtype: requirement
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-REQUIREMENT-SKILL-012
+    relations:
+      -
+        type: replacement_of
+        origin: authored
         target: DSET-REQUIREMENT-SKILL-010
     lifecycle_events: []
     absorbed_by: []
@@ -4479,6 +4689,48 @@ semantic_atoms:
         type: check_of
         origin: authored
         target: DSET-DECISION-GOV-013
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-TEST-GOV-037
+    carrier_id: DSET-ATOMIC-RECORD-042
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-042-canonical-toml-artifacts-test.md
+    sha256: 908641b4e83d84a4f076fcef8a277f18e425e64ffdd14e69bb397bfd22416571
+    type: qa
+    subtype: test
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-TEST-GOV-037
+    relations:
+      -
+        type: check_of
+        origin: authored
+        target: DSET-REQUIREMENT-GOV-036
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-TEST-SKILL-014
+    carrier_id: DSET-ATOMIC-RECORD-041
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-041-implementation-preparation-mode-test.md
+    sha256: 9480ecb61122ed209f1d54affc36b03eba8f33a8f570034df61495726ff17c13
+    type: qa
+    subtype: test
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-TEST-SKILL-014
+    relations:
+      -
+        type: check_of
+        origin: authored
+        target: DSET-REQUIREMENT-SKILL-012
+      -
+        type: replacement_of
+        origin: authored
+        target: DSET-TEST-SKILL-012
     lifecycle_events: []
     absorbed_by: []
     archived: false
@@ -5278,6 +5530,55 @@ relations:
     origin: commit_trailer
     llm_session_ids: []
   -
+    source: 6ed4261c79d7bd9c3a947f80fd437ec3c4bf3cd0
+    source_kind: commit
+    type: implementation_of
+    target: 2-8
+    origin: commit_trailer
+    llm_session_ids: []
+  -
+    source: 6ed4261c79d7bd9c3a947f80fd437ec3c4bf3cd0
+    source_kind: commit
+    type: implementation_of
+    target: 6-70
+    origin: commit_trailer
+    llm_session_ids: []
+  -
+    source: 6ed4261c79d7bd9c3a947f80fd437ec3c4bf3cd0
+    source_kind: commit
+    type: implementation_of
+    target: 7-828
+    origin: commit_trailer
+    llm_session_ids: []
+  -
+    source: 6ed4261c79d7bd9c3a947f80fd437ec3c4bf3cd0
+    source_kind: commit
+    type: implementation_of
+    target: DSET-DECISION-GOV-013
+    origin: commit_trailer
+    llm_session_ids: []
+  -
+    source: 6ed4261c79d7bd9c3a947f80fd437ec3c4bf3cd0
+    source_kind: commit
+    type: implementation_of
+    target: DSET-DEFECT-TOOL-003
+    origin: commit_trailer
+    llm_session_ids: []
+  -
+    source: 6ed4261c79d7bd9c3a947f80fd437ec3c4bf3cd0
+    source_kind: commit
+    type: implementation_of
+    target: DSET-REQUIREMENT-GOV-036
+    origin: commit_trailer
+    llm_session_ids: []
+  -
+    source: 6ed4261c79d7bd9c3a947f80fd437ec3c4bf3cd0
+    source_kind: commit
+    type: implementation_of
+    target: DSET-REQUIREMENT-SKILL-012
+    origin: commit_trailer
+    llm_session_ids: []
+  -
     source: 73089f35b2332c88f9c62c1f19969c94191b17a2
     source_kind: commit
     type: implementation_of
@@ -5608,6 +5909,15 @@ relations:
     target: DSET-DECISION-GOV-013
     llm_session_ids: []
   -
+    source: DSET-DEFECT-TOOL-003
+    source_kind: artifact
+    source_artifact_id: DSET-ATOMIC-RECORD-045
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-045-atomic-replacement-source.md
+    type: relates_to
+    origin: authored
+    target: DSET-DECISION-GOV-013
+    llm_session_ids: []
+  -
     source: DSET-EVALUATION-GOV-026
     source_kind: artifact
     source_artifact_id: DSET-ATOMIC-RECORD-037
@@ -5615,6 +5925,33 @@ relations:
     type: check_of
     origin: authored
     target: DSET-DECISION-GOV-013
+    llm_session_ids: []
+  -
+    source: DSET-EVALUATION-GOV-027
+    source_kind: artifact
+    source_artifact_id: DSET-ATOMIC-RECORD-044
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-044-canonical-toml-artifacts-evaluation.md
+    type: check_of
+    origin: authored
+    target: DSET-REQUIREMENT-GOV-036
+    llm_session_ids: []
+  -
+    source: DSET-EVALUATION-SKILL-012
+    source_kind: artifact
+    source_artifact_id: DSET-ATOMIC-RECORD-043
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-043-implementation-preparation-mode-evaluation.md
+    type: check_of
+    origin: authored
+    target: DSET-REQUIREMENT-SKILL-012
+    llm_session_ids: []
+  -
+    source: DSET-EVALUATION-SKILL-012
+    source_kind: artifact
+    source_artifact_id: DSET-ATOMIC-RECORD-043
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-043-implementation-preparation-mode-evaluation.md
+    type: replacement_of
+    origin: authored
+    target: DSET-EVAL-SKILL-010
     llm_session_ids: []
   -
     source: DSET-EVALUATION-TOOL-002
@@ -5851,6 +6188,15 @@ relations:
     target: DSET-REQUIREMENT-SKILL-010
     llm_session_ids: []
   -
+    source: DSET-REQUIREMENT-SKILL-012
+    source_kind: artifact
+    source_artifact_id: DSET-ATOMIC-RECORD-039
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-039-implementation-preparation-mode.md
+    type: replacement_of
+    origin: authored
+    target: DSET-REQUIREMENT-SKILL-010
+    llm_session_ids: []
+  -
     source: DSET-REQUIREMENT-TOOL-020
     source_kind: artifact
     source_artifact_id: DSET-ATOMIC-RECORD-010
@@ -5880,7 +6226,7 @@ relations:
       scope:
         kind: project
         id: dset-specs-loops-framework
-      through: DSET-ATOMIC-RECORD-035
+      through: DSET-ATOMIC-RECORD-040
       layer: gov
     llm_session_ids: []
   -
@@ -5895,7 +6241,7 @@ relations:
       scope:
         kind: project
         id: dset-specs-loops-framework
-      through: DSET-ATOMIC-RECORD-036
+      through: DSET-ATOMIC-RECORD-042
       subtype: test
       layer: gov
     llm_session_ids: []
@@ -5911,7 +6257,7 @@ relations:
       scope:
         kind: project
         id: dset-specs-loops-framework
-      through: DSET-ATOMIC-RECORD-037
+      through: DSET-ATOMIC-RECORD-044
       subtype: evaluation
       layer: gov
     llm_session_ids: []
@@ -5923,6 +6269,33 @@ relations:
     type: check_of
     origin: authored
     target: DSET-DECISION-GOV-013
+    llm_session_ids: []
+  -
+    source: DSET-TEST-GOV-037
+    source_kind: artifact
+    source_artifact_id: DSET-ATOMIC-RECORD-042
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-042-canonical-toml-artifacts-test.md
+    type: check_of
+    origin: authored
+    target: DSET-REQUIREMENT-GOV-036
+    llm_session_ids: []
+  -
+    source: DSET-TEST-SKILL-014
+    source_kind: artifact
+    source_artifact_id: DSET-ATOMIC-RECORD-041
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-041-implementation-preparation-mode-test.md
+    type: check_of
+    origin: authored
+    target: DSET-REQUIREMENT-SKILL-012
+    llm_session_ids: []
+  -
+    source: DSET-TEST-SKILL-014
+    source_kind: artifact
+    source_artifact_id: DSET-ATOMIC-RECORD-041
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-041-implementation-preparation-mode-test.md
+    type: replacement_of
+    origin: authored
+    target: DSET-TEST-SKILL-012
     llm_session_ids: []
   -
     source: DSET-TEST-TOOL-020

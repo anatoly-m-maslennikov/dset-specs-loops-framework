@@ -1865,10 +1865,14 @@ def _validate_change_ids(
             _diag("DSET-E106", manifest_path, "project.key is unavailable")
         )
         return diagnostics
+    atomic_records = list(change_dir.glob("*-ATOMIC-RECORD-*.md"))
     groups: dict[str, list[Path]] = {
-        "requirements": list((change_dir / "specs").glob("*.md")),
-        "tests": [change_dir / "test-plan.md"],
-        "evals": [change_dir / "eval-plan.md"],
+        "requirements": [
+            *list((change_dir / "specs").glob("*.md")),
+            *atomic_records,
+        ],
+        "tests": [change_dir / "test-plan.md", *atomic_records],
+        "evals": [change_dir / "eval-plan.md", *atomic_records],
     }
     group_types = {
         "requirements": "REQUIREMENT",
@@ -1897,7 +1901,7 @@ def _validate_change_ids(
         groups["decisions"] = [
             *change_dir.glob("*decision*.md"),
             *change_dir.glob("*adr*.md"),
-            *change_dir.glob("*-ATOMIC-RECORD-*.md"),
+            *atomic_records,
         ]
         group_types["decisions"] = "DECISION"
         if "contracts" not in data:

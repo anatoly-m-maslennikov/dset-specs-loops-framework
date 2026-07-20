@@ -12,49 +12,49 @@ llm_session_ids: []
 > This generated view is not authority. Follow each link to its canonical
 > owner and refresh explicitly after source changes.
 
-- **Source digest:** `98e849cba818c6244d930e0cb2e459bd618fff0ada78e9c74aecea58116a4dd9`
+- **Source digest:** `16151d0e80ad00ff9051c05071da9c6789d2861e90eff58653e1c824f9824d35`
 - **Renderer:** `dset health` schema 1.0
 
 ## Coverage
 
 | Closure | Numerator | Denominator | Excluded | N/A | Unknown | Stale |
 |---|---:|---:|---:|---:|---:|---:|
-| Decision authority compiled into evergreen truth | 87 | 87 | 0 | 0 | 0 | 0 |
-| Decision authority linked from implementation commits | 12 | 12 | 75 | 0 | 0 | 0 |
-| Applicable authority connected to Test or Evaluation | 87 | 87 | 0 | 0 | 0 | 0 |
-| QA definitions connected to current evidence | 56 | 124 | 0 | 0 | 67 | 1 |
+| Decision authority compiled into evergreen truth | 88 | 88 | 0 | 0 | 0 | 0 |
+| Decision authority linked from implementation commits | 13 | 13 | 75 | 0 | 0 | 0 |
+| Applicable authority connected to Test or Evaluation | 88 | 88 | 0 | 0 | 0 | 0 |
+| QA definitions connected to current evidence | 56 | 128 | 0 | 0 | 71 | 1 |
 
 ### Coverage gaps
 
 - **Decision authority compiled into evergreen truth:** none
 - **Decision authority linked from implementation commits:** none
 - **Applicable authority connected to Test or Evaluation:** none
-- **QA definitions connected to current evidence:** `DSET-EVAL-GOV-010`, `DSET-EVAL-GOV-011`, `DSET-EVAL-GOV-012`, `DSET-EVAL-GOV-013`, `DSET-EVAL-GOV-014`, `DSET-EVAL-GOV-015`, `DSET-EVAL-GOV-016`, `DSET-EVAL-GOV-018`, `DSET-EVAL-GOV-020`, `DSET-EVAL-GOV-021`, `DSET-EVAL-GOV-023`, `DSET-EVAL-META-004`, `DSET-EVAL-META-005`, `DSET-EVAL-META-006`, `DSET-EVAL-META-007`, `DSET-EVAL-META-008`, `DSET-EVAL-META-009`, `DSET-EVAL-SKILL-003`, `DSET-EVAL-SKILL-004`, `DSET-EVAL-SKILL-005`, `DSET-EVAL-SKILL-006`, `DSET-EVAL-SKILL-007`, `DSET-EVAL-SKILL-008`, `DSET-EVALUATION-TOOL-002`, `DSET-EVALUATION-TOOL-004`, `DSET-TEST-GOV-001`, `DSET-TEST-GOV-002`, `DSET-TEST-GOV-003`, `DSET-TEST-GOV-004`, `DSET-TEST-GOV-010`, `DSET-TEST-GOV-011`, `DSET-TEST-GOV-012`, `DSET-TEST-GOV-013`, `DSET-TEST-GOV-014`, `DSET-TEST-GOV-015`, `DSET-TEST-GOV-016`, `DSET-TEST-GOV-018`, `DSET-TEST-GOV-019`, `DSET-TEST-GOV-020`, `DSET-TEST-GOV-021`, `DSET-TEST-GOV-023`, `DSET-TEST-GOV-024`, `DSET-TEST-GOV-025`, `DSET-TEST-GOV-028`, `DSET-TEST-GOV-029`, `DSET-TEST-GOV-030`, `DSET-TEST-GOV-031`, `DSET-TEST-GOV-033`, `DSET-TEST-META-001`, `DSET-TEST-META-005`, `DSET-TEST-META-006`, `DSET-TEST-META-007`, `DSET-TEST-META-008`, `DSET-TEST-META-009`, `DSET-TEST-META-010`, `DSET-TEST-META-011`, `DSET-TEST-OPS-001`, `DSET-TEST-OPS-016`, `DSET-TEST-SKILL-003`, `DSET-TEST-SKILL-004`, `DSET-TEST-SKILL-005`, `DSET-TEST-SKILL-006`, `DSET-TEST-SKILL-007`, `DSET-TEST-SKILL-008`, `DSET-TEST-SKILL-009`, `DSET-TEST-TOOL-018`, `DSET-TEST-TOOL-020`
+- **QA definitions connected to current evidence:** `DSET-EVAL-GOV-010`, `DSET-EVAL-GOV-011`, `DSET-EVAL-GOV-012`, `DSET-EVAL-GOV-013`, `DSET-EVAL-GOV-014`, `DSET-EVAL-GOV-015`, `DSET-EVAL-GOV-016`, `DSET-EVAL-GOV-018`, `DSET-EVAL-GOV-020`, `DSET-EVAL-GOV-021`, `DSET-EVAL-GOV-023`, `DSET-EVAL-META-004`, `DSET-EVAL-META-005`, `DSET-EVAL-META-006`, `DSET-EVAL-META-007`, `DSET-EVAL-META-008`, `DSET-EVAL-META-009`, `DSET-EVAL-SKILL-003`, `DSET-EVAL-SKILL-004`, `DSET-EVAL-SKILL-005`, `DSET-EVAL-SKILL-006`, `DSET-EVAL-SKILL-007`, `DSET-EVAL-SKILL-008`, `DSET-EVALUATION-GOV-027`, `DSET-EVALUATION-SKILL-012`, `DSET-EVALUATION-TOOL-002`, `DSET-EVALUATION-TOOL-004`, `DSET-TEST-GOV-001`, `DSET-TEST-GOV-002`, `DSET-TEST-GOV-003`, `DSET-TEST-GOV-004`, `DSET-TEST-GOV-010`, `DSET-TEST-GOV-011`, `DSET-TEST-GOV-012`, `DSET-TEST-GOV-013`, `DSET-TEST-GOV-014`, `DSET-TEST-GOV-015`, `DSET-TEST-GOV-016`, `DSET-TEST-GOV-018`, `DSET-TEST-GOV-019`, `DSET-TEST-GOV-020`, `DSET-TEST-GOV-021`, `DSET-TEST-GOV-023`, `DSET-TEST-GOV-024`, `DSET-TEST-GOV-025`, `DSET-TEST-GOV-028`, `DSET-TEST-GOV-029`, `DSET-TEST-GOV-030`, `DSET-TEST-GOV-031`, `DSET-TEST-GOV-033`, `DSET-TEST-GOV-037`, `DSET-TEST-META-001`, `DSET-TEST-META-005`, `DSET-TEST-META-006`, `DSET-TEST-META-007`, `DSET-TEST-META-008`, `DSET-TEST-META-009`, `DSET-TEST-META-010`, `DSET-TEST-META-011`, `DSET-TEST-OPS-001`, `DSET-TEST-OPS-016`, `DSET-TEST-SKILL-003`, `DSET-TEST-SKILL-004`, `DSET-TEST-SKILL-005`, `DSET-TEST-SKILL-006`, `DSET-TEST-SKILL-007`, `DSET-TEST-SKILL-008`, `DSET-TEST-SKILL-009`, `DSET-TEST-SKILL-014`, `DSET-TEST-TOOL-018`, `DSET-TEST-TOOL-020`
 
 ## Artifact inventory
 
-- **Governed artifacts:** 385
-- **By role:** atomic=57, derived_or_navigation=103, evergreen=81, implementation=119, transactional=25
-- **By type:** analysis_report=21, atomic_record=57, delivery=21, derived_view=1, evidence_record=25, implementation=119, navigation=52, plan=37, specification=44, verification=8
-- **By subtype:** architecture=5, behavior=10, change=9, configuration=10, design=7, documentation=33, domain_model=6, evaluation_plan=14, evaluation_result=2, external_audit_analysis=1, governance=16, health_dashboard=1, hub=52, implementation_plan=7, proposal=8, readiness_record=2, release_plan=2, release_record=1, review_report=2, roadmap=2, root_cause_analysis=1, run_record=9, solution_landscape=7, source_code=37, technical_investigation=3, test_implementation=39, test_plan=14, test_result=12, version_scope=5
-- **By layer:** gov=69, meta=24, ops=33, repository=4, skill=140, tool=115
-- **By effective priority:** critical=7, high=23, medium=349, unknown=6
-- **By status:** absorbed=7, accepted=18, archived=4, in-progress=1, open=20, resolved=27
+- **Governed artifacts:** 396
+- **By role:** atomic=64, derived_or_navigation=103, evergreen=81, implementation=123, transactional=25
+- **By type:** analysis_report=21, atomic_record=64, delivery=21, derived_view=1, evidence_record=25, implementation=123, navigation=52, plan=37, specification=44, verification=8
+- **By subtype:** architecture=5, behavior=10, change=9, configuration=10, design=7, documentation=33, domain_model=6, evaluation_plan=14, evaluation_result=2, external_audit_analysis=1, governance=16, health_dashboard=1, hub=52, implementation_plan=7, proposal=8, readiness_record=2, release_plan=2, release_record=1, review_report=2, roadmap=2, root_cause_analysis=1, run_record=9, solution_landscape=7, source_code=39, technical_investigation=3, test_implementation=41, test_plan=14, test_result=12, version_scope=5
+- **By layer:** gov=69, meta=24, ops=33, repository=4, skill=147, tool=119
+- **By effective priority:** critical=7, high=28, medium=355, unknown=6
+- **By status:** absorbed=8, accepted=23, archived=4, in-progress=1, open=20, resolved=28
 
 ## Semantic inventory
 
-- **Semantic claims:** 271
-- **By Type:** decision=101, problem=28, qa=124, question=18
-- **By direct subtype:** contract=6, defect=8, evaluation=50, gap=4, opportunity=3, requirement=74, test=74
-- **Native immutable atoms:** 38
+- **Semantic claims:** 278
+- **By Type:** decision=103, problem=29, qa=128, question=18
+- **By direct subtype:** contract=6, defect=9, evaluation=52, gap=4, opportunity=3, requirement=76, test=76
+- **Native immutable atoms:** 45
 - **Compatibility-classified legacy IDs:** 233
 
 ## Typed relation inventory
 
-- **Forward relations:** 241
-- **By type:** check_of=2, child_of=31, evidence_for=2, implementation_of=197, projection_of=3, relates_to=3, replacement_of=2, resolution_of=1
-- **By origin:** authored=13, commit_trailer=197, legacy_child_of=31
-- **By source kind:** artifact=44, commit=197
+- **Forward relations:** 256
+- **By type:** check_of=6, child_of=31, evidence_for=2, implementation_of=204, projection_of=3, relates_to=4, replacement_of=5, resolution_of=1
+- **By origin:** authored=21, commit_trailer=204, legacy_child_of=31
+- **By source kind:** artifact=52, commit=204
 
 ## Unresolved work
 
@@ -90,7 +90,7 @@ llm_session_ids: []
 ## Drill-downs
 
 - **Packages:** methodology=26
-- **Work Areas:** delivery=0, documentation=1, methodology=1, project-control=309, skills=34, tests=39, toolchain=37
+- **Work Areas:** delivery=0, documentation=1, methodology=1, project-control=318, skills=34, tests=41, toolchain=39
 
 ## Canonical return paths
 

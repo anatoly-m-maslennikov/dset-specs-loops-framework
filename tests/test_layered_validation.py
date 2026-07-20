@@ -40,6 +40,34 @@ class LayeredValidationTests(unittest.TestCase):
     def test_valid_layered_repository(self) -> None:
         self.assertEqual(validate_repository(self.root), [])
 
+    def test_change_ids_may_be_owned_by_native_atomic_records(self) -> None:
+        change = self._write_change("tool", "native-atoms")
+        manifest_path = change / "change.yaml"
+        manifest = load(manifest_path)
+        assert isinstance(manifest, dict)
+        native_ids = {
+            "requirements": "DSET-REQUIREMENT-TOOL-100",
+            "tests": "DSET-TEST-TOOL-100",
+            "evals": "DSET-EVALUATION-TOOL-100",
+        }
+        for sequence, (group, identifier) in enumerate(native_ids.items(), start=100):
+            values = manifest[group]
+            assert isinstance(values, list)
+            values.append(identifier)
+            carrier = change / f"DSET-ATOMIC-RECORD-{sequence}.md"
+            carrier.write_text(f"# Native atom\n\n{identifier}\n", encoding="utf-8")
+        manifest_path.write_text(dump(manifest), encoding="utf-8")
+
+        messages = [
+            diagnostic.message
+            for diagnostic in validate_change(self.root, change, archived=False)
+        ]
+
+        for identifier in native_ids.values():
+            self.assertNotIn(
+                f"{identifier} is not present in its owning artifact", messages
+            )
+
     def test_work_area_registry_requires_unique_safe_existing_directories(self) -> None:
         path = self.scopes / "meta" / "dset.yaml"
         baseline = load(path)

@@ -398,3 +398,43 @@ events:
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: New atom sealing now rejects legacy child_of metadata while validation continues to accept already sealed compatibility carriers.
+  -
+    id: DSET-LIFECYCLE-EVENT-040
+    atom_id: DSET-REQUIREMENT-SKILL-010
+    event: absorbed
+    occurred_at: 2026-07-20T19:28:00+04:00
+    related:
+      - DSET-REQUIREMENT-SKILL-012
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: The successor preserves lazy outcome-first preparation and adds the operator-selectable strict implementation-only boundary.
+  -
+    id: DSET-LIFECYCLE-EVENT-041
+    atom_id: DSET-TEST-SKILL-012
+    event: absorbed
+    occurred_at: 2026-07-20T19:28:01+04:00
+    related:
+      - DSET-TEST-SKILL-014
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: The successor retains the lazy closure assertions and adds deterministic strict-mode and settings coverage.
+  -
+    id: DSET-LIFECYCLE-EVENT-042
+    atom_id: DSET-EVAL-SKILL-010
+    event: absorbed
+    occurred_at: 2026-07-20T19:28:02+04:00
+    related:
+      - DSET-EVALUATION-SKILL-012
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: The successor keeps outcome-first usability and explicitly evaluates operator understanding of lazy and strict modes.
+  -
+    id: DSET-LIFECYCLE-EVENT-043
+    atom_id: DSET-DEFECT-TOOL-003
+    event: resolved
+    occurred_at: 2026-07-20T19:31:00+04:00
+    related:
+      - DSET-DECISION-GOV-013
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: Source validation now allows replacement_of from any semantic atom while retaining Decision-only override and all absorption, cycle, and exclusivity gates.

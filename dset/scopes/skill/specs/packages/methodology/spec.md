@@ -89,31 +89,44 @@ A checkpoint contains only a bounded objective, scope and artifact/run pointers,
 
 **Scenario DSET-SCENARIO-SKILL-009:** An operator invokes `dset`, which chains clarification and planning before the host compacts context. The next invocation reloads the same checkpoint, detects a newer Git change, invalidates the stale next-action hint, and recommends fresh verification without asking the operator to reconstruct the session or invoke a sixth skill.
 
-## DSET-REQUIREMENT-SKILL-010 — Skills enter through outcome criteria
+## DSET-REQUIREMENT-SKILL-012 — Implementation preparation is project-selectable
 
-A public DSET skill accepts the desired outcome even when prerequisite artifacts
-are incomplete. The repository-local lifecycle rule owns its entry criteria,
-allowed prerequisite workflows, exit criteria, and stops. Missing criteria may
-be satisfied through a finite registered workflow closure in one DSET session;
-every transition must make observable progress and re-read authority.
+A public DSET skill accepts the desired outcome. Root `dset.toml` selects
+`lazy` or `strict` preparation for `dset-implement`; missing configuration uses
+the documented `lazy` default. The repository-local lifecycle rule owns both
+modes, their entry criteria, exit criteria, and stops.
 
-`dset-implement` must first invoke `decisions` to reconcile available host
-session history, bounded DSET continuity records, Git, and repository artifacts
-into missing accepted atomic records. It then invokes `plan-proof` when the
-separate Test or Evaluation plans are incomplete and `plan-implementation` when
-the executable plan is incomplete. Only then may implementation begin.
+In `lazy` mode, `dset-implement` first invokes `decisions` to reconcile
+available host-session history, bounded DSET continuity records, Git, and
+repository artifacts into missing accepted atomic records. It then invokes
+`plan-proof` when separate Test or applicable Evaluation definitions/plans are
+incomplete and `plan-implementation` when the executable plan is incomplete.
+Only then may implementation begin. Every transition must make observable
+progress and re-read authority.
+
+In `strict` mode, `dset-implement` invokes only `implement`. It never creates,
+repairs, or compiles missing authority, QA, or plans and never silently falls
+back to lazy preparation. Already accepted inputs must be sufficient; otherwise
+the workflow stops with the exact missing or ambiguous input.
 
 Session and run history are candidate evidence rather than authority. The
 decisions workflow never invents acceptance, silently resolves uncertainty, or
 edits an emitted atom. Missing context is returned explicitly. Repeated state,
 cycles, no progress, ambiguity, failure, and new authorization boundaries stop
-the closure.
+the lazy closure. Both modes preserve repository-local governance,
+authorization, run/session and commit provenance, and the stop before
+Verification or release readiness.
 
-**Scenario DSET-SCENARIO-SKILL-010:** An operator asks `dset-implement` to build
-a feature described only in the current session. The same DSET session records
-accepted atomic directives, creates separate Test and Evaluation plans plus an
-implementation plan where missing, then implements. If acceptance is unclear,
-the chain stops with the exact Question instead of fabricating a Decision.
+**Scenario DSET-SCENARIO-SKILL-012:** An operator using the default lazy mode
+asks `dset-implement` to build a feature described only in the current session;
+the same session records accepted atoms, prepares separate Test/Evaluation and
+implementation plans where needed, then implements. An automation selecting
+strict mode runs only implementation from its prepared accepted inputs and
+stops rather than creating a missing Decision or plan.
+
+`DSET-REQUIREMENT-SKILL-010` is absorbed by
+`DSET-REQUIREMENT-SKILL-012` and remains listed for historical compilation and
+lineage only.
 
 ## DSET-REQUIREMENT-SKILL-011 — Skills use one deterministic shared runtime
 

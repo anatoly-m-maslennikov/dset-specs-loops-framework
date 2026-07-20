@@ -8,6 +8,10 @@ Every normative rule ID has one editable governing document. Hubs navigate, wrap
 
 ## Writes and cutover
 
+- Use TOML for DSET-owned structured artifacts and TOML frontmatter for DSET
+  Markdown. Keep host/ecosystem/wire/runtime formats and generated compatibility
+  adapters explicit and non-authoritative. Never keep editable YAML/JSON and
+  TOML copies of the same claim.
 - Confirm authorization before editing existing project artifacts.
 - Write each conclusion to its owning accepted package, active change, decision, runbook, proof plan, or evidence artifact.
 - Keep deterministic tests and qualitative/probabilistic evals separate.
@@ -131,6 +135,10 @@ and structured schemas permit a non-empty bounded value without requiring it.
 
 Root `dset.toml` selects `artifact_creation_strictness` independently from
 other optional capabilities. The default is `medium`; `high` is opt-in.
+
+The same file must explain every operator setting, accepted value, behavioral
+effect, and default with concise comments. Defaults are executable behavior,
+not undocumented parser fallbacks.
 
 At medium strictness, emit an accepted atom only when its authority, one primary
 claim, Type, owning structural scope, provenance, material links, priority, and
