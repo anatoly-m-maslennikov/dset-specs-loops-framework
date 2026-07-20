@@ -12,6 +12,7 @@ from . import __version__
 from .archive import archive_plan, execute_archive
 from .artifact_emission import assess_artifact_candidate
 from .bootstrap import initialize_project, parse_work_area
+from .conflicts import resolve_conflict, write_conflict_result
 from .diagnostics import Diagnostic
 from .errors import DsetCommandError
 from .governance import (
@@ -185,6 +186,13 @@ def build_parser() -> argparse.ArgumentParser:
     )
     _root_argument(atom_event)
     atom_event.add_argument("--candidate", type=Path, required=True)
+
+    conflict = commands.add_parser(
+        "conflict", help="classify governed artifact incompatibilities"
+    )
+    _root_argument(conflict)
+    conflict.add_argument("--candidate", type=Path, required=True)
+    conflict.add_argument("--output", type=Path)
 
     runtime = commands.add_parser("runtime", help="bridge host skill run state")
     runtime_commands = runtime.add_subparsers(dest="runtime_command", required=True)
@@ -424,6 +432,18 @@ def main(argv: list[str] | None = None) -> int:
                     raise ValueError("lifecycle candidate must be a JSON object")
                 path = append_lifecycle_event(root, event)
             print(path.relative_to(root).as_posix())
+            return 0
+        if args.command == "conflict":
+            root = _repository_root(args.root)
+            candidate = json.loads(args.candidate.read_text(encoding="utf-8"))
+            if not isinstance(candidate, dict):
+                raise ValueError("conflict candidate must be a JSON object")
+            result = resolve_conflict(root, candidate)
+            if args.output is not None:
+                path = write_conflict_result(root, args.output, result)
+                print(path)
+            else:
+                print(json.dumps(result, indent=2, sort_keys=True))
             return 0
         if args.command == "runtime":
             root = _repository_root(args.root)

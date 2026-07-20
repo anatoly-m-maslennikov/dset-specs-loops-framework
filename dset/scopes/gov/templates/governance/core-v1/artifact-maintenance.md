@@ -59,6 +59,22 @@ canonical ID registry updates the location so references still resolve. Partial
 absorption never qualifies. Archived atoms remain immutable history and are
 never deleted merely because they are inactive.
 
+The executable boundary is explicit:
+
+```text
+dset atom seal ROOT --file ATOM.md
+dset atom event ROOT --candidate EVENT.json
+dset conflict ROOT --candidate CONFLICT.json
+```
+
+Sealing refuses an already registered semantic ID and records the carrier's
+content digest. Validation fails after content, semantic classification, or
+registered location drift. Lifecycle writes append unique events and reject
+unresolved targets or absorption cycles. Conflict resolution classifies role
+and applicability before consulting explicit precedence or effective priority;
+it reports whether a first-class open Conflict atom and later resolution event
+are required, but never edits an atom.
+
 ## Rationale
 
 Every Decision should record a concise rationale for its selected option.
