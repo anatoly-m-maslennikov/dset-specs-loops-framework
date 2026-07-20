@@ -7,3 +7,4 @@ diagnose failure.
 
 - [Artifact-role lifecycle self-application](DSET-EVIDENCE-RECORD-001-artifact-role-lifecycle.md)
 - [Project-scope ownership self-application](DSET-EVIDENCE-RECORD-002-project-scope-ownership.md)
+- [OYOHA local DSET adoption](DSET-EVIDENCE-RECORD-012-oyoha-local-adoption.md)

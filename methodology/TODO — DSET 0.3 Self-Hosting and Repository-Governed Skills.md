@@ -150,20 +150,20 @@ paths; schema 1.2 assigns each governing document to its semantic layer.
 ## §6 | Adopt DSET in obsidian-your-harness
 
 - [x] **DSET-TASK-GOV-026:** Use the owned `anatoly-m-maslennikov/obsidian-your-harness` repository as the first external pilot; record its exact starting revision, branch, upstream Claudian revision, MIT license, and adaptation boundary.
-- [ ] **DSET-TASK-GOV-027:** Inventory `your_harness_specs/`, root and scoped `CLAUDE.md` files, README/architecture surfaces, tests, package scripts, generated assets, local context, and active feature work before creating a second authority.
-- [ ] **DSET-TASK-GOV-028:** Classify every existing spec/plan as accepted truth, active change, failed/incomplete work, or history before migration.
-- [ ] **DSET-TASK-GOV-029:** Create the visible schema 1.2 `dset/scopes/` control plane with META manifest, GOV governance/artifact/intake/provenance registries, one layer-fragmented `harness` package, layer-owned changes/archive roots, OPS supportability, distributed templates/migration record, and GOV-generated traceability.
+- [x] **DSET-TASK-GOV-027:** Inventory `your_harness_specs/`, root and scoped `CLAUDE.md` files, README/architecture surfaces, tests, package scripts, generated assets, local context, and active feature work before creating a second authority.
+- [x] **DSET-TASK-GOV-028:** Classify every existing spec/plan as accepted truth, active change, failed/incomplete work, or history before migration.
+- [x] **DSET-TASK-GOV-029:** Create the visible schema 1.2 `dset/scopes/` control plane with META manifest, GOV governance/artifact/intake/provenance registries, one layer-fragmented `harness` package, layer-owned changes/archive roots, OPS supportability, distributed templates/migration record, and GOV-generated traceability.
 - [ ] **DSET-TASK-META-012:** Move accepted feature behavior into stable-ID domain/spec/contracts and separate deterministic test and qualitative/probabilistic eval plans.
 - [ ] **DSET-TASK-META-013:** Move the current autotest plan out of the legacy implementation-plan area and into the deterministic test-plan owner; retain implementation phases only as active or historical implementation artifacts.
 - [ ] **DSET-TASK-GOV-030:** Convert root `CLAUDE.md` and `AGENTS.md` into concise agent-facing hubs/wrappers; move their substantive build, architecture, supportability, and workflow rules to registered governing documents.
 - [ ] **DSET-TASK-GOV-031:** Register scoped architecture/rule documents under `src/` as owners or migrate their normative content; do not copy the same rule into global guidance.
 - [ ] **DSET-TASK-OPS-017:** Add a production supportability contract covering plugin/build identity, provider and CLI boundaries, vault/session storage authorities, safe diagnostics, redaction, retention/access, failure containment, rollback, recovery, and incident-to-change/PR traceability.
-- [ ] **DSET-TASK-GOV-032:** Make the repository README a valid root hub with purpose, boundaries, stable navigation, installation/operation, supportability, and project-control routes.
+- [x] **DSET-TASK-GOV-032:** Make the repository README a valid root hub with purpose, boundaries, stable navigation, installation/operation, supportability, and project-control routes.
 - [ ] **DSET-TASK-TOOL-033:** Select the candidate TypeScript and documentation profiles independently; configure one canonical `dset verify` command to run both plus project tests/build.
 - [ ] **DSET-TASK-SKILL-013:** Install/generated-link the same canonical thin skills for supported agent runtimes without copying rules into those installations.
 - [ ] **DSET-TASK-GOV-033:** Cut over atomically: old writable spec/rule roots become pointers, read-only history, or are removed only after the new DSET owners pass.
 - [ ] **DSET-TASK-OPS-018:** Run a real feature/defect through proposal → requirements → test/eval plans → implementation → evidence → reconciliation → archive in one PR.
-- [ ] **DSET-TASK-GOV-034:** Keep the pilot change active and the old owner intact if resolver, migration, TypeScript gates, skills, supportability, or recursive proof fails.
+- [x] **DSET-TASK-GOV-034:** Keep the pilot change active and the old owner intact if resolver, migration, TypeScript gates, skills, supportability, or recursive proof fails.
 
 ## §7 | Evaluate upstream Claudian after the owned pilot
 

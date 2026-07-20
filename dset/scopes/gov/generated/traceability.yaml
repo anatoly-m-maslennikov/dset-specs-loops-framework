@@ -362,6 +362,7 @@ changes:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-009-semantic-type-migration.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-010-release-runtime-reconciliation.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-011-typescript-candidate-profile.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-012-oyoha-local-adoption.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/end-to-end-toolchain-verification-2026-07-16.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/expanded-skill-surface-verification-2026-07-16.md
@@ -1448,7 +1449,8 @@ semantic_classifications:
       - dset/scopes/gov/intake.yaml
     carrier_statuses:
       - open
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-017
   -
     id: DSET-PROBLEM-GOV-005
     type: problem
@@ -3871,6 +3873,13 @@ lineage:
       - DSET-TEST-TOOL-021
     parent_to: []
   -
+    id: DSET-EVIDENCE-RECORD-012
+    artifact_id: DSET-EVIDENCE-RECORD-012
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-012-oyoha-local-adoption.md
+    child_of:
+      - DSET-TEST-TOOL-021
+    parent_to: []
+  -
     id: DSET-PLAN-001
     artifact_id: DSET-PLAN-001
     path: dset/scopes/ops/planning/DSET-PLAN-001-0-4-core-vertical-cut.md
@@ -4005,6 +4014,7 @@ lineage:
       - DSET-REQUIREMENT-TOOL-021
     parent_to:
       - DSET-EVIDENCE-RECORD-011
+      - DSET-EVIDENCE-RECORD-012
 implementation_edges:
   -
     commit: 08608add74f4632d768fffa3a2d4a7eb3dbde58e

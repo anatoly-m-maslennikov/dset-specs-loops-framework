@@ -12,7 +12,7 @@ llm_session_ids: []
 > This generated view is not authority. Follow each link to its canonical
 > owner and refresh explicitly after source changes.
 
-- **Source digest:** `68294fdff700bc90d9f5765381df573bface497b79850be06e2e419e7b85fe3c`
+- **Source digest:** `7b99ab57aa116e6247ffdbec90ddf640d5a356b72de4edab0d12ee109014ec6f`
 - **Renderer:** `dset health` schema 1.0
 
 ## Coverage
@@ -33,13 +33,13 @@ llm_session_ids: []
 
 ## Artifact inventory
 
-- **Governed artifacts:** 343
-- **By role:** atomic=34, derived_or_navigation=84, evergreen=88, implementation=116, transactional=21
-- **By type:** analysis_report=20, atomic_record=34, change=9, derived_view=1, evidence_record=12, implementation=116, navigation=52, plan=40, readiness_record=2, release_record=1, specification=48, verification=8
-- **By subtype:** architecture=5, behavior=10, configuration=10, design=7, documentation=33, domain_model=6, evaluation_plan=14, external_audit_analysis=1, governance=15, health_dashboard=1, hub=52, implementation_plan=7, proposal=8, release_plan=2, review_report=1, roadmap=2, root_cause_analysis=1, run_record=9, solution_landscape=7, source_code=35, technical_investigation=2, test_implementation=38, test_plan=14, test_result=2, version_scope=5
-- **By layer:** gov=68, meta=24, ops=33, repository=4, skill=102, tool=112
-- **By effective priority:** critical=1, high=8, medium=328, unknown=6
-- **By status:** absorbed=3, accepted=12, archived=4, in-progress=1, open=22, resolved=11
+- **Governed artifacts:** 344
+- **By role:** atomic=34, derived_or_navigation=84, evergreen=88, implementation=116, transactional=22
+- **By type:** analysis_report=20, atomic_record=34, change=9, derived_view=1, evidence_record=13, implementation=116, navigation=52, plan=40, readiness_record=2, release_record=1, specification=48, verification=8
+- **By subtype:** architecture=5, behavior=10, configuration=10, design=7, documentation=33, domain_model=6, evaluation_plan=14, external_audit_analysis=1, governance=15, health_dashboard=1, hub=52, implementation_plan=7, proposal=8, release_plan=2, review_report=1, roadmap=2, root_cause_analysis=1, run_record=9, solution_landscape=7, source_code=35, technical_investigation=2, test_implementation=38, test_plan=14, test_result=3, version_scope=5
+- **By layer:** gov=68, meta=24, ops=33, repository=4, skill=103, tool=112
+- **By effective priority:** critical=1, high=8, medium=329, unknown=6
+- **By status:** absorbed=3, accepted=12, archived=4, in-progress=1, open=21, resolved=12
 
 ## Semantic inventory
 
@@ -66,7 +66,6 @@ llm_session_ids: []
 - [`DSET-QUESTION-META-005`](../intake.yaml) — question: Should Work Areas expose optional descriptive tags?
 - [`DSET-QUESTION-GOV-004`](../intake.yaml) — question: Should traceability use typed relation edges?
 - [`DSET-QUESTION-GOV-005`](../intake.yaml) — question: Should Decision lifecycle be schema-enforced?
-- [`DSET-PROBLEM-GOV-004`](../intake.yaml) — problem: The declared Your Harness pilot has not adopted DSET
 - [`DSET-QUESTION-GOV-006`](../intake.yaml) — question: Should proof dependency closures become machine-readable?
 - [`DSET-OPPORTUNITY-GOV-001`](../intake.yaml) — question/opportunity: Generate a proof-currentness review view
 - [`DSET-OPPORTUNITY-TOOL-001`](../intake.yaml) — question/opportunity: Expand schema template validation into a compatibility matrix
@@ -85,7 +84,7 @@ llm_session_ids: []
 ## Drill-downs
 
 - **Packages:** methodology=25
-- **Work Areas:** delivery=0, documentation=1, methodology=1, project-control=268, skills=34, tests=38, toolchain=35
+- **Work Areas:** delivery=0, documentation=1, methodology=1, project-control=269, skills=34, tests=38, toolchain=35
 
 ## Canonical return paths
 
