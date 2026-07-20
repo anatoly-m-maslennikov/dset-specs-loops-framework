@@ -371,6 +371,7 @@ changes:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-014-oyoha-independent-evaluation.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-015-claudian-clean-room.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-016-oyoha-supportability-slice.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-017-typescript-profile-instantiation.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/end-to-end-toolchain-verification-2026-07-16.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/expanded-skill-surface-verification-2026-07-16.md
@@ -4057,6 +4058,13 @@ lineage:
     child_of: []
     parent_to: []
   -
+    id: DSET-EVIDENCE-RECORD-017
+    artifact_id: DSET-EVIDENCE-RECORD-017
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-017-typescript-profile-instantiation.md
+    child_of:
+      - DSET-TEST-TOOL-022
+    parent_to: []
+  -
     id: DSET-PLAN-001
     artifact_id: DSET-PLAN-001
     path: dset/scopes/ops/planning/DSET-PLAN-001-0-4-core-vertical-cut.md
@@ -4215,7 +4223,8 @@ lineage:
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-018-typescript-profile-instantiation-test.md
     child_of:
       - DSET-REQUIREMENT-TOOL-022
-    parent_to: []
+    parent_to:
+      - DSET-EVIDENCE-RECORD-017
 implementation_edges:
   -
     commit: 08608add74f4632d768fffa3a2d4a7eb3dbde58e
@@ -4617,6 +4626,13 @@ implementation_edges:
     commit: 9ca3cdcab2ce53dded359085d15696fdf5be2c28
     implements:
       - DSET-DECISION-GOV-002
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: 9d9a209832a7b205790245c59a0d193c218b8762
+    implements:
+      - DSET-REQUIREMENT-TOOL-022
+      - DSET-TEST-TOOL-022
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
