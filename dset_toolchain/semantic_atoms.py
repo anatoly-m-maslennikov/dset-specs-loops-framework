@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import re
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
@@ -29,6 +30,8 @@ EVENTS = frozenset(
         "withdrawn",
     }
 )
+TERMINAL_STATES = frozenset({"absorbed", "rejected", "retired", "withdrawn"})
+REOPENABLE_STATES = frozenset({"answered", "confirmed", "resolved"})
 
 
 @dataclass(frozen=True)
@@ -80,7 +83,13 @@ def collect_semantic_atoms(
 
 def validate_semantic_atoms(root: Path) -> list[Diagnostic]:
     atoms, diagnostics = collect_semantic_atoms(root)
-    diagnostics.extend(_validate_lifecycle(root, _known_semantic_ids(root, atoms)))
+    diagnostics.extend(
+        _validate_lifecycle(
+            root,
+            _known_semantic_ids(root, atoms),
+            {identifier: atom.emission_status for identifier, atom in atoms.items()},
+        )
+    )
     diagnostics.extend(_validate_ledger(root, atoms))
     return sorted(set(diagnostics))
 
@@ -134,7 +143,10 @@ def append_lifecycle_event(root: Path, event: dict[str, Any]) -> Path:
     if any(isinstance(item, dict) and item.get("id") == event_id for item in events):
         raise FileExistsError(f"lifecycle event already exists: {event_id}")
     events.append(normalized)
-    _validate_event_graph(events)
+    _validate_event_graph(
+        events,
+        {identifier: atom.emission_status for identifier, atom in atoms.items()},
+    )
     _atomic_dump(lifecycle_path, data)
     return lifecycle_path
 
@@ -342,7 +354,11 @@ def _parse_atom(
     )
 
 
-def _validate_lifecycle(root: Path, known_ids: set[str]) -> list[Diagnostic]:
+def _validate_lifecycle(
+    root: Path,
+    known_ids: set[str],
+    initial_statuses: dict[str, str],
+) -> list[Diagnostic]:
     path = _lifecycle_path(root)
     if not path.is_file():
         return []
@@ -357,12 +373,14 @@ def _validate_lifecycle(root: Path, known_ids: set[str]) -> list[Diagnostic]:
         return [Diagnostic("DSET-E160", path, "lifecycle events must be a list")]
     diagnostics: list[Diagnostic] = []
     seen: set[str] = set()
+    normalized_events: list[dict[str, Any]] = []
     for event in events:
         try:
             normalized = _validate_event(root, event, known_ids)
         except ValueError as error:
             diagnostics.append(Diagnostic("DSET-E160", path, str(error)))
             continue
+        normalized_events.append(normalized)
         event_id = str(normalized["id"])
         if event_id in seen:
             diagnostics.append(
@@ -370,7 +388,7 @@ def _validate_lifecycle(root: Path, known_ids: set[str]) -> list[Diagnostic]:
             )
         seen.add(event_id)
     try:
-        _validate_event_graph(events)
+        _validate_event_graph(normalized_events, initial_statuses)
     except ValueError as error:
         diagnostics.append(Diagnostic("DSET-E160", path, str(error)))
     return diagnostics
@@ -435,14 +453,79 @@ def _validate_event(root: Path, event: object, known_ids: set[str]) -> dict[str,
     return dict(event)
 
 
-def _validate_event_graph(events: list[object]) -> None:
+def _validate_event_graph(
+    events: Sequence[object], initial_statuses: dict[str, str] | None = None
+) -> None:
     edges: dict[str, str] = {}
+    states = dict(initial_statuses or {})
+    explicit_acceptance: set[str] = set()
     for event in events:
-        if not isinstance(event, dict) or event.get("event") != "absorbed":
+        if not isinstance(event, dict):
+            continue
+        atom_id = str(event.get("atom_id"))
+        event_kind = str(event.get("event"))
+        state = states.get(atom_id, "accepted")
+        if event_kind == "absorbed" and atom_id in edges:
+            raise ValueError(f"atom has multiple absorption successors: {atom_id}")
+        if state in TERMINAL_STATES:
+            raise ValueError(
+                f"terminal atom {atom_id} cannot transition from {state} "
+                f"through {event_kind}"
+            )
+        if event_kind == "priority_changed":
+            continue
+        if event_kind == "accepted":
+            if state == "proposed" or (
+                state == "accepted" and atom_id not in explicit_acceptance
+            ):
+                states[atom_id] = "accepted"
+            else:
+                raise ValueError(
+                    f"atom {atom_id} cannot transition from {state} through accepted"
+                )
+            explicit_acceptance.add(atom_id)
+            continue
+        if event_kind == "reopened":
+            if state not in REOPENABLE_STATES:
+                raise ValueError(
+                    f"atom {atom_id} cannot transition from {state} through reopened"
+                )
+            states[atom_id] = "reopened"
+            continue
+        if event_kind in {"answered", "confirmed", "resolved"}:
+            if state not in {"accepted", "reopened"}:
+                raise ValueError(
+                    f"atom {atom_id} cannot transition from {state} "
+                    f"through {event_kind}"
+                )
+            states[atom_id] = event_kind
+            continue
+        if event_kind in {"rejected", "withdrawn"}:
+            if state not in {"proposed", "accepted", "reopened"}:
+                raise ValueError(
+                    f"atom {atom_id} cannot transition from {state} "
+                    f"through {event_kind}"
+                )
+            states[atom_id] = event_kind
+            continue
+        if event_kind in {"absorbed", "retired"}:
+            if state not in {
+                "accepted",
+                "answered",
+                "confirmed",
+                "reopened",
+                "resolved",
+            }:
+                raise ValueError(
+                    f"atom {atom_id} cannot transition from {state} "
+                    f"through {event_kind}"
+                )
+            states[atom_id] = event_kind
+        if event_kind != "absorbed":
             continue
         related = event.get("related")
         if isinstance(related, list) and len(related) == 1:
-            edges[str(event.get("atom_id"))] = str(related[0])
+            edges[atom_id] = str(related[0])
     for start in edges:
         seen: set[str] = set()
         current = start

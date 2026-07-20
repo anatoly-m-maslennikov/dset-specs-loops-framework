@@ -807,7 +807,8 @@ semantic_classifications:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-020-lifecycle-transition-validation.md
     carrier_statuses:
       - accepted
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-019
   -
     id: DSET-DEFECT-GOV-002
     type: problem
@@ -3759,11 +3760,12 @@ semantic_atoms:
     type: problem
     subtype: defect
     emission_status: accepted
-    current_status: accepted
+    current_status: resolved
     priority: critical
     priority_source: atom:DSET-DEFECT-GOV-001
     child_of: []
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-019
     absorbed_by: []
     archived: false
   -
@@ -4946,6 +4948,13 @@ implementation_edges:
     implements:
       - DSET-REQUIREMENT-GOV-034
     llm_session_ids: []
+  -
+    commit: 8abe612ee9f2b898256322ca8299be292c42cdb0
+    implements:
+      - DSET-DECISION-GOV-003
+      - DSET-DECISION-GOV-008
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
     commit: 8ec5898d7edfa499a772403cb462cee387b5234f
     implements:

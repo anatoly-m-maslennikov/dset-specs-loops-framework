@@ -109,6 +109,72 @@ class SemanticAtomTests(unittest.TestCase):
                 ),
             )
 
+    def test_second_absorption_successor_is_rejected(self) -> None:
+        self._write_atom()
+        seal_atom(self.root, self.atom_path)
+        for number in (2, 3):
+            path = self.root / f"dset/changes/DSET-ATOMIC-RECORD-00{number}.md"
+            path.write_text(
+                self._atom_text(
+                    carrier=f"DSET-ATOMIC-RECORD-00{number}",
+                    semantic=f"DSET-CONTRACT-00{number}",
+                ),
+                encoding="utf-8",
+            )
+            seal_atom(self.root, path)
+        append_lifecycle_event(
+            self.root,
+            self._event(
+                "DSET-LIFECYCLE-EVENT-001",
+                "DSET-CONTRACT-001",
+                "DSET-CONTRACT-002",
+            ),
+        )
+
+        with self.assertRaisesRegex(ValueError, "multiple absorption successors"):
+            append_lifecycle_event(
+                self.root,
+                self._event(
+                    "DSET-LIFECYCLE-EVENT-002",
+                    "DSET-CONTRACT-001",
+                    "DSET-CONTRACT-003",
+                ),
+            )
+
+    def test_terminal_atom_cannot_be_reaccepted(self) -> None:
+        self._write_atom()
+        seal_atom(self.root, self.atom_path)
+        second = self.root / "dset/changes/DSET-ATOMIC-RECORD-002-format.md"
+        second.write_text(
+            self._atom_text(
+                carrier="DSET-ATOMIC-RECORD-002",
+                semantic="DSET-CONTRACT-002",
+            ),
+            encoding="utf-8",
+        )
+        seal_atom(self.root, second)
+        append_lifecycle_event(
+            self.root,
+            self._event(
+                "DSET-LIFECYCLE-EVENT-001",
+                "DSET-CONTRACT-001",
+                "DSET-CONTRACT-002",
+            ),
+        )
+
+        with self.assertRaisesRegex(ValueError, "terminal atom"):
+            append_lifecycle_event(
+                self.root,
+                {
+                    "id": "DSET-LIFECYCLE-EVENT-002",
+                    "atom_id": "DSET-CONTRACT-001",
+                    "event": "accepted",
+                    "occurred_at": "2026-07-20T00:01:00+04:00",
+                    "related": [],
+                    "llm_session_ids": ["codex:test-session"],
+                },
+            )
+
     def test_retired_atom_moves_byte_for_byte_with_stable_lookup(self) -> None:
         original = self._write_atom().encode()
         seal_atom(self.root, self.atom_path)
