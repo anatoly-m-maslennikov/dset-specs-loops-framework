@@ -17,6 +17,7 @@ evidence boundaries; Decisions remain separate records of choices and rationale.
 | Normative project rules | `dset/scopes/<layer>/governance/*.md` | Owning project layer | Next resolution | Digest/customization and mutation proof |
 | Framework defaults | `dset/scopes/<layer>/templates/governance/core-v1/` | Framework change | Explicit adopter comparison only | Template/schema tests |
 | Canonical wrappers | `skills/*/SKILL.md` plus registered digest | Framework change | Install/generation | Static thinness and generated-copy identity tests |
+| Shared skill runtime | Versioned framework distribution installed under the host package root; Codex uses `$CODEX_HOME/packages/dset/` | DSET package installer | Every skill invocation and distribution upgrade | Explicit-target context resolution, catalog identity, package manifest, and cross-platform fixtures |
 | Host-native installations | Declared host package/install surface | Generated or linked from canonical wrapper source | Every supported-host release | Clean install, host discovery, invocation, handoff, and stop proof |
 | Platform support | Published applicability plus platform-native entry points | Tool release | Every supported-platform release | Native macOS/Windows/WSL/Linux jobs or explicit pre-write rejection |
 | Dependency set | Lockfile, allowlist/denylist, registry/license/provenance record, bounded exceptions | Reviewed dependency change | Resolution and publication | Lockfile/license/provenance enforcement and exception-expiry fixtures |
@@ -62,6 +63,8 @@ No adopter application runtime or production data is changed. The CLI reads repo
 - Use one registry with local paths and source digests; never read a template as live fallback.
 - Treat explicit `rules refresh` as acknowledgement of intentional local customization.
 - Use generated adopter copies to prove runtime-wrapper distribution identity without making installed copies rule owners.
+- Install shared skill mechanics once per host, use `$CODEX_HOME/packages/dset/`
+  for Codex, and keep skill folders limited to thin outcome wrappers.
 - Keep `dset` as the catch-all entrypoint and expose one thin direct wrapper for every stable lifecycle mode; do not claim the expanded source, distribution, or host surface before its separate implementation proof.
 - Store bounded skill-run evidence under ignored `.dset/runs/`; never let heuristics override accepted artifacts, Git history, or hosted state.
 - Use the complete bootstrap/pre-1.0/RC/final/post-1.0 transition table and never derive 1.0 by decimal arithmetic.

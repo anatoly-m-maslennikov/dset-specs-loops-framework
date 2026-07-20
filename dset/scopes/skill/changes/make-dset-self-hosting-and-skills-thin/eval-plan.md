@@ -8,7 +8,7 @@ case and criterion.
 |---|---|
 | [META](../../../meta/specs/packages/methodology/eval-plan.md) | `DSET-EVAL-META-008..009` |
 | [GOV](../../../gov/specs/packages/methodology/eval-plan.md) | `DSET-EVAL-GOV-007..024` |
-| [SKILL](../../specs/packages/methodology/eval-plan.md) | `DSET-EVAL-SKILL-002..008`, `DSET-EVAL-SKILL-010` |
+| [SKILL](../../specs/packages/methodology/eval-plan.md) | `DSET-EVAL-SKILL-002..008`, `DSET-EVAL-SKILL-010..011` |
 | [OPS](../../../ops/specs/packages/methodology/eval-plan.md) | `DSET-EVAL-OPS-002..003`, `DSET-EVAL-OPS-010` |
 
 Connected accepted IDs are `DSET-EVAL-META-008`, `DSET-EVAL-META-009`,
@@ -24,7 +24,7 @@ Connected accepted IDs are `DSET-EVAL-META-008`, `DSET-EVAL-META-009`,
 `DSET-EVAL-SKILL-002`,
 `DSET-EVAL-SKILL-003`, `DSET-EVAL-SKILL-004`, `DSET-EVAL-SKILL-005`,
 `DSET-EVAL-SKILL-006`, `DSET-EVAL-SKILL-007`, `DSET-EVAL-SKILL-008`,
-`DSET-EVAL-SKILL-010`,
+	`DSET-EVAL-SKILL-010`, `DSET-EVAL-SKILL-011`,
 `DSET-EVAL-OPS-002`, `DSET-EVAL-OPS-003`, and `DSET-EVAL-OPS-010`.
 
 ## Change-only qualitative proof

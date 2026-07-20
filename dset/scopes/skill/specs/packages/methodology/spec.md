@@ -102,3 +102,26 @@ a feature described only in the current session. The same DSET session records
 accepted atomic directives, creates separate Test and Evaluation plans plus an
 implementation plan where missing, then implements. If acceptance is unclear,
 the chain stops with the exact Question instead of fabricating a Decision.
+
+## DSET-REQUIREMENT-SKILL-011 — Skills use one deterministic shared runtime
+
+Every DSET skill for one host must use one versioned shared runtime package. A
+Codex installation places it under `$CODEX_HOME/packages/dset/`; other hosts
+map the same distribution to an equivalent host-owned package root. Canonical
+runtime source remains in the framework distribution, and thin skill folders
+must not duplicate shared scripts or project rules.
+
+The runtime must accept the public skill ID and explicit target, discover one
+owning repository or monorepo Work Area, validate its local governance, enforce
+the registered skill/workflow mapping, resolve ordered rules and stable
+identities, and start or resume bounded session state where applicable. The LLM
+interprets returned rules but must not perform mechanical root discovery,
+entrypoint selection, workflow reconstruction, or fallback. Missing
+installation, competing roots, invalid governance, mapping mismatch, or
+required unavailable conflict coverage stops with stable diagnostics.
+
+**Scenario DSET-SCENARIO-SKILL-011:** The same installed `dset-implement`
+wrapper is invoked from nested paths in two repositories. One shared runtime
+resolves different project roots and rule digests from the explicit targets,
+rejects a mismatched workflow, and records both invocations without scripts or
+governance copied into either skill folder.

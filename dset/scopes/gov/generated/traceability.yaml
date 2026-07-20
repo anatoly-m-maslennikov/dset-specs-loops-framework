@@ -576,6 +576,14 @@ lineage:
     child_of: []
     parent_to:
       - DSET-EVIDENCE-RECORD-004
+      - DSET-REQUIREMENT-SKILL-011
+  -
+    id: DSET-REQUIREMENT-SKILL-011
+    artifact_id: DSET-ATOMIC-RECORD-007
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-007-shared-skill-runtime.md
+    child_of:
+      - DSET-REQUIREMENT-SKILL-010
+    parent_to: []
   -
     id: DSET-SPECIFICATION-001
     artifact_id: DSET-SPECIFICATION-001
