@@ -15,10 +15,24 @@ records:
     type: decision
     subtype: none
   -
+    semantic_id: DSET-DECISION-GOV-012
+    carrier_id: DSET-ATOMIC-RECORD-033
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-033-delivery-artifact-type.md
+    sha256: 38dbc1ca184d4eae2e7de28c5a8fb88bb6f332f17862704c1f2cddcfe27969b0
+    type: decision
+    subtype: none
+  -
     semantic_id: DSET-DECISION-OPS-005
     carrier_id: DSET-ATOMIC-RECORD-032
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-032-delivery-lifecycle.md
     sha256: c9534c4ced0955f7c761469267964ab9f90048f7e635556d93ee0401e6cec869
+    type: decision
+    subtype: none
+  -
+    semantic_id: DSET-DECISION-OPS-006
+    carrier_id: DSET-ATOMIC-RECORD-034
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-034-delivery-lifecycle.md
+    sha256: c268399053fe389faaa9479e3b8118450d8e4d3a0397ccd700ad5d940ed80c09
     type: decision
     subtype: none
   -
