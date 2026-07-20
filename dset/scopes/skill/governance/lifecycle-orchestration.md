@@ -168,12 +168,17 @@ history, repository owners and the bounded checkpoint are reconciled and every
 material unknown remains visible.
 
 The primary `dset` entrypoint owns session start, checkpoint, and resume for
-the whole chain. A direct specialist invocation joins a matching explicit
-session or starts one; an automatically invoked specialist or governed
-model-only workflow is a child run in the current session. Every transition
-updates `DSET-RULE-SKILL-RUNS` continuity state. After host context compaction,
-resume from that bounded checkpoint, re-read authoritative state, and recompute
-the next mode before acting. Session continuity is an internal capability, not
+the whole chain. Only initial DSET entry may omit a DSET `session_id`. An active
+handoff finalizes the current run with `dset runtime handoff`, leaves its
+checkpoint active, returns that same explicit `session_id`, and requires the
+next specialist context call to pass it. A workflow exit or return of control
+is not terminal by itself. Only true completion or stop uses
+`dset runtime finish`, which closes the session and must fail while another run
+remains active. An automatically invoked specialist or governed model-only
+workflow is a child run in the same session. Every transition updates
+`DSET-RULE-SKILL-RUNS` continuity state. After host context compaction, resume
+from that bounded checkpoint, re-read authoritative state, and recompute the
+next mode before acting. Session continuity is an internal capability, not
 another user-facing skill.
 
 The governed direct-entry map is `decompose` → `dset-decompose`, `diagnose` →

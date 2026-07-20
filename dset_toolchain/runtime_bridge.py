@@ -71,6 +71,13 @@ def start_runtime(
         )
         if selected_implementation_mode not in IMPLEMENTATION_MODES:
             raise ValueError("implementation preparation mode must be lazy or strict")
+    if session_id is None:
+        active = resume_checkpoint(root, scope=scope)
+        if active is not None:
+            raise ValueError(
+                "active DSET session requires explicit session ID: "
+                f"{active['session_id']}"
+            )
     invocation = start_run(
         root,
         public_entrypoint=public_entrypoint,
@@ -218,9 +225,10 @@ def finish_runtime(
     outputs: Sequence[str] = (),
     diagnostics: Sequence[str] = (),
     next_signals: Sequence[str] = (),
-    session_status: str | None = None,
     usage: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
+    """Finish a run and close its DSET session terminally."""
+
     invocation = load_invocation(root, run_id)
     return finish_run(
         invocation,
@@ -228,7 +236,32 @@ def finish_runtime(
         outputs=outputs,
         diagnostics=diagnostics,
         next_signals=next_signals,
-        session_status=session_status,
+        session_status="completed" if status == "succeeded" else "stopped",
+        usage=usage,
+    )
+
+
+def handoff_runtime(
+    root: Path,
+    run_id: str,
+    *,
+    outputs: Sequence[str] = (),
+    diagnostics: Sequence[str] = (),
+    next_signals: Sequence[str],
+    usage: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Finish one successful run while keeping its DSET session active."""
+
+    if not next_signals:
+        raise ValueError("active handoff requires at least one next signal")
+    invocation = load_invocation(root, run_id)
+    return finish_run(
+        invocation,
+        status="succeeded",
+        outputs=outputs,
+        diagnostics=diagnostics,
+        next_signals=next_signals,
+        session_status="active",
         usage=usage,
     )
 

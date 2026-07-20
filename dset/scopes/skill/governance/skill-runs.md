@@ -79,7 +79,11 @@ repository's authoritative artifacts.
 The checkpoint also carries a bounded `active_run_ids` stack. Starting a child
 adds only that child; finalizing it removes only that child, so a still-running
 parent remains finishable. `latest_run_id` identifies the newest invocation and
-never grants exclusive ownership of the session. A session cannot become
+never grants exclusive ownership of the session. `dset runtime handoff`
+finalizes one successful run while keeping the session `active`; it requires a
+next signal and returns the same `session_id` for the next explicit context
+call. `dset runtime finish` is terminal-only: success completes the session and
+failure, interruption, or stop marks it stopped. A session cannot become
 terminal while another run remains active.
 
 Update the checkpoint after every workflow transition, before a known context
@@ -87,10 +91,12 @@ handoff or compaction when the host exposes that event, and on terminal exit.
 Return the `session_id` with every handoff. Native host memory may cache the
 same state, but it is never the only recovery mechanism.
 
-On entry or after compaction, prefer the host-provided or explicit
-`session_id`. Without one, select only a single newest active checkpoint whose
-repository, workspace, and Change identity match; zero matches starts a new
-session and multiple matches stop for operator selection. Before resuming,
+On entry or after compaction, use the host-provided explicit `session_id`.
+Only an initial governed wrapper entry with zero compatible active checkpoints
+may omit it and start a new session. A wrapper entry with one or more compatible
+active checkpoints but no explicit ID stops and reports the continuity gap; it
+never joins or creates a chain implicitly. A read-only resume query may select
+one compatible checkpoint and stops on multiple matches. Before resuming,
 re-read the repository, Git, active Change, proof, governance, and applicable
 hosted owners. Mark stale checkpoint fields and recompute the next action; a
 checkpoint never overrides newer authoritative state.

@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import contextlib
+import io
+import json
 import shutil
 import tempfile
 import unittest
@@ -7,12 +10,14 @@ from pathlib import Path
 from typing import Any, cast
 
 from dset_toolchain.adopter import create_adopter
+from dset_toolchain.cli import main
 from dset_toolchain.layout import discover_layout
 from dset_toolchain.runtime import RuntimeStateError, load_invocation
 from dset_toolchain.runtime_bridge import (
     advance_runtime_closure,
     checkpoint_runtime,
     finish_runtime,
+    handoff_runtime,
     read_runtime,
     start_child_runtime,
     start_runtime,
@@ -61,6 +66,90 @@ class RuntimeBridgeTests(unittest.TestCase):
             self.assertEqual(terminal["persistence"], "persisted")
             with self.assertRaises(RuntimeStateError):
                 load_invocation(adopter, run_id)
+
+    def test_cli_handoff_preserves_explicit_session_until_terminal_finish(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+            adopter = Path(raw) / "adopter"
+            create_adopter(ROOT, adopter)
+            primary = resolve_skill_context(
+                adopter,
+                skill_id="dset",
+                objective="Route the failing import",
+                llm_session_ids=("codex:test-session",),
+            )
+            primary_run = cast(dict[str, Any], primary["run"])
+            primary_run_id = str(primary_run["run_id"])
+            session_id = str(primary_run["session_id"])
+
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                result = main(
+                    [
+                        "runtime",
+                        "handoff",
+                        primary_run_id,
+                        str(adopter),
+                        "--next-signal",
+                        "diagnose",
+                    ]
+                )
+            self.assertEqual(result, 0)
+            handed_off = json.loads(output.getvalue())
+            self.assertEqual(handed_off["status"], "succeeded")
+            self.assertEqual(handed_off["session_id"], session_id)
+            checkpoint = read_runtime(adopter, session_id=session_id)
+            assert checkpoint is not None
+            self.assertEqual(checkpoint["status"], "active")
+            self.assertEqual(checkpoint["active_run_ids"], [])
+
+            with self.assertRaisesRegex(ValueError, "requires explicit session ID"):
+                resolve_skill_context(
+                    adopter,
+                    skill_id="dset-diagnose",
+                    objective="Do not infer handoff continuity",
+                    llm_session_ids=("codex:test-session",),
+                )
+
+            specialist = resolve_skill_context(
+                adopter,
+                skill_id="dset-diagnose",
+                objective="Diagnose the failing import",
+                session_id=session_id,
+                llm_session_ids=("codex:test-session",),
+            )
+            specialist_run = cast(dict[str, Any], specialist["run"])
+            self.assertEqual(specialist_run["session_id"], session_id)
+            self.assertEqual(specialist_run["root_run_id"], primary_run_id)
+            self.assertEqual(specialist_run["parent_run_id"], primary_run_id)
+
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                result = main(
+                    [
+                        "runtime",
+                        "finish",
+                        str(specialist_run["run_id"]),
+                        str(adopter),
+                        "--status",
+                        "succeeded",
+                    ]
+                )
+            self.assertEqual(result, 0)
+            terminal = json.loads(output.getvalue())
+            self.assertEqual(terminal["session_id"], session_id)
+            checkpoint = read_runtime(adopter, session_id=session_id)
+            assert checkpoint is not None
+            self.assertEqual(checkpoint["status"], "completed")
+            with self.assertRaisesRegex(RuntimeStateError, "session is not active"):
+                resolve_skill_context(
+                    adopter,
+                    skill_id="dset-verify",
+                    objective="Do not reopen a completed chain",
+                    session_id=session_id,
+                    llm_session_ids=("codex:test-session",),
+                )
 
     def test_bridge_rejects_unknown_workflow_before_run_creation(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
@@ -269,11 +358,10 @@ class RuntimeBridgeTests(unittest.TestCase):
             self.assertEqual(child_run["root_run_id"], root_run["run_id"])
             self.assertEqual(child_run["parent_run_id"], root_run["run_id"])
             self.assertEqual(child_run["invocation_source"], "chained-skill")
-            finish_runtime(
+            handoff_runtime(
                 adopter,
                 str(child_run["run_id"]),
-                status="succeeded",
-                session_status="active",
+                next_signals=("plan-proof",),
             )
 
             checkpoint = advance_runtime_closure(
@@ -296,11 +384,10 @@ class RuntimeBridgeTests(unittest.TestCase):
             )
             second_run = cast(dict[str, Any], second["run"])
             self.assertEqual(second_run["parent_run_id"], child_run["run_id"])
-            finish_runtime(
+            handoff_runtime(
                 adopter,
                 str(second_run["run_id"]),
-                status="succeeded",
-                session_status="active",
+                next_signals=("plan-implementation",),
             )
             terminal = finish_runtime(
                 adopter,

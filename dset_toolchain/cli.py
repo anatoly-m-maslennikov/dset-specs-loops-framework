@@ -53,6 +53,7 @@ from .runtime_bridge import (
     advance_runtime_closure,
     checkpoint_runtime,
     finish_runtime,
+    handoff_runtime,
     read_runtime,
     start_child_runtime,
     start_runtime,
@@ -340,6 +341,14 @@ def build_parser() -> argparse.ArgumentParser:
         "--requires-authorization",
         choices=["none", "repository-write", "external-write", "publication"],
     )
+    runtime_handoff = runtime_commands.add_parser(
+        "handoff", help="finish one run while keeping its DSET session active"
+    )
+    runtime_handoff.add_argument("run_id")
+    _root_argument(runtime_handoff)
+    runtime_handoff.add_argument("--output", action="append", default=[])
+    runtime_handoff.add_argument("--diagnostic", action="append", default=[])
+    runtime_handoff.add_argument("--next-signal", action="append", required=True)
     runtime_finish = runtime_commands.add_parser("finish")
     runtime_finish.add_argument("run_id")
     _root_argument(runtime_finish)
@@ -351,9 +360,6 @@ def build_parser() -> argparse.ArgumentParser:
     runtime_finish.add_argument("--output", action="append", default=[])
     runtime_finish.add_argument("--diagnostic", action="append", default=[])
     runtime_finish.add_argument("--next-signal", action="append", default=[])
-    runtime_finish.add_argument(
-        "--session-status", choices=["active", "paused", "completed", "stopped"]
-    )
     runtime_child = runtime_commands.add_parser("child")
     runtime_child.add_argument("session_id")
     runtime_child.add_argument("workflow_id")
@@ -714,6 +720,14 @@ def main(argv: list[str] | None = None) -> int:
                     next_reason_code=args.reason_code,
                     requires_authorization=args.requires_authorization,
                 )
+            elif args.runtime_command == "handoff":
+                runtime_result = handoff_runtime(
+                    root,
+                    args.run_id,
+                    outputs=args.output,
+                    diagnostics=args.diagnostic,
+                    next_signals=args.next_signal,
+                )
             elif args.runtime_command == "finish":
                 runtime_result = finish_runtime(
                     root,
@@ -722,7 +736,6 @@ def main(argv: list[str] | None = None) -> int:
                     outputs=args.output,
                     diagnostics=args.diagnostic,
                     next_signals=args.next_signal,
-                    session_status=args.session_status,
                 )
             elif args.runtime_command == "child":
                 runtime_result = start_child_runtime(

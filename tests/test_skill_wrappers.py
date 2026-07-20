@@ -67,8 +67,12 @@ class SkillWrapperTests(unittest.TestCase):
                 )
                 self.assertIn("never select an alternate runtime", text)
                 self.assertIn("required unavailable conflict coverage", text)
+                self.assertIn("--session-id SESSION_ID", text)
+                self.assertIn("dset runtime handoff RUN_ID REPOSITORY_ROOT", text)
+                self.assertIn("--next-signal WORKFLOW", text)
                 self.assertIn("dset runtime finish RUN_ID REPOSITORY_ROOT", text)
-                self.assertIn("without a terminal record", text)
+                self.assertIn("Only a true session completion or stop", text)
+                self.assertNotIn("--session-status", text)
                 self.assertNotIn("Walk upward from the target", text)
                 self.assertNotIn("rules resolve", text)
 
@@ -145,7 +149,20 @@ class SkillWrapperTests(unittest.TestCase):
         self.assertEqual(positions, sorted(positions))
         self.assertIn("every transition must remove a missing criterion", lifecycle)
         self.assertIn("unchanged or repeated state", lifecycle)
+        self.assertIn("Only initial DSET entry may omit", lifecycle)
+        self.assertIn("`dset runtime handoff`", lifecycle)
+        self.assertIn("Only true completion or stop", lifecycle)
         self.assertNotIn("two workflow transitions", lifecycle)
+
+        skill_runs = (ROOT / "dset/scopes/skill/governance/skill-runs.md").read_text(
+            encoding="utf-8"
+        )
+        skill_runs_template = (
+            ROOT / "dset/scopes/skill/templates/governance/core-v1/skill-runs.md"
+        ).read_text(encoding="utf-8")
+        self.assertEqual(skill_runs, skill_runs_template)
+        self.assertIn("`dset runtime handoff`", skill_runs)
+        self.assertIn("`dset runtime finish` is terminal-only", skill_runs)
 
         implement = self._skill_text("dset-implement")
         self.assertNotIn("invoke `dset-decisions` first", implement)

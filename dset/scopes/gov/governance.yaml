@@ -109,7 +109,7 @@ rules:
     depends_on:
       - DSET-RULE-ARCHITECTURE
     precedence_over: []
-    customization: unmodified
+    customization: custom
     source:
       profile: core-v1
       version: "0.3"
@@ -180,7 +180,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/skill/templates/governance/core-v1/skill-runs.md
-      sha256: 37e1b8f467f5ad9b295450a6c05eab4be7f915c0900e418107dc4125499cf2d1
+      sha256: 6141ff72fdc8927695b46c58d24fa6d2bdc2f0a3d76eca1f54d2812739fc9229
   -
     id: DSET-RULE-RELEASE
     layer: OPS
@@ -219,7 +219,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/skill/templates/governance/core-v1/lifecycle-orchestration.md
-      sha256: fe4331403782912bf368408ff3d33aa9378b6be46e759d5b1f0cefc7312747ad
+      sha256: 8c972b5128f57ea031a14d34b35b9c35aef398ccda9b6f86f8b1be68492fe0a6
   -
     id: DSET-RULE-DIAGNOSIS
     layer: SKILL
@@ -454,56 +454,56 @@ wrappers:
   -
     workflow: lifecycle-orchestration
     path: skills/dset/SKILL.md
-    sha256: 3e1aebb1bb2394cfe0206b1930243c6a25ab69726387948e0af64522f7b4cf05
+    sha256: c368338f46adcd5686da5ac0ab0a0aba7db10fbc615957c063948b97b060085f
   -
     workflow: domain-clarification
     path: skills/dset-clarify/SKILL.md
-    sha256: e64b1b321d89868abcfe2a33d3d692f48e31215d010998148694d16a09eb9464
+    sha256: 90eb9032c2f8949e0bbbace9b0421e4ce98d9de828a651ca28c2d9b58710df93
   -
     workflow: diagnosis
     path: skills/dset-diagnose/SKILL.md
-    sha256: e3aff05909bece312791623a680a4257e09193ef1a6658b0c466dc4a1b71ed56
+    sha256: 4559ed0086a06c8fe9011f80c32a4ba4373fd9798c4f6a7cd4e5d5240bbcb066
   -
     workflow: prototyping
     path: skills/dset-prototype/SKILL.md
-    sha256: 0407b346162b80bd7bbd6fd10f78006220714d0d8764f54ae01fbb1f723e8245
+    sha256: 631b1558abdf14c83419d79edcff04536cc7680b93198529dc39cf63ec0f036c
   -
     workflow: release
     path: skills/dset-release/SKILL.md
-    sha256: ff341b5243a77534875c1ca14581910aac74474b5d7fd3c05c1f4a512719630f
+    sha256: 0bbe31a129bf31acf77b3e90e83888020af5e021bf2b993a2ab9391c51cbf655
   -
     workflow: work-triage
     path: skills/dset-triage/SKILL.md
-    sha256: 7d2c72e6221ea7b497fe312e6ef0a6a921df93cf68a38601e34cd70b341f5fcb
+    sha256: fb945f0bc5d8dadb07b66b9747a2d2e29aae91f92af83b6533b1f8580051dc1a
   -
     workflow: decompose
     path: skills/dset-decompose/SKILL.md
-    sha256: beaf1bc32be2e2bbd948511449c8b6401a5d0624e8df7eef52d486ca53517011
+    sha256: 1b78897b9ba7cf4f03efe7f871caed65a019710189515370c6fb7af720ac192b
   -
     workflow: landscape
     path: skills/dset-landscape/SKILL.md
-    sha256: e03ed9213725742ec1963c27a0fc8bdc33918ff5d05f9d65f184bfff8d0a8abd
+    sha256: 218655d145691ce0300d85fa83fe152d004b589e265686684a788b07d53731ae
   -
     workflow: decisions
     path: skills/dset-decisions/SKILL.md
-    sha256: eacb36086aa2c3c4e602e3c5a165c09a247cdfcdd8ad0d81f8b27ecde3bf6cba
+    sha256: 19c4a5eefbf8d0199629cea76bfa3480edd67f0470d9b02941127e58eb11ed67
   -
     workflow: plan-proof
     path: skills/dset-plan-proof/SKILL.md
-    sha256: 8de7c8f3b39e1c95bebaa206db4269b728e3c2eebe40630d573c3e561d28dbcd
+    sha256: 278317696120827d375c1359ebad28d7a67bca02d1387cc4b85546491f67f0dd
   -
     workflow: plan-implementation
     path: skills/dset-plan-implementation/SKILL.md
-    sha256: 6c15424cd5a7f67953aee43defd90b421059878cfdeba49aff46d70104e5a49c
+    sha256: 3694ec6daa93473e544ac17b3bfe2b4a8a060c61545fcfd99ced6298be8846ab
   -
     workflow: implement
     path: skills/dset-implement/SKILL.md
-    sha256: 0491e102813e5b71462d360a0b871d00c7a96f6c732ca9772c66d94405b5f174
+    sha256: 6f451352db5d2d804c82862c8379bf64081326e658e6fb0293cffc82f82c4455
   -
     workflow: verify
     path: skills/dset-verify/SKILL.md
-    sha256: f7e17dcaa011535a5e1eed5fbc9117185859fbf67dafb35a9d4c4fc749690069
+    sha256: ec3c9643325090b24411016b4fc175f2c01f9ac7dfb24ea7bc444c35850fc117
   -
     workflow: complete
     path: skills/dset-complete/SKILL.md
-    sha256: 782587295902c6ac9d870a6b20bcd5d1e69771793ba6a7aa88af763c7fb6adbf
+    sha256: bee23f861776c3da06a3f72db8074b951b9b8494fc51c3c8ed6f63e4e07c3992
