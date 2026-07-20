@@ -17,6 +17,7 @@ from .layout import RepositoryLayout, discover_layout
 from .lineage import validate_artifact_lineage
 from .profiles import VALID_PROFILES, required_artifacts
 from .semantic_atoms import validate_semantic_atoms
+from .semantic_types import classify_semantic_id, validate_semantic_classifications
 from .settings import load_project_settings
 from .yaml_subset import YamlSubsetError, load, loads
 
@@ -25,19 +26,26 @@ CHANGE_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 PROJECT_KEY_PATTERN = re.compile(r"^[A-Z][A-Z0-9]*$")
 TRACE_LAYERS = ("META", "GOV", "TOOL", "SKILL", "OPS")
 TRACE_TYPES = (
-    "REQUIREMENT",
-    "SCENARIO",
-    "INVARIANT",
-    "TEST",
-    "EVAL",
-    "TASK",
-    "PROBLEM",
-    "OPPORTUNITY",
-    "QUESTION",
     "DECISION",
+    "REQUIREMENT",
+    "CONSTRAINT",
     "CONTRACT",
     "STORY",
     "OUTCOME",
+    "SCENARIO",
+    "INVARIANT",
+    "QUESTION",
+    "CONFLICT",
+    "RISK",
+    "OPPORTUNITY",
+    "PROBLEM",
+    "DEFECT",
+    "GAP",
+    "DEBT",
+    "TEST",
+    "EVAL",
+    "EVALUATION",
+    "TASK",
     "CHANGE",
 )
 LINK_PATTERN = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
@@ -168,6 +176,7 @@ def validate_repository(root: Path) -> list[Diagnostic]:
                 diagnostics.extend(validate_change(root, path, archived=True))
     diagnostics.extend(_validate_markdown(root))
     diagnostics.extend(validate_semantic_atoms(root))
+    diagnostics.extend(validate_semantic_classifications(root))
     diagnostics.extend(validate_artifact_lineage(root))
     diagnostics.extend(validate_dependency_policy(root))
     if health_path(root).is_file() and not health_is_fresh(root):
@@ -522,7 +531,8 @@ def _validate_intake_registry(root: Path, manifest: dict[str, Any]) -> list[Diag
     scopes: dict[str, str]
     if layered:
         scopes = {segment.lower(): segment for segment in TRACE_LAYERS}
-        if data.get("schema_version") != "1.1" or any(
+        intake_schema = str(data.get("schema_version"))
+        if intake_schema not in {"1.1", "1.2"} or any(
             key in data for key in ("scope_mode", "scopes")
         ):
             diagnostics.append(
@@ -579,10 +589,33 @@ def _validate_intake_registry(root: Path, manifest: dict[str, Any]) -> list[Diag
         diagnostics.append(_diag("DSET-E142", path, "items must be a list"))
         return diagnostics
     seen_ids: set[str] = set()
+    legacy_intake = str(data.get("schema_version")) == "1.1"
     item_pattern = _trace_id_pattern(
-        project_key, ("PROBLEM", "OPPORTUNITY", "QUESTION")
+        project_key,
+        (
+            "PROBLEM",
+            "DEFECT",
+            "GAP",
+            "DEBT",
+            "QUESTION",
+            "CONFLICT",
+            "RISK",
+            "OPPORTUNITY",
+        ),
     )
-    decision_pattern = _trace_id_pattern(project_key, ("DECISION",))
+    decision_pattern = _trace_id_pattern(
+        project_key,
+        (
+            "DECISION",
+            "REQUIREMENT",
+            "CONSTRAINT",
+            "CONTRACT",
+            "STORY",
+            "OUTCOME",
+            "SCENARIO",
+            "INVARIANT",
+        ),
+    )
     for raw_item in raw_items:
         if not isinstance(raw_item, dict):
             diagnostics.append(
@@ -596,11 +629,32 @@ def _validate_intake_registry(root: Path, manifest: dict[str, Any]) -> list[Diag
         scope_id = raw_item.get("scope")
         scope_segment = scopes.get(scope_id) if isinstance(scope_id, str) else None
         item_type = raw_item.get("type")
+        item_subtype = raw_item.get("subtype")
+        identity_classification = (
+            classify_semantic_id(identifier) if isinstance(identifier, str) else None
+        )
+        declared_classification = (
+            (str(item_type), str(item_subtype) if item_subtype is not None else None)
+            if isinstance(item_type, str)
+            else None
+        )
+        classification_matches = match is not None and (
+            (
+                legacy_intake
+                and match.group("type").lower() == item_type
+                and item_subtype is None
+            )
+            or (
+                not legacy_intake
+                and identity_classification == declared_classification
+                and item_type in {"question", "problem"}
+            )
+        )
         if (
             match is None
             or identifier in seen_ids
             or not isinstance(item_type, str)
-            or match.group("type").lower() != item_type
+            or not classification_matches
             or scope_segment is None
             or (
                 match.group("layer") is not None
@@ -831,7 +885,10 @@ def _validate_packages(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]
                     _diag("DSET-E117", package_manifest, f"{group} must be a list")
                 )
                 continue
-            pattern = _trace_id_pattern(project_key, (trace_type,))
+            pattern = _trace_id_pattern(
+                project_key,
+                ("EVAL", "EVALUATION") if trace_type == "EVAL" else (trace_type,),
+            )
             content = "\n".join(
                 path.read_text(encoding="utf-8")
                 for path in owner_paths[group]
@@ -976,7 +1033,10 @@ def _validate_layered_packages(
                     _diag("DSET-E144", path, f"{group} must be a unique list")
                 )
                 continue
-            pattern = _trace_id_pattern(project_key, (trace_type,))
+            pattern = _trace_id_pattern(
+                project_key,
+                ("EVAL", "EVALUATION") if trace_type == "EVAL" else (trace_type,),
+            )
             owner = path.parent / artifact_names[owner_artifact[group]]
             content = owner.read_text(encoding="utf-8") if owner.is_file() else ""
             for identifier in identifiers:
@@ -1859,7 +1919,14 @@ def _validate_change_ids(
         pattern = (
             ID_PATTERN
             if legacy
-            else _trace_id_pattern(project_key, (group_types[group],))
+            else _trace_id_pattern(
+                project_key,
+                (
+                    ("EVAL", "EVALUATION")
+                    if group_types[group] == "EVAL"
+                    else (group_types[group],)
+                ),
+            )
         )
         content = "\n".join(
             path.read_text(encoding="utf-8") for path in paths if path.is_file()

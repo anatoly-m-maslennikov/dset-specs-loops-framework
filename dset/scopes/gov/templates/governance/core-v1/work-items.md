@@ -23,6 +23,26 @@ When a subtype exists, its full name is the external artifact and ID kind. A
 Requirement uses `type: decision`, `subtype: requirement`, and a `REQUIREMENT`
 ID. A general Decision omits subtype and uses a `DECISION` ID.
 
+## Compatibility without retyping
+
+New atoms use the explicit four-Type envelope. Existing stable semantic IDs
+remain byte-for-byte and are interpreted through a deterministic compatibility
+classification: their one recognized ID-kind token and canonical carrier role
+must agree on one Type and at most one direct subtype. Legacy `EVAL` IDs map to
+`qa/evaluation`; legacy standalone Opportunity, Conflict, and Risk carriers map
+to direct Question subtypes; Requirement, Contract, Story, Outcome, Scenario,
+Invariant, and Constraint map to direct Decision subtypes. The mapping is a
+derived view, not an edit, alias, new atom, or lifecycle event.
+
+`dset check` fails with `DSET-E166` when an ID kind and carrier classification
+disagree or a carrier cannot resolve to the flat model. Traceability publishes
+the preserved ID, normalized Type/subtype, carrier paths, compatibility flag,
+and lifecycle event IDs. Project health reports the same population by Type
+and subtype and keeps native immutable atoms separate from compatibility-
+classified history. Skill context exposes the four-Type routing identity and
+counts from the current repository; wrappers never infer a Type from the skill
+that happened to run.
+
 ## Atom boundary
 
 Types classify durable project claims and directives for DSET routing, not

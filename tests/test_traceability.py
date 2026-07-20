@@ -84,6 +84,17 @@ class TraceabilityTests(unittest.TestCase):
         self.assertEqual(atoms["DSET-DECISION-GOV-010"]["priority"], "high")
         self.assertEqual(atoms["DSET-DECISION-GOV-010"]["current_status"], "accepted")
         self.assertFalse(atoms["DSET-DECISION-GOV-010"]["archived"])
+        classifications = {
+            item["id"]: item for item in trace["semantic_classifications"]
+        }
+        self.assertEqual(
+            classifications["DSET-OPPORTUNITY-GOV-001"]["type"], "question"
+        )
+        self.assertEqual(
+            classifications["DSET-OPPORTUNITY-GOV-001"]["subtype"],
+            "opportunity",
+        )
+        self.assertTrue(classifications["DSET-OPPORTUNITY-GOV-001"]["compatibility"])
 
     def test_write_is_stable_and_checkable(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

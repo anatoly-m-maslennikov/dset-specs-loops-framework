@@ -130,7 +130,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/gov/templates/governance/core-v1/work-items.md
-      sha256: a7faf7958b0a67b65ea384d982bfeda9ddfe4d126b3deba57071fd5155b93e8e
+      sha256: df1c9221304a2e0a9c3ac0a8c0efa0102eea1f148b29a1eda4d08996c3234d86
   -
     id: DSET-RULE-ARTIFACT-CLASSIFICATION
     layer: GOV

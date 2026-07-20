@@ -7,6 +7,7 @@ from typing import Any
 from .governance import validate_governance
 from .layout import discover_layout, has_manifest
 from .runtime_bridge import start_runtime
+from .semantic_types import build_semantic_classification_index
 from .settings import load_project_settings
 from .skill_catalog import (
     PUBLIC_SKILL_MODES,
@@ -55,6 +56,7 @@ def resolve_skill_context(
     settings, settings_issues = load_project_settings(root)
     if settings_issues:
         raise ValueError("; ".join(settings_issues))
+    semantic_index = build_semantic_classification_index(root)
     return {
         "schema_version": CONTEXT_SCHEMA_VERSION,
         "status": "resolved",
@@ -70,6 +72,17 @@ def resolve_skill_context(
         .as_posix(),
         "ruleset_identity": _run_ruleset_identity(started["run"]),
         "artifact_creation_strictness": settings.artifact_creation_strictness,
+        "semantic_routing": {
+            "types": ["decision", "question", "problem", "qa"],
+            "classification_count": len(semantic_index),
+            "compatibility_count": sum(
+                1 for item in semantic_index if item["compatibility"]
+            ),
+            "source": discover_layout(root)
+            .governance_root.joinpath("governance/work-items.md")
+            .relative_to(root)
+            .as_posix(),
+        },
         "resolved": resolved,
         "run": started["run"],
         "checkpoint": checkpoint,

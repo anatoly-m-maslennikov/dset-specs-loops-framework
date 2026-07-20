@@ -32,6 +32,8 @@ class ProjectHealthTests(unittest.TestCase):
         header = "| Numerator | Denominator | Excluded | N/A | Unknown | Stale |"
         self.assertIn(header, first)
         self.assertIn("This generated view is not authority", first)
+        self.assertIn("## Semantic inventory", first)
+        self.assertIn("Compatibility-classified legacy IDs", first)
         self.assertIn("## Canonical return paths", first)
 
     def test_explicit_refresh_and_staleness_check(self) -> None:
@@ -54,6 +56,18 @@ class ProjectHealthTests(unittest.TestCase):
 
         self.assertIn("sample", model["packages"])
         self.assertEqual(len(model["coverage"]), 4)
+        semantic_types = set(model["semantic_counts"]["by_type"])
+        self.assertTrue(
+            semantic_types.issubset({"decision", "problem", "qa", "question"})
+        )
+        self.assertIn("decision", semantic_types)
+        self.assertIn("qa", semantic_types)
+        self.assertGreater(model["semantic_counts"]["compatibility"], 0)
+        self.assertEqual(
+            model["semantic_counts"]["native_atoms"]
+            + model["semantic_counts"]["compatibility"],
+            model["semantic_counts"]["total"],
+        )
         for coverage in model["coverage"]:
             self.assertGreaterEqual(coverage.denominator, 0)
             self.assertGreaterEqual(coverage.unknown, 0)

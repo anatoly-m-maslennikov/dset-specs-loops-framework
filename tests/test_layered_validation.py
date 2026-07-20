@@ -115,6 +115,37 @@ class LayeredValidationTests(unittest.TestCase):
                     "DSET-E142", {item.code for item in validate_repository(self.root)}
                 )
 
+    def test_current_intake_uses_flat_question_and_problem_subtypes(self) -> None:
+        path = self.scopes / "gov" / "intake.yaml"
+        conflict: dict[str, Any] = {
+            "id": "DSET-CONFLICT-GOV-001",
+            "scope": "gov",
+            "type": "question",
+            "subtype": "conflict",
+            "status": "open",
+            "title": "Incompatible authority",
+            "statement": "Two applicable claims cannot both hold.",
+            "owner_change": "DSET-CHANGE-GOV-001",
+            "decision": "pending",
+            "llm_session_ids": [],
+            "external_refs": [],
+        }
+        path.write_text(
+            dump({"schema_version": "1.2", "items": [conflict]}), encoding="utf-8"
+        )
+
+        self.assertNotIn(
+            "DSET-E142", {item.code for item in validate_repository(self.root)}
+        )
+
+        conflict["type"] = "problem"
+        path.write_text(
+            dump({"schema_version": "1.2", "items": [conflict]}), encoding="utf-8"
+        )
+        codes = {item.code for item in validate_repository(self.root)}
+        self.assertIn("DSET-E142", codes)
+        self.assertIn("DSET-E166", codes)
+
     def test_atomic_artifacts_require_explicit_session_provenance(self) -> None:
         intake_path = self.scopes / "gov" / "intake.yaml"
         item: dict[str, Any] = {

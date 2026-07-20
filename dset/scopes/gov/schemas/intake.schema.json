@@ -22,6 +22,15 @@
         "items": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/layered_item"}}
       },
       "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": ["schema_version", "items"],
+      "properties": {
+        "schema_version": {"const": "1.2"},
+        "items": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/current_item"}}
+      },
+      "additionalProperties": false
     }
   ],
   "$defs": {
@@ -73,9 +82,38 @@
       },
       "additionalProperties": false
     },
+    "current_item": {
+      "type": "object",
+      "required": ["id", "scope", "type", "status", "title", "statement", "owner_change", "decision", "llm_session_ids"],
+      "properties": {
+        "id": {"$ref": "#/$defs/intake_id"},
+        "scope": {"$ref": "#/$defs/layer"},
+        "type": {"enum": ["question", "problem"]},
+        "subtype": {"enum": ["conflict", "risk", "opportunity", "defect", "gap", "debt"]},
+        "status": {"enum": ["open", "accepted", "resolved", "closed"]},
+        "title": {"type": "string", "minLength": 1},
+        "statement": {"type": "string", "minLength": 1},
+        "owner_change": {"oneOf": [{"type": "string", "pattern": "^[A-Z][A-Z0-9]*-CHANGE-(?:META|GOV|TOOL|SKILL|OPS)-[0-9]{3,}$"}, {"const": "pending"}, {"type": "null"}]},
+        "decision": {"$ref": "#/$defs/decision"},
+        "llm_session_ids": {"$ref": "#/$defs/llm_session_ids"},
+        "rationale": {"$ref": "#/$defs/rationale"},
+        "external_refs": {"$ref": "#/$defs/external_refs"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"type": {"const": "question"}}, "required": ["type", "subtype"]},
+          "then": {"properties": {"subtype": {"enum": ["conflict", "risk", "opportunity"]}}}
+        },
+        {
+          "if": {"properties": {"type": {"const": "problem"}}, "required": ["type", "subtype"]},
+          "then": {"properties": {"subtype": {"enum": ["defect", "gap", "debt"]}}}
+        }
+      ],
+      "additionalProperties": false
+    },
     "layer": {"enum": ["meta", "gov", "tool", "skill", "ops"]},
-    "intake_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-(?:PROBLEM|OPPORTUNITY|QUESTION)(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"},
-    "decision": {"oneOf": [{"type": "string", "pattern": "^[A-Z][A-Z0-9]*-DECISION(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}, {"const": "pending"}, {"type": "null"}]},
+    "intake_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-(?:QUESTION|CONFLICT|RISK|OPPORTUNITY|PROBLEM|DEFECT|GAP|DEBT)(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"},
+    "decision": {"oneOf": [{"type": "string", "pattern": "^[A-Z][A-Z0-9]*-(?:DECISION|REQUIREMENT|CONSTRAINT|CONTRACT|STORY|OUTCOME|SCENARIO|INVARIANT)(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}, {"const": "pending"}, {"type": "null"}]},
     "llm_session_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$"}},
     "rationale": {"type": "string", "minLength": 1, "maxLength": 2048},
     "external_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}

@@ -454,6 +454,14 @@ remains Evaluation when deterministic code executes the method but the
 conclusion depends on judgment, sampling, calibration, probability, statistics,
 or a model. QA results affect assurance and never override Decision authority.
 
+New atoms use this explicit envelope and direct-subtype ID kind. Existing
+stable IDs and carriers are never rewritten merely to adopt it. A deterministic
+compatibility classifier maps each legacy ID-kind/carrier pair to the same four
+Types, including legacy `EVAL` to QA/Evaluation and standalone Opportunity to
+Question/Opportunity, and fails closed when the pair disagrees. Traceability,
+project health, validation, lifecycle lookup, and skill context consume that
+single mapping so compatibility does not become a second taxonomy.
+
 A Question/Conflict records exact incompatible authority and resolves through
 an append-only lifecycle event linked to the answering or absorbing Decision,
 precedence, exception, boundary change, or external-authority update. A

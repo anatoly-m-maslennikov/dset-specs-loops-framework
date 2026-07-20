@@ -12,6 +12,7 @@ from typing import Any
 from .compilation import active_authority_ids
 from .layout import discover_layout
 from .semantic_atoms import collect_semantic_atoms, effective_priority
+from .semantic_types import build_semantic_classification_index
 from .settings import load_project_settings
 from .yaml_subset import YamlSubsetError, load, loads
 
@@ -63,6 +64,7 @@ def build_health_model(root: Path) -> dict[str, Any]:
     if issues:
         raise ValueError(issues[0])
     artifacts = _classified_artifacts(root)
+    semantic_classifications = build_semantic_classification_index(root)
     atoms, atom_diagnostics = collect_semantic_atoms(root)
     if atom_diagnostics:
         raise ValueError(atom_diagnostics[0].message)
@@ -148,6 +150,29 @@ def build_health_model(root: Path) -> dict[str, Any]:
             "by_priority": dict(sorted(priority_counts.items())),
             "by_status": dict(sorted(status_counts.items())),
         },
+        "semantic_counts": {
+            "total": len(semantic_classifications),
+            "by_type": dict(
+                sorted(
+                    Counter(item["type"] for item in semantic_classifications).items()
+                )
+            ),
+            "by_subtype": dict(
+                sorted(
+                    Counter(
+                        item["subtype"]
+                        for item in semantic_classifications
+                        if item["subtype"] != "none"
+                    ).items()
+                )
+            ),
+            "compatibility": sum(
+                1 for item in semantic_classifications if item["compatibility"]
+            ),
+            "native_atoms": sum(
+                1 for item in semantic_classifications if not item["compatibility"]
+            ),
+        },
         "atoms": sorted(atom_rows, key=lambda item: str(item["id"])),
         "unresolved": unresolved,
         "open_conflicts": sorted(open_conflicts, key=lambda item: str(item["id"])),
@@ -209,6 +234,7 @@ def render_health(root: Path) -> str:
         lines.append(f"- **{coverage.name}:** {links}")
 
     counts = model["artifact_counts"]
+    semantic_counts = model["semantic_counts"]
     lines.extend(
         [
             "",
@@ -221,6 +247,15 @@ def render_health(root: Path) -> str:
             f"- **By layer:** {_counter_text(counts['by_layer'])}",
             f"- **By effective priority:** {_counter_text(counts['by_priority'])}",
             f"- **By status:** {_counter_text(counts['by_status'])}",
+            "",
+            "## Semantic inventory",
+            "",
+            f"- **Semantic claims:** {semantic_counts['total']}",
+            f"- **By Type:** {_counter_text(semantic_counts['by_type'])}",
+            f"- **By direct subtype:** {_counter_text(semantic_counts['by_subtype'])}",
+            f"- **Native immutable atoms:** {semantic_counts['native_atoms']}",
+            "- **Compatibility-classified legacy IDs:** "
+            f"{semantic_counts['compatibility']}",
             "",
             "## Unresolved work",
             "",

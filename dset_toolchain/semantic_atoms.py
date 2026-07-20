@@ -9,45 +9,10 @@ from typing import Any
 
 from .diagnostics import Diagnostic
 from .layout import discover_layout
+from .semantic_types import SEMANTIC_ID_KINDS, SEMANTIC_SUBTYPES
 from .settings import load_project_settings
 from .yaml_subset import YamlSubsetError, dump, load, loads
 
-SEMANTIC_SUBTYPES: dict[str, frozenset[str]] = {
-    "decision": frozenset(
-        {
-            "requirement",
-            "constraint",
-            "contract",
-            "user_story",
-            "outcome",
-            "scenario",
-            "invariant",
-        }
-    ),
-    "question": frozenset({"conflict", "risk", "opportunity"}),
-    "problem": frozenset({"defect", "gap", "debt"}),
-    "qa": frozenset({"test", "evaluation"}),
-}
-SEMANTIC_ID_KINDS = {
-    ("decision", None): "DECISION",
-    ("decision", "requirement"): "REQUIREMENT",
-    ("decision", "constraint"): "CONSTRAINT",
-    ("decision", "contract"): "CONTRACT",
-    ("decision", "user_story"): "STORY",
-    ("decision", "outcome"): "OUTCOME",
-    ("decision", "scenario"): "SCENARIO",
-    ("decision", "invariant"): "INVARIANT",
-    ("question", None): "QUESTION",
-    ("question", "conflict"): "CONFLICT",
-    ("question", "risk"): "RISK",
-    ("question", "opportunity"): "OPPORTUNITY",
-    ("problem", None): "PROBLEM",
-    ("problem", "defect"): "DEFECT",
-    ("problem", "gap"): "GAP",
-    ("problem", "debt"): "DEBT",
-    ("qa", "test"): "TEST",
-    ("qa", "evaluation"): "EVALUATION",
-}
 ID_PATTERN = re.compile(r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$")
 SESSION_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
 EVENTS = frozenset(

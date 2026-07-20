@@ -4,24 +4,8 @@ from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
+from .semantic_types import SEMANTIC_SUBTYPES
 from .settings import load_project_settings
-
-SEMANTIC_SUBTYPES = {
-    "decision": frozenset(
-        {
-            "requirement",
-            "constraint",
-            "contract",
-            "user_story",
-            "outcome",
-            "scenario",
-            "invariant",
-        }
-    ),
-    "question": frozenset({"conflict", "risk", "opportunity"}),
-    "problem": frozenset({"defect", "gap", "debt"}),
-    "qa": frozenset({"test", "evaluation"}),
-}
 
 MEDIUM_FIELDS = (
     "authority",

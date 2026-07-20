@@ -110,6 +110,12 @@ class RuntimeBridgeTests(unittest.TestCase):
         self.assertEqual(context["work_area"], "skills")
         self.assertEqual(context["workflow_id"], "implement")
         self.assertEqual(context["artifact_creation_strictness"], "medium")
+        semantic_routing = cast(dict[str, Any], context["semantic_routing"])
+        self.assertEqual(
+            semantic_routing["types"], ["decision", "question", "problem", "qa"]
+        )
+        self.assertGreater(semantic_routing["classification_count"], 0)
+        self.assertIn("work-items.md", semantic_routing["source"])
         self.assertTrue(str(context["ruleset_identity"]).startswith("ruleset:"))
         closure = cast(dict[str, Any], context["closure"])
         self.assertEqual(closure["next_workflow"], "decisions")
@@ -205,9 +211,7 @@ class RuntimeBridgeTests(unittest.TestCase):
                     "implementation_authorized": False,
                 },
             )
-            self.assertEqual(
-                checkpoint["closure"]["next_workflow"], "plan-proof"
-            )
+            self.assertEqual(checkpoint["closure"]["next_workflow"], "plan-proof")
             second = start_child_runtime(
                 adopter,
                 session_id="session-closure",
