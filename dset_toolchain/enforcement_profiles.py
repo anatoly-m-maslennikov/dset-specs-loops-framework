@@ -22,6 +22,7 @@ GATE_IDS = (
     "secret_hygiene",
 )
 PROFILE_STATUSES = frozenset({"candidate", "active", "custom"})
+REVISION_POLICIES = frozenset({"exact", "descendant"})
 GATE_STATUSES = frozenset({"enforced", "ratcheted", "blocked", "not-applicable"})
 _ID = re.compile(r"^[a-z][a-z0-9-]*$")
 _SHA = re.compile(r"^[0-9a-f]{40}$")
@@ -65,6 +66,8 @@ def validate_profile_data(path: Path, data: dict[str, Any]) -> list[Diagnostic]:
         diagnostics.append(_diag(path, "profile id must be kebab-case"))
     if status not in PROFILE_STATUSES:
         diagnostics.append(_diag(path, "profile status is invalid"))
+    if data.get("target_revision_policy") not in REVISION_POLICIES:
+        diagnostics.append(_diag(path, "target_revision_policy is invalid"))
     for field in ("version", "language_family"):
         if not _nonempty(data.get(field)):
             diagnostics.append(_diag(path, f"{field} must be non-empty"))
@@ -205,9 +208,17 @@ def inspect_target(
     diagnostics = validate_profile_data(profile_path, profile)
     revision = _git(target, "rev-parse", "HEAD")
     expected_revision = _mapping(profile.get("evidence")).get("revision")
-    if revision != expected_revision:
+    revision_policy = profile.get("target_revision_policy")
+    if revision_policy == "exact" and revision != expected_revision:
         diagnostics.append(
             _diag(target, f"target revision drift: {revision or 'unavailable'}")
+        )
+    elif revision_policy == "descendant" and (
+        not isinstance(expected_revision, str)
+        or not _git_is_ancestor(target, expected_revision)
+    ):
+        diagnostics.append(
+            _diag(target, "target revision is not descended from profile evidence")
         )
 
     scope = _mapping(profile.get("scope"))
@@ -254,6 +265,7 @@ def inspect_target(
         "schema_version": PROFILE_SCHEMA_VERSION,
         "profile": profile.get("id"),
         "profile_status": profile.get("status"),
+        "target_revision_policy": revision_policy,
         "profile_path": profile_path.as_posix(),
         "target": target.as_posix(),
         "target_revision": revision,
@@ -281,6 +293,17 @@ def _git(root: Path, *args: str) -> str | None:
         ["git", *args], cwd=root, check=False, capture_output=True, text=True
     )
     return result.stdout.strip() if result.returncode == 0 else None
+
+
+def _git_is_ancestor(root: Path, ancestor: str) -> bool:
+    result = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", ancestor, "HEAD"],
+        cwd=root,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    return result.returncode == 0
 
 
 def _git_files(root: Path) -> list[str]:

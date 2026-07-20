@@ -3,13 +3,14 @@
   "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/scopes/tool/schemas/enforcement-profile.schema.json",
   "title": "DSET applied enforcement profile",
   "type": "object",
-  "required": ["schema_version", "id", "version", "status", "language_family", "evidence", "toolchain", "scope", "observed", "warning_baseline", "canonical_sequence", "gates", "known_blockers", "promotion"],
+  "required": ["schema_version", "id", "version", "status", "language_family", "target_revision_policy", "evidence", "toolchain", "scope", "observed", "warning_baseline", "canonical_sequence", "gates", "known_blockers", "promotion"],
   "properties": {
     "schema_version": {"const": "1.0"},
     "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
     "version": {"type": "string", "minLength": 1},
     "status": {"enum": ["candidate", "active", "custom"]},
     "language_family": {"type": "string", "minLength": 1},
+    "target_revision_policy": {"enum": ["exact", "descendant"]},
     "evidence": {
       "type": "object",
       "required": ["repository", "revision", "observed_on", "license"],

@@ -32,6 +32,7 @@ class EnforcementProfileTests(unittest.TestCase):
     def test_typescript_candidate_is_pinned_and_complete(self) -> None:
         self.assertEqual(self.profile["id"], "typescript-v1-candidate")
         self.assertEqual(self.profile["status"], "candidate")
+        self.assertEqual(self.profile["target_revision_policy"], "exact")
         evidence = cast(dict[str, Any], self.profile["evidence"])
         self.assertEqual(
             evidence["revision"],
@@ -81,6 +82,10 @@ class EnforcementProfileTests(unittest.TestCase):
         active_blocked = copy.deepcopy(self.profile)
         active_blocked["status"] = "active"
         cases.append(("active profile", active_blocked))
+
+        invalid_revision_policy = copy.deepcopy(self.profile)
+        invalid_revision_policy["target_revision_policy"] = "floating"
+        cases.append(("target_revision_policy", invalid_revision_policy))
 
         for expected, candidate in cases:
             with self.subTest(expected=expected):
@@ -139,6 +144,26 @@ class EnforcementProfileTests(unittest.TestCase):
                     "target script drift: lint" in item for item in drift["diagnostics"]
                 )
             )
+
+            original_scripts = cast(
+                dict[str, str], self.profile["toolchain"]["scripts"]
+            )
+            profile["toolchain"]["scripts"]["lint"] = original_scripts["lint"]
+            (target / "src/core/three.ts").write_text(
+                "export const three = 3;\n", encoding="utf-8"
+            )
+            self._git(target, "add", ".")
+            self._git(target, "commit", "-qm", "descendant")
+            profile["observed"]["file_counts"]["source_typescript"] = 3
+            profile["observed"]["file_counts"]["lint_files"] = 4
+
+            exact = inspect_target(PROFILE, profile, target)
+            self.assertTrue(
+                any("target revision drift" in item for item in exact["diagnostics"])
+            )
+            profile["target_revision_policy"] = "descendant"
+            descendant = inspect_target(PROFILE, profile, target)
+            self.assertEqual(descendant["diagnostics"], [])
 
     def test_framework_resolves_the_candidate_template(self) -> None:
         self.assertEqual(resolve_profile_path(ROOT, "typescript-v1-candidate"), PROFILE)

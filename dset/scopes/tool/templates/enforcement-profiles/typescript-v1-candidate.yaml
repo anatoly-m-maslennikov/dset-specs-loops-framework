@@ -3,6 +3,7 @@ id: typescript-v1-candidate
 version: "0.1"
 status: candidate
 language_family: javascript-typescript
+target_revision_policy: exact
 
 evidence:
   repository: https://github.com/anatoly-m-maslennikov/obsidian-your-harness

@@ -164,7 +164,11 @@ non-growing count by rule until removed. Product names, Obsidian behavior,
 provider capabilities, vault storage, and local UI conventions remain adopter
 governance, not language-profile defaults. The candidate becomes
 `typescript-v1` only after the owned pilot and required hosted proof are green;
-until then its status and blocker list remain visible.
+until then its status and blocker list remain visible. The distributed evidence
+profile uses exact-revision inspection. A project-local derivative may use
+descendant inspection so committing the profile does not create an impossible
+self-referential HEAD, but it retains the exact evidence baseline and proves
+that the target descends from it.
 
 ## §7 | Agent ergonomics
 
