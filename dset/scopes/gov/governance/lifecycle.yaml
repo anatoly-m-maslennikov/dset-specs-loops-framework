@@ -358,3 +358,33 @@ events:
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: The successor preserves the complete Delivery release lifecycle while removing the invalid lineage edge from the sealed predecessor.
+  -
+    id: DSET-LIFECYCLE-EVENT-036
+    atom_id: DSET-REQUIREMENT-GOV-033
+    event: absorbed
+    occurred_at: 2026-07-20T18:00:00+04:00
+    related:
+      - DSET-DECISION-GOV-013
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: The typed-relation Decision preserves structural inheritance through child_of while separating scoped override and complete replacement semantics.
+  -
+    id: DSET-LIFECYCLE-EVENT-037
+    atom_id: DSET-REQUIREMENT-GOV-034
+    event: absorbed
+    occurred_at: 2026-07-20T18:01:00+04:00
+    related:
+      - DSET-DECISION-GOV-013
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: The typed-relation Decision replaces untyped causal lineage with bounded forward relation types and derived inverses while preserving sealed compatibility input.
+  -
+    id: DSET-LIFECYCLE-EVENT-038
+    atom_id: DSET-QUESTION-GOV-004
+    event: resolved
+    occurred_at: 2026-07-20T18:02:00+04:00
+    related:
+      - DSET-DECISION-GOV-013
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: The operator selected a bounded MECE artifact-relation vocabulary, derived inverses, and range-based evergreen projection frontiers.

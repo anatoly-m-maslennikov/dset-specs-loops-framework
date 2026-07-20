@@ -175,11 +175,11 @@ items:
       - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
     scope: gov
     type: question
-    status: open
+    status: resolved
     title: Should traceability use typed relation edges?
     statement: Should DSET replace or supplement untyped ID buckets with a small typed-edge registry that distinguishes verifies, evaluates, constrains, discharges, supersedes, supports, rebuts, and undercuts while preserving simple generated views?
     owner_change: DSET-CHANGE-SKILL-001
-    decision: pending
+    decision: DSET-DECISION-GOV-013
     external_refs: []
   - id: DSET-QUESTION-GOV-005
     llm_session_ids:

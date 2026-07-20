@@ -91,8 +91,9 @@ unresolved targets or absorption cycles. Conflict resolution classifies role
 and applicability before consulting explicit precedence or effective priority;
 it reports whether a first-class open Conflict atom and later resolution event
 are required, but never edits an atom. Explicit emission creates and seals one
-`question/conflict` atom whose `child_of` lineage names both incompatible
-parties. A separate append-only lifecycle event records its later resolution.
+`question/conflict` atom whose `relates_to` edges name both incompatible
+parties; the Conflict claim owns the incompatibility semantics. A separate
+append-only lifecycle event records its later resolution.
 Recorded dispositions bind the effective priority values and sources, context,
 precedence, and profile scale; check mode rejects them when that basis changes.
 An explicitly retired atom with no active child reliance may move byte-for-byte

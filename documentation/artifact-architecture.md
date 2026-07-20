@@ -80,20 +80,18 @@ architecture, whole-project release/readiness history, and cross-owner
 Decisions, Questions, Problems, and Analysis Reports. Parent artifacts link to
 child detail instead of duplicating it.
 
-Artifacts may inherit down the same structural tree. Every non-root child
-stores `child_of` as a list of one or more immediate parent IDs; `parent_to` is
-the derived reverse view so an immutable parent never needs a later edit. A
-parent can have many children and a child can have many parents. If a feature
-or layer has no child, it applies the nearest inherited parent directly. A
-local child Decision may define its implementation, replace it, or cancel it
-within that subtree without changing siblings or ancestors.
+Consequential traceability uses `child_of`, `analysis_of`, `projection_of`,
+`implementation_of`, `check_of`, `evidence_for`, `resolution_of`,
+`override_of`, `replacement_of`, or fallback `relates_to`. One source-target
+pair has one primary relation; reverse edges are derived and never authored.
+`child_of` keeps both claims active, `override_of` changes only a narrower
+scope, and `replacement_of` completely replaces an older atom.
 
-The same relation traces APP-PLAN decomposition through authority, analysis,
-compiled truth, implementation, QA, evidence, Verification, readiness, and
-release. Record only immediate causal parents and derive transitive paths. The
-child says what the relation means; `child_of` itself does not imply agreement
-or authority. Authored `parent_to`, missing parents, empty or duplicate parent
-lists, self-links, and cycles are invalid.
+Evergreen artifacts normally record `projection_of` ranges: one semantic Type
+and exact scope through one globally ordered immutable `ATOMIC-RECORD`
+frontier. A newer applicable atom makes the projection stale. `relates_to`
+carries no authority, assurance, dependency, precedence, lifecycle, or
+coverage meaning. Sealed legacy `child_of` fields remain compatibility input.
 
 ## Current truth and history
 

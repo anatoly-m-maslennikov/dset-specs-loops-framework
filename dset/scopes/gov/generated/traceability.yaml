@@ -181,8 +181,6 @@ changes:
       - DSET-REQUIREMENT-GOV-030
       - DSET-REQUIREMENT-GOV-031
       - DSET-REQUIREMENT-GOV-032
-      - DSET-REQUIREMENT-GOV-033
-      - DSET-REQUIREMENT-GOV-034
       - DSET-REQUIREMENT-META-007
       - DSET-REQUIREMENT-META-011
       - DSET-REQUIREMENT-OPS-003
@@ -225,8 +223,7 @@ changes:
       - DSET-TEST-GOV-030
       - DSET-TEST-GOV-031
       - DSET-TEST-GOV-032
-      - DSET-TEST-GOV-033
-      - DSET-TEST-GOV-034
+      - DSET-TEST-GOV-036
       - DSET-TEST-META-007
       - DSET-TEST-META-010
       - DSET-TEST-META-011
@@ -272,8 +269,6 @@ changes:
       - DSET-EVAL-GOV-020
       - DSET-EVAL-GOV-021
       - DSET-EVAL-GOV-022
-      - DSET-EVAL-GOV-023
-      - DSET-EVAL-GOV-024
       - DSET-EVAL-META-008
       - DSET-EVAL-META-009
       - DSET-EVAL-OPS-002
@@ -291,6 +286,7 @@ changes:
       - DSET-EVAL-SKILL-010
       - DSET-EVAL-TOOL-005
       - DSET-EVAL-TOOL-006
+      - DSET-EVALUATION-GOV-026
       - DSET-EVALUATION-TOOL-003
       - DSET-EVALUATION-TOOL-004
     intake:
@@ -339,6 +335,7 @@ changes:
       - DSET-DECISION-GOV-008
       - DSET-DECISION-GOV-009
       - DSET-DECISION-GOV-012
+      - DSET-DECISION-GOV-013
       - DSET-DECISION-OPS-001
       - DSET-DECISION-OPS-002
       - DSET-DECISION-OPS-003
@@ -750,6 +747,18 @@ semantic_classifications:
       - modern_atom
     carriers:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-033-delivery-artifact-type.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-DECISION-GOV-013
+    type: decision
+    subtype: none
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-035-typed-artifact-relations.md
     carrier_statuses:
       - accepted
     lifecycle_events: []
@@ -1500,6 +1509,18 @@ semantic_classifications:
       - defined
     lifecycle_events: []
   -
+    id: DSET-EVALUATION-GOV-026
+    type: qa
+    subtype: evaluation
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-037-typed-artifact-relations-evaluation.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
     id: DSET-EVALUATION-TOOL-002
     type: qa
     subtype: evaluation
@@ -1879,8 +1900,9 @@ semantic_classifications:
     carriers:
       - dset/scopes/gov/intake.yaml
     carrier_statuses:
-      - open
-    lifecycle_events: []
+      - resolved
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-038
   -
     id: DSET-QUESTION-GOV-005
     type: question
@@ -2420,7 +2442,8 @@ semantic_classifications:
     carrier_statuses:
       - accepted
       - defined
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-036
   -
     id: DSET-REQUIREMENT-GOV-034
     type: decision
@@ -2432,7 +2455,8 @@ semantic_classifications:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-005-artifact-lineage.md
     carrier_statuses:
       - accepted
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-037
   -
     id: DSET-REQUIREMENT-GOV-035
     type: decision
@@ -3320,6 +3344,18 @@ semantic_classifications:
       - defined
     lifecycle_events: []
   -
+    id: DSET-TEST-GOV-036
+    type: qa
+    subtype: test
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-036-typed-artifact-relations-test.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
     id: DSET-TEST-META-001
     type: qa
     subtype: test
@@ -3856,6 +3892,21 @@ semantic_atoms:
     absorbed_by: []
     archived: false
   -
+    id: DSET-DECISION-GOV-013
+    carrier_id: DSET-ATOMIC-RECORD-035
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-035-typed-artifact-relations.md
+    sha256: 4cc08243f3eb5d2f560507e3b140d8c8c7cac1f94df586e326cb455cdd8ac5e6
+    type: decision
+    subtype: none
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-DECISION-GOV-013
+    child_of: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
     id: DSET-DECISION-OPS-005
     carrier_id: DSET-ATOMIC-RECORD-032
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-032-delivery-lifecycle.md
@@ -4001,6 +4052,21 @@ semantic_atoms:
       - DSET-LIFECYCLE-EVENT-020
       - DSET-LIFECYCLE-EVENT-021
       - DSET-LIFECYCLE-EVENT-022
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-EVALUATION-GOV-026
+    carrier_id: DSET-ATOMIC-RECORD-037
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-037-typed-artifact-relations-evaluation.md
+    sha256: fa8ffd595ead482771ee012fb0d081762e1ad058395d7173f8c11bc92be08b2f
+    type: qa
+    subtype: evaluation
+    emission_status: accepted
+    current_status: accepted
+    priority: medium
+    priority_source: atom:DSET-EVALUATION-GOV-026
+    child_of: []
+    lifecycle_events: []
     absorbed_by: []
     archived: false
   -
@@ -4186,12 +4252,14 @@ semantic_atoms:
     type: decision
     subtype: requirement
     emission_status: accepted
-    current_status: accepted
+    current_status: absorbed
     priority: unknown
     priority_source: atom:DSET-REQUIREMENT-GOV-033
     child_of: []
-    lifecycle_events: []
-    absorbed_by: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-036
+    absorbed_by:
+      - DSET-DECISION-GOV-013
     archived: false
   -
     id: DSET-REQUIREMENT-GOV-034
@@ -4201,13 +4269,15 @@ semantic_atoms:
     type: decision
     subtype: requirement
     emission_status: accepted
-    current_status: accepted
+    current_status: absorbed
     priority: unknown
     priority_source: atom:DSET-REQUIREMENT-GOV-034
     child_of:
       - DSET-REQUIREMENT-GOV-033
-    lifecycle_events: []
-    absorbed_by: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-037
+    absorbed_by:
+      - DSET-DECISION-GOV-013
     archived: false
   -
     id: DSET-REQUIREMENT-GOV-035
@@ -4307,6 +4377,21 @@ semantic_atoms:
     absorbed_by: []
     archived: false
   -
+    id: DSET-TEST-GOV-036
+    carrier_id: DSET-ATOMIC-RECORD-036
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-036-typed-artifact-relations-test.md
+    sha256: 16fb6e65d53c1daa38729c1436cbd6893be11c497faab7202e8c4813db6de649
+    type: qa
+    subtype: test
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-TEST-GOV-036
+    child_of: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
     id: DSET-TEST-TOOL-020
     carrier_id: DSET-ATOMIC-RECORD-011
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-011-typescript-candidate-test.md
@@ -4382,6 +4467,12 @@ lineage:
     id: DSET-DECISION-GOV-012
     artifact_id: DSET-ATOMIC-RECORD-033
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-033-delivery-artifact-type.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-DECISION-GOV-013
+    artifact_id: DSET-ATOMIC-RECORD-035
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-035-typed-artifact-relations.md
     child_of: []
     parent_to: []
   -
@@ -4486,6 +4577,12 @@ lineage:
     id: DSET-DERIVED-VIEW-001
     artifact_id: DSET-DERIVED-VIEW-001
     path: dset/scopes/gov/generated/DSET-DERIVED-VIEW-001-project-health.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-EVALUATION-GOV-026
+    artifact_id: DSET-ATOMIC-RECORD-037
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-037-typed-artifact-relations-evaluation.md
     child_of: []
     parent_to: []
   -
@@ -4788,6 +4885,12 @@ lineage:
     parent_to:
       - DSET-EVALUATION-TOOL-004
       - DSET-TEST-TOOL-022
+  -
+    id: DSET-TEST-GOV-036
+    artifact_id: DSET-ATOMIC-RECORD-036
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-036-typed-artifact-relations-test.md
+    child_of: []
+    parent_to: []
   -
     id: DSET-TEST-TOOL-020
     artifact_id: DSET-ATOMIC-RECORD-011
@@ -5123,6 +5226,14 @@ implementation_edges:
     implements:
       - DSET-DECISION-OPS-002
     llm_session_ids: []
+  -
+    commit: 61bbbe39a2532808662eda3bd9958d0ba37f04c1
+    implements:
+      - DSET-DECISION-GOV-003
+      - DSET-DECISION-GOV-012
+      - DSET-DECISION-OPS-006
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
     commit: 61fbdfb73e9b3c8041964ee2e0192e822b2d83f6
     implements:

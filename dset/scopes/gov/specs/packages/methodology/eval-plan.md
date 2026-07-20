@@ -26,10 +26,13 @@ Applicable qualitative and probabilistic proof is layer-owned. The representativ
 | **DSET-EVAL-GOV-020** | Artifact-name readability | A cold reviewer identifies the primary artifact role from the base ID/filename without mistaking an optional subtype for the stable classification axis, and can find the subtype inside the artifact when needed |
 | **DSET-EVAL-GOV-021** | One-level architecture comprehension | From any project, feature-group, feature, or layer hub, a cold reviewer can identify the immediate structure below it and route to the correct owner without needing a single unreadable whole-system diagram or treating the visualization as authority |
 | **DSET-EVAL-GOV-022** | Structural-scope ownership | Reviewers place each claim at the narrowest common structural ancestor of every affected owner and subject; keep feature-only high-level claims local; place cross-child Contracts, shared semantics, end-to-end QA, cross-cutting policy, integration, release/readiness, and cross-owner Questions or Problems at the correct common scope; and never duplicate child truth into a parent |
-| **DSET-EVAL-GOV-023** | Artifact inheritance clarity | Reviewers use only `child_of` and derived `parent_to`; apply a parent directly where no local child exists; follow a local implementation, replacement, or cancellation Decision only inside its subtree; preserve parent immutability and sibling behavior; and stop on incompatible same-scope children without inventing another relation |
-| **DSET-EVAL-GOV-024** | End-to-end lineage clarity | Reviewers connect an APP-PLAN to any number of emitted atoms and follow immediate many-to-many `child_of` edges through analysis, compiled truth, implementation, QA, evidence, Verification, readiness, and release; derive reverse and transitive views; avoid dense ancestor links; and never infer agreement, authority, or workflow semantics from lineage alone |
 | **DSET-EVAL-GOV-025** | Artifact-emission precision and promotion restraint | At medium and high strictness, reviewers distinguish material ambiguity from optional unknown detail, ask only questions needed to make an immutable claim safe, identify the narrowest eligible immediate parent scope, and propose rather than silently perform promotion or broad generalization |
+| **DSET-EVALUATION-GOV-026** | Typed-relation clarity | At least 90% of representative structure, analysis, projection, implementation, QA, evidence, resolution, override, replacement, and fallback cases receive the narrowest correct relation, with no authority or lifecycle error and no use of `child_of` as generic causality or `relates_to` to avoid a known type |
 
 ## Calibration and evidence
 
 Use at least two independent reviewers for a baseline where interpretation matters. Record disagreements by case and criterion, and correct the earliest ambiguous owner rather than averaging incompatible results.
+
+`DSET-EVAL-GOV-023` remains a sealed package-registry compatibility ID. Its
+former criterion is replaced by `DSET-EVALUATION-GOV-026` and is not an active
+Evaluation obligation.

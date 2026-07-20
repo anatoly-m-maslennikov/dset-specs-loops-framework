@@ -15,6 +15,7 @@ presentation.
 | `DSET-DECISION-GOV-008` | Use four application-level Types with at most one direct subtype and explicit act/content/carrier/work/evidence boundaries |
 | `DSET-DECISION-GOV-010` | Use the bounded `critical`, `high`, `medium`, `low`, `deferred` priority profile with `medium` as default |
 | `DSET-DECISION-GOV-012` | Use Delivery as the shared primary artifact type for six flat release-lifecycle roles |
+| `DSET-DECISION-GOV-013` | Use ten typed forward artifact relations, derived inverses, and range-based evergreen projection frontiers |
 
 Absorbed predecessors remain immutable history and are excluded from the active
 compilation set by append-only lifecycle events.
@@ -616,71 +617,52 @@ Invariant and release-readiness gate apply across multiple groups, so the
 project owns them. A high-level requirement affecting only one feature remains
 with that feature despite its abstraction.
 
-## DSET-REQUIREMENT-GOV-033 — Artifact inheritance is parent-to-child
+## DSET-DECISION-GOV-013 — Artifact relations are typed and directional
 
-Project, feature-group, feature, and layer artifacts may form an inheritance
-tree using only `child_of` and `parent_to`. A newly emitted local child stores
-`child_of: <parent-id>`. Atomic parents remain immutable, so `parent_to` is a
-derived reverse view rather than a field appended to an existing parent.
+Every authored artifact relation uses exactly one of `child_of`, `analysis_of`,
+`projection_of`, `implementation_of`, `check_of`, `evidence_for`,
+`resolution_of`, `override_of`, `replacement_of`, or `relates_to`. The source
+stores one forward `type` and canonical `target`; reverse relations are derived
+and never authored. A source-target pair has one primary relation.
 
-For any target feature or layer, the nearest inherited parent applies directly
-when the target has no local child. When a child exists, parent and child govern
-together unless the child's accepted directive explicitly replaces or cancels
-the parent within that local scope. The effect continues into that child's
-descendants but never changes ancestors or sibling scopes. A local child may
-therefore define how its parent is implemented or cancel the parent for that
-feature or layer.
+`child_of` is claim refinement or decomposition and keeps both claims active.
+`analysis_of` owns non-authoritative investigation. `implementation_of` owns
+realization by code, configuration, documentation, migration, or commit.
+`check_of` owns Test/Evaluation definitions. `evidence_for` owns observed
+support for an explicit result, finding, or Verification. `resolution_of`
+closes a Question, Conflict, or Problem. `override_of` changes inherited
+authority only inside a narrower declared scope. `replacement_of` completely
+replaces an older atom and requires append-only absorption. `relates_to` is a
+symmetric fallback with no authority, assurance, dependency, precedence, or
+lifecycle meaning and satisfies no implementation or QA coverage.
 
-Inheritance requires no separate applicability, realization, implementation,
-conformance, or override relation. Multiple incompatible active children for
-the same parent and scope are unresolved authority and must stop.
+`projection_of` normally stores a range containing one semantic Type, one
+exact structural scope, and a `through` boundary naming a globally ordered
+immutable `ATOMIC-RECORD` carrier. The range includes all applicable active
+atoms of that Type and scope through the boundary after lifecycle resolution.
+A newer applicable atom makes the projection stale. Individual targets are
+valid only for explicit exceptions.
 
-The edge does not encode or prove those semantic effects. Deterministic lineage
-validation owns only resolved immediate ancestry, graph integrity, and derived
-reverse/transitive views. The accepted child claim must state implementation,
-replacement, or local cancellation explicitly; review or governed conflict
-assessment judges the content. `child_of` alone cannot cancel authority, prove
-conformance, or create a Conflict.
+The specialized governance-registry fields `depends_on` and
+`precedence_over` are not general artifact relations. Ordinary citations,
+folder or scope membership, shared subject matter, and chronology remain
+metadata or Markdown links. Historical sealed `child_of` fields remain
+compatibility input and project as typed `child_of` edges; new artifacts use
+the `relations` list.
 
-**Scenario DSET-SCENARIO-GOV-034:** A project Requirement has no TOOL child, so
-TOOL applies it directly. SKILL emits a `child_of` Decision selecting its local
-implementation, while OPS emits a `child_of` Decision cancelling the parent for
-OPS. The derived `parent_to` view shows both children; neither local Decision
-changes TOOL, its sibling, or the immutable project Requirement.
+**Scenario DSET-SCENARIO-GOV-034:** A feature Requirement refining a project
+Requirement is `child_of`; a scoped exception is `override_of`; and a complete
+successor is `replacement_of`. None stores an additional `child_of` edge.
 
-## DSET-REQUIREMENT-GOV-034 — Artifact lineage is many-to-many and child-owned
+**Scenario DSET-SCENARIO-GOV-035:** A specification records one
+`projection_of` Decision range through its current carrier frontier. A Test is
+`check_of` the Requirement, its result is `evidence_for` the Verification, and
+the implementation commit produces `implementation_of` edges. No reverse edge
+is stored.
 
-Every governed artifact that directly descends from another governed artifact
-must store `child_of` as a non-empty, duplicate-free list of one or more
-canonical immediate-parent IDs. Root artifacts omit the field. A parent may
-have any number of children and a child may have multiple parents. Authors and
-generators must never store `parent_to`; it is always the derived reverse view,
-so adding a child never edits an immutable parent.
-
-The same neutral lineage primitive connects APP-PLAN decomposition, atomic
-authority, Analysis Reports, compiled evergreen truth, QA definitions,
-implementation, Evidence, Verification, Readiness, and Release Records. Store
-only immediate causal parents and derive transitive ancestry and descendants.
-The child content determines whether it implements, refines, replaces,
-cancels, verifies, or reveals a problem in a parent; `child_of` alone grants no
-authority and asserts no agreement. Commit `Implements:` trailers contribute
-implementation edges to the derived graph.
-
-Unresolved parent IDs, an empty or non-list `child_of`, duplicate parents,
-self-links, and cycles must fail closed in the active graph. When an immutable
-predecessor was sealed with an invalid relationship, a valid successor and an
-explicit absorption event remove that predecessor from active relational
-validation while preserving the authored relationship as historical data.
-The derived graph must expose both directions without writing reverse links
-into canonical artifacts.
-
-**Scenario DSET-SCENARIO-GOV-035:** One APP-PLAN emits a Requirement, a
-Constraint, and a Question. A Test is `child_of` both the Requirement and
-Constraint; the Question produces an Analysis Report and then a Decision; an
-implementation commit cites the governing IDs; and Test execution produces an
-Evidence Record. DSET derives every `parent_to` edge and the complete
-APP-PLAN-to-evidence path without modifying any parent or copying every
-ancestor into each child.
+`DSET-REQUIREMENT-GOV-033` remains a sealed package-registry compatibility ID.
+Its authority is absorbed and fully replaced by `DSET-DECISION-GOV-013`; it is
+not part of the active compilation set.
 
 ## DSET-REQUIREMENT-GOV-035 — Atom creation has configurable strictness
 

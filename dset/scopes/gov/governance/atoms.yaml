@@ -22,6 +22,13 @@ records:
     type: decision
     subtype: none
   -
+    semantic_id: DSET-DECISION-GOV-013
+    carrier_id: DSET-ATOMIC-RECORD-035
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-035-typed-artifact-relations.md
+    sha256: 4cc08243f3eb5d2f560507e3b140d8c8c7cac1f94df586e326cb455cdd8ac5e6
+    type: decision
+    subtype: none
+  -
     semantic_id: DSET-DECISION-OPS-005
     carrier_id: DSET-ATOMIC-RECORD-032
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-032-delivery-lifecycle.md
@@ -84,6 +91,13 @@ records:
     sha256: cf096a1d59fcffa93e37c0d4fec939e8479e4cc4e815db2948a513911ade577d
     type: problem
     subtype: defect
+  -
+    semantic_id: DSET-EVALUATION-GOV-026
+    carrier_id: DSET-ATOMIC-RECORD-037
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-037-typed-artifact-relations-evaluation.md
+    sha256: fa8ffd595ead482771ee012fb0d081762e1ad058395d7173f8c11bc92be08b2f
+    type: qa
+    subtype: evaluation
   -
     semantic_id: DSET-EVALUATION-TOOL-002
     carrier_id: DSET-ATOMIC-RECORD-012
@@ -217,6 +231,13 @@ records:
     sha256: b1da13680501f566a532b1adb298f7b833a37cc241c3a301273ec0da44ca3348
     type: decision
     subtype: requirement
+  -
+    semantic_id: DSET-TEST-GOV-036
+    carrier_id: DSET-ATOMIC-RECORD-036
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-036-typed-artifact-relations-test.md
+    sha256: 16fb6e65d53c1daa38729c1436cbd6893be11c497faab7202e8c4813db6de649
+    type: qa
+    subtype: test
   -
     semantic_id: DSET-TEST-TOOL-020
     carrier_id: DSET-ATOMIC-RECORD-011

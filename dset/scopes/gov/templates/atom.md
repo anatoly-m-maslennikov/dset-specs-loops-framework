@@ -13,6 +13,9 @@ scope:
   id: "{{project_id}}"
 promotion:
   parent_scope: null
+# relations:
+#   - type: child_of
+#     target: "{{parent_semantic_id}}"
 llm_session_ids: []
 ---
 

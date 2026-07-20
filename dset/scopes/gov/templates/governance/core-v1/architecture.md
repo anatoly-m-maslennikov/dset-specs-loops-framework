@@ -163,44 +163,36 @@ whole-project version, release, readiness, and publication artifacts; and
 cross-owner Decisions, Questions, Problems, and Analysis Reports. Parent
 artifacts link child-owned detail and never duplicate it as parallel truth.
 
-## Artifact scope-inheritance policy
+## Typed artifact relations
 
-Project, feature-group, feature, and layer artifacts inherit through only two
-directions: a new local child stores `child_of`, and `parent_to` is the derived
-reverse view. Never edit an immutable parent merely to register a later child.
+New artifacts store consequential forward edges in `relations` using exactly
+one of `child_of`, `analysis_of`, `projection_of`, `implementation_of`,
+`check_of`, `evidence_for`, `resolution_of`, `override_of`,
+`replacement_of`, or `relates_to`. Reverse edges are derived and never
+authored. One source-target pair has one primary relation.
 
-Within a target feature or layer, the nearest inherited parent applies directly
-when no local child exists. A local child Decision may describe how the parent
-is implemented, replace it, or cancel it for that scope and its descendants.
-The local Decision never changes ancestors or sibling scopes. Parent and child
-otherwise govern together. Multiple incompatible active children of the same
-parent in one scope stop as unresolved authority.
+`child_of` narrows or decomposes a claim and keeps both active. `analysis_of`
+owns investigation. `implementation_of` owns realization. `check_of` owns a
+Test/Evaluation definition. `evidence_for` owns observed support.
+`resolution_of` closes a Question, Conflict, or Problem. `override_of` changes
+authority only in a narrower scope. `replacement_of` completely replaces an
+atom and requires append-only absorption. These three structural or
+replacement meanings never overlap for one pair.
 
-Inheritance adds no `applies_to`, `realizes`, `implements`, `conforms_to`, or
-override relation. The accepted child directive contains the local effect;
-`child_of` and derived `parent_to` contain the hierarchy.
+`relates_to` is a symmetric trace fallback only. It carries no authority,
+dependency, assurance, precedence, or lifecycle meaning and satisfies no
+implementation or QA coverage. Ordinary citations and shared subject matter
+remain Markdown links. `depends_on` and `precedence_over` remain specialized
+rule-registry controls rather than general artifact relations.
 
-This semantic effect is not inferred from the edge. Deterministic lineage
-validation proves only resolved immediate ancestry, derived reverse/transitive
-views, and graph integrity. The child claim must state any implementation,
-replacement, or local cancellation explicitly; review or governed conflict
-assessment judges that content. An edge by itself cannot cancel authority,
-prove conformance, or create a Conflict.
+`projection_of` normally stores a range with one semantic Type, one exact
+structural scope, and a `through` boundary naming the latest included globally
+ordered `ATOMIC-RECORD`. Lifecycle resolution selects applicable active atoms
+through that frontier. A newer applicable atom makes the projection stale;
+individual targets are for explicit exceptions only.
 
-## Artifact lineage
-
-The same child-owned relation provides end-to-end traceability. Every governed
-non-root child stores `child_of` as a non-empty list of one or more canonical
-immediate-parent IDs. Multiple parents and children are valid. Store only
-immediate causal parents; derive `parent_to`, ancestors, and descendants without
-editing parents or writing reverse links into canonical artifacts.
-
-Lineage connects APP-PLAN decomposition, atomic authority, Analysis Reports,
-compiled truth, implementation, QA, Evidence, Verification, readiness, and
-release. A commit contributes implementation edges through its `Implements:`
-trailers. The relation is neutral: child content states whether it implements,
-refines, replaces, cancels, verifies, or reveals a problem in its parent.
-Unresolved parent IDs, non-list or empty `child_of`, duplicate parents,
-self-links, authored `parent_to`, and cycles fail closed in the active graph.
-An explicitly absorbed immutable predecessor retains its authored lineage as
-history but no longer participates in active relational validation.
+Deterministic validation checks relation vocabulary, shape, direction, target
+resolution, uniqueness, source suitability, range frontiers, incompatible
+combinations, and applicable cycles. It never infers semantic truth from an
+edge. Historical sealed `child_of` remains readable compatibility input and is
+projected as typed `child_of`; new artifacts use `relations`.

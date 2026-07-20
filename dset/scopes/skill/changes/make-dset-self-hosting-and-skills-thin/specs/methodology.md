@@ -108,23 +108,18 @@ integration architecture, release/readiness, and cross-owner unresolved work.
 High-level wording does not promote a child-owned claim, and parents link rather
 than duplicate child detail.
 
-## ADDED — DSET-REQUIREMENT-GOV-033 Artifact inheritance
+## ADDED — DSET-DECISION-GOV-013 Typed artifact relations
 
-Artifact inheritance uses only canonical `child_of` and derived reverse
-`parent_to`. If a target feature or layer has no child, it applies the inherited
-parent directly. A local child Decision may select implementation, replace, or
-cancel the parent only for its subtree, leaving the immutable parent and sibling
-scopes unchanged. No additional inheritance relation is introduced.
+Consequential forward edges use `child_of`, `analysis_of`, `projection_of`,
+`implementation_of`, `check_of`, `evidence_for`, `resolution_of`,
+`override_of`, `replacement_of`, or fallback `relates_to`. Reverse edges are
+derived and never authored. One source-target pair has one primary relation;
+`child_of`, scoped `override_of`, and complete `replacement_of` never overlap.
 
-## ADDED — DSET-REQUIREMENT-GOV-034 Artifact lineage
-
-Every governed non-root child stores `child_of` as a non-empty list of one or
-more canonical immediate-parent IDs. Multiple parents and children are valid;
-`parent_to`, ancestry, and descendants are derived without editing parents.
-The neutral relation traces APP-PLAN decomposition through authority, analysis,
-compiled truth, implementation, QA, evidence, Verification, readiness, and
-release. Missing parents, authored reverse links, scalar or empty lists,
-duplicates, self-links, and cycles fail closed.
+Evergreen `projection_of` normally records one semantic-Type/exact-scope range
+through a globally ordered immutable `ATOMIC-RECORD` frontier. A newer
+applicable atom makes the projection stale. Sealed legacy `child_of` remains
+compatibility input; new artifacts use `relations`.
 
 ## ADDED — DSET-REQUIREMENT-OPS-012 Integration delivery is the default
 

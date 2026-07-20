@@ -46,12 +46,11 @@ cross-owner Questions or Problems. Every claim otherwise stays with the
 narrowest common structural owner; the root links child detail without copying
 it.
 
-Artifacts inherit and trace through child-owned lineage. Every non-root child
-stores one or more immediate parent IDs in `child_of`; `parent_to` and transitive
-paths are derived without editing parents. Multiple parents and children are
-valid. A layer with no child applies the inherited project artifact directly. A
-local child Decision may select its implementation or cancel it only for that
-layer and its descendants, leaving siblings unchanged.
+Artifacts trace through ten forward relation types: structure, analysis,
+projection, implementation, QA checks, evidence, resolution, scoped override,
+complete replacement, and a non-semantic fallback. Reverse edges are derived,
+never authored. Evergreen projections store one Type/scope frontier instead of
+listing every compiled atom; sealed legacy `child_of` remains compatible.
 
 ## Core loop
 
