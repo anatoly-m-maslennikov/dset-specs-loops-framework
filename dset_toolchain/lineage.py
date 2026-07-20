@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -179,6 +180,44 @@ def build_lineage_index(root: Path) -> list[dict[str, Any]]:
         }
         for node in sorted(nodes.values(), key=lambda item: item.id)
     ]
+
+
+def build_commit_implementation_edges(root: Path) -> list[dict[str, Any]]:
+    """Derive implementation lineage from immutable Git commit trailers."""
+    try:
+        completed = subprocess.run(
+            ["git", "log", "--no-merges", "--format=%H%x1f%B%x1e"],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return []
+    edges: list[dict[str, Any]] = []
+    for record in completed.stdout.split("\x1e"):
+        record = record.strip()
+        if not record or "\x1f" not in record:
+            continue
+        commit, body = record.split("\x1f", 1)
+        implements: set[str] = set()
+        sessions: set[str] = set()
+        for line in body.splitlines():
+            if line.startswith("Implements:"):
+                implements.update(re.findall(r"[A-Z0-9]+(?:-[A-Z0-9]+)+", line))
+            elif line.startswith("Session:"):
+                value = line.partition(":")[2].strip()
+                if value:
+                    sessions.add(value)
+        if implements:
+            edges.append(
+                {
+                    "commit": commit,
+                    "implements": sorted(implements),
+                    "llm_session_ids": sorted(sessions),
+                }
+            )
+    return sorted(edges, key=lambda item: str(item["commit"]))
 
 
 def validate_artifact_lineage(root: Path) -> list[Diagnostic]:

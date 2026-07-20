@@ -3,7 +3,7 @@
   "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/scopes/tool/schemas/traceability.schema.json",
   "title": "DSET traceability index",
   "type": "object",
-  "required": ["schema_version", "repository", "changes", "lineage"],
+  "required": ["schema_version", "repository", "changes", "lineage", "implementation_edges"],
   "properties": {
     "schema_version": {"enum": [1.1, "1.2"]},
     "repository": {"type": "string"},
@@ -40,6 +40,10 @@
     "lineage": {
       "type": "array",
       "items": {"$ref": "#/$defs/lineage_node"}
+    },
+    "implementation_edges": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/implementation_edge"}
     }
   },
   "allOf": [
@@ -75,6 +79,16 @@
         "path": {"type": "string", "minLength": 1},
         "child_of": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/lineage_id"}},
         "parent_to": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/lineage_id"}}
+      },
+      "additionalProperties": false
+    },
+    "implementation_edge": {
+      "type": "object",
+      "required": ["commit", "implements", "llm_session_ids"],
+      "properties": {
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "implements": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/lineage_id"}},
+        "llm_session_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$"}}
       },
       "additionalProperties": false
     },

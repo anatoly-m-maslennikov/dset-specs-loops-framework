@@ -72,6 +72,13 @@ class TraceabilityTests(unittest.TestCase):
             "DSET-REQUIREMENT-GOV-034",
             lineage["DSET-REQUIREMENT-GOV-033"]["parent_to"],
         )
+        self.assertTrue(trace["implementation_edges"])
+        self.assertTrue(
+            any(
+                "DSET-REQUIREMENT-GOV-034" in item["implements"]
+                for item in trace["implementation_edges"]
+            )
+        )
 
     def test_write_is_stable_and_checkable(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

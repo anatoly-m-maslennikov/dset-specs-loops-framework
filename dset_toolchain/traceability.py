@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any
 
 from .layout import discover_layout
-from .lineage import build_lineage_index
+from .lineage import build_commit_implementation_edges, build_lineage_index
 from .yaml_subset import dump, load
 
 
@@ -86,6 +86,7 @@ def build_traceability(root: Path) -> dict[str, Any]:
         "repository": history["repository"],
         "changes": changes,
         "lineage": build_lineage_index(root),
+        "implementation_edges": build_commit_implementation_edges(root),
     }
 
 

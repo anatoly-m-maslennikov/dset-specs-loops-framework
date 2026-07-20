@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 from dset_toolchain.lineage import (
+    build_commit_implementation_edges,
     build_lineage_index,
     collect_artifact_lineage,
     derived_parent_to,
@@ -113,6 +114,17 @@ class ArtifactLineageTests(unittest.TestCase):
 
             self.assertTrue(any("child_of itself" in message for message in messages))
             self.assertTrue(any("lineage cycle" in message for message in messages))
+
+    def test_commit_implements_trailers_form_derived_edges(self) -> None:
+        edges = build_commit_implementation_edges(Path(__file__).resolve().parents[1])
+        by_commit = {item["commit"]: item for item in edges}
+        health_commit = next(
+            item
+            for item in by_commit.values()
+            if "DSET-REQUIREMENT-GOV-024" in item["implements"]
+        )
+        self.assertIn("DSET-REQUIREMENT-TOOL-018", health_commit["implements"])
+        self.assertTrue(health_commit["llm_session_ids"])
 
     @staticmethod
     def _artifact(
