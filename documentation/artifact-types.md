@@ -216,7 +216,7 @@ the optional subtype remains metadata. For example, Version Scope may use
 `APP-DELIVERY-001-0-4-core.md`, and Roadmap uses the same `DELIVERY` sequence.
 Projects may opt newly emitted artifacts into
 subtype tokens with
-`optional_capabilities.artifact_subtype_in_names = true` in root `dset.toml`.
+`artifacts.subtype_in_names = true` in root `dset_settings.toml`.
 This independent optional capability never renames existing stable identities.
 
 An Analysis Report interprets information without authorizing its conclusion.

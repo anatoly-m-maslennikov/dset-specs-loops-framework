@@ -13,7 +13,7 @@ rules:
     reason: Every governed workflow requires explicit authority and bootstrap boundaries
     depends_on: []
     precedence_over: []
-    customization: custom
+    customization: unmodified
     source:
       profile: core-v1
       version: "0.3"
@@ -109,12 +109,12 @@ rules:
     depends_on:
       - DSET-RULE-ARCHITECTURE
     precedence_over: []
-    customization: custom
+    customization: unmodified
     source:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/gov/templates/governance/core-v1/artifact-maintenance.md
-      sha256: 4c0790babe9c0d47c9458417bab214576ad9b9d49beaa171c775cc2855bd4f28
+      sha256: 65a4b6d056577519eaa59fe16d994f04c7385e7367418ecb28762f1b3374652d
   -
     id: DSET-RULE-WORK-ITEMS
     layer: GOV
@@ -146,7 +146,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/gov/templates/governance/core-v1/artifact-classification.md
-      sha256: 7c208314600802b2c3740358e97b34db6a79eb9948afc3566f1537768b1f743d
+      sha256: f4375e2ff617cb7781362c0873f9fd06e76a04e8192ce10fde874217ce5f0665
   -
     id: DSET-RULE-DELEGATION-BUDGET
     layer: SKILL
@@ -162,7 +162,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/skill/templates/governance/core-v1/delegation-budget.md
-      sha256: 43b01f9dfed02709bb98e6afe7c6d80f02530ea1111014841d13ed540143f34f
+      sha256: b1534835a2cc8b02c447b1494340dfe78a404a45dd55526578ac72734e40bc19
   -
     id: DSET-RULE-SKILL-RUNS
     layer: SKILL
@@ -219,7 +219,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/skill/templates/governance/core-v1/lifecycle-orchestration.md
-      sha256: 305e73852e97e83a8fc213951553db995865dd483bf943fa6b879c00f1b6aae2
+      sha256: fe4331403782912bf368408ff3d33aa9378b6be46e759d5b1f0cefc7312747ad
   -
     id: DSET-RULE-DIAGNOSIS
     layer: SKILL

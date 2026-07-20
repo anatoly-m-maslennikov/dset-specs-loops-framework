@@ -274,12 +274,10 @@ def _stage_project(
             "enforcement": "none",
             "artifact": None,
             "repository_governance": profile,
-            "delegation_budget": "medium",
         },
         "change_contract": {
             "change_id_format": "project-type-layer-sequence",
             "change_slug_format": "kebab-case",
-            "workspace_default": "integration-branch",
             "pull_request_required_before_archive": True,
             "archive_requires_fresh_verification": True,
             "keep_pull_request_draft_until_archive_ready": True,
@@ -290,7 +288,10 @@ def _stage_project(
     }
     manifest_path = stage / "dset" / "scopes" / "meta" / "dset.yaml"
     manifest_path.write_text(dump(manifest, manifest_path), encoding="utf-8")
-    shutil.copyfile(source_layout.find_template("dset.toml"), stage / "dset.toml")
+    shutil.copyfile(
+        source_layout.find_template("dset_settings.toml"),
+        stage / "dset_settings.toml",
+    )
     _materialize_package(
         source_layout,
         stage,

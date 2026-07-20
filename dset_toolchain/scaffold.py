@@ -6,6 +6,7 @@ from pathlib import Path
 
 from .layout import discover_layout
 from .profiles import VALID_PROFILES, required_artifacts
+from .settings import load_project_settings
 from .yaml_subset import dump, load
 
 TRACE_LAYERS = ("META", "GOV", "TOOL", "SKILL", "OPS")
@@ -236,13 +237,10 @@ def _workspace_for_change(
     manifest = load(discover_layout(root).manifest_path)
     if not isinstance(manifest, dict):
         raise ValueError("project manifest must be a mapping")
-    change_contract = manifest.get("change_contract", {})
-    configured_mode = (
-        change_contract.get("workspace_default")
-        if isinstance(change_contract, dict)
-        else None
-    )
-    mode = requested_mode or configured_mode
+    settings, settings_issues = load_project_settings(root)
+    if settings_issues:
+        raise ValueError("; ".join(settings_issues))
+    mode = requested_mode or settings.change_workspace_mode
     if mode not in {"integration-branch", "branch-worktree"}:
         raise ValueError("workspace mode must be integration-branch or branch-worktree")
     release = manifest.get("release", {})

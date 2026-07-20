@@ -23,7 +23,7 @@ class RepositoryLayoutTest(unittest.TestCase):
 
             self.assertFalse(layout.layered)
             self.assertEqual(layout.schema_version, "1.1")
-            self.assertEqual(layout.settings_path, root / "dset.toml")
+            self.assertEqual(layout.settings_path, root / "dset_settings.toml")
             self.assertEqual(layout.manifest_path, dset / "dset.yaml")
             self.assertEqual(layout.governance_path, dset / "governance.yaml")
             self.assertEqual(layout.artifact_registry_path, dset / "artifacts.yaml")
@@ -65,7 +65,7 @@ class RepositoryLayoutTest(unittest.TestCase):
 
             self.assertTrue(layout.layered)
             self.assertEqual(layout.schema_version, "1.2")
-            self.assertEqual(layout.settings_path, root / "dset.toml")
+            self.assertEqual(layout.settings_path, root / "dset_settings.toml")
             self.assertEqual(layout.manifest_path, scopes / "meta" / "dset.yaml")
             self.assertEqual(layout.governance_path, scopes / "gov" / "governance.yaml")
             self.assertEqual(

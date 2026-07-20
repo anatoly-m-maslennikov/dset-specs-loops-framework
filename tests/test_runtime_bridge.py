@@ -128,6 +128,8 @@ class RuntimeBridgeTests(unittest.TestCase):
             self.assertEqual(context["work_area"], "skills")
             self.assertEqual(context["workflow_id"], "implement")
             self.assertEqual(context["artifact_creation_strictness"], "medium")
+            self.assertEqual(context["change_workspace_default"], "integration-branch")
+            self.assertEqual(context["delegation_budget_profile"], "medium")
             semantic_routing = cast(dict[str, Any], context["semantic_routing"])
             self.assertEqual(
                 semantic_routing["types"],
@@ -152,11 +154,15 @@ class RuntimeBridgeTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
             adopter = Path(raw) / "adopter"
             create_adopter(ROOT, adopter)
-            settings = adopter / "dset.toml"
+            settings = adopter / "dset_settings.toml"
             settings.write_text(
-                settings.read_text(encoding="utf-8").replace(
-                    'mode = "lazy"', 'mode = "strict"'
-                ),
+                settings.read_text(encoding="utf-8")
+                .replace('mode = "lazy"', 'mode = "strict"')
+                .replace(
+                    'default_workspace = "integration-branch"',
+                    'default_workspace = "branch-worktree"',
+                )
+                .replace('budget_profile = "medium"', 'budget_profile = "high"'),
                 encoding="utf-8",
             )
 
@@ -169,6 +175,8 @@ class RuntimeBridgeTests(unittest.TestCase):
             )
 
             self.assertEqual(context["implementation_preparation_mode"], "strict")
+            self.assertEqual(context["change_workspace_default"], "branch-worktree")
+            self.assertEqual(context["delegation_budget_profile"], "high")
             closure = cast(dict[str, Any], context["closure"])
             self.assertEqual(closure["implementation_mode"], "strict")
             self.assertEqual(closure["next_workflow"], "implement")
@@ -199,7 +207,7 @@ class RuntimeBridgeTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
             adopter = Path(raw) / "adopter"
             create_adopter(ROOT, adopter)
-            settings = adopter / "dset.toml"
+            settings = adopter / "dset_settings.toml"
             settings.write_text("invalid project setting\n", encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "governance is valid"):
                 resolve_skill_context(

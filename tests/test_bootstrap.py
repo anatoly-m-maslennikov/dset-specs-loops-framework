@@ -70,8 +70,11 @@ class BootstrapTests(unittest.TestCase):
             self.assertTrue((target / "skills" / "dset" / "SKILL.md").is_file())
             manifest = load(target / "dset" / "scopes" / "meta" / "dset.yaml")
             self.assertEqual(manifest["project"]["repository_slug"], "sample-app")
+            self.assertNotIn("delegation_budget", manifest["profiles"])
+            self.assertNotIn("workspace_default", manifest["change_contract"])
             self.assertTrue((target / "dset/scopes/gov/artifact-types.yaml").is_file())
-            self.assertTrue((target / "dset.toml").is_file())
+            self.assertTrue((target / "dset_settings.toml").is_file())
+            self.assertFalse((target / "dset.toml").exists())
             self.assertEqual(
                 (target / "README.md").read_text(encoding="utf-8"), "# Existing\n"
             )

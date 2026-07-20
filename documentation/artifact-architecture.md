@@ -29,9 +29,9 @@ and intended next action determine neither axis. Direct metadata or exactly one
 registered path rule supplies artifact classification; ambiguity fails closed.
 
 Base artifact IDs and filenames expose the primary artifact type, not its
-optional subtype. The subtype remains direct metadata. Root `dset.toml` exposes
-independent optional capabilities; setting
-`artifact_subtype_in_names = true` opts only newly emitted artifacts into
+optional subtype. The subtype remains direct metadata. Root
+`dset_settings.toml` exposes independent behavior settings; setting
+`artifacts.subtype_in_names = true` opts only newly emitted artifacts into
 subtype-bearing names and never rewrites stable history.
 
 An active applicable source atom wins when its compiled Specification,

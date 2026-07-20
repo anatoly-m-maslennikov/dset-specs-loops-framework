@@ -16,6 +16,11 @@ This repository is the public source for the DSET framework, executable toolchai
 
 Framework rules and release assets live here. Each adopting repository owns its own behavioral truth and changes under its local `dset/` root. Installed skills, cached tooling, private working notes, and external project artifacts are not independent framework authorities.
 
+Repository behavior is selected in the self-documenting
+[`dset_settings.toml`](dset_settings.toml). Project identity, topology,
+contracts, release targets, verification commands, and provenance boundaries
+remain separate in the [META-owned project manifest](dset/scopes/meta/dset.yaml).
+
 ## Project architecture map
 
 This repository enables layers rather than feature groups. The project view

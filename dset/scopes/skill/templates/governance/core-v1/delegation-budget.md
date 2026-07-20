@@ -30,12 +30,13 @@ quality floor. Every planned/actual difference is recorded. Agents with
 duplicate roles or no independently useful output do not count toward fan-out.
 One root budget is propagated through the delegation tree; a child cannot reset
 the remaining-agent, depth, or round counters. Operator instruction overrides
-the selected project profile. The discovered project manifest selects the
-profile from schema 1.2 `dset/scopes/skill/budget.yaml` or legacy
-`dset/budget.yaml`; `budget.yaml.default_profile` applies only when a legacy
-manifest has no selection, and the framework template is provenance only after
-materialization. No override may lower a required quality or safety gate
-without an explicit scope decision.
+the selected project profile. Root `dset_settings.toml` selects
+`delegation.budget_profile`; schema 1.2
+`dset/scopes/skill/budget.yaml` or legacy `dset/budget.yaml` defines the named
+profiles. `budget.yaml.default_profile` is compatibility fallback only when
+settings are missing or use a pre-1.2 read contract, and the framework template
+is provenance only after materialization. No override may lower a required
+quality or safety gate without an explicit scope decision.
 
 ## Model-selection evidence
 

@@ -1,0 +1,132 @@
+# DSET project behavior settings.
+#
+# This file selects operator-controlled DSET behavior for this repository.
+# It is intentionally separate from:
+# - dset/scopes/meta/dset.yaml, which records facts about the project, such as
+#   identity, Work Areas, runtime topology, release targets, verification, and
+#   commit-provenance boundaries; and
+# - repository-local governing documents, which define the policies and values
+#   that these settings are allowed to select.
+#
+# All settings below are optional at read time and show their executable
+# defaults explicitly. Keep the explicit values when copying this file so a
+# reviewer does not need to know parser fallbacks. Unknown settings fail
+# validation, which catches misspellings instead of silently ignoring them.
+#
+# New DSET writers use only this filename: dset_settings.toml.
+# The retired root name dset.toml is read-only migration input. A repository
+# containing both filenames is invalid because settings must have one owner.
+#
+# Settings schema implemented by this file.
+# Accepted: "1.2". Default for a missing settings file: "1.2" behavior.
+schema_version = "1.2"
+
+[artifacts]
+# Include the optional direct artifact subtype after the primary artifact type
+# in IDs and filenames for newly emitted artifacts only.
+#
+# Accepted:
+# - false (default): type-only structural name.
+#   Example: DSET-DELIVERY-001-0-4-core.md
+#   Inside the artifact: artifact_type = "delivery" and
+#   artifact_subtype = "version_scope".
+# - true: add the direct subtype token.
+#   Example: DSET-DELIVERY-VERSION-SCOPE-001-0-4-core.md
+#
+# Existing IDs and filenames are immutable and are never renamed when this
+# value changes. The setting affects the carrier name only; it does not change
+# an atomic record's separate semantic Type/subtype.
+#
+# Registered artifact subtype examples:
+# - analysis_report: solution_landscape, root_cause_analysis, proposal,
+#   technical_investigation, external_audit_analysis
+# - specification: domain_model, behavior, architecture, design, governance
+# - procedure: playbook, runbook
+# - plan: implementation_plan, test_plan, evaluation_plan
+# - delivery: roadmap, version_scope, change, release_plan, readiness_record,
+#   release_record
+# - implementation: source_code, documentation, configuration, migration,
+#   test_implementation, evaluation_implementation
+# - evidence_record: test_result, evaluation_result, review_report, run_record
+# - derived_view: project_overview, health_dashboard, traceability_index,
+#   changelog
+# - navigation: readme, hub, index
+# atomic_record and verification currently have no artifact subtypes.
+subtype_in_names = false
+
+# Set the gate used before a new immutable atomic artifact is emitted.
+#
+# Accepted:
+# - "medium" (default): require clear authority, one primary claim, semantic
+#   Type, owning scope, provenance, material links, priority, and acceptance.
+#   Optional non-authoritative context may remain explicitly unknown.
+# - "high": also require every material boundary, lineage, conflict, and proof
+#   question to be precise. DSET asks focused questions or stops without writing
+#   until the atom can safely remain immutable.
+#
+# Both values check whether the claim may belong one enabled scope higher and
+# propose eligible promotion. Promotion always requires operator acceptance.
+creation_strictness = "medium"
+
+[workflows.implement]
+# Choose what dset-implement may do before implementation begins.
+#
+# Accepted:
+# - "lazy" (default): reconcile missing session Decisions, then create or update
+#   separate Test/Evaluation plans and the implementation plan as needed before
+#   implementing. Completed prerequisites are skipped.
+# - "strict": perform implementation only from already sufficient accepted
+#   artifacts. Missing or ambiguous inputs stop; DSET does not create or repair
+#   Decisions or plans and never falls back to lazy mode.
+#
+# Example lazy chain:
+# decisions -> plan-proof -> plan-implementation -> implement
+mode = "lazy"
+
+[changes]
+# Select the default Git workspace for a newly created Change when the caller
+# does not request a mode explicitly.
+#
+# Accepted:
+# - "integration-branch" (default): place the Change on the project's configured
+#   integration branch, normally dev. The protected branch, normally main,
+#   remains the base for delivery.
+# - "branch-worktree": create an isolated dset/<change-slug> branch/worktree
+#   based on the integration branch. This is useful for concurrent Changes.
+#
+# An explicit per-Change request overrides this default. The project manifest
+# still owns the actual integration and protected branch names.
+default_workspace = "integration-branch"
+
+[delegation]
+# Select the registered multi-agent breadth budget. The selected profile changes
+# exploration/review breadth, never the accepted scope, safety boundary, or
+# required Tests/Evaluations. Operator instructions override the profile.
+#
+# Accepted profiles are defined in dset/scopes/skill/budget.yaml:
+# - "low": 0-1 subagents, depth 1, one round.
+# - "medium" (default): target 2 and maximum 3 subagents, depth 1, two rounds.
+# - "high": 4-6 subagents, depth 2, three rounds.
+#
+# Subagents inherit the main session's model and reasoning effort by default.
+# A cheaper token price alone is not evidence of lower total task cost.
+budget_profile = "medium"
+
+[priority]
+# Define the project-wide priority vocabulary from highest to lowest.
+#
+# Accepted: a TOML array containing at least two unique strings.
+# Default: the five values below. Array position is precedence: critical
+# outranks high, and deferred ranks last.
+#
+# Priority is available to every governed artifact. It orders current attention
+# but does not override external authority, lifecycle state, proof quality,
+# dependencies, or authorization gates.
+scale = ["critical", "high", "medium", "low", "deferred"]
+
+# Priority assigned when a governed artifact has neither a direct value nor an
+# inherited value from its canonical owner.
+#
+# Accepted: one value present in priority.scale. Default: "medium".
+default = "medium"
+

@@ -28,8 +28,8 @@ flowchart LR
 
 ## Start here
 
-- [Project settings](../dset.toml) — independent optional capabilities; base
-  mode keeps artifact subtypes out of IDs and filenames.
+- [Project behavior settings](../dset_settings.toml) — documented artifact,
+  workflow, Change-workspace, delegation-budget, and priority choices.
 - [META](scopes/meta/README.md) — identity, accepted behavior, specification semantics, and proof plans.
 - [GOV](scopes/gov/README.md) — governance, intake, provenance, migrations, and generated views.
 - [TOOL](scopes/tool/README.md) — executable CLI, validation, fixtures, traceability, and self-hosting.

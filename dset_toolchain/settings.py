@@ -7,37 +7,71 @@ from typing import Any
 from .toml_codec import TomlCodecError
 from .toml_codec import load as load_toml
 
-SETTINGS_SCHEMA_VERSION = "1.1"
+SETTINGS_FILENAME = "dset_settings.toml"
+LEGACY_SETTINGS_FILENAME = "dset.toml"
+SETTINGS_SCHEMA_VERSION = "1.2"
+PREVIOUS_SETTINGS_SCHEMA_VERSION = "1.1"
 LEGACY_SETTINGS_SCHEMA_VERSION = "1.0"
 SUPPORTED_SETTINGS_SCHEMA_VERSIONS = frozenset(
-    {LEGACY_SETTINGS_SCHEMA_VERSION, SETTINGS_SCHEMA_VERSION}
+    {
+        LEGACY_SETTINGS_SCHEMA_VERSION,
+        PREVIOUS_SETTINGS_SCHEMA_VERSION,
+        SETTINGS_SCHEMA_VERSION,
+    }
 )
 ARTIFACT_CREATION_STRICTNESS = frozenset({"medium", "high"})
 IMPLEMENTATION_MODES = frozenset({"lazy", "strict"})
+CHANGE_WORKSPACE_MODES = frozenset({"integration-branch", "branch-worktree"})
+DELEGATION_BUDGET_PROFILES = frozenset({"low", "medium", "high"})
 DEFAULT_PRIORITY_SCALE = ("critical", "high", "medium", "low", "deferred")
 
 
 @dataclass(frozen=True)
 class ProjectSettings:
-    """Validated project settings, normalized across the 1.0 → 1.1 rename."""
+    """Validated settings normalized across all supported read contracts."""
 
     schema_version: str = SETTINGS_SCHEMA_VERSION
     artifact_subtype_in_names: bool = False
     artifact_creation_strictness: str = "medium"
     implementation_mode: str = "lazy"
+    change_workspace_mode: str = "integration-branch"
+    delegation_budget_profile: str = "medium"
     priority_scale: tuple[str, ...] = DEFAULT_PRIORITY_SCALE
     default_priority: str = "medium"
 
 
-def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]:
-    """Read root settings while keeping the 1.0 names read-only compatible.
+def selected_settings_path(root: Path) -> Path:
+    """Return the selected settings carrier or the canonical missing path."""
 
-    New writers must use the documented 1.1 names.  This reader accepts the
-    retired 1.0 ``optional_capabilities`` names only so an adopter can plan a
-    deliberate migration; it never emits them.
+    canonical = root / SETTINGS_FILENAME
+    legacy = root / LEGACY_SETTINGS_FILENAME
+    if canonical.is_file():
+        return canonical
+    if legacy.is_file():
+        return legacy
+    return canonical
+
+
+def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]:
+    """Read canonical settings with explicit legacy-name compatibility.
+
+    New writers use ``dset_settings.toml`` and schema 1.2. This reader accepts
+    the retired root filename and 1.0/1.1 field contracts only so an adopter
+    can plan a deliberate migration; it never emits them. Competing root names
+    fail closed instead of selecting by precedence.
     """
 
-    path = root / "dset.toml"
+    canonical = root / SETTINGS_FILENAME
+    legacy_path = root / LEGACY_SETTINGS_FILENAME
+    if canonical.is_file() and legacy_path.is_file():
+        return (
+            ProjectSettings(),
+            (
+                f"{SETTINGS_FILENAME} and legacy {LEGACY_SETTINGS_FILENAME} "
+                "cannot coexist",
+            ),
+        )
+    path = selected_settings_path(root)
     if not path.is_file():
         return ProjectSettings(), ()
     try:
@@ -48,15 +82,14 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
     issues: list[str] = []
     schema_version = _string(raw.get("schema_version"), "schema_version", issues)
     if schema_version not in SUPPORTED_SETTINGS_SCHEMA_VERSIONS:
-        issues.append("settings schema_version must be 1.0 or 1.1")
+        issues.append("settings schema_version must be 1.0, 1.1, or 1.2")
 
     legacy = schema_version == LEGACY_SETTINGS_SCHEMA_VERSION
+    _validate_known_keys(raw, schema_version, issues)
     artifacts_name = "optional_capabilities" if legacy else "artifacts"
     artifacts = _table(raw.get(artifacts_name), artifacts_name, issues)
     subtype_key = "artifact_subtype_in_names" if legacy else "subtype_in_names"
-    strictness_key = (
-        "artifact_creation_strictness" if legacy else "creation_strictness"
-    )
+    strictness_key = "artifact_creation_strictness" if legacy else "creation_strictness"
 
     include_subtype = _boolean(
         artifacts.get(subtype_key, False),
@@ -69,7 +102,7 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
         issues,
     )
     if strictness not in ARTIFACT_CREATION_STRICTNESS:
-        issues.append("artifact_creation_strictness must be medium or high")
+        issues.append(f"{artifacts_name}.{strictness_key} must be medium or high")
         strictness = "medium"
 
     implementation_mode = "lazy"
@@ -82,6 +115,32 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
         if implementation_mode not in IMPLEMENTATION_MODES:
             issues.append("workflows.implement.mode must be lazy or strict")
             implementation_mode = "lazy"
+
+    change_workspace_mode = "integration-branch"
+    delegation_budget_profile = "medium"
+    if schema_version == SETTINGS_SCHEMA_VERSION:
+        changes = _table(raw.get("changes"), "changes", issues)
+        change_workspace_mode = _string(
+            changes.get("default_workspace", "integration-branch"),
+            "changes.default_workspace",
+            issues,
+        )
+        if change_workspace_mode not in CHANGE_WORKSPACE_MODES:
+            issues.append(
+                "changes.default_workspace must be integration-branch or "
+                "branch-worktree"
+            )
+            change_workspace_mode = "integration-branch"
+
+        delegation = _table(raw.get("delegation"), "delegation", issues)
+        delegation_budget_profile = _string(
+            delegation.get("budget_profile", "medium"),
+            "delegation.budget_profile",
+            issues,
+        )
+        if delegation_budget_profile not in DELEGATION_BUDGET_PROFILES:
+            issues.append("delegation.budget_profile must be low, medium, or high")
+            delegation_budget_profile = "medium"
 
     priority = _table(raw.get("priority"), "priority", issues)
     priority_scale = _priority_scale(
@@ -103,11 +162,65 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
             artifact_subtype_in_names=include_subtype,
             artifact_creation_strictness=strictness,
             implementation_mode=implementation_mode,
+            change_workspace_mode=change_workspace_mode,
+            delegation_budget_profile=delegation_budget_profile,
             priority_scale=priority_scale,
             default_priority=default_priority,
         ),
         tuple(issues),
     )
+
+
+def _validate_known_keys(
+    raw: dict[str, Any], schema_version: str, issues: list[str]
+) -> None:
+    legacy = schema_version == LEGACY_SETTINGS_SCHEMA_VERSION
+    current = schema_version == SETTINGS_SCHEMA_VERSION
+    allowed_top = {
+        "schema_version",
+        "optional_capabilities" if legacy else "artifacts",
+        "priority",
+    }
+    if not legacy:
+        allowed_top.add("workflows")
+    if current:
+        allowed_top.update({"changes", "delegation"})
+    _unknown_keys(raw, allowed_top, "settings", issues)
+
+    artifacts_name = "optional_capabilities" if legacy else "artifacts"
+    artifacts = raw.get(artifacts_name)
+    if isinstance(artifacts, dict):
+        _unknown_keys(
+            artifacts,
+            {
+                "artifact_subtype_in_names" if legacy else "subtype_in_names",
+                ("artifact_creation_strictness" if legacy else "creation_strictness"),
+            },
+            artifacts_name,
+            issues,
+        )
+    priority = raw.get("priority")
+    if isinstance(priority, dict):
+        _unknown_keys(priority, {"scale", "default"}, "priority", issues)
+    workflows = raw.get("workflows")
+    if isinstance(workflows, dict):
+        _unknown_keys(workflows, {"implement"}, "workflows", issues)
+        implement = workflows.get("implement")
+        if isinstance(implement, dict):
+            _unknown_keys(implement, {"mode"}, "workflows.implement", issues)
+    changes = raw.get("changes")
+    if isinstance(changes, dict):
+        _unknown_keys(changes, {"default_workspace"}, "changes", issues)
+    delegation = raw.get("delegation")
+    if isinstance(delegation, dict):
+        _unknown_keys(delegation, {"budget_profile"}, "delegation", issues)
+
+
+def _unknown_keys(
+    table: dict[str, Any], allowed: set[str], name: str, issues: list[str]
+) -> None:
+    for key in sorted(set(table) - allowed):
+        issues.append(f"{name} has unknown setting: {key}")
 
 
 def _table(value: object, name: str, issues: list[str]) -> dict[str, Any]:
@@ -133,9 +246,7 @@ def _boolean(value: object, name: str, issues: list[str]) -> bool:
     return False
 
 
-def _priority_scale(
-    value: object, legacy: bool, issues: list[str]
-) -> tuple[str, ...]:
+def _priority_scale(value: object, legacy: bool, issues: list[str]) -> tuple[str, ...]:
     if legacy and isinstance(value, str):
         selected = tuple(item.strip() for item in value.split(",") if item.strip())
     elif isinstance(value, (list, tuple)) and all(

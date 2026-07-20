@@ -23,7 +23,7 @@ from .lineage import validate_artifact_lineage
 from .profiles import VALID_PROFILES, required_artifacts
 from .semantic_atoms import validate_semantic_atoms
 from .semantic_types import classify_semantic_id, validate_semantic_classifications
-from .settings import load_project_settings
+from .settings import load_project_settings, selected_settings_path
 from .yaml_subset import YamlSubsetError, load
 
 ID_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
@@ -143,7 +143,8 @@ def validate_repository(root: Path) -> list[Diagnostic]:
     settings, settings_issues = load_project_settings(root)
     include_subtype_in_names = settings.artifact_subtype_in_names
     diagnostics.extend(
-        _diag("DSET-E157", root / "dset.toml", issue) for issue in settings_issues
+        _diag("DSET-E157", selected_settings_path(root), issue)
+        for issue in settings_issues
     )
     try:
         layout = discover_layout(root)
@@ -402,7 +403,6 @@ def _validate_project_manifest(
         expected_change_contract = {
             "change_id_format": "project-type-layer-sequence",
             "change_slug_format": "kebab-case",
-            "workspace_default": "integration-branch",
             "pull_request_required_before_archive": True,
             "archive_requires_fresh_verification": True,
             "keep_pull_request_draft_until_archive_ready": True,

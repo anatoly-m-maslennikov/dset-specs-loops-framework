@@ -65,9 +65,7 @@ class TraceabilityTests(unittest.TestCase):
         )
         relations = trace["relations"]
         legacy = [
-            item
-            for item in relations
-            if item["source"] == "DSET-REQUIREMENT-GOV-034"
+            item for item in relations if item["source"] == "DSET-REQUIREMENT-GOV-034"
         ]
         self.assertEqual(legacy[0]["type"], "child_of")
         self.assertEqual(legacy[0]["target"], "DSET-REQUIREMENT-GOV-033")
@@ -103,9 +101,9 @@ class TraceabilityTests(unittest.TestCase):
         self.assertEqual(
             {item["through"] for item in projection_ranges},
             {
-                "DSET-ATOMIC-RECORD-042",
-                "DSET-ATOMIC-RECORD-044",
-                "DSET-ATOMIC-RECORD-047",
+                "DSET-ATOMIC-RECORD-048",
+                "DSET-ATOMIC-RECORD-049",
+                "DSET-ATOMIC-RECORD-050",
             },
         )
         atoms = {item["id"]: item for item in trace["semantic_atoms"]}

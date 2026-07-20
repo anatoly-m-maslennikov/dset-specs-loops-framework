@@ -58,12 +58,10 @@ profiles:
   enforcement: python-v1
   artifact: documentation-v1
   repository_governance: core-v1
-  delegation_budget: medium
 
 change_contract:
   change_id_format: project-type-layer-sequence
   change_slug_format: kebab-case
-  workspace_default: integration-branch
   pull_request_required_before_archive: true
   archive_requires_fresh_verification: true
   keep_pull_request_draft_until_archive_ready: true

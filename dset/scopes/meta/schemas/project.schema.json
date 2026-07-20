@@ -79,8 +79,7 @@
         "durability_topology": {"type": "string", "minLength": 1},
         "enforcement": {"type": "string", "minLength": 1},
         "artifact": {"type": ["string", "null"], "minLength": 1},
-        "repository_governance": {"type": ["string", "null"], "minLength": 1},
-        "delegation_budget": {"enum": ["low", "medium", "high"]}
+        "repository_governance": {"type": ["string", "null"], "minLength": 1}
       },
       "additionalProperties": false
     },
@@ -130,7 +129,6 @@
           "structure": {"$ref": "#/$defs/layered_structure"},
           "packages": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/layered_package"}},
           "work_items": {"properties": {"registry": {"const": "dset/scopes/gov/intake.yaml"}}},
-          "profiles": {"required": ["delegation_budget"]},
           "change_contract": {"$ref": "#/$defs/layered_change_contract"}
         }
       },
@@ -148,7 +146,6 @@
       "then": {
         "required": ["release", "work_items", "contracts"],
         "properties": {
-          "profiles": {"required": ["delegation_budget"]},
           "work_items": {"properties": {"registry": {"const": "dset/intake.yaml"}}}
         }
       }
@@ -208,11 +205,10 @@
     },
     "layered_change_contract": {
       "type": "object",
-      "required": ["change_id_format", "change_slug_format", "workspace_default", "pull_request_required_before_archive", "archive_requires_fresh_verification", "keep_pull_request_draft_until_archive_ready"],
+      "required": ["change_id_format", "change_slug_format", "pull_request_required_before_archive", "archive_requires_fresh_verification", "keep_pull_request_draft_until_archive_ready"],
       "properties": {
         "change_id_format": {"const": "project-type-layer-sequence"},
         "change_slug_format": {"const": "kebab-case"},
-        "workspace_default": {"const": "integration-branch"},
         "pull_request_required_before_archive": {"const": true},
         "archive_requires_fresh_verification": {"const": true},
         "keep_pull_request_draft_until_archive_ready": {"const": true}

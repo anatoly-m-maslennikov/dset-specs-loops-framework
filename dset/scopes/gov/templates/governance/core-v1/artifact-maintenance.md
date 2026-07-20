@@ -136,7 +136,7 @@ and structured schemas permit a non-empty bounded value without requiring it.
 
 ## Artifact-creation strictness and promotion eligibility
 
-Root `dset.toml` selects `artifact_creation_strictness` independently from
+Root `dset_settings.toml` selects `artifacts.creation_strictness` independently from
 other optional capabilities. The default is `medium`; `high` is opt-in.
 
 The same file must explain every operator setting, accepted value, behavioral
@@ -280,7 +280,7 @@ stay in their owning semantics as priority evidence, not a second universal
 rank. The selected project profile owns one bounded scale, legend, inheritance,
 override, and escalation rules. `core-v1` orders `critical`, `high`, `medium`,
 `low`, then `deferred`; lower list position means lower current execution
-priority. Root `dset.toml` publishes the ordered scale and its default. An
+priority. Root `dset_settings.toml` publishes the ordered scale and its default. An
 artifact without a direct priority inherits through its owning atom or Change,
 then the project default. An explicit historical `unknown` remains unknown
 until an append-only priority event supplies a value; it never silently falls

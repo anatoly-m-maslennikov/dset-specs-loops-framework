@@ -6974,6 +6974,14 @@ relations:
     origin: commit_trailer
     llm_session_ids: []
   -
+    source: d3a5789e61ee7b071d655b6e11c9ebc207635535
+    source_kind: commit
+    type: implementation_of
+    target: DSET-REQUIREMENT-GOV-037
+    origin: commit_trailer
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
     source: d993d1f46e07e516bd8af79cbd7d0628d470a981
     source_kind: commit
     type: implementation_of

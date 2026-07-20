@@ -46,7 +46,7 @@ class ArtifactEmissionTests(unittest.TestCase):
         }
 
     def enable_high_strictness(self) -> None:
-        path = self.root / "dset.toml"
+        path = self.root / "dset_settings.toml"
         path.write_text(
             path.read_text(encoding="utf-8").replace(
                 'creation_strictness = "medium"',
@@ -73,7 +73,7 @@ class ArtifactEmissionTests(unittest.TestCase):
         self.assertFalse(assessment["writes_performed"])
 
     def test_missing_setting_uses_medium_but_invalid_value_stops(self) -> None:
-        path = self.root / "dset.toml"
+        path = self.root / "dset_settings.toml"
         path.write_text(
             path.read_text(encoding="utf-8").replace(
                 'creation_strictness = "medium"\n', ""
@@ -92,7 +92,7 @@ class ArtifactEmissionTests(unittest.TestCase):
             encoding="utf-8",
         )
         _settings, issues = load_project_settings(self.root)
-        self.assertIn("artifact_creation_strictness must be medium or high", issues)
+        self.assertIn("artifacts.creation_strictness must be medium or high", issues)
 
     def test_high_blocks_until_every_material_field_is_explicit(self) -> None:
         self.enable_high_strictness()

@@ -166,7 +166,7 @@ path_rules:
     artifact_type: implementation
     artifact_subtype: configuration
   -
-    pattern: "**/templates/dset.toml"
+    pattern: "**/templates/dset_settings.toml"
     artifact_type: implementation
     artifact_subtype: configuration
   -

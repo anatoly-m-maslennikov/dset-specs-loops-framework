@@ -50,7 +50,7 @@ class RepositoryLayout:
 
     @property
     def settings_path(self) -> Path:
-        return self.root / "dset.toml"
+        return self.root / "dset_settings.toml"
 
     @property
     def scopes_root(self) -> Path:
@@ -326,9 +326,12 @@ def discover_layout(root: Path) -> RepositoryLayout:
 
 def has_manifest(root: Path) -> bool:
     root = root.resolve()
-    return _manifest_candidate(root / "dset" / "dset.yaml").is_file() or (
-        _manifest_candidate(root / "dset" / "scopes" / "meta" / "dset.yaml")
-    ).is_file()
+    return (
+        _manifest_candidate(root / "dset" / "dset.yaml").is_file()
+        or (
+            _manifest_candidate(root / "dset" / "scopes" / "meta" / "dset.yaml")
+        ).is_file()
+    )
 
 
 def _schema_version(path: Path) -> str | None:

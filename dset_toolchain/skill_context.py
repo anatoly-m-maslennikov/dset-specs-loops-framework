@@ -76,6 +76,8 @@ def resolve_skill_context(
         "ruleset_identity": _run_ruleset_identity(started["run"]),
         "artifact_creation_strictness": settings.artifact_creation_strictness,
         "implementation_preparation_mode": settings.implementation_mode,
+        "change_workspace_default": settings.change_workspace_mode,
+        "delegation_budget_profile": settings.delegation_budget_profile,
         "semantic_routing": {
             "types": ["decision", "question", "problem", "qa"],
             "classification_count": len(semantic_index),

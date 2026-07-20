@@ -112,7 +112,7 @@ closure is finite because every transition must remove a missing criterion.
 Writes, external messages, publication, and other consequential effects require
 the same authorization they would require if invoked directly.
 
-Root `dset.toml` selects `workflows.implement.mode = "lazy"` or `"strict"`.
+Root `dset_settings.toml` selects `workflows.implement.mode = "lazy"` or `"strict"`.
 Missing configuration uses `lazy`.
 
 In lazy mode, the following sequence applies.

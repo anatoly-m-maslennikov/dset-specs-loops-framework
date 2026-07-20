@@ -563,8 +563,8 @@ workflow position changes any semantic or artifact classification.
 New artifact IDs and filenames must include the primary artifact type token by
 default. The optional direct artifact subtype remains metadata and cannot force
 identity churn. A project may opt only newly emitted artifacts into subtype
-tokens with `optional_capabilities.artifact_subtype_in_names = true` in root
-`dset.toml`. Optional capabilities are independently selectable; DSET has no
+tokens with `artifacts.subtype_in_names = true` in root
+`dset_settings.toml`. Optional capabilities are independently selectable; DSET has no
 single bundled advanced mode. A settings change never renames immutable atoms
 or already stable artifact identities.
 

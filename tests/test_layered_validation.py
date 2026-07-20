@@ -585,6 +585,32 @@ class LayeredValidationTests(unittest.TestCase):
         self.assertEqual(isolated_data["workspace"]["branch"], "dset/isolated-change")
         self.assertEqual(isolated_data["workspace"]["base_ref"], "dev")
 
+        (self.root / "dset_settings.toml").write_text(
+            "\n".join(
+                (
+                    'schema_version = "1.2"',
+                    "[changes]",
+                    'default_workspace = "branch-worktree"',
+                    "",
+                )
+            ),
+            encoding="utf-8",
+        )
+        configured = create_change(
+            self.root,
+            "settings-isolated-change",
+            "sample",
+            "small",
+            layer="tool",
+        )
+        configured_data = load(configured / "change.yaml")
+        assert isinstance(configured_data, dict)
+        self.assertEqual(configured_data["workspace"]["isolation"], "branch-worktree")
+        self.assertEqual(
+            configured_data["workspace"]["branch"],
+            "dset/settings-isolated-change",
+        )
+
         targeted = create_change(
             self.root,
             "targeted-change",
@@ -731,12 +757,10 @@ class LayeredValidationTests(unittest.TestCase):
                 "runtime_risk": "low",
                 "durability_topology": "files",
                 "enforcement": "local",
-                "delegation_budget": "medium",
             },
             "change_contract": {
                 "change_id_format": "project-type-layer-sequence",
                 "change_slug_format": "kebab-case",
-                "workspace_default": "integration-branch",
                 "pull_request_required_before_archive": True,
                 "archive_requires_fresh_verification": True,
                 "keep_pull_request_draft_until_archive_ready": True,

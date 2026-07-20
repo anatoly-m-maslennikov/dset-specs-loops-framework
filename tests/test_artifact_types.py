@@ -245,8 +245,8 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
             )
 
     def test_project_settings_default_to_type_only_names(self) -> None:
-        settings = (ROOT / "dset.toml").read_text(encoding="utf-8")
-        template = (ROOT / "dset/scopes/meta/templates/dset.toml").read_text(
+        settings = (ROOT / "dset_settings.toml").read_text(encoding="utf-8")
+        template = (ROOT / "dset/scopes/meta/templates/dset_settings.toml").read_text(
             encoding="utf-8"
         )
         self.assertEqual(settings, template)

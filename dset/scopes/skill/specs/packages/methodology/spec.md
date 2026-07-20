@@ -91,7 +91,7 @@ A checkpoint contains only a bounded objective, scope and artifact/run pointers,
 
 ## DSET-REQUIREMENT-SKILL-012 — Implementation preparation is project-selectable
 
-A public DSET skill accepts the desired outcome. Root `dset.toml` selects
+A public DSET skill accepts the desired outcome. Root `dset_settings.toml` selects
 `lazy` or `strict` preparation for `dset-implement`; missing configuration uses
 the documented `lazy` default. The repository-local lifecycle rule owns both
 modes, their entry criteria, exit criteria, and stops.

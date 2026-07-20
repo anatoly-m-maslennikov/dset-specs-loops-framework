@@ -90,7 +90,6 @@ def _write_adopter_files(source_root: Path, root: Path) -> None:
             "enforcement": "none",
             "artifact": None,
             "repository_governance": "core-v1",
-            "delegation_budget": "medium",
         },
         "change_contract": {
             "change_id_format": "kebab-case",
@@ -104,7 +103,10 @@ def _write_adopter_files(source_root: Path, root: Path) -> None:
     }
     manifest_path = dset / "dset.yaml"
     manifest_path.write_text(dump(manifest, manifest_path), encoding="utf-8")
-    shutil.copyfile(source_layout.find_template("dset.toml"), root / "dset.toml")
+    shutil.copyfile(
+        source_layout.find_template("dset_settings.toml"),
+        root / "dset_settings.toml",
+    )
     shutil.copyfile(
         source_layout.find_template("artifact-types.yaml"),
         dset / "artifact-types.yaml",

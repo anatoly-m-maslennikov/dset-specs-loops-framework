@@ -39,7 +39,7 @@ and do not enter the structural name. For example, a Version Scope is
 Roadmap uses the same `DELIVERY` sequence with `artifact_subtype: roadmap`.
 
 Projects may opt into subtype tokens for newly emitted artifacts with
-`optional_capabilities.artifact_subtype_in_names = true` in root `dset.toml`.
+`artifacts.subtype_in_names = true` in root `dset_settings.toml`.
 This is an independent optional capability, not a bundled “advanced mode.” A
 setting change never renames an immutable atom or an already stable artifact
 identity.
