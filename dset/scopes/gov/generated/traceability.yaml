@@ -367,6 +367,7 @@ changes:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-013-oyoha-local-rule-cutover.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-014-oyoha-independent-evaluation.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-015-claudian-clean-room.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-016-oyoha-supportability-slice.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/end-to-end-toolchain-verification-2026-07-16.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/expanded-skill-surface-verification-2026-07-16.md
@@ -3945,6 +3946,12 @@ lineage:
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-015-claudian-clean-room.md
     child_of:
       - DSET-EVALUATION-TOOL-003
+    parent_to: []
+  -
+    id: DSET-EVIDENCE-RECORD-016
+    artifact_id: DSET-EVIDENCE-RECORD-016
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-016-oyoha-supportability-slice.md
+    child_of: []
     parent_to: []
   -
     id: DSET-PLAN-001
