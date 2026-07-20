@@ -235,6 +235,20 @@ class LayeredValidationTests(unittest.TestCase):
             {item.code for item in validate_change(self.root, change, archived=False)},
         )
 
+        proof.write_text(
+            "+++\n"
+            'artifact_type = "evidence_record"\n'
+            'artifact_id = "DSET-EVIDENCE-RECORD-099"\n'
+            'llm_session_ids = ["codex:session-099"]\n'
+            "+++\n\n"
+            "# Proof\n",
+            encoding="utf-8",
+        )
+        self.assertNotIn(
+            "DSET-E155",
+            {item.code for item in validate_change(self.root, change, archived=False)},
+        )
+
     def test_change_target_is_repository_or_declared_work_areas(self) -> None:
         change = self._write_change("tool", "targeted-change")
         path = change / "change.yaml"

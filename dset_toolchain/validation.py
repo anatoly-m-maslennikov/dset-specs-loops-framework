@@ -749,6 +749,13 @@ def _valid_llm_session_ids(value: object) -> bool:
 
 
 def _markdown_has_session_provenance(path: Path) -> bool:
+    try:
+        metadata = frontmatter_metadata(path)
+    except (OSError, UnicodeError, FrontmatterError):
+        metadata = None
+    if metadata is not None and "llm_session_ids" in metadata:
+        return _valid_llm_session_ids(metadata["llm_session_ids"])
+
     lines = path.read_text(encoding="utf-8").splitlines()
     for index, line in enumerate(lines):
         match = LLM_SESSION_FIELD_PATTERN.fullmatch(line)
