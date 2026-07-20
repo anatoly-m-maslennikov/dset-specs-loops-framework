@@ -8,6 +8,13 @@ records:
     type: decision
     subtype: none
   -
+    semantic_id: DSET-DECISION-GOV-011
+    carrier_id: DSET-ATOMIC-RECORD-031
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-031-delivery-artifact-type.md
+    sha256: 11e6a8a25e69e36a3f02a18982c1965921d082759da28ea4ba601b12e4b4caca
+    type: decision
+    subtype: none
+  -
     semantic_id: DSET-DEFECT-GOV-001
     carrier_id: DSET-ATOMIC-RECORD-020
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-020-lifecycle-transition-validation.md

@@ -318,3 +318,13 @@ events:
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: Current Verification was rebuilt around the active DSET 0.4 boundary and fresh deterministic evidence; historical adopter claims are preserved but no longer promoted as current release proof.
+  -
+    id: DSET-LIFECYCLE-EVENT-032
+    atom_id: DSET-DECISION-GOV-009
+    event: absorbed
+    occurred_at: 2026-07-21T03:00:00+04:00
+    related:
+      - DSET-DECISION-GOV-011
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: The successor preserves the independent classification model and replaces the split release-lifecycle roles with one Delivery type and six direct subtypes.
