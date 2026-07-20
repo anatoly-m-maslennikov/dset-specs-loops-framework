@@ -361,6 +361,7 @@ changes:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-008-governed-conflict-runtime.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-009-semantic-type-migration.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-010-release-runtime-reconciliation.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-011-typescript-candidate-profile.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/end-to-end-toolchain-verification-2026-07-16.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/expanded-skill-surface-verification-2026-07-16.md
@@ -3863,6 +3864,13 @@ lineage:
     child_of: []
     parent_to: []
   -
+    id: DSET-EVIDENCE-RECORD-011
+    artifact_id: DSET-EVIDENCE-RECORD-011
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-011-typescript-candidate-profile.md
+    child_of:
+      - DSET-TEST-TOOL-021
+    parent_to: []
+  -
     id: DSET-PLAN-001
     artifact_id: DSET-PLAN-001
     path: dset/scopes/ops/planning/DSET-PLAN-001-0-4-core-vertical-cut.md
@@ -3995,7 +4003,8 @@ lineage:
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-014-typescript-candidate-test.md
     child_of:
       - DSET-REQUIREMENT-TOOL-021
-    parent_to: []
+    parent_to:
+      - DSET-EVIDENCE-RECORD-011
 implementation_edges:
   -
     commit: 08608add74f4632d768fffa3a2d4a7eb3dbde58e
@@ -4417,6 +4426,15 @@ implementation_edges:
       - DSET-DECISION-GOV-009
     llm_session_ids: []
   -
+    commit: bf9fcc3cdc3734e16a7a7e4da98651756bcc23b5
+    implements:
+      - DSET-DECISION-GOV-003
+      - DSET-REQUIREMENT-GOV-034
+      - DSET-REQUIREMENT-TOOL-021
+      - DSET-TEST-TOOL-021
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
     commit: bfbd95d576667d33bd614ba9bc19d618431b2491
     implements:
       - DSET-DECISION-SKILL-001
@@ -4467,6 +4485,13 @@ implementation_edges:
     implements:
       - DSET-REQUIREMENT-GOV-033
     llm_session_ids: []
+  -
+    commit: de05bf282e603edff9459afc95680d05aa2ef69c
+    implements:
+      - DSET-REQUIREMENT-TOOL-021
+      - DSET-TEST-TOOL-021
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
     commit: df49da0111d86408e1dd919570bfc2f42a9867ec
     implements:

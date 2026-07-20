@@ -139,17 +139,17 @@ paths; schema 1.2 assigns each governing document to its semantic layer.
 
 ## §5 | Derive TypeScript v1 from Your Harness
 
-- [ ] **DSET-TASK-TOOL-026:** Inventory the actual Your Harness Node, TypeScript, ESLint, Jest, esbuild, package-lock, source/test scopes, generated outputs, warnings, and CI behavior at a pinned revision.
-- [ ] **DSET-TASK-TOOL-027:** Map the six language-neutral gate categories to observed TypeScript-native tools and commands; do not translate Python thresholds mechanically.
-- [ ] **DSET-TASK-TOOL-028:** Start from the real canonical sequence: typecheck, lint, unit/integration tests, production build, DSET structural/rule checks, trace freshness, and diff hygiene.
-- [ ] **DSET-TASK-TOOL-029:** Define dependency/layer checks for provider-neutral `core`, provider adapters, feature orchestration, shared UI, and style boundaries using syntax-aware TypeScript/ESLint evidence.
-- [ ] **DSET-TASK-TOOL-030:** Record current complexity/max-function warnings as a bounded baseline or advisory gate; new violations must not silently expand the baseline.
+- [x] **DSET-TASK-TOOL-026:** Inventory the actual Your Harness Node, TypeScript, ESLint, Jest, esbuild, package-lock, source/test scopes, generated outputs, warnings, and CI behavior at a pinned revision.
+- [x] **DSET-TASK-TOOL-027:** Map the six language-neutral gate categories to observed TypeScript-native tools and commands; do not translate Python thresholds mechanically.
+- [x] **DSET-TASK-TOOL-028:** Start from the real canonical sequence: typecheck, lint, unit/integration tests, production build, DSET structural/rule checks, trace freshness, and diff hygiene.
+- [x] **DSET-TASK-TOOL-029:** Define dependency/layer checks for provider-neutral `core`, provider adapters, feature orchestration, shared UI, and style boundaries using syntax-aware TypeScript/ESLint evidence.
+- [x] **DSET-TASK-TOOL-030:** Record current complexity/max-function warnings as a bounded baseline or advisory gate; new violations must not silently expand the baseline.
 - [ ] **DSET-TASK-TOOL-031:** Define schema/contracts, secret hygiene, generated-bundle, lockfile, and test-to-source mapping gates appropriate to the plugin.
 - [ ] **DSET-TASK-TOOL-032:** Publish `typescript-v1` only after the pilot passes; use an explicitly labeled candidate profile before acceptance.
 
 ## §6 | Adopt DSET in obsidian-your-harness
 
-- [ ] **DSET-TASK-GOV-026:** Use the owned `anatoly-m-maslennikov/obsidian-your-harness` repository as the first external pilot; record its exact starting revision, branch, upstream Claudian revision, MIT license, and adaptation boundary.
+- [x] **DSET-TASK-GOV-026:** Use the owned `anatoly-m-maslennikov/obsidian-your-harness` repository as the first external pilot; record its exact starting revision, branch, upstream Claudian revision, MIT license, and adaptation boundary.
 - [ ] **DSET-TASK-GOV-027:** Inventory `your_harness_specs/`, root and scoped `CLAUDE.md` files, README/architecture surfaces, tests, package scripts, generated assets, local context, and active feature work before creating a second authority.
 - [ ] **DSET-TASK-GOV-028:** Classify every existing spec/plan as accepted truth, active change, failed/incomplete work, or history before migration.
 - [ ] **DSET-TASK-GOV-029:** Create the visible schema 1.2 `dset/scopes/` control plane with META manifest, GOV governance/artifact/intake/provenance registries, one layer-fragmented `harness` package, layer-owned changes/archive roots, OPS supportability, distributed templates/migration record, and GOV-generated traceability.
