@@ -9,7 +9,7 @@ This is the diagnostic pre-resolution exception. Invalid local governance never 
 
 ## Diagnose
 
-1. Invoke the installed shared runtime exactly once with `dset skills context --skill dset-repair-governance --target TARGET --objective OBJECTIVE`. Require `status: invalid-governance`; stop on no root, competing roots, valid governance, an unavailable launcher, or command failure.
+1. Invoke the installed shared runtime exactly once with `dset skills context --skill dset-repair-governance --target TARGET --objective OBJECTIVE --llm-session-id LLM_SESSION_ID`. Replace the placeholder with the current host session ID. Require `status: invalid-governance`; stop on an unavailable ID/launcher, no root, competing roots, valid governance, or command failure.
 2. Report every returned stable schema, ownership, path, digest, applicability, and conflict diagnostic with its local file identity and proposed repair owner.
 3. Preserve the invalid repository as evidence. Do not resolve substantive rules, copy template content, select project policy, or mutate the registry under this invocation.
 

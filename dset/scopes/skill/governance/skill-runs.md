@@ -59,6 +59,12 @@ empty list means no LLM contributed; it does not mean provenance is unknown.
 Internal chaining therefore does not create extra user-facing skills or lose
 either DSET session continuity or host-session provenance.
 
+Every public or internally chained LLM wrapper passes its current host session
+ID explicitly at context start and stops when the host cannot expose one. The
+runtime rejects empty provenance for public-skill, chained-skill,
+governed-model, and delegated-run sources; only an explicit operator source may
+represent human-only execution with an empty list.
+
 The runtime atomically maintains one replaceable checkpoint per session under
 ignored `.dset/sessions/<session-id>.json`. A checkpoint contains the same
 bounded `llm_session_ids`, a bounded objective summary, current

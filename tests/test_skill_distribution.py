@@ -161,6 +161,8 @@ class SkillDistributionTests(unittest.TestCase):
                 str(target),
                 "--objective",
                 "Resolve from the installed host package",
+                "--llm-session-id",
+                "codex:test-session",
             ],
             check=False,
             capture_output=True,
@@ -173,6 +175,23 @@ class SkillDistributionTests(unittest.TestCase):
         self.assertEqual(context["skill_id"], "dset-implement")
         self.assertEqual(context["workflow_id"], "implement")
         self.assertTrue(str(context["ruleset_identity"]).startswith("ruleset:"))
+        terminal = subprocess.run(
+            [
+                sys.executable,
+                str(package / "dset.py"),
+                "runtime",
+                "finish",
+                str(context["run"]["run_id"]),
+                str(project),
+                "--status",
+                "succeeded",
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(terminal.returncode, 0, terminal.stderr)
+        self.assertEqual(json.loads(terminal.stdout)["status"], "succeeded")
 
     def test_runtime_package_conflict_stops_without_overwrite(self) -> None:
         destination = self.root / "claude" / "packages" / "dset"

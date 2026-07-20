@@ -868,7 +868,8 @@ semantic_classifications:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-026-llm-session-provenance.md
     carrier_statuses:
       - accepted
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-023
   -
     id: DSET-DEFECT-TOOL-001
     type: problem
@@ -882,6 +883,8 @@ semantic_classifications:
       - accepted
     lifecycle_events:
       - DSET-LIFECYCLE-EVENT-020
+      - DSET-LIFECYCLE-EVENT-021
+      - DSET-LIFECYCLE-EVENT-022
   -
     id: DSET-EVAL-GOV-001
     type: qa
@@ -3837,11 +3840,12 @@ semantic_atoms:
     type: problem
     subtype: defect
     emission_status: accepted
-    current_status: accepted
+    current_status: resolved
     priority: critical
     priority_source: atom:DSET-DEFECT-SKILL-001
     child_of: []
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-023
     absorbed_by: []
     archived: false
   -
@@ -3858,6 +3862,8 @@ semantic_atoms:
     child_of: []
     lifecycle_events:
       - DSET-LIFECYCLE-EVENT-020
+      - DSET-LIFECYCLE-EVENT-021
+      - DSET-LIFECYCLE-EVENT-022
     absorbed_by: []
     archived: false
   -
@@ -4825,6 +4831,12 @@ implementation_edges:
     implements:
       - DSET-DECISION-SKILL-001
     llm_session_ids: []
+  -
+    commit: 540af58ffa7d227fd92fc79764f16abc5a693f59
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
     commit: 570cb84478c9df4b0cd77e49e34b7bc7c543e91b
     implements:

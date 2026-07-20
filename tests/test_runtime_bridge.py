@@ -73,6 +73,19 @@ class RuntimeBridgeTests(unittest.TestCase):
                 )
             self.assertFalse((adopter / ".dset" / "runs").exists())
 
+    def test_public_skill_requires_llm_session_provenance(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            adopter = Path(raw) / "adopter"
+            create_adopter(ROOT, adopter)
+            with self.assertRaisesRegex(ValueError, "host-session provenance"):
+                start_runtime(
+                    adopter,
+                    public_entrypoint="dset-diagnose",
+                    workflow_id="diagnosis",
+                    objective="Diagnose with missing host provenance",
+                )
+            self.assertFalse((adopter / ".dset" / "runs").exists())
+
     def test_bridge_accepts_every_catalog_entry_and_rejects_mismatches(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
             adopter = Path(raw) / "adopter"
@@ -87,6 +100,7 @@ class RuntimeBridgeTests(unittest.TestCase):
                     workflow_id=workflow_id,
                     objective=f"Run {skill_id}",
                     session_id=f"session-{skill_id}",
+                    llm_session_ids=("codex:test-session",),
                 )
                 run = cast(dict[str, Any], started["run"])
                 self.assertEqual(run["skill_id"], skill_id)
@@ -99,31 +113,38 @@ class RuntimeBridgeTests(unittest.TestCase):
                 )
 
     def test_context_resolves_explicit_nested_work_area_target(self) -> None:
-        context = resolve_skill_context(
-            ROOT / "skills" / "dset-implement" / "SKILL.md",
-            skill_id="dset-implement",
-            objective="Implement the shared runtime",
-            session_id="session-context-work-area",
-            llm_session_ids=("codex:test-session",),
-        )
-        self.assertEqual(context["repository_root"], str(ROOT))
-        self.assertEqual(context["work_area"], "skills")
-        self.assertEqual(context["workflow_id"], "implement")
-        self.assertEqual(context["artifact_creation_strictness"], "medium")
-        semantic_routing = cast(dict[str, Any], context["semantic_routing"])
-        self.assertEqual(
-            semantic_routing["types"], ["decision", "question", "problem", "qa"]
-        )
-        self.assertGreater(semantic_routing["classification_count"], 0)
-        self.assertEqual(
-            semantic_routing["source"],
-            "dset/scopes/gov/governance/work-items.md",
-        )
-        self.assertTrue(str(context["ruleset_identity"]).startswith("ruleset:"))
-        closure = cast(dict[str, Any], context["closure"])
-        self.assertEqual(closure["next_workflow"], "decisions")
-        resolved = cast(dict[str, Any], context["resolved"])
-        self.assertEqual(resolved["workflow_id"], "implement")
+        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+            adopter = Path(raw) / "adopter"
+            shutil.copytree(ROOT / "dset", adopter / "dset")
+            shutil.copytree(ROOT / "skills", adopter / "skills")
+            context = resolve_skill_context(
+                adopter / "skills" / "dset-implement" / "SKILL.md",
+                skill_id="dset-implement",
+                objective="Implement the shared runtime",
+                session_id="session-context-work-area",
+                llm_session_ids=("codex:test-session",),
+            )
+            self.assertEqual(context["repository_root"], str(adopter))
+            self.assertEqual(context["work_area"], "skills")
+            self.assertEqual(context["workflow_id"], "implement")
+            self.assertEqual(context["artifact_creation_strictness"], "medium")
+            semantic_routing = cast(dict[str, Any], context["semantic_routing"])
+            self.assertEqual(
+                semantic_routing["types"],
+                ["decision", "question", "problem", "qa"],
+            )
+            self.assertGreater(semantic_routing["classification_count"], 0)
+            self.assertEqual(
+                semantic_routing["source"],
+                "dset/scopes/gov/governance/work-items.md",
+            )
+            self.assertTrue(str(context["ruleset_identity"]).startswith("ruleset:"))
+            closure = cast(dict[str, Any], context["closure"])
+            self.assertEqual(closure["next_workflow"], "decisions")
+            resolved = cast(dict[str, Any], context["resolved"])
+            self.assertEqual(resolved["workflow_id"], "implement")
+            run = cast(dict[str, Any], context["run"])
+            finish_runtime(adopter, str(run["run_id"]), status="succeeded")
 
     def test_context_returns_rootless_initialization_without_writing(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
@@ -185,6 +206,7 @@ class RuntimeBridgeTests(unittest.TestCase):
                 workflow_id="implement",
                 objective="Implement the bounded change",
                 session_id="session-closure",
+                llm_session_ids=("codex:test-session",),
             )
             root_run = cast(dict[str, Any], started["run"])
             child = start_child_runtime(
@@ -192,6 +214,7 @@ class RuntimeBridgeTests(unittest.TestCase):
                 session_id="session-closure",
                 workflow_id="decisions",
                 objective="Reconcile accepted directives",
+                llm_session_ids=("codex:test-session",),
             )
             child_run = cast(dict[str, Any], child["run"])
             self.assertEqual(child_run["root_run_id"], root_run["run_id"])
@@ -220,6 +243,7 @@ class RuntimeBridgeTests(unittest.TestCase):
                 session_id="session-closure",
                 workflow_id="plan-proof",
                 objective="Complete proof plans",
+                llm_session_ids=("codex:test-session",),
             )
             second_run = cast(dict[str, Any], second["run"])
             self.assertEqual(second_run["parent_run_id"], child_run["run_id"])

@@ -34,6 +34,7 @@ class SkillWrapperTests(unittest.TestCase):
                 self.assertRegex(text, r"(?m)^description: \S")
                 self.assertIn(marker, text)
                 self.assertEqual(text.count("dset skills context"), 1)
+                self.assertIn("--llm-session-id LLM_SESSION_ID", text)
                 self.assertIn("installed shared runtime", text)
                 self.assertFalse(any(fragment in text for fragment in forbidden))
 
@@ -65,6 +66,8 @@ class SkillWrapperTests(unittest.TestCase):
                 )
                 self.assertIn("never select an alternate runtime", text)
                 self.assertIn("required unavailable conflict coverage", text)
+                self.assertIn("dset runtime finish RUN_ID REPOSITORY_ROOT", text)
+                self.assertIn("without a terminal record", text)
                 self.assertNotIn("Walk upward from the target", text)
                 self.assertNotIn("rules resolve", text)
 

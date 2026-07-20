@@ -207,3 +207,33 @@ events:
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: Checkpoint schema 1.3 tracks every active run, child finalization preserves its parent, and a session cannot terminalize while another run remains active.
+  -
+    id: DSET-LIFECYCLE-EVENT-021
+    atom_id: DSET-DEFECT-TOOL-001
+    event: reopened
+    occurred_at: 2026-07-20T23:30:00+04:00
+    related:
+      - DSET-DEFECT-SKILL-001
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: Checkpoint ownership was corrected first, but the public wrappers still lacked their mandatory terminal finish step.
+  -
+    id: DSET-LIFECYCLE-EVENT-022
+    atom_id: DSET-DEFECT-TOOL-001
+    event: resolved
+    occurred_at: 2026-07-20T23:40:00+04:00
+    related:
+      - DSET-REQUIREMENT-SKILL-009
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: Every governed wrapper now retains its run identity and must finalize it before any handoff or stop, while the active-run stack preserves nested parents.
+  -
+    id: DSET-LIFECYCLE-EVENT-023
+    atom_id: DSET-DEFECT-SKILL-001
+    event: resolved
+    occurred_at: 2026-07-20T23:41:00+04:00
+    related:
+      - DSET-REQUIREMENT-SKILL-009
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: Every wrapper supplies the current host session ID and the runtime rejects empty provenance for every LLM-backed invocation source.

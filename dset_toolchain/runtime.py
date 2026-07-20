@@ -208,6 +208,11 @@ def start_run(
         "unknown authorization state",
     )
     normalized_llm_ids = _normalize_llm_session_ids(llm_session_ids)
+    if invocation_source != "operator":
+        _require(
+            bool(normalized_llm_ids),
+            "LLM-backed invocation requires host-session provenance",
+        )
     normalized_scope = _normalize_scope(root, scope)
     normalized_parameters = _normalize_parameters(parameters)
     normalized_budget = _normalize_budget(budget)
