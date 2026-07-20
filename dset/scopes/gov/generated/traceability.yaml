@@ -363,6 +363,8 @@ changes:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-010-release-runtime-reconciliation.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-011-typescript-candidate-profile.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-012-oyoha-local-adoption.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-013-oyoha-local-rule-cutover.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-014-oyoha-independent-evaluation.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/end-to-end-toolchain-verification-2026-07-16.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/expanded-skill-surface-verification-2026-07-16.md
@@ -3799,7 +3801,8 @@ lineage:
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-015-typescript-candidate-evaluation.md
     child_of:
       - DSET-REQUIREMENT-TOOL-021
-    parent_to: []
+    parent_to:
+      - DSET-EVIDENCE-RECORD-014
   -
     id: DSET-EVIDENCE-RECORD-001
     artifact_id: DSET-EVIDENCE-RECORD-001
@@ -3880,6 +3883,20 @@ lineage:
       - DSET-TEST-TOOL-021
     parent_to: []
   -
+    id: DSET-EVIDENCE-RECORD-013
+    artifact_id: DSET-EVIDENCE-RECORD-013
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-013-oyoha-local-rule-cutover.md
+    child_of:
+      - DSET-REQUIREMENT-SKILL-011
+    parent_to: []
+  -
+    id: DSET-EVIDENCE-RECORD-014
+    artifact_id: DSET-EVIDENCE-RECORD-014
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-014-oyoha-independent-evaluation.md
+    child_of:
+      - DSET-EVALUATION-TOOL-003
+    parent_to: []
+  -
     id: DSET-PLAN-001
     artifact_id: DSET-PLAN-001
     path: dset/scopes/ops/planning/DSET-PLAN-001-0-4-core-vertical-cut.md
@@ -3958,6 +3975,7 @@ lineage:
       - DSET-REQUIREMENT-SKILL-010
     parent_to:
       - DSET-EVIDENCE-RECORD-005
+      - DSET-EVIDENCE-RECORD-013
   -
     id: DSET-REQUIREMENT-TOOL-020
     artifact_id: DSET-ATOMIC-RECORD-010

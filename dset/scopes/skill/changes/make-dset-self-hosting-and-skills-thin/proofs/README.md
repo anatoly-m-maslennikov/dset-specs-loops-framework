@@ -8,3 +8,5 @@ diagnose failure.
 - [Artifact-role lifecycle self-application](DSET-EVIDENCE-RECORD-001-artifact-role-lifecycle.md)
 - [Project-scope ownership self-application](DSET-EVIDENCE-RECORD-002-project-scope-ownership.md)
 - [OYOHA local DSET adoption](DSET-EVIDENCE-RECORD-012-oyoha-local-adoption.md)
+- [OYOHA local-rule cutover](DSET-EVIDENCE-RECORD-013-oyoha-local-rule-cutover.md)
+- [OYOHA independent Evaluation](DSET-EVIDENCE-RECORD-014-oyoha-independent-evaluation.md)
