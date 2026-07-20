@@ -15,7 +15,7 @@ workspace:
   isolation: integration-branch
   branch: dev
   base_ref: main
-  base_commit: b874504c25e42329eae19ed14f2b50a3d922d64e
+  base_commit: 6d170d17bbfa84fdd4d33df4f624782e30206a2e
   head_commit: pending
 dependencies:
   - change_id: DSET-CHANGE-GOV-001
@@ -83,18 +83,22 @@ packages:
   - methodology
 pull_request:
   repository: anatoly-m-maslennikov/dset-specs-loops-framework
-  number: 9
-  url: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9
+  number: pending
+  url: pending
+related_pull_requests:
+  -
+    number: 9
+    role: published-0.3.1-baseline-and-predecessor
 release:
   policy: dset/scopes/ops/governance/release.md
-  class: bootstrap
+  class: normal
   base:
     ref: main
-    commit: b874504c25e42329eae19ed14f2b50a3d922d64e
-    version: unversioned
-  target: 0.3.1
-  readiness: DSET-READINESS-RECORD-001-0-3-1.md
-  candidate_commit: a6738bfed4c222f8e984d615a20be4a6e0d56767
+    commit: 6d170d17bbfa84fdd4d33df4f624782e30206a2e
+    version: 0.3.1
+  target: 0.4.0
+  readiness: pending
+  candidate_commit: pending
 intake:
   - DSET-PROBLEM-TOOL-001
   - DSET-QUESTION-GOV-001

@@ -4,12 +4,12 @@ artifact_subtype: release_plan
 artifact_id: DSET-PLAN-002
 version_scope_ref: DSET-SPECIFICATION-001
 proposed_version: 0.3.1
-status: preparing
+status: closed_blocked
 llm_session_ids:
   - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
 ---
 
-# Release Plan — DSET 0.3.1
+# Historical Release Plan — blocked DSET 0.3.1 candidate
 
 ## Transition
 
@@ -25,6 +25,11 @@ llm_session_ids:
 Deliver the DSET 0.3 foundation represented by `DSET-SPECIFICATION-001` and
 this Change. Later work on the branch is outside the pinned candidate until the
 declaration and this plan are deliberately refreshed.
+
+This plan is no longer active. PR 9 established the published `0.3.1`
+baseline through a later repository state; this earlier blocked candidate and
+its Readiness Record remain bounded history and do not govern active `0.4`
+work.
 
 ## Required gates
 

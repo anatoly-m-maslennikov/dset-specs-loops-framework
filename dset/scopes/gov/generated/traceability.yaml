@@ -353,7 +353,7 @@ changes:
       - DSET-CONTRACT-TOOL-002
     stories: []
     outcomes: []
-    pull_request: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9
+    pull_request: pending
     evidence:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-001-artifact-role-lifecycle.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-002-project-scope-ownership.md
@@ -406,7 +406,7 @@ changes:
       isolation: integration-branch
       branch: dev
       base_ref: main
-      base_commit: b874504c25e42329eae19ed14f2b50a3d922d64e
+      base_commit: 6d170d17bbfa84fdd4d33df4f624782e30206a2e
       head_commit: pending
     dependencies:
       -
@@ -820,7 +820,8 @@ semantic_classifications:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-021-compilation-consequence.md
     carrier_statuses:
       - accepted
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-028
   -
     id: DSET-DEFECT-GOV-003
     type: problem
@@ -832,7 +833,8 @@ semantic_classifications:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-023-artifact-emission-gate.md
     carrier_statuses:
       - accepted
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-026
   -
     id: DSET-DEFECT-GOV-004
     type: problem
@@ -856,7 +858,8 @@ semantic_classifications:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-028-release-truth.md
     carrier_statuses:
       - accepted
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-030
   -
     id: DSET-DEFECT-SKILL-001
     type: problem
@@ -1491,7 +1494,8 @@ semantic_classifications:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-022-legacy-immutability.md
     carrier_statuses:
       - accepted
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-027
   -
     id: DSET-GAP-SKILL-001
     type: problem
@@ -1516,7 +1520,8 @@ semantic_classifications:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-027-commit-provenance-gate.md
     carrier_statuses:
       - accepted
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-029
   -
     id: DSET-GAP-TOOL-002
     type: problem
@@ -3782,11 +3787,12 @@ semantic_atoms:
     type: problem
     subtype: defect
     emission_status: accepted
-    current_status: accepted
+    current_status: resolved
     priority: critical
     priority_source: atom:DSET-DEFECT-GOV-002
     child_of: []
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-028
     absorbed_by: []
     archived: false
   -
@@ -3797,11 +3803,12 @@ semantic_atoms:
     type: problem
     subtype: defect
     emission_status: accepted
-    current_status: accepted
+    current_status: resolved
     priority: high
     priority_source: atom:DSET-DEFECT-GOV-003
     child_of: []
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-026
     absorbed_by: []
     archived: false
   -
@@ -3827,11 +3834,12 @@ semantic_atoms:
     type: problem
     subtype: defect
     emission_status: accepted
-    current_status: accepted
+    current_status: resolved
     priority: critical
     priority_source: atom:DSET-DEFECT-OPS-001
     child_of: []
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-030
     absorbed_by: []
     archived: false
   -
@@ -3926,11 +3934,12 @@ semantic_atoms:
     type: problem
     subtype: gap
     emission_status: accepted
-    current_status: accepted
+    current_status: resolved
     priority: high
     priority_source: atom:DSET-GAP-GOV-001
     child_of: []
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-027
     absorbed_by: []
     archived: false
   -
@@ -3957,11 +3966,12 @@ semantic_atoms:
     type: problem
     subtype: gap
     emission_status: accepted
-    current_status: accepted
+    current_status: resolved
     priority: high
     priority_source: atom:DSET-GAP-TOOL-001
     child_of: []
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-029
     absorbed_by: []
     archived: false
   -
@@ -4618,6 +4628,13 @@ implementation_edges:
       - DSET-DECISION-GOV-004
     llm_session_ids: []
   -
+    commit: 0a4c760249c8915d385ec13bc433ad385e7c57ab
+    implements:
+      - DSET-REQUIREMENT-GOV-033
+      - DSET-REQUIREMENT-GOV-034
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
     commit: 0b4dd3497605046e9361aef2f5442c2ea81cab5a
     implements:
       - DSET-DECISION-GOV-001
@@ -4648,6 +4665,12 @@ implementation_edges:
     implements:
       - DSET-DECISION-SKILL-001
     llm_session_ids: []
+  -
+    commit: 14c8331a996db01beb83ab137b4a03a6f5281c96
+    implements:
+      - DSET-REQUIREMENT-GOV-035
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
     commit: 1518f7eb62a8d9b872d742ed947454ee3def92b8
     implements:
@@ -4842,6 +4865,12 @@ implementation_edges:
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
+    commit: 5500d879bd25148e68a1289072d88770c014b41e
+    implements:
+      - DSET-DECISION-GOV-003
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
     commit: 570cb84478c9df4b0cd77e49e34b7bc7c543e91b
     implements:
       - DSET-DECISION-SKILL-001
@@ -5024,6 +5053,12 @@ implementation_edges:
       - DSET-DECISION-SKILL-001
     llm_session_ids: []
   -
+    commit: 96800941678c9b665abac9d3838a8a4b36db02e2
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
     commit: 98491172849ef1dfeffc91809506e76f0dda94fd
     implements:
       - DSET-DECISION-GOV-009
@@ -5095,6 +5130,13 @@ implementation_edges:
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
+    commit: b99bf41e327cac63b044038dc7bbdf85c4a1465d
+    implements:
+      - DSET-REQUIREMENT-SKILL-009
+      - DSET-REQUIREMENT-SKILL-011
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
     commit: bd1498f2aebab82827937ae323e8f797ddfd4ff5
     implements:
       - DSET-DECISION-GOV-009
@@ -5123,6 +5165,12 @@ implementation_edges:
     implements:
       - DSET-DECISION-SKILL-001
     llm_session_ids: []
+  -
+    commit: c0ee76a4697212e1e0f8cc621ab253acd9e56759
+    implements:
+      - DSET-DECISION-GOV-003
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
     commit: c3fdba93d27f491aa7843373b15e12a253a5eb40
     implements:
@@ -5222,6 +5270,12 @@ implementation_edges:
     implements:
       - DSET-DECISION-SKILL-002
     llm_session_ids: []
+  -
+    commit: f445592aa5025524b88f2cef896a69488891f4d8
+    implements:
+      - DSET-REQUIREMENT-GOV-022
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
     commit: f5acf413bbe77b222b9a49ac0be0f8cd2700ca41
     implements:
