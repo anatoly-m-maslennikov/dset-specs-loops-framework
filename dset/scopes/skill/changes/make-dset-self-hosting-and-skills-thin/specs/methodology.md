@@ -23,6 +23,7 @@ the implementation scope to its current layer-owned Requirement owners.
 | Type-first artifact names and independently selectable subtype-name capability | `DSET-REQUIREMENT-GOV-030` |
 | One-level-down project/group/feature/layer architecture views | `DSET-REQUIREMENT-GOV-031` |
 | Narrowest-common-scope ownership for project, group, feature, and layer truth | `DSET-REQUIREMENT-GOV-032` |
+| Parent-to-child artifact inheritance, local implementation/cancellation, and direct fallback | `DSET-REQUIREMENT-GOV-033` |
 | Five flat Release lifecycle artifacts | `DSET-REQUIREMENT-OPS-013` |
 | Role-aware handling for every governed conflict pairing, with priority selection only where permitted | `DSET-REQUIREMENT-TOOL-019` |
 
@@ -44,6 +45,7 @@ Connected accepted IDs are `DSET-REQUIREMENT-META-007`,
 `DSET-REQUIREMENT-GOV-029`,
 `DSET-REQUIREMENT-GOV-030`, `DSET-REQUIREMENT-GOV-031`,
 `DSET-REQUIREMENT-GOV-032`,
+`DSET-REQUIREMENT-GOV-033`,
 `DSET-REQUIREMENT-TOOL-018`,
 `DSET-REQUIREMENT-TOOL-019`,
 `DSET-REQUIREMENT-SKILL-002`, `DSET-REQUIREMENT-SKILL-003`,
@@ -80,6 +82,14 @@ requirements, Contracts and semantics, end-to-end QA, cross-cutting policy,
 integration architecture, release/readiness, and cross-owner unresolved work.
 High-level wording does not promote a child-owned claim, and parents link rather
 than duplicate child detail.
+
+## ADDED — DSET-REQUIREMENT-GOV-033 Artifact inheritance
+
+Artifact inheritance uses only canonical `child_of` and derived reverse
+`parent_to`. If a target feature or layer has no child, it applies the inherited
+parent directly. A local child Decision may select implementation, replace, or
+cancel the parent only for its subtree, leaving the immutable parent and sibling
+scopes unchanged. No additional inheritance relation is introduced.
 
 ## ADDED — DSET-REQUIREMENT-OPS-012 Integration delivery is the default
 

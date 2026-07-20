@@ -42,3 +42,4 @@
 - [x] **DSET-TASK-GOV-052:** Implement type-first artifact naming, root `dset.toml` optional-capability settings, default/opt-in validation, and self-application without renaming stable history.
 - [x] **DSET-TASK-GOV-053:** Require and self-apply one-level-down Mermaid architecture views at the project and every enabled layer/feature/feature-group hub, with reusable templates and regression proof.
 - [x] **DSET-TASK-GOV-054:** Define and self-apply narrowest-common-scope ownership so project-level artifacts own cross-child truth, Contracts, end-to-end QA, cross-cutting policy, integration, release/readiness, and cross-owner work without duplicating child detail.
+- [x] **DSET-TASK-GOV-055:** Define minimal artifact inheritance with canonical `child_of`, derived `parent_to`, direct parent applicability when no child exists, and local Decision implementation or cancellation limited to its subtree.

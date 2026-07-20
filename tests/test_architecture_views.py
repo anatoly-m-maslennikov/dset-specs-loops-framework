@@ -73,6 +73,21 @@ class ArchitectureViewTests(unittest.TestCase):
         self.assertIn("Project-level truth owns only concerns", root)
         self.assertIn("narrowest common structural owner", root)
 
+    def test_artifact_inheritance_uses_only_parent_and_child(self) -> None:
+        live = ROOT / "dset/scopes/gov/governance/architecture.md"
+        template = ROOT / "dset/scopes/gov/templates/governance/core-v1/architecture.md"
+        content = live.read_text(encoding="utf-8")
+        self.assertEqual(content, template.read_text(encoding="utf-8"))
+        for phrase in (
+            "new local child stores `child_of`",
+            "`parent_to` is the derived",
+            "parent applies directly",
+            "cancel it for that scope and its descendants",
+            "never changes ancestors or sibling scopes",
+            "Inheritance adds no `applies_to`",
+        ):
+            self.assertIn(phrase, content)
+
 
 if __name__ == "__main__":
     unittest.main()

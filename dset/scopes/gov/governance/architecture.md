@@ -162,3 +162,20 @@ Invariants and Constraints; system architecture and integration topology;
 whole-project version, release, readiness, and publication artifacts; and
 cross-owner Decisions, Questions, Problems, and Analysis Reports. Parent
 artifacts link child-owned detail and never duplicate it as parallel truth.
+
+## Artifact inheritance
+
+Project, feature-group, feature, and layer artifacts inherit through only two
+directions: a new local child stores `child_of`, and `parent_to` is the derived
+reverse view. Never edit an immutable parent merely to register a later child.
+
+Within a target feature or layer, the nearest inherited parent applies directly
+when no local child exists. A local child Decision may describe how the parent
+is implemented, replace it, or cancel it for that scope and its descendants.
+The local Decision never changes ancestors or sibling scopes. Parent and child
+otherwise govern together. Multiple incompatible active children of the same
+parent in one scope stop as unresolved authority.
+
+Inheritance adds no `applies_to`, `realizes`, `implements`, `conforms_to`, or
+override relation. The accepted child directive contains the local effect;
+`child_of` and derived `parent_to` contain the hierarchy.

@@ -80,6 +80,13 @@ architecture, whole-project release/readiness history, and cross-owner
 Decisions, Questions, Problems, and Analysis Reports. Parent artifacts link to
 child detail instead of duplicating it.
 
+Artifacts may inherit down the same structural tree. A new local artifact
+stores only `child_of`; `parent_to` is the derived reverse view so an immutable
+parent never needs a later edit. If a feature or layer has no child, it applies
+the nearest inherited parent directly. A local child Decision may define its
+implementation, replace it, or cancel it within that subtree without changing
+siblings or ancestors. No other inheritance relation is needed.
+
 ## Current truth and history
 
 Active source atoms authorize current rules or accepted behavior.

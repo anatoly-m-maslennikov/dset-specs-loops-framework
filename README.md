@@ -46,6 +46,11 @@ cross-owner Questions or Problems. Every claim otherwise stays with the
 narrowest common structural owner; the root links child detail without copying
 it.
 
+Artifacts inherit down this structure through `child_of`; `parent_to` is the
+derived reverse view. A layer with no child applies the inherited project
+artifact directly. A local child Decision may select its implementation or
+cancel it only for that layer and its descendants, leaving siblings unchanged.
+
 ## Core loop
 
 The core workflow separates unresolved context, atomic authority, compiled

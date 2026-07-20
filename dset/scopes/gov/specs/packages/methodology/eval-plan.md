@@ -26,6 +26,7 @@ Applicable qualitative and probabilistic proof is layer-owned. The representativ
 | **DSET-EVAL-GOV-020** | Artifact-name readability | A cold reviewer identifies the primary artifact role from the base ID/filename without mistaking an optional subtype for the stable classification axis, and can find the subtype inside the artifact when needed |
 | **DSET-EVAL-GOV-021** | One-level architecture comprehension | From any project, feature-group, feature, or layer hub, a cold reviewer can identify the immediate structure below it and route to the correct owner without needing a single unreadable whole-system diagram or treating the visualization as authority |
 | **DSET-EVAL-GOV-022** | Structural-scope ownership | Reviewers place each claim at the narrowest common structural ancestor of every affected owner and subject; keep feature-only high-level claims local; place cross-child Contracts, shared semantics, end-to-end QA, cross-cutting policy, integration, release/readiness, and cross-owner Questions or Problems at the correct common scope; and never duplicate child truth into a parent |
+| **DSET-EVAL-GOV-023** | Artifact inheritance clarity | Reviewers use only `child_of` and derived `parent_to`; apply a parent directly where no local child exists; follow a local implementation, replacement, or cancellation Decision only inside its subtree; preserve parent immutability and sibling behavior; and stop on incompatible same-scope children without inventing another relation |
 
 ## Calibration and evidence
 

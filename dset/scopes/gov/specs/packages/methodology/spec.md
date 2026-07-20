@@ -566,3 +566,28 @@ Contract and one end-to-end Test, so the group owns those artifacts. A privacy
 Invariant and release-readiness gate apply across multiple groups, so the
 project owns them. A high-level requirement affecting only one feature remains
 with that feature despite its abstraction.
+
+## DSET-REQUIREMENT-GOV-033 — Artifact inheritance is parent-to-child
+
+Project, feature-group, feature, and layer artifacts may form an inheritance
+tree using only `child_of` and `parent_to`. A newly emitted local child stores
+`child_of: <parent-id>`. Atomic parents remain immutable, so `parent_to` is a
+derived reverse view rather than a field appended to an existing parent.
+
+For any target feature or layer, the nearest inherited parent applies directly
+when the target has no local child. When a child exists, parent and child govern
+together unless the child's accepted directive explicitly replaces or cancels
+the parent within that local scope. The effect continues into that child's
+descendants but never changes ancestors or sibling scopes. A local child may
+therefore define how its parent is implemented or cancel the parent for that
+feature or layer.
+
+Inheritance requires no separate applicability, realization, implementation,
+conformance, or override relation. Multiple incompatible active children for
+the same parent and scope are unresolved authority and must stop.
+
+**Scenario DSET-SCENARIO-GOV-034:** A project Requirement has no TOOL child, so
+TOOL applies it directly. SKILL emits a `child_of` Decision selecting its local
+implementation, while OPS emits a `child_of` Decision cancelling the parent for
+OPS. The derived `parent_to` view shows both children; neither local Decision
+changes TOOL, its sibling, or the immutable project Requirement.
