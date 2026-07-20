@@ -248,9 +248,7 @@ def plan_install(
         source_skill = skills_root / skill_id
         _validate_skill_shape(source_skill, host)
         target = destination_root / skill_id
-        source_digest = _rendered_skill_digest(
-            source_skill, host, launcher_command
-        )
+        source_digest = _rendered_skill_digest(source_skill, host, launcher_command)
         installed_digest = tree_digest(target) if target.is_dir() else None
         if target.exists() and not target.is_dir():
             status = "conflict"
@@ -300,9 +298,7 @@ def apply_install(actions: Sequence[InstallAction]) -> list[InstallationProof]:
             )
         if (
             source.name != action.skill_id
-            or _rendered_skill_digest(
-                source, action.host, action.launcher_command
-            )
+            or _rendered_skill_digest(source, action.host, action.launcher_command)
             != action.source_digest
         ):
             raise SkillDistributionError(
@@ -531,9 +527,7 @@ def _launcher_command(runtime_destination: Path) -> str:
     return shlex.join([sys.executable, str(launcher)])
 
 
-def _rendered_skill_digest(
-    source: Path, host: str, launcher_command: str
-) -> str:
+def _rendered_skill_digest(source: Path, host: str, launcher_command: str) -> str:
     with tempfile.TemporaryDirectory(prefix="dset-skill-render-") as raw:
         rendered = Path(raw) / source.name
         _render_skill_package(source, rendered, host, launcher_command)

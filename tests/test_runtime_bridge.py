@@ -259,9 +259,7 @@ class RuntimeBridgeTests(unittest.TestCase):
                 status="succeeded",
             )
             self.assertEqual(terminal["status"], "succeeded")
-            final_checkpoint = read_runtime(
-                adopter, session_id="session-closure"
-            )
+            final_checkpoint = read_runtime(adopter, session_id="session-closure")
             assert final_checkpoint is not None
             self.assertEqual(final_checkpoint["status"], "completed")
             self.assertEqual(final_checkpoint["active_run_ids"], [])
