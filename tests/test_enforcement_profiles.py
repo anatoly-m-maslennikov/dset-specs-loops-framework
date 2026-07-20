@@ -46,6 +46,10 @@ class EnforcementProfileTests(unittest.TestCase):
         self.assertEqual(self.profile["warning_baseline"]["warning_count"], 203)
         self.assertEqual(self.profile["warning_baseline"]["error_count"], 0)
         self.assertIn("OYOHA-DSET-001", self.profile["known_blockers"])
+        observed = cast(dict[str, Any], self.profile["observed"])
+        ci = cast(dict[str, Any], observed["ci"])
+        self.assertEqual(ci["active_workflows"], 0)
+        self.assertEqual(ci["candidate_jobs"], ["lint", "typecheck", "test"])
 
     def test_invalid_profile_boundaries_fail_closed(self) -> None:
         cases: list[tuple[str, Any]] = []

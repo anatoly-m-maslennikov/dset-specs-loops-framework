@@ -50,6 +50,14 @@ observed:
     source_typescript: 348
     test_typescript: 254
     lint_files: 602
+  ci:
+    active_workflows: 0
+    disabled_root: .github/workflows-disabled
+    candidate_workflow: .github/workflows-disabled/ci.yml
+    candidate_jobs:
+      - lint
+      - typecheck
+      - test
   hard_failures:
     typecheck: 1
     lint: 3
