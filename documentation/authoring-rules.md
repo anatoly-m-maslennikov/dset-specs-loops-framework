@@ -86,6 +86,12 @@ When two entities are mutually related, define each independently first using sh
   for disabled levels.
 - Keep each diagram one level deep, link its owners, and treat it as navigation
   or compiled architecture rather than authority.
+- Own every claim at the narrowest common structural ancestor of its affected
+  owners and subjects. Project-level truth is for genuinely cross-child or
+  whole-project concerns, including shared Contracts and semantics, end-to-end
+  QA, cross-cutting Invariants/Constraints, integration architecture, release
+  readiness, and cross-owner Questions or Problems. High-level wording alone
+  does not move a child-owned claim upward; parents link rather than duplicate.
 
 ## Rationale and Decisions
 

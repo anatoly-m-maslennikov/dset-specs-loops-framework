@@ -7,7 +7,7 @@ case and criterion.
 | Owning plan | Applicable Eval IDs |
 |---|---|
 | [META](../../../meta/specs/packages/methodology/eval-plan.md) | `DSET-EVAL-META-008..009` |
-| [GOV](../../../gov/specs/packages/methodology/eval-plan.md) | `DSET-EVAL-GOV-007..021` |
+| [GOV](../../../gov/specs/packages/methodology/eval-plan.md) | `DSET-EVAL-GOV-007..022` |
 | [SKILL](../../specs/packages/methodology/eval-plan.md) | `DSET-EVAL-SKILL-002..008` |
 | [OPS](../../../ops/specs/packages/methodology/eval-plan.md) | `DSET-EVAL-OPS-002..003`, `DSET-EVAL-OPS-010` |
 
@@ -19,7 +19,7 @@ Connected accepted IDs are `DSET-EVAL-META-008`, `DSET-EVAL-META-009`,
 `DSET-EVAL-GOV-017`,
 `DSET-EVAL-GOV-018`,
 `DSET-EVAL-GOV-019`,
-`DSET-EVAL-GOV-020`, `DSET-EVAL-GOV-021`,
+`DSET-EVAL-GOV-020`, `DSET-EVAL-GOV-021`, `DSET-EVAL-GOV-022`,
 `DSET-EVAL-SKILL-002`,
 `DSET-EVAL-SKILL-003`, `DSET-EVAL-SKILL-004`, `DSET-EVAL-SKILL-005`,
 `DSET-EVAL-SKILL-006`, `DSET-EVAL-SKILL-007`, `DSET-EVAL-SKILL-008`,

@@ -538,3 +538,31 @@ TOOL, SKILL, and OPS. Each layer hub shows only its own main functions. A
 product repository with enabled feature groups instead shows groups at the
 root, features in each group hub, and main functions inside each feature hub;
 it creates no empty layer or feature-group diagram for disabled structures.
+
+## DSET-REQUIREMENT-GOV-032 — Global truth owns only cross-child concerns
+
+When features, feature groups, or layers are enabled, every atomic claim and
+compiled artifact must be owned by the narrowest structural scope that fully
+contains every affected owner and subject. A claim must not move to project
+scope merely because it is abstract, important, reused, or described at a high
+level.
+
+The project-level artifact set owns project-wide outcomes, user journeys, and
+requirements; Contracts and dependency rules between immediate children;
+shared API, data, and event semantics; end-to-end Tests and Evaluations;
+cross-cutting Invariants and Constraints such as security, privacy,
+compatibility, supportability, performance budgets, and licensing; whole-
+project architecture, integration topology, version scope, release planning,
+readiness, and publication history; and cross-owner Decisions, Questions,
+Problems, Conflicts, Risks, Opportunities, and Analysis Reports.
+
+The rule applies recursively. A concern spanning features inside one feature
+group belongs to that group; a concern spanning feature groups or layers
+belongs to the project. Parent specifications and atoms link child-owned detail
+without copying or becoming a competing authority.
+
+**Scenario DSET-SCENARIO-GOV-033:** Two features in one group share an API
+Contract and one end-to-end Test, so the group owns those artifacts. A privacy
+Invariant and release-readiness gate apply across multiple groups, so the
+project owns them. A high-level requirement affecting only one feature remains
+with that feature despite its abstraction.

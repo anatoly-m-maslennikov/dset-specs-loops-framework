@@ -22,6 +22,7 @@ the implementation scope to its current layer-owned Requirement owners.
 | Independent MECE artifact classification and Analysis Report boundaries | `DSET-REQUIREMENT-GOV-029` |
 | Type-first artifact names and independently selectable subtype-name capability | `DSET-REQUIREMENT-GOV-030` |
 | One-level-down project/group/feature/layer architecture views | `DSET-REQUIREMENT-GOV-031` |
+| Narrowest-common-scope ownership for project, group, feature, and layer truth | `DSET-REQUIREMENT-GOV-032` |
 | Five flat Release lifecycle artifacts | `DSET-REQUIREMENT-OPS-013` |
 | Role-aware handling for every governed conflict pairing, with priority selection only where permitted | `DSET-REQUIREMENT-TOOL-019` |
 
@@ -42,6 +43,7 @@ Connected accepted IDs are `DSET-REQUIREMENT-META-007`,
 `DSET-REQUIREMENT-GOV-028`,
 `DSET-REQUIREMENT-GOV-029`,
 `DSET-REQUIREMENT-GOV-030`, `DSET-REQUIREMENT-GOV-031`,
+`DSET-REQUIREMENT-GOV-032`,
 `DSET-REQUIREMENT-TOOL-018`,
 `DSET-REQUIREMENT-TOOL-019`,
 `DSET-REQUIREMENT-SKILL-002`, `DSET-REQUIREMENT-SKILL-003`,
@@ -68,6 +70,16 @@ separate Decision accepts it; Specification/Design compiles it; Evidence Record
 captures a Test run; Verification assesses the evidence; and Readiness Record
 makes the explicit release gate disposition without any workflow-derived
 reclassification.
+
+## ADDED — DSET-REQUIREMENT-GOV-032 Structural-scope ownership
+
+Every claim and compiled artifact belongs to the narrowest common structural
+scope containing all affected owners and subjects. Project-level truth owns
+only genuinely cross-child or whole-project concerns—shared outcomes and
+requirements, Contracts and semantics, end-to-end QA, cross-cutting policy,
+integration architecture, release/readiness, and cross-owner unresolved work.
+High-level wording does not promote a child-owned claim, and parents link rather
+than duplicate child detail.
 
 ## ADDED — DSET-REQUIREMENT-OPS-012 Integration delivery is the default
 

@@ -146,3 +146,19 @@ consistent with current accepted truth. It is Navigation or compiled
 Specification/Architecture, never independent authority. Cross-level details
 belong in the child view rather than expanding one whole-project diagram until
 it becomes unreadable.
+
+## Project-level and child-level ownership
+
+Every claim and compiled artifact belongs to the narrowest common structural
+ancestor that contains all affected owners and subjects. A concern spanning
+features inside one feature group belongs to that group; a concern spanning
+groups or layers belongs to the project. Abstract, important, or reusable does
+not by itself mean project-level.
+
+The project-level set owns genuinely project-wide outcomes, user journeys, and
+requirements; cross-child Contracts and dependency rules; shared API, data,
+and event semantics; end-to-end Tests and Evaluations; cross-cutting
+Invariants and Constraints; system architecture and integration topology;
+whole-project version, release, readiness, and publication artifacts; and
+cross-owner Decisions, Questions, Problems, and Analysis Reports. Parent
+artifacts link child-owned detail and never duplicate it as parallel truth.

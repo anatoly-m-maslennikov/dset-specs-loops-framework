@@ -67,6 +67,19 @@ shows its main functions, capabilities, or components. Disabled optional levels
 need no placeholder. These views provide the helicopter view at the reader's
 current scale and link canonical owners without replacing them.
 
+The project-level artifact set is not a summary copy of every child. Place each
+claim at the narrowest common structural ancestor that contains all affected
+owners and subjects. This makes a feature group the owner of concerns spanning
+only its features, and the project the owner of concerns spanning groups or
+layers. Abstraction, importance, or reuse does not promote a child-owned claim.
+
+Project-level truth owns genuinely cross-child outcomes and requirements,
+Contracts and dependency rules, shared API/data/event semantics, end-to-end
+Tests and Evaluations, cross-cutting Invariants and Constraints, integration
+architecture, whole-project release/readiness history, and cross-owner
+Decisions, Questions, Problems, and Analysis Reports. Parent artifacts link to
+child detail instead of duplicating it.
+
 ## Current truth and history
 
 Active source atoms authorize current rules or accepted behavior.

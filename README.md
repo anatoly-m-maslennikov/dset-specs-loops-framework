@@ -38,6 +38,14 @@ flowchart LR
     P --> OPS
 ```
 
+Project-level truth owns only concerns that cross these immediate owners or
+apply to the whole project: shared outcomes and requirements, inter-layer
+Contracts and semantics, end-to-end Tests and Evaluations, cross-cutting
+Invariants and Constraints, integration architecture, release/readiness, and
+cross-owner Questions or Problems. Every claim otherwise stays with the
+narrowest common structural owner; the root links child detail without copying
+it.
+
 ## Core loop
 
 The core workflow separates unresolved context, atomic authority, compiled

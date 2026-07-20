@@ -55,6 +55,24 @@ class ArchitectureViewTests(unittest.TestCase):
         self.assertIn("does not\ncreate empty diagrams", content)
         self.assertIn("Each view stays one level deep", content)
 
+    def test_global_truth_owns_only_cross_child_concerns(self) -> None:
+        live = ROOT / "dset/scopes/gov/governance/architecture.md"
+        template = ROOT / "dset/scopes/gov/templates/governance/core-v1/architecture.md"
+        content = live.read_text(encoding="utf-8")
+        self.assertEqual(content, template.read_text(encoding="utf-8"))
+        for phrase in (
+            "narrowest common structural",
+            "Abstract, important, or reusable does",
+            "cross-child Contracts and dependency rules",
+            "end-to-end Tests and Evaluations",
+            "never duplicate it as parallel truth",
+        ):
+            self.assertIn(phrase, content)
+
+        root = (ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertIn("Project-level truth owns only concerns", root)
+        self.assertIn("narrowest common structural owner", root)
+
 
 if __name__ == "__main__":
     unittest.main()
