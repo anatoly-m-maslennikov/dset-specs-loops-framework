@@ -15,6 +15,7 @@ from .dependencies import validate_dependency_policy
 from .diagnostics import Diagnostic
 from .frontmatter import FrontmatterError
 from .frontmatter import metadata as frontmatter_metadata
+from .frontmatter import parse as parse_frontmatter
 from .governance import validate_governance
 from .health import health_is_fresh, health_path
 from .layout import RepositoryLayout, discover_layout
@@ -2441,7 +2442,11 @@ def _validate_markdown(root: Path) -> list[Diagnostic]:
         if any(part in MARKDOWN_IGNORED_PARTS for part in path.relative_to(root).parts):
             continue
         text = path.read_text(encoding="utf-8")
-        rendered = _without_code(text)
+        try:
+            parsed = parse_frontmatter(text)
+        except FrontmatterError:
+            parsed = None
+        rendered = _without_code(parsed[1] if parsed is not None else text)
         if "[[" in rendered or "![[" in rendered:
             diagnostics.append(
                 _diag("DSET-E114", path, "Obsidian wiki links are not portable")

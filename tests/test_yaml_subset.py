@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -7,6 +8,7 @@ from dset_toolchain.frontmatter import parse as parse_frontmatter
 from dset_toolchain.frontmatter import render as render_frontmatter
 from dset_toolchain.layout import discover_layout
 from dset_toolchain.toml_codec import loads as load_toml
+from dset_toolchain.validation import _validate_markdown
 from dset_toolchain.yaml_subset import dump, load, loads
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -54,6 +56,19 @@ class YamlSubsetTests(unittest.TestCase):
         rendered = render_frontmatter({"id": "DSET-ITEM-001"}, "Body\n")
         self.assertTrue(rendered.startswith("+++\n"))
         self.assertEqual(parse_frontmatter(rendered)[2], "toml")  # type: ignore[index]
+
+    def test_toml_array_tables_in_frontmatter_are_not_wiki_links(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            document = root / "dset" / "record.md"
+            document.parent.mkdir()
+            document.write_text(
+                "+++\n[[relations]]\ntype = \"check_of\"\n"
+                "target = \"DSET-REQUIREMENT-001\"\n+++\n\nBody.\n",
+                encoding="utf-8",
+            )
+
+            self.assertEqual(_validate_markdown(root), [])
 
 
 if __name__ == "__main__":

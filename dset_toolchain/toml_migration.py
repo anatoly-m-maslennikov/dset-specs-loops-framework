@@ -250,6 +250,7 @@ def apply_toml_migration(
             _atomic_write_text(path, writes[path])
         for path in sorted(deletes):
             path.unlink()
+        _reconcile_migrated_authority(plan.root)
         if regenerates_bundle:
             _atomic_write_text(bundle_path, _render_bootstrap_bundle(plan.root))
         _validate_staged_tree(plan, writes)
@@ -771,6 +772,33 @@ def _render_bootstrap_bundle(root: Path) -> str:
     return rendered
 
 
+def _reconcile_migrated_authority(root: Path) -> None:
+    """Rebase governed digests and derived views in a fresh interpreter."""
+
+    module = root / "dset_toolchain" / "migration_reconcile.py"
+    if not module.is_file():
+        return
+    try:
+        completed = subprocess.run(
+            [sys.executable, "-m", "dset_toolchain.migration_reconcile", "."],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+    except subprocess.TimeoutExpired as error:
+        raise TomlMigrationError(
+            "migrated authority reconciliation timed out"
+        ) from error
+    if completed.returncode:
+        message = completed.stderr.strip() or completed.stdout.strip()
+        raise TomlMigrationError(
+            "migrated authority reconciliation failed"
+            + (f": {message}" if message else f" (exit {completed.returncode})")
+        )
+
+
 def _validate_migrated_runtime(root: Path) -> None:
     """Run the migrated tree in a new interpreter before committing the cutover."""
 
@@ -818,7 +846,11 @@ def prove_runtime_readiness(root: Path) -> dict[str, object]:
         root, list(source_plan.entries), list(source_plan.references)
     )
     source_tool_digest = _tool_digest(root)
-    with tempfile.TemporaryDirectory(prefix="dset-toml-proof-", dir=root.parent) as raw:
+    with tempfile.TemporaryDirectory(
+        prefix="dset-toml-proof-",
+        dir=root.parent,
+        ignore_cleanup_errors=True,
+    ) as raw:
         staged = Path(raw) / "repository"
         shutil.copytree(root, staged, ignore=_proof_ignore)
         staged_plan = apply_toml_migration(staged, bypass_runtime_readiness=True)
