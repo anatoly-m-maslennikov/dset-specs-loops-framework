@@ -302,9 +302,7 @@ def _validate_lifecycle(root: Path, known_ids: set[str]) -> list[Diagnostic]:
     return diagnostics
 
 
-def _validate_event(
-    root: Path, event: object, known_ids: set[str]
-) -> dict[str, Any]:
+def _validate_event(root: Path, event: object, known_ids: set[str]) -> dict[str, Any]:
     if not isinstance(event, dict):
         raise ValueError("every lifecycle event must be a mapping")
     event_id = event.get("id")
@@ -347,9 +345,7 @@ def _validate_event(
         isinstance(item, str) and ID_PATTERN.fullmatch(item) for item in related
     ):
         raise ValueError("lifecycle related IDs must be canonical")
-    if event_kind == "absorbed" and (
-        len(related) != 1 or related[0] not in known_ids
-    ):
+    if event_kind == "absorbed" and (len(related) != 1 or related[0] not in known_ids):
         raise ValueError("absorbed event requires one resolving atom")
     if event_kind == "priority_changed":
         settings, _ = load_project_settings(root)
@@ -383,9 +379,7 @@ def _validate_event_graph(events: list[object]) -> None:
             current = edges[current]
 
 
-def _known_semantic_ids(
-    root: Path, atoms: dict[str, SemanticAtom]
-) -> set[str]:
+def _known_semantic_ids(root: Path, atoms: dict[str, SemanticAtom]) -> set[str]:
     identifiers = set(atoms)
     layout = discover_layout(root)
     if layout.intake_path.is_file():
@@ -425,9 +419,7 @@ def _known_semantic_ids(
     return identifiers
 
 
-def _validate_ledger(
-    root: Path, atoms: dict[str, SemanticAtom]
-) -> list[Diagnostic]:
+def _validate_ledger(root: Path, atoms: dict[str, SemanticAtom]) -> list[Diagnostic]:
     path = _ledger_path(root)
     if not path.is_file():
         if atoms:
@@ -538,8 +530,11 @@ def _valid_sessions(value: object) -> bool:
 
 
 def _ignored(relative: Path) -> bool:
-    ignored = {".git", ".venv", "__pycache__", "dist", ".dset"}
-    return any(part in ignored for part in relative.parts)
+    ignored = {".git", ".cache", ".venv", "__pycache__", "dist", ".dset"}
+    return any(
+        part in ignored or (part.startswith(".") and part != ".github")
+        for part in relative.parts
+    )
 
 
 def _digest(path: Path) -> str:

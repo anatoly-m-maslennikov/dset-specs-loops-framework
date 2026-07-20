@@ -10,6 +10,7 @@ from urllib.parse import unquote
 from . import __version__
 from .diagnostics import Diagnostic
 from .governance import validate_governance
+from .health import health_is_fresh, health_path
 from .layout import RepositoryLayout, discover_layout
 from .lineage import validate_artifact_lineage
 from .profiles import VALID_PROFILES, required_artifacts
@@ -107,8 +108,7 @@ def validate_repository(root: Path) -> list[Diagnostic]:
     settings, settings_issues = load_project_settings(root)
     include_subtype_in_names = settings.artifact_subtype_in_names
     diagnostics.extend(
-        _diag("DSET-E157", root / "dset.toml", issue)
-        for issue in settings_issues
+        _diag("DSET-E157", root / "dset.toml", issue) for issue in settings_issues
     )
     try:
         layout = discover_layout(root)
@@ -167,6 +167,10 @@ def validate_repository(root: Path) -> list[Diagnostic]:
     diagnostics.extend(_validate_markdown(root))
     diagnostics.extend(validate_semantic_atoms(root))
     diagnostics.extend(validate_artifact_lineage(root))
+    if health_path(root).is_file() and not health_is_fresh(root):
+        diagnostics.append(
+            _diag("DSET-E162", health_path(root), "project health is stale")
+        )
     return sorted(set(diagnostics))
 
 

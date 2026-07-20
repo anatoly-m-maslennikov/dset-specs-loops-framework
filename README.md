@@ -118,8 +118,8 @@ real failures using suitable logs, traces, provenance, state, and runbooks.
 |---|---|---|
 | Methodology | [Methodology hub](methodology/README.md) | Delivery stages, runtime/build rules, proof conventions, and external grounding |
 | Artifact governance | [Documentation architecture hub](documentation/README.md) | Artifact types, authoring rules, hubs, maintenance, and `documentation-v1` |
-| Project control plane | [DSET project hub](dset/README.md) | Accepted project truth, active/archive changes, schemas, templates, fixtures, traceability, migrations, and supportability |
-| Executable CLI | [`dset_toolchain/`](dset_toolchain/) | Dependency-light lifecycle, governance resolution/materialization, validation, traceability, archive, and bounded self-hosting |
+| Project control plane | [DSET project hub](dset/README.md) | Accepted project truth, active/archive changes, schemas, templates, fixtures, [project health](dset/scopes/gov/generated/DSET-DERIVED-VIEW-001-project-health.md), traceability, migrations, and supportability |
+| Executable CLI | [`dset_toolchain/`](dset_toolchain/) | Dependency-light lifecycle, governance resolution/materialization, immutable-atom sealing, conflict disposition, health rendering, validation, traceability, archive, and bounded self-hosting |
 | Agent workflows | [Skills hub](skills/README.md) | Five thin lifecycle, clarification, diagnosis, prototype, and release wrappers |
 | Delivery and provenance | [Delivery policy](.github/DELIVERY.md) and [third-party notices](THIRD_PARTY_NOTICES.md) | Protected publication path and external-source/license boundaries |
 
@@ -140,7 +140,8 @@ methodology document set. The current `0.3.1` state includes:
   self-hosting, persistent runtime checkpoints, host skill distribution, and
   coordinated release preparation;
 - schemas, templates, fixtures, migration guidance, generated traceability, and
-  provenance records;
+  provenance records, plus a deterministic Markdown project-health view with
+  explicit coverage denominators and stale/unknown dispositions;
 - 16 repository-native skills: one catch-all lifecycle orchestrator, one thin
   direct wrapper per stable lifecycle mode, and two bounded pre-resolution
   entrypoints, plus governing contracts for skill-run logs, session

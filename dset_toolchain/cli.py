@@ -23,6 +23,7 @@ from .governance import (
     resolve_workflow,
     validate_governance,
 )
+from .health import health_is_fresh, health_path, render_health, write_health
 from .layout import discover_layout
 from .release import check_release, plan_release, prepare_release
 from .runtime_bridge import (
@@ -167,9 +168,7 @@ def build_parser() -> argparse.ArgumentParser:
     artifact = commands.add_parser(
         "artifact", help="assess immutable artifact emission"
     )
-    artifact_commands = artifact.add_subparsers(
-        dest="artifact_command", required=True
-    )
+    artifact_commands = artifact.add_subparsers(dest="artifact_command", required=True)
     artifact_assess = artifact_commands.add_parser(
         "assess", help="check ambiguity and broader-scope eligibility"
     )
@@ -193,6 +192,12 @@ def build_parser() -> argparse.ArgumentParser:
     _root_argument(conflict)
     conflict.add_argument("--candidate", type=Path, required=True)
     conflict.add_argument("--output", type=Path)
+
+    health = commands.add_parser("health", help="render derived project health")
+    _root_argument(health)
+    health_mode = health.add_mutually_exclusive_group()
+    health_mode.add_argument("--write", action="store_true")
+    health_mode.add_argument("--check", action="store_true")
 
     runtime = commands.add_parser("runtime", help="bridge host skill run state")
     runtime_commands = runtime.add_subparsers(dest="runtime_command", required=True)
@@ -444,6 +449,21 @@ def main(argv: list[str] | None = None) -> int:
                 print(path)
             else:
                 print(json.dumps(result, indent=2, sort_keys=True))
+            return 0
+        if args.command == "health":
+            root = _repository_root(args.root)
+            if args.check:
+                if health_is_fresh(root):
+                    print("DSET project health is fresh")
+                    return 0
+                path = health_path(root).relative_to(root)
+                print(f"DSET-E162 {path}: project health is stale")
+                return 1
+            if args.write:
+                path = write_health(root)
+                print(path.relative_to(root).as_posix())
+                return 0
+            sys.stdout.write(render_health(root))
             return 0
         if args.command == "runtime":
             root = _repository_root(args.root)
