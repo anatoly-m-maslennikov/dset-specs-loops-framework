@@ -2,13 +2,12 @@ from __future__ import annotations
 
 import hashlib
 import os
-import re
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from typing import Any
 
-from .compilation import active_authority_ids
+from .compilation import active_authority_ids, projected_authority_ids
 from .frontmatter import FrontmatterError
 from .frontmatter import format_for_path as frontmatter_format_for_path
 from .frontmatter import metadata as frontmatter_metadata
@@ -20,20 +19,7 @@ from .semantic_types import build_semantic_classification_index
 from .settings import load_project_settings
 from .yaml_subset import YamlSubsetError, load
 
-ID_RE = re.compile(r"\b[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+-[0-9]{3,}\b")
-DECISION_KINDS = frozenset(
-    {
-        "DECISION",
-        "REQUIREMENT",
-        "CONSTRAINT",
-        "CONTRACT",
-        "STORY",
-        "OUTCOME",
-        "SCENARIO",
-        "INVARIANT",
-    }
-)
-QA_KINDS = frozenset({"TEST", "EVAL", "EVALUATION"})
+INACTIVE_STATUSES = frozenset({"absorbed", "rejected", "retired", "withdrawn"})
 IGNORED_PARTS = frozenset(
     {
         ".git",
@@ -82,9 +68,8 @@ def build_health_model(root: Path) -> dict[str, Any]:
         and atom.emission_status == "accepted"
         and atom.semantic_id in authorities
     }
-    qa_ids = _qa_ids(root, atoms)
-    projections = _evergreen_text(root)
     relations = build_relation_index(root)
+    qa_ids = _qa_ids(root, atoms, lifecycle)
     commit_edges = {
         str(item["target"])
         for item in relations
@@ -92,13 +77,10 @@ def build_health_model(root: Path) -> dict[str, Any]:
         and item["type"] == "implementation_of"
         and isinstance(item.get("target"), str)
     }
-    proof_text = _proof_text(root)
-    qa_plan_text = _qa_plan_text(root)
-
-    compiled = _coverage_compiled(authorities, projections)
+    compiled = _coverage_compiled(authorities, projected_authority_ids(root))
     implemented = _coverage_implemented(authorities, modern_authorities, commit_edges)
-    qa_coverage = _coverage_qa(authorities, qa_plan_text)
-    proof_coverage = _coverage_proof(qa_ids, proof_text)
+    qa_coverage = _coverage_qa(authorities, qa_ids, relations)
+    proof_coverage = _coverage_proof(qa_ids, relations)
 
     type_counts = Counter(item["artifact_type"] for item in artifacts)
     subtype_counts = Counter(
@@ -107,7 +89,17 @@ def build_health_model(root: Path) -> dict[str, Any]:
         if item["artifact_subtype"] is not None
     )
     layer_counts = Counter(str(item["layer"]) for item in artifacts)
-    role_counts = Counter(_role(str(item["artifact_type"])) for item in artifacts)
+    role_counts = Counter(
+        _role(
+            str(item["artifact_type"]),
+            (
+                str(item["artifact_subtype"])
+                if item["artifact_subtype"] is not None
+                else None
+            ),
+        )
+        for item in artifacts
+    )
     priority_counts: Counter[str] = Counter()
     status_counts: Counter[str] = Counter()
     atom_rows: list[dict[str, Any]] = []
@@ -193,9 +185,7 @@ def build_health_model(root: Path) -> dict[str, Any]:
                 sorted(Counter(str(item["origin"]) for item in relations).items())
             ),
             "by_source_kind": dict(
-                sorted(
-                    Counter(str(item["source_kind"]) for item in relations).items()
-                )
+                sorted(Counter(str(item["source_kind"]) for item in relations).items())
             ),
         },
         "atoms": sorted(atom_rows, key=lambda item: str(item["id"])),
@@ -288,8 +278,7 @@ def render_health(root: Path) -> str:
             f"- **Forward relations:** {relation_counts['total']}",
             f"- **By type:** {_counter_text(relation_counts['by_type'])}",
             f"- **By origin:** {_counter_text(relation_counts['by_origin'])}",
-            "- **By source kind:** "
-            f"{_counter_text(relation_counts['by_source_kind'])}",
+            f"- **By source kind:** {_counter_text(relation_counts['by_source_kind'])}",
             "",
             "## Unresolved work",
             "",
@@ -428,11 +417,18 @@ def _classified_artifacts(root: Path) -> list[dict[str, Any]]:
     return artifacts
 
 
-def _qa_ids(root: Path, atoms: dict[str, Any]) -> set[str]:
+def _qa_ids(
+    root: Path, atoms: dict[str, Any], lifecycle: list[dict[str, Any]]
+) -> set[str]:
     identifiers = {
-        atom.semantic_id for atom in atoms.values() if atom.semantic_type == "qa"
+        atom.semantic_id
+        for atom in atoms.values()
+        if atom.semantic_type == "qa"
+        and atom.emission_status == "accepted"
+        and _current_status(atom.semantic_id, atom.emission_status, lifecycle)
+        not in INACTIVE_STATUSES
     }
-    for path in root.rglob("package.yaml"):
+    for path in discover_layout(root).structured_named_files(root, "package"):
         if not _canonical_package_manifest(root, path):
             continue
         try:
@@ -445,13 +441,19 @@ def _qa_ids(root: Path, atoms: dict[str, Any]) -> set[str]:
             values = data.get(field, [])
             if isinstance(values, list):
                 identifiers.update(
-                    str(item) for item in values if isinstance(item, str)
+                    str(item)
+                    for item in values
+                    if isinstance(item, str)
+                    and _current_status(str(item), "accepted", lifecycle)
+                    not in INACTIVE_STATUSES
                 )
     return identifiers
 
 
-def _coverage_compiled(authorities: set[str], text: str) -> Coverage:
-    covered = {identifier for identifier in authorities if identifier in text}
+def _coverage_compiled(
+    authorities: set[str], projected_authorities: set[str]
+) -> Coverage:
+    covered = authorities & projected_authorities
     gaps = tuple(sorted(authorities - covered))
     return Coverage(
         "Decision authority compiled into evergreen truth",
@@ -483,45 +485,36 @@ def _coverage_implemented(
     )
 
 
-def _coverage_qa(authorities: set[str], plan_text: str) -> Coverage:
-    covered: set[str] = set()
-    not_applicable: set[str] = set()
-    for line in plan_text.splitlines():
-        ids = set(ID_RE.findall(line))
-        owners = ids & authorities
-        if not owners:
-            continue
-        if "not applicable" in line.lower():
-            not_applicable.update(owners)
-        elif any(_kind(identifier) in QA_KINDS for identifier in ids):
-            covered.update(owners)
-    gaps = tuple(sorted(authorities - covered - not_applicable))
-    denominator = len(authorities) - len(not_applicable)
+def _coverage_qa(
+    authorities: set[str], qa_ids: set[str], relations: list[dict[str, Any]]
+) -> Coverage:
+    covered = {
+        str(item["target"])
+        for item in relations
+        if item.get("type") == "check_of"
+        and item.get("source") in qa_ids
+        and item.get("target") in authorities
+    }
+    gaps = tuple(sorted(authorities - covered))
     return Coverage(
         "Applicable authority connected to Test or Evaluation",
         len(covered),
-        denominator,
+        len(authorities),
         0,
-        len(not_applicable),
+        0,
         len(gaps),
         0,
         gaps,
     )
 
 
-def _coverage_proof(qa_ids: set[str], proof_text: str) -> Coverage:
-    covered: set[str] = set()
-    stale: set[str] = set()
-    for identifier in qa_ids:
-        positions = [line for line in proof_text.splitlines() if identifier in line]
-        if any(
-            "stale" in line.lower() or "historical" in line.lower()
-            for line in positions
-        ):
-            stale.add(identifier)
-        elif positions:
-            covered.add(identifier)
-    gaps = tuple(sorted(qa_ids - covered - stale))
+def _coverage_proof(qa_ids: set[str], relations: list[dict[str, Any]]) -> Coverage:
+    covered = {
+        str(item["target"])
+        for item in relations
+        if item.get("type") == "evidence_for" and item.get("target") in qa_ids
+    }
+    gaps = tuple(sorted(qa_ids - covered))
     return Coverage(
         "QA definitions connected to current evidence",
         len(covered),
@@ -529,46 +522,14 @@ def _coverage_proof(qa_ids: set[str], proof_text: str) -> Coverage:
         0,
         0,
         len(gaps),
-        len(stale),
+        0,
         gaps,
     )
 
 
-def _evergreen_text(root: Path) -> str:
-    paths = [
-        path
-        for path in root.rglob("*.md")
-        if not _path_ignored(root, path)
-        and _in_project_scope(root, path.relative_to(root))
-        and ("specs" in path.parts or "governance" in path.parts)
-    ]
-    return "\n".join(path.read_text(encoding="utf-8") for path in sorted(paths))
-
-
-def _qa_plan_text(root: Path) -> str:
-    paths = [
-        path
-        for path in root.rglob("*.md")
-        if not _path_ignored(root, path)
-        and _in_project_scope(root, path.relative_to(root))
-        and path.name in {"test-plan.md", "eval-plan.md"}
-    ]
-    return "\n".join(path.read_text(encoding="utf-8") for path in sorted(paths))
-
-
-def _proof_text(root: Path) -> str:
-    paths = [
-        path
-        for path in root.rglob("*.md")
-        if not _path_ignored(root, path)
-        and _in_project_scope(root, path.relative_to(root))
-        and "proofs" in path.parts
-    ]
-    return "\n".join(path.read_text(encoding="utf-8") for path in sorted(paths))
-
-
 def _lifecycle_events(root: Path) -> list[dict[str, Any]]:
-    path = discover_layout(root).governance_root / "lifecycle.yaml"
+    layout = discover_layout(root)
+    path = layout.structured_file(layout.governance_root, "lifecycle.toml")
     if not path.is_file():
         return []
     data = load(path)
@@ -734,23 +695,20 @@ def _layer(relative: Path) -> str:
     return "repository"
 
 
-def _role(artifact_type: str) -> str:
+def _role(artifact_type: str, artifact_subtype: str | None) -> str:
     if artifact_type == "atomic_record":
         return "atomic"
     if artifact_type in {"specification", "plan", "procedure"}:
         return "evergreen"
+    if artifact_type == "delivery":
+        if artifact_subtype in {"roadmap", "version_scope", "release_plan"}:
+            return "evergreen"
+        return "transactional"
     if artifact_type == "implementation":
         return "implementation"
-    if artifact_type in {"evidence_record", "change"}:
+    if artifact_type == "evidence_record":
         return "transactional"
     return "derived_or_navigation"
-
-
-def _kind(identifier: str) -> str:
-    for part in identifier.split("-"):
-        if part in DECISION_KINDS or part in QA_KINDS:
-            return part
-    return "UNKNOWN"
 
 
 def _legacy_intake_type(identifier: str, legacy_type: str) -> tuple[str, str | None]:

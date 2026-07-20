@@ -3,15 +3,19 @@ from __future__ import annotations
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 
 from dset_toolchain.adopter import create_adopter
 from dset_toolchain.health import (
+    _qa_ids,
     build_health_model,
     health_is_fresh,
     health_path,
     render_health,
     write_health,
 )
+from dset_toolchain.layout import discover_layout
+from dset_toolchain.yaml_subset import dump, load
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -78,6 +82,102 @@ class ProjectHealthTests(unittest.TestCase):
             self.assertGreaterEqual(coverage.denominator, 0)
             self.assertGreaterEqual(coverage.unknown, 0)
             self.assertGreaterEqual(coverage.stale, 0)
+
+    def test_prose_mentions_do_not_create_coverage(self) -> None:
+        package_root = self.root / "dset/specs/packages/sample"
+        manifest = discover_layout(self.root).structured_file(
+            package_root, "package.toml"
+        )
+        data = load(manifest)
+        assert isinstance(data, dict)
+        requirements = data["requirements"]
+        tests = data["tests"]
+        assert isinstance(requirements, list)
+        assert isinstance(tests, list)
+        requirements.append("DSET-REQUIREMENT-999")
+        tests.append("DSET-TEST-999")
+        manifest.write_text(dump(data, manifest), encoding="utf-8")
+
+        spec = self.root / "dset/specs/packages/sample/spec.md"
+        spec.write_text(
+            spec.read_text(encoding="utf-8")
+            + "\nLoose reference to DSET-REQUIREMENT-999.\n",
+            encoding="utf-8",
+        )
+        test_plan = self.root / "dset/specs/packages/sample/test-plan.md"
+        test_plan.write_text(
+            test_plan.read_text(encoding="utf-8")
+            + "\nDSET-TEST-999 mentions DSET-REQUIREMENT-999.\n",
+            encoding="utf-8",
+        )
+        proofs = self.root / "dset/changes/sample/proofs"
+        proofs.mkdir(parents=True, exist_ok=True)
+        (proofs / "mention.md").write_text(
+            "DSET-TEST-999 is mentioned without an evidence_for relation.\n",
+            encoding="utf-8",
+        )
+
+        coverage = {
+            item.name: item for item in build_health_model(self.root)["coverage"]
+        }
+
+        compiled = coverage["Decision authority compiled into evergreen truth"]
+        checked = coverage["Applicable authority connected to Test or Evaluation"]
+        evidenced = coverage["QA definitions connected to current evidence"]
+        self.assertIn("DSET-REQUIREMENT-999", compiled.gaps)
+        self.assertIn("DSET-REQUIREMENT-999", checked.gaps)
+        self.assertIn("DSET-TEST-999", evidenced.gaps)
+
+    def test_inactive_qa_is_excluded_from_current_evidence_coverage(self) -> None:
+        identifier = "DSET-TEST-998"
+        atom = SimpleNamespace(
+            semantic_id=identifier,
+            semantic_type="qa",
+            emission_status="accepted",
+        )
+
+        self.assertIn(identifier, _qa_ids(self.root, {identifier: atom}, []))
+        self.assertNotIn(
+            identifier,
+            _qa_ids(
+                self.root,
+                {identifier: atom},
+                [{"atom_id": identifier, "event": "absorbed"}],
+            ),
+        )
+
+    def test_delivery_roles_are_derived_from_direct_subtypes(self) -> None:
+        before = build_health_model(self.root)["artifact_counts"]["by_role"]
+        folder = self.root / "dset/delivery-role-fixtures"
+        folder.mkdir(parents=True)
+        subtypes = (
+            "roadmap",
+            "version_scope",
+            "release_plan",
+            "change",
+            "readiness_record",
+            "release_record",
+        )
+        for sequence, subtype in enumerate(subtypes, start=900):
+            (folder / f"DSET-DELIVERY-{sequence}.md").write_text(
+                "+++\n"
+                'artifact_type = "delivery"\n'
+                f'artifact_subtype = "{subtype}"\n'
+                f'artifact_id = "DSET-DELIVERY-{sequence}"\n'
+                'priority = "medium"\n'
+                "llm_session_ids = []\n"
+                "+++\n",
+                encoding="utf-8",
+            )
+
+        after = build_health_model(self.root)["artifact_counts"]["by_role"]
+
+        self.assertEqual(after["evergreen"] - before.get("evergreen", 0), 3)
+        self.assertEqual(after["transactional"] - before.get("transactional", 0), 3)
+        self.assertEqual(
+            after.get("derived_or_navigation", 0),
+            before.get("derived_or_navigation", 0),
+        )
 
 
 if __name__ == "__main__":

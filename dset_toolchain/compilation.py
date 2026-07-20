@@ -74,7 +74,8 @@ def compilation_path(root: Path) -> Path:
         if layout.layered
         else layout.dset_root / "generated"
     )
-    return layout.structured_file(generated, "compilation.yaml")
+    suffix = ".toml" if layout.manifest_path.suffix == ".toml" else ".yaml"
+    return layout.structured_file(generated, f"compilation{suffix}")
 
 
 def rendered_compilation(root: Path) -> str:
@@ -104,6 +105,18 @@ def active_authority_ids(root: Path) -> set[str]:
     return set(_authority_sources(root.resolve()))
 
 
+def projected_authority_ids(root: Path) -> set[str]:
+    """Return authorities with an explicit evergreen claim fragment."""
+    root = root.resolve()
+    sources = _authority_sources(root)
+    projections = _projection_paths(root)
+    return {
+        identifier
+        for identifier in sources
+        if any(_projection_fragments(path, identifier) for path in projections)
+    }
+
+
 def _authority_sources(root: Path) -> dict[str, Path]:
     lifecycle = _lifecycle_status(root)
     sources: dict[str, Path] = {}
@@ -127,7 +140,7 @@ def _authority_sources(root: Path) -> dict[str, Path]:
         identifier = match.group(1)
         if lifecycle.get(identifier) not in INACTIVE_EVENTS:
             sources[identifier] = path
-    for path in root.rglob("package.yaml"):
+    for path in discover_layout(root).structured_named_files(root, "package"):
         if _ignored(root, path) or "specs" not in path.parts:
             continue
         try:
@@ -159,7 +172,8 @@ def _projection_paths(root: Path) -> list[Path]:
 
 
 def _lifecycle_status(root: Path) -> dict[str, str]:
-    path = discover_layout(root).governance_root / "lifecycle.yaml"
+    layout = discover_layout(root)
+    path = layout.structured_file(layout.governance_root, "lifecycle.toml")
     if not path.is_file():
         return {}
     data = load(path)
