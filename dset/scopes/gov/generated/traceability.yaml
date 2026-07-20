@@ -389,6 +389,7 @@ changes:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-022-codex-host-invocation-attempt.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-023-typed-artifact-relations.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-024-legacy-relation-sealing.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-025-verbose-project-settings.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/end-to-end-toolchain-verification-2026-07-16.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/expanded-skill-surface-verification-2026-07-16.md
@@ -6461,6 +6462,24 @@ relations:
     target: DSET-EVIDENCE-RECORD-023
     llm_session_ids: []
   -
+    source: DSET-EVIDENCE-RECORD-025
+    source_kind: artifact
+    source_artifact_id: DSET-EVIDENCE-RECORD-025
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-025-verbose-project-settings.md
+    type: evidence_for
+    origin: authored
+    target: DSET-TEST-GOV-038
+    llm_session_ids: []
+  -
+    source: DSET-EVIDENCE-RECORD-025
+    source_kind: artifact
+    source_artifact_id: DSET-EVIDENCE-RECORD-025
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-025-verbose-project-settings.md
+    type: relates_to
+    origin: authored
+    target: DSET-REQUIREMENT-GOV-037
+    llm_session_ids: []
+  -
     source: DSET-REQUIREMENT-GOV-034
     source_kind: artifact
     source_artifact_id: DSET-ATOMIC-RECORD-005
@@ -6742,6 +6761,14 @@ relations:
     source_kind: commit
     type: implementation_of
     target: DSET-REQUIREMENT-GOV-023
+    origin: commit_trailer
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    source: ac5a0b7b4ec5707fcdcc5f75bd984ef88bc44387
+    source_kind: commit
+    type: implementation_of
+    target: DSET-REQUIREMENT-GOV-037
     origin: commit_trailer
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
@@ -7055,6 +7082,14 @@ relations:
     source_kind: commit
     type: implementation_of
     target: DSET-DECISION-OPS-006
+    origin: commit_trailer
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    source: ecfc9cd8957439a6a1cee3167f2cc2e5c48ef045
+    source_kind: commit
+    type: implementation_of
+    target: DSET-REQUIREMENT-GOV-037
     origin: commit_trailer
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d

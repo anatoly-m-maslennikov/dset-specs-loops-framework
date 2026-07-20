@@ -19,3 +19,5 @@ diagnose failure.
 - [Independent Claude review attempt](DSET-EVIDENCE-RECORD-021-claude-review-attempt.md)
 - [Documented-path Codex host invocation attempt](DSET-EVIDENCE-RECORD-022-codex-host-invocation-attempt.md)
 - [Typed artifact relation Test result](DSET-EVIDENCE-RECORD-023-typed-artifact-relations.md)
+- [Legacy relation sealing Test result](DSET-EVIDENCE-RECORD-024-legacy-relation-sealing.md)
+- [Verbose project settings Test result](DSET-EVIDENCE-RECORD-025-verbose-project-settings.md)
