@@ -28,6 +28,7 @@ the implementation scope to its current layer-owned Requirement owners.
 | Five flat Release lifecycle artifacts | `DSET-REQUIREMENT-OPS-013` |
 | Role-aware handling for every governed conflict pairing, with priority selection only where permitted | `DSET-REQUIREMENT-TOOL-019` |
 | Evidence-derived TypeScript candidate profile and promotion boundary | `DSET-REQUIREMENT-TOOL-021` |
+| Framework-reference versus project-applied TypeScript profile authority | `DSET-REQUIREMENT-TOOL-022` |
 
 The canonical text lives in the accepted META, GOV, TOOL, SKILL, and OPS package
 fragments under `dset/scopes/<layer>/specs/packages/methodology/`. This Change
@@ -52,6 +53,7 @@ Connected accepted IDs are `DSET-REQUIREMENT-META-007`,
 `DSET-REQUIREMENT-TOOL-018`,
 `DSET-REQUIREMENT-TOOL-019`,
 `DSET-REQUIREMENT-TOOL-021`,
+`DSET-REQUIREMENT-TOOL-022`,
 `DSET-REQUIREMENT-SKILL-002`, `DSET-REQUIREMENT-SKILL-003`,
 `DSET-REQUIREMENT-SKILL-004`, `DSET-REQUIREMENT-SKILL-005`,
 `DSET-REQUIREMENT-SKILL-006`, `DSET-REQUIREMENT-SKILL-007`,

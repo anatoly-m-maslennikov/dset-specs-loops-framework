@@ -2,6 +2,7 @@ schema_version: "1.0"
 id: typescript-v1-candidate
 version: "0.1"
 status: candidate
+profile_role: reference
 language_family: javascript-typescript
 target_revision_policy: exact
 

@@ -22,6 +22,7 @@ GATE_IDS = (
     "secret_hygiene",
 )
 PROFILE_STATUSES = frozenset({"candidate", "active", "custom"})
+PROFILE_ROLES = frozenset({"reference", "applied"})
 REVISION_POLICIES = frozenset({"exact", "descendant"})
 GATE_STATUSES = frozenset({"enforced", "ratcheted", "blocked", "not-applicable"})
 _ID = re.compile(r"^[a-z][a-z0-9-]*$")
@@ -29,7 +30,7 @@ _SHA = re.compile(r"^[0-9a-f]{40}$")
 
 
 def resolve_profile_path(root: Path, profile_id: str) -> Path:
-    """Resolve project-owned profiles before framework candidate templates."""
+    """Resolve an applied profile, with references limited to framework source."""
 
     layout = discover_layout(root.resolve())
     local = layout.layer_root("tool") / "profiles" / f"{profile_id}.yaml"
@@ -41,9 +42,14 @@ def resolve_profile_path(root: Path, profile_id: str) -> Path:
         / "enforcement-profiles"
         / f"{profile_id}.yaml"
     )
-    if candidate.is_file():
+    if candidate.is_file() and _repository_role(layout.manifest_path) == (
+        "framework-source-and-adopter"
+    ):
         return candidate
-    raise FileNotFoundError(f"enforcement profile is missing: {profile_id}")
+    raise FileNotFoundError(
+        f"applied enforcement profile is missing: {profile_id}; "
+        "framework references are not project-owned instances"
+    )
 
 
 def validate_profile_file(path: Path) -> tuple[dict[str, Any], list[Diagnostic]]:
@@ -60,12 +66,20 @@ def validate_profile_data(path: Path, data: dict[str, Any]) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     profile_id = data.get("id")
     status = data.get("status")
+    profile_role = data.get("profile_role")
     if data.get("schema_version") != PROFILE_SCHEMA_VERSION:
         diagnostics.append(_diag(path, "schema_version must be 1.0"))
     if not isinstance(profile_id, str) or _ID.fullmatch(profile_id) is None:
         diagnostics.append(_diag(path, "profile id must be kebab-case"))
     if status not in PROFILE_STATUSES:
         diagnostics.append(_diag(path, "profile status is invalid"))
+    if profile_role not in PROFILE_ROLES:
+        diagnostics.append(_diag(path, "profile_role is invalid"))
+    derived_from = data.get("derived_from")
+    if profile_role == "applied" and not _nonempty(derived_from):
+        diagnostics.append(_diag(path, "applied profile requires derived_from"))
+    if profile_role == "reference" and derived_from is not None:
+        diagnostics.append(_diag(path, "reference profile cannot set derived_from"))
     if data.get("target_revision_policy") not in REVISION_POLICIES:
         diagnostics.append(_diag(path, "target_revision_policy is invalid"))
     for field in ("version", "language_family"):
@@ -264,6 +278,7 @@ def inspect_target(
     return {
         "schema_version": PROFILE_SCHEMA_VERSION,
         "profile": profile.get("id"),
+        "profile_role": profile.get("profile_role"),
         "profile_status": profile.get("status"),
         "target_revision_policy": revision_policy,
         "profile_path": profile_path.as_posix(),
@@ -304,6 +319,20 @@ def _git_is_ancestor(root: Path, ancestor: str) -> bool:
         text=True,
     )
     return result.returncode == 0
+
+
+def _repository_role(manifest_path: Path) -> str | None:
+    try:
+        manifest = load(manifest_path)
+    except (OSError, UnicodeError, YamlSubsetError):
+        return None
+    if not isinstance(manifest, dict):
+        return None
+    project = manifest.get("project")
+    if not isinstance(project, dict):
+        return None
+    role = project.get("repository_role")
+    return role if isinstance(role, str) else None
 
 
 def _git_files(root: Path) -> list[str]:

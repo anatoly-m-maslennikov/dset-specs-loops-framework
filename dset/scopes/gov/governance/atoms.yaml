@@ -22,6 +22,13 @@ records:
     type: qa
     subtype: evaluation
   -
+    semantic_id: DSET-EVALUATION-TOOL-004
+    carrier_id: DSET-ATOMIC-RECORD-019
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-019-typescript-profile-instantiation-evaluation.md
+    sha256: 73518e67d9075166f046bc29e571cb899e0e6013a41b6c55b1f7f4230edd2b68
+    type: qa
+    subtype: evaluation
+  -
     semantic_id: DSET-PROBLEM-TOOL-006
     carrier_id: DSET-ATOMIC-RECORD-016
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-016-initializer-supportability.md
@@ -99,6 +106,13 @@ records:
     type: decision
     subtype: requirement
   -
+    semantic_id: DSET-REQUIREMENT-TOOL-022
+    carrier_id: DSET-ATOMIC-RECORD-017
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-017-typescript-profile-instantiation.md
+    sha256: b1da13680501f566a532b1adb298f7b833a37cc241c3a301273ec0da44ca3348
+    type: decision
+    subtype: requirement
+  -
     semantic_id: DSET-TEST-TOOL-020
     carrier_id: DSET-ATOMIC-RECORD-011
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-011-typescript-candidate-test.md
@@ -110,5 +124,12 @@ records:
     carrier_id: DSET-ATOMIC-RECORD-014
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-014-typescript-candidate-test.md
     sha256: bd14a862ee60548ec636360a92affaf375d00af3359b27eb9b3aef073a52744a
+    type: qa
+    subtype: test
+  -
+    semantic_id: DSET-TEST-TOOL-022
+    carrier_id: DSET-ATOMIC-RECORD-018
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-018-typescript-profile-instantiation-test.md
+    sha256: 2924a436681279f0f9a64b3431ee9c135e951a2e0e363f40da27c6c632d0ac0a
     type: qa
     subtype: test

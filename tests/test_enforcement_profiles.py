@@ -32,6 +32,7 @@ class EnforcementProfileTests(unittest.TestCase):
     def test_typescript_candidate_is_pinned_and_complete(self) -> None:
         self.assertEqual(self.profile["id"], "typescript-v1-candidate")
         self.assertEqual(self.profile["status"], "candidate")
+        self.assertEqual(self.profile["profile_role"], "reference")
         self.assertEqual(self.profile["target_revision_policy"], "exact")
         evidence = cast(dict[str, Any], self.profile["evidence"])
         self.assertEqual(
@@ -87,6 +88,18 @@ class EnforcementProfileTests(unittest.TestCase):
         invalid_revision_policy["target_revision_policy"] = "floating"
         cases.append(("target_revision_policy", invalid_revision_policy))
 
+        invalid_role = copy.deepcopy(self.profile)
+        invalid_role["profile_role"] = "generic"
+        cases.append(("profile_role", invalid_role))
+
+        applied_without_source = copy.deepcopy(self.profile)
+        applied_without_source["profile_role"] = "applied"
+        cases.append(("derived_from", applied_without_source))
+
+        reference_with_source = copy.deepcopy(self.profile)
+        reference_with_source["derived_from"] = "typescript-v1-candidate@0.1"
+        cases.append(("cannot set derived_from", reference_with_source))
+
         for expected, candidate in cases:
             with self.subTest(expected=expected):
                 rendered = "\n".join(
@@ -134,6 +147,7 @@ class EnforcementProfileTests(unittest.TestCase):
             self.assertEqual(result["diagnostics"], [])
             self.assertFalse(result["commands_executed"])
             self.assertFalse(result["promotion_eligible"])
+            self.assertEqual(result["profile_role"], "reference")
             self.assertEqual(result["file_counts"]["lint_files"], 3)
             self.assertEqual(before, after)
 
@@ -167,6 +181,49 @@ class EnforcementProfileTests(unittest.TestCase):
 
     def test_framework_resolves_the_candidate_template(self) -> None:
         self.assertEqual(resolve_profile_path(ROOT, "typescript-v1-candidate"), PROFILE)
+
+    def test_adopter_cannot_execute_a_framework_reference_as_local_truth(self) -> None:
+        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+            target = Path(raw)
+            meta = target / "dset/scopes/meta"
+            template = (
+                target
+                / "dset/scopes/tool/templates/enforcement-profiles"
+                / PROFILE.name
+            )
+            for layer in ("meta", "gov", "tool", "skill", "ops"):
+                (target / "dset/scopes" / layer).mkdir(parents=True)
+            template.parent.mkdir(parents=True)
+            (meta / "dset.yaml").write_text(
+                'schema_version: "1.2"\n'
+                "project:\n"
+                "  key: SAMPLE\n"
+                "  repository_role: adopter\n",
+                encoding="utf-8",
+            )
+            template.write_text(PROFILE.read_text(encoding="utf-8"), encoding="utf-8")
+
+            with self.assertRaisesRegex(FileNotFoundError, "project-owned instances"):
+                resolve_profile_path(target, "typescript-v1-candidate")
+
+            applied = (
+                target / "dset/scopes/tool/profiles" / "typescript-v1-candidate.yaml"
+            )
+            applied.parent.mkdir(parents=True)
+            applied.write_text(
+                PROFILE.read_text(encoding="utf-8")
+                .replace("profile_role: reference", "profile_role: applied")
+                .replace(
+                    "language_family: javascript-typescript",
+                    "derived_from: typescript-v1-candidate@0.1\n"
+                    "language_family: javascript-typescript",
+                ),
+                encoding="utf-8",
+            )
+            self.assertEqual(
+                resolve_profile_path(target, "typescript-v1-candidate"),
+                applied,
+            )
 
     @staticmethod
     def _git(root: Path, *args: str) -> str:

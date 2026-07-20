@@ -129,3 +129,23 @@ governance never become language defaults.
 failures plus advisory complexity warnings. Target inspection reports the hard
 failures as blockers, accepts only the warning counts as a shrink-only ratchet,
 and rejects promotion to `typescript-v1` until the pilot is green.
+
+## DSET-REQUIREMENT-TOOL-022 — Profile references and applied instances are distinct
+
+The framework's evidence-derived candidate is a `reference`: it preserves the
+pinned pilot and six neutral gate categories for comparison but is not adopter
+authority. Every adopter that selects the candidate must own an `applied`
+instance under its local TOOL profile root, declare `derived_from`, and supply
+its own commands, paths, thresholds, counts, debt, blockers, promotion gates,
+and evidence revisions.
+
+Resolution prefers the local applied instance. An adopter with only the
+distributed reference fails closed; the framework source may resolve the
+reference for read-only comparison. Concrete OYOHA product, Obsidian, delivery,
+supportability, and debt fields never become TypeScript defaults.
+
+**Scenario DSET-SCENARIO-TOOL-022:** A clean adopter receives the framework
+bundle but has not materialized a local TypeScript profile. Profile resolution
+stops and names the missing project-owned instance. After the adopter writes an
+applied instance with its reference origin, the same profile ID resolves
+locally and inspection reports `profile_role: applied`.

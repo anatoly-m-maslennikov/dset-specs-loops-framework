@@ -58,7 +58,7 @@ records:
     id: DSET-CONTRACT-TOOL-001
     source:
       path: dset/scopes/tool/specs/packages/methodology/package.yaml
-      sha256: a526231dba2eb3aae5ba8bd6fa4c1fd998607eecc70b7a2c3bbe18c5baeaffa4
+      sha256: cbf2fba881d9081281c1adc33f0c06e1203e7637736ad6f1ee1958a238be5a2c
     projections:
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/contracts.md
@@ -70,7 +70,7 @@ records:
     id: DSET-CONTRACT-TOOL-002
     source:
       path: dset/scopes/tool/specs/packages/methodology/package.yaml
-      sha256: a526231dba2eb3aae5ba8bd6fa4c1fd998607eecc70b7a2c3bbe18c5baeaffa4
+      sha256: cbf2fba881d9081281c1adc33f0c06e1203e7637736ad6f1ee1958a238be5a2c
     projections:
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/contracts.md
@@ -95,7 +95,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-DECISION-GOV-002
     source:
@@ -380,7 +380,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-015
     source:
@@ -395,7 +395,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-016
     source:
@@ -410,7 +410,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-017
     source:
@@ -425,7 +425,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-018
     source:
@@ -440,7 +440,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-019
     source:
@@ -455,7 +455,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-020
     source:
@@ -470,7 +470,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-021
     source:
@@ -485,7 +485,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-022
     source:
@@ -500,7 +500,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-023
     source:
@@ -515,7 +515,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-024
     source:
@@ -530,7 +530,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-025
     source:
@@ -545,7 +545,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-026
     source:
@@ -560,7 +560,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-027
     source:
@@ -575,7 +575,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-028
     source:
@@ -590,7 +590,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-029
     source:
@@ -605,7 +605,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-030
     source:
@@ -620,7 +620,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-031
     source:
@@ -635,7 +635,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-032
     source:
@@ -650,7 +650,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-033
     source:
@@ -665,7 +665,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-034
     source:
@@ -680,7 +680,7 @@ records:
         sha256: cb975a188583fd7494e4db2a218ac56425ff4bcbf3e10c575e5c15b243b951ff
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-GOV-035
     source:
@@ -794,7 +794,7 @@ records:
         sha256: b212c46313762c920aa99339308fd6a356477a96d9cc4c70dd2320bc4a9102b7
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-META-008
     source:
@@ -848,7 +848,7 @@ records:
         sha256: b212c46313762c920aa99339308fd6a356477a96d9cc4c70dd2320bc4a9102b7
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-OPS-001
     source:
@@ -896,7 +896,7 @@ records:
         sha256: d03bef8b047fdb0a2c757a5a0fcc97182c12e3a218db05c395fb69883277d8bb
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-OPS-004
     source:
@@ -914,7 +914,7 @@ records:
         sha256: d03bef8b047fdb0a2c757a5a0fcc97182c12e3a218db05c395fb69883277d8bb
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-OPS-005
     source:
@@ -932,7 +932,7 @@ records:
         sha256: d03bef8b047fdb0a2c757a5a0fcc97182c12e3a218db05c395fb69883277d8bb
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-OPS-006
     source:
@@ -950,7 +950,7 @@ records:
         sha256: d03bef8b047fdb0a2c757a5a0fcc97182c12e3a218db05c395fb69883277d8bb
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-OPS-007
     source:
@@ -965,7 +965,7 @@ records:
         sha256: d03bef8b047fdb0a2c757a5a0fcc97182c12e3a218db05c395fb69883277d8bb
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
       -
         path: dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/specs/methodology.md
         sha256: b3f042dcd6cd37207d635544f165552fd74e2eb26a78320c5cf0d73afe63f3e1
@@ -983,7 +983,7 @@ records:
         sha256: d03bef8b047fdb0a2c757a5a0fcc97182c12e3a218db05c395fb69883277d8bb
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
   -
     id: DSET-REQUIREMENT-SKILL-001
     source:
@@ -1007,7 +1007,7 @@ records:
     projections:
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
       -
         path: dset/scopes/skill/specs/packages/methodology/spec.md
         sha256: 9c4afcc3c464831f67f3050984f29dbe4faf7b3a2b76b36caabb89231d9022d8
@@ -1022,7 +1022,7 @@ records:
     projections:
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
       -
         path: dset/scopes/skill/specs/packages/methodology/spec.md
         sha256: 9c4afcc3c464831f67f3050984f29dbe4faf7b3a2b76b36caabb89231d9022d8
@@ -1037,7 +1037,7 @@ records:
     projections:
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
       -
         path: dset/scopes/skill/specs/packages/methodology/spec.md
         sha256: 9c4afcc3c464831f67f3050984f29dbe4faf7b3a2b76b36caabb89231d9022d8
@@ -1052,7 +1052,7 @@ records:
     projections:
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
       -
         path: dset/scopes/skill/specs/packages/methodology/spec.md
         sha256: 9c4afcc3c464831f67f3050984f29dbe4faf7b3a2b76b36caabb89231d9022d8
@@ -1067,7 +1067,7 @@ records:
     projections:
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
       -
         path: dset/scopes/skill/specs/packages/methodology/spec.md
         sha256: 9c4afcc3c464831f67f3050984f29dbe4faf7b3a2b76b36caabb89231d9022d8
@@ -1082,7 +1082,7 @@ records:
     projections:
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
       -
         path: dset/scopes/skill/specs/packages/methodology/spec.md
         sha256: 9c4afcc3c464831f67f3050984f29dbe4faf7b3a2b76b36caabb89231d9022d8
@@ -1097,7 +1097,7 @@ records:
     projections:
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
       -
         path: dset/scopes/skill/specs/packages/methodology/spec.md
         sha256: 9c4afcc3c464831f67f3050984f29dbe4faf7b3a2b76b36caabb89231d9022d8
@@ -1112,7 +1112,7 @@ records:
     projections:
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
       -
         path: dset/scopes/skill/specs/packages/methodology/spec.md
         sha256: 9c4afcc3c464831f67f3050984f29dbe4faf7b3a2b76b36caabb89231d9022d8
@@ -1127,7 +1127,7 @@ records:
     projections:
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
       -
         path: dset/scopes/skill/specs/packages/methodology/spec.md
         sha256: 9c4afcc3c464831f67f3050984f29dbe4faf7b3a2b76b36caabb89231d9022d8
@@ -1150,7 +1150,7 @@ records:
     id: DSET-REQUIREMENT-TOOL-001
     source:
       path: dset/scopes/tool/specs/packages/methodology/package.yaml
-      sha256: a526231dba2eb3aae5ba8bd6fa4c1fd998607eecc70b7a2c3bbe18c5baeaffa4
+      sha256: cbf2fba881d9081281c1adc33f0c06e1203e7637736ad6f1ee1958a238be5a2c
     projections:
       -
         path: dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/specs/methodology.md
@@ -1160,88 +1160,88 @@ records:
         sha256: 059feac9eb93c25e228cf38066f55b3225526ce3ae4b6760fa26418379d16c43
       -
         path: dset/scopes/tool/specs/packages/methodology/spec.md
-        sha256: f4ee2b94b507b278230d526a62e9543f7aefe92a81f66a2e93b65fe944b326ad
+        sha256: 0eb5c19e046fb4a70607c0fd3015cf906f4c9e733738189026af5f477fb2f3ef
       -
         path: dset/scopes/tool/specs/packages/methodology/test-plan.md
-        sha256: f68dde3489d34a95fbc350fad8563c2f9d596d2dd701d12b3fc50f6b75e83922
+        sha256: 5f7c345c3de9fed1467af9cacec9e0389544f2348f32e7959aabd23501abec85
   -
     id: DSET-REQUIREMENT-TOOL-002
     source:
       path: dset/scopes/tool/specs/packages/methodology/package.yaml
-      sha256: a526231dba2eb3aae5ba8bd6fa4c1fd998607eecc70b7a2c3bbe18c5baeaffa4
+      sha256: cbf2fba881d9081281c1adc33f0c06e1203e7637736ad6f1ee1958a238be5a2c
     projections:
       -
         path: dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/specs/methodology.md
         sha256: b3f042dcd6cd37207d635544f165552fd74e2eb26a78320c5cf0d73afe63f3e1
       -
         path: dset/scopes/tool/specs/packages/methodology/spec.md
-        sha256: f4ee2b94b507b278230d526a62e9543f7aefe92a81f66a2e93b65fe944b326ad
+        sha256: 0eb5c19e046fb4a70607c0fd3015cf906f4c9e733738189026af5f477fb2f3ef
       -
         path: dset/scopes/tool/specs/packages/methodology/test-plan.md
-        sha256: f68dde3489d34a95fbc350fad8563c2f9d596d2dd701d12b3fc50f6b75e83922
+        sha256: 5f7c345c3de9fed1467af9cacec9e0389544f2348f32e7959aabd23501abec85
   -
     id: DSET-REQUIREMENT-TOOL-003
     source:
       path: dset/scopes/tool/specs/packages/methodology/package.yaml
-      sha256: a526231dba2eb3aae5ba8bd6fa4c1fd998607eecc70b7a2c3bbe18c5baeaffa4
+      sha256: cbf2fba881d9081281c1adc33f0c06e1203e7637736ad6f1ee1958a238be5a2c
     projections:
       -
         path: dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/specs/methodology.md
         sha256: b3f042dcd6cd37207d635544f165552fd74e2eb26a78320c5cf0d73afe63f3e1
       -
         path: dset/scopes/tool/specs/packages/methodology/spec.md
-        sha256: f4ee2b94b507b278230d526a62e9543f7aefe92a81f66a2e93b65fe944b326ad
+        sha256: 0eb5c19e046fb4a70607c0fd3015cf906f4c9e733738189026af5f477fb2f3ef
       -
         path: dset/scopes/tool/specs/packages/methodology/test-plan.md
-        sha256: f68dde3489d34a95fbc350fad8563c2f9d596d2dd701d12b3fc50f6b75e83922
+        sha256: 5f7c345c3de9fed1467af9cacec9e0389544f2348f32e7959aabd23501abec85
   -
     id: DSET-REQUIREMENT-TOOL-004
     source:
       path: dset/scopes/tool/specs/packages/methodology/package.yaml
-      sha256: a526231dba2eb3aae5ba8bd6fa4c1fd998607eecc70b7a2c3bbe18c5baeaffa4
+      sha256: cbf2fba881d9081281c1adc33f0c06e1203e7637736ad6f1ee1958a238be5a2c
     projections:
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
       -
         path: dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/specs/methodology.md
         sha256: b3f042dcd6cd37207d635544f165552fd74e2eb26a78320c5cf0d73afe63f3e1
       -
         path: dset/scopes/tool/specs/packages/methodology/spec.md
-        sha256: f4ee2b94b507b278230d526a62e9543f7aefe92a81f66a2e93b65fe944b326ad
+        sha256: 0eb5c19e046fb4a70607c0fd3015cf906f4c9e733738189026af5f477fb2f3ef
       -
         path: dset/scopes/tool/specs/packages/methodology/test-plan.md
-        sha256: f68dde3489d34a95fbc350fad8563c2f9d596d2dd701d12b3fc50f6b75e83922
+        sha256: 5f7c345c3de9fed1467af9cacec9e0389544f2348f32e7959aabd23501abec85
   -
     id: DSET-REQUIREMENT-TOOL-018
     source:
       path: dset/scopes/tool/specs/packages/methodology/package.yaml
-      sha256: a526231dba2eb3aae5ba8bd6fa4c1fd998607eecc70b7a2c3bbe18c5baeaffa4
+      sha256: cbf2fba881d9081281c1adc33f0c06e1203e7637736ad6f1ee1958a238be5a2c
     projections:
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
       -
         path: dset/scopes/tool/specs/packages/methodology/spec.md
-        sha256: f4ee2b94b507b278230d526a62e9543f7aefe92a81f66a2e93b65fe944b326ad
+        sha256: 0eb5c19e046fb4a70607c0fd3015cf906f4c9e733738189026af5f477fb2f3ef
       -
         path: dset/scopes/tool/specs/packages/methodology/test-plan.md
-        sha256: f68dde3489d34a95fbc350fad8563c2f9d596d2dd701d12b3fc50f6b75e83922
+        sha256: 5f7c345c3de9fed1467af9cacec9e0389544f2348f32e7959aabd23501abec85
   -
     id: DSET-REQUIREMENT-TOOL-019
     source:
       path: dset/scopes/tool/specs/packages/methodology/package.yaml
-      sha256: a526231dba2eb3aae5ba8bd6fa4c1fd998607eecc70b7a2c3bbe18c5baeaffa4
+      sha256: cbf2fba881d9081281c1adc33f0c06e1203e7637736ad6f1ee1958a238be5a2c
     projections:
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
       -
         path: dset/scopes/tool/specs/packages/methodology/spec.md
-        sha256: f4ee2b94b507b278230d526a62e9543f7aefe92a81f66a2e93b65fe944b326ad
+        sha256: 0eb5c19e046fb4a70607c0fd3015cf906f4c9e733738189026af5f477fb2f3ef
       -
         path: dset/scopes/tool/specs/packages/methodology/test-plan.md
-        sha256: f68dde3489d34a95fbc350fad8563c2f9d596d2dd701d12b3fc50f6b75e83922
+        sha256: 5f7c345c3de9fed1467af9cacec9e0389544f2348f32e7959aabd23501abec85
   -
     id: DSET-REQUIREMENT-TOOL-021
     source:
@@ -1250,10 +1250,25 @@ records:
     projections:
       -
         path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
-        sha256: 131185037ded81ac0d42beb3764228c9095e12697ac3073a7088c1c1ac149960
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
       -
         path: dset/scopes/tool/specs/packages/methodology/spec.md
-        sha256: f4ee2b94b507b278230d526a62e9543f7aefe92a81f66a2e93b65fe944b326ad
+        sha256: 0eb5c19e046fb4a70607c0fd3015cf906f4c9e733738189026af5f477fb2f3ef
       -
         path: dset/scopes/tool/specs/packages/methodology/test-plan.md
-        sha256: f68dde3489d34a95fbc350fad8563c2f9d596d2dd701d12b3fc50f6b75e83922
+        sha256: 5f7c345c3de9fed1467af9cacec9e0389544f2348f32e7959aabd23501abec85
+  -
+    id: DSET-REQUIREMENT-TOOL-022
+    source:
+      path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-017-typescript-profile-instantiation.md
+      sha256: b1da13680501f566a532b1adb298f7b833a37cc241c3a301273ec0da44ca3348
+    projections:
+      -
+        path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/methodology.md
+        sha256: 8f88e21d90881074d70ffe965a28e4cc0d7719fd1dd4ac88bab1d3ac221203c3
+      -
+        path: dset/scopes/tool/specs/packages/methodology/spec.md
+        sha256: 0eb5c19e046fb4a70607c0fd3015cf906f4c9e733738189026af5f477fb2f3ef
+      -
+        path: dset/scopes/tool/specs/packages/methodology/test-plan.md
+        sha256: 5f7c345c3de9fed1467af9cacec9e0389544f2348f32e7959aabd23501abec85

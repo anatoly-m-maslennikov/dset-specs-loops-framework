@@ -205,6 +205,7 @@ changes:
       - DSET-REQUIREMENT-TOOL-018
       - DSET-REQUIREMENT-TOOL-019
       - DSET-REQUIREMENT-TOOL-021
+      - DSET-REQUIREMENT-TOOL-022
     tests:
       - DSET-TEST-GOV-014
       - DSET-TEST-GOV-015
@@ -254,6 +255,7 @@ changes:
       - DSET-TEST-TOOL-018
       - DSET-TEST-TOOL-019
       - DSET-TEST-TOOL-021
+      - DSET-TEST-TOOL-022
     evals:
       - DSET-EVAL-GOV-007
       - DSET-EVAL-GOV-008
@@ -290,6 +292,7 @@ changes:
       - DSET-EVAL-TOOL-005
       - DSET-EVAL-TOOL-006
       - DSET-EVALUATION-TOOL-003
+      - DSET-EVALUATION-TOOL-004
     intake:
       - DSET-OPPORTUNITY-GOV-001
       - DSET-OPPORTUNITY-OPS-001
@@ -1366,6 +1369,21 @@ semantic_classifications:
       - package:evals
     carriers:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-015-typescript-candidate-evaluation.md
+      - dset/scopes/tool/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - accepted
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVALUATION-TOOL-004
+    type: qa
+    subtype: evaluation
+    compatibility: false
+    origins:
+      - modern_atom
+      - package:evals
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-019-typescript-profile-instantiation-evaluation.md
       - dset/scopes/tool/specs/packages/methodology/package.yaml
     carrier_statuses:
       - accepted
@@ -2686,6 +2704,21 @@ semantic_classifications:
       - defined
     lifecycle_events: []
   -
+    id: DSET-REQUIREMENT-TOOL-022
+    type: decision
+    subtype: requirement
+    compatibility: false
+    origins:
+      - modern_atom
+      - package:requirements
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-017-typescript-profile-instantiation.md
+      - dset/scopes/tool/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - accepted
+      - defined
+    lifecycle_events: []
+  -
     id: DSET-TEST-GOV-001
     type: qa
     subtype: test
@@ -3553,6 +3586,21 @@ semantic_classifications:
       - accepted
       - defined
     lifecycle_events: []
+  -
+    id: DSET-TEST-TOOL-022
+    type: qa
+    subtype: test
+    compatibility: false
+    origins:
+      - modern_atom
+      - package:tests
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-018-typescript-profile-instantiation-test.md
+      - dset/scopes/tool/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - accepted
+      - defined
+    lifecycle_events: []
 semantic_atoms:
   -
     id: DSET-DECISION-GOV-010
@@ -3600,6 +3648,22 @@ semantic_atoms:
     priority_source: atom:DSET-EVALUATION-TOOL-003
     child_of:
       - DSET-REQUIREMENT-TOOL-021
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-EVALUATION-TOOL-004
+    carrier_id: DSET-ATOMIC-RECORD-019
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-019-typescript-profile-instantiation-evaluation.md
+    sha256: 73518e67d9075166f046bc29e571cb899e0e6013a41b6c55b1f7f4230edd2b68
+    type: qa
+    subtype: evaluation
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-EVALUATION-TOOL-004
+    child_of:
+      - DSET-REQUIREMENT-TOOL-022
     lifecycle_events: []
     absorbed_by: []
     archived: false
@@ -3777,6 +3841,22 @@ semantic_atoms:
     absorbed_by: []
     archived: false
   -
+    id: DSET-REQUIREMENT-TOOL-022
+    carrier_id: DSET-ATOMIC-RECORD-017
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-017-typescript-profile-instantiation.md
+    sha256: b1da13680501f566a532b1adb298f7b833a37cc241c3a301273ec0da44ca3348
+    type: decision
+    subtype: requirement
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-REQUIREMENT-TOOL-022
+    child_of:
+      - DSET-REQUIREMENT-TOOL-021
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
     id: DSET-TEST-TOOL-020
     carrier_id: DSET-ATOMIC-RECORD-011
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-011-typescript-candidate-test.md
@@ -3807,6 +3887,22 @@ semantic_atoms:
     priority_source: atom:DSET-TEST-TOOL-021
     child_of:
       - DSET-REQUIREMENT-TOOL-021
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-TEST-TOOL-022
+    carrier_id: DSET-ATOMIC-RECORD-018
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-018-typescript-profile-instantiation-test.md
+    sha256: 2924a436681279f0f9a64b3431ee9c135e951a2e0e363f40da27c6c632d0ac0a
+    type: qa
+    subtype: test
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-TEST-TOOL-022
+    child_of:
+      - DSET-REQUIREMENT-TOOL-022
     lifecycle_events: []
     absorbed_by: []
     archived: false
@@ -3847,6 +3943,13 @@ lineage:
       - DSET-ANALYSIS-REPORT-001
       - DSET-EVIDENCE-RECORD-014
       - DSET-EVIDENCE-RECORD-015
+  -
+    id: DSET-EVALUATION-TOOL-004
+    artifact_id: DSET-ATOMIC-RECORD-019
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-019-typescript-profile-instantiation-evaluation.md
+    child_of:
+      - DSET-REQUIREMENT-TOOL-022
+    parent_to: []
   -
     id: DSET-EVIDENCE-RECORD-001
     artifact_id: DSET-EVIDENCE-RECORD-001
@@ -4055,7 +4158,17 @@ lineage:
     child_of: []
     parent_to:
       - DSET-EVALUATION-TOOL-003
+      - DSET-REQUIREMENT-TOOL-022
       - DSET-TEST-TOOL-021
+  -
+    id: DSET-REQUIREMENT-TOOL-022
+    artifact_id: DSET-ATOMIC-RECORD-017
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-017-typescript-profile-instantiation.md
+    child_of:
+      - DSET-REQUIREMENT-TOOL-021
+    parent_to:
+      - DSET-EVALUATION-TOOL-004
+      - DSET-TEST-TOOL-022
   -
     id: DSET-SPECIFICATION-001
     artifact_id: DSET-SPECIFICATION-001
@@ -4096,6 +4209,13 @@ lineage:
     parent_to:
       - DSET-EVIDENCE-RECORD-011
       - DSET-EVIDENCE-RECORD-012
+  -
+    id: DSET-TEST-TOOL-022
+    artifact_id: DSET-ATOMIC-RECORD-018
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-018-typescript-profile-instantiation-test.md
+    child_of:
+      - DSET-REQUIREMENT-TOOL-022
+    parent_to: []
 implementation_edges:
   -
     commit: 08608add74f4632d768fffa3a2d4a7eb3dbde58e
