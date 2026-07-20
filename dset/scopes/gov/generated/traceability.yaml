@@ -351,6 +351,7 @@ changes:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-001-artifact-role-lifecycle.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-002-project-scope-ownership.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-003-artifact-lineage.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-004-entry-criteria-skill-chains.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/end-to-end-toolchain-verification-2026-07-16.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/expanded-skill-surface-verification-2026-07-16.md
@@ -523,6 +524,13 @@ lineage:
       - DSET-REQUIREMENT-GOV-034
     parent_to: []
   -
+    id: DSET-EVIDENCE-RECORD-004
+    artifact_id: DSET-EVIDENCE-RECORD-004
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-004-entry-criteria-skill-chains.md
+    child_of:
+      - DSET-REQUIREMENT-SKILL-010
+    parent_to: []
+  -
     id: DSET-PLAN-001
     artifact_id: DSET-PLAN-001
     path: dset/scopes/ops/planning/DSET-PLAN-001-0-4-core-vertical-cut.md
@@ -566,7 +574,8 @@ lineage:
     artifact_id: DSET-ATOMIC-RECORD-006
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-006-entry-criteria-skill-chains.md
     child_of: []
-    parent_to: []
+    parent_to:
+      - DSET-EVIDENCE-RECORD-004
   -
     id: DSET-SPECIFICATION-001
     artifact_id: DSET-SPECIFICATION-001
