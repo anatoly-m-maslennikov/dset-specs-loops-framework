@@ -42,9 +42,14 @@ resolves the explicit target's repository-local authority.
 
 During installation, each copied wrapper is rendered with the exact current
 Python interpreter and package-local `dset.py` path from the same preview. The
-installed wrapper therefore does not depend on a global `dset` command or a
-mutable `PATH`; a changed source, destination, interpreter, or launcher path
-changes the planned digest and stops an unreviewed replacement.
+installer replaces every executable DSET code span, including initialization,
+context, child/closure, handoff, finish, and rule commands. Resolved governance
+uses `dset` only as a logical token; the caller reuses the wrapper's exact
+launcher prefix. POSIX quoting is used on Linux, macOS, and WSL; native Windows
+uses PowerShell's call operator and single-quoted literals. The installed
+wrapper therefore does not depend on a global `dset` command or a mutable
+`PATH`; a changed source, destination, interpreter, or launcher path changes
+the planned digest and stops an unreviewed replacement.
 
 The installer rejects symlinked source content and creates real copied skill
 folders. It requires the exact 16-skill catalog: `dset`, `dset-init`,

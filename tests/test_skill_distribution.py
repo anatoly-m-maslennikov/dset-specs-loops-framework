@@ -3,19 +3,23 @@ from __future__ import annotations
 import hashlib
 import io
 import json
+import re
+import shlex
 import shutil
 import subprocess
 import sys
 import tempfile
 import unittest
 from contextlib import redirect_stderr, redirect_stdout
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from unittest.mock import patch
 
 from dset_toolchain.adopter import create_adopter
 from dset_toolchain.skill_distribution import (
     SKILL_WORKFLOWS,
     SkillDistributionError,
+    _launcher_command,
+    _render_skill_package,
     apply_install,
     apply_runtime_install,
     default_destination,
@@ -95,10 +99,75 @@ class SkillDistributionTests(unittest.TestCase):
                 wrapper,
             )
             self.assertNotIn("`dset skills context", wrapper)
+            self.assertNotRegex(wrapper, r"`dset\s")
         self.assertEqual(
             {item.status for item in plan_install(self.source, "codex", destination)},
             {"current"},
         )
+
+    def test_every_installed_wrapper_command_uses_one_runtime_launcher(self) -> None:
+        destination = self.root / "installed skills"
+        runtime = self.root / "runtime ü & 'quoted';$value" / "dset"
+        apply_install(plan_install(self.source, "codex", destination, runtime))
+        expected_launcher = _launcher_command(runtime)
+
+        for skill_id in SKILL_WORKFLOWS:
+            with self.subTest(skill=skill_id):
+                source = (self.source / "skills" / skill_id / "SKILL.md").read_text(
+                    encoding="utf-8"
+                )
+                installed = (destination / skill_id / "SKILL.md").read_text(
+                    encoding="utf-8"
+                )
+                source_commands = re.findall(r"`dset\s", source)
+                rendered_commands = re.findall(
+                    rf"`{re.escape(expected_launcher)}\s", installed
+                )
+                self.assertEqual(len(rendered_commands), len(source_commands))
+                self.assertNotRegex(installed, r"`dset\s")
+
+    def test_launcher_representation_is_shell_safe_on_posix_and_wsl(self) -> None:
+        interpreter = "/opt/Python ü & Co/bin/python's"
+        runtime = Path("/mnt/c/Users/Zoë & Team/$DSET;pkg")
+
+        command = _launcher_command(
+            runtime,
+            platform_name="posix",
+            executable=interpreter,
+        )
+
+        self.assertEqual(
+            shlex.split(command),
+            [interpreter, str(runtime / "dset.py")],
+        )
+
+    def test_launcher_representation_is_native_powershell(self) -> None:
+        interpreter = r"C:\Program Files\Python ü & Co\python.exe"
+        runtime = PureWindowsPath(r"C:\Users\Zoë O'Neil\$DSET; package")
+
+        command = _launcher_command(
+            runtime,
+            platform_name="nt",
+            executable=interpreter,
+        )
+
+        self.assertEqual(
+            command,
+            "& 'C:\\Program Files\\Python ü & Co\\python.exe' "
+            "'C:\\Users\\Zoë O''Neil\\$DSET; package\\dset.py'",
+        )
+        self.assertNotIn('"', command)
+
+        rendered = self.root / "rendered-windows-skill"
+        _render_skill_package(
+            self.source / "skills" / "dset-implement",
+            rendered,
+            "codex",
+            command,
+        )
+        wrapper = (rendered / "SKILL.md").read_text(encoding="utf-8")
+        self.assertEqual(wrapper.count(f"`{command} "), 3)
+        self.assertNotRegex(wrapper, r"`dset\s")
 
     def test_host_copy_and_default_destinations_are_portable(self) -> None:
         destination = self.root / "claude-skills"

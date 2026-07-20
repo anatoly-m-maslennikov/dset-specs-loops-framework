@@ -180,7 +180,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/skill/templates/governance/core-v1/skill-runs.md
-      sha256: 6141ff72fdc8927695b46c58d24fa6d2bdc2f0a3d76eca1f54d2812739fc9229
+      sha256: 5b33b0eb9e307a0a3819e079e4c9c01f95039ce01148ea2dcf0cc91917b91cf6
   -
     id: DSET-RULE-RELEASE
     layer: OPS
@@ -219,7 +219,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/skill/templates/governance/core-v1/lifecycle-orchestration.md
-      sha256: 8c972b5128f57ea031a14d34b35b9c35aef398ccda9b6f86f8b1be68492fe0a6
+      sha256: 1f15148f5d1fb55691c0c05b291583bd2ad32c5a95fa08580e1372d2f9f8cb01
   -
     id: DSET-RULE-DIAGNOSIS
     layer: SKILL

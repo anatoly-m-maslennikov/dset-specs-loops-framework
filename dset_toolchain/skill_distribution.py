@@ -4,13 +4,14 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import shlex
 import shutil
 import sys
 import tempfile
 from collections.abc import Mapping, Sequence
 from dataclasses import asdict, dataclass
-from pathlib import Path
+from pathlib import Path, PurePath
 from typing import Any
 
 from . import __version__
@@ -40,6 +41,7 @@ RECEIPT_FIELDS = {
     "stop_boundary_observed",
 }
 MAX_RECEIPT_BYTES = 16 * 1024
+_DSET_CODE_COMMAND = re.compile(r"`dset(?=\s)")
 
 
 class SkillDistributionError(ValueError):
@@ -808,13 +810,26 @@ def _runtime_source_digest(source: Path) -> str:
     return digest.hexdigest()
 
 
-def _launcher_command(runtime_destination: Path) -> str:
+def _launcher_command(
+    runtime_destination: PurePath,
+    *,
+    platform_name: str | None = None,
+    executable: str | None = None,
+) -> str:
     launcher = runtime_destination / "dset.py"
-    if os.name == "nt":
-        import subprocess
+    interpreter = sys.executable if executable is None else executable
+    platform = os.name if platform_name is None else platform_name
+    if platform == "nt":
+        return "& " + " ".join(
+            _powershell_literal(argument) for argument in (interpreter, str(launcher))
+        )
+    if platform == "posix":
+        return shlex.join([interpreter, str(launcher)])
+    raise SkillDistributionError(f"unsupported launcher platform: {platform}")
 
-        return subprocess.list2cmdline([sys.executable, str(launcher)])
-    return shlex.join([sys.executable, str(launcher)])
+
+def _powershell_literal(value: str) -> str:
+    return "'" + value.replace("'", "''") + "'"
 
 
 def _rendered_skill_digest(source: Path, host: str, launcher_command: str) -> str:
@@ -838,14 +853,16 @@ def _render_skill_package(
         raise SkillDistributionError(
             f"skill context launcher is not uniquely renderable: {source.name}"
         )
-    text = text.replace(
-        "`dset skills context",
-        f"`{launcher_command} skills context",
-    )
-    text = text.replace(
-        "`dset runtime finish",
-        f"`{launcher_command} runtime finish",
-    )
+    command_count = len(_DSET_CODE_COMMAND.findall(text))
+    if command_count == 0:
+        raise SkillDistributionError(
+            f"skill has no renderable DSET commands: {source.name}"
+        )
+    text = _DSET_CODE_COMMAND.sub(lambda _match: f"`{launcher_command}", text)
+    if _DSET_CODE_COMMAND.search(text):
+        raise SkillDistributionError(
+            f"skill retains an ambient DSET command: {source.name}"
+        )
     skill_file.write_text(text, encoding="utf-8")
 
 

@@ -65,6 +65,11 @@ runtime rejects empty provenance for public-skill, chained-skill,
 governed-model, and delegated-run sources; only an explicit operator source may
 represent human-only execution with an empty list.
 
+Every command in one installed skill run uses the exact launcher prefix
+rendered into that wrapper. A logical `dset` token in resolved governance means
+that same prefix; it never authorizes an ambient executable, a different Python
+runtime, or a shell-dependent fallback.
+
 The runtime atomically maintains one replaceable checkpoint per session under
 ignored `.dset/sessions/<session-id>.json`. A checkpoint contains the same
 bounded `llm_session_ids`, a bounded objective summary, current

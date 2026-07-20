@@ -149,6 +149,9 @@ class SkillWrapperTests(unittest.TestCase):
         self.assertEqual(positions, sorted(positions))
         self.assertIn("every transition must remove a missing criterion", lifecycle)
         self.assertIn("unchanged or repeated state", lifecycle)
+        self.assertIn("## Installed command carrier", lifecycle)
+        self.assertIn("ambient `dset` execution and launcher substitution", lifecycle)
+        self.assertIn("PowerShell call operator", lifecycle)
         self.assertIn("Only initial DSET entry may omit", lifecycle)
         self.assertIn("`dset runtime handoff`", lifecycle)
         self.assertIn("Only true completion or stop", lifecycle)
@@ -163,6 +166,8 @@ class SkillWrapperTests(unittest.TestCase):
         self.assertEqual(skill_runs, skill_runs_template)
         self.assertIn("`dset runtime handoff`", skill_runs)
         self.assertIn("`dset runtime finish` is terminal-only", skill_runs)
+        self.assertIn("Every command in one installed skill run", skill_runs)
+        self.assertIn("never authorizes an ambient executable", skill_runs)
 
         implement = self._skill_text("dset-implement")
         self.assertNotIn("invoke `dset-decisions` first", implement)

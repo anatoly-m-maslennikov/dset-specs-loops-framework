@@ -115,6 +115,16 @@ the same authorization they would require if invoked directly.
 Root `dset_settings.toml` selects `workflows.implement.mode = "lazy"` or `"strict"`.
 Missing configuration uses `lazy`.
 
+## Installed command carrier
+
+Governance uses `dset` as the logical command token because a repository
+template cannot know a host installation path. An installed wrapper owns one
+exact package-local Python-and-`dset.py` launcher prefix and must reuse that
+same prefix for every later governed DSET instruction in the session. Bare
+ambient `dset` execution and launcher substitution are forbidden. Installer
+rendering uses argument-safe POSIX syntax on macOS, Linux, and WSL, and a
+PowerShell call operator with single-quoted literals on native Windows.
+
 In lazy mode, the following sequence applies.
 
 The `implement` closure is ordered:
