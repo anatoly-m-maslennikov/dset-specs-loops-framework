@@ -20,7 +20,7 @@ customization = "unmodified"
 profile = "core-v1"
 version = "0.3"
 template = "dset/scopes/gov/templates/governance/core-v1/architecture.md"
-sha256 = "9fc71b6a3f910f4505ab21c6022e256b959af8dd90994e2d846015596d6186c0"
+sha256 = "48423de578a784b3ab530823ead80b123ee9bedb5964202e55b0f495eee8d161"
 
 [[rules]]
 id = "DSET-RULE-BUILD"
@@ -139,7 +139,7 @@ customization = "unmodified"
 profile = "core-v1"
 version = "0.3"
 template = "dset/scopes/gov/templates/governance/core-v1/work-items.md"
-sha256 = "0876623108fb219ed8dd5700c60716bcbd9372bdd31a70f16146ef7388059cf7"
+sha256 = "61447c22741684e20014f41a1072cdbabba0701779021f11bd6a4dd78731544a"
 
 [[rules]]
 id = "DSET-RULE-ARTIFACT-CLASSIFICATION"

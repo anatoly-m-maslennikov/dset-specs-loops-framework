@@ -512,3 +512,75 @@ occurred_at = "2026-07-21T01:48:07+04:00"
 related = ["DSET-REQUIREMENT-SKILL-009"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The runtime now distinguishes active handoff from terminal finish, preserves session identity across specialist context resolution, and verifies terminal closure separately."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-058"
+atom_id = "DSET-DECISION-GOV-003"
+event = "absorbed"
+occurred_at = "2026-07-21T02:15:00+04:00"
+related = ["DSET-DECISION-GOV-018"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "The successor retains semantic immutability, append-only lifecycle, explicit replacement, priority, conflict, and retirement consequences while replacing permanent byte identity with audited carrier transitions."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-059"
+atom_id = "DSET-DECISION-GOV-016"
+event = "absorbed"
+occurred_at = "2026-07-21T02:15:01+04:00"
+related = ["DSET-DECISION-GOV-018"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "The successor retains historical package content in TOML envelopes and a digest-bound transition ledger instead of preserving YAML bytes."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-060"
+atom_id = "DSET-DECISION-GOV-017"
+event = "absorbed"
+occurred_at = "2026-07-21T02:15:02+04:00"
+related = ["DSET-DECISION-GOV-018"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "The successor retains every historical structured value and path transition in TOML rather than keeping a YAML snapshot in the working tree."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-061"
+atom_id = "DSET-CONFLICT-GOV-001"
+event = "resolved"
+occurred_at = "2026-07-21T02:15:03+04:00"
+related = ["DSET-DECISION-GOV-018"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "The operator selected semantic immutability plus a lossless audited carrier transition, so TOML completeness no longer conflicts with retained artifact identity."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-062"
+atom_id = "DSET-REQUIREMENT-GOV-037"
+event = "absorbed"
+occurred_at = "2026-07-21T02:15:04+04:00"
+related = ["DSET-REQUIREMENT-GOV-040"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "The successor retains verbose settings and ownership semantics while replacing the immutable-YAML exception with governed carrier transitions."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-063"
+atom_id = "DSET-TEST-GOV-038"
+event = "absorbed"
+occurred_at = "2026-07-21T02:15:05+04:00"
+related = ["DSET-TEST-GOV-043"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "The successor retains settings and migration proof while requiring complete historical carrier conversion."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-064"
+atom_id = "DSET-TEST-GOV-040"
+event = "absorbed"
+occurred_at = "2026-07-21T02:15:06+04:00"
+related = ["DSET-TEST-GOV-043"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "The successor retains package-history preservation checks while requiring TOML historical envelopes instead of YAML snapshots."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-065"
+atom_id = "DSET-TEST-GOV-041"
+event = "absorbed"
+occurred_at = "2026-07-21T02:15:07+04:00"
+related = ["DSET-TEST-GOV-043"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "The successor preserves digest, link, ownership, rollback, and idempotency checks while eliminating the retained-YAML exception."

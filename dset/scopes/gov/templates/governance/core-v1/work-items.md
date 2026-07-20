@@ -25,10 +25,12 @@ ID. A general Decision omits subtype and uses a `DECISION` ID.
 
 ## Compatibility without retyping
 
-New atoms use the explicit four-Type envelope. Existing stable semantic IDs
-remain byte-for-byte and are interpreted through a deterministic compatibility
-classification: their one recognized ID-kind token and canonical carrier role
-must agree on one Type and at most one direct subtype. Legacy `EVAL` IDs map to
+New atoms use the explicit four-Type envelope. Existing stable semantic IDs and
+normalized payloads remain unchanged and are interpreted through a
+deterministic compatibility classification even when a governed carrier
+transition changes their encoding or path. Their one recognized ID-kind token
+and canonical carrier role must agree on one Type and at most one direct
+subtype. Legacy `EVAL` IDs map to
 `qa/evaluation`; legacy standalone Opportunity, Conflict, and Risk carriers map
 to direct Question subtypes; Requirement, Contract, Story, Outcome, Scenario,
 Invariant, and Constraint map to direct Decision subtypes. The mapping is a
@@ -181,14 +183,15 @@ another semantic Type.
 
 ## Representation migration
 
-Existing emitted atoms remain immutable. Legacy top-level Opportunity and
-Conflict records, Problem/Risk classifications, separate Requirement/Contract
-authority records, and `EVAL` identities must not be silently retyped or
-renamed. A successor schema must preserve their IDs, content digests,
-provenance, and explicit successor or absorption relations.
+Existing emitted semantic records remain immutable. Legacy top-level
+Opportunity and Conflict records, Problem/Risk classifications, separate
+Requirement/Contract authority records, and `EVAL` identities must not be
+silently retyped or renamed. A carrier transition must preserve their IDs,
+normalized payloads, provenance, and explicit successor or absorption
+relations while retaining the original digest and source-return address.
 
 The compatibility projection is implemented across validation, traceability,
-project health, and skill routing. It preserves legacy identities without
-upgrading their immutability guarantee: native atoms are digest-sealed, while
-legacy carriers remain compatibility-classified until separately sealed or
-absorbed. Any immutable-coverage claim must state that boundary.
+project health, and skill routing. Native atoms and compatibility-classified
+legacy IDs both resolve through an original seal plus any validated current-
+carrier transition chain. Any immutability claim must distinguish semantic
+immutability from carrier representation.

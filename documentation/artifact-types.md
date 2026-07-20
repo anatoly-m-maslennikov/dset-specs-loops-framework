@@ -188,7 +188,7 @@ than another semantic Type.
 independent from the semantic `type` and `subtype` of an Atomic Record.
 
 The machine-readable catalog is
-[`dset/scopes/gov/artifact-types.yaml`](../dset/scopes/gov/artifact-types.yaml).
+[`dset/scopes/gov/artifact-types.toml`](../dset/scopes/gov/artifact-types.toml).
 It defines eleven artifact types:
 
 | Artifact type | Direct artifact subtypes |

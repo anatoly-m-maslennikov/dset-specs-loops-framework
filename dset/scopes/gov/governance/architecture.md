@@ -113,8 +113,9 @@ Question, Problem, and QA:
 
 An active atom wins over a stale compiled projection. An absorbing successor
 wins over absorbed predecessors by explicit lifecycle relation, never by age.
-A fully retired atom may move byte-for-byte to its type's `archive/` subfolder
-with stable ID, digest, and lookup. Generated views may summarize these
+A fully retired atom may move to its type's `archive/` subfolder only through a
+lossless carrier transition that keeps its semantic ID, original seal, current
+digest, source-return address, and lookup. Generated views may summarize these
 relationships but never become authority.
 
 ## Public workflow contract

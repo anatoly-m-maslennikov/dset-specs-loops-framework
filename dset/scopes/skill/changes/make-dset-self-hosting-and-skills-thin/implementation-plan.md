@@ -136,7 +136,7 @@
   resolver. Retain the authenticated independent review and its reconciled
   findings as a separate open Evaluation gate.
 
-## Batch 11 — Implementation modes and canonical TOML — planned
+## Batch 11 — Implementation modes and canonical TOML — in progress
 
 - Add a documented `workflows.implement.mode` setting with `lazy` as the
   default and `strict` as the implementation-only option.
@@ -154,6 +154,23 @@
 - Commit migration tooling before applying it. Apply the migration as a
   separate logical commit, then regenerate adapters/derived views and record
   deterministic evidence after the complete repository and adopter gates pass.
+
+## Batch 12 — Complete DSET-owned TOML cutover — in progress
+
+- Replace byte-level immutability with semantic immutability under
+  `DSET-DECISION-GOV-018`; permit carrier changes only through a lossless,
+  authority-bound transition with an append-only return path.
+- Add a validated carrier-transition ledger and schema containing the source
+  and target paths, whole-file digests, normalized semantic digest, source Git
+  blob, declared loss, governing Decision, and session provenance.
+- Convert every DSET-owned standalone YAML artifact to an adjacent historical
+  TOML envelope, and convert every DSET-owned Markdown YAML frontmatter block
+  to TOML frontmatter without changing its semantic payload or body.
+- Retain YAML only at externally prescribed host boundaries such as GitHub
+  Actions and host skill metadata; those files are not DSET artifact carriers.
+- Prove zero DSET YAML artifact paths, zero DSET Markdown YAML frontmatter,
+  semantic equivalence, complete resealing, rollback coverage, idempotency,
+  current compilation, and the full repository verification suite.
 
 ## Later batches
 

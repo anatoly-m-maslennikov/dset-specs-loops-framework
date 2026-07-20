@@ -223,10 +223,13 @@ location, and fragment digests. This proves declared structure and freshness,
 not semantic equivalence. Review or Evaluation separately judges whether the
 fragment faithfully carries the source consequence.
 
-Atomic artifacts are immutable. Editable drafts are not atoms. Emission fixes
-the atom's ID, content, provenance, creation status, and links. Acceptance,
-rejection, reopening, correction, withdrawal, or any other later change is a
-new append-only lifecycle event from which current status is derived.
+Atomic semantic records are immutable. Editable drafts are not atoms. Emission
+fixes the atom's ID, semantic payload, provenance, creation status, and links.
+Acceptance, rejection, reopening, correction, withdrawal, or any other later
+semantic change is a new append-only lifecycle event or successor atom.
+Carrier encoding and path may change only through a lossless, authorized,
+append-only carrier transition that retains the original seal and source-return
+address while binding the current carrier.
 
 Compatibility migration must not leave older Decision authority mutable.
 Dedicated legacy Decision carriers are sealed by whole-file digest; Decision
@@ -245,18 +248,19 @@ unaffected older claims active and does not absorb the whole atom. Reverse
 links and the active compilation set are derived views.
 
 An atom with no active claims, open reliance, or unresolved lifecycle work is
-fully retired and may move byte-for-byte into its artifact type's `archive/`
-subfolder. Its ID and content digest remain unchanged, and the canonical ID
-registry updates its location. Partial absorption does not qualify. Archived
-atoms remain immutable history and are not deleted.
+fully retired and may move into its artifact type's `archive/` subfolder
+through a registered carrier transition. Its semantic ID and payload remain
+unchanged, the original and current carrier digests remain linked, and the
+canonical ID registry updates its location. Partial absorption does not
+qualify. Archived atoms remain immutable history and are not deleted.
 
 **Scenario DSET-SCENARIO-GOV-022:** A resolved Question produces a Decision, the
 Decision compiles into the relevant spec and proof plans, and review rejects a
 code-only change that leaves the evergreen projection stale. A later Decision
 absorbs the earlier one explicitly; the original remains immutable provenance,
 while only the successor participates in the active compilation set. After all
-reliance closes, the original moves byte-for-byte to `archive/` and remains
-resolvable by ID.
+reliance closes, the original moves to `archive/` through a lossless registered
+carrier transition and remains resolvable by ID and source return address.
 
 ## DSET-REQUIREMENT-GOV-022 — Commits and atomic artifacts retain provenance
 
@@ -714,7 +718,7 @@ does not write at group scope or jump to project scope without acceptance.
 `DSET-REQUIREMENT-GOV-035` is absorbed by
 `DSET-REQUIREMENT-GOV-039` and remains immutable history.
 
-## DSET-REQUIREMENT-GOV-037 — Project settings are verbose and separate from project truth
+## DSET-REQUIREMENT-GOV-040 — Project settings are verbose and all DSET artifacts use TOML
 
 The canonical root settings carrier is `dset_settings.toml`. It must explain
 its boundary with the project manifest and governing documents, every setting,
@@ -731,37 +735,39 @@ runtime-risk and durability topology, external contracts, release targets,
 verification commands, and commit-provenance boundaries. Governing documents
 own definitions and policy; settings select registered behavior only.
 
-DSET-owned mutable structured artifact files must use TOML, and newly emitted
-DSET Markdown artifacts must use TOML frontmatter. One canonical source must
-not coexist with an editable YAML or JSON copy. Existing sealed atomic carriers
-and registered legacy Decision carriers remain byte-stable historical
-exceptions; correction emits a successor instead of rewriting them.
+DSET-owned structured artifact files and DSET Markdown frontmatter must use
+TOML. One canonical source must not coexist with an editable YAML or JSON copy.
+Previously sealed atomic carriers, promoted evidence, legacy Decision
+carriers, and historical structured editions migrate through the authorized
+lossless carrier-transition protocol; they are not format exceptions.
 
 Externally prescribed carriers may retain their required format: host skill
 metadata, GitHub Actions, ecosystem manifests and lockfiles, wire/CLI output,
 machine-local runtime journals, and standards-compliant JSON Schema files.
 
-Migration must inventory every mutable source and reference, preview without
-writing, preserve parsed values and stable IDs, emit old/new digests, refuse
-collisions and unsupported values, rewrite repository references, validate the
-complete migrated tree before cutover, and leave no writable YAML/JSON DSET
-authority. Any adopter compatibility reader is explicit, finite, and never a
-legacy write path.
+Migration must inventory every source and reference, preview without writing,
+preserve normalized values, stable IDs, provenance, relations, selector
+fragments, and Markdown bodies, emit old/new and semantic digests plus Git
+source-return addresses, refuse collisions and unsupported values, rewrite
+repository references, update current-carrier seals transactionally, validate
+the complete migrated tree before cutover, and leave no DSET-owned YAML
+artifact or Markdown YAML frontmatter. Any adopter compatibility reader is
+explicit, finite, and never a legacy write path.
 
 **Scenario DSET-SCENARIO-GOV-037:** A cold reader opens
 `dset_settings.toml`, finds every operator choice and predicts its effect, then
 opens the project manifest for runtime topology and release truth. Bootstrap
 emits only the canonical name; a repository containing both names fails.
 
-**Scenario DSET-SCENARIO-GOV-038:** A dry run reports every mutable owned
-YAML/JSON source, TOML destination, reference rewrite, external or immutable
-historical exception, and digest. Apply produces a valid repository and
-adopter, a second apply is a no-op, and JSON Schema remains standard canonical
-JSON without an editable TOML duplicate.
+**Scenario DSET-SCENARIO-GOV-038:** A dry run reports every DSET-owned YAML
+source, TOML destination, reference rewrite, carrier transition, source-return
+address, and semantic digest. Apply produces a valid repository with no DSET
+YAML artifact or Markdown YAML frontmatter; a second apply is a no-op, and JSON
+Schema remains standard canonical JSON without an editable TOML duplicate.
 
-`DSET-REQUIREMENT-GOV-036` remains a sealed package-registry compatibility ID.
-Its authority is absorbed and fully replaced by `DSET-REQUIREMENT-GOV-037`;
-it is not part of the active compilation set.
+`DSET-REQUIREMENT-GOV-036` and `DSET-REQUIREMENT-GOV-037` remain historical
+compatibility IDs. Their authority is absorbed and fully replaced by
+`DSET-REQUIREMENT-GOV-040`; neither is part of the active compilation set.
 
 ## DSET-DECISION-GOV-014 — TOML null normalization is allowlisted
 
@@ -782,7 +788,7 @@ validating them as JSON Schema. Replacing this boundary with a DSET schema DSL
 and generated adapter requires separate accepted authority, a lossless mapping,
 and a freshness gate.
 
-## DSET-DECISION-GOV-016 — Native package registries succeed sealed YAML
+## Historical DSET-DECISION-GOV-016 — Native package registries succeed sealed YAML
 
 When a package YAML contains selector-sealed legacy Decision fragments, DSET
 preserves that YAML byte-for-byte as historical compatibility authority. The
@@ -796,7 +802,10 @@ historical fragments, so the two carriers never become competing writable
 owners. Readiness binds the preserved YAML digest and exact successor output;
 missing, changed, incomplete, ambiguous, or competing successors stop cutover.
 
-## DSET-DECISION-GOV-017 — Legacy structured snapshots preserve history only
+This Decision is absorbed by `DSET-DECISION-GOV-018`; retained YAML is no
+longer active policy.
+
+## Historical DSET-DECISION-GOV-017 — Legacy structured snapshots preserve history only
 
 A YAML carrier required by immutable historical links or selector-sealed
 authority remains byte-stable only as an exact `legacy_structured` registry
@@ -809,3 +818,35 @@ paths, and new immutable links to unregistered carriers fail. Migration creates
 the owner and registration transactionally, rewrites only mutable references,
 keeps historical links physically navigable on GitHub, and becomes a no-op on
 a second run.
+
+This Decision is absorbed by `DSET-DECISION-GOV-018`; retained YAML is no
+longer active policy.
+
+## DSET-DECISION-GOV-018 — Immutable semantics permit governed TOML carrier transitions
+
+Atomic immutability attaches to the artifact's semantic identity and payload,
+not permanently to one byte encoding. DSET may replace a governed carrier
+representation with canonical TOML only through a deterministic, lossless,
+append-only transition that preserves IDs, normalized values, claims,
+relations, provenance, intended use, selector fragments, and Markdown bodies.
+
+The append-only `dset/scopes/gov/migrations/carrier-transitions.toml` ledger
+binds the authorizing Decision, carrier and semantic IDs, old path, format,
+digest and Git blob return address, new path, format and digest, semantic-
+equivalence digest, declared loss, implementation commit, and session
+provenance. Original seals remain historical; current-carrier fields follow the
+validated transition chain. Unregistered mutation, semantic loss, missing
+return address, broken chain, partial resealing, or ambiguous ownership fails.
+
+Markdown keeps its path and body while TOML replaces YAML frontmatter. A
+standalone historical YAML edition moves to adjacent `<stem>.legacy.toml` when
+`<stem>.toml` already owns current truth. Readers never treat the historical
+envelope as current authority. After cutover, `dset/` contains no YAML artifact
+files and no Markdown YAML frontmatter. JSON Schema and other externally
+prescribed formats remain governed by `DSET-DECISION-GOV-015` and their owning
+host or ecosystem contracts.
+
+This Decision replaces `DSET-DECISION-GOV-003`, `016`, and `017` while carrying
+forward semantic immutability, append-only lifecycle, explicit acyclic
+replacement and absorption, role-before-priority conflict handling, universal
+priority, retirement, and stable lookup.

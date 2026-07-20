@@ -45,18 +45,19 @@ transactional context route work or support those sources but do not become
 authority merely by existing. Closing a transactional artifact without
 compiling its accepted normative consequences leaves the work incomplete.
 
-Atomic artifacts are immutable. Editable drafts are working documents, not
-atoms. Emitting an atom fixes its ID, content, provenance, creation status, and
-links. Later acceptance, rejection, reopening, correction, withdrawal, or other
-state change is a new append-only lifecycle event; current status is derived.
+Atomic artifacts are immutable in their semantic records. Editable drafts are working documents,
+not atoms. Emitting an atom fixes its ID, semantic payload, provenance,
+creation status, and links. Later semantic or lifecycle change is a new
+append-only event or successor atom; current status is derived.
 
-Legacy Decision authority remains byte-stable during migration without
-rewriting its carriers. A committed compatibility ledger seals each dedicated
-legacy Decision carrier by whole-file digest and each Decision identifier in a
-shared package registry by a selector-specific digest. Validation fails when a
-sealed legacy fragment disappears or changes. New authority uses native atoms;
-a deliberate replacement requires a native successor and lifecycle event, not
-regeneration of the compatibility ledger.
+Carrier bytes and paths may change only through an explicitly authorized,
+lossless, append-only transition recorded in
+`dset/scopes/gov/migrations/carrier-transitions.toml`. The transition retains
+the original seal and Git blob return address, binds the current path and
+digest, proves normalized semantic equality, declares loss, and updates every
+selector, link, classification, and generated view transactionally. Direct
+seal refresh, unregistered representation change, hidden loss, or broken
+transition chain fails validation.
 
 A successor atom declares `replacement_of` relations to older atoms. Matching
 append-only lifecycle events mark the predecessors `absorbed`. Replacement is
@@ -69,11 +70,11 @@ atom. Reverse `absorbed_by` links, current status, confirmation/violation state,
 and the active compilation set are derived views, never edits to an atom.
 
 When an atom has no active claims, open reliance, or unresolved lifecycle work,
-it is fully retired and may move byte-for-byte into its artifact type's
-`archive/` subfolder. The move preserves its ID and content digest; the
-canonical ID registry updates the location so references still resolve. Partial
-absorption never qualifies. Archived atoms remain immutable history and are
-never deleted merely because they are inactive.
+it is fully retired and may move into its artifact type's `archive/` subfolder
+through a registered carrier transition. The move preserves semantic identity,
+the original and current carrier digests, source return, and stable lookup.
+Partial absorption never qualifies. Archived atoms remain immutable history
+and are never deleted merely because they are inactive.
 
 Lifecycle absorption is also the repair mechanism when a sealed atom contains
 an invalid relationship that cannot be edited. The absorbing successor must
@@ -104,9 +105,9 @@ parties; the Conflict claim owns the incompatibility semantics. A separate
 append-only lifecycle event records its later resolution.
 Recorded dispositions bind the effective priority values and sources, context,
 precedence, and profile scale; check mode rejects them when that basis changes.
-An explicitly retired atom with no active child reliance may move byte-for-byte
-to its adjacent `archive/` folder while the digest-bound canonical registry
-updates only its lookup path.
+An explicitly retired atom with no active child reliance may move to its
+adjacent `archive/` folder only through a lossless carrier transition while the
+canonical registry updates current lookup and retains the original seal.
 
 Compilation generates a digest-bound index from every active authority source
 to one or more explicit evergreen claim fragments. A fragment must be a
