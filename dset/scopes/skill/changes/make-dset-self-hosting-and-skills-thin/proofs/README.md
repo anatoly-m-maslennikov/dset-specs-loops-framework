@@ -15,3 +15,4 @@ diagnose failure.
 - [TypeScript profile instantiation boundary](DSET-EVIDENCE-RECORD-017-typescript-profile-instantiation.md)
 - [Codex host installation attempt](DSET-EVIDENCE-RECORD-018-codex-host-install-attempt.md)
 - [Independent DSET remediation review](DSET-EVIDENCE-RECORD-019-independent-review-remediation.md)
+- [Exact-head Codex host installation attempt](DSET-EVIDENCE-RECORD-020-codex-host-install-attempt.md)
