@@ -22,6 +22,13 @@ records:
     type: qa
     subtype: evaluation
   -
+    semantic_id: DSET-PROBLEM-TOOL-006
+    carrier_id: DSET-ATOMIC-RECORD-016
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-016-initializer-supportability.md
+    sha256: b7af5e995e537f67f3e99741d2f875d60edb81d71883db71ec0151f7c9d20950
+    type: problem
+    subtype: none
+  -
     semantic_id: DSET-REQUIREMENT-GOV-030
     carrier_id: DSET-ATOMIC-RECORD-001
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-001-artifact-type-name-policy.md

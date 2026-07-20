@@ -309,6 +309,7 @@ changes:
       - DSET-PROBLEM-TOOL-003
       - DSET-PROBLEM-TOOL-004
       - DSET-PROBLEM-TOOL-005
+      - DSET-PROBLEM-TOOL-006
       - DSET-QUESTION-GOV-001
       - DSET-QUESTION-GOV-002
       - DSET-QUESTION-GOV-003
@@ -1590,6 +1591,22 @@ semantic_classifications:
       - open
     lifecycle_events:
       - DSET-LIFECYCLE-EVENT-012
+  -
+    id: DSET-PROBLEM-TOOL-006
+    type: problem
+    subtype: none
+    compatibility: false
+    origins:
+      - intake_compatibility
+      - modern_atom
+    carriers:
+      - dset/scopes/gov/intake.yaml
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-016-initializer-supportability.md
+    carrier_statuses:
+      - accepted
+      - resolved
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-018
   -
     id: DSET-QUESTION-GOV-001
     type: question
@@ -3585,6 +3602,22 @@ semantic_atoms:
     absorbed_by: []
     archived: false
   -
+    id: DSET-PROBLEM-TOOL-006
+    carrier_id: DSET-ATOMIC-RECORD-016
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-016-initializer-supportability.md
+    sha256: b7af5e995e537f67f3e99741d2f875d60edb81d71883db71ec0151f7c9d20950
+    type: problem
+    subtype: none
+    emission_status: accepted
+    current_status: resolved
+    priority: high
+    priority_source: atom:DSET-PROBLEM-TOOL-006
+    child_of: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-018
+    absorbed_by: []
+    archived: false
+  -
     id: DSET-REQUIREMENT-GOV-030
     carrier_id: DSET-ATOMIC-RECORD-001
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-001-artifact-type-name-policy.md
@@ -3906,6 +3939,12 @@ lineage:
     id: DSET-PLAN-002
     artifact_id: DSET-PLAN-002
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-PLAN-002-0-3-1-release.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-PROBLEM-TOOL-006
+    artifact_id: DSET-ATOMIC-RECORD-016
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-016-initializer-supportability.md
     child_of: []
     parent_to: []
   -

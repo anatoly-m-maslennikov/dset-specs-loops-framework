@@ -94,6 +94,7 @@ def initialize_project(
             repository=repository or project_id,
             work_areas=work_areas,
             profile=profile,
+            hosted_automation=(target / ".github" / "workflows").is_dir(),
         )
         paths = tuple(
             path.relative_to(stage).as_posix()
@@ -217,6 +218,7 @@ def _stage_project(
     repository: str,
     work_areas: Sequence[WorkArea],
     profile: str,
+    hosted_automation: bool,
 ) -> None:
     source_layout = discover_layout(source)
     for layer in LAYERS:
@@ -238,9 +240,15 @@ def _stage_project(
             "repository_role": "adopter",
         },
         "supportability": {
-            "status": "not-applicable",
+            "status": "applicable" if hosted_automation else "not-applicable",
             "reason": (
-                "bootstrap default; classify production supportability before release"
+                "active hosted automation detected during bootstrap; complete "
+                "production supportability before release"
+                if hosted_automation
+                else (
+                    "bootstrap default; classify production supportability "
+                    "before release"
+                )
             ),
             "authority": "local-repository",
             "runbook": "dset/scopes/ops/supportability/README.md",
@@ -307,9 +315,14 @@ def _stage_project(
     ops = stage / "dset" / "scopes" / "ops"
     supportability = ops / "supportability"
     supportability.mkdir()
+    supportability_state = (
+        "Active hosted automation was detected during bootstrap. Supportability "
+        "is applicable; complete the production runbook before release."
+        if hosted_automation
+        else "Bootstrap default: not applicable. Reclassify before release."
+    )
     (supportability / "README.md").write_text(
-        "# Supportability\n\n"
-        "Bootstrap default: not applicable. Reclassify before release.\n",
+        f"# Supportability\n\n{supportability_state}\n",
         encoding="utf-8",
     )
     history = ops / "history"

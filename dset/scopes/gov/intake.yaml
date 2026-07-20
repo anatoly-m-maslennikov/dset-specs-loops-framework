@@ -374,3 +374,14 @@ items:
     owner_change: DSET-CHANGE-SKILL-001
     decision: DSET-DECISION-GOV-007
     external_refs: []
+  - id: DSET-PROBLEM-TOOL-006
+    llm_session_ids:
+      - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+    scope: tool
+    type: problem
+    status: resolved
+    title: Initializer contradicts active automation
+    statement: Repositories with active GitHub workflows were initialized with supportability marked not applicable, so the initializer's own post-write validator rejected and rolled back an otherwise valid initialization. Bootstrap now detects active hosted automation and emits applicable supportability with a bounded incomplete-runbook warning.
+    owner_change: DSET-CHANGE-SKILL-001
+    decision: null
+    external_refs: []

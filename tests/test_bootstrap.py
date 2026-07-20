@@ -76,6 +76,31 @@ class BootstrapTests(unittest.TestCase):
                 (target / "README.md").read_text(encoding="utf-8"), "# Existing\n"
             )
 
+    def test_execute_detects_hosted_automation_supportability(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw) / "automated"
+            workflow = target / ".github/workflows/ci.yml"
+            workflow.parent.mkdir(parents=True)
+            workflow.write_text("name: CI\n", encoding="utf-8")
+
+            result = initialize_project(
+                target,
+                project_key="APP",
+                project_id="sample-app",
+                project_name="Sample App",
+                project_license="MIT",
+                execute=True,
+            )
+
+            self.assertTrue(result.executed)
+            self.assertEqual(validate_repository(target), [])
+            manifest = load(target / "dset/scopes/meta/dset.yaml")
+            self.assertEqual(manifest["supportability"]["status"], "applicable")
+            runbook = (target / "dset/scopes/ops/supportability/README.md").read_text(
+                encoding="utf-8"
+            )
+            self.assertIn("Active hosted automation", runbook)
+
     def test_execute_ignores_git_ignored_runtime_markdown(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             target = Path(raw) / "existing"
