@@ -3,7 +3,7 @@
   "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/scopes/tool/schemas/traceability.schema.json",
   "title": "DSET traceability index",
   "type": "object",
-  "required": ["schema_version", "repository", "changes"],
+  "required": ["schema_version", "repository", "changes", "lineage"],
   "properties": {
     "schema_version": {"enum": [1.1, "1.2"]},
     "repository": {"type": "string"},
@@ -36,6 +36,10 @@
         },
         "additionalProperties": false
       }
+    },
+    "lineage": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/lineage_node"}
     }
   },
   "allOf": [
@@ -61,6 +65,19 @@
     }
   ],
   "$defs": {
+    "lineage_id": {"type": "string", "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)+$"},
+    "lineage_node": {
+      "type": "object",
+      "required": ["id", "artifact_id", "path", "child_of", "parent_to"],
+      "properties": {
+        "id": {"$ref": "#/$defs/lineage_id"},
+        "artifact_id": {"$ref": "#/$defs/lineage_id"},
+        "path": {"type": "string", "minLength": 1},
+        "child_of": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/lineage_id"}},
+        "parent_to": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/lineage_id"}}
+      },
+      "additionalProperties": false
+    },
     "change_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-CHANGE-(?:META|GOV|TOOL|SKILL|OPS)-[0-9]{3,}$"},
     "trace_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-(?:REQUIREMENT|SCENARIO|INVARIANT|TEST|EVAL|TASK|PROBLEM|OPPORTUNITY|QUESTION|DECISION|CONTRACT|STORY|OUTCOME|CHANGE)(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"},
     "sha_or_pending": {"oneOf": [{"type": "string", "pattern": "^[0-9a-f]{40}$"}, {"const": "pending"}]},

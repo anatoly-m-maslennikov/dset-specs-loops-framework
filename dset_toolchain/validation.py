@@ -11,6 +11,7 @@ from . import __version__
 from .diagnostics import Diagnostic
 from .governance import validate_governance
 from .layout import RepositoryLayout, discover_layout
+from .lineage import validate_artifact_lineage
 from .profiles import VALID_PROFILES, required_artifacts
 from .yaml_subset import YamlSubsetError, load, loads
 
@@ -158,6 +159,7 @@ def validate_repository(root: Path) -> list[Diagnostic]:
             if path.is_dir() and re.match(r"^\d{4}-\d{2}-\d{2}-", path.name):
                 diagnostics.extend(validate_change(root, path, archived=True))
     diagnostics.extend(_validate_markdown(root))
+    diagnostics.extend(validate_artifact_lineage(root))
     return sorted(set(diagnostics))
 
 

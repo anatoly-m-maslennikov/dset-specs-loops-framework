@@ -63,6 +63,15 @@ class TraceabilityTests(unittest.TestCase):
         self.assertTrue(
             all(item["outcomes"] == [] for item in trace["changes"] if item != current)
         )
+        lineage = {item["id"]: item for item in trace["lineage"]}
+        self.assertEqual(
+            lineage["DSET-REQUIREMENT-GOV-034"]["child_of"],
+            ["DSET-REQUIREMENT-GOV-033"],
+        )
+        self.assertIn(
+            "DSET-REQUIREMENT-GOV-034",
+            lineage["DSET-REQUIREMENT-GOV-033"]["parent_to"],
+        )
 
     def test_write_is_stable_and_checkable(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

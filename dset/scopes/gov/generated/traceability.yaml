@@ -182,6 +182,7 @@ changes:
       - DSET-REQUIREMENT-GOV-031
       - DSET-REQUIREMENT-GOV-032
       - DSET-REQUIREMENT-GOV-033
+      - DSET-REQUIREMENT-GOV-034
       - DSET-REQUIREMENT-META-007
       - DSET-REQUIREMENT-META-011
       - DSET-REQUIREMENT-OPS-003
@@ -222,6 +223,7 @@ changes:
       - DSET-TEST-GOV-031
       - DSET-TEST-GOV-032
       - DSET-TEST-GOV-033
+      - DSET-TEST-GOV-034
       - DSET-TEST-META-007
       - DSET-TEST-META-010
       - DSET-TEST-META-011
@@ -265,6 +267,7 @@ changes:
       - DSET-EVAL-GOV-021
       - DSET-EVAL-GOV-022
       - DSET-EVAL-GOV-023
+      - DSET-EVAL-GOV-024
       - DSET-EVAL-META-008
       - DSET-EVAL-META-009
       - DSET-EVAL-OPS-002
@@ -495,3 +498,78 @@ changes:
       base_commit: f340e28316aa92341784ce8e1a853039abf5acc6
       head_commit: c9d29f102df2966af926af2dc9919ea17d049efb
     dependencies: []
+lineage:
+  -
+    id: DSET-EVIDENCE-RECORD-001
+    artifact_id: DSET-EVIDENCE-RECORD-001
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-001-artifact-role-lifecycle.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-EVIDENCE-RECORD-002
+    artifact_id: DSET-EVIDENCE-RECORD-002
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-002-project-scope-ownership.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-PLAN-001
+    artifact_id: DSET-PLAN-001
+    path: dset/scopes/ops/planning/DSET-PLAN-001-0-4-core-vertical-cut.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-REQUIREMENT-GOV-030
+    artifact_id: DSET-ATOMIC-RECORD-001
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-001-artifact-type-name-policy.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-REQUIREMENT-GOV-031
+    artifact_id: DSET-ATOMIC-RECORD-002
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-002-multilevel-architecture-views.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-REQUIREMENT-GOV-032
+    artifact_id: DSET-ATOMIC-RECORD-003
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-003-project-scope-ownership.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-REQUIREMENT-GOV-033
+    artifact_id: DSET-ATOMIC-RECORD-004
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-004-artifact-inheritance.md
+    child_of: []
+    parent_to:
+      - DSET-REQUIREMENT-GOV-034
+  -
+    id: DSET-REQUIREMENT-GOV-034
+    artifact_id: DSET-ATOMIC-RECORD-005
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-005-artifact-lineage.md
+    child_of:
+      - DSET-REQUIREMENT-GOV-033
+    parent_to: []
+  -
+    id: DSET-SPECIFICATION-001
+    artifact_id: DSET-SPECIFICATION-001
+    path: dset/scopes/ops/planning/DSET-SPECIFICATION-001-0-3-foundation.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-SPECIFICATION-002
+    artifact_id: DSET-SPECIFICATION-002
+    path: dset/scopes/ops/planning/DSET-SPECIFICATION-002-0-4-self-hosted-core.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-SPECIFICATION-003
+    artifact_id: DSET-SPECIFICATION-003
+    path: dset/scopes/ops/planning/DSET-SPECIFICATION-003-0-5-adopter-ready.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-SPECIFICATION-004
+    artifact_id: DSET-SPECIFICATION-004
+    path: dset/scopes/ops/planning/DSET-SPECIFICATION-004-1-0-stable.md
+    child_of: []
+    parent_to: []

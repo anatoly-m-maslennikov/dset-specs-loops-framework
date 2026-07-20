@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Any
 
 from .layout import discover_layout
+from .lineage import build_lineage_index
 from .yaml_subset import dump, load
 
 
@@ -84,6 +85,7 @@ def build_traceability(root: Path) -> dict[str, Any]:
         "schema_version": "1.2" if layout.layered else 1.1,
         "repository": history["repository"],
         "changes": changes,
+        "lineage": build_lineage_index(root),
     }
 
 
