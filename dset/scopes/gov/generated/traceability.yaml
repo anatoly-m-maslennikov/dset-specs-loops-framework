@@ -182,6 +182,7 @@ changes:
       - DSET-REQUIREMENT-GOV-031
       - DSET-REQUIREMENT-GOV-032
       - DSET-REQUIREMENT-GOV-036
+      - DSET-REQUIREMENT-GOV-037
       - DSET-REQUIREMENT-META-007
       - DSET-REQUIREMENT-META-011
       - DSET-REQUIREMENT-OPS-003
@@ -227,6 +228,7 @@ changes:
       - DSET-TEST-GOV-032
       - DSET-TEST-GOV-036
       - DSET-TEST-GOV-037
+      - DSET-TEST-GOV-038
       - DSET-TEST-META-007
       - DSET-TEST-META-010
       - DSET-TEST-META-011
@@ -292,6 +294,7 @@ changes:
       - DSET-EVAL-TOOL-006
       - DSET-EVALUATION-GOV-026
       - DSET-EVALUATION-GOV-027
+      - DSET-EVALUATION-GOV-028
       - DSET-EVALUATION-SKILL-012
       - DSET-EVALUATION-TOOL-003
       - DSET-EVALUATION-TOOL-004
@@ -1595,6 +1598,22 @@ semantic_classifications:
     carrier_statuses:
       - accepted
       - defined
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-046
+  -
+    id: DSET-EVALUATION-GOV-028
+    type: qa
+    subtype: evaluation
+    compatibility: false
+    origins:
+      - modern_atom
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-050-verbose-project-settings-evaluation.md
+    carrier_statuses:
+      - accepted
+      - defined
     lifecycle_events: []
   -
     id: DSET-EVALUATION-SKILL-012
@@ -2574,6 +2593,22 @@ semantic_classifications:
     carrier_statuses:
       - accepted
       - defined
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-044
+  -
+    id: DSET-REQUIREMENT-GOV-037
+    type: decision
+    subtype: requirement
+    compatibility: false
+    origins:
+      - modern_atom
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-048-verbose-project-settings.md
+    carrier_statuses:
+      - accepted
+      - defined
     lifecycle_events: []
   -
     id: DSET-REQUIREMENT-META-001
@@ -3491,6 +3526,22 @@ semantic_classifications:
     carrier_statuses:
       - accepted
       - defined
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-045
+  -
+    id: DSET-TEST-GOV-038
+    type: qa
+    subtype: test
+    compatibility: false
+    origins:
+      - modern_atom
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-049-verbose-project-settings-test.md
+    carrier_statuses:
+      - accepted
+      - defined
     lifecycle_events: []
   -
     id: DSET-TEST-META-001
@@ -4333,7 +4384,7 @@ semantic_atoms:
     type: qa
     subtype: evaluation
     emission_status: accepted
-    current_status: accepted
+    current_status: absorbed
     priority: medium
     priority_source: atom:DSET-EVALUATION-GOV-027
     relations:
@@ -4341,6 +4392,31 @@ semantic_atoms:
         type: check_of
         origin: authored
         target: DSET-REQUIREMENT-GOV-036
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-046
+    absorbed_by:
+      - DSET-EVALUATION-GOV-028
+    archived: false
+  -
+    id: DSET-EVALUATION-GOV-028
+    carrier_id: DSET-ATOMIC-RECORD-050
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-050-verbose-project-settings-evaluation.md
+    sha256: 0acee9747599519f949835531fcb0d01859efdfa8b2f6a02d1da3574e61b7dbc
+    type: qa
+    subtype: evaluation
+    emission_status: accepted
+    current_status: accepted
+    priority: medium
+    priority_source: atom:DSET-EVALUATION-GOV-028
+    relations:
+      -
+        type: check_of
+        origin: authored
+        target: DSET-REQUIREMENT-GOV-037
+      -
+        type: replacement_of
+        origin: authored
+        target: DSET-EVALUATION-GOV-027
     lifecycle_events: []
     absorbed_by: []
     archived: false
@@ -4620,10 +4696,31 @@ semantic_atoms:
     type: decision
     subtype: requirement
     emission_status: accepted
-    current_status: accepted
+    current_status: absorbed
     priority: high
     priority_source: atom:DSET-REQUIREMENT-GOV-036
     relations: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-044
+    absorbed_by:
+      - DSET-REQUIREMENT-GOV-037
+    archived: false
+  -
+    id: DSET-REQUIREMENT-GOV-037
+    carrier_id: DSET-ATOMIC-RECORD-048
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-048-verbose-project-settings.md
+    sha256: cc5958bc9d829dcd5438660e3424ea43963ad212357e3cd5b6bd8e7cd36f83dc
+    type: decision
+    subtype: requirement
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-REQUIREMENT-GOV-037
+    relations:
+      -
+        type: replacement_of
+        origin: authored
+        target: DSET-REQUIREMENT-GOV-036
     lifecycle_events: []
     absorbed_by: []
     archived: false
@@ -4764,7 +4861,7 @@ semantic_atoms:
     type: qa
     subtype: test
     emission_status: accepted
-    current_status: accepted
+    current_status: absorbed
     priority: high
     priority_source: atom:DSET-TEST-GOV-037
     relations:
@@ -4772,6 +4869,31 @@ semantic_atoms:
         type: check_of
         origin: authored
         target: DSET-REQUIREMENT-GOV-036
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-045
+    absorbed_by:
+      - DSET-TEST-GOV-038
+    archived: false
+  -
+    id: DSET-TEST-GOV-038
+    carrier_id: DSET-ATOMIC-RECORD-049
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-049-verbose-project-settings-test.md
+    sha256: db02d80840e3c245783281ca8070559c92b0c19653e92fe5705704c9e191bb94
+    type: qa
+    subtype: test
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-TEST-GOV-038
+    relations:
+      -
+        type: check_of
+        origin: authored
+        target: DSET-REQUIREMENT-GOV-037
+      -
+        type: replacement_of
+        origin: authored
+        target: DSET-TEST-GOV-037
     lifecycle_events: []
     absorbed_by: []
     archived: false
@@ -6105,6 +6227,24 @@ relations:
     target: DSET-REQUIREMENT-GOV-036
     llm_session_ids: []
   -
+    source: DSET-EVALUATION-GOV-028
+    source_kind: artifact
+    source_artifact_id: DSET-ATOMIC-RECORD-050
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-050-verbose-project-settings-evaluation.md
+    type: check_of
+    origin: authored
+    target: DSET-REQUIREMENT-GOV-037
+    llm_session_ids: []
+  -
+    source: DSET-EVALUATION-GOV-028
+    source_kind: artifact
+    source_artifact_id: DSET-ATOMIC-RECORD-050
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-050-verbose-project-settings-evaluation.md
+    type: replacement_of
+    origin: authored
+    target: DSET-EVALUATION-GOV-027
+    llm_session_ids: []
+  -
     source: DSET-EVALUATION-SKILL-012
     source_kind: artifact
     source_artifact_id: DSET-ATOMIC-RECORD-043
@@ -6348,6 +6488,15 @@ relations:
     target: DSET-REQUIREMENT-GOV-033
     llm_session_ids: []
   -
+    source: DSET-REQUIREMENT-GOV-037
+    source_kind: artifact
+    source_artifact_id: DSET-ATOMIC-RECORD-048
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-048-verbose-project-settings.md
+    type: replacement_of
+    origin: authored
+    target: DSET-REQUIREMENT-GOV-036
+    llm_session_ids: []
+  -
     source: DSET-REQUIREMENT-SKILL-011
     source_kind: artifact
     source_artifact_id: DSET-ATOMIC-RECORD-007
@@ -6395,7 +6544,7 @@ relations:
       scope:
         kind: project
         id: dset-specs-loops-framework
-      through: DSET-ATOMIC-RECORD-047
+      through: DSET-ATOMIC-RECORD-048
       layer: gov
     llm_session_ids: []
   -
@@ -6410,7 +6559,7 @@ relations:
       scope:
         kind: project
         id: dset-specs-loops-framework
-      through: DSET-ATOMIC-RECORD-042
+      through: DSET-ATOMIC-RECORD-049
       subtype: test
       layer: gov
     llm_session_ids: []
@@ -6426,7 +6575,7 @@ relations:
       scope:
         kind: project
         id: dset-specs-loops-framework
-      through: DSET-ATOMIC-RECORD-044
+      through: DSET-ATOMIC-RECORD-050
       subtype: evaluation
       layer: gov
     llm_session_ids: []
@@ -6447,6 +6596,24 @@ relations:
     type: check_of
     origin: authored
     target: DSET-REQUIREMENT-GOV-036
+    llm_session_ids: []
+  -
+    source: DSET-TEST-GOV-038
+    source_kind: artifact
+    source_artifact_id: DSET-ATOMIC-RECORD-049
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-049-verbose-project-settings-test.md
+    type: check_of
+    origin: authored
+    target: DSET-REQUIREMENT-GOV-037
+    llm_session_ids: []
+  -
+    source: DSET-TEST-GOV-038
+    source_kind: artifact
+    source_artifact_id: DSET-ATOMIC-RECORD-049
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-049-verbose-project-settings-test.md
+    type: replacement_of
+    origin: authored
+    target: DSET-TEST-GOV-037
     llm_session_ids: []
   -
     source: DSET-TEST-SKILL-014

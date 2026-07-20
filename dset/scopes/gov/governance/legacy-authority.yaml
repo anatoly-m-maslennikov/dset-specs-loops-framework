@@ -496,6 +496,15 @@ records:
         selector: requirements:DSET-REQUIREMENT-GOV-036
         sha256: da092a123af98964f3977597e6ecd6ae8bc93caff97d1f4dafbe8df6e494a342
   -
+    semantic_id: DSET-REQUIREMENT-GOV-037
+    type: decision
+    subtype: requirement
+    fragments:
+      -
+        path: dset/scopes/gov/specs/packages/methodology/package.yaml
+        selector: requirements:DSET-REQUIREMENT-GOV-037
+        sha256: 6bb0a13d93d08366d1ef953e937512722b7c3a942598502a1213a010c5a6268d
+  -
     semantic_id: DSET-REQUIREMENT-META-001
     type: decision
     subtype: requirement

@@ -438,3 +438,33 @@ events:
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: Source validation now allows replacement_of from any semantic atom while retaining Decision-only override and all absorption, cycle, and exclusivity gates.
+  -
+    id: DSET-LIFECYCLE-EVENT-044
+    atom_id: DSET-REQUIREMENT-GOV-036
+    event: absorbed
+    occurred_at: 2026-07-20T21:49:14+04:00
+    related:
+      - DSET-REQUIREMENT-GOV-037
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: The successor renames and expands project settings, separates selectable behavior from manifest truth, and preserves immutable historical carriers.
+  -
+    id: DSET-LIFECYCLE-EVENT-045
+    atom_id: DSET-TEST-GOV-037
+    event: absorbed
+    occurred_at: 2026-07-20T21:49:15+04:00
+    related:
+      - DSET-TEST-GOV-038
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: The successor retains canonical TOML coverage and adds deterministic filename, compatibility, manifest-boundary, and selected-behavior checks.
+  -
+    id: DSET-LIFECYCLE-EVENT-046
+    atom_id: DSET-EVALUATION-GOV-027
+    event: absorbed
+    occurred_at: 2026-07-20T21:49:16+04:00
+    related:
+      - DSET-EVALUATION-GOV-028
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: The successor focuses the readability evaluation on discoverable settings and the settings-manifest-governance ownership boundary.

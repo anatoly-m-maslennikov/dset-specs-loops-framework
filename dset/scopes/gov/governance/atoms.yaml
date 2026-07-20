@@ -134,6 +134,13 @@ records:
     type: qa
     subtype: evaluation
   -
+    semantic_id: DSET-EVALUATION-GOV-028
+    carrier_id: DSET-ATOMIC-RECORD-050
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-050-verbose-project-settings-evaluation.md
+    sha256: 0acee9747599519f949835531fcb0d01859efdfa8b2f6a02d1da3574e61b7dbc
+    type: qa
+    subtype: evaluation
+  -
     semantic_id: DSET-EVALUATION-SKILL-012
     carrier_id: DSET-ATOMIC-RECORD-043
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-043-implementation-preparation-mode-evaluation.md
@@ -246,6 +253,13 @@ records:
     type: decision
     subtype: requirement
   -
+    semantic_id: DSET-REQUIREMENT-GOV-037
+    carrier_id: DSET-ATOMIC-RECORD-048
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-048-verbose-project-settings.md
+    sha256: cc5958bc9d829dcd5438660e3424ea43963ad212357e3cd5b6bd8e7cd36f83dc
+    type: decision
+    subtype: requirement
+  -
     semantic_id: DSET-REQUIREMENT-SKILL-010
     carrier_id: DSET-ATOMIC-RECORD-006
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-006-entry-criteria-skill-chains.md
@@ -299,6 +313,13 @@ records:
     carrier_id: DSET-ATOMIC-RECORD-042
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-042-canonical-toml-artifacts-test.md
     sha256: 908641b4e83d84a4f076fcef8a277f18e425e64ffdd14e69bb397bfd22416571
+    type: qa
+    subtype: test
+  -
+    semantic_id: DSET-TEST-GOV-038
+    carrier_id: DSET-ATOMIC-RECORD-049
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-049-verbose-project-settings-test.md
+    sha256: db02d80840e3c245783281ca8070559c92b0c19653e92fe5705704c9e191bb94
     type: qa
     subtype: test
   -

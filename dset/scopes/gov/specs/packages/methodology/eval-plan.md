@@ -28,7 +28,7 @@ Applicable qualitative and probabilistic proof is layer-owned. The representativ
 | **DSET-EVAL-GOV-022** | Structural-scope ownership | Reviewers place each claim at the narrowest common structural ancestor of every affected owner and subject; keep feature-only high-level claims local; place cross-child Contracts, shared semantics, end-to-end QA, cross-cutting policy, integration, release/readiness, and cross-owner Questions or Problems at the correct common scope; and never duplicate child truth into a parent |
 | **DSET-EVAL-GOV-025** | Artifact-emission precision and promotion restraint | At medium and high strictness, reviewers distinguish material ambiguity from optional unknown detail, ask only questions needed to make an immutable claim safe, identify the narrowest eligible immediate parent scope, and propose rather than silently perform promotion or broad generalization |
 | **DSET-EVALUATION-GOV-026** | Typed-relation clarity | At least 90% of representative structure, analysis, projection, implementation, QA, evidence, resolution, override, replacement, and fallback cases receive the narrowest correct relation, with no authority or lifecycle error and no use of `child_of` as generic causality or `relates_to` to avoid a known type |
-| **DSET-EVALUATION-GOV-027** | TOML artifact readability | At least 90% of cold-reader questions about scalar/list/table boundaries, active settings, valid values, effects, defaults, canonical ownership, and external/generated adapters are answered correctly without relying on indentation or mistaking an adapter for authority |
+| **DSET-EVALUATION-GOV-028** | Settings discoverability | At least 90% of cold-reader questions about active settings, accepted values, effects, defaults, examples, project-manifest facts, governing definitions, legacy compatibility, and external-format boundaries are answered correctly without an authority-source error |
 
 ## Calibration and evidence
 
@@ -37,3 +37,7 @@ Use at least two independent reviewers for a baseline where interpretation matte
 `DSET-EVAL-GOV-023` remains a sealed package-registry compatibility ID. Its
 former criterion is replaced by `DSET-EVALUATION-GOV-026` and is not an active
 Evaluation obligation.
+
+`DSET-EVALUATION-GOV-027` remains a sealed package-registry compatibility ID.
+Its former criterion is replaced by `DSET-EVALUATION-GOV-028` and is not an
+active Evaluation obligation.

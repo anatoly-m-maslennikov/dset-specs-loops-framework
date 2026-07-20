@@ -92,7 +92,7 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: table-row
@@ -106,7 +106,7 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: table-row
@@ -120,7 +120,7 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: table-row
@@ -134,7 +134,7 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: table-row
@@ -148,7 +148,7 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: table-row
@@ -162,7 +162,7 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: table-row
@@ -176,7 +176,7 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: table-row
@@ -194,7 +194,7 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: table-row
@@ -202,7 +202,7 @@ records:
             sha256: e237cc47e3b68b6691c9a340ad5aec418577593bd932646b6f6924b2d553a407
           -
             kind: section
-            line: 728
+            line: 751
             sha256: 40fd44d5f4972f86fb4710bb06d32f53f00e0b931ceebb8893c045995157621e
   -
     id: DSET-DECISION-GOV-015
@@ -212,7 +212,7 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: table-row
@@ -220,7 +220,7 @@ records:
             sha256: 934fb2e9cf61334380823f0cd1bb1bbcc93e2d5db1d7d68252d725d34c56d51c
           -
             kind: section
-            line: 738
+            line: 761
             sha256: 9a6b6ec162d4b98085fda5bfefea14e1fe3b3c05070b3c9ed7897132a3a6b36f
   -
     id: DSET-DECISION-OPS-006
@@ -268,11 +268,11 @@ records:
     id: DSET-REQUIREMENT-GOV-001
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -282,11 +282,11 @@ records:
     id: DSET-REQUIREMENT-GOV-002
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -296,11 +296,11 @@ records:
     id: DSET-REQUIREMENT-GOV-003
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -310,11 +310,11 @@ records:
     id: DSET-REQUIREMENT-GOV-004
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -324,11 +324,11 @@ records:
     id: DSET-REQUIREMENT-GOV-005
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -338,11 +338,11 @@ records:
     id: DSET-REQUIREMENT-GOV-006
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -352,11 +352,11 @@ records:
     id: DSET-REQUIREMENT-GOV-007
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -366,11 +366,11 @@ records:
     id: DSET-REQUIREMENT-GOV-008
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -380,11 +380,11 @@ records:
     id: DSET-REQUIREMENT-GOV-009
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -394,11 +394,11 @@ records:
     id: DSET-REQUIREMENT-GOV-010
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -408,11 +408,11 @@ records:
     id: DSET-REQUIREMENT-GOV-011
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -422,11 +422,11 @@ records:
     id: DSET-REQUIREMENT-GOV-012
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -436,11 +436,11 @@ records:
     id: DSET-REQUIREMENT-GOV-013
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -450,11 +450,11 @@ records:
     id: DSET-REQUIREMENT-GOV-014
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -464,11 +464,11 @@ records:
     id: DSET-REQUIREMENT-GOV-015
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -478,11 +478,11 @@ records:
     id: DSET-REQUIREMENT-GOV-016
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -492,11 +492,11 @@ records:
     id: DSET-REQUIREMENT-GOV-017
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -506,11 +506,11 @@ records:
     id: DSET-REQUIREMENT-GOV-018
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -520,11 +520,11 @@ records:
     id: DSET-REQUIREMENT-GOV-019
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -534,11 +534,11 @@ records:
     id: DSET-REQUIREMENT-GOV-020
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -548,11 +548,11 @@ records:
     id: DSET-REQUIREMENT-GOV-021
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -562,11 +562,11 @@ records:
     id: DSET-REQUIREMENT-GOV-022
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -576,11 +576,11 @@ records:
     id: DSET-REQUIREMENT-GOV-023
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -590,11 +590,11 @@ records:
     id: DSET-REQUIREMENT-GOV-024
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -604,11 +604,11 @@ records:
     id: DSET-REQUIREMENT-GOV-025
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -618,11 +618,11 @@ records:
     id: DSET-REQUIREMENT-GOV-026
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -632,11 +632,11 @@ records:
     id: DSET-REQUIREMENT-GOV-027
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -646,11 +646,11 @@ records:
     id: DSET-REQUIREMENT-GOV-028
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -660,11 +660,11 @@ records:
     id: DSET-REQUIREMENT-GOV-029
     source:
       path: dset/scopes/gov/specs/packages/methodology/package.yaml
-      sha256: ef7e606faf4b76b9d603ede9ca7b1c80ee63d51d309f5fb2537518ac75757b5d
+      sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -678,7 +678,7 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -692,7 +692,7 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -706,7 +706,7 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
@@ -720,26 +720,26 @@ records:
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
             line: 669
-            sha256: 7f8fe0eccd02c33ff9ac0c9ce77422e77bc5f529138e88827edf08cfad043592
+            sha256: 0301903c48eb139b72354bafc2ebb724fd55ba92c86a69081e9be8c966b233bf
   -
-    id: DSET-REQUIREMENT-GOV-036
+    id: DSET-REQUIREMENT-GOV-037
     source:
-      path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-040-canonical-toml-artifacts.md
-      sha256: 99e8a1ded652b79ff1e39293058146af35f2b20bc40c995e2b85782649ee09aa
+      path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-048-verbose-project-settings.md
+      sha256: cc5958bc9d829dcd5438660e3424ea43963ad212357e3cd5b6bd8e7cd36f83dc
     projections:
       -
         path: dset/scopes/gov/specs/packages/methodology/spec.md
-        sha256: 0249ecd45f2da3da4de52b9bc2d70f6563dcd1dfb8893134345afc39fe48ecca
+        sha256: 39f98c076a217c9645280645336415d0f68d56d340c3bbdad3d02052efeb6998
         fragments:
           -
             kind: section
             line: 702
-            sha256: 3d3bdfc9e98d625a0186cb09772ace8f158b48875e25957479bb5c7264681c67
+            sha256: 7ca440f83ecd335b51df6c2e4c951551c583f4cec29edaa24a1bdeee457616b3
   -
     id: DSET-REQUIREMENT-META-001
     source:

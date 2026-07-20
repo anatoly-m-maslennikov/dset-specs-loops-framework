@@ -668,8 +668,8 @@ not part of the active compilation set.
 
 ## DSET-REQUIREMENT-GOV-035 — Atom creation has configurable strictness
 
-Root `dset.toml` must expose independent
-`optional_capabilities.artifact_creation_strictness` with `medium` as the
+Root `dset_settings.toml` must expose independent
+`artifacts.creation_strictness` with `medium` as the
 default and `high` as the stricter alternative. At `medium`, DSET may emit one
 accepted atom when authority, primary claim, Type, owning structural scope,
 provenance, material links, priority, and acceptance state are clear; optional
@@ -699,31 +699,54 @@ the exception. Once precise, DSET notices that the claim applies unchanged to
 every feature in its group and proposes one feature-to-group promotion; it
 does not write at group scope or jump to project scope without acceptance.
 
-## DSET-REQUIREMENT-GOV-036 — DSET-owned structured artifacts use TOML
+## DSET-REQUIREMENT-GOV-037 — Project settings are verbose and separate from project truth
 
-DSET-owned structured artifact files must use TOML, and DSET Markdown
-artifacts must use TOML frontmatter. Root `dset.toml` must document every
-operator setting, valid value, behavioral effect, and reasonable default in
-the file itself. One canonical source must not coexist with an editable YAML
-or JSON copy.
+The canonical root settings carrier is `dset_settings.toml`. It must explain
+its boundary with the project manifest and governing documents, every setting,
+every accepted value, the behavior each value selects, the default, and
+practical examples. New writers and bootstraps emit only this name. A root
+`dset.toml` is read-only migration input; if both names exist, validation stops.
+
+Settings own operator-selectable behavior: artifact subtype naming,
+medium/high artifact-creation strictness, lazy/strict implementation
+preparation, integration-branch/branch-worktree Change workspace selection,
+low/medium/high delegation budget selection, and the priority scale/default.
+The project manifest owns identity, repository and Work Area structure,
+runtime-risk and durability topology, external contracts, release targets,
+verification commands, and commit-provenance boundaries. Governing documents
+own definitions and policy; settings select registered behavior only.
+
+DSET-owned mutable structured artifact files must use TOML, and newly emitted
+DSET Markdown artifacts must use TOML frontmatter. One canonical source must
+not coexist with an editable YAML or JSON copy. Existing sealed atomic carriers
+and registered legacy Decision carriers remain byte-stable historical
+exceptions; correction emits a successor instead of rewriting them.
 
 Externally prescribed carriers may retain their required format: host skill
 metadata, GitHub Actions, ecosystem manifests and lockfiles, wire/CLI output,
-and machine-local runtime journals. Interoperable JSON Schema files may be
-generated from canonical DSET schema sources, but generated adapters are not
-authority and must pass freshness checks.
+machine-local runtime journals, and standards-compliant JSON Schema files.
 
-Migration must inventory every source and reference, preview without writing,
-preserve parsed values and stable IDs, emit old/new digests, refuse collisions
-and unsupported values, rewrite repository references, validate the complete
-migrated tree before cutover, and leave no writable YAML/JSON DSET authority.
-Any adopter compatibility reader is explicit, finite, and never a legacy write
-path.
+Migration must inventory every mutable source and reference, preview without
+writing, preserve parsed values and stable IDs, emit old/new digests, refuse
+collisions and unsupported values, rewrite repository references, validate the
+complete migrated tree before cutover, and leave no writable YAML/JSON DSET
+authority. Any adopter compatibility reader is explicit, finite, and never a
+legacy write path.
 
-**Scenario DSET-SCENARIO-GOV-037:** A dry run reports every owned YAML/JSON
-source, TOML destination, reference rewrite, external exception, and digest.
-Apply produces a valid repository and adopter, a second apply is a no-op, and a
-stale generated JSON Schema adapter fails without becoming authority.
+**Scenario DSET-SCENARIO-GOV-037:** A cold reader opens
+`dset_settings.toml`, finds every operator choice and predicts its effect, then
+opens the project manifest for runtime topology and release truth. Bootstrap
+emits only the canonical name; a repository containing both names fails.
+
+**Scenario DSET-SCENARIO-GOV-038:** A dry run reports every mutable owned
+YAML/JSON source, TOML destination, reference rewrite, external or immutable
+historical exception, and digest. Apply produces a valid repository and
+adopter, a second apply is a no-op, and JSON Schema remains standard canonical
+JSON without an editable TOML duplicate.
+
+`DSET-REQUIREMENT-GOV-036` remains a sealed package-registry compatibility ID.
+Its authority is absorbed and fully replaced by `DSET-REQUIREMENT-GOV-037`;
+it is not part of the active compilation set.
 
 ## DSET-DECISION-GOV-014 — TOML null normalization is allowlisted
 
