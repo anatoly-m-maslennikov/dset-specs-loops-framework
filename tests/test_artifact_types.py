@@ -32,7 +32,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
         self.assertEqual(self.registry, load(TEMPLATE_PATH))
         json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
 
-    def test_exact_thirteen_types_and_analysis_subtypes_are_registered(self) -> None:
+    def test_exact_eleven_types_and_direct_subtypes_are_registered(self) -> None:
         catalog = {
             entry["id"]: frozenset(entry["subtypes"])
             for entry in self.registry["artifact_types"]
@@ -48,6 +48,19 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
                 "external_audit_analysis",
             },
         )
+        self.assertEqual(
+            catalog["delivery"],
+            {
+                "roadmap",
+                "version_scope",
+                "change",
+                "release_plan",
+                "readiness_record",
+                "release_record",
+            },
+        )
+        self.assertNotIn("version_scope", catalog["specification"])
+        self.assertTrue({"roadmap", "release_plan"}.isdisjoint(catalog["plan"]))
 
     def test_analysis_report_templates_cover_every_direct_subtype(self) -> None:
         template_root = ROOT / "dset/scopes/gov/templates/change"
@@ -194,8 +207,8 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
     def test_type_only_names_are_default_and_subtype_names_are_opt_in(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)
-            base = root / "APP-SPECIFICATION-001-core.md"
-            self._write_classified(base, "APP-SPECIFICATION-001")
+            base = root / "APP-DELIVERY-001-core.md"
+            self._write_classified(base, "APP-DELIVERY-001")
             self.assertEqual(
                 validate_artifact_type_registry(
                     root,
@@ -206,10 +219,10 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
                 [],
             )
             base.unlink()
-            advanced = root / "APP-SPECIFICATION-VERSION-SCOPE-001-core.md"
+            advanced = root / "APP-DELIVERY-VERSION-SCOPE-001-core.md"
             self._write_classified(
                 advanced,
-                "APP-SPECIFICATION-VERSION-SCOPE-001",
+                "APP-DELIVERY-VERSION-SCOPE-001",
             )
             default_diagnostics = validate_artifact_type_registry(
                 root,
@@ -245,11 +258,13 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
             ROOT / "dset/scopes/gov/governance/artifact-classification.md"
         ).read_text(encoding="utf-8")
         for phrase in (
-            "`specification/version_scope`",
-            "`plan/roadmap`",
-            "`plan/release_plan`",
-            "Readiness Record",
-            "Release Record",
+            "`delivery`",
+            "`roadmap`",
+            "`version_scope`",
+            "`change`",
+            "`release_plan`",
+            "`readiness_record`",
+            "`release_record`",
         ):
             self.assertIn(phrase, rule)
 
@@ -270,7 +285,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
     def _write_classified(path: Path, artifact_id: str) -> None:
         path.write_text(
             "---\n"
-            "artifact_type: specification\n"
+            "artifact_type: delivery\n"
             "artifact_subtype: version_scope\n"
             f"artifact_id: {artifact_id}\n"
             "---\n",

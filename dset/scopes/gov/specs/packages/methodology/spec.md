@@ -13,8 +13,8 @@ presentation.
 | `DSET-DECISION-GOV-002` | Use one constitutional governance root; separate dependency from precedence and authority from assurance |
 | `DSET-DECISION-GOV-003` | Keep semantic atoms immutable and resolve conflicts by role and lifecycle before priority |
 | `DSET-DECISION-GOV-008` | Use four application-level Types with at most one direct subtype and explicit act/content/carrier/work/evidence boundaries |
-| `DSET-DECISION-GOV-009` | Classify artifact role independently from semantic Type, including Analysis Report and release roles |
 | `DSET-DECISION-GOV-010` | Use the bounded `critical`, `high`, `medium`, `low`, `deferred` priority profile with `medium` as default |
+| `DSET-DECISION-GOV-012` | Use Delivery as the shared primary artifact type for six flat release-lifecycle roles |
 
 Absorbed predecessors remain immutable history and are excluded from the active
 compilation set by append-only lifecycle events.
@@ -528,8 +528,9 @@ DSET must classify every governed carrier with exactly one primary
 `artifact_type` and at most one allowed direct `artifact_subtype`, independently
 from the semantic `type` and `subtype` used by Atomic Records. The registered
 types are Atomic Record, Analysis Report, Specification, Procedure, Plan,
-Change, Implementation, Evidence Record, Verification, Readiness Record,
-Release Record, Derived View, and Navigation. The project-local
+Delivery, Implementation, Evidence Record, Verification, Derived View, and
+Navigation. Delivery directly permits Roadmap, Version Scope, Change, Release
+Plan, Readiness Record, and Release Record. The project-local
 machine-readable registry owns their IDs, primary questions, direct subtypes,
 fallback behavior, and path rules.
 
@@ -542,11 +543,10 @@ explicit release gate disposition, and Release Record owns immutable
 publication history. Unknown types, missing classifications, mismatched or
 nested subtypes, and multiple applicable path rules fail closed.
 
-Version Scope, Roadmap, Release Plan, Readiness Record, and Release Record are
-flat Release lifecycle artifacts. The first three classify respectively as
-Specification/Version Scope, Plan/Roadmap, and Plan/Release Plan. Milestones are
-Roadmap entries; Release Notes and changelogs are mirrors or Derived Views of
-Release Records.
+Roadmap, Version Scope, Change, Release Plan, Readiness Record, and Release
+Record are flat peers under the primary Delivery type. They share one
+project-wide `DELIVERY` identity sequence. Milestones are Roadmap entries;
+Release Notes and changelogs are mirrors or Derived Views of Release Records.
 
 **Scenario DSET-SCENARIO-GOV-030:** A Solution Landscape compares three options
 without choosing one; a later Decision accepts one option and compiles it into
@@ -566,11 +566,11 @@ single bundled advanced mode. A settings change never renames immutable atoms
 or already stable artifact identities.
 
 **Scenario DSET-SCENARIO-GOV-031:** A Version Scope is emitted as
-`APP-SPECIFICATION-001-0-4-core.md` with
-`artifact_subtype: version_scope`, and a Roadmap as
-`APP-PLAN-001-0-4-core.md` with `artifact_subtype: roadmap`. An adopter that
-explicitly enables subtype-bearing names may include those subtype tokens in
-new artifacts, while every existing identity remains unchanged.
+`APP-DELIVERY-001-0-4-core.md` with `artifact_subtype: version_scope`, and a
+Roadmap uses the same `DELIVERY` sequence with `artifact_subtype: roadmap`. An
+adopter that explicitly enables subtype-bearing names may include those subtype
+tokens in new artifacts, while every existing stable identity remains
+unchanged.
 
 ## DSET-REQUIREMENT-GOV-031 — Architecture views descend one level
 

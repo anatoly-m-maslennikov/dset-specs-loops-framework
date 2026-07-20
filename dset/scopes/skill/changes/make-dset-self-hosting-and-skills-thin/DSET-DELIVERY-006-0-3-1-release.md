@@ -1,8 +1,8 @@
 ---
-artifact_type: plan
+artifact_type: delivery
 artifact_subtype: release_plan
-artifact_id: DSET-PLAN-002
-version_scope_ref: DSET-SPECIFICATION-001
+artifact_id: DSET-DELIVERY-006
+version_scope_ref: DSET-DELIVERY-001
 proposed_version: 0.3.1
 status: closed_blocked
 llm_session_ids:
@@ -22,7 +22,7 @@ llm_session_ids:
 
 ## Included scope
 
-Deliver the DSET 0.3 foundation represented by `DSET-SPECIFICATION-001` and
+Deliver the DSET 0.3 foundation represented by `DSET-DELIVERY-001` and
 this Change. Later work on the branch is outside the pinned candidate until the
 declaration and this plan are deliberately refreshed.
 

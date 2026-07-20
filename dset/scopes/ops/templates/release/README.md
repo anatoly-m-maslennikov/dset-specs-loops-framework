@@ -2,8 +2,9 @@
 
 ## Purpose
 
-Seed the five flat Release lifecycle artifacts with direct artifact
-classification and typed references.
+Seed the five file-backed release templates within the six-role Delivery
+lifecycle. Change uses the project Change manifest template; all six use direct
+artifact classification and typed references.
 
 ## Boundaries
 

@@ -398,7 +398,11 @@ def _readiness_passed(path: Path, candidate_commit: str) -> bool:
         data = loads("\n".join(lines[1:end]))
     except (ValueError, TypeError) as error:
         raise ReleaseError("Readiness Record frontmatter is invalid") from error
-    if not isinstance(data, dict) or data.get("artifact_type") != "readiness_record":
+    if (
+        not isinstance(data, dict)
+        or data.get("artifact_type") != "delivery"
+        or data.get("artifact_subtype") != "readiness_record"
+    ):
         raise ReleaseError("release readiness must use a Readiness Record")
     if data.get("candidate_sha") != candidate_commit:
         raise ReleaseError(

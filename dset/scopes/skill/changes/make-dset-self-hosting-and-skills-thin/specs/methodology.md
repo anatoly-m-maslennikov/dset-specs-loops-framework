@@ -25,7 +25,7 @@ the implementation scope to its current layer-owned Requirement owners.
 | Narrowest-common-scope ownership for project, group, feature, and layer truth | `DSET-REQUIREMENT-GOV-032` |
 | Parent-to-child artifact inheritance, local implementation/cancellation, and direct fallback | `DSET-REQUIREMENT-GOV-033` |
 | Many-to-many child-owned lineage and derived reverse/transitive traceability | `DSET-REQUIREMENT-GOV-034` |
-| Five flat Release lifecycle artifacts | `DSET-REQUIREMENT-OPS-013` |
+| Six flat Delivery lifecycle subtypes | `DSET-REQUIREMENT-OPS-013` |
 | Role-aware handling for every governed conflict pairing, with priority selection only where permitted | `DSET-REQUIREMENT-TOOL-019` |
 | Evidence-derived TypeScript candidate profile and promotion boundary | `DSET-REQUIREMENT-TOOL-021` |
 | Framework-reference versus project-applied TypeScript profile authority | `DSET-REQUIREMENT-TOOL-022` |
@@ -81,12 +81,16 @@ authority, so reconciliation never invents acceptance or edits immutable atoms.
 
 Every governed carrier must have one primary artifact type and at most one
 allowed direct artifact subtype, independently from the four semantic Types.
-The project-local artifact-type registry owns the thirteen development roles,
+The project-local artifact-type registry owns the eleven development roles,
 their primary questions, direct subtypes, fallback behavior, and path rules.
 Analysis Report is non-authoritative and permits Solution Landscape,
 Root-Cause Analysis, Proposal, Technical Investigation, and External Audit
 Analysis. Unknown, mismatched, nested, missing, or ambiguous classifications
 fail closed.
+
+Roadmap, Version Scope, Change, Release Plan, Readiness Record, and Release
+Record are direct subtypes of Delivery and share the `DELIVERY` identity
+sequence for newly emitted carriers.
 
 **Scenario DSET-SCENARIO-GOV-030:** A Proposal recommends one candidate; a
 separate Decision accepts it; Specification/Design compiles it; Evidence Record

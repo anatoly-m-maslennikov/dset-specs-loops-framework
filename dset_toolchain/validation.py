@@ -93,20 +93,26 @@ ARTIFACT_TYPE_SUBTYPES: dict[str, frozenset[str]] = {
             "architecture",
             "design",
             "governance",
-            "version_scope",
         }
     ),
     "procedure": frozenset({"playbook", "runbook"}),
     "plan": frozenset(
         {
-            "roadmap",
             "implementation_plan",
             "test_plan",
             "evaluation_plan",
-            "release_plan",
         }
     ),
-    "change": frozenset(),
+    "delivery": frozenset(
+        {
+            "roadmap",
+            "version_scope",
+            "change",
+            "release_plan",
+            "readiness_record",
+            "release_record",
+        }
+    ),
     "implementation": frozenset(
         {
             "source_code",
@@ -121,8 +127,6 @@ ARTIFACT_TYPE_SUBTYPES: dict[str, frozenset[str]] = {
         {"test_result", "evaluation_result", "review_report", "run_record"}
     ),
     "verification": frozenset(),
-    "readiness_record": frozenset(),
-    "release_record": frozenset(),
     "derived_view": frozenset(
         {"project_overview", "health_dashboard", "traceability_index", "changelog"}
     ),
@@ -1360,7 +1364,7 @@ def _artifact_type_catalog(
             _diag(
                 "DSET-E156",
                 registry_path,
-                "artifact_types must contain the thirteen canonical types exactly",
+                "artifact_types must contain the eleven canonical types exactly",
             )
         )
     for identifier, expected in ARTIFACT_TYPE_SUBTYPES.items():
@@ -1893,6 +1897,7 @@ def _validate_change_ids(
         groups["decisions"] = [
             *change_dir.glob("*decision*.md"),
             *change_dir.glob("*adr*.md"),
+            *change_dir.glob("*-ATOMIC-RECORD-*.md"),
         ]
         group_types["decisions"] = "DECISION"
         if "contracts" not in data:

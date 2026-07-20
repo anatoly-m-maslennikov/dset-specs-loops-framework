@@ -110,10 +110,8 @@ class ReleaseIntegrationTests(unittest.TestCase):
         duplicate = self.root / "dset/scopes/tool/changes/duplicate"
         duplicate.mkdir(parents=True)
         (duplicate / "verification.md").write_text("ready\n", encoding="utf-8")
-        (duplicate / "TEST-READINESS-RECORD-001-release.md").write_text(
-            (self.change / "TEST-READINESS-RECORD-001-release.md").read_text(
-                encoding="utf-8"
-            ),
+        (duplicate / "TEST-DELIVERY-003-release.md").write_text(
+            (self.change / "TEST-DELIVERY-003-release.md").read_text(encoding="utf-8"),
             encoding="utf-8",
         )
         (duplicate / "change.yaml").write_text(
@@ -126,7 +124,7 @@ class ReleaseIntegrationTests(unittest.TestCase):
             plan_release(self.root)
 
     def test_readiness_record_is_the_only_release_gate_authority(self) -> None:
-        readiness = self.change / "TEST-READINESS-RECORD-001-release.md"
+        readiness = self.change / "TEST-DELIVERY-003-release.md"
         ready_text = readiness.read_text(encoding="utf-8")
         readiness.write_text(
             ready_text.replace("disposition: ready", "disposition: blocked"),
@@ -233,12 +231,13 @@ version = "independent"
         change = scopes / "ops" / "changes" / "release"
         change.mkdir()
         (change / "verification.md").write_text("# Verification\n", encoding="utf-8")
-        (change / "TEST-READINESS-RECORD-001-release.md").write_text(
+        (change / "TEST-DELIVERY-003-release.md").write_text(
             """---
-artifact_type: readiness_record
-artifact_id: TEST-READINESS-RECORD-001
-version_scope_ref: TEST-SPECIFICATION-001
-release_plan_ref: TEST-PLAN-001
+artifact_type: delivery
+artifact_subtype: readiness_record
+artifact_id: TEST-DELIVERY-003
+version_scope_ref: TEST-DELIVERY-001
+release_plan_ref: TEST-DELIVERY-002
 candidate_sha: "2222222222222222222222222222222222222222"
 disposition: ready
 llm_session_ids: []
@@ -260,7 +259,7 @@ release:
     commit: "1111111111111111111111111111111111111111"
     version: 0.3.1
   target: 0.4.0
-  readiness: TEST-READINESS-RECORD-001-release.md
+  readiness: TEST-DELIVERY-003-release.md
   candidate_commit: "2222222222222222222222222222222222222222"
 """,
             encoding="utf-8",

@@ -2,13 +2,13 @@
 
 ## Active Decision source compilation
 
-### DSET-DECISION-OPS-004 — Flat release lifecycle roles
+### DSET-DECISION-OPS-006 — Flat Delivery lifecycle roles
 
-The Decision compiles as five flat peer release lifecycle roles: Version Scope,
-Roadmap, Release Plan, Readiness Record, and Release Record. Milestone remains
-a Roadmap entry. Release Record combines delivered summary and publication
-identity. The absorbed OPS Decisions remain immutable history and do not
-participate in active compilation.
+The Decision compiles as six flat peer roles under the primary Delivery
+artifact type: Roadmap, Version Scope, Change, Release Plan, Readiness Record,
+and Release Record. Milestone remains a Roadmap entry. Release Record combines
+delivered summary and publication identity. The absorbed OPS Decisions remain
+immutable history and do not participate in active compilation.
 
 ## DSET-REQUIREMENT-OPS-001 — Production supportability is explicit and risk-scaled
 
@@ -56,16 +56,18 @@ The framework product version, CLI package version, release notes, rendered Git 
 
 ## DSET-REQUIREMENT-OPS-013 — Release lifecycle artifacts are flat and typed
 
-Every release-applicable project must represent release planning and history
-with five peer roles: Version Scope, Roadmap, Release Plan, Readiness Record,
-and Release Record. Version Scope defines one version line; Roadmap targets one
-next-minor Version Scope and owns milestone entries; Release Plan selects one
-exact release transition and its Changes; Readiness Record owns the explicit
-ready-or-blocked disposition for one exact candidate; and Release Record
-immutably owns both the delivered summary and publication identity. Applicable
-artifacts use typed references rather than containment or copied obligations.
-Verification may support a Readiness Record but cannot authorize release.
-Forge notes and changelogs are mirrors or derived views of Release Records.
+Every release-applicable project must represent release planning, bounded work,
+gates, and history with six peer roles under the primary Delivery artifact
+type: Roadmap, Version Scope, Change, Release Plan, Readiness Record, and
+Release Record. Roadmap targets one next-minor Version Scope and owns milestone
+entries; Version Scope defines one version line; Change groups one bounded
+delivery; Release Plan selects one exact transition and its Changes; Readiness
+Record owns the explicit ready-or-blocked disposition for one exact candidate;
+and Release Record immutably owns both the delivered summary and publication
+identity. Applicable artifacts use typed references rather than containment or
+copied obligations. Verification may support a Readiness Record but cannot
+authorize release. Forge notes and changelogs are mirrors or derived views of
+Release Records.
 
 **Scenario DSET-SCENARIO-OPS-014:** A `0.4.0` candidate references its `0.4`
 Version Scope and exact Release Plan. Passing Tests, Evals, and Verification are

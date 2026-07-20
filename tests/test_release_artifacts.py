@@ -9,16 +9,17 @@ from dset_toolchain.yaml_subset import loads
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATES = ROOT / "dset/scopes/ops/templates/release"
 PLANNING = ROOT / "dset/scopes/ops/planning"
+CHANGE = ROOT / "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin"
 
 
 class ReleaseArtifactTests(unittest.TestCase):
-    def test_five_flat_release_templates_have_exact_classification(self) -> None:
+    def test_release_templates_share_delivery_classification(self) -> None:
         expected = {
-            "version-scope.md": ("specification", "version_scope"),
-            "roadmap.md": ("plan", "roadmap"),
-            "release-plan.md": ("plan", "release_plan"),
-            "readiness-record.md": ("readiness_record", None),
-            "release-record.md": ("release_record", None),
+            "version-scope.md": ("delivery", "version_scope"),
+            "roadmap.md": ("delivery", "roadmap"),
+            "release-plan.md": ("delivery", "release_plan"),
+            "readiness-record.md": ("delivery", "readiness_record"),
+            "release-record.md": ("delivery", "release_record"),
         }
         self.assertEqual(
             {path.name for path in TEMPLATES.glob("*.md") if path.name != "README.md"},
@@ -34,24 +35,24 @@ class ReleaseArtifactTests(unittest.TestCase):
 
     def test_dset_self_applies_type_first_release_names(self) -> None:
         expected = {
-            "DSET-SPECIFICATION-001-0-3-foundation.md": (
-                "DSET-SPECIFICATION-001",
+            "DSET-DELIVERY-001-0-3-foundation.md": (
+                "DSET-DELIVERY-001",
                 "version_scope",
             ),
-            "DSET-SPECIFICATION-002-0-4-self-hosted-core.md": (
-                "DSET-SPECIFICATION-002",
+            "DSET-DELIVERY-002-0-4-self-hosted-core.md": (
+                "DSET-DELIVERY-002",
                 "version_scope",
             ),
-            "DSET-SPECIFICATION-003-0-5-adopter-ready.md": (
-                "DSET-SPECIFICATION-003",
+            "DSET-DELIVERY-003-0-5-adopter-ready.md": (
+                "DSET-DELIVERY-003",
                 "version_scope",
             ),
-            "DSET-SPECIFICATION-004-1-0-stable.md": (
-                "DSET-SPECIFICATION-004",
+            "DSET-DELIVERY-004-1-0-stable.md": (
+                "DSET-DELIVERY-004",
                 "version_scope",
             ),
-            "DSET-PLAN-001-0-4-core-vertical-cut.md": (
-                "DSET-PLAN-001",
+            "DSET-DELIVERY-005-0-4-core-vertical-cut.md": (
+                "DSET-DELIVERY-005",
                 "roadmap",
             ),
         }
@@ -64,6 +65,33 @@ class ReleaseArtifactTests(unittest.TestCase):
                 metadata = self._frontmatter(PLANNING / name)
                 self.assertEqual(metadata["artifact_id"], artifact_id)
                 self.assertEqual(metadata["artifact_subtype"], subtype)
+
+    def test_dset_delivery_sequence_covers_current_release_carriers(self) -> None:
+        expected = {
+            CHANGE / "DSET-DELIVERY-006-0-3-1-release.md": (
+                "DSET-DELIVERY-006",
+                "release_plan",
+            ),
+            CHANGE / "DSET-DELIVERY-007-0-3-1-readiness.md": (
+                "DSET-DELIVERY-007",
+                "readiness_record",
+            ),
+        }
+        for path, (artifact_id, subtype) in expected.items():
+            with self.subTest(path=path.name):
+                metadata = self._frontmatter(path)
+                self.assertEqual(metadata["artifact_type"], "delivery")
+                self.assertEqual(metadata["artifact_id"], artifact_id)
+                self.assertEqual(metadata["artifact_subtype"], subtype)
+
+        all_delivery_ids = [
+            self._frontmatter(path)["artifact_id"]
+            for path in sorted(PLANNING.glob("DSET-DELIVERY-*.md"))
+        ] + [artifact_id for artifact_id, _ in expected.values()]
+        self.assertEqual(
+            all_delivery_ids,
+            [f"DSET-DELIVERY-{sequence:03d}" for sequence in range(1, 8)],
+        )
 
     def test_release_reference_chain_and_gate_boundaries_are_explicit(self) -> None:
         release_plan = (TEMPLATES / "release-plan.md").read_text(encoding="utf-8")

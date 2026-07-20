@@ -34,7 +34,6 @@ artifact_types:
       - architecture
       - design
       - governance
-      - version_scope
   -
     id: procedure
     primary_question: What reusable way of working should an operator enact?
@@ -47,16 +46,20 @@ artifact_types:
     primary_question: What intended work or proof should occur for this bounded objective?
     allow_empty_subtype: true
     subtypes:
-      - roadmap
       - implementation_plan
       - test_plan
       - evaluation_plan
-      - release_plan
   -
-    id: change
-    primary_question: Which accepted work and evidence are grouped for one bounded delivery?
+    id: delivery
+    primary_question: What bounded delivery intent, transaction, gate, or publication record does this artifact own?
     allow_empty_subtype: true
-    subtypes: []
+    subtypes:
+      - roadmap
+      - version_scope
+      - change
+      - release_plan
+      - readiness_record
+      - release_record
   -
     id: implementation
     primary_question: What realizes accepted truth or QA definitions?
@@ -80,16 +83,6 @@ artifact_types:
   -
     id: verification
     primary_question: What do the applicable evidence records support at this revision?
-    allow_empty_subtype: true
-    subtypes: []
-  -
-    id: readiness_record
-    primary_question: May this exact release candidate proceed through its release gate?
-    allow_empty_subtype: true
-    subtypes: []
-  -
-    id: release_record
-    primary_question: What exact version was published, what did it deliver, and where?
     allow_empty_subtype: true
     subtypes: []
   -
@@ -292,25 +285,28 @@ path_rules:
     artifact_subtype: evaluation_plan
   -
     pattern: "**/version-scope.md"
-    artifact_type: specification
+    artifact_type: delivery
     artifact_subtype: version_scope
   -
     pattern: "**/roadmap.md"
-    artifact_type: plan
+    artifact_type: delivery
     artifact_subtype: roadmap
   -
     pattern: "**/release-plan.md"
-    artifact_type: plan
+    artifact_type: delivery
     artifact_subtype: release_plan
   -
     pattern: "**/readiness-record.md"
-    artifact_type: readiness_record
+    artifact_type: delivery
+    artifact_subtype: readiness_record
   -
     pattern: "**/release-record.md"
-    artifact_type: release_record
+    artifact_type: delivery
+    artifact_subtype: release_record
   -
     pattern: "**/change.yaml"
-    artifact_type: change
+    artifact_type: delivery
+    artifact_subtype: change
   -
     pattern: "**/verification.md"
     artifact_type: verification

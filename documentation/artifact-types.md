@@ -189,21 +189,19 @@ independent from the semantic `type` and `subtype` of an Atomic Record.
 
 The machine-readable catalog is
 [`dset/scopes/gov/artifact-types.yaml`](../dset/scopes/gov/artifact-types.yaml).
-It defines thirteen artifact types:
+It defines eleven artifact types:
 
 | Artifact type | Direct artifact subtypes |
 |---|---|
 | `atomic_record` | None; use semantic Type fields for its atom |
 | `analysis_report` | `solution_landscape`, `root_cause_analysis`, `proposal`, `technical_investigation`, `external_audit_analysis` |
-| `specification` | `domain_model`, `behavior`, `architecture`, `design`, `governance`, `version_scope` |
+| `specification` | `domain_model`, `behavior`, `architecture`, `design`, `governance` |
 | `procedure` | `playbook`, `runbook` |
-| `plan` | `roadmap`, `implementation_plan`, `test_plan`, `evaluation_plan`, `release_plan` |
-| `change` | None |
+| `plan` | `implementation_plan`, `test_plan`, `evaluation_plan` |
+| `delivery` | `roadmap`, `version_scope`, `change`, `release_plan`, `readiness_record`, `release_record` |
 | `implementation` | `source_code`, `documentation`, `configuration`, `migration`, `test_implementation`, `evaluation_implementation` |
 | `evidence_record` | `test_result`, `evaluation_result`, `review_report`, `run_record` |
 | `verification` | None |
-| `readiness_record` | None |
-| `release_record` | None |
 | `derived_view` | `project_overview`, `health_dashboard`, `traceability_index`, `changelog` |
 | `navigation` | `readme`, `hub`, `index` |
 
@@ -215,8 +213,8 @@ rule.
 
 New artifact IDs and filenames use the primary artifact type token by default;
 the optional subtype remains metadata. For example, Version Scope may use
-`APP-SPECIFICATION-001-0-4-core.md`, and Roadmap may use
-`APP-PLAN-001-0-4-core.md`. Projects may opt newly emitted artifacts into
+`APP-DELIVERY-001-0-4-core.md`, and Roadmap uses the same `DELIVERY` sequence.
+Projects may opt newly emitted artifacts into
 subtype tokens with
 `optional_capabilities.artifact_subtype_in_names = true` in root `dset.toml`.
 This independent optional capability never renames existing stable identities.
@@ -230,17 +228,17 @@ accepted conclusion is emitted separately as a Decision, Question, Problem, or
 QA atom.
 
 Critical boundaries are: Specification versus intended Plan; reusable
-Procedure versus one enactment Plan; Implementation versus observed Evidence
-Record; Evidence Record versus derived Verification; Verification versus an
-explicit Readiness Record gate decision; and release readiness versus immutable
-Release Record publication history. Derived View and Navigation never become
-authority.
+Procedure versus one enactment Plan; Plan versus bounded Delivery;
+Implementation versus observed Evidence Record; Evidence Record versus derived
+Verification; Verification versus an explicit Readiness Record gate decision;
+and release readiness versus immutable Release Record publication history.
+Derived View and Navigation never become authority.
 
-The flat Release lifecycle uses Version Scope
-(`specification/version_scope`), Roadmap (`plan/roadmap`), Release Plan
-(`plan/release_plan`), Readiness Record, and Release Record. Milestones are
-Roadmap entries. Release Notes and changelogs are rendered or derived from
-Release Records.
+The flat Release lifecycle uses the primary `delivery` type with direct
+subtypes `roadmap`, `version_scope`, `change`, `release_plan`,
+`readiness_record`, and `release_record`. All six share one project-wide
+`DELIVERY` identity sequence. Milestones are Roadmap entries. Release Notes and
+changelogs are rendered or derived from Release Records.
 
 ## Lifecycle and authority
 

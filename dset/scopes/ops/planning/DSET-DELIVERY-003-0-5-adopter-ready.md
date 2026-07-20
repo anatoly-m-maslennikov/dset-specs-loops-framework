@@ -1,7 +1,7 @@
 ---
-artifact_type: specification
+artifact_type: delivery
 artifact_subtype: version_scope
-artifact_id: DSET-SPECIFICATION-003
+artifact_id: DSET-DELIVERY-003
 version_line: "0.5"
 status: planned
 llm_session_ids:
@@ -39,5 +39,5 @@ repeatable cross-project proof.
 
 ## Governing provenance
 
-Compiled from `DSET-DECISION-OPS-004`. Later scope changes require a new
+Compiled from `DSET-DECISION-OPS-006`. Later scope changes require a new
 accepted Decision and recompilation.

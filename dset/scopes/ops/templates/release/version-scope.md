@@ -1,7 +1,7 @@
 ---
-artifact_type: specification
+artifact_type: delivery
 artifact_subtype: version_scope
-artifact_id: "{{project_key}}-SPECIFICATION-{{sequence}}"
+artifact_id: "{{project_key}}-DELIVERY-{{sequence}}"
 version_line: "{{version_line}}"
 status: draft
 llm_session_ids: []

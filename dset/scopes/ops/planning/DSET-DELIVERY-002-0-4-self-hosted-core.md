@@ -1,7 +1,7 @@
 ---
-artifact_type: specification
+artifact_type: delivery
 artifact_subtype: version_scope
-artifact_id: DSET-SPECIFICATION-002
+artifact_id: DSET-DELIVERY-002
 version_line: "0.4"
 status: active
 llm_session_ids:
@@ -36,7 +36,7 @@ the same revision.
 
 ## Exit criteria
 
-- Every milestone in `DSET-PLAN-001` meets its linked owner conditions.
+- Every milestone in `DSET-DELIVERY-005` meets its linked owner conditions.
 - `DSET-TASK-GOV-049`, `DSET-TASK-GOV-051`, `DSET-TASK-TOOL-043`,
   `DSET-TASK-GOV-044..045`, and `DSET-TASK-TOOL-046` are complete.
 - Applicable host/platform/dependency/publisher proof tasks are complete or the
@@ -46,5 +46,5 @@ the same revision.
 
 ## Governing provenance
 
-Compiled from `DSET-DECISION-OPS-004` and linked accepted DSET Decisions. A new
+Compiled from `DSET-DECISION-OPS-006` and linked accepted DSET Decisions. A new
 Decision is required to change this promise, its exclusions, or exit criteria.

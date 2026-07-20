@@ -1,8 +1,8 @@
 ---
-artifact_type: plan
+artifact_type: delivery
 artifact_subtype: roadmap
-artifact_id: "{{project_key}}-PLAN-{{sequence}}"
-version_scope_ref: "{{project_key}}-SPECIFICATION-{{version_scope_sequence}}"
+artifact_id: "{{project_key}}-DELIVERY-{{sequence}}"
+version_scope_ref: "{{project_key}}-DELIVERY-{{version_scope_sequence}}"
 published_baseline: "{{published_baseline}}"
 status: active
 llm_session_ids: []

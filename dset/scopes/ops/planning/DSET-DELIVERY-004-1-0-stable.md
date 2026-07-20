@@ -1,7 +1,7 @@
 ---
-artifact_type: specification
+artifact_type: delivery
 artifact_subtype: version_scope
-artifact_id: DSET-SPECIFICATION-004
+artifact_id: DSET-DELIVERY-004
 version_line: "1.0"
 status: planned
 llm_session_ids:
@@ -39,4 +39,4 @@ and proven through the RC/final gate.
 
 ## Governing provenance
 
-Compiled from `DSET-DECISION-OPS-004` and the accepted RC/final release rules.
+Compiled from `DSET-DECISION-OPS-006` and the accepted RC/final release rules.

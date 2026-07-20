@@ -338,10 +338,12 @@ changes:
       - DSET-DECISION-GOV-007
       - DSET-DECISION-GOV-008
       - DSET-DECISION-GOV-009
+      - DSET-DECISION-GOV-012
       - DSET-DECISION-OPS-001
       - DSET-DECISION-OPS-002
       - DSET-DECISION-OPS-003
       - DSET-DECISION-OPS-004
+      - DSET-DECISION-OPS-006
       - DSET-DECISION-SKILL-001
       - DSET-DECISION-SKILL-002
     contracts:
@@ -712,7 +714,8 @@ semantic_classifications:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-009.md
     carrier_statuses:
       - accepted
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-032
   -
     id: DSET-DECISION-GOV-010
     type: decision
@@ -722,6 +725,31 @@ semantic_classifications:
       - modern_atom
     carriers:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-009-priority-profile.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-DECISION-GOV-011
+    type: decision
+    subtype: none
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-031-delivery-artifact-type.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-034
+  -
+    id: DSET-DECISION-GOV-012
+    type: decision
+    subtype: none
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-033-delivery-artifact-type.md
     carrier_statuses:
       - accepted
     lifecycle_events: []
@@ -773,6 +801,32 @@ semantic_classifications:
       - legacy_decision
     carriers:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-OPS-004.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-033
+  -
+    id: DSET-DECISION-OPS-005
+    type: decision
+    subtype: none
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-032-delivery-lifecycle.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-035
+  -
+    id: DSET-DECISION-OPS-006
+    type: decision
+    subtype: none
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-034-delivery-lifecycle.md
     carrier_statuses:
       - accepted
     lifecycle_events: []
@@ -3769,6 +3823,73 @@ semantic_atoms:
     absorbed_by: []
     archived: false
   -
+    id: DSET-DECISION-GOV-011
+    carrier_id: DSET-ATOMIC-RECORD-031
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-031-delivery-artifact-type.md
+    sha256: 11e6a8a25e69e36a3f02a18982c1965921d082759da28ea4ba601b12e4b4caca
+    type: decision
+    subtype: none
+    emission_status: accepted
+    current_status: absorbed
+    priority: high
+    priority_source: atom:DSET-DECISION-GOV-011
+    child_of:
+      - DSET-DECISION-GOV-009
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-034
+    absorbed_by:
+      - DSET-DECISION-GOV-012
+    archived: false
+  -
+    id: DSET-DECISION-GOV-012
+    carrier_id: DSET-ATOMIC-RECORD-033
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-033-delivery-artifact-type.md
+    sha256: 38dbc1ca184d4eae2e7de28c5a8fb88bb6f332f17862704c1f2cddcfe27969b0
+    type: decision
+    subtype: none
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-DECISION-GOV-012
+    child_of: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-DECISION-OPS-005
+    carrier_id: DSET-ATOMIC-RECORD-032
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-032-delivery-lifecycle.md
+    sha256: c9534c4ced0955f7c761469267964ab9f90048f7e635556d93ee0401e6cec869
+    type: decision
+    subtype: none
+    emission_status: accepted
+    current_status: absorbed
+    priority: high
+    priority_source: atom:DSET-DECISION-OPS-005
+    child_of:
+      - DSET-DECISION-OPS-004
+      - DSET-DECISION-GOV-011
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-035
+    absorbed_by:
+      - DSET-DECISION-OPS-006
+    archived: false
+  -
+    id: DSET-DECISION-OPS-006
+    carrier_id: DSET-ATOMIC-RECORD-034
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-034-delivery-lifecycle.md
+    sha256: c268399053fe389faaa9479e3b8118450d8e4d3a0397ccd700ad5d940ed80c09
+    type: decision
+    subtype: none
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-DECISION-OPS-006
+    child_of: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
     id: DSET-DEFECT-GOV-001
     carrier_id: DSET-ATOMIC-RECORD-020
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-020-lifecycle-transition-validation.md
@@ -4250,6 +4371,34 @@ lineage:
     child_of: []
     parent_to: []
   -
+    id: DSET-DECISION-GOV-011
+    artifact_id: DSET-ATOMIC-RECORD-031
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-031-delivery-artifact-type.md
+    child_of:
+      - DSET-DECISION-GOV-009
+    parent_to:
+      - DSET-DECISION-OPS-005
+  -
+    id: DSET-DECISION-GOV-012
+    artifact_id: DSET-ATOMIC-RECORD-033
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-033-delivery-artifact-type.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-DECISION-OPS-005
+    artifact_id: DSET-ATOMIC-RECORD-032
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-032-delivery-lifecycle.md
+    child_of:
+      - DSET-DECISION-OPS-004
+      - DSET-DECISION-GOV-011
+    parent_to: []
+  -
+    id: DSET-DECISION-OPS-006
+    artifact_id: DSET-ATOMIC-RECORD-034
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-034-delivery-lifecycle.md
+    child_of: []
+    parent_to: []
+  -
     id: DSET-DEFECT-GOV-001
     artifact_id: DSET-ATOMIC-RECORD-020
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-020-lifecycle-transition-validation.md
@@ -4289,6 +4438,48 @@ lineage:
     id: DSET-DEFECT-TOOL-001
     artifact_id: DSET-ATOMIC-RECORD-024
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-024-runtime-terminalization.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-DELIVERY-001
+    artifact_id: DSET-DELIVERY-001
+    path: dset/scopes/ops/planning/DSET-DELIVERY-001-0-3-foundation.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-DELIVERY-002
+    artifact_id: DSET-DELIVERY-002
+    path: dset/scopes/ops/planning/DSET-DELIVERY-002-0-4-self-hosted-core.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-DELIVERY-003
+    artifact_id: DSET-DELIVERY-003
+    path: dset/scopes/ops/planning/DSET-DELIVERY-003-0-5-adopter-ready.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-DELIVERY-004
+    artifact_id: DSET-DELIVERY-004
+    path: dset/scopes/ops/planning/DSET-DELIVERY-004-1-0-stable.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-DELIVERY-005
+    artifact_id: DSET-DELIVERY-005
+    path: dset/scopes/ops/planning/DSET-DELIVERY-005-0-4-core-vertical-cut.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-DELIVERY-006
+    artifact_id: DSET-DELIVERY-006
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-DELIVERY-006-0-3-1-release.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-DELIVERY-007
+    artifact_id: DSET-DELIVERY-007
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-DELIVERY-007-0-3-1-readiness.md
     child_of: []
     parent_to: []
   -
@@ -4493,18 +4684,6 @@ lineage:
     child_of: []
     parent_to: []
   -
-    id: DSET-PLAN-001
-    artifact_id: DSET-PLAN-001
-    path: dset/scopes/ops/planning/DSET-PLAN-001-0-4-core-vertical-cut.md
-    child_of: []
-    parent_to: []
-  -
-    id: DSET-PLAN-002
-    artifact_id: DSET-PLAN-002
-    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-PLAN-002-0-3-1-release.md
-    child_of: []
-    parent_to: []
-  -
     id: DSET-PLAN-003
     artifact_id: DSET-PLAN-003
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-PLAN-003-external-review-packet.md
@@ -4514,12 +4693,6 @@ lineage:
     id: DSET-PROBLEM-TOOL-006
     artifact_id: DSET-ATOMIC-RECORD-016
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-016-initializer-supportability.md
-    child_of: []
-    parent_to: []
-  -
-    id: DSET-READINESS-RECORD-001
-    artifact_id: DSET-READINESS-RECORD-001
-    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-READINESS-RECORD-001-0-3-1.md
     child_of: []
     parent_to: []
   -
@@ -4616,30 +4789,6 @@ lineage:
       - DSET-EVALUATION-TOOL-004
       - DSET-TEST-TOOL-022
   -
-    id: DSET-SPECIFICATION-001
-    artifact_id: DSET-SPECIFICATION-001
-    path: dset/scopes/ops/planning/DSET-SPECIFICATION-001-0-3-foundation.md
-    child_of: []
-    parent_to: []
-  -
-    id: DSET-SPECIFICATION-002
-    artifact_id: DSET-SPECIFICATION-002
-    path: dset/scopes/ops/planning/DSET-SPECIFICATION-002-0-4-self-hosted-core.md
-    child_of: []
-    parent_to: []
-  -
-    id: DSET-SPECIFICATION-003
-    artifact_id: DSET-SPECIFICATION-003
-    path: dset/scopes/ops/planning/DSET-SPECIFICATION-003-0-5-adopter-ready.md
-    child_of: []
-    parent_to: []
-  -
-    id: DSET-SPECIFICATION-004
-    artifact_id: DSET-SPECIFICATION-004
-    path: dset/scopes/ops/planning/DSET-SPECIFICATION-004-1-0-stable.md
-    child_of: []
-    parent_to: []
-  -
     id: DSET-TEST-TOOL-020
     artifact_id: DSET-ATOMIC-RECORD-011
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-011-typescript-candidate-test.md
@@ -4664,6 +4813,12 @@ lineage:
     parent_to:
       - DSET-EVIDENCE-RECORD-017
 implementation_edges:
+  -
+    commit: 015e31faeef752c76a9386351a41cecda67c661d
+    implements:
+      - DSET-DECISION-GOV-011
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
     commit: 08608add74f4632d768fffa3a2d4a7eb3dbde58e
     implements:
@@ -5266,6 +5421,12 @@ implementation_edges:
       - DSET-DECISION-GOV-008
     llm_session_ids: []
   -
+    commit: cb4c06a2dbe8982301f73c1d9e7bc70db809a72c
+    implements:
+      - DSET-DECISION-OPS-005
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
     commit: cbc08134d0b905c9f56dc33251429477cf1b549d
     implements:
       - DSET-REQUIREMENT-SKILL-010
@@ -5326,6 +5487,13 @@ implementation_edges:
     implements:
       - DSET-DECISION-GOV-001
     llm_session_ids: []
+  -
+    commit: eb3f58620291d9a6c75ce9e6b3906091ddd37fc3
+    implements:
+      - DSET-DECISION-GOV-012
+      - DSET-DECISION-OPS-006
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
     commit: ef646fd9b189d082e96e0f531ca9e67e67d5d155
     implements:

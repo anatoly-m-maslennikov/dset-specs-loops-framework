@@ -1,8 +1,9 @@
 ---
-artifact_type: readiness_record
-artifact_id: "{{project_key}}-READINESS-RECORD-{{sequence}}"
-version_scope_ref: "{{project_key}}-SPECIFICATION-{{version_scope_sequence}}"
-release_plan_ref: "{{project_key}}-PLAN-{{release_plan_sequence}}"
+artifact_type: delivery
+artifact_subtype: readiness_record
+artifact_id: "{{project_key}}-DELIVERY-{{sequence}}"
+version_scope_ref: "{{project_key}}-DELIVERY-{{version_scope_sequence}}"
+release_plan_ref: "{{project_key}}-DELIVERY-{{release_plan_sequence}}"
 candidate_sha: pending
 disposition: blocked
 llm_session_ids: []

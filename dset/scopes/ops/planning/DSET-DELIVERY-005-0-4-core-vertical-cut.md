@@ -1,8 +1,8 @@
 ---
-artifact_type: plan
+artifact_type: delivery
 artifact_subtype: roadmap
-artifact_id: DSET-PLAN-001
-version_scope_ref: DSET-SPECIFICATION-002
+artifact_id: DSET-DELIVERY-005
+version_scope_ref: DSET-DELIVERY-002
 published_baseline: 0.3.1
 status: active
 llm_session_ids:
@@ -35,4 +35,4 @@ canonical; this Roadmap owns order and checkpoint conditions only.
 - A semantic migration that cannot preserve immutable legacy atoms reopens the
   governing lifecycle Decision before implementation continues.
 - Any change to the `0.4` promise recompiles
-  `DSET-SPECIFICATION-002` first, then this Roadmap.
+  `DSET-DELIVERY-002` first, then this Roadmap.

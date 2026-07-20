@@ -8,23 +8,29 @@ manifest: schema 1.2 `dset/scopes/meta/dset.yaml` or the legacy central path.
 Generic DSET skills use configured roles, never hard-coded branch or forge
 names.
 
-## Five flat Release lifecycle artifacts
+## Six flat Delivery lifecycle artifacts
 
-The Release lifecycle has five peer roles. They are connected by typed
-references; none owns, contains, subclasses, or serves as the base Type of
-another:
+The release lifecycle has six peer roles under one primary `delivery` artifact
+type. They are connected by typed references; none owns, contains, or
+subclasses another:
 
-- **Version Scope** is `specification/version_scope` and owns promises,
+- **Roadmap** is `delivery/roadmap` and orders the mutable route from the
+  published baseline to one next-minor Version Scope. Milestones are Roadmap
+  entries.
+- **Version Scope** is `delivery/version_scope` and owns promises,
   exclusions, and exit criteria for one declared version line.
-- **Roadmap** is `plan/roadmap` and orders the mutable route from the published
-  baseline to one next-minor Version Scope. Milestones are Roadmap entries.
-- **Release Plan** is `plan/release_plan` and selects one exact proposed version
-  and its participating Changes.
-- **Readiness Record** is `readiness_record` and owns the explicit
+- **Change** is `delivery/change` and groups accepted work and evidence for one
+  bounded delivery.
+- **Release Plan** is `delivery/release_plan` and selects one exact proposed
+  version and its participating Changes.
+- **Readiness Record** is `delivery/readiness_record` and owns the explicit
   ready-or-blocked disposition for one exact candidate.
-- **Release Record** is `release_record` and immutably owns the delivered
+- **Release Record** is `delivery/release_record` and immutably owns the delivered
   summary, migration notes, protected merge SHA, tag, packages, and publisher
   identity after publication.
+
+All six use one project-wide `DELIVERY` identity sequence. The subtype remains
+metadata unless subtype-bearing names are explicitly enabled.
 
 All applicable artifacts reference the stable Version Scope identity through
 `version_scope_ref`. A Readiness Record additionally references its Release

@@ -1,8 +1,9 @@
 ---
-artifact_type: readiness_record
-artifact_id: DSET-READINESS-RECORD-001
-version_scope_ref: DSET-SPECIFICATION-001
-release_plan_ref: DSET-PLAN-002
+artifact_type: delivery
+artifact_subtype: readiness_record
+artifact_id: DSET-DELIVERY-007
+version_scope_ref: DSET-DELIVERY-001
+release_plan_ref: DSET-DELIVERY-006
 candidate_sha: a6738bfed4c222f8e984d615a20be4a6e0d56767
 disposition: blocked
 llm_session_ids:
@@ -15,8 +16,8 @@ llm_session_ids:
 
 - **Candidate SHA:** `a6738bfed4c222f8e984d615a20be4a6e0d56767`
 - **Observed at:** 2026-07-20
-- **Release Plan:** `DSET-PLAN-002`
-- **Version Scope:** `DSET-SPECIFICATION-001`
+- **Release Plan:** `DSET-DELIVERY-006`
+- **Version Scope:** `DSET-DELIVERY-001`
 
 ## Gate disposition
 

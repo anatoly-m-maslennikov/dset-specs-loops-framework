@@ -427,6 +427,32 @@ class LayeredValidationTests(unittest.TestCase):
             trace["changes"][0]["workspace"]["isolation"], "integration-branch"
         )
 
+    def test_native_atomic_record_can_own_a_change_decision(self) -> None:
+        change = self._write_change("tool", "native-decision")
+        manifest_path = change / "change.yaml"
+        manifest = load(manifest_path)
+        assert isinstance(manifest, dict)
+        manifest["decisions"] = ["DSET-DECISION-TOOL-099"]
+        manifest_path.write_text(dump(manifest), encoding="utf-8")
+        atom = change / "DSET-ATOMIC-RECORD-099-native-decision.md"
+        atom.write_text(
+            "---\n"
+            "artifact_type: atomic_record\n"
+            "artifact_id: DSET-ATOMIC-RECORD-099\n"
+            "type: decision\n"
+            "semantic_id: DSET-DECISION-TOOL-099\n"
+            "status: accepted\n"
+            "priority: medium\n"
+            "llm_session_ids: []\n"
+            "---\n\n"
+            "# Decision\n",
+            encoding="utf-8",
+        )
+
+        diagnostics = validate_change(self.root, change, archived=False)
+
+        self.assertNotIn("DSET-E106", {item.code for item in diagnostics})
+
     def test_workspace_and_dependency_currentness_are_enforced(self) -> None:
         change = self._write_change("tool", "layered-change")
         path = change / "change.yaml"
