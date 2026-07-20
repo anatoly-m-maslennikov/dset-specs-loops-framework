@@ -187,6 +187,8 @@ authority records, and `EVAL` identities must not be silently retyped or
 renamed. A successor schema must preserve their IDs, content digests,
 provenance, and explicit successor or absorption relations.
 
-Until that migration is implemented, the accepted Type model governs and the
-older schema/validator projection is stale. Workflows must report the mismatch
-rather than claiming end-to-end Type/subtype enforcement.
+The compatibility projection is implemented across validation, traceability,
+project health, and skill routing. It preserves legacy identities without
+upgrading their immutability guarantee: native atoms are digest-sealed, while
+legacy carriers remain compatibility-classified until separately sealed or
+absorbed. Any immutable-coverage claim must state that boundary.
