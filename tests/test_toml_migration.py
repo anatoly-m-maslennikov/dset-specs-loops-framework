@@ -13,6 +13,7 @@ from typing import cast
 from unittest.mock import patch
 
 import dset_toolchain.toml_migration as toml_migration
+import dset_toolchain.validation as validation
 from dset_toolchain.cli import main
 from dset_toolchain.layout import RepositoryLayout
 from dset_toolchain.lineage import validate_artifact_relations
@@ -42,6 +43,74 @@ class TomlMigrationTests(unittest.TestCase):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
         return path
+
+    def initialize_git_fixture(self) -> None:
+        self.write(
+            ".gitignore",
+            ".dset/toml-migration-runtime-readiness.json\n"
+            ".dset/toml-migration-backups/\n",
+        )
+        commands = (
+            ["git", "init", "-q"],
+            ["git", "add", "-A"],
+            [
+                "git",
+                "-c",
+                "user.name=DSET Test",
+                "-c",
+                "user.email=dset-test@example.invalid",
+                "-c",
+                "commit.gpgsign=false",
+                "commit",
+                "-q",
+                "--no-gpg-sign",
+                "-m",
+                "fixture",
+            ],
+        )
+        for command in commands:
+            subprocess.run(command, cwd=self.root, check=True, capture_output=True)
+
+    def add_minimal_runtime_gate(self) -> None:
+        self.write("dset_toolchain/__init__.py", "")
+        self.write(
+            "dset_toolchain/__main__.py",
+            "raise SystemExit(0)\n",
+        )
+        self.write("dset_toolchain/bootstrap_bundle.json", "{}\n")
+
+    def write_current_runtime_readiness(self) -> MigrationPlan:
+        preview = plan_toml_migration(self.root, bypass_runtime_readiness=True)
+        targets = toml_migration._target_digests(
+            self.root,
+            list(preview.entries),
+            list(preview.references),
+            preview.package_successors,
+        )
+        self.write(
+            ".dset/toml-migration-runtime-readiness.json",
+            json.dumps(
+                {
+                    "targets": targets,
+                    "planned_targets": targets,
+                    "preserved_inputs": toml_migration._preserved_input_digests(
+                        self.root,
+                        preview.package_successors,
+                        preview.preserved_structured,
+                    ),
+                    "source_tool_sha256": toml_migration._tool_digest(self.root),
+                    "source_commit": toml_migration._git_head(self.root),
+                    "input_sha256": toml_migration._migration_input_digest(
+                        self.root,
+                        list(preview.entries),
+                        list(preview.references),
+                        list(preview.exceptions),
+                    ),
+                },
+                sort_keys=True,
+            ),
+        )
+        return preview
 
     def standard_fixture(self) -> None:
         self.write(
@@ -188,6 +257,71 @@ class TomlMigrationTests(unittest.TestCase):
         self.assertIn("items.toml", rendered_record)
         second = apply_toml_migration(self.root)
         self.assertEqual(second.entries, ())
+
+    def test_real_apply_retains_ignored_recovery_and_is_idempotent(self) -> None:
+        self.standard_fixture()
+        self.add_minimal_runtime_gate()
+        self.initialize_git_fixture()
+        preview = self.write_current_runtime_readiness()
+
+        applied = apply_toml_migration(self.root)
+
+        self.assertTrue(preview.ready)
+        recovery = self.root / ".dset/toml-migration-backups" / applied.digest
+        self.assertTrue((recovery / "manifest.json").is_file())
+        visible = {
+            path.relative_to(self.root).as_posix()
+            for path in validation._project_visible_files(self.root)
+        }
+        self.assertIn("dset/scopes/gov/items.toml", visible)
+        self.assertNotIn("dset/scopes/gov/items.yaml", visible)
+        self.assertFalse(
+            any(path.startswith(".dset/toml-migration-backups/") for path in visible)
+        )
+        git_status = subprocess.run(
+            ["git", "status", "--porcelain"],
+            cwd=self.root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout
+        self.assertNotIn("toml-migration-backups", git_status)
+
+        second = apply_toml_migration(self.root)
+
+        self.assertEqual(second.entries, ())
+        self.assertEqual(second.references, ())
+        self.assertTrue((recovery / "manifest.json").is_file())
+
+    def test_real_apply_failure_restores_clean_git_tree_and_removes_recovery(
+        self,
+    ) -> None:
+        self.standard_fixture()
+        self.add_minimal_runtime_gate()
+        self.initialize_git_fixture()
+        self.write_current_runtime_readiness()
+        recovery_root = self.root / ".dset/toml-migration-backups"
+
+        with (
+            patch(
+                "dset_toolchain.toml_migration._validate_migrated_runtime",
+                side_effect=ValueError("runtime failed"),
+            ),
+            self.assertRaisesRegex(TomlMigrationError, "migration rolled back"),
+        ):
+            apply_toml_migration(self.root)
+
+        self.assertTrue((self.root / "dset/scopes/gov/items.yaml").is_file())
+        self.assertFalse((self.root / "dset/scopes/gov/items.toml").exists())
+        self.assertFalse(recovery_root.exists())
+        git_status = subprocess.run(
+            ["git", "status", "--porcelain"],
+            cwd=self.root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout
+        self.assertEqual(git_status, "")
 
     def test_explicit_exceptions_retain_the_json_schema_contract_boundary(
         self,

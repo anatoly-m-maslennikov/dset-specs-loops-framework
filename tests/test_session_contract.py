@@ -77,6 +77,7 @@ class SessionContractTests(unittest.TestCase):
         self.assertIn(".dset/runs/", ignored)
         self.assertIn(".dset/sessions/", ignored)
         self.assertIn(".dset/toml-migration-runtime-readiness.json", ignored)
+        self.assertIn(".dset/toml-migration-backups/", ignored)
 
 
 if __name__ == "__main__":

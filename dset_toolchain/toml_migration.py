@@ -18,6 +18,7 @@ import subprocess
 import sys
 import tempfile
 from collections.abc import Iterable
+from contextlib import suppress
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -370,6 +371,7 @@ def apply_toml_migration(
             _validate_proven_output(plan)
     except Exception as error:
         _restore(originals)
+        _remove_failed_recovery(backup_root)
         raise TomlMigrationError(
             f"migration rolled back after staged validation failure: {error}"
         ) from error
@@ -381,6 +383,8 @@ def _project_files(root: Path) -> list[Path]:
     for path in root.rglob("*"):
         relative = path.relative_to(root)
         if any(part in _IGNORED_TOP_LEVEL for part in relative.parts):
+            continue
+        if relative.parts[:2] == (".dset", "toml-migration-backups"):
             continue
         if path.is_symlink():
             paths.append(path)
@@ -2130,6 +2134,15 @@ def _restore(originals: dict[Path, bytes | None]) -> None:
         else:
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(content)
+
+
+def _remove_failed_recovery(backup_root: Path) -> None:
+    """Remove the failed transaction record after its originals are restored."""
+
+    shutil.rmtree(backup_root, ignore_errors=True)
+    recovery_root = backup_root.parent
+    with suppress(OSError):
+        recovery_root.rmdir()
 
 
 def _relative(root: Path, path: Path) -> str:

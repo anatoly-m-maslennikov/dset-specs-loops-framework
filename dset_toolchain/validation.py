@@ -3196,11 +3196,17 @@ def _project_visible_files(root: Path) -> list[Path]:
     except OSError:
         result = None
     if result is not None and result.returncode == 0:
-        return sorted(
-            root / item.decode("utf-8")
-            for item in result.stdout.split(b"\0")
-            if item and Path(item.decode("utf-8")).name != ".DS_Store"
-        )
+        visible: list[Path] = []
+        for item in result.stdout.split(b"\0"):
+            if not item:
+                continue
+            relative = Path(item.decode("utf-8"))
+            path = root / relative
+            if relative.parts[:2] == (".dset", "toml-migration-backups"):
+                continue
+            if path.is_file() or path.is_symlink():
+                visible.append(path)
+        return sorted(visible)
     return sorted(
         path
         for path in root.rglob("*")
