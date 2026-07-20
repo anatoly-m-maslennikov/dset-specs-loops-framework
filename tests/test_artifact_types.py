@@ -4,14 +4,14 @@ import copy
 import json
 import tempfile
 import unittest
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 from dset_toolchain.validation import (
     ARTIFACT_TYPE_SUBTYPES,
     validate_artifact_type_registry,
 )
-from dset_toolchain.yaml_subset import load
+from dset_toolchain.yaml_subset import load, loads
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY_PATH = ROOT / "dset/scopes/gov/artifact-types.yaml"
@@ -64,6 +64,32 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
                     content.startswith("---\nartifact_type: analysis_report")
                 )
                 self.assertIn(f"artifact_subtype: {subtype}", content)
+
+    def test_every_distributed_template_has_one_effective_classification(self) -> None:
+        template_files = sorted(
+            path
+            for scope in (ROOT / "dset/scopes").iterdir()
+            for path in (scope / "templates").rglob("*")
+            if path.is_file()
+        )
+        self.assertTrue(template_files)
+        for path in template_files:
+            relative = PurePosixPath(path.relative_to(ROOT).as_posix())
+            matches = [
+                rule
+                for rule in self.registry["path_rules"]
+                if self._matches(relative, rule["pattern"])
+            ]
+            direct = self._direct_classification(path)
+            with self.subTest(path=relative.as_posix()):
+                self.assertLessEqual(len(matches), 1, matches)
+                self.assertTrue(direct is not None or matches, "unclassified template")
+                if direct is not None and matches:
+                    expected = (
+                        matches[0]["artifact_type"],
+                        matches[0].get("artifact_subtype"),
+                    )
+                    self.assertEqual(direct, expected)
 
     def test_unknown_type_is_rejected(self) -> None:
         data = self._copy()
@@ -225,6 +251,32 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
             f"artifact_id: {artifact_id}\n"
             "---\n",
             encoding="utf-8",
+        )
+
+    @staticmethod
+    def _matches(path: PurePosixPath, pattern: str) -> bool:
+        return path.match(pattern) or (
+            pattern.startswith("**/") and path.match(pattern.removeprefix("**/"))
+        )
+
+    @staticmethod
+    def _direct_classification(path: Path) -> tuple[str, str | None] | None:
+        if path.suffix.lower() != ".md":
+            return None
+        lines = path.read_text(encoding="utf-8").splitlines()
+        if not lines or lines[0] != "---":
+            return None
+        try:
+            end = lines.index("---", 1)
+        except ValueError:
+            return None
+        metadata = loads("\n".join(lines[1:end]))
+        if not isinstance(metadata, dict) or metadata.get("artifact_type") is None:
+            return None
+        subtype = metadata.get("artifact_subtype")
+        return (
+            str(metadata["artifact_type"]),
+            str(subtype) if subtype is not None else None,
         )
 
     @staticmethod

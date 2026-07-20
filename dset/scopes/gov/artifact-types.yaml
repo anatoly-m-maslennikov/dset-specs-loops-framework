@@ -112,6 +112,127 @@ artifact_types:
 
 path_rules:
   -
+    pattern: "**/templates/change/adoption-decision.md"
+    artifact_type: atomic_record
+  -
+    pattern: "**/templates/change/decision.md"
+    artifact_type: atomic_record
+  -
+    pattern: "**/templates/change/tasks.md"
+    artifact_type: atomic_record
+  -
+    pattern: "**/templates/change/dependency-map.yaml"
+    artifact_type: specification
+    artifact_subtype: architecture
+  -
+    pattern: "**/templates/change/global-impact.md"
+    artifact_type: analysis_report
+    artifact_subtype: technical_investigation
+  -
+    pattern: "**/templates/change/specs/package.md"
+    artifact_type: specification
+    artifact_subtype: behavior
+  -
+    pattern: "**/templates/package/contracts.md"
+    artifact_type: specification
+    artifact_subtype: behavior
+  -
+    pattern: "**/templates/package/stories.md"
+    artifact_type: specification
+    artifact_subtype: behavior
+  -
+    pattern: "**/templates/package/outcomes.md"
+    artifact_type: specification
+    artifact_subtype: behavior
+  -
+    pattern: "**/templates/package/*/package.yaml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "**/templates/artifact-types.yaml"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "**/templates/governance/*/profile.yaml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "**/templates/profiles.yaml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "**/templates/intake.yaml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "**/templates/budget.yaml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "**/templates/dset.toml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
+    pattern: "**/templates/governance/*/architecture.md"
+    artifact_type: specification
+    artifact_subtype: architecture
+  -
+    pattern: "**/templates/governance/*/artifact-classification.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "**/templates/governance/*/artifact-maintenance.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "**/templates/governance/*/work-items.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "**/templates/governance/*/domain-spec-authoring.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "**/templates/governance/*/eval-planning.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "**/templates/governance/*/test-planning.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "**/templates/governance/*/release.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "**/templates/governance/*/supportability.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "**/templates/governance/*/delegation-budget.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "**/templates/governance/*/diagnosis.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "**/templates/governance/*/lifecycle-orchestration.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "**/templates/governance/*/prototyping.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "**/templates/governance/*/skill-runs.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
+    pattern: "**/templates/governance/*/build-rules.md"
+    artifact_type: specification
+    artifact_subtype: governance
+  -
     pattern: "**/analysis-report.md"
     artifact_type: analysis_report
   -
