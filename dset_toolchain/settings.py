@@ -5,6 +5,7 @@ from pathlib import Path
 
 SETTINGS_SCHEMA_VERSION = "1.0"
 ARTIFACT_CREATION_STRICTNESS = frozenset({"medium", "high"})
+DEFAULT_PRIORITY_SCALE = ("critical", "high", "medium", "low", "deferred")
 
 
 @dataclass(frozen=True)
@@ -12,6 +13,8 @@ class ProjectSettings:
     schema_version: str = SETTINGS_SCHEMA_VERSION
     artifact_subtype_in_names: bool = False
     artifact_creation_strictness: str = "medium"
+    priority_scale: tuple[str, ...] = DEFAULT_PRIORITY_SCALE
+    default_priority: str = "medium"
 
 
 def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]:
@@ -26,6 +29,8 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
     schema_version: str | None = None
     include_subtype: bool | None = None
     strictness = "medium"
+    priority_scale: tuple[str, ...] = DEFAULT_PRIORITY_SCALE
+    default_priority = "medium"
     issues: list[str] = []
     section = ""
     for raw in lines:
@@ -42,6 +47,20 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
         value = value.strip()
         if not section and key == "schema_version":
             schema_version = value.strip('"')
+        if section == "priority":
+            if key == "scale":
+                parsed = tuple(
+                    item.strip() for item in value.strip('"').split(",") if item.strip()
+                )
+                if len(parsed) < 2 or len(set(parsed)) != len(parsed):
+                    issues.append(
+                        "priority.scale must contain at least two unique values"
+                    )
+                else:
+                    priority_scale = parsed
+            if key == "default":
+                default_priority = value.strip('"')
+            continue
         if section != "optional_capabilities":
             continue
         if key == "artifact_subtype_in_names":
@@ -64,11 +83,15 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
         issues.append(
             "optional_capabilities.artifact_subtype_in_names is required"
         )
+    if default_priority not in priority_scale:
+        issues.append("priority.default must be present in priority.scale")
     return (
         ProjectSettings(
             schema_version=schema_version or SETTINGS_SCHEMA_VERSION,
             artifact_subtype_in_names=bool(include_subtype),
             artifact_creation_strictness=strictness,
+            priority_scale=priority_scale,
+            default_priority=default_priority,
         ),
         tuple(issues),
     )

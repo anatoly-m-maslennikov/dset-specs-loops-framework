@@ -2,6 +2,7 @@ schema_version: 1.1
 id: fixture-standard
 profile: standard
 status: in-progress
+priority: medium
 packages:
   - example
 pull_request:

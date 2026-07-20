@@ -134,10 +134,12 @@ provenance is not equivalent to human-only work. Session provenance is not
 authority by itself; it lets a reviewer find the working context that created
 or assessed the atom.
 
-Current Change manifests, intake items, Decisions, promoted proofs, local
-skill-run records, and session checkpoints are atomic artifacts. Their schemas,
-templates, or validators must enforce the explicit provenance shape before a
-repository claims this rule is implemented.
+Only emitted Decision, Question, Problem, and QA claims are semantic atoms.
+Change manifests, intake queues, skill-run records, and session checkpoints are
+mutable transactional or execution-state carriers; they may contain or point
+to atoms but do not become atoms because a workflow uses them. Promoted proof
+is immutable evidence, not a semantic atom. Every supported carrier still
+enforces explicit provenance appropriate to its role.
 
 ## Proof and derived-view maintenance
 
@@ -202,7 +204,13 @@ authorization, gates, and resources may still determine the next action.
 Impact, severity, likelihood, expected value, obligations, and Outcome value
 stay in their owning semantics as priority evidence, not a second universal
 rank. The selected project profile owns one bounded scale, legend, inheritance,
-override, and escalation rules.
+override, and escalation rules. `core-v1` orders `critical`, `high`, `medium`,
+`low`, then `deferred`; lower list position means lower current execution
+priority. Root `dset.toml` publishes the ordered scale and its default. An
+artifact without a direct priority inherits through its owning atom or Change,
+then the project default. An explicit historical `unknown` remains unknown
+until an append-only priority event supplies a value; it never silently falls
+back.
 
 Classify each conflict before resolving it. Immutable external authority wins
 over mutable project truth. If two immutable obligations cannot both be

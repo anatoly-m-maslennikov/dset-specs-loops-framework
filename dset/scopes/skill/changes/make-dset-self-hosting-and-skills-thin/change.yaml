@@ -3,6 +3,7 @@ id: DSET-CHANGE-SKILL-001
 slug: make-dset-self-hosting-and-skills-thin
 profile: standard
 status: in-progress
+priority: critical
 primary_layer: skill
 affected_layers:
   - meta

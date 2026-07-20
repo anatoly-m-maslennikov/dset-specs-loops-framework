@@ -508,6 +508,12 @@ changes:
     dependencies: []
 lineage:
   -
+    id: DSET-DECISION-GOV-010
+    artifact_id: DSET-ATOMIC-RECORD-009
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-009-priority-profile.md
+    child_of: []
+    parent_to: []
+  -
     id: DSET-EVIDENCE-RECORD-001
     artifact_id: DSET-EVIDENCE-RECORD-001
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-001-artifact-role-lifecycle.md

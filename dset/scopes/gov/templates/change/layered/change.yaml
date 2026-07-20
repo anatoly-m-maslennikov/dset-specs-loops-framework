@@ -3,6 +3,7 @@ id: {{change_id}}
 slug: {{change_slug}}
 profile: {{profile}}
 status: proposed
+priority: medium
 primary_layer: {{layer}}
 affected_layers:
   - {{layer}}

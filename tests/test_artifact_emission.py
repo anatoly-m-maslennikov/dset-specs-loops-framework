@@ -64,6 +64,11 @@ class ArtifactEmissionTests(unittest.TestCase):
         settings, issues = load_project_settings(self.root)
         self.assertEqual(issues, ())
         self.assertEqual(settings.artifact_creation_strictness, "medium")
+        self.assertEqual(
+            settings.priority_scale,
+            ("critical", "high", "medium", "low", "deferred"),
+        )
+        self.assertEqual(settings.default_priority, "medium")
 
         assessment = assess_artifact_candidate(self.root, self.candidate())
 

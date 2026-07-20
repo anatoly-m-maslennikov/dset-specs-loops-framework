@@ -109,7 +109,7 @@ rules:
     depends_on:
       - DSET-RULE-ARCHITECTURE
     precedence_over: []
-    customization: unmodified
+    customization: custom
     source:
       profile: core-v1
       version: "0.3"
