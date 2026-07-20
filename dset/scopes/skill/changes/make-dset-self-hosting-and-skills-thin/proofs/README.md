@@ -18,3 +18,4 @@ diagnose failure.
 - [Exact-head Codex host installation attempt](DSET-EVIDENCE-RECORD-020-codex-host-install-attempt.md)
 - [Independent Claude review attempt](DSET-EVIDENCE-RECORD-021-claude-review-attempt.md)
 - [Documented-path Codex host invocation attempt](DSET-EVIDENCE-RECORD-022-codex-host-invocation-attempt.md)
+- [Typed artifact relation Test result](DSET-EVIDENCE-RECORD-023-typed-artifact-relations.md)
