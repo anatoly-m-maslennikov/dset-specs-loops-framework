@@ -201,9 +201,12 @@ class PriorityConflictTests(unittest.TestCase):
         candidate["conflict_atom"] = {
             "artifact_id": "DSET-ATOMIC-RECORD-003",
             "semantic_id": "DSET-CONFLICT-003",
-            "authority": "operator",
+            "authority": "operator:test-operator",
             "claim": "The two active authority claims cannot both govern this scope.",
-            "scope": {"kind": "project", "id": "DSET"},
+            "scope": {
+                "kind": "project",
+                "id": "dset-temporary-adopter",
+            },
             "llm_session_ids": ["codex:test-session"],
             "material_links": ["DSET-DECISION-001", "DSET-CONTRACT-002"],
             "promotion": {"parent_scope": None},
@@ -231,6 +234,13 @@ class PriorityConflictTests(unittest.TestCase):
                 f"semantic_id: {semantic}\n"
                 "status: accepted\n"
                 f"priority: {priority}\n"
+                'authority: "operator:test-operator"\n'
+                'claim: "This authority claim governs the fixture."\n'
+                "scope:\n"
+                "  kind: project\n"
+                "  id: dset-temporary-adopter\n"
+                "promotion:\n"
+                "  parent_scope: null\n"
                 "llm_session_ids:\n"
                 '  - "codex:test-session"\n'
                 "---\n\n# Authority\n",

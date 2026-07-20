@@ -267,9 +267,22 @@ def emit_conflict_atom(
         "semantic_id": _required_text(atom, "semantic_id"),
         "status": _required_text(atom, "acceptance"),
         "priority": _required_text(atom, "priority"),
+        "authority": _required_text(atom, "authority"),
+        "claim": _required_text(atom, "claim"),
+        "scope": atom.get("scope"),
+        "promotion": atom.get("promotion"),
         "child_of": parents,
         "llm_session_ids": atom.get("llm_session_ids"),
     }
+    for field in (
+        "boundary",
+        "lineage",
+        "conflict_state",
+        "verification_obligation",
+        "unknowns",
+    ):
+        if field in atom:
+            frontmatter[field] = atom[field]
     rationale = atom.get("rationale")
     if rationale is not None:
         frontmatter["rationale"] = rationale

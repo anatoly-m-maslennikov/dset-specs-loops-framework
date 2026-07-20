@@ -113,6 +113,33 @@ def seal_atom(root: Path, path: Path) -> Path:
     if diagnostics or atom is None:
         message = diagnostics[0].message if diagnostics else "invalid atom"
         raise ValueError(message)
+    from .artifact_emission import assess_artifact_candidate
+
+    candidate = {
+        "authority": metadata.get("authority"),
+        "claim": metadata.get("claim"),
+        "type": metadata.get("type"),
+        "subtype": metadata.get("subtype"),
+        "scope": metadata.get("scope"),
+        "llm_session_ids": metadata.get("llm_session_ids"),
+        "material_links": metadata.get("child_of", []),
+        "priority": metadata.get("priority"),
+        "acceptance": metadata.get("status"),
+        "promotion": metadata.get("promotion"),
+    }
+    for field in (
+        "boundary",
+        "lineage",
+        "conflict_state",
+        "verification_obligation",
+        "unknowns",
+    ):
+        if field in metadata:
+            candidate[field] = metadata[field]
+    assessment = assess_artifact_candidate(root, candidate)
+    if assessment["emission_allowed"] is not True:
+        first = assessment["diagnostics"][0]
+        raise ValueError(f"artifact emission is blocked: {first['message']}")
     ledger_path = _ledger_path(root)
     data = _load_or_empty(ledger_path, "records")
     records = data["records"]

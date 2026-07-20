@@ -659,11 +659,17 @@ Root `dset.toml` must expose independent
 `optional_capabilities.artifact_creation_strictness` with `medium` as the
 default and `high` as the stricter alternative. At `medium`, DSET may emit one
 accepted atom when authority, primary claim, Type, owning structural scope,
-provenance, and material links are clear; optional non-authoritative detail may
-remain explicitly unknown. At `high`, every material authority, meaning,
-boundary, Type, scope, priority, lineage, acceptance, conflict, and proof
-question must be resolved before emission. Otherwise DSET asks focused
+provenance, material links, priority, and acceptance state are clear; optional
+non-authoritative detail may remain explicitly unknown. At `high`, every
+material authority, meaning, boundary, Type, scope, lineage, conflict, and
+proof question must be resolved before emission. Otherwise DSET asks focused
 questions or stops without writing an atom.
+
+The deterministic assessment must resolve the candidate's scope, immediate
+parent, affected children, material links, priority, and session identifiers
+against repository authority. Sealing an immutable atom must consume the same
+assessment and refuse a blocked candidate; a caller cannot bypass the gate by
+writing a carrier directly.
 
 Before emission, DSET must assess eligibility for the immediately broader
 enabled scope under narrowest-common-scope ownership. Eligible feature claims

@@ -6,6 +6,13 @@ type: "{{type}}"
 semantic_id: "{{semantic_id}}"
 status: proposed
 priority: medium
+authority: "operator:{{operator_id}}"
+claim: "{{one_primary_claim}}"
+scope:
+  kind: project
+  id: "{{project_id}}"
+promotion:
+  parent_scope: null
 llm_session_ids: []
 ---
 

@@ -119,15 +119,15 @@ Root `dset.toml` selects `artifact_creation_strictness` independently from
 other optional capabilities. The default is `medium`; `high` is opt-in.
 
 At medium strictness, emit an accepted atom only when its authority, one primary
-claim, Type, owning structural scope, provenance, and material links are clear.
-Optional non-authoritative detail may remain explicitly unknown. A material
-unknown that could change the claim becomes a separate Question or blocks the
-emission.
+claim, Type, owning structural scope, provenance, material links, priority, and
+acceptance state are clear. Optional non-authoritative detail may remain
+explicitly unknown. A material unknown that could change the claim becomes a
+separate Question or blocks the emission.
 
 At high strictness, do not emit while authority, meaning, boundary, Type,
-scope, priority, lineage, acceptance, conflict state, or proof obligation is
-materially ambiguous. Ask focused questions until the atom can safely remain
-immutable, or stop without writing it.
+scope, lineage, conflict state, or proof obligation is materially ambiguous.
+Ask focused questions until the atom can safely remain immutable, or stop
+without writing it.
 
 Before emission, assess whether the unchanged claim belongs at the immediately
 broader enabled scope under narrowest-common-scope ownership. Propose eligible
@@ -144,16 +144,18 @@ dset artifact assess ROOT --candidate CANDIDATE.json
 ```
 
 Every candidate explicitly supplies authority, one claim, semantic `type`,
-structural `scope`, `llm_session_ids`, material links, and a promotion
-assessment. High strictness additionally requires boundary, priority, lineage,
-acceptance, conflict state, and verification obligation. `unknowns` identifies
+structural `scope`, `llm_session_ids`, material links, priority, acceptance,
+and a promotion assessment. High strictness additionally requires boundary,
+lineage, conflict state, and verification obligation. `unknowns` identifies
 each unresolved field, whether it is material, and the focused question to ask.
 Promotion names only the immediate `parent_scope`, affected children, whether
 the claim applies unchanged, whether local context is required, and an optional
 operator `disposition` of `keep_local` or `promote`. Eligibility without a
 disposition stops with a proposal; `promote` stops local emission so a new
-candidate can be assessed at the broader scope. A successful result only says
-`emission_allowed: true`; the caller still owns the authorized write.
+candidate can be assessed at the broader scope. The assessor resolves scopes,
+immediate parents, affected children, material links, priority values, and
+session syntax against repository authority. `dset atom seal` repeats this
+assessment and refuses the immutable write when it is not allowed.
 
 ## Commit and session provenance
 

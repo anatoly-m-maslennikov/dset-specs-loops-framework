@@ -1,11 +1,18 @@
 from __future__ import annotations
 
+import re
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
-from .semantic_types import SEMANTIC_SUBTYPES
+from .layout import LAYERS, discover_layout
+from .lineage import collect_artifact_lineage
+from .semantic_types import SEMANTIC_SUBTYPES, build_semantic_classification_index
 from .settings import load_project_settings
+from .yaml_subset import load
+
+SESSION_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
+AUTHORITY_PATTERN = re.compile(r"^(?:operator|repository|external):[A-Za-z0-9._:-]+$")
 
 MEDIUM_FIELDS = (
     "authority",
@@ -14,13 +21,13 @@ MEDIUM_FIELDS = (
     "scope",
     "llm_session_ids",
     "material_links",
+    "priority",
+    "acceptance",
     "promotion",
 )
 HIGH_FIELDS = (
     "boundary",
-    "priority",
     "lineage",
-    "acceptance",
     "conflict_state",
     "verification_obligation",
 )
@@ -73,11 +80,14 @@ def assess_artifact_candidate(
 
     diagnostics.extend(_semantic_diagnostics(candidate))
     diagnostics.extend(_shape_diagnostics(candidate))
+    diagnostics.extend(_value_diagnostics(root, candidate, settings.priority_scale))
     unknown_diagnostics, unknown_questions = _unknown_diagnostics(candidate)
     diagnostics.extend(unknown_diagnostics)
     questions.extend(unknown_questions)
 
-    promotion = _assess_promotion(candidate)
+    scope_model, scope_diagnostics = _repository_scope_model(root)
+    diagnostics.extend(scope_diagnostics)
+    promotion = _assess_promotion(candidate, scope_model)
     if promotion["status"] == "invalid":
         diagnostics.append(
             {
@@ -191,6 +201,102 @@ def _shape_diagnostics(candidate: Mapping[str, Any]) -> list[dict[str, str]]:
     return diagnostics
 
 
+def _value_diagnostics(
+    root: Path, candidate: Mapping[str, Any], priorities: Sequence[str]
+) -> list[dict[str, str]]:
+    diagnostics: list[dict[str, str]] = []
+    authority = candidate.get("authority")
+    if isinstance(authority, str) and not AUTHORITY_PATTERN.fullmatch(authority):
+        diagnostics.append(
+            {
+                "code": "DSET-ARTIFACT-AUTHORITY",
+                "field": "authority",
+                "message": (
+                    "authority must use operator:, repository:, or external: "
+                    "with a stable authority ID"
+                ),
+            }
+        )
+    sessions = candidate.get("llm_session_ids")
+    if _is_string_sequence(sessions):
+        assert isinstance(sessions, Sequence) and not isinstance(sessions, str)
+        normalized = [str(item) for item in sessions]
+        if len(normalized) != len(set(normalized)) or any(
+            not SESSION_PATTERN.fullmatch(item) for item in normalized
+        ):
+            diagnostics.append(
+                {
+                    "code": "DSET-ARTIFACT-SESSION",
+                    "field": "llm_session_ids",
+                    "message": "LLM session IDs must be unique provider:id values",
+                }
+            )
+    priority = candidate.get("priority")
+    if isinstance(priority, str) and priority not in {*priorities, "unknown"}:
+        diagnostics.append(
+            {
+                "code": "DSET-ARTIFACT-PRIORITY",
+                "field": "priority",
+                "message": "priority is not in the repository priority scale",
+            }
+        )
+    acceptance = candidate.get("acceptance")
+    if isinstance(acceptance, str) and acceptance not in {"proposed", "accepted"}:
+        diagnostics.append(
+            {
+                "code": "DSET-ARTIFACT-ACCEPTANCE",
+                "field": "acceptance",
+                "message": "acceptance must be proposed or accepted",
+            }
+        )
+    conflict_state = candidate.get("conflict_state")
+    if isinstance(conflict_state, str) and conflict_state not in {
+        "clear",
+        "unresolved",
+    }:
+        diagnostics.append(
+            {
+                "code": "DSET-ARTIFACT-CONFLICT",
+                "field": "conflict_state",
+                "message": "conflict_state must be clear or unresolved",
+            }
+        )
+    diagnostics.extend(_link_diagnostics(root, candidate))
+    return diagnostics
+
+
+def _link_diagnostics(root: Path, candidate: Mapping[str, Any]) -> list[dict[str, str]]:
+    requested: set[str] = set()
+    for field in ("material_links", "lineage"):
+        value = candidate.get(field)
+        if _is_string_sequence(value):
+            assert isinstance(value, Sequence) and not isinstance(value, str)
+            requested.update(str(item) for item in value)
+    if not requested:
+        return []
+    known: set[str] = set()
+    try:
+        known.update(
+            str(row["id"]) for row in build_semantic_classification_index(root)
+        )
+        nodes, lineage_issues = collect_artifact_lineage(root)
+        if not lineage_issues:
+            for node in nodes.values():
+                known.update((node.id, node.artifact_id))
+    except (OSError, ValueError):
+        pass
+    missing = sorted(requested - known)
+    if not missing:
+        return []
+    return [
+        {
+            "code": "DSET-ARTIFACT-LINK",
+            "field": "material_links",
+            "message": f"linked artifact IDs do not resolve: {', '.join(missing)}",
+        }
+    ]
+
+
 def _unknown_diagnostics(
     candidate: Mapping[str, Any],
 ) -> tuple[list[dict[str, str]], list[str]]:
@@ -233,24 +339,49 @@ def _unknown_diagnostics(
     return diagnostics, questions
 
 
-def _assess_promotion(candidate: Mapping[str, Any]) -> dict[str, Any]:
+def _assess_promotion(
+    candidate: Mapping[str, Any], scope_model: Mapping[str, Any] | None
+) -> dict[str, Any]:
     raw = candidate.get("promotion")
     if not isinstance(raw, Mapping):
         return {"status": "not-assessed", "eligible": False}
+    scope = candidate.get("scope")
+    if not _valid_scope(scope):
+        return {"status": "invalid", "eligible": False}
+    assert isinstance(scope, Mapping)
+    current_key = (str(scope["kind"]), str(scope["id"]))
+    if scope_model is None or current_key not in scope_model["scopes"]:
+        return {
+            "status": "invalid",
+            "eligible": False,
+            "reason": "scope is not enabled by the repository manifest",
+        }
     parent = raw.get("parent_scope")
     if parent is None:
+        if scope_model["parents"].get(current_key) is not None:
+            return {
+                "status": "invalid",
+                "eligible": False,
+                "reason": "the enabled local scope requires its immediate parent",
+            }
         return {
             "status": "not-applicable",
             "eligible": False,
             "reason": "no broader enabled scope",
         }
-    scope = candidate.get("scope")
-    if not _valid_scope(scope) or not _valid_scope(parent):
+    if not _valid_scope(parent):
         return {"status": "invalid", "eligible": False}
-    assert isinstance(scope, Mapping)
     assert isinstance(parent, Mapping)
     current_kind = str(scope["kind"])
     parent_kind = str(parent["kind"])
+    parent_key = (parent_kind, str(parent["id"]))
+    actual_parent = scope_model["parents"].get(current_key)
+    if actual_parent != parent_key:
+        return {
+            "status": "invalid",
+            "eligible": False,
+            "reason": "parent_scope is not the manifest-defined immediate parent",
+        }
     if (current_kind, parent_kind) not in ALLOWED_PROMOTION_STEPS:
         return {
             "status": "invalid",
@@ -258,11 +389,17 @@ def _assess_promotion(candidate: Mapping[str, Any]) -> dict[str, Any]:
             "reason": "parent_scope is not an allowed immediate broader step",
         }
     affected = raw.get("affected_children")
+    actual_children = scope_model["children"].get(parent_key, ())
+    affected_items: tuple[str, ...] = ()
+    if _is_string_sequence(affected):
+        assert isinstance(affected, Sequence) and not isinstance(affected, str)
+        affected_items = tuple(str(item) for item in affected)
+    affected_matches = set(affected_items) == set(actual_children)
     eligible = (
         raw.get("applies_unchanged") is True
         and raw.get("local_context_required") is False
-        and _is_string_sequence(affected)
-        and bool(affected)
+        and affected_matches
+        and bool(actual_children)
     )
     if not eligible:
         return {
@@ -271,8 +408,7 @@ def _assess_promotion(candidate: Mapping[str, Any]) -> dict[str, Any]:
             "reason": "claim changes across children or requires local context",
         }
     disposition = raw.get("disposition")
-    assert isinstance(affected, Sequence) and not isinstance(affected, str)
-    affected_children = [str(item) for item in affected]
+    affected_children = list(affected_items)
     proposal = (
         f"Promote the unchanged claim from {scope['kind']}:{scope['id']} to "
         f"{parent['kind']}:{parent['id']} for {', '.join(affected_children)}?"
@@ -292,6 +428,46 @@ def _assess_promotion(candidate: Mapping[str, Any]) -> dict[str, Any]:
         "question": proposal,
         "automatic": False,
     }
+
+
+def _repository_scope_model(
+    root: Path,
+) -> tuple[dict[str, Any] | None, list[dict[str, str]]]:
+    try:
+        layout = discover_layout(root)
+        manifest = load(layout.manifest_path)
+    except (OSError, ValueError) as error:
+        return None, [
+            {
+                "code": "DSET-ARTIFACT-REPOSITORY",
+                "field": "scope",
+                "message": f"repository scope authority is unavailable: {error}",
+            }
+        ]
+    project = manifest.get("project") if isinstance(manifest, Mapping) else None
+    project_id = project.get("id") if isinstance(project, Mapping) else None
+    if not isinstance(project_id, str) or not project_id.strip():
+        return None, [
+            {
+                "code": "DSET-ARTIFACT-REPOSITORY",
+                "field": "scope",
+                "message": "project manifest requires project.id",
+            }
+        ]
+    project_key = ("project", project_id)
+    scopes: set[tuple[str, str]] = {project_key}
+    parents: dict[tuple[str, str], tuple[str, str]] = {}
+    children: dict[tuple[str, str], tuple[str, ...]] = {}
+    if layout.layered:
+        layer_keys = [("layer", layer) for layer in LAYERS]
+        scopes.update(layer_keys)
+        parents.update({key: project_key for key in layer_keys})
+        children[project_key] = LAYERS
+    return {
+        "scopes": scopes,
+        "parents": parents,
+        "children": children,
+    }, []
 
 
 def _valid_scope(value: object) -> bool:

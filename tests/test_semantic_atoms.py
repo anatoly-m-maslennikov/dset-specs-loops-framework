@@ -64,6 +64,15 @@ class SemanticAtomTests(unittest.TestCase):
             messages,
         )
 
+    def test_sealing_repeats_repository_backed_emission_gate(self) -> None:
+        text = self._write_atom().replace('authority: "operator:test-operator"\n', "")
+        self.atom_path.write_text(text, encoding="utf-8")
+
+        with self.assertRaisesRegex(
+            ValueError, "artifact emission is blocked: material field"
+        ):
+            seal_atom(self.root, self.atom_path)
+
     def test_invalid_nested_or_qa_empty_subtype_fails(self) -> None:
         self._write_atom()
         self.atom_path.write_text(
@@ -218,6 +227,13 @@ subtype: contract
 semantic_id: {semantic}
 status: accepted
 priority: high
+authority: "operator:test-operator"
+claim: "The output contract governs this project."
+scope:
+  kind: project
+  id: dset-temporary-adopter
+promotion:
+  parent_scope: null
 llm_session_ids:
   - "codex:test-session"
 ---

@@ -19,27 +19,22 @@ ROOT = Path(__file__).resolve().parents[1]
 class ArtifactEmissionTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory(dir=ROOT.parent)
-        self.root = Path(self.temporary.name)
-        (self.root / "dset.toml").write_text(
-            'schema_version = "1.0"\n\n'
-            "[optional_capabilities]\n"
-            "artifact_subtype_in_names = false\n"
-            'artifact_creation_strictness = "medium"\n',
-            encoding="utf-8",
-        )
+        self.root = create_adopter(ROOT, Path(self.temporary.name) / "adopter")
 
     def tearDown(self) -> None:
         self.temporary.cleanup()
 
     def candidate(self) -> dict[str, Any]:
         return {
-            "authority": "operator acceptance",
+            "authority": "operator:test-operator",
             "claim": "The tool writes one deterministic result.",
             "type": "decision",
             "subtype": "requirement",
-            "scope": {"kind": "feature", "id": "writer"},
+            "scope": {"kind": "project", "id": "dset-temporary-adopter"},
             "llm_session_ids": ["codex:test-session"],
             "material_links": [],
+            "priority": "medium",
+            "acceptance": "accepted",
             "promotion": {"parent_scope": None},
             "unknowns": [
                 {
@@ -90,8 +85,11 @@ class ArtifactEmissionTests(unittest.TestCase):
         self.assertEqual(issues, ())
 
         path.write_text(
-            path.read_text(encoding="utf-8")
-            + 'artifact_creation_strictness = "maximum"\n',
+            path.read_text(encoding="utf-8").replace(
+                "artifact_subtype_in_names = false\n",
+                "artifact_subtype_in_names = false\n"
+                'artifact_creation_strictness = "maximum"\n',
+            ),
             encoding="utf-8",
         )
         _settings, issues = load_project_settings(self.root)
@@ -109,15 +107,13 @@ class ArtifactEmissionTests(unittest.TestCase):
             set(
                 (
                     "boundary",
-                    "priority",
                     "lineage",
-                    "acceptance",
                     "conflict_state",
                     "verification_obligation",
                 )
             ),
         )
-        self.assertEqual(len(blocked["questions"]), 6)
+        self.assertEqual(len(blocked["questions"]), 4)
 
         complete = self.candidate()
         complete.update(
@@ -150,16 +146,33 @@ class ArtifactEmissionTests(unittest.TestCase):
             "Did the operator accept this directive?", assessment["questions"]
         )
 
+    def test_unknown_repository_scope_is_rejected(self) -> None:
+        candidate = self.candidate()
+        candidate["scope"] = {"kind": "feature", "id": "unregistered"}
+
+        assessment = assess_artifact_candidate(self.root, candidate)
+
+        self.assertFalse(assessment["emission_allowed"])
+        messages = [item["message"] for item in assessment["diagnostics"]]
+        self.assertIn(
+            "scope is not enabled by the repository manifest",
+            messages,
+        )
+
     def test_eligible_promotion_is_proposed_and_never_automatic(self) -> None:
         candidate = self.candidate()
+        candidate["scope"] = {"kind": "layer", "id": "tool"}
         candidate["promotion"] = {
-            "parent_scope": {"kind": "feature_group", "id": "schedulers"},
+            "parent_scope": {
+                "kind": "project",
+                "id": "dset-specs-loops-framework",
+            },
             "applies_unchanged": True,
             "local_context_required": False,
-            "affected_children": ["global", "catchup"],
+            "affected_children": ["meta", "gov", "tool", "skill", "ops"],
         }
 
-        proposal = assess_artifact_candidate(self.root, candidate)
+        proposal = assess_artifact_candidate(ROOT, candidate)
 
         self.assertFalse(proposal["emission_allowed"])
         self.assertEqual(proposal["promotion"]["status"], "proposal-required")
@@ -167,18 +180,16 @@ class ArtifactEmissionTests(unittest.TestCase):
         self.assertFalse(proposal["promotion"]["automatic"])
 
         candidate["promotion"]["disposition"] = "keep_local"
-        local = assess_artifact_candidate(self.root, candidate)
+        local = assess_artifact_candidate(ROOT, candidate)
         self.assertTrue(local["emission_allowed"])
         self.assertEqual(local["promotion"]["status"], "declined")
 
         candidate["promotion"]["disposition"] = "promote"
-        promote = assess_artifact_candidate(self.root, candidate)
+        promote = assess_artifact_candidate(ROOT, candidate)
         self.assertFalse(promote["emission_allowed"])
         self.assertEqual(promote["promotion"]["status"], "promote-before-emission")
 
     def test_cli_is_read_only_and_returns_blocked_status(self) -> None:
-        project = self.root / "project"
-        create_adopter(ROOT, project)
         candidate_path = self.root / "candidate.json"
         candidate = self.candidate()
         candidate.pop("claim")
@@ -190,7 +201,7 @@ class ArtifactEmissionTests(unittest.TestCase):
                 [
                     "artifact",
                     "assess",
-                    str(project),
+                    str(self.root),
                     "--candidate",
                     str(candidate_path),
                 ]
