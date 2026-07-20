@@ -33,10 +33,12 @@
 plans are the authoritative mappings. Candidate-to-repository and
 candidate-to-adopter deterministic proof passes locally, while the pinned
 pre-transition validator is an explicit degraded bootstrap result and the
-current branch lacks exact-head hosted proof. The new skill/run/session/release
-runtime, qualitative evals, TypeScript profile, external pilots, distribution,
-and final release reconciliation remain open; DSET 0.3 is not yet an
-adoption-readiness claim.
+current branch lacks exact-head hosted proof. Qualitative evals, the TypeScript
+profile and pilots, native-host proof, hosted proof, and final release
+reconciliation remain open; DSET 0.3 is not yet an adoption-readiness claim.
+The local runtime, skill distribution, budget, release-transaction, migration,
+project-health, and external-review mechanics are implemented and must not
+remain mislabeled as roadmap-only work.
 
 **Measured outcome:** [`DSET-OUTCOME-META-001`](../dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/outcomes.md) defines adoption readiness as a baseline-to-target state change proven by test, eval, hosted, pilot, and blocker evidence. Completing features or roadmap tasks alone does not satisfy it.
 
@@ -199,17 +201,17 @@ duplicate roadmap-owned Eval entities and not deterministic test substitutes.
 
 ## §10 | Distribution and release
 
-- [ ] **DSET-TASK-SKILL-014:** Implement the thin primary `dset` orchestration wrapper and registered local orchestration rules; keep initialization, decomposition, landscape/Decision/spec/proof/implementation planning, implementation, verification, tickets, and next-step guidance as modes or chained workflows.
-- [ ] **DSET-TASK-SKILL-015:** Implement the thin `dset-release` wrapper and registered release rules; retain `dset-clarify`, `dset-diagnose`, and `dset-prototype` as the other specialist skills and reject helper-skill proliferation.
-- [ ] **DSET-TASK-SKILL-016:** Add bounded redacted append-only `.dset/runs/` records, ignored by Git, with schema/retention rules and authoritative-state reconciliation for next-step heuristics.
-- [ ] **DSET-TASK-OPS-019:** Add the normal/small/RC/final transition matrix, exactly-one-class main-PR validation, coordinated product/package version surfaces, and independent schema/profile/template compatibility versions.
-- [ ] **DSET-TASK-OPS-020:** Add pre-merge release preparation and post-merge tag/GitHub Release publication from the protected merge commit without a post-merge content write.
-- [ ] **DSET-TASK-OPS-021:** Gate `1.0.0-rc.N` and `1.0.0` on fully working declared scope, self-hosting, documentation, supportability, migrations, deterministic tests, applicable evals, required pilots, distribution, and absence of known release blockers.
-- [ ] **DSET-TASK-SKILL-018:** Implement same-model/same-effort subagent inheritance, medium two-or-three-agent useful fan-out, explicit deviation reporting, and capacity-aware zero/fewer-agent behavior.
-- [ ] **DSET-TASK-SKILL-019:** Implement low/medium/high outcome-cost budget profiles, run-record plan/actual metrics, and task-relevant model-comparison evidence without price-only downgrade heuristics.
-- [ ] **DSET-TASK-TOOL-035:** Publish one pinned install/run path for the DSET CLI that adopters can use without copying validator code.
-- [ ] **DSET-TASK-SKILL-017:** Publish one canonical source for each thin skill plus generated installation mappings for supported runtimes.
-- [ ] **DSET-TASK-GOV-038:** Add compatibility and migration notes for registry, template, schema, diagnostic, wrapper, and release-policy changes.
+- [x] **DSET-TASK-SKILL-014:** Implement the thin primary `dset` orchestration wrapper and registered local orchestration rules; keep initialization, decomposition, landscape/Decision/spec/proof/implementation planning, implementation, verification, tickets, and next-step guidance as modes or chained workflows.
+- [x] **DSET-TASK-SKILL-015:** Implement the thin `dset-release` wrapper and registered release rules; preserve `dset`, `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release` as the primary operator surface while exposing the additional governed lifecycle wrappers accepted by `DSET-DECISION-SKILL-002` as direct shortcuts.
+- [x] **DSET-TASK-SKILL-016:** Add bounded redacted append-only `.dset/runs/` records, ignored by Git, with schema/retention rules and authoritative-state reconciliation for next-step heuristics.
+- [x] **DSET-TASK-OPS-019:** Add the normal/small/RC/final transition matrix, exactly-one-class main-PR validation, coordinated product/package version surfaces, and independent schema/profile/template compatibility versions.
+- [x] **DSET-TASK-OPS-020:** Add pre-merge release preparation and post-merge tag/GitHub Release publication from the protected merge commit without a post-merge content write.
+- [x] **DSET-TASK-OPS-021:** Gate `1.0.0-rc.N` and `1.0.0` on fully working declared scope, self-hosting, documentation, supportability, migrations, deterministic tests, applicable evals, required pilots, distribution, and absence of known release blockers.
+- [x] **DSET-TASK-SKILL-018:** Implement same-model/same-effort subagent inheritance, medium two-or-three-agent useful fan-out, explicit deviation reporting, and capacity-aware zero/fewer-agent behavior.
+- [x] **DSET-TASK-SKILL-019:** Implement low/medium/high outcome-cost budget profiles, run-record plan/actual metrics, and task-relevant model-comparison evidence without price-only downgrade heuristics.
+- [x] **DSET-TASK-TOOL-035:** Publish one pinned install/run path for the DSET CLI that adopters can use without copying validator code.
+- [x] **DSET-TASK-SKILL-017:** Publish one canonical source for each thin skill plus generated installation mappings for supported runtimes.
+- [x] **DSET-TASK-GOV-038:** Add compatibility and migration notes for registry, template, schema, diagnostic, wrapper, and release-policy changes.
 - [ ] **DSET-TASK-OPS-022:** Run the complete deterministic plan and at least two independent reviewers across the qualitative eval plan; preserve failures and corrective loops.
 - [ ] **DSET-TASK-OPS-023:** Require green framework self-hosting and green Your Harness hosted verification before marking `typescript-v1`, thin skills, or DSET 0.3 ready.
 - [ ] **DSET-TASK-OPS-024:** Reconcile accepted methodology and artifact contracts, archive through the implementing PR, and publish the final version mapping, release notes, pinned distribution identity, and migration guide.
@@ -217,14 +219,14 @@ duplicate roadmap-owned Eval entities and not deterministic test substitutes.
 ## Definition of done
 
 - [ ] The released validator checks the candidate change, and the candidate checks both this repository and one generated adopter.
-- [ ] `dset/scopes/gov/governance.yaml`, its GOV-owned schema, resolver commands, stable diagnostics, distributed templates, and migrations are public and versioned; legacy central paths remain validated compatibility surfaces.
-- [ ] All first-wave skills are thin wrappers; no substantive governing rule exists only or independently inside a skill.
-- [ ] The core distribution exposes exactly `dset`, `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release`; helper lifecycle actions remain modes or chained workflows.
-- [ ] Bounded redacted local run records support investigation and next-step heuristics without becoming project truth.
+- [x] `dset/scopes/gov/governance.yaml`, its GOV-owned schema, resolver commands, stable diagnostics, distributed templates, and migrations are public and versioned; legacy central paths remain validated compatibility surfaces.
+- [x] All first-wave skills are thin wrappers; no substantive governing rule exists only or independently inside a skill.
+- [x] The primary operator surface is `dset`, `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release`; the complete distribution exposes the exact 16 accepted thin lifecycle wrappers, with non-primary wrappers acting only as direct shortcuts to the same governed modes.
+- [x] Bounded redacted local run records support investigation and next-step heuristics without becoming project truth.
 - [ ] Every accepted `dev` to `main` PR carries exactly one valid version transition, and neither normal nor small progression can produce `1.0.0`.
 - [ ] Product/package RC and final releases satisfy the fully working gate and publish from the protected merge commit.
-- [ ] Subagents inherit the main model/effort by default; budget profiles vary useful fan-out/evidence first and record every model/effort deviation.
-- [ ] Two different project-local rulesets produce different compliant agent behavior through byte-identical wrappers.
+- [x] Subagents inherit the main model/effort by default; budget profiles vary useful fan-out/evidence first and record every model/effort deviation.
+- [x] Two different project-local rulesets produce different compliant agent behavior through byte-identical wrappers.
 - [ ] Your Harness has one visible DSET root, one writable owner per concern, exact upstream provenance, a production supportability contract, and independent TypeScript/documentation profiles.
 - [ ] A real Your Harness change completes the full DSET loop with deterministic tests, applicable evals, hosted checks, accepted-truth reconciliation, PR traceability, and guarded archive.
 - [ ] The clean upstream Claudian evaluation proves that templates, resolver, skills, and TypeScript gates do not depend on Your Harness-only rules or private machine context.

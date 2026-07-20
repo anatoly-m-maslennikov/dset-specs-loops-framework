@@ -355,6 +355,9 @@ changes:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-005-shared-skill-runtime.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-006-artifact-emission-gate.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-007-executable-entry-criteria-closure.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-008-governed-conflict-runtime.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-009-semantic-type-migration.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-010-release-runtime-reconciliation.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/end-to-end-toolchain-verification-2026-07-16.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/expanded-skill-surface-verification-2026-07-16.md
@@ -506,11 +509,3090 @@ changes:
       base_commit: f340e28316aa92341784ce8e1a853039abf5acc6
       head_commit: c9d29f102df2966af926af2dc9919ea17d049efb
     dependencies: []
+semantic_classifications:
+  -
+    id: DSET-CONTRACT-META-001
+    type: decision
+    subtype: contract
+    compatibility: true
+    origins:
+      - package:contracts
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-CONTRACT-OPS-001
+    type: decision
+    subtype: contract
+    compatibility: true
+    origins:
+      - package:contracts
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-CONTRACT-SKILL-001
+    type: decision
+    subtype: contract
+    compatibility: true
+    origins:
+      - package:contracts
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-CONTRACT-SKILL-002
+    type: decision
+    subtype: contract
+    compatibility: true
+    origins:
+      - package:contracts
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-CONTRACT-TOOL-001
+    type: decision
+    subtype: contract
+    compatibility: true
+    origins:
+      - package:contracts
+    carriers:
+      - dset/scopes/tool/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-CONTRACT-TOOL-002
+    type: decision
+    subtype: contract
+    compatibility: true
+    origins:
+      - package:contracts
+    carriers:
+      - dset/scopes/tool/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-DECISION-GOV-001
+    type: decision
+    subtype: none
+    compatibility: true
+    origins:
+      - legacy_decision
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-001.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-DECISION-GOV-002
+    type: decision
+    subtype: none
+    compatibility: true
+    origins:
+      - legacy_decision
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-002.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-DECISION-GOV-003
+    type: decision
+    subtype: none
+    compatibility: true
+    origins:
+      - legacy_decision
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-003.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-DECISION-GOV-004
+    type: decision
+    subtype: none
+    compatibility: true
+    origins:
+      - legacy_decision
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-004.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-002
+  -
+    id: DSET-DECISION-GOV-005
+    type: decision
+    subtype: none
+    compatibility: true
+    origins:
+      - legacy_decision
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-005.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-006
+  -
+    id: DSET-DECISION-GOV-006
+    type: decision
+    subtype: none
+    compatibility: true
+    origins:
+      - legacy_decision
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-006.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-007
+  -
+    id: DSET-DECISION-GOV-007
+    type: decision
+    subtype: none
+    compatibility: true
+    origins:
+      - legacy_decision
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-007.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-003
+  -
+    id: DSET-DECISION-GOV-008
+    type: decision
+    subtype: none
+    compatibility: true
+    origins:
+      - legacy_decision
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-008.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-DECISION-GOV-009
+    type: decision
+    subtype: none
+    compatibility: true
+    origins:
+      - legacy_decision
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-009.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-DECISION-GOV-010
+    type: decision
+    subtype: none
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-009-priority-profile.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-DECISION-OPS-001
+    type: decision
+    subtype: none
+    compatibility: true
+    origins:
+      - legacy_decision
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-OPS-001.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-008
+  -
+    id: DSET-DECISION-OPS-002
+    type: decision
+    subtype: none
+    compatibility: true
+    origins:
+      - legacy_decision
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-OPS-002.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-009
+  -
+    id: DSET-DECISION-OPS-003
+    type: decision
+    subtype: none
+    compatibility: true
+    origins:
+      - legacy_decision
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-OPS-003.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-010
+  -
+    id: DSET-DECISION-OPS-004
+    type: decision
+    subtype: none
+    compatibility: true
+    origins:
+      - legacy_decision
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-OPS-004.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-DECISION-SKILL-001
+    type: decision
+    subtype: none
+    compatibility: true
+    origins:
+      - legacy_decision
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-SKILL-001.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-DECISION-SKILL-002
+    type: decision
+    subtype: none
+    compatibility: true
+    origins:
+      - legacy_decision
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-SKILL-002.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-001
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-002
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-003
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-004
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-005
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-006
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-007
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-008
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-009
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-010
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-011
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-012
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-013
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-014
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-015
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-016
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-017
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-018
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-019
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-020
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-021
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-022
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-GOV-023
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-META-001
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-META-002
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-META-003
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-META-004
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-META-005
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-META-006
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-META-007
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-META-008
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-META-009
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-OPS-001
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-OPS-002
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-OPS-003
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-OPS-010
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-SKILL-001
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-SKILL-002
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-SKILL-003
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-SKILL-004
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-SKILL-005
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-SKILL-006
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-SKILL-007
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-SKILL-008
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-SKILL-010
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-EVAL-TOOL-001
+    type: qa
+    subtype: evaluation
+    compatibility: true
+    origins:
+      - package:evals
+    carriers:
+      - dset/scopes/tool/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-OPPORTUNITY-GOV-001
+    type: question
+    subtype: opportunity
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-OPPORTUNITY-OPS-001
+    type: question
+    subtype: opportunity
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-OPPORTUNITY-TOOL-001
+    type: question
+    subtype: opportunity
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-PROBLEM-GOV-001
+    type: problem
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - resolved
+    lifecycle_events: []
+  -
+    id: DSET-PROBLEM-GOV-002
+    type: problem
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - resolved
+    lifecycle_events: []
+  -
+    id: DSET-PROBLEM-GOV-003
+    type: problem
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - resolved
+    lifecycle_events: []
+  -
+    id: DSET-PROBLEM-GOV-004
+    type: problem
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-PROBLEM-GOV-005
+    type: problem
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-005
+  -
+    id: DSET-PROBLEM-GOV-006
+    type: problem
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-011
+  -
+    id: DSET-PROBLEM-GOV-007
+    type: problem
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-013
+  -
+    id: DSET-PROBLEM-OPS-001
+    type: problem
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-PROBLEM-OPS-002
+    type: problem
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-PROBLEM-SKILL-001
+    type: problem
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-PROBLEM-TOOL-001
+    type: problem
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-PROBLEM-TOOL-002
+    type: problem
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-PROBLEM-TOOL-003
+    type: problem
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - resolved
+    lifecycle_events: []
+  -
+    id: DSET-PROBLEM-TOOL-004
+    type: problem
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-004
+  -
+    id: DSET-PROBLEM-TOOL-005
+    type: problem
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-012
+  -
+    id: DSET-QUESTION-GOV-001
+    type: question
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-QUESTION-GOV-002
+    type: question
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-001
+  -
+    id: DSET-QUESTION-GOV-003
+    type: question
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-QUESTION-GOV-004
+    type: question
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-QUESTION-GOV-005
+    type: question
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-QUESTION-GOV-006
+    type: question
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-QUESTION-GOV-007
+    type: question
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-QUESTION-META-001
+    type: question
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-QUESTION-META-002
+    type: question
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-QUESTION-META-003
+    type: question
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-QUESTION-META-004
+    type: question
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-QUESTION-META-005
+    type: question
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-QUESTION-OPS-001
+    type: question
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-QUESTION-SKILL-001
+    type: question
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - resolved
+    lifecycle_events: []
+  -
+    id: DSET-QUESTION-TOOL-001
+    type: question
+    subtype: none
+    compatibility: true
+    origins:
+      - intake_compatibility
+    carriers:
+      - dset/scopes/gov/intake.yaml
+    carrier_statuses:
+      - open
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-001
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-002
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-003
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-004
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-005
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-006
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-007
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-008
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-009
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-010
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-011
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-012
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-013
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-014
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-015
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-016
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-017
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-018
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-019
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-020
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-021
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-022
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-023
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-024
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-025
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-026
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-027
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-028
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-029
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-030
+    type: decision
+    subtype: requirement
+    compatibility: false
+    origins:
+      - modern_atom
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-001-artifact-type-name-policy.md
+    carrier_statuses:
+      - accepted
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-031
+    type: decision
+    subtype: requirement
+    compatibility: false
+    origins:
+      - modern_atom
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-002-multilevel-architecture-views.md
+    carrier_statuses:
+      - accepted
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-032
+    type: decision
+    subtype: requirement
+    compatibility: false
+    origins:
+      - modern_atom
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-003-project-scope-ownership.md
+    carrier_statuses:
+      - accepted
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-033
+    type: decision
+    subtype: requirement
+    compatibility: false
+    origins:
+      - modern_atom
+      - package:requirements
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-004-artifact-inheritance.md
+    carrier_statuses:
+      - accepted
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-034
+    type: decision
+    subtype: requirement
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-005-artifact-lineage.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-GOV-035
+    type: decision
+    subtype: requirement
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-008-artifact-creation-strictness.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-META-001
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-META-002
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-META-003
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-META-004
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-META-005
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-META-006
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-META-007
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-META-008
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-META-009
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-META-010
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-META-011
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-OPS-001
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-OPS-002
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-OPS-003
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-OPS-004
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-OPS-005
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-OPS-006
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-OPS-007
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-OPS-013
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-SKILL-001
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-SKILL-002
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-SKILL-003
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-SKILL-004
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-SKILL-005
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-SKILL-006
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-SKILL-007
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-SKILL-008
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-SKILL-009
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-SKILL-010
+    type: decision
+    subtype: requirement
+    compatibility: false
+    origins:
+      - modern_atom
+      - package:requirements
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-006-entry-criteria-skill-chains.md
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - accepted
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-SKILL-011
+    type: decision
+    subtype: requirement
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-007-shared-skill-runtime.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-TOOL-001
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/tool/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-TOOL-002
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/tool/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-TOOL-003
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/tool/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-TOOL-004
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/tool/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-TOOL-018
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/tool/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-REQUIREMENT-TOOL-019
+    type: decision
+    subtype: requirement
+    compatibility: true
+    origins:
+      - package:requirements
+    carriers:
+      - dset/scopes/tool/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-001
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-002
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-003
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-004
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-005
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-006
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-007
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-008
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-009
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-010
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-011
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-012
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-013
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-014
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-015
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-016
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-017
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-018
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-019
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-020
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-021
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-022
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-023
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-024
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-025
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-026
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-027
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-028
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-029
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-030
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-031
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-032
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-GOV-033
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/gov/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-META-001
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-META-002
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-META-003
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-META-004
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-META-005
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-META-006
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-META-007
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-META-008
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-META-009
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-META-010
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-META-011
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/meta/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-OPS-001
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-OPS-002
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-OPS-003
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-OPS-004
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-OPS-005
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-OPS-006
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-OPS-007
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-OPS-016
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/ops/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-SKILL-001
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-SKILL-002
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-SKILL-003
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-SKILL-004
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-SKILL-005
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-SKILL-006
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-SKILL-007
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-SKILL-008
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-SKILL-009
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-SKILL-010
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-SKILL-012
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/skill/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-TOOL-001
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/tool/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-TOOL-002
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/tool/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-TOOL-003
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/tool/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-TOOL-004
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/tool/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-TOOL-005
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/tool/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-TOOL-018
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/tool/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+  -
+    id: DSET-TEST-TOOL-019
+    type: qa
+    subtype: test
+    compatibility: true
+    origins:
+      - package:tests
+    carriers:
+      - dset/scopes/tool/specs/packages/methodology/package.yaml
+    carrier_statuses:
+      - defined
+    lifecycle_events: []
+semantic_atoms:
+  -
+    id: DSET-DECISION-GOV-010
+    carrier_id: DSET-ATOMIC-RECORD-009
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-009-priority-profile.md
+    sha256: 7ce545c825d004d1870742906b4eae10441082344d994e5e447d224b24624a98
+    type: decision
+    subtype: none
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-DECISION-GOV-010
+    child_of: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-REQUIREMENT-GOV-030
+    carrier_id: DSET-ATOMIC-RECORD-001
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-001-artifact-type-name-policy.md
+    sha256: 4a3cf9e7f8b574c82093377cf59eb15758866dc577ba9094cd40b8821bfb8277
+    type: decision
+    subtype: requirement
+    emission_status: accepted
+    current_status: accepted
+    priority: unknown
+    priority_source: atom:DSET-REQUIREMENT-GOV-030
+    child_of: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-REQUIREMENT-GOV-031
+    carrier_id: DSET-ATOMIC-RECORD-002
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-002-multilevel-architecture-views.md
+    sha256: 6ff98586cdbd23a5e7a747fa6cc451de4e1de98247029b232b94d0020d22b726
+    type: decision
+    subtype: requirement
+    emission_status: accepted
+    current_status: accepted
+    priority: unknown
+    priority_source: atom:DSET-REQUIREMENT-GOV-031
+    child_of: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-REQUIREMENT-GOV-032
+    carrier_id: DSET-ATOMIC-RECORD-003
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-003-project-scope-ownership.md
+    sha256: 9f367bbaa2ab3c153320c359217bb83efd0879b57910c07de0ce3fed18a02dc0
+    type: decision
+    subtype: requirement
+    emission_status: accepted
+    current_status: accepted
+    priority: unknown
+    priority_source: atom:DSET-REQUIREMENT-GOV-032
+    child_of: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-REQUIREMENT-GOV-033
+    carrier_id: DSET-ATOMIC-RECORD-004
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-004-artifact-inheritance.md
+    sha256: 38ec923a1e0d0933192156cd39c2a185497b536a016816f1eea4f7e10b97e80e
+    type: decision
+    subtype: requirement
+    emission_status: accepted
+    current_status: accepted
+    priority: unknown
+    priority_source: atom:DSET-REQUIREMENT-GOV-033
+    child_of: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-REQUIREMENT-GOV-034
+    carrier_id: DSET-ATOMIC-RECORD-005
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-005-artifact-lineage.md
+    sha256: 1b1254c9c1e0906a61c19d0f14c697cf298f760927be463ebfc2f693497e9811
+    type: decision
+    subtype: requirement
+    emission_status: accepted
+    current_status: accepted
+    priority: unknown
+    priority_source: atom:DSET-REQUIREMENT-GOV-034
+    child_of:
+      - DSET-REQUIREMENT-GOV-033
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-REQUIREMENT-GOV-035
+    carrier_id: DSET-ATOMIC-RECORD-008
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-008-artifact-creation-strictness.md
+    sha256: 434e4eb6f6cf65c590ce9a28d6c84da5ca2cb8dd4135c209f35573dae4560294
+    type: decision
+    subtype: requirement
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-REQUIREMENT-GOV-035
+    child_of:
+      - DSET-REQUIREMENT-GOV-032
+      - DSET-REQUIREMENT-GOV-033
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-REQUIREMENT-SKILL-010
+    carrier_id: DSET-ATOMIC-RECORD-006
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-006-entry-criteria-skill-chains.md
+    sha256: 0b8845164ec3ec43ad148c93999d5a8c8b52a768fc77d0d2155dff7106f548e6
+    type: decision
+    subtype: requirement
+    emission_status: accepted
+    current_status: accepted
+    priority: unknown
+    priority_source: atom:DSET-REQUIREMENT-SKILL-010
+    child_of: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-REQUIREMENT-SKILL-011
+    carrier_id: DSET-ATOMIC-RECORD-007
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-007-shared-skill-runtime.md
+    sha256: b6d69a52b9d02a90ab137605bc197993d7180c0d9ef466f7911e608dd514b6d7
+    type: decision
+    subtype: requirement
+    emission_status: accepted
+    current_status: accepted
+    priority: critical
+    priority_source: atom:DSET-REQUIREMENT-SKILL-011
+    child_of:
+      - DSET-REQUIREMENT-SKILL-010
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
 lineage:
   -
     id: DSET-DECISION-GOV-010
     artifact_id: DSET-ATOMIC-RECORD-009
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-009-priority-profile.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-DERIVED-VIEW-001
+    artifact_id: DSET-DERIVED-VIEW-001
+    path: dset/scopes/gov/generated/DSET-DERIVED-VIEW-001-project-health.md
     child_of: []
     parent_to: []
   -
@@ -559,6 +3641,24 @@ lineage:
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-007-executable-entry-criteria-closure.md
     child_of:
       - DSET-REQUIREMENT-SKILL-010
+    parent_to: []
+  -
+    id: DSET-EVIDENCE-RECORD-008
+    artifact_id: DSET-EVIDENCE-RECORD-008
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-008-governed-conflict-runtime.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-EVIDENCE-RECORD-009
+    artifact_id: DSET-EVIDENCE-RECORD-009
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-009-semantic-type-migration.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-EVIDENCE-RECORD-010
+    artifact_id: DSET-EVIDENCE-RECORD-010
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-010-release-runtime-reconciliation.md
+    child_of: []
     parent_to: []
   -
     id: DSET-PLAN-001
@@ -663,3 +3763,533 @@ lineage:
     path: dset/scopes/ops/planning/DSET-SPECIFICATION-004-1-0-stable.md
     child_of: []
     parent_to: []
+implementation_edges:
+  -
+    commit: 08608add74f4632d768fffa3a2d4a7eb3dbde58e
+    implements:
+      - DSET-DECISION-GOV-004
+    llm_session_ids: []
+  -
+    commit: 0b4dd3497605046e9361aef2f5442c2ea81cab5a
+    implements:
+      - DSET-DECISION-GOV-001
+    llm_session_ids: []
+  -
+    commit: 10df1e0f9484f921a2b778624cee7680e6a98de4
+    implements:
+      - DSET-DECISION-GOV-007
+    llm_session_ids: []
+  -
+    commit: 115cb22f136c5609c49ae86b54195edc85b28a05
+    implements:
+      - DSET-DECISION-GOV-008
+      - DSET-INVARIANT-GOV-004
+      - DSET-INVARIANT-GOV-017
+      - DSET-REQUIREMENT-GOV-027
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: 12c9046a809a08198ffebb74ac512d32df07abd3
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: 1518f7eb62a8d9b872d742ed947454ee3def92b8
+    implements:
+      - DSET-DECISION-SKILL-002
+    llm_session_ids: []
+  -
+    commit: 15a5f529565fc2a00e41aded73dfcb668d49b5f0
+    implements:
+      - DSET-DECISION-GOV-008
+    llm_session_ids: []
+  -
+    commit: 1839602639b9a01ef35e22be3bac16191b1b831c
+    implements:
+      - DSET-REQUIREMENT-SKILL-002
+      - DSET-REQUIREMENT-SKILL-004
+      - DSET-REQUIREMENT-SKILL-011
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: 1855c22cccbebc116edb6d44a5f7aaf16083fa60
+    implements:
+      - DSET-DECISION-OPS-003
+    llm_session_ids: []
+  -
+    commit: 1a9623e1e0c6f46988058366e4baa77829e19641
+    implements:
+      - DSET-DECISION-GOV-009
+      - DSET-DECISION-OPS-004
+      - DSET-REQUIREMENT-GOV-030
+      - DSET-REQUIREMENT-GOV-031
+    llm_session_ids: []
+  -
+    commit: 1add7e7126d34bdb47bef2a4cf3edf55103b6aa0
+    implements:
+      - DSET-DECISION-GOV-001
+      - DSET-DECISION-GOV-005
+    llm_session_ids: []
+  -
+    commit: 1ce0d1b548d55f25fc5b272d2e4a7591b3d5dbe9
+    implements:
+      - DSET-REQUIREMENT-GOV-034
+    llm_session_ids: []
+  -
+    commit: 2045af4c3b0f3515fd00679f4e8ce8ee2352293e
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: 2072302cf80782f3885fbf959b74c71badf47fc7
+    implements:
+      - DSET-DECISION-SKILL-002
+    llm_session_ids: []
+  -
+    commit: 2080d23daecdbf952ef97f896327071fa5c20b42
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: 2102e5123f6a6dfbc502cdedfa220f4982a3cf9b
+    implements:
+      - DSET-DECISION-GOV-008
+      - DSET-REQUIREMENT-GOV-027
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: 2315848a42f439f7f980318555828d856298f87f
+    implements:
+      - DSET-REQUIREMENT-SKILL-010
+    llm_session_ids: []
+  -
+    commit: 243d8188fa47bc00b3623111bff6c78566c993c0
+    implements:
+      - DSET-REQUIREMENT-GOV-034
+    llm_session_ids: []
+  -
+    commit: 2a85b0d3cb1ebfb0d02d1eb52938ad706299dff2
+    implements:
+      - DSET-REQUIREMENT-GOV-032
+    llm_session_ids: []
+  -
+    commit: 2b912229c30af80888b59580c002bc9fab343a34
+    implements:
+      - DSET-DECISION-GOV-008
+      - DSET-DECISION-GOV-010
+      - DSET-REQUIREMENT-GOV-021
+      - DSET-REQUIREMENT-GOV-026
+      - DSET-REQUIREMENT-GOV-027
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: 321ec5e9ac6369e39efa9a32f6fef6b6efcea1e8
+    implements:
+      - DSET-DECISION-GOV-003
+      - DSET-DECISION-GOV-010
+      - DSET-REQUIREMENT-GOV-026
+      - DSET-REQUIREMENT-TOOL-019
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: 3257df3400ed8c919063d3f2529a3762346c914c
+    implements:
+      - DSET-DECISION-GOV-008
+    llm_session_ids: []
+  -
+    commit: 3464d22df615eb459c3f7ce71822439e475e0fc9
+    implements:
+      - DSET-DECISION-GOV-005
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: 3735b505fbc3e08a9a44f34f8bc1a829b0b9df24
+    implements:
+      - DSET-CHANGE-SKILL-001
+    llm_session_ids: []
+  -
+    commit: 40e04e11687be629a46df2fb9f5e7cb4d537decf
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: 41bc06af7dd7b93f6212c6254f3a25d3b696dd1e
+    implements:
+      - DSET-DECISION-GOV-005
+    llm_session_ids: []
+  -
+    commit: 42b6f9945f8c48a251e2d6998e441d7d077585ca
+    implements:
+      - DSET-DECISION-GOV-003
+    llm_session_ids: []
+  -
+    commit: 47672dfe9d4e6df1ac33ed27e88f507567cc08f7
+    implements:
+      - DSET-DECISION-GOV-007
+    llm_session_ids: []
+  -
+    commit: 47c491ba3472434ecbdb795c344f76c9c7e37473
+    implements:
+      - DSET-REQUIREMENT-SKILL-003
+      - DSET-REQUIREMENT-SKILL-011
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: 480adb3770041dec29f6f298cbe0f6eeba19fdce
+    implements:
+      - DSET-DECISION-GOV-005
+    llm_session_ids: []
+  -
+    commit: 4915a3aa877643b566a249ac581e56a00850d3f4
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: 4aef28e15a07a4404c023dd3cad79dfdd72d03e0
+    implements:
+      - DSET-DECISION-GOV-003
+    llm_session_ids: []
+  -
+    commit: 4f82976a24c9537f45883ca9276b8a57a39d1e6b
+    implements:
+      - DSET-REQUIREMENT-SKILL-002
+      - DSET-REQUIREMENT-SKILL-011
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: 501071179c5b35221f46605ef67de639e0267ee7
+    implements:
+      - DSET-DECISION-GOV-002
+    llm_session_ids: []
+  -
+    commit: 51add3b03961d10f9e1035896c680f2f493d0068
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: 570cb84478c9df4b0cd77e49e34b7bc7c543e91b
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: 5a2baa5e17a96769a979465451689e277a6a05d6
+    implements:
+      - DSET-DECISION-SKILL-002
+    llm_session_ids: []
+  -
+    commit: 5e4f2c0993953808f5995c65a231f4c2a3ead241
+    implements:
+      - DSET-REQUIREMENT-GOV-035
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: 609eec17819a60515d422f6b5ba9f50286f09569
+    implements:
+      - DSET-DECISION-OPS-002
+    llm_session_ids: []
+  -
+    commit: 61fbdfb73e9b3c8041964ee2e0192e822b2d83f6
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: 663294100fba03eb9696d0caf92993f4e00ee1f4
+    implements:
+      - DSET-REQUIREMENT-SKILL-003
+    llm_session_ids: []
+  -
+    commit: 691f66da56e65c585b3b0e863f9d2b2e062dd780
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: 6a0df97fea6c2f959bcb1fcafe47f8c39b81b933
+    implements:
+      - DSET-REQUIREMENT-GOV-022
+      - DSET-REQUIREMENT-GOV-034
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: 6b02782ef2d503e9f7711ec8df670821ce687a66
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: 6b8aa6955fdf4c534c2f43d6e5071ccdbc2fd0f5
+    implements:
+      - DSET-DECISION-GOV-003
+      - DSET-DECISION-GOV-010
+      - DSET-REQUIREMENT-GOV-020
+      - DSET-REQUIREMENT-GOV-026
+      - DSET-REQUIREMENT-TOOL-019
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: 6e6d4a7d20ffeb3beb0906fb38ec1af0f7904eba
+    implements:
+      - DSET-DECISION-OPS-001
+    llm_session_ids: []
+  -
+    commit: 73089f35b2332c88f9c62c1f19969c94191b17a2
+    implements:
+      - DSET-DECISION-GOV-008
+    llm_session_ids: []
+  -
+    commit: 732372149c2547eae3ce250b9c460263fe0ae48a
+    implements:
+      - DSET-DECISION-GOV-009
+      - DSET-DECISION-OPS-004
+      - DSET-REQUIREMENT-GOV-030
+      - DSET-REQUIREMENT-GOV-031
+    llm_session_ids: []
+  -
+    commit: 7e7ca9d822a6bb31cff2ee7d82843adbe52ab897
+    implements:
+      - DSET-REQUIREMENT-GOV-024
+      - DSET-REQUIREMENT-TOOL-018
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: 80c00d4e0071f0767ceba293a74a182d8bb61d56
+    implements:
+      - DSET-REQUIREMENT-SKILL-010
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: 81398bfb8b2fb238bd6345b4ad05314158d4c63a
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: 83971ec5c16ae5f4651e58400634225d3ef5086c
+    implements:
+      - DSET-DECISION-OPS-001
+    llm_session_ids: []
+  -
+    commit: 83aa8474ebbddbdc3b26f0e1b3a85d65ce696ddf
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: 86a582e61bd2cff9645fafab3e5feb3047d9c608
+    implements:
+      - DSET-REQUIREMENT-GOV-034
+    llm_session_ids: []
+  -
+    commit: 8ec5898d7edfa499a772403cb462cee387b5234f
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: 8f484f9b2a4e8f6a5c7caec39a7703bd430172a6
+    implements:
+      - DSET-REQUIREMENT-GOV-035
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: 91a850e9b9bba77037d5a00f3d0069c26d5c23e1
+    implements:
+      - DSET-DECISION-GOV-003
+      - DSET-DECISION-GOV-010
+      - DSET-REQUIREMENT-GOV-026
+      - DSET-REQUIREMENT-TOOL-019
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: 9219e56527b47541aa32e024d300d12d8023a6e4
+    implements:
+      - DSET-REQUIREMENT-GOV-025
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: 932d05087dd906cb395c9d1d9141842f9cac72a0
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: 943b48dde8a5a5b4ec9047602a36bcd8acb60e71
+    implements:
+      - DSET-REQUIREMENT-SKILL-011
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: 9632b4e199b27b0cfb6b905bfeb27f169ae054e2
+    implements:
+      - DSET-DECISION-GOV-002
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: 98491172849ef1dfeffc91809506e76f0dda94fd
+    implements:
+      - DSET-DECISION-GOV-009
+    llm_session_ids: []
+  -
+    commit: 9df5a36825d530a1b26ea9156486471d2669c98e
+    implements:
+      - DSET-REQUIREMENT-SKILL-011
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: a2ee2623931bbde1adc454b59cf28b12117be764
+    implements:
+      - DSET-REQUIREMENT-GOV-035
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: a472ebd1a81c26d802f85fe3f84aa3bbecff145c
+    implements:
+      - DSET-DECISION-OPS-004
+    llm_session_ids: []
+  -
+    commit: a5163261772e4c729aa155fca0528467854a1ee9
+    implements:
+      - DSET-DECISION-GOV-003
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: a5960966d8cdd6148b57e6e76789f6ec6794b675
+    implements:
+      - DSET-REQUIREMENT-OPS-006
+      - DSET-REQUIREMENT-OPS-013
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: a9e8d6c03e091edfdc414db7ead7bff9a2cef308
+    implements:
+      - DSET-DECISION-GOV-001
+      - DSET-DECISION-GOV-002
+      - DSET-DECISION-GOV-003
+      - DSET-REQUIREMENT-GOV-021
+      - DSET-REQUIREMENT-GOV-023
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: b1a50a434aa780425d8cfae7d951ecffe504c7b8
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: bd1498f2aebab82827937ae323e8f797ddfd4ff5
+    implements:
+      - DSET-DECISION-GOV-009
+    llm_session_ids: []
+  -
+    commit: be8ebbb7244ac0894c8343bd24aee7cd8246bed6
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: be9f54d9ed28d7079517ca81547862a81f18c125
+    implements:
+      - DSET-DECISION-GOV-009
+    llm_session_ids: []
+  -
+    commit: bfbd95d576667d33bd614ba9bc19d618431b2491
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: c3fdba93d27f491aa7843373b15e12a253a5eb40
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: c7c0038a19ee2b95bd9d51d2d903f130aca3166e
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: ca8ff03bc4ce735fbad136d1cf416f6b5da81abc
+    implements:
+      - DSET-DECISION-GOV-008
+    llm_session_ids: []
+  -
+    commit: cbc08134d0b905c9f56dc33251429477cf1b549d
+    implements:
+      - DSET-REQUIREMENT-SKILL-010
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: cc97eeff3a3de224034dfc62b0b54191f134006f
+    implements:
+      - DSET-DECISION-GOV-009
+    llm_session_ids: []
+  -
+    commit: cd1293f3fd837b23bcd75cff922b1cdce822f636
+    implements:
+      - DSET-DECISION-GOV-006
+    llm_session_ids: []
+  -
+    commit: cfa817663e992977772ec67059cd035e4194355c
+    implements:
+      - DSET-DECISION-GOV-001
+    llm_session_ids: []
+  -
+    commit: d32c007c21ae6a8ad45c4bac8ba6a55e45f7f44e
+    implements:
+      - DSET-REQUIREMENT-GOV-032
+    llm_session_ids: []
+  -
+    commit: d993d1f46e07e516bd8af79cbd7d0628d470a981
+    implements:
+      - DSET-REQUIREMENT-GOV-033
+    llm_session_ids: []
+  -
+    commit: df49da0111d86408e1dd919570bfc2f42a9867ec
+    implements:
+      - DSET-DECISION-GOV-001
+    llm_session_ids: []
+  -
+    commit: e2cac0f2459ab462ee2e761bbf76462cae1cf45a
+    implements:
+      - DSET-DECISION-GOV-001
+    llm_session_ids: []
+  -
+    commit: f29e247797ff28cabe7baa312e53987b166bdc41
+    implements:
+      - DSET-DECISION-GOV-003
+    llm_session_ids: []
+  -
+    commit: f40e613b12bf5e253698a281434b4b6988749e8e
+    implements:
+      - DSET-REQUIREMENT-SKILL-011
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: f42fe8736645833e3c709b17b799e991e45ee9a0
+    implements:
+      - DSET-DECISION-SKILL-002
+    llm_session_ids: []
+  -
+    commit: f5acf413bbe77b222b9a49ac0be0f8cd2700ca41
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: f84c0961fdbe3562e059b789668cc96bed8dfea3
+    implements:
+      - DSET-REQUIREMENT-SKILL-010
+    llm_session_ids: []
+  -
+    commit: faf9083743f1018badac99006db4837cd7d571de
+    implements:
+      - DSET-DECISION-GOV-010
+      - DSET-REQUIREMENT-GOV-026
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: fb0cdd8aaeab4a169c591e51dd02543a171d7956
+    implements:
+      - DSET-DECISION-GOV-007
+    llm_session_ids: []
+  -
+    commit: fc4a448e06948b954ebedd0997e28ff14da7447d
+    implements:
+      - DSET-DECISION-SKILL-001
+    llm_session_ids: []
+  -
+    commit: ffceb9d683e1b055e07a00ef21652ab53361167d
+    implements:
+      - DSET-CONTRACT-TOOL-002
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
