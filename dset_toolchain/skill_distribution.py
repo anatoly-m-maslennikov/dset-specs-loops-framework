@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import os
+import shlex
 import shutil
 import sys
 import tempfile
@@ -53,6 +54,8 @@ class InstallAction:
     source_digest: str
     installed_digest: str | None
     status: str
+    runtime_destination: str
+    launcher_command: str
 
 
 @dataclass(frozen=True)
@@ -224,17 +227,30 @@ def plan_install(
     source: Path,
     host: str,
     destination: Path | None = None,
+    package_destination: Path | None = None,
 ) -> list[InstallAction]:
     _require_host(host)
     skills_root = _skills_root(source)
     _validate_source_surface(skills_root)
     destination_root = default_destination(host) if destination is None else destination
+    runtime_destination = (
+        default_package_destination(host)
+        if package_destination is None and destination is None
+        else (
+            destination_root.parent / "packages" / "dset"
+            if package_destination is None
+            else package_destination
+        )
+    )
+    launcher_command = _launcher_command(runtime_destination)
     actions: list[InstallAction] = []
     for skill_id in sorted(SKILL_WORKFLOWS):
         source_skill = skills_root / skill_id
         _validate_skill_shape(source_skill, host)
         target = destination_root / skill_id
-        source_digest = tree_digest(source_skill)
+        source_digest = _rendered_skill_digest(
+            source_skill, host, launcher_command
+        )
         installed_digest = tree_digest(target) if target.is_dir() else None
         if target.exists() and not target.is_dir():
             status = "conflict"
@@ -253,6 +269,8 @@ def plan_install(
                 source_digest=source_digest,
                 installed_digest=installed_digest,
                 status=status,
+                runtime_destination=str(runtime_destination),
+                launcher_command=launcher_command,
             )
         )
     return actions
@@ -274,9 +292,18 @@ def apply_install(actions: Sequence[InstallAction]) -> list[InstallationProof]:
         source = Path(action.source)
         destination = Path(action.destination)
         _validate_skill_shape(source, action.host)
+        if action.launcher_command != _launcher_command(
+            Path(action.runtime_destination)
+        ):
+            raise SkillDistributionError(
+                f"runtime launcher changed after planning: {action.skill_id}"
+            )
         if (
             source.name != action.skill_id
-            or tree_digest(source) != action.source_digest
+            or _rendered_skill_digest(
+                source, action.host, action.launcher_command
+            )
+            != action.source_digest
         ):
             raise SkillDistributionError(
                 f"source changed after planning: {action.skill_id}"
@@ -303,7 +330,12 @@ def apply_install(actions: Sequence[InstallAction]) -> list[InstallationProof]:
         )
         staged = staging_parent / action.skill_id
         try:
-            shutil.copytree(source, staged, copy_function=shutil.copy2)
+            _render_skill_package(
+                source,
+                staged,
+                action.host,
+                action.launcher_command,
+            )
             if tree_digest(staged) != action.source_digest:
                 raise SkillDistributionError(
                     f"copied skill digest mismatch: {action.skill_id}"
@@ -490,6 +522,49 @@ def _runtime_source_digest(source: Path) -> str:
     return digest.hexdigest()
 
 
+def _launcher_command(runtime_destination: Path) -> str:
+    launcher = runtime_destination / "dset.py"
+    if os.name == "nt":
+        import subprocess
+
+        return subprocess.list2cmdline([sys.executable, str(launcher)])
+    return shlex.join([sys.executable, str(launcher)])
+
+
+def _rendered_skill_digest(
+    source: Path, host: str, launcher_command: str
+) -> str:
+    with tempfile.TemporaryDirectory(prefix="dset-skill-render-") as raw:
+        rendered = Path(raw) / source.name
+        _render_skill_package(source, rendered, host, launcher_command)
+        return tree_digest(rendered)
+
+
+def _render_skill_package(
+    source: Path,
+    destination: Path,
+    host: str,
+    launcher_command: str,
+) -> None:
+    _validate_skill_shape(source, host)
+    shutil.copytree(source, destination, copy_function=shutil.copy2)
+    skill_file = destination / "SKILL.md"
+    text = skill_file.read_text(encoding="utf-8")
+    if text.count("`dset skills context") != 1:
+        raise SkillDistributionError(
+            f"skill context launcher is not uniquely renderable: {source.name}"
+        )
+    text = text.replace(
+        "`dset skills context",
+        f"`{launcher_command} skills context",
+    )
+    text = text.replace(
+        "`dset runtime finish",
+        f"`{launcher_command} runtime finish",
+    )
+    skill_file.write_text(text, encoding="utf-8")
+
+
 def _render_runtime_package(source: Path, host: str, destination: Path) -> None:
     _require_host(host)
     source_root = _distribution_root(source)
@@ -645,14 +720,24 @@ def main(argv: Sequence[str] | None = None) -> int:
         if arguments.command == "install":
             source = Path(arguments.source) if arguments.source is not None else None
             if source is not None:
-                actions = plan_install(source, host, destination)
+                actions = plan_install(
+                    source,
+                    host,
+                    destination,
+                    package_destination,
+                )
                 runtime_action = plan_runtime_install(source, host, package_destination)
                 result = _execute_install(
                     actions, runtime_action, apply=arguments.apply
                 )
             else:
                 with distribution_source() as (selected_source, _identity):
-                    actions = plan_install(selected_source, host, destination)
+                    actions = plan_install(
+                        selected_source,
+                        host,
+                        destination,
+                        package_destination,
+                    )
                     runtime_action = plan_runtime_install(
                         Path(__file__).resolve().parents[1],
                         host,

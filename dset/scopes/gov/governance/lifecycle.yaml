@@ -237,3 +237,13 @@ events:
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: Every wrapper supplies the current host session ID and the runtime rejects empty provenance for every LLM-backed invocation source.
+  -
+    id: DSET-LIFECYCLE-EVENT-024
+    atom_id: DSET-GAP-SKILL-001
+    event: resolved
+    occurred_at: 2026-07-20T23:55:00+04:00
+    related:
+      - DSET-REQUIREMENT-SKILL-011
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: The installer now renders the exact current interpreter and package-local dset.py path into every copied wrapper and binds that command into the planned digest.

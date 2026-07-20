@@ -118,6 +118,11 @@ map the same distribution to an equivalent host-owned package root. Canonical
 runtime source remains in the framework distribution, and thin skill folders
 must not duplicate shared scripts or project rules.
 
+The installer renders the exact current Python interpreter and package-local
+`dset.py` path into each installed wrapper. Invocation must not depend on a
+global `dset` executable or ambient `PATH`; the rendered command is part of the
+previewed and verified wrapper digest.
+
 The runtime must accept the public skill ID and explicit target, discover one
 owning repository or monorepo Work Area, validate its local governance, enforce
 the registered skill/workflow mapping, resolve ordered rules and stable

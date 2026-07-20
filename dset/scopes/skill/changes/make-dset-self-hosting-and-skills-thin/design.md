@@ -64,7 +64,8 @@ No adopter application runtime or production data is changed. The CLI reads repo
 - Treat explicit `rules refresh` as acknowledgement of intentional local customization.
 - Use generated adopter copies to prove runtime-wrapper distribution identity without making installed copies rule owners.
 - Install shared skill mechanics once per host, use `$CODEX_HOME/packages/dset/`
-  for Codex, and keep skill folders limited to thin outcome wrappers.
+  for Codex, render its exact package-local launcher into each installed
+  wrapper, and keep skill folders limited to thin outcome wrappers.
 - Keep `dset` as the catch-all entrypoint and expose one thin direct wrapper for every stable lifecycle mode; do not claim the expanded source, distribution, or host surface before its separate implementation proof.
 - Store bounded skill-run evidence under ignored `.dset/runs/`; never let heuristics override accepted artifacts, Git history, or hosted state.
 - Use the complete bootstrap/pre-1.0/RC/final/post-1.0 transition table and never derive 1.0 by decimal arithmetic.

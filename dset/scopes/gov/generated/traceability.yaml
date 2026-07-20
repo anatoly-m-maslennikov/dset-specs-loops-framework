@@ -1503,7 +1503,8 @@ semantic_classifications:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-025-installed-launcher-discovery.md
     carrier_statuses:
       - accepted
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-024
   -
     id: DSET-GAP-TOOL-001
     type: problem
@@ -3939,11 +3940,12 @@ semantic_atoms:
     type: problem
     subtype: gap
     emission_status: accepted
-    current_status: accepted
+    current_status: resolved
     priority: critical
     priority_source: atom:DSET-GAP-SKILL-001
     child_of: []
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-024
     absorbed_by: []
     archived: false
   -
@@ -4978,6 +4980,13 @@ implementation_edges:
     commit: 8f484f9b2a4e8f6a5c7caec39a7703bd430172a6
     implements:
       - DSET-REQUIREMENT-GOV-035
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: 8f85e3e1817f8ff7bb5a996be0ad0ca6789a1aec
+    implements:
+      - DSET-DECISION-GOV-001
+      - DSET-DECISION-SKILL-001
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -

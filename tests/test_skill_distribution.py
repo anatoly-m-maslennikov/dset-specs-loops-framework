@@ -64,6 +64,12 @@ class SkillDistributionTests(unittest.TestCase):
             self.assertTrue(installed.is_dir())
             self.assertFalse(installed.is_symlink())
             self.assertTrue((installed / "agents" / "openai.yaml").is_file())
+            wrapper = (installed / "SKILL.md").read_text(encoding="utf-8")
+            self.assertIn(
+                str(destination.parent / "packages" / "dset" / "dset.py"),
+                wrapper,
+            )
+            self.assertNotIn("`dset skills context", wrapper)
         self.assertEqual(
             {item.status for item in plan_install(self.source, "codex", destination)},
             {"current"},

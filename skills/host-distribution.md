@@ -32,6 +32,12 @@ sources, a versioned manifest, the portable `dset.py` launcher, and native
 `dset`/`dset.cmd` adapters. It has no project governance: every invocation
 resolves the explicit target's repository-local authority.
 
+During installation, each copied wrapper is rendered with the exact current
+Python interpreter and package-local `dset.py` path from the same preview. The
+installed wrapper therefore does not depend on a global `dset` command or a
+mutable `PATH`; a changed source, destination, interpreter, or launcher path
+changes the planned digest and stops an unreviewed replacement.
+
 The installer rejects symlinked source content and creates real copied skill
 folders. It requires the exact 16-skill catalog: `dset`, `dset-init`,
 `dset-repair-governance`, `dset-decompose`, `dset-diagnose`, `dset-clarify`,
