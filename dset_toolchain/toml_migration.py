@@ -1225,6 +1225,14 @@ def _runtime_readiness(
     successors: list[PackageSuccessor],
     preserved_structured: tuple[Path, ...] = (),
 ) -> tuple[dict[str, object], list[str]]:
+    pending_successors = [item for item in successors if item.status == "pending"]
+    if not entries and not references and not pending_successors:
+        return {
+            "evidence_path": _RUNTIME_READINESS_PATH,
+            "target_count": 0,
+            "preserved_input_count": 0,
+            "status": "not-required",
+        }, []
     target_digests = _target_digests(root, entries, references, successors)
     targets = _expected_target_paths(root, entries, references, successors)
     preserved_inputs = _preserved_input_digests(root, successors, preserved_structured)

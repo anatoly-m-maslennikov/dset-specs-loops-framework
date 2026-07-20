@@ -532,6 +532,68 @@ class TomlMigrationTests(unittest.TestCase):
         self.assertEqual(reapplied.entries, ())
         self.assertEqual(reapplied.references, ())
 
+    def test_migrated_git_tree_is_noop_with_missing_or_stale_readiness(
+        self,
+    ) -> None:
+        self.selector_sealed_package_fixture()
+        self.add_minimal_runtime_gate()
+        self.initialize_git_fixture()
+        apply_toml_migration(self.root, bypass_runtime_readiness=True)
+        self.write(
+            "scripts/build_bootstrap_bundle.py",
+            "def render_bundle(root):\n    return '{}\\n'\n",
+        )
+        evidence_path = self.root / ".dset/toml-migration-runtime-readiness.json"
+
+        for evidence in (None, {"targets": {"stale": "digest"}}):
+            with self.subTest(evidence=evidence):
+                if evidence is None:
+                    evidence_path.unlink(missing_ok=True)
+                else:
+                    self.write(
+                        ".dset/toml-migration-runtime-readiness.json",
+                        json.dumps(evidence),
+                    )
+                before = subprocess.run(
+                    ["git", "status", "--porcelain"],
+                    cwd=self.root,
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                ).stdout
+
+                preview = plan_toml_migration(self.root)
+
+                self.assertTrue(preview.ready, preview.blockers)
+                self.assertEqual(preview.entries, ())
+                self.assertEqual(preview.references, ())
+                self.assertTrue(
+                    all(item.status == "current" for item in preview.package_successors)
+                )
+                self.assertEqual(preview.runtime_readiness["status"], "not-required")
+                self.assertEqual(preview.runtime_readiness["target_count"], 0)
+                with (
+                    patch(
+                        "dset_toolchain.toml_migration._write_recovery_manifest"
+                    ) as recovery,
+                    patch(
+                        "dset_toolchain.toml_migration._render_bootstrap_bundle"
+                    ) as bundle,
+                ):
+                    applied = apply_toml_migration(self.root)
+                recovery.assert_not_called()
+                bundle.assert_not_called()
+                self.assertEqual(applied.entries, ())
+                self.assertEqual(applied.references, ())
+                after = subprocess.run(
+                    ["git", "status", "--porcelain"],
+                    cwd=self.root,
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                ).stdout
+                self.assertEqual(after, before)
+
     def test_registered_snapshot_is_preserved_with_toml_only_current_reads(
         self,
     ) -> None:
