@@ -23,6 +23,7 @@ from dset_toolchain.governance import (
     validate_governance,
 )
 from dset_toolchain.layout import discover_layout
+from dset_toolchain.legacy_authority import write_legacy_authority_ledger
 from dset_toolchain.skill_catalog import REGISTERED_SKILL_WORKFLOWS
 from dset_toolchain.validation import validate_repository
 from dset_toolchain.yaml_subset import dump, load
@@ -608,6 +609,7 @@ class GovernanceTests(unittest.TestCase):
                 path.read_text(encoding="utf-8").replace("DSET-", "ACME-"),
                 encoding="utf-8",
             )
+        write_legacy_authority_ledger(self.root)
         self.assertEqual(validate_repository(self.root), [])
 
     def test_validator_ignores_machine_local_cache_documents(self) -> None:

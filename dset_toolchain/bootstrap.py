@@ -80,7 +80,9 @@ def initialize_project(
     )
     with (
         distribution_source(source_root) as (source, source_identity),
-        tempfile.TemporaryDirectory(prefix="dset-init-") as raw,
+        tempfile.TemporaryDirectory(
+            prefix="dset-init-", ignore_cleanup_errors=True
+        ) as raw,
     ):
         stage = Path(raw) / "project"
         stage.mkdir()
