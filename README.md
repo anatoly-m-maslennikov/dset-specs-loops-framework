@@ -120,13 +120,14 @@ real failures using suitable logs, traces, provenance, state, and runbooks.
 | Artifact governance | [Documentation architecture hub](documentation/README.md) | Artifact types, authoring rules, hubs, maintenance, and `documentation-v1` |
 | Project control plane | [DSET project hub](dset/README.md) | Accepted project truth, active/archive changes, schemas, templates, fixtures, [project health](dset/scopes/gov/generated/DSET-DERIVED-VIEW-001-project-health.md), traceability, migrations, and supportability |
 | Executable CLI | [`dset_toolchain/`](dset_toolchain/) | Dependency-light lifecycle, governance resolution/materialization, immutable-atom sealing, conflict disposition, health rendering, validation, traceability, archive, and bounded self-hosting |
-| Agent workflows | [Skills hub](skills/README.md) | Five thin lifecycle, clarification, diagnosis, prototype, and release wrappers |
+| Agent workflows | [Skills hub](skills/README.md) | Sixteen thin lifecycle, planning, implementation, review, support, and release wrappers backed by one shared runtime |
 | Delivery and provenance | [Delivery policy](.github/DELIVERY.md) and [third-party notices](THIRD_PARTY_NOTICES.md) | Protected publication path and external-source/license boundaries |
 
 ## What is already here
 
 DSET is now a public, self-hosted framework repository rather than only a
-methodology document set. The current `0.3.1` state includes:
+methodology document set. The published `0.3.1` baseline and active `0.4`
+self-hosting work include:
 
 - published methodology and documentation governance for Domain,
   Supportability, Evals, Tests, specs, Decisions, contracts, stories, outcomes,
@@ -180,7 +181,8 @@ dset init /path/to/project \
 # Repeat the reviewed command with --execute to materialize and validate it.
 ```
 
-Install the five portable source skills after reviewing the plan:
+Install the complete 16-skill portable catalog and shared runtime after
+reviewing the plan:
 
 ```bash
 dset skills install --host codex
@@ -244,8 +246,8 @@ the remaining native and hosted evidence gaps without overstating them:
   project-health view, and external-review reconciliation flow;
 - add the JavaScript/TypeScript applied profile while keeping documentation and
   methodology as first-class Work Areas and implementation roles;
-- pilot the framework on external repositories such as Obsidian Your Harness and
-  record the resulting Problems, Opportunities, Questions, Decisions, proofs,
-  and release evidence;
 - harden release automation, pinned distribution, hosted exact-head proofs, and
   recovery diagnostics before claiming `1.0` adoption readiness.
+
+External adopter pilots are separate project-owned work and are not part of
+the current DSET repository release scope.
