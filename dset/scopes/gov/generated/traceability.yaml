@@ -377,6 +377,7 @@ changes:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-021-claude-review-attempt.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-022-codex-host-invocation-attempt.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-023-typed-artifact-relations.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-024-legacy-relation-sealing.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/end-to-end-toolchain-verification-2026-07-16.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/expanded-skill-surface-verification-2026-07-16.md
@@ -4788,6 +4789,14 @@ relations:
     origin: commit_trailer
     llm_session_ids: []
   -
+    source: 23fe405a9c705b323ffcf2fb8d82d7151c27cfb5
+    source_kind: commit
+    type: implementation_of
+    target: DSET-DECISION-GOV-013
+    origin: commit_trailer
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
     source: 243d8188fa47bc00b3623111bff6c78566c993c0
     source_kind: commit
     type: implementation_of
@@ -5777,6 +5786,33 @@ relations:
     type: evidence_for
     origin: authored
     target: DSET-TEST-GOV-036
+    llm_session_ids: []
+  -
+    source: DSET-EVIDENCE-RECORD-024
+    source_kind: artifact
+    source_artifact_id: DSET-EVIDENCE-RECORD-024
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-024-legacy-relation-sealing.md
+    type: evidence_for
+    origin: authored
+    target: DSET-TEST-GOV-036
+    llm_session_ids: []
+  -
+    source: DSET-EVIDENCE-RECORD-024
+    source_kind: artifact
+    source_artifact_id: DSET-EVIDENCE-RECORD-024
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-024-legacy-relation-sealing.md
+    type: relates_to
+    origin: authored
+    target: DSET-DEFECT-TOOL-002
+    llm_session_ids: []
+  -
+    source: DSET-EVIDENCE-RECORD-024
+    source_kind: artifact
+    source_artifact_id: DSET-EVIDENCE-RECORD-024
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-024-legacy-relation-sealing.md
+    type: relates_to
+    origin: authored
+    target: DSET-EVIDENCE-RECORD-023
     llm_session_ids: []
   -
     source: DSET-REQUIREMENT-GOV-034
