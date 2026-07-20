@@ -32,7 +32,15 @@ from .yaml_subset import loads as load_yaml
 
 MIGRATION_SCHEMA_VERSION = "1.0"
 _STRUCTURED_SUFFIXES = {".yaml", ".yml", ".json"}
-_IGNORED_TOP_LEVEL = {".git", ".cache", ".venv", "build", "dist", "__pycache__"}
+_IGNORED_TOP_LEVEL = {
+    ".git",
+    ".cache",
+    ".uv-cache",
+    ".venv",
+    "build",
+    "dist",
+    "__pycache__",
+}
 _RUNTIME_READINESS_PATH = ".dset/toml-migration-runtime-readiness.json"
 _NON_REWRITABLE_EXCEPTIONS = {
     "cli-wire-json",
@@ -119,6 +127,7 @@ class MigrationPlan:
     blockers: tuple[str, ...]
     runtime_readiness: dict[str, object]
     package_successors: tuple[PackageSuccessor, ...] = ()
+    preserved_structured: tuple[Path, ...] = ()
 
     @property
     def ready(self) -> bool:
@@ -183,6 +192,13 @@ class MigrationPlan:
                 }
                 for successor in self.package_successors
             ],
+            "preserved_structured": [
+                {
+                    "path": _relative(self.root, path),
+                    "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                }
+                for path in self.preserved_structured
+            ],
             "exceptions": list(self.exceptions),
             "blockers": list(self.blockers),
             "runtime_readiness": self.runtime_readiness,
@@ -196,6 +212,7 @@ class MigrationPlan:
                     successor.status == "pending"
                     for successor in self.package_successors
                 ),
+                "preserved_structured": len(self.preserved_structured),
                 "exceptions": len(self.exceptions),
                 "exceptions_by_category": exceptions_by_category,
                 "normalizations": len(normalizations),
@@ -219,6 +236,8 @@ def plan_toml_migration(
     exceptions: list[dict[str, object]] = []
     blockers: list[str] = []
     paths = list(_project_files(root))
+    legacy_structured, legacy_blockers = _legacy_structured_registry(root)
+    blockers.extend(legacy_blockers)
     immutable, immutable_blockers, shared_packages = _immutable_classifications(
         root, paths
     )
@@ -236,6 +255,12 @@ def plan_toml_migration(
                 )
             continue
         if _is_owned_structured(root, path):
+            if (
+                path in legacy_structured
+                and legacy_structured[path]["current_owner"].is_file()
+                and _toml_cutover_complete(root)
+            ):
+                continue
             try:
                 entries.append(_structured_entry(root, path))
             except (OSError, UnicodeError, ValueError, TomlCodecError) as error:
@@ -256,20 +281,29 @@ def plan_toml_migration(
                     entries.append(entry)
 
     entries.sort(key=lambda item: (_relative(root, item.source), item.kind))
-    successors, successor_blockers = _package_successors(
-        root, shared_packages, entries
-    )
+    successors, successor_blockers = _package_successors(root, shared_packages, entries)
     blockers.extend(successor_blockers)
     blockers.extend(_collision_blockers(root, entries, successors))
-    successor_mapping = {
-        successor.source: successor.target for successor in successors
-    }
+    successor_mapping = {successor.source: successor.target for successor in successors}
+    successor_mapping.update(
+        {
+            source: item["current_owner"]
+            for source, item in legacy_structured.items()
+            if source not in shared_packages
+            and not (item["current_owner"].is_file() and _toml_cutover_complete(root))
+        }
+    )
     references, reference_blockers = _reference_rewrites(
         root, paths, entries, immutable, successor_mapping
     )
     blockers.extend(reference_blockers)
     runtime_readiness, runtime_blockers = _runtime_readiness(
-        root, entries, references, exceptions, successors
+        root,
+        entries,
+        references,
+        exceptions,
+        successors,
+        tuple(sorted(legacy_structured)),
     )
     if bypass_runtime_readiness:
         runtime_readiness = {**runtime_readiness, "bypassed_for_proof": True}
@@ -283,6 +317,7 @@ def plan_toml_migration(
         blockers=tuple(sorted(set(blockers))),
         runtime_readiness=runtime_readiness,
         package_successors=tuple(successors),
+        preserved_structured=tuple(sorted(legacy_structured)),
     )
 
 
@@ -302,7 +337,12 @@ def apply_toml_migration(
         return plan
 
     writes = _planned_writes(plan)
-    deletes = {entry.source for entry in plan.entries if entry.source != entry.target}
+    deletes = {
+        entry.source
+        for entry in plan.entries
+        if entry.source != entry.target
+        and entry.source not in plan.preserved_structured
+    }
     _preflight_apply(plan)
     backup_root = plan.root / ".dset" / "toml-migration-backups" / plan.digest
     bundle_path = plan.root / "dset_toolchain" / "bootstrap_bundle.json"
@@ -321,9 +361,9 @@ def apply_toml_migration(
             _atomic_write_text(path, writes[path])
         for path in sorted(deletes):
             path.unlink()
-        _reconcile_migrated_authority(plan.root)
         if regenerates_bundle:
             _atomic_write_text(bundle_path, _render_bootstrap_bundle(plan.root))
+        _reconcile_migrated_authority(plan.root)
         _validate_staged_tree(plan, writes)
         _validate_migrated_runtime(plan.root)
         if not bypass_runtime_readiness and (plan.root / "dset_toolchain").is_dir():
@@ -601,6 +641,90 @@ def _load_history_ledger(
     return data, []
 
 
+def _legacy_structured_registry(
+    root: Path,
+) -> tuple[dict[Path, dict[str, Any]], list[str]]:
+    """Load exact historical structured snapshots without accepting wildcards."""
+
+    candidates = (
+        root / "dset/scopes/gov/artifact-types.toml",
+        root / "dset/scopes/gov/artifact-types.yaml",
+        root / "dset/artifact-types.toml",
+        root / "dset/artifact-types.yaml",
+    )
+    registry = next((path for path in candidates if path.is_file()), None)
+    if registry is None:
+        return {}, []
+    try:
+        data = load_structured(registry)
+    except (OSError, UnicodeError, YamlSubsetError) as error:
+        return {}, [f"legacy-structured: cannot read registry: {error}"]
+    raw_entries = data.get("legacy_structured") if isinstance(data, dict) else None
+    if raw_entries is None:
+        return {}, []
+    if not isinstance(raw_entries, list):
+        return {}, ["legacy-structured: registry must be a list"]
+
+    result: dict[Path, dict[str, Any]] = {}
+    owners: set[Path] = set()
+    blockers: list[str] = []
+    for item in raw_entries:
+        if not isinstance(item, dict):
+            blockers.append("legacy-structured: every entry must be a mapping")
+            continue
+        raw_path = item.get("path")
+        raw_owner = item.get("current_owner")
+        digest = item.get("sha256")
+        if not isinstance(raw_path, str) or not isinstance(raw_owner, str):
+            blockers.append("legacy-structured: path and current_owner are required")
+            continue
+        if any(token in raw_path or token in raw_owner for token in "*?[]"):
+            blockers.append(
+                f"legacy-structured: wildcard paths are forbidden: {raw_path}"
+            )
+            continue
+        source = (root / raw_path).resolve()
+        owner = (root / raw_owner).resolve()
+        if not _is_within_root(root, source) or not _is_within_root(root, owner):
+            blockers.append(f"legacy-structured: path escapes repository: {raw_path}")
+            continue
+        if source in result:
+            blockers.append(f"legacy-structured: duplicate path: {raw_path}")
+            continue
+        if owner in owners:
+            blockers.append(f"legacy-structured: duplicate current owner: {raw_owner}")
+            continue
+        valid_owner = owner == source.with_suffix(".toml")
+        if source.suffix.lower() not in {".yaml", ".yml"} or not valid_owner:
+            blockers.append(
+                "legacy-structured: current_owner must be the TOML sibling of "
+                f"{raw_path}"
+            )
+            continue
+        if not source.is_file() or source.is_symlink():
+            blockers.append(
+                f"legacy-structured: registered snapshot is missing: {raw_path}"
+            )
+            continue
+        actual = hashlib.sha256(source.read_bytes()).hexdigest()
+        if not isinstance(digest, str) or actual != digest:
+            blockers.append(f"legacy-structured: snapshot digest changed: {raw_path}")
+            continue
+        result[source] = {**item, "current_owner": owner}
+        owners.add(owner)
+    return result, blockers
+
+
+def _toml_cutover_complete(root: Path) -> bool:
+    return any(
+        path.is_file()
+        for path in (
+            root / "dset/scopes/meta/dset.toml",
+            root / "dset/dset.toml",
+        )
+    )
+
+
 def _register_immutable_path(
     root: Path,
     project_paths: set[Path],
@@ -688,9 +812,7 @@ def _package_successors(
                     for value in values
                     if not isinstance(value, str) or value not in inactive
                 ]
-        _reconcile_package_artifact_paths(
-            root, source, data, path_mapping, blockers
-        )
+        _reconcile_package_artifact_paths(root, source, data, path_mapping, blockers)
         packages.append(
             {
                 "source": source,
@@ -738,13 +860,13 @@ def _package_successors(
                 package
                 for package in packages
                 if package["layer"] == layer
-                and _package_projection_contains(
-                    package, atom_field, atom.semantic_id
-                )
+                and _package_projection_contains(package, atom_field, atom.semantic_id)
             ]
             if len(candidates) != 1:
-                condition = "no current package projection" if not candidates else (
-                    "ambiguous current package projections"
+                condition = (
+                    "no current package projection"
+                    if not candidates
+                    else ("ambiguous current package projections")
                 )
                 blockers.append(
                     f"package-successor: active native ID has {condition}: "
@@ -792,9 +914,11 @@ def _package_successors(
                 if current == target_text:
                     status = "current"
                 else:
-                    status = "incomplete" if _successor_incomplete(
-                        current, data
-                    ) else "conflicting"
+                    status = (
+                        "incomplete"
+                        if _successor_incomplete(current, data)
+                        else "conflicting"
+                    )
                     blockers.append(
                         f"package-successor: {status} current successor: "
                         f"{_relative(root, target)}"
@@ -826,9 +950,7 @@ def _inactive_semantic_ids(root: Path) -> tuple[set[str], list[str]]:
         if isinstance(event, dict) and isinstance(event.get("atom_id"), str):
             current[str(event["atom_id"])] = str(event.get("event", ""))
     return {
-        identifier
-        for identifier, state in current.items()
-        if state in TERMINAL_STATES
+        identifier for identifier, state in current.items() if state in TERMINAL_STATES
     }, blockers
 
 
@@ -873,9 +995,7 @@ def _package_projection_contains(
     entry = package["entry_by_source"].get(path)
     try:
         text = (
-            entry.after_text
-            if entry is not None
-            else path.read_text(encoding="utf-8")
+            entry.after_text if entry is not None else path.read_text(encoding="utf-8")
         )
     except (OSError, UnicodeError):
         return False
@@ -966,6 +1086,8 @@ def _structured_entry(root: Path, source: Path) -> MigrationEntry:
         value = load_yaml(before)
     if not isinstance(value, dict):
         raise TomlMigrationError("DSET structured root must be a mapping")
+    if source.name == "artifact-types.yaml":
+        _reconcile_artifact_type_patterns(value)
     normalizations = _normalize_allowed_nulls(
         value,
         _relative(root, source),
@@ -979,6 +1101,24 @@ def _structured_entry(root: Path, source: Path) -> MigrationEntry:
         dump_toml(value),
         normalizations,
     )
+
+
+def _reconcile_artifact_type_patterns(value: dict[str, Any]) -> None:
+    """Move only DSET-owned path rules; retain boundary YAML classifiers."""
+
+    rules = value.get("path_rules")
+    if not isinstance(rules, list):
+        return
+    for rule in rules:
+        if not isinstance(rule, dict):
+            continue
+        pattern = rule.get("pattern")
+        if not isinstance(pattern, str) or pattern.startswith((".github/", "skills/")):
+            continue
+        if pattern.endswith(".yaml"):
+            rule["pattern"] = pattern[: -len(".yaml")] + ".toml"
+        elif pattern.endswith(".yml"):
+            rule["pattern"] = pattern[: -len(".yml")] + ".toml"
 
 
 def _frontmatter_entry(root: Path, source: Path) -> MigrationEntry | None:
@@ -1073,10 +1213,11 @@ def _runtime_readiness(
     references: list[ReferenceRewrite],
     exceptions: list[dict[str, object]],
     successors: list[PackageSuccessor],
+    preserved_structured: tuple[Path, ...] = (),
 ) -> tuple[dict[str, object], list[str]]:
     target_digests = _target_digests(root, entries, references, successors)
     targets = _expected_target_paths(root, entries, references, successors)
-    preserved_inputs = _preserved_input_digests(root, successors)
+    preserved_inputs = _preserved_input_digests(root, successors, preserved_structured)
     input_digest = _migration_input_digest(root, entries, references, exceptions)
     evidence_path = root / _RUNTIME_READINESS_PATH
     result: dict[str, object] = {
@@ -1127,9 +1268,7 @@ def _runtime_readiness(
     )
     missing_or_stale.extend(
         f"preserved:{path}"
-        for path in sorted(
-            set(preserved_inputs).symmetric_difference(mapped_preserved)
-        )
+        for path in sorted(set(preserved_inputs).symmetric_difference(mapped_preserved))
     )
     missing_or_stale.extend(
         f"preserved:{path}"
@@ -1163,9 +1302,7 @@ def _target_digests(
     successors: Iterable[PackageSuccessor] = (),
 ) -> dict[str, str]:
     writes = {entry.target: entry.after_text for entry in entries}
-    writes.update(
-        {successor.target: successor.target_text for successor in successors}
-    )
+    writes.update({successor.target: successor.target_text for successor in successors})
     grouped: dict[Path, list[ReferenceRewrite]] = {}
     for reference in references:
         grouped.setdefault(reference.path, []).append(reference)
@@ -1201,12 +1338,21 @@ def _expected_target_paths(
 
 
 def _preserved_input_digests(
-    root: Path, successors: Iterable[PackageSuccessor]
+    root: Path,
+    successors: Iterable[PackageSuccessor],
+    preserved_structured: Iterable[Path] = (),
 ) -> dict[str, str]:
-    return {
+    digests = {
         _relative(root, successor.source): successor.source_digest
         for successor in successors
     }
+    digests.update(
+        {
+            _relative(root, path): hashlib.sha256(path.read_bytes()).hexdigest()
+            for path in preserved_structured
+        }
+    )
+    return dict(sorted(digests.items()))
 
 
 def _migration_input_digest(
@@ -1288,7 +1434,7 @@ def _validate_proven_output(plan: MigrationPlan) -> None:
             mismatches.append(relative)
     preserved = evidence.get("preserved_inputs", {})
     expected_preserved = _preserved_input_digests(
-        plan.root, plan.package_successors
+        plan.root, plan.package_successors, plan.preserved_structured
     )
     if not isinstance(preserved, dict):
         mismatches.append("preserved_inputs")
@@ -1331,9 +1477,7 @@ def _collision_blockers(
                 f"conversion: target collision {_relative(root, target)}: {listed}"
             )
         elif (
-            target != sources[0]
-            and target.exists()
-            and target not in successor_targets
+            target != sources[0] and target.exists() and target not in successor_targets
         ):
             blockers.append(
                 f"conversion: target collision {_relative(root, target)} already exists"
@@ -1364,6 +1508,11 @@ def _reference_rewrites(
         if path.relative_to(root).parts[:1] == ("tests",):
             continue
         if path.stem == "legacy-authority":
+            continue
+        if path.stem == "artifact-types":
+            # The registry contains both current path rules and intentionally
+            # historical snapshot paths.  Its conversion reconciles only the
+            # former structurally in ``_reconcile_artifact_type_patterns``.
             continue
         if (
             _is_runtime_source(root, path)
@@ -1507,8 +1656,7 @@ def _preflight_apply(plan: MigrationPlan) -> None:
             != successor.target_digest
         ):
             raise TomlMigrationError(
-                f"package successor changed: "
-                f"{_relative(plan.root, successor.target)}"
+                f"package successor changed: {_relative(plan.root, successor.target)}"
             )
 
 
@@ -1693,7 +1841,7 @@ def prove_runtime_readiness(root: Path) -> dict[str, object]:
         source_plan.package_successors,
     )
     preserved_inputs = _preserved_input_digests(
-        root, source_plan.package_successors
+        root, source_plan.package_successors, source_plan.preserved_structured
     )
     source_tool_digest = _tool_digest(root)
     with tempfile.TemporaryDirectory(
@@ -1702,7 +1850,7 @@ def prove_runtime_readiness(root: Path) -> dict[str, object]:
         ignore_cleanup_errors=True,
     ) as raw:
         staged = Path(raw) / "repository"
-        shutil.copytree(root, staged, ignore=_proof_ignore)
+        _copy_proof_tree(root, staged)
         staged_plan = apply_toml_migration(staged, bypass_runtime_readiness=True)
         results = _proof_commands(staged)
         targets = {
@@ -1740,6 +1888,7 @@ def _proof_ignore(_directory: str, names: list[str]) -> set[str]:
             ".venv",
             ".cache",
             ".dset",
+            ".uv-cache",
             "build",
             "dist",
             "__pycache__",
@@ -1748,6 +1897,40 @@ def _proof_ignore(_directory: str, names: list[str]) -> set[str]:
             ".ruff_cache",
         }
     }
+
+
+def _copy_proof_tree(root: Path, staged: Path) -> None:
+    """Copy the committed project snapshot without machine-local state."""
+
+    try:
+        completed = subprocess.run(
+            ["git", "ls-files", "-z", "--cached"],
+            cwd=root,
+            check=False,
+            capture_output=True,
+        )
+    except OSError:
+        completed = None
+    if completed is None or completed.returncode != 0:
+        shutil.copytree(root, staged, ignore=_proof_ignore)
+        return
+
+    staged.mkdir(parents=True)
+    for raw_path in completed.stdout.split(b"\0"):
+        if not raw_path:
+            continue
+        relative = Path(os.fsdecode(raw_path))
+        if any(
+            part in _IGNORED_TOP_LEVEL or part == ".dset" for part in relative.parts
+        ):
+            continue
+        source = root / relative
+        target = staged / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if source.is_symlink():
+            target.symlink_to(os.readlink(source))
+        elif source.is_file():
+            shutil.copy2(source, target)
 
 
 def _proof_commands(root: Path) -> list[dict[str, object]]:

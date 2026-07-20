@@ -315,6 +315,82 @@ class TomlMigrationTests(unittest.TestCase):
         self.assertEqual(second.references, ())
         self.assertEqual(second.package_successors[0].status, "current")
 
+    def test_registered_snapshot_is_preserved_with_toml_only_current_reads(
+        self,
+    ) -> None:
+        for layer in ("meta", "gov", "tool", "skill", "ops"):
+            (self.root / f"dset/scopes/{layer}").mkdir(parents=True, exist_ok=True)
+        self.write("dset/scopes/meta/dset.yaml", 'schema_version: "1.2"\n')
+        snapshot = self.write(
+            "dset/scopes/gov/items.yaml", "schema_version: 1.0\nid: historical\n"
+        )
+        before = snapshot.read_bytes()
+        proof = self.write(
+            "dset/scopes/gov/changes/example/proofs/history.md",
+            "[historical](../../../items.yaml)\n",
+        )
+        mutable = self.write("README.md", "[current](dset/scopes/gov/items.yaml)\n")
+        digest = hashlib.sha256(before).hexdigest()
+        self.write(
+            "dset/scopes/gov/artifact-types.yaml",
+            'schema_version: "1.0"\n'
+            "legacy_structured:\n"
+            "  -\n"
+            "    path: dset/scopes/gov/items.yaml\n"
+            f"    sha256: {digest}\n"
+            "    current_owner: dset/scopes/gov/items.toml\n"
+            "    artifact_type: implementation\n"
+            "    artifact_subtype: configuration\n"
+            "    retained_for:\n"
+            "      -\n"
+            "        carrier_path: dset/scopes/gov/changes/example/proofs/history.md\n"
+            "        reason: Immutable history.\n",
+        )
+
+        plan = plan_toml_migration(self.root, bypass_runtime_readiness=True)
+        self.assertTrue(plan.ready, plan.blockers)
+        self.assertIn(snapshot, plan.preserved_structured)
+        apply_toml_migration(self.root, bypass_runtime_readiness=True)
+
+        owner = snapshot.with_suffix(".toml")
+        self.assertEqual(snapshot.read_bytes(), before)
+        self.assertTrue(owner.is_file())
+        self.assertIn("items.yaml", proof.read_text(encoding="utf-8"))
+        self.assertIn("items.toml", mutable.read_text(encoding="utf-8"))
+        second = apply_toml_migration(self.root, bypass_runtime_readiness=True)
+        self.assertEqual(second.entries, ())
+        self.assertEqual(second.references, ())
+
+        owner.unlink()
+        self.assertEqual(
+            RepositoryLayout.structured_file(snapshot.parent, "items.yaml"), owner
+        )
+
+    def test_registered_snapshot_digest_drift_blocks_migration(self) -> None:
+        snapshot = self.write("dset/scopes/gov/items.yaml", "id: historical\n")
+        self.write(
+            "dset/scopes/gov/artifact-types.yaml",
+            'schema_version: "1.0"\n'
+            "legacy_structured:\n"
+            "  -\n"
+            "    path: dset/scopes/gov/items.yaml\n"
+            f"    sha256: {'0' * 64}\n"
+            "    current_owner: dset/scopes/gov/items.toml\n"
+            "    artifact_type: implementation\n"
+            "    artifact_subtype: configuration\n"
+            "    retained_for:\n"
+            "      -\n"
+            "        semantic_id: DSET-REQUIREMENT-GOV-001\n"
+            "        reason: Selector seal.\n",
+        )
+        self.assertTrue(snapshot.is_file())
+
+        plan = plan_toml_migration(self.root, bypass_runtime_readiness=True)
+
+        self.assertTrue(
+            any("snapshot digest changed" in item for item in plan.blockers)
+        )
+
     def test_package_successor_rejects_changed_input_and_incomplete_target(
         self,
     ) -> None:
@@ -349,9 +425,7 @@ class TomlMigrationTests(unittest.TestCase):
     def test_readiness_binds_preserved_package_and_exact_successor(self) -> None:
         self.selector_sealed_package_fixture()
         (self.root / "dset_toolchain").mkdir()
-        preview = plan_toml_migration(
-            self.root, bypass_runtime_readiness=True
-        )
+        preview = plan_toml_migration(self.root, bypass_runtime_readiness=True)
         targets = toml_migration._target_digests(
             self.root,
             list(preview.entries),
@@ -381,9 +455,7 @@ class TomlMigrationTests(unittest.TestCase):
         current = plan_toml_migration(self.root)
         self.assertEqual(current.runtime_readiness["status"], "current")
 
-        evidence["preserved_inputs"] = {
-            path: "0" * 64 for path in preserved
-        }
+        evidence["preserved_inputs"] = {path: "0" * 64 for path in preserved}
         evidence_path.write_text(json.dumps(evidence), encoding="utf-8")
         stale_input = plan_toml_migration(self.root)
         self.assertEqual(stale_input.runtime_readiness["status"], "stale")
@@ -391,10 +463,7 @@ class TomlMigrationTests(unittest.TestCase):
             list[str], stale_input.runtime_readiness["missing_or_stale"]
         )
         self.assertTrue(
-            any(
-                str(item).startswith("preserved:")
-                for item in stale_input_items
-            )
+            any(str(item).startswith("preserved:") for item in stale_input_items)
         )
 
         evidence["preserved_inputs"] = preserved
@@ -443,8 +512,7 @@ class TomlMigrationTests(unittest.TestCase):
         self.assertNotIn("DSET-TEST-GOV-012", successor["tests"])
         self.assertIn("DSET-TEST-GOV-040", successor["tests"])
         messages = [
-            diagnostic.message
-            for diagnostic in validate_artifact_relations(self.root)
+            diagnostic.message for diagnostic in validate_artifact_relations(self.root)
         ]
         self.assertFalse(
             any(

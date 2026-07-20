@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import subprocess
 import tempfile
@@ -9,6 +10,7 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 
 from dset_toolchain.frontmatter import metadata as frontmatter_metadata
+from dset_toolchain.layout import discover_layout
 from dset_toolchain.validation import (
     ARTIFACT_TYPE_SUBTYPES,
     validate_artifact_type_registry,
@@ -16,8 +18,9 @@ from dset_toolchain.validation import (
 from dset_toolchain.yaml_subset import load
 
 ROOT = Path(__file__).resolve().parents[1]
-REGISTRY_PATH = ROOT / "dset/scopes/gov/artifact-types.yaml"
-TEMPLATE_PATH = ROOT / "dset/scopes/gov/templates/artifact-types.yaml"
+LAYOUT = discover_layout(ROOT)
+REGISTRY_PATH = LAYOUT.artifact_type_registry_path
+TEMPLATE_PATH = LAYOUT.find_template("artifact-types.toml")
 SCHEMA_PATH = ROOT / "dset/scopes/gov/schemas/artifact-types.schema.json"
 
 
@@ -26,12 +29,73 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
         self.registry = load(REGISTRY_PATH)
         assert isinstance(self.registry, dict)
 
-    def test_live_registry_is_valid_and_matches_template(self) -> None:
-        self.assertEqual(
-            validate_artifact_type_registry(ROOT, REGISTRY_PATH, self.registry), []
-        )
-        self.assertEqual(self.registry, load(TEMPLATE_PATH))
+    def test_live_registry_owns_exact_project_legacy_customization(self) -> None:
+        template = load(TEMPLATE_PATH)
+        assert isinstance(template, dict)
+        self.assertEqual(template["legacy_structured"], [])
+        self.assertEqual(len(self.registry["legacy_structured"]), 10)
+        self.assertNotEqual(self.registry, template)
+        for key in set(template) - {"legacy_structured"}:
+            self.assertEqual(self.registry[key], template[key])
+        with tempfile.TemporaryDirectory() as raw:
+            self.assertEqual(
+                validate_artifact_type_registry(Path(raw), TEMPLATE_PATH, template),
+                [],
+            )
         json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+
+    def test_legacy_structured_registry_rejects_wildcards_and_duplicates(self) -> None:
+        data = self._copy()
+        data["legacy_structured"][0]["path"] = "dset/**/package.yaml"
+        self.assert_error(data, "wildcard legacy_structured path")
+
+        data = self._copy()
+        duplicate = copy.deepcopy(data["legacy_structured"][0])
+        data["legacy_structured"].append(duplicate)
+        self.assert_error(data, "duplicate legacy_structured path")
+
+    def test_legacy_structured_registry_fails_missing_owner_and_unregistered_pair(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            registry_path = root / "dset/scopes/gov/artifact-types.yaml"
+            snapshot = root / "dset/scopes/gov/items.yaml"
+            snapshot.parent.mkdir(parents=True)
+            snapshot.write_text("id: historical\n", encoding="utf-8")
+            snapshot.with_suffix(".toml").write_text(
+                'id = "current"\n', encoding="utf-8"
+            )
+            data = self._copy()
+            data["legacy_structured"] = []
+            diagnostics = validate_artifact_type_registry(root, registry_path, data)
+            self.assertTrue(
+                any(
+                    "unregistered YAML/TOML pair" in item.message
+                    for item in diagnostics
+                )
+            )
+
+            snapshot.with_suffix(".toml").unlink()
+            data["legacy_structured"] = [
+                {
+                    "path": "dset/scopes/gov/items.yaml",
+                    "sha256": hashlib.sha256(snapshot.read_bytes()).hexdigest(),
+                    "current_owner": "dset/scopes/gov/items.toml",
+                    "artifact_type": "implementation",
+                    "artifact_subtype": "configuration",
+                    "retained_for": [
+                        {
+                            "carrier_path": "dset/scopes/gov/changes/x/proofs/p.md",
+                            "reason": "Historical proof link.",
+                        }
+                    ],
+                }
+            ]
+            diagnostics = validate_artifact_type_registry(root, registry_path, data)
+            self.assertTrue(
+                any("current owner is missing" in item.message for item in diagnostics)
+            )
 
     def test_exact_eleven_types_and_direct_subtypes_are_registered(self) -> None:
         catalog = {

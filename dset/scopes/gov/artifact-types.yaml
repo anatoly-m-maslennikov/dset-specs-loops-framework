@@ -84,6 +84,342 @@ legacy_evidence_paths:
   - dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/proofs/github-delivery-evidence-2026-07-14.md
   - dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/proofs/qualitative-evals-2026-07-14.md
 
+legacy_structured:
+  -
+    path: dset/scopes/meta/specs/packages/methodology/package.yaml
+    sha256: 4fbb3bba040b5daf4440b65b4900c1e8ed7c2a637403086402853e4efa2490dc
+    current_owner: dset/scopes/meta/specs/packages/methodology/package.toml
+    artifact_type: implementation
+    artifact_subtype: configuration
+    retained_for:
+      -
+        semantic_id: DSET-CONTRACT-META-001
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-META-001
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-META-002
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-META-003
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-META-004
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-META-005
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-META-006
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-META-007
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-META-008
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-META-009
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-META-010
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-META-011
+        reason: Selector-sealed legacy authority fragment.
+  -
+    path: dset/scopes/gov/specs/packages/methodology/package.yaml
+    sha256: 36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074
+    current_owner: dset/scopes/gov/specs/packages/methodology/package.toml
+    artifact_type: implementation
+    artifact_subtype: configuration
+    retained_for:
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-001
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-002
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-003
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-004
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-005
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-006
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-007
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-008
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-009
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-010
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-011
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-012
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-013
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-014
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-015
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-016
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-017
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-018
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-019
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-020
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-021
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-022
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-023
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-024
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-025
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-026
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-027
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-028
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-029
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-030
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-031
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-032
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-033
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-036
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-GOV-037
+        reason: Selector-sealed legacy authority fragment.
+  -
+    path: dset/scopes/tool/specs/packages/methodology/package.yaml
+    sha256: cbf2fba881d9081281c1adc33f0c06e1203e7637736ad6f1ee1958a238be5a2c
+    current_owner: dset/scopes/tool/specs/packages/methodology/package.toml
+    artifact_type: implementation
+    artifact_subtype: configuration
+    retained_for:
+      -
+        semantic_id: DSET-CONTRACT-TOOL-001
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-CONTRACT-TOOL-002
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-TOOL-001
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-TOOL-002
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-TOOL-003
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-TOOL-004
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-TOOL-018
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-TOOL-019
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-TOOL-021
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-TOOL-022
+        reason: Selector-sealed legacy authority fragment.
+  -
+    path: dset/scopes/skill/specs/packages/methodology/package.yaml
+    sha256: 8d13339aed1d48b874618d2699b86adbfb25298e78836bf98db718ad5a0dbd5f
+    current_owner: dset/scopes/skill/specs/packages/methodology/package.toml
+    artifact_type: implementation
+    artifact_subtype: configuration
+    retained_for:
+      -
+        semantic_id: DSET-CONTRACT-SKILL-001
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-CONTRACT-SKILL-002
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-SKILL-001
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-SKILL-002
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-SKILL-003
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-SKILL-004
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-SKILL-005
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-SKILL-006
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-SKILL-007
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-SKILL-008
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-SKILL-009
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-SKILL-010
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-SKILL-012
+        reason: Selector-sealed legacy authority fragment.
+  -
+    path: dset/scopes/ops/specs/packages/methodology/package.yaml
+    sha256: 8fdaf12df71c216c49ec626950e3010d3a0a32a8a5e0b300a11d80c8692395fa
+    current_owner: dset/scopes/ops/specs/packages/methodology/package.toml
+    artifact_type: implementation
+    artifact_subtype: configuration
+    retained_for:
+      -
+        semantic_id: DSET-CONTRACT-OPS-001
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-OPS-001
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-OPS-002
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-OPS-003
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-OPS-004
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-OPS-005
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-OPS-006
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-OPS-007
+        reason: Selector-sealed legacy authority fragment.
+      -
+        semantic_id: DSET-REQUIREMENT-OPS-013
+        reason: Selector-sealed legacy authority fragment.
+  -
+    path: dset/scopes/gov/provenance.yaml
+    sha256: a27bd2fde8900df5eeb6ba9726ebc644dac6e91085bdade54137c2ba614a098f
+    current_owner: dset/scopes/gov/provenance.toml
+    artifact_type: implementation
+    artifact_subtype: configuration
+    retained_for:
+      -
+        semantic_id: DSET-DECISION-GOV-002
+        reason: Immutable Decision links the historical provenance carrier.
+      -
+        semantic_id: DSET-DECISION-GOV-008
+        reason: Immutable Decision links the historical provenance carrier.
+      -
+        carrier_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-flat-type-model-review-2026-07-20.md
+        reason: Immutable FPF review links the historical provenance carrier.
+      -
+        carrier_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-governance-constitution-review-2026-07-16.md
+        reason: Immutable FPF review links the historical provenance carrier.
+      -
+        carrier_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-principles-audit-2026-07-15.md
+        reason: Immutable FPF review links the historical provenance carrier.
+  -
+    path: dset/scopes/gov/intake.yaml
+    sha256: 0003383a985ecad880182f0971df5480b87a2328a161feee7da66854513d686e
+    current_owner: dset/scopes/gov/intake.toml
+    artifact_type: implementation
+    artifact_subtype: configuration
+    retained_for:
+      -
+        carrier_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/schema-self-application-audit-2026-07-15.md
+        reason: Immutable audit links the historical intake carrier.
+  -
+    path: dset/scopes/ops/history/pull-requests.yaml
+    sha256: a6175b0f646b61d5e42da43ee7ef26f1032688b62afcc7ed2e2b88c812e590c3
+    current_owner: dset/scopes/ops/history/pull-requests.toml
+    artifact_type: implementation
+    artifact_subtype: configuration
+    retained_for:
+      -
+        carrier_path: dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/proofs/github-delivery-evidence-2026-07-14.md
+        reason: Immutable delivery proof links the historical PR snapshot.
+  -
+    path: dset/scopes/gov/generated/traceability.yaml
+    sha256: 0a6c0fead5ca7d003a64b020fef8610729d184717ed329a571b80d8417a2e53b
+    current_owner: dset/scopes/gov/generated/traceability.toml
+    artifact_type: derived_view
+    artifact_subtype: traceability_index
+    retained_for:
+      -
+        carrier_path: dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/proofs/github-delivery-evidence-2026-07-14.md
+        reason: Immutable delivery proof links the historical traceability view.
+  -
+    path: dset/scopes/gov/migrations/migration-map.template.yaml
+    sha256: 64c5e571aabe0700e337b5b1e07531c941b61e529d73593c8af945e91211cdf6
+    current_owner: dset/scopes/gov/migrations/migration-map.template.toml
+    artifact_type: implementation
+    artifact_subtype: migration
+    retained_for:
+      -
+        carrier_path: dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/proofs/qualitative-evals-2026-07-14.md
+        reason: Immutable evaluation proof links the historical migration-map template.
+
 artifact_types:
   -
     id: atomic_record

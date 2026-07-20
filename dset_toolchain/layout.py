@@ -213,6 +213,8 @@ class RepositoryLayout:
             return canonical
         for candidate in legacy:
             if candidate.is_file():
+                if _registered_snapshot_after_cutover(candidate):
+                    return canonical
                 return candidate
         return canonical if requested.suffix.lower() == ".toml" else requested
 
@@ -407,3 +409,40 @@ def _canonical_relative(relative: str | Path) -> Path:
 
 def _manifest_candidate(requested: Path) -> Path:
     return RepositoryLayout.structured_file(requested.parent, requested.name)
+
+
+def _registered_snapshot_after_cutover(snapshot: Path) -> bool:
+    """Refuse legacy read fallback once a registered repository has cut over."""
+
+    resolved = snapshot.resolve()
+    for root in (resolved.parent, *resolved.parents):
+        registry_candidates = (
+            root / "dset/scopes/gov/artifact-types.toml",
+            root / "dset/scopes/gov/artifact-types.yaml",
+            root / "dset/artifact-types.toml",
+            root / "dset/artifact-types.yaml",
+        )
+        registry = next(
+            (candidate for candidate in registry_candidates if candidate.is_file()),
+            None,
+        )
+        if registry is None:
+            continue
+        cutover = (root / "dset/scopes/meta/dset.toml").is_file() or (
+            root / "dset/dset.toml"
+        ).is_file()
+        if not cutover:
+            return False
+        try:
+            data = load(registry)
+        except (OSError, ValueError, YamlSubsetError):
+            return False
+        entries = data.get("legacy_structured") if isinstance(data, dict) else None
+        if not isinstance(entries, list):
+            return False
+        for entry in entries:
+            raw = entry.get("path") if isinstance(entry, dict) else None
+            if isinstance(raw, str) and (root / raw).resolve() == resolved:
+                return True
+        return False
+    return False

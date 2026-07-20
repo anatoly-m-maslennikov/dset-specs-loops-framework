@@ -84,6 +84,8 @@ legacy_evidence_paths:
   - dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/proofs/github-delivery-evidence-2026-07-14.md
   - dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/proofs/qualitative-evals-2026-07-14.md
 
+legacy_structured: []
+
 artifact_types:
   -
     id: atomic_record

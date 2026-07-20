@@ -67,6 +67,26 @@ def _rebase_governance_sources(root: Path, registry_path: Path) -> None:
         if not local.is_file():
             raise ValueError(f"governance rule is missing: {raw_path}")
         source["sha256"] = hashlib.sha256(local.read_bytes()).hexdigest()
+
+    wrappers = data.get("wrappers")
+    if not isinstance(wrappers, list):
+        raise ValueError("governance registry requires wrappers")
+    for wrapper in wrappers:
+        if not isinstance(wrapper, dict):
+            raise ValueError("governance wrapper must be a mapping")
+        raw_path = wrapper.get("path")
+        if not isinstance(raw_path, str):
+            raise ValueError("governance wrapper requires path")
+        local = (root / raw_path).resolve()
+        try:
+            local.relative_to(root)
+        except ValueError as error:
+            raise ValueError(
+                f"governance wrapper path escapes root: {raw_path}"
+            ) from error
+        if not local.is_file():
+            raise ValueError(f"governance wrapper is missing: {raw_path}")
+        wrapper["sha256"] = hashlib.sha256(local.read_bytes()).hexdigest()
     _atomic_structured_write(registry_path, data)
 
 

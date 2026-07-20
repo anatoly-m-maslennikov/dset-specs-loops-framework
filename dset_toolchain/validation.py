@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import subprocess
@@ -60,10 +61,12 @@ GITHUB_CALLOUTS = {"NOTE", "TIP", "IMPORTANT", "WARNING", "CAUTION"}
 MARKDOWN_IGNORED_PARTS = frozenset(
     {
         ".cache",
+        ".dset",
         ".git",
         ".mypy_cache",
         ".pytest_cache",
         ".ruff_cache",
+        ".uv-cache",
         ".venv",
         "__pycache__",
         "coverage",
@@ -1246,6 +1249,10 @@ def validate_artifact_type_registry(
         registry_path, data
     )
     diagnostics.extend(compatibility_diagnostics)
+    legacy_structured, structured_diagnostics = _legacy_structured_entries(
+        root, registry_path, data, types
+    )
+    diagnostics.extend(structured_diagnostics)
     diagnostics.extend(
         _validate_artifact_path_rules(
             root,
@@ -1254,6 +1261,7 @@ def validate_artifact_type_registry(
             types,
             exclusions,
             legacy_evidence,
+            legacy_structured,
             project_key=project_key,
             include_subtype_in_names=include_subtype_in_names,
         )
@@ -1263,6 +1271,12 @@ def validate_artifact_type_registry(
             root.resolve(), _project_visible_files(root.resolve()), legacy_evidence
         )
     )
+    if _within_root(root.resolve(), registry_path.resolve()):
+        diagnostics.extend(
+            _validate_legacy_structured_links(
+                root.resolve(), registry_path, legacy_structured, legacy_evidence
+            )
+        )
     return diagnostics
 
 
@@ -1507,6 +1521,457 @@ def _legacy_evidence_paths(
     return frozenset(paths), diagnostics
 
 
+def _legacy_structured_entries(
+    root: Path,
+    registry_path: Path,
+    data: dict[str, Any],
+    catalog: dict[str, frozenset[str]],
+) -> tuple[dict[str, dict[str, Any]], list[Diagnostic]]:
+    """Validate the exact registry of byte-stable structured snapshots."""
+
+    diagnostics: list[Diagnostic] = []
+    raw_entries = data.get("legacy_structured")
+    if not isinstance(raw_entries, list):
+        return {}, [
+            _diag(
+                "DSET-E156",
+                registry_path,
+                "legacy_structured must be an explicit finite list",
+            )
+        ]
+    entries: dict[str, dict[str, Any]] = {}
+    owners: set[str] = set()
+    enforce_repository_state = _within_root(root.resolve(), registry_path.resolve())
+    ledger = _legacy_authority_records(root) if enforce_repository_state else []
+    for item in raw_entries:
+        if not isinstance(item, dict):
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    "every legacy_structured entry must be a mapping",
+                )
+            )
+            continue
+        allowed = {
+            "path",
+            "sha256",
+            "current_owner",
+            "artifact_type",
+            "artifact_subtype",
+            "retained_for",
+        }
+        required = allowed - {"artifact_subtype"}
+        if not required.issubset(item) or set(item) - allowed:
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    "legacy_structured entry has missing or unknown fields",
+                )
+            )
+            continue
+        raw_path = item.get("path")
+        raw_owner = item.get("current_owner")
+        if not _exact_registry_path(raw_path, suffixes={".yaml", ".yml"}):
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"invalid or wildcard legacy_structured path: {raw_path}",
+                )
+            )
+            continue
+        if not _exact_registry_path(raw_owner, suffixes={".toml"}):
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"invalid or wildcard current_owner path: {raw_owner}",
+                )
+            )
+            continue
+        assert isinstance(raw_path, str) and isinstance(raw_owner, str)
+        if PurePosixPath(raw_owner) != PurePosixPath(raw_path).with_suffix(".toml"):
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"current_owner must be the TOML sibling of {raw_path}",
+                )
+            )
+        if raw_path in entries:
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"duplicate legacy_structured path: {raw_path}",
+                )
+            )
+        if raw_owner in owners:
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"duplicate legacy_structured current_owner: {raw_owner}",
+                )
+            )
+        entries[raw_path] = item
+        owners.add(raw_owner)
+
+        artifact_type = item.get("artifact_type")
+        subtype = item.get("artifact_subtype")
+        if not isinstance(artifact_type, str) or artifact_type not in catalog:
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"legacy_structured uses unknown artifact type: {artifact_type}",
+                )
+            )
+        elif subtype is not None and (
+            not isinstance(subtype, str) or subtype not in catalog[artifact_type]
+        ):
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"legacy_structured {raw_path} has a subtype/type mismatch",
+                )
+            )
+
+        if not enforce_repository_state:
+            continue
+        source = (root / raw_path).resolve()
+        owner = (root / raw_owner).resolve()
+        invalid_source = (
+            not _within_root(root, source)
+            or not source.is_file()
+            or source.is_symlink()
+        )
+        if invalid_source:
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"legacy snapshot is missing: {raw_path}",
+                )
+            )
+        else:
+            expected = item.get("sha256")
+            actual = hashlib.sha256(source.read_bytes()).hexdigest()
+            if (
+                not isinstance(expected, str)
+                or re.fullmatch(r"[0-9a-f]{64}", expected) is None
+                or actual != expected
+            ):
+                diagnostics.append(
+                    _diag(
+                        "DSET-E156",
+                        registry_path,
+                        f"legacy snapshot digest changed: {raw_path}",
+                    )
+                )
+        if not _within_root(root, owner) or not owner.is_file() or owner.is_symlink():
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"legacy snapshot current owner is missing: {raw_owner}",
+                )
+            )
+        diagnostics.extend(
+            _validate_retention_identities(
+                root, registry_path, raw_path, item.get("retained_for"), ledger
+            )
+        )
+
+    if not enforce_repository_state:
+        return entries, diagnostics
+    for path in _project_visible_files(root):
+        if path.suffix.lower() not in {".yaml", ".yml"}:
+            continue
+        relative = path.relative_to(root).as_posix()
+        if path.with_suffix(".toml").is_file() and relative not in entries:
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"unregistered YAML/TOML pair: {relative}",
+                )
+            )
+    return entries, diagnostics
+
+
+def _exact_registry_path(raw: object, *, suffixes: set[str]) -> bool:
+    if not isinstance(raw, str) or not raw or raw.startswith("/") or "\\" in raw:
+        return False
+    if any(token in raw for token in ("*", "?", "[", "]")):
+        return False
+    path = PurePosixPath(raw)
+    return path.suffix in suffixes and all(
+        part not in {"", ".", ".."} for part in path.parts
+    )
+
+
+def _within_root(root: Path, path: Path) -> bool:
+    try:
+        path.relative_to(root.resolve())
+    except ValueError:
+        return False
+    return True
+
+
+def _legacy_authority_records(root: Path) -> list[dict[str, Any]]:
+    layout = discover_layout(root)
+    path = layout.structured_file(layout.governance_root, "legacy-authority.toml")
+    if not path.is_file():
+        return []
+    try:
+        data = load(path)
+    except (OSError, ValueError, YamlSubsetError):
+        return []
+    records = data.get("records") if isinstance(data, dict) else None
+    return (
+        [item for item in records if isinstance(item, dict)]
+        if isinstance(records, list)
+        else []
+    )
+
+
+def _validate_retention_identities(
+    root: Path,
+    registry_path: Path,
+    snapshot: str,
+    raw_identities: object,
+    ledger: list[dict[str, Any]],
+) -> list[Diagnostic]:
+    diagnostics: list[Diagnostic] = []
+    if not isinstance(raw_identities, list) or not raw_identities:
+        return [
+            _diag(
+                "DSET-E156",
+                registry_path,
+                f"legacy_structured {snapshot} requires retained_for identities",
+            )
+        ]
+    seen: set[tuple[str, str]] = set()
+    snapshot_path = (root / snapshot).resolve()
+    for identity in raw_identities:
+        if not isinstance(identity, dict):
+            diagnostics.append(
+                _diag("DSET-E156", registry_path, "retained_for must be a mapping")
+            )
+            continue
+        identity_keys = set(identity) - {"reason"}
+        if (
+            identity_keys not in ({"semantic_id"}, {"carrier_path"})
+            or not isinstance(identity.get("reason"), str)
+            or not str(identity["reason"]).strip()
+        ):
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    "retained_for requires reason and exactly one of "
+                    "semantic_id or carrier_path",
+                )
+            )
+            continue
+        key = next(iter(identity_keys))
+        value = identity.get(key)
+        if not isinstance(value, str) or not value:
+            diagnostics.append(
+                _diag("DSET-E156", registry_path, f"retained_for {key} is invalid")
+            )
+            continue
+        marker = (key, value)
+        if marker in seen:
+            diagnostics.append(
+                _diag("DSET-E156", registry_path, f"duplicate retained_for: {value}")
+            )
+        seen.add(marker)
+        if key == "semantic_id":
+            carriers = _semantic_retention_carriers(root, ledger, value, snapshot)
+            if not carriers:
+                diagnostics.append(
+                    _diag(
+                        "DSET-E156",
+                        registry_path,
+                        "retained_for semantic ID does not select or link "
+                        f"{snapshot}: {value}",
+                    )
+                )
+        else:
+            if not _exact_registry_path(value, suffixes={".md"}):
+                diagnostics.append(
+                    _diag(
+                        "DSET-E156",
+                        registry_path,
+                        f"retained_for carrier_path is invalid: {value}",
+                    )
+                )
+                continue
+            carrier = (root / value).resolve()
+            if (
+                not _within_root(root, carrier)
+                or not carrier.is_file()
+                or "/proofs/" not in f"/{value}"
+                or not _carrier_references_path(root, carrier, snapshot_path)
+            ):
+                diagnostics.append(
+                    _diag(
+                        "DSET-E156",
+                        registry_path,
+                        f"historical carrier does not link {snapshot}: {value}",
+                    )
+                )
+    return diagnostics
+
+
+def _semantic_retention_carriers(
+    root: Path, ledger: list[dict[str, Any]], semantic_id: str, snapshot: str
+) -> set[Path]:
+    carriers: set[Path] = set()
+    snapshot_path = (root / snapshot).resolve()
+    for record in ledger:
+        if record.get("semantic_id") != semantic_id:
+            continue
+        fragments = record.get("fragments")
+        if not isinstance(fragments, list):
+            continue
+        for fragment in fragments:
+            raw = fragment.get("path") if isinstance(fragment, dict) else None
+            if not isinstance(raw, str):
+                continue
+            carrier = (root / raw).resolve()
+            links_snapshot = (
+                carrier.is_file()
+                and carrier.suffix == ".md"
+                and _carrier_references_path(root, carrier, snapshot_path)
+            )
+            if raw == snapshot or links_snapshot:
+                carriers.add(carrier)
+    return carriers
+
+
+def _carrier_references_path(root: Path, carrier: Path, target: Path) -> bool:
+    if target in _local_link_targets(carrier):
+        return True
+    text = carrier.read_text(encoding="utf-8")
+    for raw_target in LINK_PATTERN.findall(text):
+        link = raw_target.strip().strip("<>").split("#", 1)[0]
+        if link and (carrier.parent / unquote(link)).resolve() == target:
+            return True
+    relative = target.relative_to(root).as_posix()
+    return relative in text
+
+
+def _validate_legacy_structured_links(
+    root: Path,
+    registry_path: Path,
+    entries: dict[str, dict[str, Any]],
+    legacy_evidence: frozenset[str],
+) -> list[Diagnostic]:
+    """Keep mutable references current and immutable references explicitly bound."""
+
+    diagnostics: list[Diagnostic] = []
+    registered = {(root / relative).resolve(): relative for relative in entries}
+    ledger = _legacy_authority_records(root)
+    immutable: set[Path] = {(root / relative).resolve() for relative in legacy_evidence}
+    for path in _project_visible_files(root):
+        relative = path.relative_to(root).as_posix()
+        if path.suffix == ".md" and "/proofs/" in f"/{relative}":
+            immutable.add(path.resolve())
+    for record in ledger:
+        fragments = record.get("fragments")
+        if not isinstance(fragments, list):
+            continue
+        for fragment in fragments:
+            if (
+                not isinstance(fragment, dict)
+                or fragment.get("selector") != "whole-carrier"
+            ):
+                continue
+            raw = fragment.get("path")
+            if isinstance(raw, str):
+                immutable.add((root / raw).resolve())
+    atoms = discover_layout(root).structured_file(
+        discover_layout(root).governance_root, "atoms.toml"
+    )
+    if atoms.is_file():
+        try:
+            atom_data = load(atoms)
+        except (OSError, ValueError, YamlSubsetError):
+            atom_data = {}
+        records = atom_data.get("records") if isinstance(atom_data, dict) else None
+        if isinstance(records, list):
+            for record in records:
+                raw = record.get("path") if isinstance(record, dict) else None
+                if isinstance(raw, str):
+                    immutable.add((root / raw).resolve())
+
+    allowed: dict[Path, set[Path]] = {path: set() for path in registered}
+    for relative, entry in entries.items():
+        snapshot = (root / relative).resolve()
+        identities = entry.get("retained_for")
+        if not isinstance(identities, list):
+            continue
+        for identity in identities:
+            if not isinstance(identity, dict):
+                continue
+            raw_path = identity.get("carrier_path")
+            if isinstance(raw_path, str):
+                allowed[snapshot].add((root / raw_path).resolve())
+            semantic_id = identity.get("semantic_id")
+            if isinstance(semantic_id, str):
+                allowed[snapshot].update(
+                    _semantic_retention_carriers(root, ledger, semantic_id, relative)
+                )
+
+    for carrier in _project_visible_files(root):
+        if carrier.suffix != ".md":
+            continue
+        targets = _local_link_targets(carrier)
+        is_immutable = carrier.resolve() in immutable
+        for target in targets:
+            registered_relative = registered.get(target)
+            if registered_relative is not None:
+                if not is_immutable:
+                    diagnostics.append(
+                        _diag(
+                            "DSET-E156",
+                            carrier,
+                            "mutable carrier links registered legacy snapshot: "
+                            f"{registered_relative}",
+                        )
+                    )
+                elif carrier.resolve() not in allowed[target]:
+                    diagnostics.append(
+                        _diag(
+                            "DSET-E156",
+                            carrier,
+                            "immutable legacy link is not declared by retained_for: "
+                            f"{registered_relative}",
+                        )
+                    )
+                continue
+            if (
+                is_immutable
+                and target.suffix.lower() in {".yaml", ".yml"}
+                and _within_root(root / "dset", target)
+            ):
+                diagnostics.append(
+                    _diag(
+                        "DSET-E156",
+                        carrier,
+                        "immutable carrier links an unregistered legacy "
+                        f"structured path: {target.relative_to(root).as_posix()}",
+                    )
+                )
+    return diagnostics
+
+
 def _validate_artifact_path_rules(
     root: Path,
     registry_path: Path,
@@ -1514,6 +1979,7 @@ def _validate_artifact_path_rules(
     catalog: dict[str, frozenset[str]],
     exclusions: list[tuple[str, str]],
     legacy_evidence: frozenset[str],
+    legacy_structured: dict[str, dict[str, Any]],
     *,
     project_key: str | None,
     include_subtype_in_names: bool,
@@ -1582,6 +2048,7 @@ def _validate_artifact_path_rules(
             catalog,
             exclusions,
             legacy_evidence,
+            legacy_structured,
             project_key=project_key,
             include_subtype_in_names=include_subtype_in_names,
         )
@@ -1596,6 +2063,7 @@ def _validate_current_artifact_classifications(
     catalog: dict[str, frozenset[str]],
     exclusions: list[tuple[str, str]],
     legacy_evidence: frozenset[str],
+    legacy_structured: dict[str, dict[str, Any]],
     *,
     project_key: str | None,
     include_subtype_in_names: bool,
@@ -1622,6 +2090,7 @@ def _validate_current_artifact_classifications(
             )
         direct = _direct_artifact_classification(path)
         is_legacy_evidence = relative in legacy_evidence
+        historical = legacy_structured.get(relative)
         if len(matched_exclusions) > 1:
             diagnostics.append(
                 _diag(
@@ -1632,7 +2101,7 @@ def _validate_current_artifact_classifications(
                 )
             )
         if matched_exclusions and (
-            direct is not None or matched_rules or is_legacy_evidence
+            direct is not None or matched_rules or is_legacy_evidence or historical
         ):
             diagnostics.append(
                 _diag(
@@ -1645,6 +2114,7 @@ def _validate_current_artifact_classifications(
             direct is None
             and not matched_rules
             and not is_legacy_evidence
+            and historical is None
             and not matched_exclusions
         ):
             diagnostics.append(
@@ -1663,6 +2133,42 @@ def _validate_current_artifact_classifications(
                     "legacy evidence path has a conflicting direct classification",
                 )
             )
+        if historical is not None and len(matched_rules) == 1:
+            _, rule_type, rule_subtype = matched_rules[0]
+            historical_classification = (
+                historical.get("artifact_type"),
+                historical.get("artifact_subtype"),
+            )
+            if historical_classification != (
+                rule_type,
+                rule_subtype,
+            ):
+                diagnostics.append(
+                    _diag(
+                        "DSET-E156",
+                        path,
+                        "legacy_structured classification conflicts with its path rule",
+                    )
+                )
+        owner_entries = [
+            entry
+            for entry in legacy_structured.values()
+            if entry.get("current_owner") == relative
+        ]
+        if owner_entries and len(matched_rules) == 1:
+            _, rule_type, rule_subtype = matched_rules[0]
+            owner = owner_entries[0]
+            if (owner.get("artifact_type"), owner.get("artifact_subtype")) != (
+                rule_type,
+                rule_subtype,
+            ):
+                diagnostics.append(
+                    _diag(
+                        "DSET-E156",
+                        path,
+                        "current_owner classification conflicts with its path rule",
+                    )
+                )
         if direct is None:
             continue
         artifact_type, artifact_subtype, artifact_id = direct
@@ -2691,7 +3197,9 @@ def _project_visible_files(root: Path) -> list[Path]:
         result = None
     if result is not None and result.returncode == 0:
         return sorted(
-            root / item.decode("utf-8") for item in result.stdout.split(b"\0") if item
+            root / item.decode("utf-8")
+            for item in result.stdout.split(b"\0")
+            if item and Path(item.decode("utf-8")).name != ".DS_Store"
         )
     return sorted(
         path
@@ -2700,6 +3208,8 @@ def _project_visible_files(root: Path) -> list[Path]:
         and not any(
             part in MARKDOWN_IGNORED_PARTS for part in path.relative_to(root).parts
         )
+        and not any(part.endswith(".egg-info") for part in path.relative_to(root).parts)
+        and path.name != ".DS_Store"
     )
 
 
