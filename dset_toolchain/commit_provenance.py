@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+import hashlib
 import re
 import subprocess
 from collections.abc import Mapping
+from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 from .diagnostics import Diagnostic
 from .layout import discover_layout
@@ -12,6 +15,25 @@ from .yaml_subset import load
 
 ID_PATTERN = re.compile(r"[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+")
 SESSION_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
+COMMIT_PATTERN = re.compile(r"^[0-9a-f]{40}$")
+DIGEST_PATTERN = re.compile(r"^[0-9a-f]{64}$")
+CORRECTION_FIELDS = {
+    "commit",
+    "original_message_sha256",
+    "mode",
+    "decision_ids",
+    "verifies",
+    "resolves",
+    "session",
+    "rationale",
+}
+
+
+@dataclass(frozen=True)
+class CommitRecord:
+    commit: str
+    message: str
+    message_sha256: str
 
 
 def validate_commit_provenance(root: Path) -> list[Diagnostic]:
@@ -51,15 +73,41 @@ def validate_commit_provenance(root: Path) -> list[Diagnostic]:
         }
     except (OSError, ValueError, subprocess.CalledProcessError) as error:
         return [Diagnostic("DSET-E168", manifest_path, str(error))]
-    diagnostics: list[Diagnostic] = []
-    for commit, message in commits:
-        for problem in validate_commit_message(message, known):
-            diagnostics.append(
-                Diagnostic(
-                    "DSET-E168", manifest_path, f"commit {commit[:12]}: {problem}"
-                )
+    return [
+        Diagnostic("DSET-E168", manifest_path, problem)
+        for problem in validate_commit_history(
+            commits, known, raw_policy.get("corrections", [])
+        )
+    ]
+
+
+def validate_commit_history(
+    commits: list[CommitRecord],
+    known: Mapping[str, tuple[str, str]],
+    raw_corrections: object,
+) -> list[str]:
+    corrections, problems = _parse_corrections(raw_corrections, commits)
+    for record in commits:
+        original_problems = validate_commit_message(record.message, known)
+        correction = corrections.get(record.commit)
+        if correction is None:
+            problems.extend(
+                f"commit {record.commit[:12]}: {problem}"
+                for problem in original_problems
             )
-    return diagnostics
+            continue
+        if not original_problems:
+            problems.append(
+                f"correction for commit {record.commit} is unnecessary because "
+                "the original provenance is valid"
+            )
+            continue
+        corrected_message = _corrected_message(correction)
+        problems.extend(
+            f"correction for commit {record.commit}: {problem}"
+            for problem in validate_commit_message(corrected_message, known)
+        )
+    return problems
 
 
 def validate_commit_message(
@@ -96,6 +144,105 @@ def validate_commit_message(
     return problems
 
 
+def _parse_corrections(
+    raw_corrections: object, commits: list[CommitRecord]
+) -> tuple[dict[str, Mapping[str, Any]], list[str]]:
+    if not isinstance(raw_corrections, list):
+        return {}, ["commit_provenance.corrections must be a list"]
+    records = {record.commit: record for record in commits}
+    corrections: dict[str, Mapping[str, Any]] = {}
+    problems: list[str] = []
+    for index, raw in enumerate(raw_corrections, start=1):
+        prefix = f"commit_provenance.corrections[{index}]"
+        if not isinstance(raw, Mapping):
+            problems.append(f"{prefix} must be a mapping")
+            continue
+        fields = set(raw)
+        if fields != CORRECTION_FIELDS:
+            missing = sorted(CORRECTION_FIELDS - fields)
+            extra = sorted(fields - CORRECTION_FIELDS)
+            details: list[str] = []
+            if missing:
+                details.append(f"missing {', '.join(missing)}")
+            if extra:
+                details.append(f"unknown {', '.join(extra)}")
+            problems.append(f"{prefix} fields are invalid: {'; '.join(details)}")
+            continue
+        commit = raw.get("commit")
+        if not isinstance(commit, str) or not COMMIT_PATTERN.fullmatch(commit):
+            problems.append(f"{prefix}.commit requires one full lowercase SHA")
+            continue
+        if commit in corrections:
+            problems.append(f"duplicate provenance correction for commit {commit}")
+            continue
+        record = records.get(commit)
+        if record is None:
+            problems.append(
+                f"provenance correction commit is outside the validated range: {commit}"
+            )
+            continue
+        digest = raw.get("original_message_sha256")
+        if not isinstance(digest, str) or not DIGEST_PATTERN.fullmatch(digest):
+            problems.append(f"{prefix}.original_message_sha256 is invalid")
+            continue
+        if digest != record.message_sha256:
+            problems.append(
+                f"provenance correction message digest mismatch for commit {commit}"
+            )
+            continue
+        mode = raw.get("mode")
+        if mode not in {"implementation", "evidence"}:
+            problems.append(f"{prefix}.mode must be implementation or evidence")
+            continue
+        if not _valid_id_list(raw.get("decision_ids"), allow_empty=False):
+            problems.append(f"{prefix}.decision_ids requires unique canonical IDs")
+            continue
+        verifies = raw.get("verifies")
+        if not _valid_id_list(verifies, allow_empty=mode == "implementation"):
+            problems.append(
+                f"{prefix}.verifies must be empty for implementation or contain "
+                "unique canonical IDs for evidence"
+            )
+            continue
+        if mode == "implementation" and verifies:
+            problems.append(f"{prefix}.verifies must be empty for implementation")
+            continue
+        if not _valid_id_list(raw.get("resolves"), allow_empty=True):
+            problems.append(f"{prefix}.resolves must contain unique canonical IDs")
+            continue
+        session = raw.get("session")
+        if not isinstance(session, str) or not SESSION_PATTERN.fullmatch(session):
+            problems.append(f"{prefix}.session requires exactly one valid session ID")
+            continue
+        rationale = raw.get("rationale")
+        if not isinstance(rationale, str) or not rationale.strip():
+            problems.append(f"{prefix}.rationale requires non-empty text")
+            continue
+        corrections[commit] = raw
+    return corrections, problems
+
+
+def _valid_id_list(value: object, *, allow_empty: bool) -> bool:
+    if not isinstance(value, list) or (not allow_empty and not value):
+        return False
+    if not all(
+        isinstance(item, str) and ID_PATTERN.fullmatch(item) for item in value
+    ):
+        return False
+    return len(value) == len(set(value))
+
+
+def _corrected_message(correction: Mapping[str, Any]) -> str:
+    label = "Implements" if correction["mode"] == "implementation" else "Decision"
+    lines = [f"{label}: {', '.join(correction['decision_ids'])}"]
+    if correction["verifies"]:
+        lines.append(f"Verifies: {', '.join(correction['verifies'])}")
+    if correction["resolves"]:
+        lines.append(f"Resolves: {', '.join(correction['resolves'])}")
+    lines.append(f"Session: {correction['session']}")
+    return "\n".join(lines)
+
+
 def _resolve_base(root: Path, manifest_path: Path, start: str) -> str | None:
     if start == "root":
         return None
@@ -128,22 +275,33 @@ def _resolve_base(root: Path, manifest_path: Path, start: str) -> str | None:
     return completed.stdout.strip()
 
 
-def _commits_after(root: Path, base: str | None) -> list[tuple[str, str]]:
+def _commits_after(root: Path, base: str | None) -> list[CommitRecord]:
     revision = f"{base}..HEAD" if base else "HEAD"
     completed = subprocess.run(
-        ["git", "log", "--no-merges", "--reverse", "--format=%H%x1f%B%x1e", revision],
+        ["git", "rev-list", "--no-merges", "--reverse", revision],
         cwd=root,
         check=True,
         capture_output=True,
         text=True,
     )
-    records: list[tuple[str, str]] = []
-    for raw in completed.stdout.split("\x1e"):
-        raw = raw.strip()
-        if raw and "\x1f" in raw:
-            commit, message = raw.split("\x1f", 1)
-            records.append((commit, message))
-    return records
+    return [_read_commit(root, commit) for commit in completed.stdout.split()]
+
+
+def _read_commit(root: Path, commit: str) -> CommitRecord:
+    completed = subprocess.run(
+        ["git", "cat-file", "commit", commit],
+        cwd=root,
+        check=True,
+        capture_output=True,
+    )
+    _headers, separator, message = completed.stdout.partition(b"\n\n")
+    if not separator:
+        raise ValueError(f"commit object has no message boundary: {commit}")
+    return CommitRecord(
+        commit=commit,
+        message=message.decode("utf-8", errors="surrogateescape"),
+        message_sha256=hashlib.sha256(message).hexdigest(),
+    )
 
 
 def _has_head(root: Path) -> bool:

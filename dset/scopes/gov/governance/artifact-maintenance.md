@@ -200,6 +200,15 @@ more Decision-family `Implements:` IDs; evidence has both Decision-family
 IDs, non-Decision implementation authority, mixed modes, and missing provenance
 fail the repository check.
 
+Immutable historical commits are never rewritten or exempted. When an older
+commit in the validated range cannot satisfy the current trailer grammar, the
+project manifest may append one correction bound to its full commit SHA and
+exact original-message digest. The correction declares the ordinary provenance
+mode, canonical Decision and applicable Verification/Problem IDs, exactly one
+Session ID, and a rationale. The original must be invalid, the corrected view
+must pass the same rules as a current commit, and correction entries are unique
+and append-only.
+
 Every newly emitted atomic artifact or append-only lifecycle event has explicit
 LLM session provenance. Use unique `llm_session_ids` with stable host-prefixed
 IDs such as `codex:<session-id>` when an LLM produced the record; use an

@@ -279,7 +279,14 @@ one or more known Decision-family IDs, or the evidence pair `Decision:` and
 name only known Problems. Unknown IDs, QA/Problem IDs used as implementation
 authority, mixed modes, and missing trailers fail validation.
 
-**Scenario DSET-SCENARIO-GOV-023:** A commit body contains `Implements: DSET-DECISION-GOV-001`; the emitted Decision, Change, intake item, proof, run, checkpoint, and later lifecycle-event shapes record the Codex session IDs that produced them; a correction is a new linked event; and a human-only fixture passes only with explicit empty provenance.
+An immutable historical commit in the validated range may have one append-only
+manifest correction instead of rewritten history. The correction binds the
+full commit SHA and exact original-message digest, declares the ordinary
+provenance mode and canonical IDs, carries exactly one Session ID and a
+rationale, and is valid only when the original fails and the corrected view
+passes the same rules as a current commit. It is not an exemption mechanism.
+
+**Scenario DSET-SCENARIO-GOV-023:** A commit body contains `Implements: DSET-DECISION-GOV-001`; the emitted Decision, Change, intake item, proof, run, checkpoint, and later lifecycle-event shapes record the Codex session IDs that produced them; an atomic correction is a new linked event; an exact historical commit correction is append-only, digest-bound, and revalidated; and a human-only fixture passes only with explicit empty provenance.
 
 ## DSET-REQUIREMENT-GOV-023 — Rule authority and assurance are explicit
 

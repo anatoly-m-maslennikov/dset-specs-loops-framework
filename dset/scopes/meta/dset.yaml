@@ -68,6 +68,39 @@ change_contract:
 
 commit_provenance:
   start_commit: 96800941678c9b665abac9d3838a8a4b36db02e2
+  corrections:
+    -
+      commit: 00fb9c666efd9a40efd013a815c6eca7be2b6c90
+      original_message_sha256: e48025512aceb574b1145dda3d1d9e5986ac8680cb42a273427e239f66ff1aca
+      mode: implementation
+      decision_ids:
+        - DSET-DECISION-GOV-015
+        - DSET-DECISION-GOV-017
+      verifies: []
+      resolves:
+        - DSET-DEFECT-TOOL-004
+      session: codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+      rationale: Preserve the immutable commit while replacing its legacy Decision trailer with implementation provenance.
+    -
+      commit: 4096ce125aed225b1a4d27fda2db8fa899b6a749
+      original_message_sha256: 37f52517c358b1fb0c33083c79b1147731ad981f7bcacd3ba15ed39b48ee71d6
+      mode: implementation
+      decision_ids:
+        - DSET-DECISION-GOV-017
+      verifies: []
+      resolves: []
+      session: codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+      rationale: Preserve the immutable commit while removing a Test ID from implementation authority.
+    -
+      commit: f9bff423cbb4cc0a58518bfd174ed0cf892d7911
+      original_message_sha256: e99f33e601546052035242b0c97414440a98a0b02e4cb97f5873e3d5c69ce42c
+      mode: implementation
+      decision_ids:
+        - DSET-DECISION-GOV-016
+      verifies: []
+      resolves: []
+      session: codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+      rationale: Preserve the immutable commit while removing a Test ID from implementation authority.
 
 verification:
   commands:
