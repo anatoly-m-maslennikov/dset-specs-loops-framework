@@ -95,9 +95,7 @@ class ArtifactEmissionTests(unittest.TestCase):
             encoding="utf-8",
         )
         _settings, issues = load_project_settings(self.root)
-        self.assertIn(
-            "artifact_creation_strictness must be medium or high", issues
-        )
+        self.assertIn("artifact_creation_strictness must be medium or high", issues)
 
     def test_high_blocks_until_every_material_field_is_explicit(self) -> None:
         self.enable_high_strictness()
@@ -106,14 +104,19 @@ class ArtifactEmissionTests(unittest.TestCase):
 
         self.assertFalse(blocked["emission_allowed"])
         missing = {item["field"] for item in blocked["diagnostics"]}
-        self.assertEqual(missing, set((
-            "boundary",
-            "priority",
-            "lineage",
-            "acceptance",
-            "conflict_state",
-            "verification_obligation",
-        )))
+        self.assertEqual(
+            missing,
+            set(
+                (
+                    "boundary",
+                    "priority",
+                    "lineage",
+                    "acceptance",
+                    "conflict_state",
+                    "verification_obligation",
+                )
+            ),
+        )
         self.assertEqual(len(blocked["questions"]), 6)
 
         complete = self.candidate()
@@ -171,9 +174,7 @@ class ArtifactEmissionTests(unittest.TestCase):
         candidate["promotion"]["disposition"] = "promote"
         promote = assess_artifact_candidate(self.root, candidate)
         self.assertFalse(promote["emission_allowed"])
-        self.assertEqual(
-            promote["promotion"]["status"], "promote-before-emission"
-        )
+        self.assertEqual(promote["promotion"]["status"], "promote-before-emission")
 
     def test_cli_is_read_only_and_returns_blocked_status(self) -> None:
         project = self.root / "project"

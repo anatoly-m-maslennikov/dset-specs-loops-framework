@@ -71,18 +71,14 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
         if key == "artifact_creation_strictness":
             selected = value.strip('"')
             if selected not in ARTIFACT_CREATION_STRICTNESS:
-                issues.append(
-                    "artifact_creation_strictness must be medium or high"
-                )
+                issues.append("artifact_creation_strictness must be medium or high")
             else:
                 strictness = selected
 
     if schema_version != SETTINGS_SCHEMA_VERSION:
         issues.append(f"settings schema_version must be {SETTINGS_SCHEMA_VERSION}")
     if include_subtype is None:
-        issues.append(
-            "optional_capabilities.artifact_subtype_in_names is required"
-        )
+        issues.append("optional_capabilities.artifact_subtype_in_names is required")
     if default_priority not in priority_scale:
         issues.append("priority.default must be present in priority.scale")
     return (

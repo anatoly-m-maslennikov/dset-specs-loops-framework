@@ -73,9 +73,7 @@ class SkillWrapperTests(unittest.TestCase):
                 self.assertLess(context_at, read_at)
 
         registry = load(ROOT / "dset/scopes/gov/governance.yaml")
-        workflows = {
-            item["id"]: item["rules"] for item in registry["workflows"]
-        }
+        workflows = {item["id"]: item["rules"] for item in registry["workflows"]}
         for name, workflow in PUBLIC_SKILL_WORKFLOWS.items():
             if name in PRE_RESOLUTION_SKILLS or name == "dset":
                 continue
@@ -121,12 +119,10 @@ class SkillWrapperTests(unittest.TestCase):
 
     def test_implementation_uses_governed_entry_criteria_closure(self) -> None:
         lifecycle = (
-            ROOT
-            / "dset/scopes/skill/governance/lifecycle-orchestration.md"
+            ROOT / "dset/scopes/skill/governance/lifecycle-orchestration.md"
         ).read_text(encoding="utf-8")
         template = (
-            ROOT
-            / "dset/scopes/skill/templates/governance/core-v1/"
+            ROOT / "dset/scopes/skill/templates/governance/core-v1/"
             "lifecycle-orchestration.md"
         ).read_text(encoding="utf-8")
         self.assertEqual(lifecycle, template)

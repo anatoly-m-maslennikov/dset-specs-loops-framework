@@ -781,9 +781,7 @@ class GovernanceTests(unittest.TestCase):
                 path = ROOT / "skills" / skill / "SKILL.md"
                 text = path.read_text(encoding="utf-8")
                 self.assertLessEqual(len(text.splitlines()), 24)
-                self.assertIn(
-                    f"skills context --skill {skill} --target TARGET", text
-                )
+                self.assertIn(f"skills context --skill {skill} --target TARGET", text)
                 self.assertNotIn("## Workflow", text)
                 self.assertNotIn("git bisect", text)
                 self.assertNotIn("proofs/<candidate>-fit", text)

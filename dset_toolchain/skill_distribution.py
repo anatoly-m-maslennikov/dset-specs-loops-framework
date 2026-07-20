@@ -209,9 +209,7 @@ def verify_runtime_installation(
         raise SkillDistributionError("runtime manifest identity is stale")
     for relative in ("dset.py", "dset", "dset.cmd", "dset_toolchain/__init__.py"):
         if not (destination / relative).is_file():
-            raise SkillDistributionError(
-                f"runtime package file is missing: {relative}"
-            )
+            raise SkillDistributionError(f"runtime package file is missing: {relative}")
     return RuntimeInstallationProof(
         host=host,
         destination=str(destination),
@@ -289,8 +287,7 @@ def apply_install(actions: Sequence[InstallAction]) -> list[InstallationProof]:
                 f"{action.host}/{action.skill_id}: {destination}"
             )
         if destination.exists() and (
-            not destination.is_dir()
-            or tree_digest(destination) != action.source_digest
+            not destination.is_dir() or tree_digest(destination) != action.source_digest
         ):
             raise SkillDistributionError(
                 f"destination changed after planning: {destination}"
@@ -506,7 +503,7 @@ def _render_runtime_package(source: Path, host: str, destination: Path) -> None:
     )
     launcher = (
         "from dset_toolchain.cli import main\n\n"
-        "if __name__ == \"__main__\":\n"
+        'if __name__ == "__main__":\n'
         "    raise SystemExit(main())\n"
     )
     (destination / "dset.py").write_text(launcher, encoding="utf-8")
@@ -516,7 +513,7 @@ def _render_runtime_package(source: Path, host: str, destination: Path) -> None:
     )
     (destination / "dset").chmod(0o755)
     (destination / "dset.cmd").write_text(
-        "@echo off\r\npy -3 \"%~dp0dset.py\" %*\r\n",
+        '@echo off\r\npy -3 "%~dp0dset.py" %*\r\n',
         encoding="utf-8",
     )
     manifest = {
@@ -632,13 +629,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             if arguments.destination is None
             else Path(arguments.destination)
         )
-        requested_package_destination = getattr(
-            arguments, "package_destination", None
-        )
+        requested_package_destination = getattr(arguments, "package_destination", None)
         package_destination = (
             default_package_destination(host)
-            if requested_package_destination is None
-            and arguments.destination is None
+            if requested_package_destination is None and arguments.destination is None
             else (
                 destination.parent / "packages" / "dset"
                 if requested_package_destination is None
@@ -652,9 +646,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             source = Path(arguments.source) if arguments.source is not None else None
             if source is not None:
                 actions = plan_install(source, host, destination)
-                runtime_action = plan_runtime_install(
-                    source, host, package_destination
-                )
+                runtime_action = plan_runtime_install(source, host, package_destination)
                 result = _execute_install(
                     actions, runtime_action, apply=arguments.apply
                 )

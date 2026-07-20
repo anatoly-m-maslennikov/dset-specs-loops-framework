@@ -196,7 +196,5 @@ def _state_fingerprint(closure: Mapping[str, Any]) -> str:
         "next_workflow": closure["next_workflow"],
         "reason_code": closure["reason_code"],
     }
-    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode(
-        "utf-8"
-    )
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
     return f"state:{hashlib.sha256(encoded).hexdigest()}"

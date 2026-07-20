@@ -234,7 +234,7 @@ version = "independent"
         change.mkdir()
         (change / "verification.md").write_text("# Verification\n", encoding="utf-8")
         (change / "TEST-READINESS-RECORD-001-release.md").write_text(
-            '''---
+            """---
 artifact_type: readiness_record
 artifact_id: TEST-READINESS-RECORD-001
 version_scope_ref: TEST-SPECIFICATION-001
@@ -245,7 +245,7 @@ llm_session_ids: []
 ---
 
 # Readiness Record
-''',
+""",
             encoding="utf-8",
         )
         (change / "change.yaml").write_text(

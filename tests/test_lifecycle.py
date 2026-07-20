@@ -76,9 +76,7 @@ class LifecycleClosureTests(unittest.TestCase):
         self.assertEqual(failed["reason_code"], "DSET-RUNTIME-CHILD-FAILED")
 
         blocked = advance_closure(initial, workflow_id="decisions")
-        stopped = advance_closure(
-            blocked, observations={"proof_plan_complete": None}
-        )
+        stopped = advance_closure(blocked, observations={"proof_plan_complete": None})
         self.assertEqual(stopped["status"], "stopped")
         self.assertEqual(stopped["reason_code"], "DSET-RUNTIME-NO-PROGRESS")
 
