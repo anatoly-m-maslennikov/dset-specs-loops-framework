@@ -577,7 +577,7 @@ compatibility = false
 origins = ["modern_atom"]
 carriers = ["dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-057-classification-enforcement.md"]
 carrier_statuses = ["accepted"]
-lifecycle_events = []
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-052"]
 
 [[semantic_classifications]]
 id = "DSET-DEFECT-GOV-006"
@@ -587,7 +587,7 @@ compatibility = false
 origins = ["modern_atom"]
 carriers = ["dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-059-evidence-record-contract.md"]
 carrier_statuses = ["accepted"]
-lifecycle_events = []
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-054"]
 
 [[semantic_classifications]]
 id = "DSET-DEFECT-OPS-001"
@@ -617,7 +617,7 @@ compatibility = false
 origins = ["modern_atom"]
 carriers = ["dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-064-installed-skill-integrity.md"]
 carrier_statuses = ["accepted"]
-lifecycle_events = []
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-055"]
 
 [[semantic_classifications]]
 id = "DSET-DEFECT-SKILL-003"
@@ -627,7 +627,7 @@ compatibility = false
 origins = ["modern_atom"]
 carriers = ["dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-066-location-independent-launcher.md"]
 carrier_statuses = ["accepted"]
-lifecycle_events = []
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-056"]
 
 [[semantic_classifications]]
 id = "DSET-DEFECT-SKILL-004"
@@ -637,7 +637,7 @@ compatibility = false
 origins = ["modern_atom"]
 carriers = ["dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-068-session-handoff-terminalization.md"]
 carrier_statuses = ["accepted"]
-lifecycle_events = []
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-057"]
 
 [[semantic_classifications]]
 id = "DSET-DEFECT-TOOL-001"
@@ -677,7 +677,7 @@ compatibility = false
 origins = ["modern_atom"]
 carriers = ["dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-055-immutable-toml-migration.md"]
 carrier_statuses = ["accepted"]
-lifecycle_events = []
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-050"]
 
 [[semantic_classifications]]
 id = "DSET-DEFECT-TOOL-005"
@@ -687,7 +687,7 @@ compatibility = false
 origins = ["modern_atom"]
 carriers = ["dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-056-relation-bound-health.md"]
 carrier_statuses = ["accepted"]
-lifecycle_events = []
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-051"]
 
 [[semantic_classifications]]
 id = "DSET-DEFECT-TOOL-006"
@@ -697,7 +697,7 @@ compatibility = false
 origins = ["modern_atom"]
 carriers = ["dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-058-conflict-source-truth.md"]
 carrier_statuses = ["accepted"]
-lifecycle_events = []
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-053"]
 
 [[semantic_classifications]]
 id = "DSET-EVAL-GOV-001"
@@ -3524,10 +3524,10 @@ sha256 = "a9b2303a279ba39252c2b10c53c76af7331e49e9de4f93cadf860c85d7bdf8cb"
 type = "problem"
 subtype = "defect"
 emission_status = "accepted"
-current_status = "accepted"
+current_status = "resolved"
 priority = "high"
 priority_source = "atom:DSET-DEFECT-GOV-005"
-lifecycle_events = []
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-052"]
 absorbed_by = []
 archived = false
 
@@ -3544,10 +3544,10 @@ sha256 = "ab6b47e23a722aab2248bb18825d132f4461b2a0305f238be08e0ad4880a1dec"
 type = "problem"
 subtype = "defect"
 emission_status = "accepted"
-current_status = "accepted"
+current_status = "resolved"
 priority = "high"
 priority_source = "atom:DSET-DEFECT-GOV-006"
-lifecycle_events = []
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-054"]
 absorbed_by = []
 archived = false
 
@@ -3596,10 +3596,10 @@ sha256 = "9c2de4f8ba3035d58af5f95c286d7aa3e42b95049d3c2f35c48320a424af30c5"
 type = "problem"
 subtype = "defect"
 emission_status = "accepted"
-current_status = "accepted"
+current_status = "resolved"
 priority = "critical"
 priority_source = "atom:DSET-DEFECT-SKILL-002"
-lifecycle_events = []
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-055"]
 absorbed_by = []
 archived = false
 
@@ -3616,10 +3616,10 @@ sha256 = "a038eb3cc485d129c0afdfd32e230f0179c76fda2ea0a265ecf1694fb4035d18"
 type = "problem"
 subtype = "defect"
 emission_status = "accepted"
-current_status = "accepted"
+current_status = "resolved"
 priority = "high"
 priority_source = "atom:DSET-DEFECT-SKILL-003"
-lifecycle_events = []
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-056"]
 absorbed_by = []
 archived = false
 
@@ -3636,10 +3636,10 @@ sha256 = "69b3271266f6682676c759089ab40955c51f50b1623ee5779451f33eefcd2cd2"
 type = "problem"
 subtype = "defect"
 emission_status = "accepted"
-current_status = "accepted"
+current_status = "resolved"
 priority = "high"
 priority_source = "atom:DSET-DEFECT-SKILL-004"
-lifecycle_events = []
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-057"]
 absorbed_by = []
 archived = false
 
@@ -3712,10 +3712,10 @@ sha256 = "cc31131d684c728ee3e3610ba0e090f3bbbca6c671212bbd237a7d2fce1cc2c3"
 type = "problem"
 subtype = "defect"
 emission_status = "accepted"
-current_status = "accepted"
+current_status = "resolved"
 priority = "critical"
 priority_source = "atom:DSET-DEFECT-TOOL-004"
-lifecycle_events = []
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-050"]
 absorbed_by = []
 archived = false
 
@@ -3732,10 +3732,10 @@ sha256 = "39a343b8ccabe070f25dabb56b7d0af14c4754f8fa97c5f4e9344ceb500118bb"
 type = "problem"
 subtype = "defect"
 emission_status = "accepted"
-current_status = "accepted"
+current_status = "resolved"
 priority = "critical"
 priority_source = "atom:DSET-DEFECT-TOOL-005"
-lifecycle_events = []
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-051"]
 absorbed_by = []
 archived = false
 
@@ -3752,10 +3752,10 @@ sha256 = "2d0dd35aa576c75f558064da67f87af7ab16f9944473c67b88fb5a90111f546b"
 type = "problem"
 subtype = "defect"
 emission_status = "accepted"
-current_status = "accepted"
+current_status = "resolved"
 priority = "high"
 priority_source = "atom:DSET-DEFECT-TOOL-006"
-lifecycle_events = []
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-053"]
 absorbed_by = []
 archived = false
 
@@ -7153,6 +7153,30 @@ type = "implementation_of"
 target = "DSET-DECISION-SKILL-001"
 origin = "commit_trailer"
 llm_session_ids = []
+
+[[relations]]
+source = "b7d79ec08c9a446f8a5358ac44c4c26bf7486d42"
+source_kind = "commit"
+type = "implementation_of"
+target = "DSET-DECISION-GOV-015"
+origin = "commit_trailer"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+
+[[relations]]
+source = "b7d79ec08c9a446f8a5358ac44c4c26bf7486d42"
+source_kind = "commit"
+type = "implementation_of"
+target = "DSET-DECISION-GOV-016"
+origin = "commit_trailer"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+
+[[relations]]
+source = "b7d79ec08c9a446f8a5358ac44c4c26bf7486d42"
+source_kind = "commit"
+type = "implementation_of"
+target = "DSET-DECISION-GOV-017"
+origin = "commit_trailer"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 
 [[relations]]
 source = "b82c8681b9fd49cb3803e9f61a7c4d8e117929b8"

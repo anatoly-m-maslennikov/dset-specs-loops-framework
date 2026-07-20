@@ -12,7 +12,7 @@ llm_session_ids = []
 > This generated view is not authority. Follow each link to its canonical
 > owner and refresh explicitly after source changes.
 
-- **Source digest:** `64af964a7700d9caefa8991719a2c043386463ab8ae7b04ef7abadc8d75b3082`
+- **Source digest:** `85a48e57ce0f8a29a86d5dd8550ad837d59c3c5c962819552a53934b5c10fbcd`
 - **Renderer:** `dset health` schema 1.0
 
 ## Coverage
@@ -39,7 +39,7 @@ llm_session_ids = []
 - **By subtype:** architecture=7, behavior=29, change=9, configuration=76, design=7, domain_model=6, evaluation_plan=14, evaluation_result=2, external_audit_analysis=2, governance=46, health_dashboard=1, hub=52, implementation_plan=9, migration=1, playbook=18, proposal=8, readiness_record=2, release_plan=2, release_record=1, review_report=2, roadmap=2, root_cause_analysis=1, run_record=9, runbook=3, solution_landscape=7, source_code=42, technical_investigation=3, test_implementation=43, test_plan=14, test_result=14, version_scope=5
 - **By layer:** gov=108, meta=36, ops=44, repository=27, skill=190, tool=139
 - **By effective priority:** critical=15, high=43, medium=480, unknown=6
-- **By status:** absorbed=14, accepted=41, open=20, resolved=28
+- **By status:** absorbed=14, accepted=33, open=20, resolved=36
 
 ## Semantic inventory
 
@@ -51,10 +51,10 @@ llm_session_ids = []
 
 ## Typed relation inventory
 
-- **Forward relations:** 357
-- **By type:** analysis_of=1, check_of=16, child_of=41, evidence_for=3, implementation_of=264, projection_of=3, relates_to=15, replacement_of=11, resolution_of=3
-- **By origin:** authored=62, commit_trailer=264, legacy_child_of=31
-- **By source kind:** artifact=93, commit=264
+- **Forward relations:** 360
+- **By type:** analysis_of=1, check_of=16, child_of=41, evidence_for=3, implementation_of=267, projection_of=3, relates_to=15, replacement_of=11, resolution_of=3
+- **By origin:** authored=62, commit_trailer=267, legacy_child_of=31
+- **By source kind:** artifact=93, commit=267
 
 ## Unresolved work
 

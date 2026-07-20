@@ -440,3 +440,75 @@ occurred_at = "2026-07-20T22:51:10+04:00"
 related = ["DSET-REQUIREMENT-SKILL-013"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The successor preserves lazy and strict implementation preparation while correcting the canonical settings filename and key."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-050"
+atom_id = "DSET-DEFECT-TOOL-004"
+event = "resolved"
+occurred_at = "2026-07-21T01:48:00+04:00"
+related = ["DSET-DECISION-GOV-016", "DSET-DECISION-GOV-017"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "The migration preserves sealed atoms, promoted proof, selector-sealed authority, and registered historical YAML snapshots byte-for-byte while native TOML carriers own current state."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-051"
+atom_id = "DSET-DEFECT-TOOL-005"
+event = "resolved"
+occurred_at = "2026-07-21T01:48:01+04:00"
+related = ["DSET-REQUIREMENT-GOV-024"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "Project-health coverage now derives from validated current typed relations instead of loose identifier mentions."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-052"
+atom_id = "DSET-DEFECT-GOV-005"
+event = "resolved"
+occurred_at = "2026-07-21T01:48:02+04:00"
+related = ["DSET-REQUIREMENT-GOV-029"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "Every governed carrier must now resolve to exactly one classification or one explicit registered exclusion, including Procedure carriers."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-053"
+atom_id = "DSET-DEFECT-TOOL-006"
+event = "resolved"
+occurred_at = "2026-07-21T01:48:03+04:00"
+related = ["DSET-REQUIREMENT-GOV-020"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "Conflict resolution now derives authority, lifecycle, scope, relation, priority, and precedence facts from repository truth and evidence-binds irreducible assertions."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-054"
+atom_id = "DSET-DEFECT-GOV-006"
+event = "resolved"
+occurred_at = "2026-07-21T01:48:04+04:00"
+related = ["DSET-REQUIREMENT-GOV-025"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "Native TOML Evidence Records now have a schema, template, validator, compatibility boundary, and focused deterministic coverage."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-055"
+atom_id = "DSET-DEFECT-SKILL-002"
+event = "resolved"
+occurred_at = "2026-07-21T01:48:05+04:00"
+related = ["DSET-REQUIREMENT-SKILL-011"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "Installed wrappers and runtime payloads are now verified against source-bound expected identities, and post-install mutation is rejected."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-056"
+atom_id = "DSET-DEFECT-SKILL-003"
+event = "resolved"
+occurred_at = "2026-07-21T01:48:06+04:00"
+related = ["DSET-REQUIREMENT-SKILL-011"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "Every rendered executable instruction now uses a package-local launcher with shell-safe POSIX, WSL, and PowerShell forms and no ambient-PATH fallback."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-057"
+atom_id = "DSET-DEFECT-SKILL-004"
+event = "resolved"
+occurred_at = "2026-07-21T01:48:07+04:00"
+related = ["DSET-REQUIREMENT-SKILL-009"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "The runtime now distinguishes active handoff from terminal finish, preserves session identity across specialist context resolution, and verifies terminal closure separately."
