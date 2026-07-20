@@ -308,3 +308,13 @@ events:
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
     rationale: The active Change now declares one normal 0.3.1-to-0.4.0 transaction with pending candidate, readiness, and PR identities; PR 9 and its blocked candidate remain historical predecessor records.
+  -
+    id: DSET-LIFECYCLE-EVENT-031
+    atom_id: DSET-DEFECT-GOV-004
+    event: resolved
+    occurred_at: 2026-07-21T02:30:00+04:00
+    related:
+      - DSET-REQUIREMENT-GOV-023
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+    rationale: Current Verification was rebuilt around the active DSET 0.4 boundary and fresh deterministic evidence; historical adopter claims are preserved but no longer promoted as current release proof.

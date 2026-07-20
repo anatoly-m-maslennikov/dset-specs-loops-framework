@@ -373,6 +373,7 @@ changes:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-016-oyoha-supportability-slice.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-017-typescript-profile-instantiation.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-018-codex-host-install-attempt.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-019-independent-review-remediation.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/end-to-end-toolchain-verification-2026-07-16.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/expanded-skill-surface-verification-2026-07-16.md
@@ -846,7 +847,8 @@ semantic_classifications:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-029-stale-verification-claims.md
     carrier_statuses:
       - accepted
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-031
   -
     id: DSET-DEFECT-OPS-001
     type: problem
@@ -3819,11 +3821,12 @@ semantic_atoms:
     type: problem
     subtype: defect
     emission_status: accepted
-    current_status: accepted
+    current_status: resolved
     priority: high
     priority_source: atom:DSET-DEFECT-GOV-004
     child_of: []
-    lifecycle_events: []
+    lifecycle_events:
+      - DSET-LIFECYCLE-EVENT-031
     absorbed_by: []
     archived: false
   -
@@ -4436,6 +4439,13 @@ lineage:
       - DSET-REQUIREMENT-SKILL-011
     parent_to: []
   -
+    id: DSET-EVIDENCE-RECORD-019
+    artifact_id: DSET-EVIDENCE-RECORD-019
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-019-independent-review-remediation.md
+    child_of:
+      - DSET-REQUIREMENT-SKILL-011
+    parent_to: []
+  -
     id: DSET-GAP-GOV-001
     artifact_id: DSET-ATOMIC-RECORD-022
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-022-legacy-immutability.md
@@ -4546,6 +4556,7 @@ lineage:
       - DSET-EVIDENCE-RECORD-005
       - DSET-EVIDENCE-RECORD-013
       - DSET-EVIDENCE-RECORD-018
+      - DSET-EVIDENCE-RECORD-019
   -
     id: DSET-REQUIREMENT-TOOL-020
     artifact_id: DSET-ATOMIC-RECORD-010
@@ -4800,6 +4811,12 @@ implementation_edges:
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
+    commit: 3f1e9ff7410fd7d8b0f7b2e326a04a96a30472e8
+    implements:
+      - DSET-REQUIREMENT-GOV-008
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
     commit: 40e04e11687be629a46df2fb9f5e7cb4d537decf
     implements:
       - DSET-DECISION-SKILL-001
@@ -4854,6 +4871,12 @@ implementation_edges:
       - DSET-DECISION-GOV-002
     llm_session_ids: []
   -
+    commit: 507a4e48436638a29e060315f2e0c961f858dfdb
+    implements:
+      - DSET-DECISION-OPS-004
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
     commit: 51add3b03961d10f9e1035896c680f2f493d0068
     implements:
       - DSET-DECISION-SKILL-001
@@ -4868,6 +4891,13 @@ implementation_edges:
     commit: 5500d879bd25148e68a1289072d88770c014b41e
     implements:
       - DSET-DECISION-GOV-003
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: 5643e23367e942914999c93d9be61fcc36903899
+    implements:
+      - DSET-REQUIREMENT-OPS-003
+      - DSET-REQUIREMENT-SKILL-004
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
@@ -5255,6 +5285,13 @@ implementation_edges:
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
+    commit: f1ccdef8c48ffc8ed1bb6106c00a932ef22a57fe
+    implements:
+      - DSET-REQUIREMENT-GOV-021
+      - DSET-REQUIREMENT-SKILL-005
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
     commit: f29e247797ff28cabe7baa312e53987b166bdc41
     implements:
       - DSET-DECISION-GOV-003
@@ -5285,6 +5322,12 @@ implementation_edges:
     commit: f71a42ff14a3592853e7e52fec8afcd194bb8a18
     implements:
       - DSET-DECISION-SKILL-001
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    commit: f7522fd29f1004843066086901e872f0de7f0669
+    implements:
+      - DSET-REQUIREMENT-TOOL-004
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
