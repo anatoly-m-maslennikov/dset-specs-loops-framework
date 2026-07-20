@@ -12,7 +12,7 @@ from .diagnostics import Diagnostic
 from .governance import validate_governance
 from .layout import RepositoryLayout, discover_layout
 from .profiles import VALID_PROFILES, required_artifacts
-from .yaml_subset import YamlSubsetError, load
+from .yaml_subset import YamlSubsetError, load, loads
 
 ID_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
 CHANGE_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
@@ -101,6 +101,8 @@ ARTIFACT_TYPE_SUBTYPES: dict[str, frozenset[str]] = {
 def validate_repository(root: Path) -> list[Diagnostic]:
     root = root.resolve()
     diagnostics: list[Diagnostic] = []
+    include_subtype_in_names, settings_diagnostics = _load_project_settings(root)
+    diagnostics.extend(settings_diagnostics)
     try:
         layout = discover_layout(root)
     except ValueError as error:
@@ -120,7 +122,14 @@ def validate_repository(root: Path) -> list[Diagnostic]:
     if manifest:
         diagnostics.extend(_validate_project_manifest(root, manifest_path, manifest))
         diagnostics.extend(_validate_intake_registry(root, manifest))
-        diagnostics.extend(_validate_artifacts(root, manifest_path, manifest))
+        diagnostics.extend(
+            _validate_artifacts(
+                root,
+                manifest_path,
+                manifest,
+                include_subtype_in_names=include_subtype_in_names,
+            )
+        )
         profiles = manifest.get("profiles", {})
         if isinstance(profiles, dict) and profiles.get("repository_governance"):
             diagnostics.extend(
@@ -1010,7 +1019,11 @@ def _validate_layered_packages(
 
 
 def _validate_artifacts(
-    root: Path, manifest_path: Path, manifest: dict[str, Any]
+    root: Path,
+    manifest_path: Path,
+    manifest: dict[str, Any],
+    *,
+    include_subtype_in_names: bool,
 ) -> list[Diagnostic]:
     profiles = manifest.get("profiles", {})
     if not isinstance(profiles, dict):
@@ -1062,14 +1075,27 @@ def _validate_artifacts(
         return diagnostics
     type_registry = _safe_load(type_registry_path, diagnostics)
     if type_registry:
+        project = manifest.get("project", {})
+        project_key = project.get("key") if isinstance(project, dict) else None
         diagnostics.extend(
-            validate_artifact_type_registry(root, type_registry_path, type_registry)
+            validate_artifact_type_registry(
+                root,
+                type_registry_path,
+                type_registry,
+                project_key=str(project_key) if project_key else None,
+                include_subtype_in_names=include_subtype_in_names,
+            )
         )
     return diagnostics
 
 
 def validate_artifact_type_registry(
-    root: Path, registry_path: Path, data: dict[str, Any]
+    root: Path,
+    registry_path: Path,
+    data: dict[str, Any],
+    *,
+    project_key: str | None = None,
+    include_subtype_in_names: bool = False,
 ) -> list[Diagnostic]:
     """Validate the documentation-v1 artifact-role vocabulary and path rules."""
     diagnostics: list[Diagnostic] = []
@@ -1084,7 +1110,16 @@ def validate_artifact_type_registry(
     diagnostics.extend(_validate_artifact_classification(registry_path, data))
     types, type_diagnostics = _artifact_type_catalog(registry_path, data)
     diagnostics.extend(type_diagnostics)
-    diagnostics.extend(_validate_artifact_path_rules(root, registry_path, data, types))
+    diagnostics.extend(
+        _validate_artifact_path_rules(
+            root,
+            registry_path,
+            data,
+            types,
+            project_key=project_key,
+            include_subtype_in_names=include_subtype_in_names,
+        )
+    )
     return diagnostics
 
 
@@ -1242,6 +1277,9 @@ def _validate_artifact_path_rules(
     registry_path: Path,
     data: dict[str, Any],
     catalog: dict[str, frozenset[str]],
+    *,
+    project_key: str | None,
+    include_subtype_in_names: bool,
 ) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     raw_rules = data.get("path_rules")
@@ -1299,12 +1337,27 @@ def _validate_artifact_path_rules(
                 )
                 continue
         rules.append((pattern, artifact_type, artifact_subtype))
-    diagnostics.extend(_validate_current_path_matches(root, registry_path, rules))
+    diagnostics.extend(
+        _validate_current_artifact_classifications(
+            root,
+            registry_path,
+            rules,
+            catalog,
+            project_key=project_key,
+            include_subtype_in_names=include_subtype_in_names,
+        )
+    )
     return diagnostics
 
 
-def _validate_current_path_matches(
-    root: Path, registry_path: Path, rules: list[tuple[str, str, str | None]]
+def _validate_current_artifact_classifications(
+    root: Path,
+    registry_path: Path,
+    rules: list[tuple[str, str, str | None]],
+    catalog: dict[str, frozenset[str]],
+    *,
+    project_key: str | None,
+    include_subtype_in_names: bool,
 ) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     ignored_parts = {
@@ -1321,9 +1374,10 @@ def _validate_current_path_matches(
         if not path.is_file() or any(part in ignored_parts for part in path.parts):
             continue
         relative = path.relative_to(root).as_posix()
-        matches = [
-            pattern for pattern, _, _ in rules if _path_rule_matches(relative, pattern)
+        matched_rules = [
+            rule for rule in rules if _path_rule_matches(relative, rule[0])
         ]
+        matches = [rule[0] for rule in matched_rules]
         if len(matches) > 1:
             diagnostics.append(
                 _diag(
@@ -1332,7 +1386,174 @@ def _validate_current_path_matches(
                     "artifact path matches multiple rules: " + ", ".join(matches),
                 )
             )
+        direct = _direct_artifact_classification(path)
+        if direct is None:
+            continue
+        artifact_type, artifact_subtype, artifact_id = direct
+        if artifact_type not in catalog:
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    path,
+                    f"direct metadata uses unknown artifact type: {artifact_type}",
+                )
+            )
+            continue
+        if (
+            artifact_subtype is not None
+            and artifact_subtype not in catalog[artifact_type]
+        ):
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    path,
+                    "direct metadata has a subtype/type mismatch",
+                )
+            )
+        if len(matched_rules) == 1:
+            _, rule_type, rule_subtype = matched_rules[0]
+            if (artifact_type, artifact_subtype) != (rule_type, rule_subtype):
+                diagnostics.append(
+                    _diag(
+                        "DSET-E156",
+                        path,
+                        "direct metadata conflicts with its path rule",
+                    )
+                )
+        if (
+            project_key is not None
+            and artifact_id is not None
+            and "templates" not in path.relative_to(root).parts
+        ):
+            diagnostics.extend(
+                _validate_artifact_name(
+                    path,
+                    artifact_id,
+                    project_key,
+                    artifact_type,
+                    artifact_subtype,
+                    include_subtype_in_names=include_subtype_in_names,
+                )
+            )
     return diagnostics
+
+
+def _direct_artifact_classification(
+    path: Path,
+) -> tuple[str, str | None, str | None] | None:
+    if path.suffix.lower() != ".md":
+        return None
+    try:
+        content = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeError):
+        return None
+    lines = content.splitlines()
+    if not lines or lines[0].strip() != "---":
+        return None
+    try:
+        end = lines.index("---", 1)
+    except ValueError:
+        return None
+    try:
+        metadata = loads("\n".join(lines[1:end]))
+    except YamlSubsetError:
+        return None
+    if not isinstance(metadata, dict):
+        return None
+    artifact_type = metadata.get("artifact_type")
+    artifact_subtype = metadata.get("artifact_subtype")
+    artifact_id = metadata.get("artifact_id")
+    if artifact_type is None and artifact_subtype is None:
+        return None
+    return (
+        str(artifact_type),
+        str(artifact_subtype) if artifact_subtype is not None else None,
+        str(artifact_id) if artifact_id is not None else None,
+    )
+
+
+def _validate_artifact_name(
+    path: Path,
+    artifact_id: str,
+    project_key: str,
+    artifact_type: str,
+    artifact_subtype: str | None,
+    *,
+    include_subtype_in_names: bool,
+) -> list[Diagnostic]:
+    type_token = artifact_type.replace("_", "-").upper()
+    tokens = [project_key, type_token]
+    if include_subtype_in_names and artifact_subtype is not None:
+        tokens.append(artifact_subtype.replace("_", "-").upper())
+    prefix = "-".join(tokens) + "-"
+    identifier_suffix = artifact_id.removeprefix(prefix)
+    filename_suffix = path.stem.removeprefix(prefix)
+    if (
+        artifact_id.startswith(prefix)
+        and path.stem.startswith(prefix)
+        and re.match(r"^\d+(?:-|$)", identifier_suffix)
+        and re.match(r"^\d+(?:-|$)", filename_suffix)
+    ):
+        return []
+    return [
+        _diag(
+            "DSET-E157",
+            path,
+            f"artifact ID and filename must use the configured naming prefix: {prefix}",
+        )
+    ]
+
+
+def _load_project_settings(root: Path) -> tuple[bool, list[Diagnostic]]:
+    path = root / "dset.toml"
+    if not path.is_file():
+        return False, []
+    diagnostics: list[Diagnostic] = []
+    try:
+        lines = path.read_text(encoding="utf-8").splitlines()
+    except (OSError, UnicodeError) as error:
+        return False, [_diag("DSET-E157", path, f"cannot read settings: {error}")]
+    schema_version: str | None = None
+    include_subtype: bool | None = None
+    section = ""
+    for raw in lines:
+        line = raw.split("#", 1)[0].strip()
+        if not line:
+            continue
+        if line.startswith("[") and line.endswith("]"):
+            section = line[1:-1].strip()
+            continue
+        key, separator, value = line.partition("=")
+        if not separator:
+            continue
+        key = key.strip()
+        value = value.strip()
+        if not section and key == "schema_version":
+            schema_version = value.strip('"')
+        if section == "optional_capabilities" and key == "artifact_subtype_in_names":
+            if value not in {"true", "false"}:
+                diagnostics.append(
+                    _diag(
+                        "DSET-E157",
+                        path,
+                        "artifact_subtype_in_names must be true or false",
+                    )
+                )
+            else:
+                include_subtype = value == "true"
+    if schema_version != "1.0":
+        diagnostics.append(
+            _diag("DSET-E157", path, "settings schema_version must be 1.0")
+        )
+    if include_subtype is None:
+        diagnostics.append(
+            _diag(
+                "DSET-E157",
+                path,
+                "optional_capabilities.artifact_subtype_in_names is required",
+            )
+        )
+    return bool(include_subtype), diagnostics
 
 
 def _path_rule_matches(relative_path: str, pattern: str) -> bool:

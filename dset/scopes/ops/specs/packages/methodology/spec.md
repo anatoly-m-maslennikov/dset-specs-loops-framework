@@ -43,3 +43,23 @@ Each applicable project must configure an integration branch, protected release 
 The framework product version, CLI package version, release notes, rendered Git tag, and publisher release must carry equivalent release identity. Product identity is canonical SemVer; Python maps every `MAJOR.MINOR.PATCH-rc.N` to PEP 440 `MAJOR.MINOR.PATCHrcN`, and no other mismatch is accepted. Committed files express prepared identity; live tag/release state at the protected merge SHA proves publication. Schema, governance-profile, language-profile, artifact-profile, and template-format versions remain independent compatibility surfaces.
 
 **Scenario DSET-SCENARIO-OPS-008:** Product/package `0.3.0` may validly use schema `1.0` and governance profile `core-v1@0.2`; neither compatibility version implies DSET 1.0 readiness.
+
+## DSET-REQUIREMENT-OPS-013 — Release lifecycle artifacts are flat and typed
+
+Every release-applicable project must represent release planning and history
+with five peer roles: Version Scope, Roadmap, Release Plan, Readiness Record,
+and Release Record. Version Scope defines one version line; Roadmap targets one
+next-minor Version Scope and owns milestone entries; Release Plan selects one
+exact release transition and its Changes; Readiness Record owns the explicit
+ready-or-blocked disposition for one exact candidate; and Release Record
+immutably owns both the delivered summary and publication identity. Applicable
+artifacts use typed references rather than containment or copied obligations.
+Verification may support a Readiness Record but cannot authorize release.
+Forge notes and changelogs are mirrors or derived views of Release Records.
+
+**Scenario DSET-SCENARIO-OPS-014:** A `0.4.0` candidate references its `0.4`
+Version Scope and exact Release Plan. Passing Tests, Evals, and Verification are
+linked evidence, but the candidate remains blocked until its Readiness Record
+explicitly says ready. After publication, one immutable Release Record binds
+the scope, plan, readiness record, protected merge SHA, tag, packages, forge
+identity, migration notes, and user-visible summary.

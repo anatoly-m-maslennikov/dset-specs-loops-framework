@@ -8,6 +8,22 @@ Own repository governance, artifact architecture, intake, provenance, migrations
 
 GOV owns the single intake and governance registries. Generated views are navigational evidence, not parallel truth, and other scopes retain their own semantic artifacts.
 
+## Layer map
+
+```mermaid
+flowchart TB
+    GOV["GOV"]
+    RULES["Governance and artifact registries"]
+    INTAKE["Problems, Questions, provenance"]
+    ASSETS["Schemas, templates, migrations"]
+    VIEWS["Traceability and derived views"]
+
+    GOV --> RULES
+    GOV --> INTAKE
+    GOV --> ASSETS
+    GOV --> VIEWS
+```
+
 ## Start here
 
 - [Governance registry](governance.yaml)

@@ -2,6 +2,7 @@
 
 Package and specification-governance templates owned by META.
 
+- [Project settings](dset.toml)
 - [Legacy schema 1.0 package manifest](package/legacy/package.yaml)
 - [Layered schema 1.2 package fragment](package/layered/package.yaml)
 

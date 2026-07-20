@@ -1,5 +1,6 @@
 # GOV templates
 
+- [Architecture-view templates](architecture-view/README.md)
 - [Change templates](change/), with explicit
   [legacy schema 1.1](change/legacy/change.yaml) and
   [layered schema 1.2](change/layered/change.yaml) manifests plus the neutral

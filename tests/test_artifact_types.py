@@ -48,6 +48,23 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
             },
         )
 
+    def test_analysis_report_templates_cover_every_direct_subtype(self) -> None:
+        template_root = ROOT / "dset/scopes/gov/templates/change"
+        expected = {
+            "solution-landscape.md": "solution_landscape",
+            "root-cause.md": "root_cause_analysis",
+            "proposal.md": "proposal",
+            "technical-investigation.md": "technical_investigation",
+            "external-audit-analysis.md": "external_audit_analysis",
+        }
+        for name, subtype in expected.items():
+            with self.subTest(name=name):
+                content = (template_root / name).read_text(encoding="utf-8")
+                self.assertTrue(
+                    content.startswith("---\nartifact_type: analysis_report")
+                )
+                self.assertIn(f"artifact_subtype: {subtype}", content)
+
     def test_unknown_type_is_rejected(self) -> None:
         data = self._copy()
         data["path_rules"][0]["artifact_type"] = "unknown"
@@ -100,6 +117,79 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
             any("matches multiple rules" in item.message for item in diagnostics)
         )
 
+    def test_direct_metadata_subtype_mismatch_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            path = root / "APP-SPECIFICATION-001-example.md"
+            path.write_text(
+                "---\n"
+                "artifact_type: specification\n"
+                "artifact_subtype: roadmap\n"
+                "artifact_id: APP-SPECIFICATION-001\n"
+                "---\n",
+                encoding="utf-8",
+            )
+            diagnostics = validate_artifact_type_registry(
+                root,
+                REGISTRY_PATH,
+                self.registry,
+                project_key="APP",
+            )
+        self.assertTrue(
+            any(
+                "direct metadata has a subtype/type mismatch" in item.message
+                for item in diagnostics
+            )
+        )
+
+    def test_type_only_names_are_default_and_subtype_names_are_opt_in(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            base = root / "APP-SPECIFICATION-001-core.md"
+            self._write_classified(base, "APP-SPECIFICATION-001")
+            self.assertEqual(
+                validate_artifact_type_registry(
+                    root,
+                    REGISTRY_PATH,
+                    self.registry,
+                    project_key="APP",
+                ),
+                [],
+            )
+            base.unlink()
+            advanced = root / "APP-SPECIFICATION-VERSION-SCOPE-001-core.md"
+            self._write_classified(
+                advanced,
+                "APP-SPECIFICATION-VERSION-SCOPE-001",
+            )
+            default_diagnostics = validate_artifact_type_registry(
+                root,
+                REGISTRY_PATH,
+                self.registry,
+                project_key="APP",
+            )
+            self.assertTrue(
+                any(item.code == "DSET-E157" for item in default_diagnostics)
+            )
+            self.assertEqual(
+                validate_artifact_type_registry(
+                    root,
+                    REGISTRY_PATH,
+                    self.registry,
+                    project_key="APP",
+                    include_subtype_in_names=True,
+                ),
+                [],
+            )
+
+    def test_project_settings_default_to_type_only_names(self) -> None:
+        settings = (ROOT / "dset.toml").read_text(encoding="utf-8")
+        template = (ROOT / "dset/scopes/meta/templates/dset.toml").read_text(
+            encoding="utf-8"
+        )
+        self.assertEqual(settings, template)
+        self.assertIn("artifact_subtype_in_names = false", settings)
+
     def test_release_lifecycle_projection_is_compiled(self) -> None:
         rule = (
             ROOT / "dset/scopes/gov/governance/artifact-classification.md"
@@ -125,6 +215,17 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
 
     def _copy(self) -> dict[str, Any]:
         return copy.deepcopy(self.registry)
+
+    @staticmethod
+    def _write_classified(path: Path, artifact_id: str) -> None:
+        path.write_text(
+            "---\n"
+            "artifact_type: specification\n"
+            "artifact_subtype: version_scope\n"
+            f"artifact_id: {artifact_id}\n"
+            "---\n",
+            encoding="utf-8",
+        )
 
     @staticmethod
     def _type(data: dict[str, Any], identifier: str) -> dict[str, Any]:

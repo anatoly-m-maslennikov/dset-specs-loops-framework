@@ -112,6 +112,9 @@ artifact_types:
 
 path_rules:
   -
+    pattern: "**/analysis-report.md"
+    artifact_type: analysis_report
+  -
     pattern: "**/decision-*.md"
     artifact_type: atomic_record
   -
@@ -122,6 +125,14 @@ path_rules:
     pattern: "**/root-cause.md"
     artifact_type: analysis_report
     artifact_subtype: root_cause_analysis
+  -
+    pattern: "**/technical-investigation.md"
+    artifact_type: analysis_report
+    artifact_subtype: technical_investigation
+  -
+    pattern: "**/external-audit-analysis.md"
+    artifact_type: analysis_report
+    artifact_subtype: external_audit_analysis
   -
     pattern: "**/proposal.md"
     artifact_type: analysis_report
@@ -151,6 +162,24 @@ path_rules:
     artifact_type: plan
     artifact_subtype: evaluation_plan
   -
+    pattern: "**/version-scope.md"
+    artifact_type: specification
+    artifact_subtype: version_scope
+  -
+    pattern: "**/roadmap.md"
+    artifact_type: plan
+    artifact_subtype: roadmap
+  -
+    pattern: "**/release-plan.md"
+    artifact_type: plan
+    artifact_subtype: release_plan
+  -
+    pattern: "**/readiness-record.md"
+    artifact_type: readiness_record
+  -
+    pattern: "**/release-record.md"
+    artifact_type: release_record
+  -
     pattern: "**/change.yaml"
     artifact_type: change
   -
@@ -164,4 +193,3 @@ path_rules:
     pattern: "**/README.md"
     artifact_type: navigation
     artifact_subtype: hub
-

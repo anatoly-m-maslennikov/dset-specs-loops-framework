@@ -213,6 +213,14 @@ from artifact classification. Every governed artifact has one primary artifact
 type, recorded directly or resolved through one unambiguous registered path
 rule.
 
+New artifact IDs and filenames use the primary artifact type token by default;
+the optional subtype remains metadata. For example, Version Scope may use
+`APP-SPECIFICATION-001-0-4-core.md`, and Roadmap may use
+`APP-PLAN-001-0-4-core.md`. Projects may opt newly emitted artifacts into
+subtype tokens with
+`optional_capabilities.artifact_subtype_in_names = true` in root `dset.toml`.
+This independent optional capability never renames existing stable identities.
+
 An Analysis Report interprets information without authorizing its conclusion.
 A Solution Landscape compares live options; Root-Cause Analysis supports a
 cause for an observed Problem; Proposal recommends one candidate; Technical

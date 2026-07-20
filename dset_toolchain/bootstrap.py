@@ -278,6 +278,7 @@ def _stage_project(
     }
     manifest_path = stage / "dset" / "scopes" / "meta" / "dset.yaml"
     manifest_path.write_text(dump(manifest), encoding="utf-8")
+    shutil.copyfile(source_layout.find_template("dset.toml"), stage / "dset.toml")
     _materialize_package(
         source_layout,
         stage,

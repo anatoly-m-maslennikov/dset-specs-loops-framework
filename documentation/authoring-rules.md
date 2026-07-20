@@ -30,6 +30,12 @@
     result, evidence, gate disposition, and derived Verification. A single
     stored record may link several of these roles but must not collapse their
     meanings.
+12. Name new artifact IDs and files with their primary artifact type by
+    default. Keep the optional artifact subtype in metadata. Enable subtype
+    tokens only through the independent
+    `optional_capabilities.artifact_subtype_in_names` setting in root
+    `dset.toml`; never rename an immutable or already stable identity merely
+    because the setting changes.
 
 ## Analysis reports
 
@@ -73,7 +79,13 @@ When two entities are mutually related, define each independently first using sh
 - State goals, boundaries, components, ownership, dependency direction, and prohibited coupling.
 - Separate accepted structural constraints from candidate designs and implementation batches.
 - Link material choices to Decisions and behavioral constraints to specifications.
-- Use diagrams only when relationships are harder to understand linearly.
+- Maintain a Mermaid view at every enabled structural level. The project view
+  shows immediate feature groups, or features/layers when groups are absent;
+  each feature-group view shows its features; each feature or layer view shows
+  its main functions, capabilities, or components. Do not create placeholders
+  for disabled levels.
+- Keep each diagram one level deep, link its owners, and treat it as navigation
+  or compiled architecture rather than authority.
 
 ## Rationale and Decisions
 

@@ -10,6 +10,11 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 | **Product release** | One coordinated DSET framework and distributable CLI-package identity prepared through the configured integration-to-protected release PR and published from its protected merge commit |
 | **Release candidate** | A fully working `1.0.0-rc.N` build whose declared scope and required proof are complete and whose remaining work is release-blocker correction or final validation only |
 | **Hosted delivery automation** | GitHub workflows and rulesets that govern the repository's production publication path and use GitHub PR/check/run/commit identities as authoritative operational evidence |
+| **Version Scope** | Evergreen specification of the promises, exclusions, and exit criteria for one declared version line |
+| **Roadmap** | Evergreen dependency-aware plan from one published baseline to exactly one next-minor Version Scope; milestones are local checkpoint entries, not artifacts |
+| **Release Plan** | Evergreen plan for one exact proposed release transition and its participating Changes |
+| **Readiness Record** | Exact-candidate gate disposition that records applicability, results, blockers, and evidence and explicitly concludes ready or blocked |
+| **Release Record** | Immutable post-publication record of what one exact release delivered and where it was published |
 
 ## Invariants
 
@@ -19,3 +24,4 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 - **DSET-INVARIANT-OPS-004:** Release artifacts are prepared and reviewed before merge; immutable tag and publisher-release identity derive from the configured protected merge commit without a post-merge content mutation.
 - **DSET-INVARIANT-OPS-005:** `1.0.0-rc.N` and `1.0.0` represent fully working, evidence-complete gates; schedules, accumulated version increments, or partial scope cannot substitute for readiness.
 - **DSET-INVARIANT-OPS-006:** Product, CLI package, release notes, tag, and publisher release share one canonical/equivalent release identity, while schemas, profiles, and template formats retain independent compatibility versions.
+- **DSET-INVARIANT-OPS-007:** The Release lifecycle uses exactly five flat peer artifacts—Version Scope, Roadmap, Release Plan, Readiness Record, and Release Record—connected by typed references. Verification never substitutes for Readiness, milestones remain Roadmap entries, and rendered release notes never compete with the immutable Release Record.

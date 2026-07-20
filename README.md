@@ -16,6 +16,28 @@ This repository is the public source for the DSET framework, executable toolchai
 
 Framework rules and release assets live here. Each adopting repository owns its own behavioral truth and changes under its local `dset/` root. Installed skills, cached tooling, private working notes, and external project artifacts are not independent framework authorities.
 
+## Project architecture map
+
+This repository enables layers rather than feature groups. The project view
+therefore shows the five immediate semantic owners; each linked layer hub shows
+its own main functions one level below.
+
+```mermaid
+flowchart LR
+    P["DSET project"]
+    META["META<br/>Identity and behavioral truth"]
+    GOV["GOV<br/>Governance and artifact control"]
+    TOOL["TOOL<br/>Executable toolchain"]
+    SKILL["SKILL<br/>Agent workflows"]
+    OPS["OPS<br/>Delivery and supportability"]
+
+    P --> META
+    P --> GOV
+    P --> TOOL
+    P --> SKILL
+    P --> OPS
+```
+
 ## Core loop
 
 The core workflow separates unresolved context, atomic authority, compiled

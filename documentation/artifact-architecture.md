@@ -28,6 +28,12 @@ an Atomic Record means. Workflow, queue, skill, tool, host, filename, folder,
 and intended next action determine neither axis. Direct metadata or exactly one
 registered path rule supplies artifact classification; ambiguity fails closed.
 
+Base artifact IDs and filenames expose the primary artifact type, not its
+optional subtype. The subtype remains direct metadata. Root `dset.toml` exposes
+independent optional capabilities; setting
+`artifact_subtype_in_names = true` opts only newly emitted artifacts into
+subtype-bearing names and never rewrites stable history.
+
 An active applicable source atom wins when its compiled Specification,
 Procedure, or Plan is stale.
 The drift must be routed for recompilation; implementation and evidence cannot
@@ -53,6 +59,13 @@ repository root hub
   owning evergreen projections.
 
 Every governed area declares one root, owner, purpose, hub, and parent. A child may have many semantic links but one structural parent. Cycles and missing parents are invalid.
+
+Each enabled structural level also owns one one-level-down Mermaid view. A
+project hub shows feature groups when present, otherwise its immediate features
+and/or layers. A feature-group hub shows its features. A feature or layer hub
+shows its main functions, capabilities, or components. Disabled optional levels
+need no placeholder. These views provide the helicopter view at the reader's
+current scale and link canonical owners without replacing them.
 
 ## Current truth and history
 

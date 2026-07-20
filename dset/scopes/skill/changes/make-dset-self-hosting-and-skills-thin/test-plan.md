@@ -6,10 +6,10 @@ Change executes and records their applicable proof; it does not redefine them.
 | Owning plan | Applicable Test IDs |
 |---|---|
 | [META](../../../meta/specs/packages/methodology/test-plan.md) | `DSET-TEST-META-007`, `DSET-TEST-META-010..011` |
-| [GOV](../../../gov/specs/packages/methodology/test-plan.md) | `DSET-TEST-GOV-014..029` |
+| [GOV](../../../gov/specs/packages/methodology/test-plan.md) | `DSET-TEST-GOV-014..031` |
 | [TOOL](../../../tool/specs/packages/methodology/test-plan.md) | `DSET-TEST-TOOL-005`, `DSET-TEST-TOOL-018..019` |
 | [SKILL](../../specs/packages/methodology/test-plan.md) | `DSET-TEST-SKILL-001..010` |
-| [OPS](../../../ops/specs/packages/methodology/test-plan.md) | `DSET-TEST-OPS-003..007` |
+| [OPS](../../../ops/specs/packages/methodology/test-plan.md) | `DSET-TEST-OPS-003..007`, `DSET-TEST-OPS-016` |
 
 Connected accepted IDs are `DSET-TEST-META-007`, `DSET-TEST-META-010`,
 `DSET-TEST-META-011`, `DSET-TEST-GOV-014`, `DSET-TEST-GOV-015`,
@@ -20,13 +20,15 @@ Connected accepted IDs are `DSET-TEST-META-007`, `DSET-TEST-META-010`,
 `DSET-TEST-GOV-027`,
 `DSET-TEST-GOV-028`,
 `DSET-TEST-GOV-029`,
+`DSET-TEST-GOV-030`, `DSET-TEST-GOV-031`,
 `DSET-TEST-TOOL-018`, `DSET-TEST-TOOL-019`,
 `DSET-TEST-SKILL-001`, `DSET-TEST-SKILL-002`, `DSET-TEST-SKILL-003`,
 `DSET-TEST-SKILL-004`, `DSET-TEST-SKILL-005`,
 `DSET-TEST-SKILL-006`, `DSET-TEST-SKILL-007`, `DSET-TEST-SKILL-008`,
 `DSET-TEST-SKILL-009`, `DSET-TEST-SKILL-010`,
 `DSET-TEST-OPS-003`, `DSET-TEST-OPS-004`,
-`DSET-TEST-OPS-005`, `DSET-TEST-OPS-006`, and `DSET-TEST-OPS-007`.
+`DSET-TEST-OPS-005`, `DSET-TEST-OPS-006`, `DSET-TEST-OPS-007`, and
+`DSET-TEST-OPS-016`.
 
 ## Change-only deterministic proof
 

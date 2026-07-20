@@ -8,26 +8,33 @@ This is the control-plane hub for the repository as both the DSET framework sour
 
 `dset/scopes/` owns project control artifacts. Public framework prose remains under `methodology/` and `documentation/`; executable source remains under `dset_toolchain/`, `skills/`, and `.github/`. Those implementation surfaces trace back to accepted layer-owned contracts.
 
+## Project-control map
+
+```mermaid
+flowchart LR
+    DSET["DSET control plane"]
+    META["META"]
+    GOV["GOV"]
+    TOOL["TOOL"]
+    SKILL["SKILL"]
+    OPS["OPS"]
+
+    DSET --> META
+    DSET --> GOV
+    DSET --> TOOL
+    DSET --> SKILL
+    DSET --> OPS
+```
+
 ## Start here
 
+- [Project settings](../dset.toml) — independent optional capabilities; base
+  mode keeps artifact subtypes out of IDs and filenames.
 - [META](scopes/meta/README.md) — identity, accepted behavior, specification semantics, and proof plans.
 - [GOV](scopes/gov/README.md) — governance, intake, provenance, migrations, and generated views.
 - [TOOL](scopes/tool/README.md) — executable CLI, validation, fixtures, traceability, and self-hosting.
 - [SKILL](scopes/skill/README.md) — agent workflows, delegation, and local run evidence.
 - [OPS](scopes/ops/README.md) — delivery, release, supportability, and hosted evidence.
-
-## Current structure
-
-```text
-dset/
-├── README.md
-└── scopes/
-    ├── meta/
-    ├── gov/
-    ├── tool/
-    ├── skill/
-    └── ops/
-```
 
 Each scope has a hub and may own governing rules, schemas, templates, a fragment of the logical `methodology` package, and Changes. The project manifest is [META-owned](scopes/meta/dset.yaml). The single governance and intake registries are [GOV-owned](scopes/gov/governance.yaml) and [GOV-owned](scopes/gov/intake.yaml). Generated [traceability](scopes/gov/generated/traceability.yaml) is a non-authoritative relationship view.
 

@@ -30,6 +30,21 @@ and `subtype` remain reserved for semantic atom classification. Existing
 immutable atoms are classified externally; classification never edits their
 emitted content.
 
+## Naming
+
+The base naming convention uses the primary artifact type token in a new
+artifact ID and filename. Optional artifact subtypes live in direct metadata
+and do not enter the structural name. For example, a Version Scope is
+`APP-SPECIFICATION-001-0-4-core.md` with
+`artifact_subtype: version_scope`; a Roadmap is
+`APP-PLAN-001-0-4-core.md` with `artifact_subtype: roadmap`.
+
+Projects may opt into subtype tokens for newly emitted artifacts with
+`optional_capabilities.artifact_subtype_in_names = true` in root `dset.toml`.
+This is an independent optional capability, not a bundled “advanced mode.” A
+setting change never renames an immutable atom or an already stable artifact
+identity.
+
 ## Role boundaries
 
 - Analysis Report interprets information; Evidence Record records an
@@ -65,4 +80,3 @@ management, performed production support, and operation of deployment
 infrastructure are outside it. External work may supply operator input or
 evidence. Developing required supportability behavior or documentation remains
 Implementation.
-

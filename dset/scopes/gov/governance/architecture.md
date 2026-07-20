@@ -132,3 +132,17 @@ They are reproducible views over canonical artifacts, carry no independent
 authority, and must link back to stable IDs and owning sources. A stale or
 missing generated view cannot override or invalidate otherwise valid canonical
 truth.
+
+## One-level architecture views
+
+Every project hub includes a Mermaid view of its immediate enabled structural
+children: feature groups when present, otherwise features and/or layers. Every
+feature-group hub shows its features. Every feature or layer hub shows the main
+functions, capabilities, or components it immediately owns. A project does not
+create empty diagrams for structural levels it has not enabled.
+
+Each view stays one level deep, links its owning hubs or artifacts, and remains
+consistent with current accepted truth. It is Navigation or compiled
+Specification/Architecture, never independent authority. Cross-level details
+belong in the child view rather than expanding one whole-project diagram until
+it becomes unreadable.

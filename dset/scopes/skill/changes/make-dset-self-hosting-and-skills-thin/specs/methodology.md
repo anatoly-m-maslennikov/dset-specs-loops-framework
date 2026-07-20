@@ -20,6 +20,9 @@ the implementation scope to its current layer-owned Requirement owners.
 | Workflow-independent Problem, Question, and Conflict semantics | `DSET-REQUIREMENT-GOV-027` |
 | Recommended optional rationale for Decisions and other atomic artifacts | `DSET-REQUIREMENT-GOV-028` |
 | Independent MECE artifact classification and Analysis Report boundaries | `DSET-REQUIREMENT-GOV-029` |
+| Type-first artifact names and independently selectable subtype-name capability | `DSET-REQUIREMENT-GOV-030` |
+| One-level-down project/group/feature/layer architecture views | `DSET-REQUIREMENT-GOV-031` |
+| Five flat Release lifecycle artifacts | `DSET-REQUIREMENT-OPS-013` |
 | Role-aware handling for every governed conflict pairing, with priority selection only where permitted | `DSET-REQUIREMENT-TOOL-019` |
 
 The canonical text lives in the accepted META, GOV, TOOL, SKILL, and OPS package
@@ -38,6 +41,7 @@ Connected accepted IDs are `DSET-REQUIREMENT-META-007`,
 `DSET-REQUIREMENT-GOV-026`, `DSET-REQUIREMENT-GOV-027`,
 `DSET-REQUIREMENT-GOV-028`,
 `DSET-REQUIREMENT-GOV-029`,
+`DSET-REQUIREMENT-GOV-030`, `DSET-REQUIREMENT-GOV-031`,
 `DSET-REQUIREMENT-TOOL-018`,
 `DSET-REQUIREMENT-TOOL-019`,
 `DSET-REQUIREMENT-SKILL-002`, `DSET-REQUIREMENT-SKILL-003`,
@@ -45,8 +49,8 @@ Connected accepted IDs are `DSET-REQUIREMENT-META-007`,
 `DSET-REQUIREMENT-SKILL-006`, `DSET-REQUIREMENT-SKILL-007`,
 `DSET-REQUIREMENT-SKILL-008`, `DSET-REQUIREMENT-SKILL-009`,
 `DSET-REQUIREMENT-OPS-003`, `DSET-REQUIREMENT-OPS-004`,
-`DSET-REQUIREMENT-OPS-005`, `DSET-REQUIREMENT-OPS-006`, and
-`DSET-REQUIREMENT-OPS-007`.
+`DSET-REQUIREMENT-OPS-005`, `DSET-REQUIREMENT-OPS-006`,
+`DSET-REQUIREMENT-OPS-007`, and `DSET-REQUIREMENT-OPS-013`.
 
 ## ADDED — DSET-REQUIREMENT-GOV-029 MECE artifact classification
 

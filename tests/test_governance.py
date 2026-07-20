@@ -446,6 +446,7 @@ class GovernanceTests(unittest.TestCase):
         self.assertEqual(manifest["profiles"]["delegation_budget"], "medium")
         self.assertEqual(manifest["release"]["status"], "not-applicable")
         self.assertEqual(manifest["work_items"]["registry"], "dset/intake.yaml")
+        self.assertTrue((self.root / "dset.toml").is_file())
         self.assertTrue((self.root / "dset" / "artifact-types.yaml").is_file())
         self.assertTrue((self.root / "dset" / "budget.yaml").is_file())
         self.assertTrue((self.root / "dset" / "intake.yaml").is_file())

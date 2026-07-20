@@ -100,6 +100,7 @@ def _write_adopter_files(source_root: Path, root: Path) -> None:
         "canonical_command": "python -m dset_toolchain check .",
     }
     (dset / "dset.yaml").write_text(dump(manifest), encoding="utf-8")
+    shutil.copyfile(source_layout.find_template("dset.toml"), root / "dset.toml")
     shutil.copyfile(
         source_layout.find_template("artifact-types.yaml"),
         dset / "artifact-types.yaml",

@@ -1,0 +1,60 @@
+from __future__ import annotations
+
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+class ArchitectureViewTests(unittest.TestCase):
+    def test_project_hub_maps_enabled_layers(self) -> None:
+        content = (ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertIn("## Project architecture map", content)
+        self.assertIn("```mermaid", content)
+        for layer in ("META", "GOV", "TOOL", "SKILL", "OPS"):
+            self.assertIn(f'{layer}["{layer}', content)
+
+    def test_every_layer_hub_maps_its_main_functions(self) -> None:
+        expected = {
+            "meta": ("Project and version identity", "Evaluation definitions"),
+            "gov": ("Governance and artifact registries", "Traceability"),
+            "tool": ("CLI and runtime bridge", "self-hosting"),
+            "skill": ("Thin host wrappers", "Delegation and budget policy"),
+            "ops": ("Release lifecycle", "Supportability and investigation"),
+        }
+        for layer, phrases in expected.items():
+            with self.subTest(layer=layer):
+                content = (ROOT / f"dset/scopes/{layer}/README.md").read_text(
+                    encoding="utf-8"
+                )
+                self.assertIn("## Layer map", content)
+                self.assertIn("```mermaid", content)
+                for phrase in phrases:
+                    self.assertIn(phrase, content)
+
+    def test_templates_cover_only_enabled_structural_levels(self) -> None:
+        root = ROOT / "dset/scopes/gov/templates/architecture-view"
+        expected = {"project.md", "feature-group.md", "feature-or-layer.md"}
+        self.assertEqual(
+            {path.name for path in root.glob("*.md") if path.name != "README.md"},
+            expected,
+        )
+        for name in expected:
+            with self.subTest(name=name):
+                content = (root / name).read_text(encoding="utf-8")
+                self.assertIn("artifact_type: specification", content)
+                self.assertIn("artifact_subtype: architecture", content)
+                self.assertIn("```mermaid", content)
+
+    def test_governance_requires_one_level_down_without_placeholders(self) -> None:
+        live = ROOT / "dset/scopes/gov/governance/architecture.md"
+        template = ROOT / "dset/scopes/gov/templates/governance/core-v1/architecture.md"
+        content = live.read_text(encoding="utf-8")
+        self.assertEqual(content, template.read_text(encoding="utf-8"))
+        self.assertIn("feature groups when present", content)
+        self.assertIn("does not\ncreate empty diagrams", content)
+        self.assertIn("Each view stays one level deep", content)
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -8,6 +8,32 @@ manifest: schema 1.2 `dset/scopes/meta/dset.yaml` or the legacy central path.
 Generic DSET skills use configured roles, never hard-coded branch or forge
 names.
 
+## Five flat Release lifecycle artifacts
+
+The Release lifecycle has five peer roles. They are connected by typed
+references; none owns, contains, subclasses, or serves as the base Type of
+another:
+
+- **Version Scope** is `specification/version_scope` and owns promises,
+  exclusions, and exit criteria for one declared version line.
+- **Roadmap** is `plan/roadmap` and orders the mutable route from the published
+  baseline to one next-minor Version Scope. Milestones are Roadmap entries.
+- **Release Plan** is `plan/release_plan` and selects one exact proposed version
+  and its participating Changes.
+- **Readiness Record** is `readiness_record` and owns the explicit
+  ready-or-blocked disposition for one exact candidate.
+- **Release Record** is `release_record` and immutably owns the delivered
+  summary, migration notes, protected merge SHA, tag, packages, and publisher
+  identity after publication.
+
+All applicable artifacts reference the stable Version Scope identity through
+`version_scope_ref`. A Readiness Record additionally references its Release
+Plan and candidate commit. A Release Record references the Version Scope,
+Release Plan, accepted Readiness Record, and protected merge commit. Release
+notes and changelogs are rendered mirrors or derived views of the Release
+Record. Verification assesses evidence but never substitutes for the explicit
+Readiness Record gate disposition.
+
 The base flow is local work on the configured integration branch, push to its
 remote counterpart, then open one integration-to-protected release PR. A Change
 may optionally use an isolated branch-backed workspace/worktree and review that
@@ -20,8 +46,8 @@ contains the committed declaration; any other participating Changes contain
 only a `release.owner_change` reference to that owner. Omission, multiple
 declarations, and dangling/cyclic owner references fail preparation, so a
 multi-change PR cannot escape or duplicate the transition. The declaration is
-the authority for class, base, target, and readiness identity;
-package metadata, release notes, PR text, tag, and forge release are validated
+the authority for class, base, target, and Readiness Record identity;
+package metadata, rendered notes, PR text, tag, and forge release are validated
 mirrors. The base is read exactly once from the protected branch version
 manifest. Re-running preparation must be idempotent and cannot bump the target
 again.
@@ -58,12 +84,14 @@ else under that version and never returns to a lower `0.y.z` identity.
 
 ## RC readiness owner
 
-The change's committed verification artifact is the readiness manifest. It is
-anchored to the exact candidate SHA and lists declared scope, every required
-test/eval/pilot/distribution gate with `applicable` or justified `not-applicable`
-disposition, evidence links, and the blocker register. Final promotion permits
-only release metadata and evidence-link updates; substantive code, behavior, or
-scope changes require a new `rc.N+1` candidate and fresh readiness evidence.
+The committed Readiness Record is the release gate authority. It is anchored
+to the exact candidate SHA and lists declared scope, every required
+test/eval/pilot/distribution gate with `applicable` or justified
+`not-applicable` disposition, evidence links, the blocker register, and one
+explicit `ready` or `blocked` conclusion. Verification is linked assurance
+evidence. Final promotion permits only release metadata and evidence-link
+updates; substantive code, behavior, or scope changes require a new `rc.N+1`
+candidate and fresh readiness evidence.
 
 ## Identity and publication
 
@@ -77,7 +105,10 @@ Committed version files express the prepared identity, not live publication
 status. Only the configured forge tag/release at the exact protected merge SHA
 proves that an identity is published.
 
-Post-merge publication is required at the exact protected-branch merge SHA. If
+After publication, the immutable Release Record binds that identity, its
+delivered summary, migration notes, protected merge SHA, tag, packages, and
+publisher release. Post-merge publication is required at the exact
+protected-branch merge SHA. If
 tag/release already exist at that SHA with matching identity, retry succeeds. If
 one is missing, create only the missing object. Any existing tag or release with
 a different SHA or identity stops; tags are never retargeted or reused. A bad

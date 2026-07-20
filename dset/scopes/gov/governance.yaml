@@ -2,7 +2,7 @@ schema_version: 1.1
 profile:
   id: core-v1
   version: "0.3"
-  customization: unmodified
+  customization: custom
 rules:
   -
     id: DSET-RULE-ARCHITECTURE
@@ -13,7 +13,7 @@ rules:
     reason: Every governed workflow requires explicit authority and bootstrap boundaries
     depends_on: []
     precedence_over: []
-    customization: unmodified
+    customization: custom
     source:
       profile: core-v1
       version: "0.3"
@@ -141,7 +141,7 @@ rules:
     depends_on:
       - DSET-RULE-ARCHITECTURE
     precedence_over: []
-    customization: unmodified
+    customization: custom
     source:
       profile: core-v1
       version: "0.3"
@@ -197,7 +197,7 @@ rules:
       - DSET-RULE-ARTIFACT-MAINTENANCE
       - DSET-RULE-ARTIFACT-CLASSIFICATION
     precedence_over: []
-    customization: unmodified
+    customization: custom
     source:
       profile: core-v1
       version: "0.3"

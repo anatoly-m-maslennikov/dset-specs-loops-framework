@@ -505,3 +505,36 @@ Specification/Design and Plan/Implementation Plan. Test execution emits an
 Evidence Record, Verification assesses its support, and a Readiness Record
 records an explicit blocked gate until the required evidence passes. No
 workflow position changes any semantic or artifact classification.
+
+## DSET-REQUIREMENT-GOV-030 — Artifact names default to primary type
+
+New artifact IDs and filenames must include the primary artifact type token by
+default. The optional direct artifact subtype remains metadata and cannot force
+identity churn. A project may opt only newly emitted artifacts into subtype
+tokens with `optional_capabilities.artifact_subtype_in_names = true` in root
+`dset.toml`. Optional capabilities are independently selectable; DSET has no
+single bundled advanced mode. A settings change never renames immutable atoms
+or already stable artifact identities.
+
+**Scenario DSET-SCENARIO-GOV-031:** A Version Scope is emitted as
+`APP-SPECIFICATION-001-0-4-core.md` with
+`artifact_subtype: version_scope`, and a Roadmap as
+`APP-PLAN-001-0-4-core.md` with `artifact_subtype: roadmap`. An adopter that
+explicitly enables subtype-bearing names may include those subtype tokens in
+new artifacts, while every existing identity remains unchanged.
+
+## DSET-REQUIREMENT-GOV-031 — Architecture views descend one level
+
+Every project hub must include a Mermaid view of its immediate enabled
+structural children: feature groups when present, otherwise features and/or
+layers. Every feature-group hub must show its features. Every feature or layer
+hub must show the main functions, capabilities, or components immediately
+under it. A structural level that is not enabled requires no placeholder.
+Views must state how responsibility descends one level, remain consistent with
+linked canonical owners, and never become authority merely by being visual.
+
+**Scenario DSET-SCENARIO-GOV-032:** A layered repository root shows META, GOV,
+TOOL, SKILL, and OPS. Each layer hub shows only its own main functions. A
+product repository with enabled feature groups instead shows groups at the
+root, features in each group hub, and main functions inside each feature hub;
+it creates no empty layer or feature-group diagram for disabled structures.

@@ -49,6 +49,10 @@ class RepositoryLayout:
         return self.root / "dset"
 
     @property
+    def settings_path(self) -> Path:
+        return self.root / "dset.toml"
+
+    @property
     def scopes_root(self) -> Path:
         return self.dset_root / "scopes"
 
