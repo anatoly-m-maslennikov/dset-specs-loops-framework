@@ -15,6 +15,13 @@ records:
     type: decision
     subtype: none
   -
+    semantic_id: DSET-DECISION-OPS-005
+    carrier_id: DSET-ATOMIC-RECORD-032
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-032-delivery-lifecycle.md
+    sha256: c9534c4ced0955f7c761469267964ab9f90048f7e635556d93ee0401e6cec869
+    type: decision
+    subtype: none
+  -
     semantic_id: DSET-DEFECT-GOV-001
     carrier_id: DSET-ATOMIC-RECORD-020
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-020-lifecycle-transition-validation.md
