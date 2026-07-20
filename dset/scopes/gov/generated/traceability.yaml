@@ -797,6 +797,90 @@ semantic_classifications:
       - accepted
     lifecycle_events: []
   -
+    id: DSET-DEFECT-GOV-001
+    type: problem
+    subtype: defect
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-020-lifecycle-transition-validation.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-DEFECT-GOV-002
+    type: problem
+    subtype: defect
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-021-compilation-consequence.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-DEFECT-GOV-003
+    type: problem
+    subtype: defect
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-023-artifact-emission-gate.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-DEFECT-GOV-004
+    type: problem
+    subtype: defect
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-029-stale-verification-claims.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-DEFECT-OPS-001
+    type: problem
+    subtype: defect
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-028-release-truth.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-DEFECT-SKILL-001
+    type: problem
+    subtype: defect
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-026-llm-session-provenance.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-DEFECT-TOOL-001
+    type: problem
+    subtype: defect
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-024-runtime-terminalization.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
     id: DSET-EVAL-GOV-001
     type: qa
     subtype: evaluation
@@ -1390,6 +1474,54 @@ semantic_classifications:
     carrier_statuses:
       - accepted
       - defined
+    lifecycle_events: []
+  -
+    id: DSET-GAP-GOV-001
+    type: problem
+    subtype: gap
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-022-legacy-immutability.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-GAP-SKILL-001
+    type: problem
+    subtype: gap
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-025-installed-launcher-discovery.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-GAP-TOOL-001
+    type: problem
+    subtype: gap
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-027-commit-provenance-gate.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-GAP-TOOL-002
+    type: problem
+    subtype: gap
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-030-installer-transaction.md
+    carrier_statuses:
+      - accepted
     lifecycle_events: []
   -
     id: DSET-OPPORTUNITY-GOV-001
@@ -3620,6 +3752,111 @@ semantic_atoms:
     absorbed_by: []
     archived: false
   -
+    id: DSET-DEFECT-GOV-001
+    carrier_id: DSET-ATOMIC-RECORD-020
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-020-lifecycle-transition-validation.md
+    sha256: c8916dcabeb3626e63a1702ee1e544df41bcfd09d5e92f0740ac570600bf813e
+    type: problem
+    subtype: defect
+    emission_status: accepted
+    current_status: accepted
+    priority: critical
+    priority_source: atom:DSET-DEFECT-GOV-001
+    child_of: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-DEFECT-GOV-002
+    carrier_id: DSET-ATOMIC-RECORD-021
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-021-compilation-consequence.md
+    sha256: 46a3e2cc0077cb7d75796a04061d3da183fb19f3318008c7f9f08bc30cb63fc4
+    type: problem
+    subtype: defect
+    emission_status: accepted
+    current_status: accepted
+    priority: critical
+    priority_source: atom:DSET-DEFECT-GOV-002
+    child_of: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-DEFECT-GOV-003
+    carrier_id: DSET-ATOMIC-RECORD-023
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-023-artifact-emission-gate.md
+    sha256: d5447e39a2be17f889359d0c1c1716195f398c0f81aac426319f7c1a623f6e15
+    type: problem
+    subtype: defect
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-DEFECT-GOV-003
+    child_of: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-DEFECT-GOV-004
+    carrier_id: DSET-ATOMIC-RECORD-029
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-029-stale-verification-claims.md
+    sha256: f7f17af4dcde168a95e4c2b6dbd40dfad4e84131d54ed2fcdabd155cbc80c2f4
+    type: problem
+    subtype: defect
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-DEFECT-GOV-004
+    child_of: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-DEFECT-OPS-001
+    carrier_id: DSET-ATOMIC-RECORD-028
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-028-release-truth.md
+    sha256: 869119533fe7126886751edff95011adb5ebeee9b10a7c6580bce5cf1786ff22
+    type: problem
+    subtype: defect
+    emission_status: accepted
+    current_status: accepted
+    priority: critical
+    priority_source: atom:DSET-DEFECT-OPS-001
+    child_of: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-DEFECT-SKILL-001
+    carrier_id: DSET-ATOMIC-RECORD-026
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-026-llm-session-provenance.md
+    sha256: a2b2aa2dd70043f3ad968e4d884c02bd258251673b95cffff146d4586a83fe7e
+    type: problem
+    subtype: defect
+    emission_status: accepted
+    current_status: accepted
+    priority: critical
+    priority_source: atom:DSET-DEFECT-SKILL-001
+    child_of: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-DEFECT-TOOL-001
+    carrier_id: DSET-ATOMIC-RECORD-024
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-024-runtime-terminalization.md
+    sha256: cf096a1d59fcffa93e37c0d4fec939e8479e4cc4e815db2948a513911ade577d
+    type: problem
+    subtype: defect
+    emission_status: accepted
+    current_status: accepted
+    priority: critical
+    priority_source: atom:DSET-DEFECT-TOOL-001
+    child_of: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
     id: DSET-EVALUATION-TOOL-002
     carrier_id: DSET-ATOMIC-RECORD-012
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-012-typescript-candidate-evaluation.md
@@ -3666,6 +3903,66 @@ semantic_atoms:
     priority_source: atom:DSET-EVALUATION-TOOL-004
     child_of:
       - DSET-REQUIREMENT-TOOL-022
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-GAP-GOV-001
+    carrier_id: DSET-ATOMIC-RECORD-022
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-022-legacy-immutability.md
+    sha256: 3abf15cf57d47e99e4ab7dadf7ea18e47d998d20c8b066ce12e6ee8b64acb3b4
+    type: problem
+    subtype: gap
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-GAP-GOV-001
+    child_of: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-GAP-SKILL-001
+    carrier_id: DSET-ATOMIC-RECORD-025
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-025-installed-launcher-discovery.md
+    sha256: b6b5c1f0b395a157aff5b711ba68f703f76fa1fb1b1e622405b213d92633c227
+    type: problem
+    subtype: gap
+    emission_status: accepted
+    current_status: accepted
+    priority: critical
+    priority_source: atom:DSET-GAP-SKILL-001
+    child_of: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-GAP-TOOL-001
+    carrier_id: DSET-ATOMIC-RECORD-027
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-027-commit-provenance-gate.md
+    sha256: 44888a2a73c96aff5a2ec271860eacb296d17eeb5ad31f5b2355e894b6d7850a
+    type: problem
+    subtype: gap
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-GAP-TOOL-001
+    child_of: []
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
+    id: DSET-GAP-TOOL-002
+    carrier_id: DSET-ATOMIC-RECORD-030
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-030-installer-transaction.md
+    sha256: 8bd936dd5dec7718f05fc6a7ec8085fa79e369f0fb839c26465ff7a197592df2
+    type: problem
+    subtype: gap
+    emission_status: accepted
+    current_status: accepted
+    priority: medium
+    priority_source: atom:DSET-GAP-TOOL-002
+    child_of: []
     lifecycle_events: []
     absorbed_by: []
     archived: false
@@ -3923,6 +4220,48 @@ lineage:
     child_of: []
     parent_to: []
   -
+    id: DSET-DEFECT-GOV-001
+    artifact_id: DSET-ATOMIC-RECORD-020
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-020-lifecycle-transition-validation.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-DEFECT-GOV-002
+    artifact_id: DSET-ATOMIC-RECORD-021
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-021-compilation-consequence.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-DEFECT-GOV-003
+    artifact_id: DSET-ATOMIC-RECORD-023
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-023-artifact-emission-gate.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-DEFECT-GOV-004
+    artifact_id: DSET-ATOMIC-RECORD-029
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-029-stale-verification-claims.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-DEFECT-OPS-001
+    artifact_id: DSET-ATOMIC-RECORD-028
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-028-release-truth.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-DEFECT-SKILL-001
+    artifact_id: DSET-ATOMIC-RECORD-026
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-026-llm-session-provenance.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-DEFECT-TOOL-001
+    artifact_id: DSET-ATOMIC-RECORD-024
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-024-runtime-terminalization.md
+    child_of: []
+    parent_to: []
+  -
     id: DSET-DERIVED-VIEW-001
     artifact_id: DSET-DERIVED-VIEW-001
     path: dset/scopes/gov/generated/DSET-DERIVED-VIEW-001-project-health.md
@@ -4071,6 +4410,30 @@ lineage:
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-018-codex-host-install-attempt.md
     child_of:
       - DSET-REQUIREMENT-SKILL-011
+    parent_to: []
+  -
+    id: DSET-GAP-GOV-001
+    artifact_id: DSET-ATOMIC-RECORD-022
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-022-legacy-immutability.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-GAP-SKILL-001
+    artifact_id: DSET-ATOMIC-RECORD-025
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-025-installed-launcher-discovery.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-GAP-TOOL-001
+    artifact_id: DSET-ATOMIC-RECORD-027
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-027-commit-provenance-gate.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-GAP-TOOL-002
+    artifact_id: DSET-ATOMIC-RECORD-030
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-030-installer-transaction.md
+    child_of: []
     parent_to: []
   -
     id: DSET-PLAN-001
@@ -4784,6 +5147,13 @@ implementation_edges:
     implements:
       - DSET-DECISION-GOV-001
     llm_session_ids: []
+  -
+    commit: e1c85afb7bc24403f8ba04c9c3501e1d83350cac
+    implements:
+      - DSET-DECISION-GOV-003
+      - DSET-DECISION-GOV-008
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
     commit: e2cac0f2459ab462ee2e761bbf76462cae1cf45a
     implements:

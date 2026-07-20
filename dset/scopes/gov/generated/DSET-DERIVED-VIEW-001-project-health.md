@@ -12,7 +12,7 @@ llm_session_ids: []
 > This generated view is not authority. Follow each link to its canonical
 > owner and refresh explicitly after source changes.
 
-- **Source digest:** `b0524df7118846ce0176b9d1ff9ca3ff013f0a47de7fb78a2faadd51c05163a9`
+- **Source digest:** `c1fcaa6a493f6411c8c13deeb37b9dfcfe0c0f2f26cf2fdbe6720d4dc5db134c`
 - **Renderer:** `dset health` schema 1.0
 
 ## Coverage
@@ -33,20 +33,20 @@ llm_session_ids: []
 
 ## Artifact inventory
 
-- **Governed artifacts:** 355
-- **By role:** atomic=38, derived_or_navigation=85, evergreen=88, implementation=116, transactional=28
-- **By type:** analysis_report=21, atomic_record=38, change=9, derived_view=1, evidence_record=19, implementation=116, navigation=52, plan=40, readiness_record=2, release_record=1, specification=48, verification=8
+- **Governed artifacts:** 366
+- **By role:** atomic=49, derived_or_navigation=85, evergreen=88, implementation=116, transactional=28
+- **By type:** analysis_report=21, atomic_record=49, change=9, derived_view=1, evidence_record=19, implementation=116, navigation=52, plan=40, readiness_record=2, release_record=1, specification=48, verification=8
 - **By subtype:** architecture=5, behavior=10, configuration=10, design=7, documentation=33, domain_model=6, evaluation_plan=14, evaluation_result=2, external_audit_analysis=1, governance=15, health_dashboard=1, hub=52, implementation_plan=7, proposal=8, release_plan=2, review_report=1, roadmap=2, root_cause_analysis=1, run_record=9, solution_landscape=7, source_code=35, technical_investigation=3, test_implementation=38, test_plan=14, test_result=7, version_scope=5
-- **By layer:** gov=68, meta=24, ops=33, repository=4, skill=114, tool=112
-- **By effective priority:** critical=1, high=12, medium=336, unknown=6
-- **By status:** absorbed=3, accepted=15, archived=4, in-progress=1, open=21, resolved=14
+- **By layer:** gov=68, meta=24, ops=33, repository=4, skill=125, tool=112
+- **By effective priority:** critical=7, high=16, medium=337, unknown=6
+- **By status:** absorbed=3, accepted=26, archived=4, in-progress=1, open=21, resolved=14
 
 ## Semantic inventory
 
-- **Semantic claims:** 252
-- **By Type:** decision=96, problem=16, qa=122, question=18
-- **By direct subtype:** contract=6, evaluation=49, opportunity=3, requirement=74, test=73
-- **Native immutable atoms:** 19
+- **Semantic claims:** 263
+- **By Type:** decision=96, problem=27, qa=122, question=18
+- **By direct subtype:** contract=6, defect=7, evaluation=49, gap=4, opportunity=3, requirement=74, test=73
+- **Native immutable atoms:** 30
 - **Compatibility-classified legacy IDs:** 233
 
 ## Unresolved work
@@ -84,7 +84,7 @@ llm_session_ids: []
 ## Drill-downs
 
 - **Packages:** methodology=25
-- **Work Areas:** delivery=0, documentation=1, methodology=1, project-control=280, skills=34, tests=38, toolchain=35
+- **Work Areas:** delivery=0, documentation=1, methodology=1, project-control=291, skills=34, tests=38, toolchain=35
 
 ## Canonical return paths
 
