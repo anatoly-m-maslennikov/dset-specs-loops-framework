@@ -1,6 +1,6 @@
 # 05_Layered Build Standard — DDD, TDD, Small Functions, Typed Gates
 
-**Thesis:** DSET defines a **language-neutral enforcement contract** and realizes it through **applied language profiles**. Every durable tool carries the same six gate categories—conformance, purity, spec-sync, typing/contracts, lint/static analysis, and secret hygiene—but each profile selects the language-native tools, file scopes, thresholds, exclusions, and migration ratchet. The first applied profile is Python. A JavaScript/TypeScript profile will be derived later from evidence in `obsidian-your-harness`; no guessed JS/TS thresholds are normative yet. The unifying rule is that every adopted convention must have an executable check: prose explains why, while the selected profile makes violations fail. Pattern names and origins live in [04_General Build Rules — Tool Code Conventions](<04_General Build Rules — Tool Code Conventions.md>), proof planning lives in [02_Test and Eval Plan Patterns — Proof Artifact Conventions](<02_Test and Eval Plan Patterns — Proof Artifact Conventions.md>), and this document is stage 5 of [00_Tool Development Playbook](<00_Tool Development Playbook.md>).
+**Thesis:** DSET defines a **language-neutral enforcement contract** and realizes it through **applied language profiles**. Every durable tool carries the same six gate categories—conformance, purity, spec-sync, typing/contracts, lint/static analysis, and secret hygiene—but each profile selects the language-native tools, file scopes, thresholds, exclusions, and migration ratchet. The first applied profile is Python. JavaScript/TypeScript remains a framework reference candidate outside the current DSET core release; each adopting project must own and prove its applied profile, and no external adopter is a DSET release gate. The unifying rule is that every adopted convention must have an executable check: prose explains why, while the selected profile makes violations fail. Pattern names and origins live in [04_General Build Rules — Tool Code Conventions](<04_General Build Rules — Tool Code Conventions.md>), proof planning lives in [02_Test and Eval Plan Patterns — Proof Artifact Conventions](<02_Test and Eval Plan Patterns — Proof Artifact Conventions.md>), and this document is stage 5 of [00_Tool Development Playbook](<00_Tool Development Playbook.md>).
 
 ¶0 **Boundary:** Sections 1–5 define language-neutral code-enforcement rules. Section 6 owns applied implementation-language profiles. Sections 7–8 define agent ergonomics and adoption. A project selects its implementation-language profile explicitly; it must not inherit Python tools or thresholds merely because Python is the first implemented profile. Artifact governance is a separate axis owned by the [documentation architecture](../documentation/README.md); `documentation-v1` may be combined with Python, JavaScript/TypeScript, another code profile, or no code profile.
 
@@ -11,7 +11,7 @@ graph TD
     CHECK -.red gate.-> CODE["Domain · adapters · app"]
     CODE --> CHECK
     PY["Python v1<br/>implemented"] --> PROFILE
-    TS["JS/TS<br/>pending harness evidence"] -.later.-> PROFILE
+    TS["JS/TS reference candidate<br/>outside core release"] -.optional.-> PROFILE
     style RULES fill:#fff3e0,stroke:#ef6c00
     style PROFILE fill:#e3f2fd,stroke:#1565c0
     style PY fill:#e8f5e9,stroke:#2e7d32

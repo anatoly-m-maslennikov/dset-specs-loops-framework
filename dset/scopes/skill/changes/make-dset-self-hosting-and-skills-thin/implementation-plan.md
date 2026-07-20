@@ -116,7 +116,7 @@
   validator, profile templates, active Change traceability, and bounded FPF
   provenance.
 
-## Batch 10 — Project health, external review, and ranking — specification complete
+## Batch 10 — Project health, external review, and ranking — deterministic implementation complete; independent review pending
 
 - Define a non-authoritative project-health projection with artifact inventory,
   explicit coverage denominators/applicability/freshness, and canonical return
@@ -131,13 +131,20 @@
   only selectable policy conflicts after immutable authority and explicit
   precedence, stop on unsatisfiable obligations/ties/unknown/incomparability,
   and leave the exact scale/inheritance policy to the open governance Question.
-- Register deterministic tests, qualitative evals, implementation tasks, and
-  current missing-capability Problems without claiming the renderer, schemas,
-  reconciliation runtime, or cross-host proof exists.
+- Implement and deterministically verify the health renderer, review
+  packet/report/reconciliation runtime, priority/lifecycle model, and conflict
+  resolver. Retain the authenticated independent review and its reconciled
+  findings as a separate open Evaluation gate.
 
 ## Later batches
 
-Complete Batch 4's native authenticated Codex/Claude receipts, hosted Linux/macOS/native-Windows and WSL execution, RC/final readiness integration, and real exact-SHA publication proof. Implement Batch 10 health/review/ranking mechanics plus roadmap §§5–§10 for the TypeScript profile, owned Your Harness pilot, clean-room Claudian evaluation, and complete qualitative evals. Keep unfinished evidence and behavior out of public capability claims.
+Complete only the remaining DSET core gates: native authenticated Codex/Claude
+receipts, hosted Linux/macOS/native-Windows and WSL execution, the independent
+review report and reconciliation, RC/final readiness integration, and real
+exact-SHA publication proof. JavaScript/TypeScript applied enforcement and all
+external adopter work belong to separately owned project Changes and are not
+prerequisites for this DSET release. Keep unfinished evidence and behavior out
+of public capability claims.
 
 ## Rollout and recovery
 
