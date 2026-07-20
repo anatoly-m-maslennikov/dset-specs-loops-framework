@@ -12,6 +12,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
+from . import __version__
 from .bootstrap import distribution_source
 from .skill_catalog import PUBLIC_SKILL_WORKFLOWS, SKILL_INVOCATION_MARKERS
 from .skill_context import resolve_skill_context
@@ -19,6 +20,7 @@ from .skill_context import resolve_skill_context
 SKILL_WORKFLOWS = PUBLIC_SKILL_WORKFLOWS
 HOSTS = {"claude", "codex"}
 RECEIPT_SCHEMA_VERSION = "1.0"
+RUNTIME_PACKAGE_SCHEMA_VERSION = "1.0"
 RECEIPT_FIELDS = {
     "schema_version",
     "host",
@@ -64,6 +66,26 @@ class InstallationProof:
     invocation_contract: bool
 
 
+@dataclass(frozen=True)
+class RuntimeInstallAction:
+    host: str
+    source: str
+    destination: str
+    source_digest: str
+    installed_digest: str | None
+    status: str
+
+
+@dataclass(frozen=True)
+class RuntimeInstallationProof:
+    host: str
+    destination: str
+    digest: str
+    copied_package: bool
+    manifest_current: bool
+    portable_launcher: str
+
+
 def default_destination(
     host: str,
     *,
@@ -78,6 +100,126 @@ def default_destination(
         return Path(configured).expanduser() / "skills"
     base = Path.home() if home is None else home
     return base / (".codex" if host == "codex" else ".claude") / "skills"
+
+
+def default_package_destination(
+    host: str,
+    *,
+    environment: Mapping[str, str] | None = None,
+    home: Path | None = None,
+) -> Path:
+    _require_host(host)
+    values = os.environ if environment is None else environment
+    variable = "CODEX_HOME" if host == "codex" else "CLAUDE_CONFIG_DIR"
+    configured = values.get(variable)
+    if configured:
+        return Path(configured).expanduser() / "packages" / "dset"
+    base = Path.home() if home is None else home
+    return base / (".codex" if host == "codex" else ".claude") / "packages" / "dset"
+
+
+def plan_runtime_install(
+    source: Path,
+    host: str,
+    destination: Path | None = None,
+) -> RuntimeInstallAction:
+    _require_host(host)
+    source_root = _distribution_root(source)
+    destination_root = (
+        default_package_destination(host) if destination is None else destination
+    )
+    with tempfile.TemporaryDirectory(prefix="dset-runtime-plan-") as raw:
+        rendered = Path(raw) / "dset"
+        _render_runtime_package(source_root, host, rendered)
+        source_digest = tree_digest(rendered)
+    installed_digest = (
+        tree_digest(destination_root) if destination_root.is_dir() else None
+    )
+    if destination_root.exists() and not destination_root.is_dir():
+        status = "conflict"
+    elif installed_digest is None:
+        status = "create"
+    elif installed_digest == source_digest:
+        status = "current"
+    else:
+        status = "conflict"
+    return RuntimeInstallAction(
+        host=host,
+        source=str(source_root),
+        destination=str(destination_root),
+        source_digest=source_digest,
+        installed_digest=installed_digest,
+        status=status,
+    )
+
+
+def apply_runtime_install(
+    action: RuntimeInstallAction,
+) -> RuntimeInstallationProof:
+    _require_host(action.host)
+    source = Path(action.source)
+    destination = Path(action.destination)
+    if action.status == "conflict":
+        raise SkillDistributionError(
+            f"runtime destination differs for {action.host}: {destination}"
+        )
+    _validate_runtime_source(action)
+    if destination.exists():
+        if not destination.is_dir() or tree_digest(destination) != action.source_digest:
+            raise SkillDistributionError(
+                f"runtime destination changed after planning: {destination}"
+            )
+        return verify_runtime_installation(action.host, destination)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    staging_parent = Path(
+        tempfile.mkdtemp(prefix=".dset-runtime-", dir=destination.parent)
+    )
+    staged = staging_parent / "dset"
+    try:
+        _render_runtime_package(source, action.host, staged)
+        if tree_digest(staged) != action.source_digest:
+            raise SkillDistributionError("runtime source changed after planning")
+        staged.replace(destination)
+    finally:
+        shutil.rmtree(staging_parent, ignore_errors=True)
+    return verify_runtime_installation(action.host, destination)
+
+
+def verify_runtime_installation(
+    host: str, destination: Path
+) -> RuntimeInstallationProof:
+    _require_host(host)
+    if destination.is_symlink() or not destination.is_dir():
+        raise SkillDistributionError(f"runtime package is missing: {destination}")
+    manifest_path = destination / "manifest.json"
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise SkillDistributionError(
+            f"runtime manifest is invalid: {manifest_path}"
+        ) from error
+    expected = {
+        "schema_version": RUNTIME_PACKAGE_SCHEMA_VERSION,
+        "package": "dset",
+        "version": __version__,
+        "host": host,
+        "entrypoint": "dset.py",
+    }
+    if any(manifest.get(key) != value for key, value in expected.items()):
+        raise SkillDistributionError("runtime manifest identity is stale")
+    for relative in ("dset.py", "dset", "dset.cmd", "dset_toolchain/__init__.py"):
+        if not (destination / relative).is_file():
+            raise SkillDistributionError(
+                f"runtime package file is missing: {relative}"
+            )
+    return RuntimeInstallationProof(
+        host=host,
+        destination=str(destination),
+        digest=tree_digest(destination),
+        copied_package=True,
+        manifest_current=True,
+        portable_launcher="dset.py",
+    )
 
 
 def plan_install(
@@ -146,14 +288,17 @@ def apply_install(actions: Sequence[InstallAction]) -> list[InstallationProof]:
                 "destination differs for "
                 f"{action.host}/{action.skill_id}: {destination}"
             )
+        if destination.exists() and (
+            not destination.is_dir()
+            or tree_digest(destination) != action.source_digest
+        ):
+            raise SkillDistributionError(
+                f"destination changed after planning: {destination}"
+            )
+    for action in actions:
+        source = Path(action.source)
+        destination = Path(action.destination)
         if destination.exists():
-            if (
-                not destination.is_dir()
-                or tree_digest(destination) != action.source_digest
-            ):
-                raise SkillDistributionError(
-                    f"destination changed after planning: {destination}"
-                )
             continue
         destination.parent.mkdir(parents=True, exist_ok=True)
         staging_parent = Path(
@@ -287,6 +432,9 @@ def tree_digest(root: Path) -> str:
     digest = hashlib.sha256()
     files: list[Path] = []
     for path in root.rglob("*"):
+        relative_parts = path.relative_to(root).parts
+        if "__pycache__" in relative_parts or path.suffix in {".pyc", ".pyo"}:
+            continue
         if path.is_symlink():
             raise SkillDistributionError(
                 f"symlinks are not portable skill input: {path}"
@@ -306,6 +454,91 @@ def tree_digest(root: Path) -> str:
 def _skills_root(source: Path) -> Path:
     candidate = source / "skills"
     return candidate if candidate.is_dir() else source
+
+
+def _distribution_root(source: Path) -> Path:
+    candidate = source.resolve()
+    if (candidate / "dset_toolchain" / "__init__.py").is_file():
+        return candidate
+    if candidate.name == "skills":
+        sibling = candidate.parent
+        if (sibling / "dset_toolchain" / "__init__.py").is_file():
+            return sibling
+    raise SkillDistributionError(
+        f"DSET runtime source is missing beside the skills catalog: {source}"
+    )
+
+
+def _runtime_source_digest(source: Path) -> str:
+    package = source / "dset_toolchain"
+    digest = hashlib.sha256()
+    files = sorted(
+        (
+            path
+            for path in package.iterdir()
+            if path.is_file()
+            and (path.suffix == ".py" or path.name == "bootstrap_bundle.json")
+        ),
+        key=lambda item: item.name,
+    )
+    if not files:
+        raise SkillDistributionError(f"DSET runtime source is empty: {package}")
+    for path in files:
+        relative = path.relative_to(source).as_posix().encode("utf-8")
+        content = path.read_bytes()
+        digest.update(len(relative).to_bytes(4, "big"))
+        digest.update(relative)
+        digest.update(len(content).to_bytes(8, "big"))
+        digest.update(content)
+    return digest.hexdigest()
+
+
+def _render_runtime_package(source: Path, host: str, destination: Path) -> None:
+    _require_host(host)
+    source_root = _distribution_root(source)
+    package_source = source_root / "dset_toolchain"
+    destination.mkdir(parents=True)
+    shutil.copytree(
+        package_source,
+        destination / "dset_toolchain",
+        copy_function=shutil.copy2,
+        ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "*.pyo"),
+    )
+    launcher = (
+        "from dset_toolchain.cli import main\n\n"
+        "if __name__ == \"__main__\":\n"
+        "    raise SystemExit(main())\n"
+    )
+    (destination / "dset.py").write_text(launcher, encoding="utf-8")
+    (destination / "dset").write_text(
+        "#!/usr/bin/env python3\n" + launcher,
+        encoding="utf-8",
+    )
+    (destination / "dset").chmod(0o755)
+    (destination / "dset.cmd").write_text(
+        "@echo off\r\npy -3 \"%~dp0dset.py\" %*\r\n",
+        encoding="utf-8",
+    )
+    manifest = {
+        "schema_version": RUNTIME_PACKAGE_SCHEMA_VERSION,
+        "package": "dset",
+        "version": __version__,
+        "host": host,
+        "entrypoint": "dset.py",
+        "source_digest": _runtime_source_digest(source_root),
+    }
+    (destination / "manifest.json").write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+
+def _validate_runtime_source(action: RuntimeInstallAction) -> None:
+    with tempfile.TemporaryDirectory(prefix="dset-runtime-validate-") as raw:
+        rendered = Path(raw) / "dset"
+        _render_runtime_package(Path(action.source), action.host, rendered)
+        if tree_digest(rendered) != action.source_digest:
+            raise SkillDistributionError("runtime source changed after planning")
 
 
 def _validate_source_surface(skills_root: Path) -> None:
@@ -362,6 +595,8 @@ def _parser() -> argparse.ArgumentParser:
         item = subparsers.add_parser(command)
         item.add_argument("--host", choices=sorted(HOSTS), required=True)
         item.add_argument("--destination", type=Path)
+        if command in {"install", "verify"}:
+            item.add_argument("--package-destination", type=Path)
         if command == "install":
             item.add_argument("--source", type=Path)
             item.add_argument("--apply", action="store_true")
@@ -397,22 +632,51 @@ def main(argv: Sequence[str] | None = None) -> int:
             if arguments.destination is None
             else Path(arguments.destination)
         )
+        requested_package_destination = getattr(
+            arguments, "package_destination", None
+        )
+        package_destination = (
+            default_package_destination(host)
+            if requested_package_destination is None
+            and arguments.destination is None
+            else (
+                destination.parent / "packages" / "dset"
+                if requested_package_destination is None
+                else Path(requested_package_destination)
+            )
+        )
         result: Any
         actions: list[InstallAction] = []
+        runtime_action: RuntimeInstallAction | None = None
         if arguments.command == "install":
             source = Path(arguments.source) if arguments.source is not None else None
             if source is not None:
                 actions = plan_install(source, host, destination)
-                result = _execute_install(actions, apply=arguments.apply)
+                runtime_action = plan_runtime_install(
+                    source, host, package_destination
+                )
+                result = _execute_install(
+                    actions, runtime_action, apply=arguments.apply
+                )
             else:
                 with distribution_source() as (selected_source, _identity):
                     actions = plan_install(selected_source, host, destination)
-                    result = _execute_install(actions, apply=arguments.apply)
+                    runtime_action = plan_runtime_install(
+                        Path(__file__).resolve().parents[1],
+                        host,
+                        package_destination,
+                    )
+                    result = _execute_install(
+                        actions, runtime_action, apply=arguments.apply
+                    )
         elif arguments.command == "verify":
             result = {
                 "proofs": [
                     asdict(item) for item in verify_installation(host, destination)
-                ]
+                ],
+                "runtime_proof": asdict(
+                    verify_runtime_installation(host, package_destination)
+                ),
             }
         elif arguments.command == "receipt-template":
             result = invocation_receipt_template(
@@ -435,21 +699,34 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 2
     print(json.dumps(result, indent=2, sort_keys=True))
     if arguments.command == "install" and not arguments.apply:
-        return 2 if any(item.status == "conflict" for item in actions) else 0
+        has_conflict = any(item.status == "conflict" for item in actions)
+        if runtime_action is not None and runtime_action.status == "conflict":
+            has_conflict = True
+        return 2 if has_conflict else 0
     return 0
 
 
 def _execute_install(
-    actions: Sequence[InstallAction], *, apply: bool
+    actions: Sequence[InstallAction],
+    runtime_action: RuntimeInstallAction,
+    *,
+    apply: bool,
 ) -> dict[str, object]:
     if apply:
+        if any(action.status == "conflict" for action in actions):
+            raise SkillDistributionError("skill destination conflict blocks install")
+        if runtime_action.status == "conflict":
+            raise SkillDistributionError("runtime destination conflict blocks install")
+        _validate_runtime_source(runtime_action)
         return {
             "applied": True,
             "proofs": [asdict(item) for item in apply_install(actions)],
+            "runtime_proof": asdict(apply_runtime_install(runtime_action)),
         }
     return {
         "applied": False,
         "actions": [asdict(item) for item in actions],
+        "runtime_action": asdict(runtime_action),
     }
 
 

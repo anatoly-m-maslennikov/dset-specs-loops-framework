@@ -3,21 +3,28 @@ from __future__ import annotations
 import io
 import json
 import shutil
+import subprocess
+import sys
 import tempfile
 import unittest
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 
+from dset_toolchain.adopter import create_adopter
 from dset_toolchain.skill_distribution import (
     SKILL_WORKFLOWS,
     SkillDistributionError,
     apply_install,
+    apply_runtime_install,
     default_destination,
+    default_package_destination,
     invocation_receipt_template,
     main,
     plan_install,
+    plan_runtime_install,
     verify_installation,
     verify_invocation_receipt,
+    verify_runtime_installation,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,10 +32,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class SkillDistributionTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.temporary = tempfile.TemporaryDirectory()
+        self.temporary = tempfile.TemporaryDirectory(dir=ROOT.parent)
         self.root = Path(self.temporary.name)
         self.source = self.root / "source"
         shutil.copytree(ROOT / "skills", self.source / "skills")
+        shutil.copytree(
+            ROOT / "dset_toolchain",
+            self.source / "dset_toolchain",
+            ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "*.pyo"),
+        )
 
     def tearDown(self) -> None:
         self.temporary.cleanup()
@@ -80,6 +92,18 @@ class SkillDistributionTests(unittest.TestCase):
             configured / "skills",
         )
         self.assertEqual(
+            default_package_destination("codex", environment={}, home=home),
+            home / ".codex" / "packages" / "dset",
+        )
+        self.assertEqual(
+            default_package_destination(
+                "claude",
+                environment={"CLAUDE_CONFIG_DIR": str(configured)},
+                home=home,
+            ),
+            configured / "packages" / "dset",
+        )
+        self.assertEqual(
             default_destination(
                 "claude",
                 environment={"CLAUDE_CONFIG_DIR": str(configured)},
@@ -87,6 +111,82 @@ class SkillDistributionTests(unittest.TestCase):
             ),
             configured / "skills",
         )
+
+    def test_shared_runtime_package_is_copied_and_executable(self) -> None:
+        destination = self.root / "codex" / "packages" / "dset"
+        action = plan_runtime_install(ROOT, "codex", destination)
+
+        self.assertEqual(action.status, "create")
+        self.assertFalse(destination.exists())
+        proof = apply_runtime_install(action)
+
+        self.assertEqual(proof.destination, str(destination))
+        self.assertTrue(proof.copied_package)
+        self.assertTrue(proof.manifest_current)
+        self.assertEqual(proof.portable_launcher, "dset.py")
+        self.assertEqual(
+            verify_runtime_installation("codex", destination).digest,
+            proof.digest,
+        )
+        completed = subprocess.run(
+            [sys.executable, str(destination / "dset.py"), "--version"],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertEqual(completed.stdout.strip(), "0.3.1")
+        self.assertEqual(
+            plan_runtime_install(ROOT, "codex", destination).status,
+            "current",
+        )
+
+    def test_installed_runtime_resolves_explicit_project_target(self) -> None:
+        package = self.root / "codex" / "packages" / "dset"
+        apply_runtime_install(plan_runtime_install(ROOT, "codex", package))
+        project = self.root / "project"
+        create_adopter(ROOT, project)
+        target = project / "src" / "nested"
+        target.mkdir(parents=True)
+
+        completed = subprocess.run(
+            [
+                sys.executable,
+                str(package / "dset.py"),
+                "skills",
+                "context",
+                "--skill",
+                "dset-implement",
+                "--target",
+                str(target),
+                "--objective",
+                "Resolve from the installed host package",
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        context = json.loads(completed.stdout)
+        self.assertEqual(context["repository_root"], str(project))
+        self.assertEqual(context["skill_id"], "dset-implement")
+        self.assertEqual(context["workflow_id"], "implement")
+        self.assertTrue(str(context["ruleset_identity"]).startswith("ruleset:"))
+
+    def test_runtime_package_conflict_stops_without_overwrite(self) -> None:
+        destination = self.root / "claude" / "packages" / "dset"
+        apply_runtime_install(plan_runtime_install(ROOT, "claude", destination))
+        launcher = destination / "dset.py"
+        launcher.write_text("operator content\n", encoding="utf-8")
+
+        action = plan_runtime_install(ROOT, "claude", destination)
+        self.assertEqual(action.status, "conflict")
+        with self.assertRaisesRegex(
+            SkillDistributionError, "runtime destination differs"
+        ):
+            apply_runtime_install(action)
+        self.assertEqual(launcher.read_text(encoding="utf-8"), "operator content\n")
 
     def test_conflicting_destination_stops_without_overwrite(self) -> None:
         destination = self.root / "codex-skills"
@@ -157,7 +257,7 @@ class SkillDistributionTests(unittest.TestCase):
         self.assertFalse(destination.exists())
         self.assertFalse(json.loads(output.getvalue())["applied"])
 
-        with redirect_stdout(io.StringIO()):
+        with redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
             status = main(
                 [
                     "install",
@@ -172,6 +272,37 @@ class SkillDistributionTests(unittest.TestCase):
             )
         self.assertEqual(status, 0)
         self.assertTrue((destination / "dset" / "SKILL.md").is_file())
+        package = destination.parent / "packages" / "dset"
+        self.assertTrue((package / "dset.py").is_file())
+
+    def test_combined_install_preflights_runtime_conflict_before_writes(self) -> None:
+        destination = self.root / "codex" / "skills"
+        package = self.root / "codex" / "packages" / "dset"
+        package.mkdir(parents=True)
+        (package / "dset.py").write_text("operator runtime\n", encoding="utf-8")
+
+        with redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
+            status = main(
+                [
+                    "install",
+                    "--host",
+                    "codex",
+                    "--source",
+                    str(self.source),
+                    "--destination",
+                    str(destination),
+                    "--package-destination",
+                    str(package),
+                    "--apply",
+                ]
+            )
+
+        self.assertEqual(status, 2)
+        self.assertFalse(destination.exists())
+        self.assertEqual(
+            (package / "dset.py").read_text(encoding="utf-8"),
+            "operator runtime\n",
+        )
 
 
 if __name__ == "__main__":

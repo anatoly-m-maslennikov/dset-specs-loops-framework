@@ -55,5 +55,7 @@ depends on private memory, machine-specific paths, shell-only behavior, or a
 parallel specification format.
 
 Use the [host-distribution workflow](host-distribution.md) to preview or apply
-copy-based Codex and Claude installations, verify discovery artifacts, and
-validate a bounded receipt from a representative host invocation.
+copy-based Codex and Claude installations. One transaction installs all thin
+wrappers plus the shared runtime under the host's `packages/dset` root, verifies
+their identities, and can validate a bounded receipt from a representative
+host invocation.
