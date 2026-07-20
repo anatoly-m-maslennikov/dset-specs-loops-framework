@@ -127,6 +127,27 @@ records:
     type: problem
     subtype: defect
   -
+    semantic_id: DSET-DEFECT-SKILL-002
+    carrier_id: DSET-ATOMIC-RECORD-064
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-064-installed-skill-integrity.md
+    sha256: 9c2de4f8ba3035d58af5f95c286d7aa3e42b95049d3c2f35c48320a424af30c5
+    type: problem
+    subtype: defect
+  -
+    semantic_id: DSET-DEFECT-SKILL-003
+    carrier_id: DSET-ATOMIC-RECORD-066
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-066-location-independent-launcher.md
+    sha256: a038eb3cc485d129c0afdfd32e230f0179c76fda2ea0a265ecf1694fb4035d18
+    type: problem
+    subtype: defect
+  -
+    semantic_id: DSET-DEFECT-SKILL-004
+    carrier_id: DSET-ATOMIC-RECORD-068
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-068-session-handoff-terminalization.md
+    sha256: 69b3271266f6682676c759089ab40955c51f50b1623ee5779451f33eefcd2cd2
+    type: problem
+    subtype: defect
+  -
     semantic_id: DSET-DEFECT-TOOL-001
     carrier_id: DSET-ATOMIC-RECORD-024
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-024-runtime-terminalization.md
@@ -418,6 +439,27 @@ records:
     carrier_id: DSET-ATOMIC-RECORD-041
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-041-implementation-preparation-mode-test.md
     sha256: 9480ecb61122ed209f1d54affc36b03eba8f33a8f570034df61495726ff17c13
+    type: qa
+    subtype: test
+  -
+    semantic_id: DSET-TEST-SKILL-015
+    carrier_id: DSET-ATOMIC-RECORD-065
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-065-installed-skill-integrity-test.md
+    sha256: 59665301d0230456f8bc68a465c391e445d25d4bbcc2383209c7afd55dcefe0c
+    type: qa
+    subtype: test
+  -
+    semantic_id: DSET-TEST-SKILL-016
+    carrier_id: DSET-ATOMIC-RECORD-067
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-067-location-independent-launcher-test.md
+    sha256: ebe02fdf287631f58c6ecad027c37ffe677faa33f55d05ce3aadd1b2a38176b5
+    type: qa
+    subtype: test
+  -
+    semantic_id: DSET-TEST-SKILL-017
+    carrier_id: DSET-ATOMIC-RECORD-069
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-069-session-handoff-terminalization-test.md
+    sha256: eb8bc82a066e828898b60689732469e293c5631e1fb4fedd906fd5e15ccd7e06
     type: qa
     subtype: test
   -
