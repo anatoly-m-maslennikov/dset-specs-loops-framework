@@ -1,0 +1,22 @@
+schema_version: "1.0"
+policy_id: APP-DEPENDENCY-POLICY-001
+version: "1.0"
+authority: Project dependency-policy owner
+exception_authority: Named exception authority
+ecosystems:
+  -
+    id: python-uv
+    manifest: pyproject.toml
+    lockfile: uv.lock
+    registry: https://pypi.org/simple
+allow:
+  -
+    ecosystem: python-uv
+    name: package-name
+    version: "1.0.0"
+    registry: https://pypi.org/simple
+    license: MIT
+    provenance: https://pypi.org/project/package-name/1.0.0/
+    rationale: Why the exact dependency is permitted
+deny: []
+exceptions: []

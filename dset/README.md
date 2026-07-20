@@ -68,6 +68,7 @@ targets either the whole repository or one or more declared Work Areas.
 | `uv run dset new <slug> --package <package-id> --profile <profile> --layer <layer> [--work-area <id> ...] [--workspace branch-worktree]` | Allocate a stable layer-qualified Change ID; use the integration branch by default or opt into an isolated worktree |
 | `uv run dset trace . --write` | Regenerate deterministic relationship evidence |
 | `uv run dset health . --write` | Regenerate the portable project-health dashboard; use `--check` in gates |
+| `uv run dset dependencies .` | Enforce exact allow/deny, registry, version, license, provenance, lockfile, and exception policy |
 | `uv run dset review packet . --output <path> --packet-id <id> --artifact <path> --criterion <text> --scope <text>` | Bind an external review to exact inputs, commit, local rules, and read-only effects |
 | `uv run dset review validate . --packet <path> --report <path>` | Validate an independent report envelope while allowing a free-form findings body |
 | `uv run dset review reconcile . --packet <path> --report <path> --candidate <json>` | Require one explicit disposition per stable finding without authorizing repair |

@@ -8,6 +8,7 @@ from typing import Any
 from urllib.parse import unquote
 
 from . import __version__
+from .dependencies import validate_dependency_policy
 from .diagnostics import Diagnostic
 from .governance import validate_governance
 from .health import health_is_fresh, health_path
@@ -167,6 +168,7 @@ def validate_repository(root: Path) -> list[Diagnostic]:
     diagnostics.extend(_validate_markdown(root))
     diagnostics.extend(validate_semantic_atoms(root))
     diagnostics.extend(validate_artifact_lineage(root))
+    diagnostics.extend(validate_dependency_policy(root))
     if health_path(root).is_file() and not health_is_fresh(root):
         diagnostics.append(
             _diag("DSET-E162", health_path(root), "project health is stale")

@@ -173,6 +173,10 @@ path_rules:
     artifact_type: implementation
     artifact_subtype: configuration
   -
+    pattern: "**/dependency-policy.yaml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
     pattern: "**/templates/governance/*/architecture.md"
     artifact_type: specification
     artifact_subtype: architecture

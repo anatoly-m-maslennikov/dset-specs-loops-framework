@@ -13,6 +13,7 @@ from .archive import archive_plan, execute_archive
 from .artifact_emission import assess_artifact_candidate
 from .bootstrap import initialize_project, parse_work_area
 from .conflicts import resolve_conflict, write_conflict_result
+from .dependencies import dependency_summary
 from .diagnostics import Diagnostic
 from .errors import DsetCommandError
 from .external_review import (
@@ -204,6 +205,12 @@ def build_parser() -> argparse.ArgumentParser:
     health_mode = health.add_mutually_exclusive_group()
     health_mode.add_argument("--write", action="store_true")
     health_mode.add_argument("--check", action="store_true")
+
+    dependencies = commands.add_parser(
+        "dependencies", help="enforce exact dependency policy and lock authority"
+    )
+    _root_argument(dependencies)
+    dependencies.add_argument("--format", choices=["text", "json"], default="text")
 
     review = commands.add_parser("review", help="exchange bounded external reviews")
     review_commands = review.add_subparsers(dest="review_command", required=True)
@@ -497,6 +504,20 @@ def main(argv: list[str] | None = None) -> int:
                 return 0
             sys.stdout.write(render_health(root))
             return 0
+        if args.command == "dependencies":
+            root = _repository_root(args.root)
+            result = dependency_summary(root)
+            if args.format == "json":
+                print(json.dumps(result, indent=2, sort_keys=True))
+            else:
+                print(
+                    f"DEPENDENCIES {result['status']} "
+                    f"allow={result['allowed']} deny={result['denied']} "
+                    f"exceptions={result['exceptions']}"
+                )
+                for diagnostic in result["diagnostics"]:
+                    print(diagnostic)
+            return 0 if result["status"] == "pass" else 1
         if args.command == "review":
             root = _repository_root(args.root)
             if args.review_command == "packet":
