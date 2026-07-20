@@ -50,9 +50,22 @@ class TomlMigrationTests(unittest.TestCase):
             ".dset/toml-migration-runtime-readiness.json\n"
             ".dset/toml-migration-backups/\n",
         )
-        commands = (
+        subprocess.run(
             ["git", "init", "-q"],
+            cwd=self.root,
+            check=True,
+            capture_output=True,
+        )
+        self.commit_git_fixture("fixture")
+
+    def commit_git_fixture(self, message: str) -> None:
+        subprocess.run(
             ["git", "add", "-A"],
+            cwd=self.root,
+            check=True,
+            capture_output=True,
+        )
+        subprocess.run(
             [
                 "git",
                 "-c",
@@ -65,11 +78,12 @@ class TomlMigrationTests(unittest.TestCase):
                 "-q",
                 "--no-gpg-sign",
                 "-m",
-                "fixture",
+                message,
             ],
+            cwd=self.root,
+            check=True,
+            capture_output=True,
         )
-        for command in commands:
-            subprocess.run(command, cwd=self.root, check=True, capture_output=True)
 
     def add_minimal_runtime_gate(self) -> None:
         self.write("dset_toolchain/__init__.py", "")
@@ -892,6 +906,94 @@ class TomlMigrationTests(unittest.TestCase):
         )
         self.assertEqual(stored["targets"], evidence["targets"])
         self.assertEqual(stored["planned_targets"], evidence["planned_targets"])
+
+    def test_runtime_proof_preserves_exact_git_authority_and_working_bytes(
+        self,
+    ) -> None:
+        self.standard_fixture()
+        self.add_minimal_runtime_gate()
+        self.write("history.txt", "first\n")
+        deleted = self.write("deleted.txt", "tracked\n")
+        self.write(
+            "dset_toolchain/migration_reconcile.py",
+            "from pathlib import Path\n"
+            "import subprocess\n"
+            "root = Path.cwd()\n"
+            "head = subprocess.run(\n"
+            "    ['git', 'rev-parse', 'HEAD'], cwd=root, check=True,\n"
+            "    capture_output=True, text=True,\n"
+            ").stdout.strip()\n"
+            "path = root / 'dset/scopes/gov/record.md'\n"
+            "text = path.read_text(encoding='utf-8')\n"
+            "marker = '\\nGit authority: '\n"
+            "path.write_text(text.split(marker, 1)[0] + marker + head + '\\n', "
+            "encoding='utf-8')\n",
+        )
+        self.initialize_git_fixture()
+        self.write("history.txt", "second\n")
+        self.commit_git_fixture("second")
+        source_head = toml_migration._git_head(self.root)
+        self.write("history.txt", "working\n")
+        deleted.unlink()
+        self.write("untracked.txt", "visible\n")
+        worktrees_before = subprocess.run(
+            ["git", "worktree", "list", "--porcelain"],
+            cwd=self.root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout
+        staged_roots: list[Path] = []
+
+        def inspect_staged(staged: Path) -> list[dict[str, object]]:
+            staged_roots.append(staged)
+            self.assertEqual(toml_migration._git_head(staged), source_head)
+            self.assertEqual(
+                (staged / "history.txt").read_text(encoding="utf-8"),
+                "working\n",
+            )
+            self.assertFalse((staged / "deleted.txt").exists())
+            self.assertEqual(
+                (staged / "untracked.txt").read_text(encoding="utf-8"),
+                "visible\n",
+            )
+            parent = subprocess.run(
+                ["git", "rev-parse", "HEAD^"],
+                cwd=staged,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+            self.assertTrue(parent)
+            return [{"argv": ["test"], "returncode": 0}]
+
+        with patch(
+            "dset_toolchain.toml_migration._proof_commands",
+            side_effect=inspect_staged,
+        ):
+            evidence = prove_runtime_readiness(self.root)
+
+        self.assertEqual(evidence["source_commit"], source_head)
+        self.assertEqual(len(staged_roots), 1)
+        self.assertFalse(staged_roots[0].exists())
+        worktrees_after = subprocess.run(
+            ["git", "worktree", "list", "--porcelain"],
+            cwd=self.root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout
+        self.assertEqual(worktrees_after, worktrees_before)
+
+        apply_toml_migration(self.root)
+
+        record = self.root / "dset/scopes/gov/record.md"
+        targets = cast(dict[str, str], evidence["targets"])
+        self.assertEqual(
+            hashlib.sha256(record.read_bytes()).hexdigest(),
+            targets[record.relative_to(self.root).as_posix()],
+        )
+        self.assertIn(source_head or "", record.read_text(encoding="utf-8"))
 
     def test_runtime_proof_creates_a_deterministic_local_git_head(self) -> None:
         heads: list[str] = []

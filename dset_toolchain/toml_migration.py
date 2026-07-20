@@ -1874,10 +1874,9 @@ def prove_runtime_readiness(root: Path) -> dict[str, object]:
         dir=root.parent,
         ignore_cleanup_errors=True,
     ) as raw:
-        staged = Path(raw) / "repository"
-        _copy_proof_tree(root, staged)
+        staged, git_context = _stage_proof_tree(root, Path(raw))
         staged_plan = apply_toml_migration(staged, bypass_runtime_readiness=True)
-        results = _proof_commands(staged)
+        results = [git_context, *_proof_commands(staged)]
         targets = {
             relative: hashlib.sha256((staged / relative).read_bytes()).hexdigest()
             for relative in sorted(target_paths)
@@ -1925,23 +1924,152 @@ def _proof_ignore(_directory: str, names: list[str]) -> set[str]:
     }
 
 
-def _copy_proof_tree(root: Path, staged: Path) -> None:
-    """Copy the committed project snapshot without machine-local state."""
+def _stage_proof_tree(
+    root: Path, temporary_root: Path
+) -> tuple[Path, dict[str, object]]:
+    """Stage exact Git authority plus inspected working bytes for proof."""
 
+    git_root = _git_top_level(root)
+    source_head = _git_head(root)
+    if git_root is None or source_head is None:
+        staged = temporary_root / "repository"
+        shutil.copytree(root, staged, ignore=_proof_ignore)
+        return staged, _initialize_synthetic_proof_head(staged)
+
+    checkout = temporary_root / "repository"
+    clone = _run_proof_git(
+        root,
+        [
+            "git",
+            "clone",
+            "--local",
+            "--shared",
+            "--no-checkout",
+            "--quiet",
+            "--",
+            str(git_root),
+            str(checkout),
+        ],
+        "clone exact source history",
+    )
+    _run_proof_git(
+        checkout,
+        [
+            "git",
+            "-c",
+            "core.autocrlf=false",
+            "checkout",
+            "--detach",
+            "--force",
+            "--quiet",
+            source_head,
+        ],
+        "checkout exact source HEAD",
+    )
+    relative_root = root.relative_to(git_root)
+    staged = checkout / relative_root
+    _clear_proof_scope(staged, checkout)
+    _overlay_proof_working_tree(root, staged)
+    staged_head = _git_head(staged)
+    if staged_head != source_head:
+        raise TomlMigrationError(
+            "isolated readiness checkout does not preserve source HEAD"
+        )
+    return staged, {
+        "argv": ["git", "exact-readiness-head"],
+        "returncode": 0,
+        "stdout_sha256": _sha256(clone.stdout + clone.stderr),
+        "stderr_sha256": _sha256(""),
+        "head": staged_head,
+    }
+
+
+def _git_top_level(root: Path) -> Path | None:
     try:
         completed = subprocess.run(
-            ["git", "ls-files", "-z", "--cached"],
+            ["git", "rev-parse", "--show-toplevel"],
             cwd=root,
             check=False,
             capture_output=True,
+            text=True,
+            timeout=30,
         )
-    except OSError:
-        completed = None
-    if completed is None or completed.returncode != 0:
-        shutil.copytree(root, staged, ignore=_proof_ignore)
-        return
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    if completed.returncode or not completed.stdout.strip():
+        return None
+    return Path(completed.stdout.strip()).resolve()
 
-    staged.mkdir(parents=True)
+
+def _run_proof_git(
+    root: Path, command: list[str], purpose: str
+) -> subprocess.CompletedProcess[str]:
+    try:
+        completed = subprocess.run(
+            command,
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+    except (OSError, subprocess.TimeoutExpired) as error:
+        stdout = error.stdout if isinstance(error, subprocess.TimeoutExpired) else ""
+        stderr = error.stderr if isinstance(error, subprocess.TimeoutExpired) else ""
+        raise TomlMigrationError(
+            f"cannot {purpose}" + _proof_output_tail(stdout, stderr)
+        ) from error
+    if completed.returncode:
+        raise TomlMigrationError(
+            f"cannot {purpose} (exit {completed.returncode})"
+            + _proof_output_tail(completed.stdout, completed.stderr)
+        )
+    return completed
+
+
+def _clear_proof_scope(staged: Path, checkout: Path) -> None:
+    """Clear checked-out bytes while preserving the isolated Git database."""
+
+    if staged != checkout:
+        shutil.rmtree(staged, ignore_errors=True)
+        staged.mkdir(parents=True)
+        return
+    for path in staged.iterdir():
+        if path.name == ".git":
+            continue
+        if path.is_symlink() or path.is_file():
+            path.unlink()
+        else:
+            shutil.rmtree(path)
+
+
+def _overlay_proof_working_tree(root: Path, staged: Path) -> None:
+    """Overlay tracked and untracked, nonignored working-tree bytes."""
+
+    try:
+        completed = subprocess.run(
+            [
+                "git",
+                "ls-files",
+                "-z",
+                "--cached",
+                "--others",
+                "--exclude-standard",
+                "--",
+                ".",
+            ],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            timeout=30,
+        )
+    except (OSError, subprocess.TimeoutExpired) as error:
+        raise TomlMigrationError("cannot inventory proof working tree") from error
+    if completed.returncode:
+        raise TomlMigrationError(
+            "cannot inventory proof working tree"
+            + _proof_output_tail(completed.stdout, completed.stderr)
+        )
     for raw_path in completed.stdout.split(b"\0"):
         if not raw_path:
             continue
@@ -1976,10 +2104,7 @@ def _proof_commands(root: Path) -> list[dict[str, object]]:
         "tests.test_bootstrap",
         "tests.test_toml_migration",
     ]
-    results = [_run_proof_command(root, check)]
-    results.append(_initialize_synthetic_proof_head(root))
-    results.append(_run_proof_command(root, tests))
-    return results
+    return [_run_proof_command(root, check), _run_proof_command(root, tests)]
 
 
 def _run_proof_command(root: Path, command: list[str]) -> dict[str, object]:
