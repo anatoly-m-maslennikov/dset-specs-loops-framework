@@ -4,6 +4,7 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
+from .governance import validate_governance
 from .layout import discover_layout, has_manifest
 from .runtime_bridge import start_runtime
 from .settings import load_project_settings
@@ -11,7 +12,6 @@ from .skill_catalog import (
     PUBLIC_SKILL_MODES,
     PUBLIC_SKILL_WORKFLOWS,
 )
-from .validation import validate_repository
 from .yaml_subset import load
 
 CONTEXT_SCHEMA_VERSION = "1.0"
@@ -98,7 +98,7 @@ def _initialization_context(target: Path, skill_id: str) -> dict[str, object]:
 
 
 def _repair_context(target: Path, root: Path, skill_id: str) -> dict[str, object]:
-    diagnostics = validate_repository(root)
+    diagnostics = validate_governance(root)
     if not diagnostics:
         raise ValueError(f"DSET governance is valid at: {root}")
     return {

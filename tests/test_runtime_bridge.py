@@ -128,6 +128,29 @@ class RuntimeBridgeTests(unittest.TestCase):
             self.assertIsNone(context["repository_root"])
             self.assertFalse(target.exists())
 
+    def test_repair_context_is_bounded_to_governance_diagnostics(self) -> None:
+        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+            adopter = Path(raw) / "adopter"
+            create_adopter(ROOT, adopter)
+            settings = adopter / "dset.toml"
+            settings.write_text("invalid project setting\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "governance is valid"):
+                resolve_skill_context(
+                    adopter,
+                    skill_id="dset-repair-governance",
+                    objective="Do not misroute a settings defect",
+                )
+
+            registry = adopter / "dset" / "governance.yaml"
+            registry.write_text("invalid governance\n", encoding="utf-8")
+            context = resolve_skill_context(
+                adopter,
+                skill_id="dset-repair-governance",
+                objective="Return bounded governance diagnostics",
+            )
+            self.assertEqual(context["status"], "invalid-governance")
+            self.assertTrue(context["diagnostics"])
+
     def test_context_rejects_competing_project_roots(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
             outer = Path(raw) / "outer"
