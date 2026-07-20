@@ -64,3 +64,4 @@
 - [ ] **DSET-TASK-TOOL-073:** Resolve `DSET-DEFECT-TOOL-006`: derive conflict authority facts from repository truth and evidence-bind irreducible caller assertions.
 - [ ] **DSET-TASK-GOV-074:** Resolve `DSET-DEFECT-GOV-006`: add a TOML Evidence Record schema, template, validator, compatibility boundary, and focused proof.
 - [ ] **DSET-TASK-GOV-075:** Implement `DSET-DECISION-GOV-016`: preserve selector-sealed package YAML byte-for-byte, emit one current native `package.toml` successor per shared package, reconcile active IDs and paths, enforce reader precedence and digest-bound readiness, and prove idempotent cutover.
+- [ ] **DSET-TASK-GOV-076:** Implement `DSET-DECISION-GOV-017`: register every historically required YAML snapshot by exact path, digest, current TOML owner, artifact classification, and retaining carrier; preserve physical historical links, prohibit fallback ownership, and prove fail-closed idempotent cutover.

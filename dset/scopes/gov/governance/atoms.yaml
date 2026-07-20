@@ -50,6 +50,13 @@ records:
     type: decision
     subtype: none
   -
+    semantic_id: DSET-DECISION-GOV-017
+    carrier_id: DSET-ATOMIC-RECORD-062
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-062-legacy-structured-snapshots.md
+    sha256: 44488b55a3c9b56a3bd653026e9634ea5337a367020918c61d53b41fae78d4ad
+    type: decision
+    subtype: none
+  -
     semantic_id: DSET-DECISION-OPS-005
     carrier_id: DSET-ATOMIC-RECORD-032
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-032-delivery-lifecycle.md
@@ -397,6 +404,13 @@ records:
     carrier_id: DSET-ATOMIC-RECORD-061
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-061-native-package-successors-test.md
     sha256: 43a27b039efd438f4213c6261e5417dc82c2477041ea1ef2009cdf7ff480f066
+    type: qa
+    subtype: test
+  -
+    semantic_id: DSET-TEST-GOV-041
+    carrier_id: DSET-ATOMIC-RECORD-063
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-063-legacy-structured-snapshots-test.md
+    sha256: 29fe325dd5b3989b4e19b264d079fe0affe0a3518ad1affb94dc701433496e45
     type: qa
     subtype: test
   -

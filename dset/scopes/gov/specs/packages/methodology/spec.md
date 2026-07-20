@@ -19,6 +19,7 @@ presentation.
 | `DSET-DECISION-GOV-014` | Normalize explicit null to omission only for governed optional-unset TOML fields; block every other null |
 | `DSET-DECISION-GOV-015` | Keep standards-compliant JSON Schema files as canonical external-format contract carriers without editable TOML duplicates |
 | `DSET-DECISION-GOV-016` | Preserve selector-sealed package YAML as historical authority and use one sibling package TOML as the current editable registry |
+| `DSET-DECISION-GOV-017` | Retain exactly registered, digest-bound YAML snapshots for immutable historical links while TOML alone owns current state |
 
 Absorbed predecessors remain immutable history and are excluded from the active
 compilation set by append-only lifecycle events.
@@ -787,3 +788,17 @@ written only to TOML. YAML remains finite read-only input for its registered
 historical fragments, so the two carriers never become competing writable
 owners. Readiness binds the preserved YAML digest and exact successor output;
 missing, changed, incomplete, ambiguous, or competing successors stop cutover.
+
+## DSET-DECISION-GOV-017 — Legacy structured snapshots preserve history only
+
+A YAML carrier required by immutable historical links or selector-sealed
+authority remains byte-stable only as an exact `legacy_structured` registry
+entry. The entry binds its path and whole-file digest to one TOML current owner,
+artifact classification, exact retaining carrier IDs, and retention reason.
+
+Readers use TOML only. Missing or changed snapshots or owners, unregistered
+YAML/TOML pairs, duplicate or wildcard registration, mutable links to legacy
+paths, and new immutable links to unregistered carriers fail. Migration creates
+the owner and registration transactionally, rewrites only mutable references,
+keeps historical links physically navigable on GitHub, and becomes a no-op on
+a second run.
