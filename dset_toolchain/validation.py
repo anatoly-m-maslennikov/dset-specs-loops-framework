@@ -51,6 +51,20 @@ TRACE_TYPES = (
 LINK_PATTERN = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 CALLOUT_PATTERN = re.compile(r"^> \[!([^\]]+)\]", re.MULTILINE)
 GITHUB_CALLOUTS = {"NOTE", "TIP", "IMPORTANT", "WARNING", "CAUTION"}
+MARKDOWN_IGNORED_PARTS = frozenset(
+    {
+        ".cache",
+        ".git",
+        ".mypy_cache",
+        ".pytest_cache",
+        ".ruff_cache",
+        ".venv",
+        "__pycache__",
+        "coverage",
+        "dist",
+        "node_modules",
+    }
+)
 LLM_SESSION_ID_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
 LLM_SESSION_FIELD_PATTERN = re.compile(
     r"^\s*(?:-\s*)?\*\*LLM session IDs?:\*\*\s*(.*)$",
@@ -2431,7 +2445,7 @@ def _validate_provenance(root: Path) -> list[Diagnostic]:
 def _validate_markdown(root: Path) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     for path in sorted(root.rglob("*.md")):
-        if any(part in {".git", ".cache"} for part in path.relative_to(root).parts):
+        if any(part in MARKDOWN_IGNORED_PARTS for part in path.relative_to(root).parts):
             continue
         text = path.read_text(encoding="utf-8")
         rendered = _without_code(text)

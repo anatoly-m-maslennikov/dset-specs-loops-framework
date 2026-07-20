@@ -51,6 +51,9 @@ class BootstrapTests(unittest.TestCase):
             target = Path(raw) / "existing"
             (target / "src").mkdir(parents=True)
             (target / "README.md").write_text("# Existing\n", encoding="utf-8")
+            dependency = target / "node_modules/dependency/README.md"
+            dependency.parent.mkdir(parents=True)
+            dependency.write_text("[missing](./NOT-PACKAGED.md)\n", encoding="utf-8")
             result = initialize_project(
                 target,
                 project_key="APP",
