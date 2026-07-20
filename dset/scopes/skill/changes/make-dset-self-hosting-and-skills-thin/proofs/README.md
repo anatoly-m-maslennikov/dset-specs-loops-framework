@@ -13,3 +13,4 @@ diagnose failure.
 - [Claudian clean-room comparison](DSET-EVIDENCE-RECORD-015-claudian-clean-room.md)
 - [OYOHA supportability slice](DSET-EVIDENCE-RECORD-016-oyoha-supportability-slice.md)
 - [TypeScript profile instantiation boundary](DSET-EVIDENCE-RECORD-017-typescript-profile-instantiation.md)
+- [Codex host installation attempt](DSET-EVIDENCE-RECORD-018-codex-host-install-attempt.md)
