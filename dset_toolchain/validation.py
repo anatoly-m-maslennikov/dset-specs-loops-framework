@@ -13,6 +13,7 @@ from .governance import validate_governance
 from .layout import RepositoryLayout, discover_layout
 from .lineage import validate_artifact_lineage
 from .profiles import VALID_PROFILES, required_artifacts
+from .settings import load_project_settings
 from .yaml_subset import YamlSubsetError, load, loads
 
 ID_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
@@ -102,8 +103,12 @@ ARTIFACT_TYPE_SUBTYPES: dict[str, frozenset[str]] = {
 def validate_repository(root: Path) -> list[Diagnostic]:
     root = root.resolve()
     diagnostics: list[Diagnostic] = []
-    include_subtype_in_names, settings_diagnostics = _load_project_settings(root)
-    diagnostics.extend(settings_diagnostics)
+    settings, settings_issues = load_project_settings(root)
+    include_subtype_in_names = settings.artifact_subtype_in_names
+    diagnostics.extend(
+        _diag("DSET-E157", root / "dset.toml", issue)
+        for issue in settings_issues
+    )
     try:
         layout = discover_layout(root)
     except ValueError as error:
@@ -1504,58 +1509,6 @@ def _validate_artifact_name(
             f"artifact ID and filename must use the configured naming prefix: {prefix}",
         )
     ]
-
-
-def _load_project_settings(root: Path) -> tuple[bool, list[Diagnostic]]:
-    path = root / "dset.toml"
-    if not path.is_file():
-        return False, []
-    diagnostics: list[Diagnostic] = []
-    try:
-        lines = path.read_text(encoding="utf-8").splitlines()
-    except (OSError, UnicodeError) as error:
-        return False, [_diag("DSET-E157", path, f"cannot read settings: {error}")]
-    schema_version: str | None = None
-    include_subtype: bool | None = None
-    section = ""
-    for raw in lines:
-        line = raw.split("#", 1)[0].strip()
-        if not line:
-            continue
-        if line.startswith("[") and line.endswith("]"):
-            section = line[1:-1].strip()
-            continue
-        key, separator, value = line.partition("=")
-        if not separator:
-            continue
-        key = key.strip()
-        value = value.strip()
-        if not section and key == "schema_version":
-            schema_version = value.strip('"')
-        if section == "optional_capabilities" and key == "artifact_subtype_in_names":
-            if value not in {"true", "false"}:
-                diagnostics.append(
-                    _diag(
-                        "DSET-E157",
-                        path,
-                        "artifact_subtype_in_names must be true or false",
-                    )
-                )
-            else:
-                include_subtype = value == "true"
-    if schema_version != "1.0":
-        diagnostics.append(
-            _diag("DSET-E157", path, "settings schema_version must be 1.0")
-        )
-    if include_subtype is None:
-        diagnostics.append(
-            _diag(
-                "DSET-E157",
-                path,
-                "optional_capabilities.artifact_subtype_in_names is required",
-            )
-        )
-    return bool(include_subtype), diagnostics
 
 
 def _path_rule_matches(relative_path: str, pattern: str) -> bool:

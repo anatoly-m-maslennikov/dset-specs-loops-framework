@@ -114,7 +114,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/gov/templates/governance/core-v1/artifact-maintenance.md
-      sha256: 973ec95ae5a9fc89fa4892571a188da5e5386aa98c3087a19ffa9ecaf76e16b0
+      sha256: 9dd4dffa86b647bf882d650d82b51f0c88d63c2d0817efe248e4c6a09abd6437
   -
     id: DSET-RULE-WORK-ITEMS
     layer: GOV

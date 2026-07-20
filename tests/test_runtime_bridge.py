@@ -107,6 +107,7 @@ class RuntimeBridgeTests(unittest.TestCase):
         self.assertEqual(context["repository_root"], str(ROOT))
         self.assertEqual(context["work_area"], "skills")
         self.assertEqual(context["workflow_id"], "implement")
+        self.assertEqual(context["artifact_creation_strictness"], "medium")
         self.assertTrue(str(context["ruleset_identity"]).startswith("ruleset:"))
         resolved = cast(dict[str, Any], context["resolved"])
         self.assertEqual(resolved["workflow_id"], "implement")

@@ -10,6 +10,7 @@ from pathlib import Path
 
 from . import __version__
 from .archive import archive_plan, execute_archive
+from .artifact_emission import assess_artifact_candidate
 from .bootstrap import initialize_project, parse_work_area
 from .diagnostics import Diagnostic
 from .errors import DsetCommandError
@@ -158,6 +159,18 @@ def build_parser() -> argparse.ArgumentParser:
     _root_argument(release_prepare)
     release_prepare.add_argument("--execute", action="store_true")
     release_prepare.add_argument("--format", choices=["text", "json"], default="text")
+
+    artifact = commands.add_parser(
+        "artifact", help="assess immutable artifact emission"
+    )
+    artifact_commands = artifact.add_subparsers(
+        dest="artifact_command", required=True
+    )
+    artifact_assess = artifact_commands.add_parser(
+        "assess", help="check ambiguity and broader-scope eligibility"
+    )
+    _root_argument(artifact_assess)
+    artifact_assess.add_argument("--candidate", type=Path, required=True)
 
     runtime = commands.add_parser("runtime", help="bridge host skill run state")
     runtime_commands = runtime.add_subparsers(dest="runtime_command", required=True)
@@ -363,6 +376,14 @@ def main(argv: list[str] | None = None) -> int:
                 label = "RELEASE PREPARED" if args.execute else "DRY RUN"
                 _print_release(preparation.to_dict(), args.format, label)
                 return 0
+        if args.command == "artifact":
+            root = _repository_root(args.root)
+            candidate = json.loads(args.candidate.read_text(encoding="utf-8"))
+            if not isinstance(candidate, dict):
+                raise ValueError("artifact candidate must be a JSON object")
+            assessment = assess_artifact_candidate(root, candidate)
+            print(json.dumps(assessment, indent=2, sort_keys=True))
+            return 0 if assessment["emission_allowed"] is True else 2
         if args.command == "runtime":
             root = _repository_root(args.root)
             runtime_result: object

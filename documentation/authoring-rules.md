@@ -102,6 +102,10 @@ When two entities are mutually related, define each independently first using sh
   atom. At high strictness, resolve every material ambiguity through focused
   questions first. At every strictness, check the immediately broader enabled
   scope and propose an eligible promotion without performing it automatically.
+- Use `dset artifact assess ROOT --candidate CANDIDATE.json` for the
+  deterministic read-only gate. An eligible promotion without operator
+  disposition blocks emission; `keep_local` permits the assessed local
+  candidate, while `promote` requires a newly assessed broader-scope candidate.
 
 ## Rationale and Decisions
 

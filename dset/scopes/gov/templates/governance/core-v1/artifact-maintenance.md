@@ -99,6 +99,24 @@ Local evidence, implementation, exceptions, and vocabulary remain local. A
 later promotion emits a new linked broader-scope atom; it never moves or edits
 the original.
 
+The deterministic pre-emission check accepts a JSON candidate and never writes:
+
+```text
+dset artifact assess ROOT --candidate CANDIDATE.json
+```
+
+Every candidate explicitly supplies authority, one claim, semantic `type`,
+structural `scope`, `llm_session_ids`, material links, and a promotion
+assessment. High strictness additionally requires boundary, priority, lineage,
+acceptance, conflict state, and verification obligation. `unknowns` identifies
+each unresolved field, whether it is material, and the focused question to ask.
+Promotion names only the immediate `parent_scope`, affected children, whether
+the claim applies unchanged, whether local context is required, and an optional
+operator `disposition` of `keep_local` or `promote`. Eligibility without a
+disposition stops with a proposal; `promote` stops local emission so a new
+candidate can be assessed at the broader scope. A successful result only says
+`emission_allowed: true`; the caller still owns the authorized write.
+
 ## Commit and session provenance
 
 Every commit that changes evergreen truth or implementation artifacts must name

@@ -6,6 +6,7 @@ from typing import Any
 
 from .layout import discover_layout, has_manifest
 from .runtime_bridge import start_runtime
+from .settings import load_project_settings
 from .skill_catalog import (
     PUBLIC_SKILL_MODES,
     PUBLIC_SKILL_WORKFLOWS,
@@ -49,6 +50,9 @@ def resolve_skill_context(
     )
     resolved = started["resolved"]
     assert isinstance(resolved, dict)
+    settings, settings_issues = load_project_settings(root)
+    if settings_issues:
+        raise ValueError("; ".join(settings_issues))
     return {
         "schema_version": CONTEXT_SCHEMA_VERSION,
         "status": "resolved",
@@ -63,6 +67,7 @@ def resolve_skill_context(
         .governance_path.relative_to(root)
         .as_posix(),
         "ruleset_identity": _run_ruleset_identity(started["run"]),
+        "artifact_creation_strictness": settings.artifact_creation_strictness,
         "resolved": resolved,
         "run": started["run"],
         "checkpoint": started["checkpoint"],
