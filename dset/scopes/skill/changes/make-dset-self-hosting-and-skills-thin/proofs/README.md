@@ -6,3 +6,4 @@ Keep raw generated logs ephemeral unless a concise excerpt is required to
 diagnose failure.
 
 - [Artifact-role lifecycle self-application](DSET-EVIDENCE-RECORD-001-artifact-role-lifecycle.md)
+- [Project-scope ownership self-application](DSET-EVIDENCE-RECORD-002-project-scope-ownership.md)
