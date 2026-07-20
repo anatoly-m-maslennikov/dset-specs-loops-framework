@@ -375,6 +375,7 @@ changes:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-018-codex-host-install-attempt.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-019-independent-review-remediation.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-020-codex-host-install-attempt.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-021-claude-review-attempt.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/end-to-end-toolchain-verification-2026-07-16.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/expanded-skill-surface-verification-2026-07-16.md
@@ -4454,6 +4455,12 @@ lineage:
       - DSET-REQUIREMENT-SKILL-011
     parent_to: []
   -
+    id: DSET-EVIDENCE-RECORD-021
+    artifact_id: DSET-EVIDENCE-RECORD-021
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-021-claude-review-attempt.md
+    child_of: []
+    parent_to: []
+  -
     id: DSET-GAP-GOV-001
     artifact_id: DSET-ATOMIC-RECORD-022
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-022-legacy-immutability.md
@@ -4487,6 +4494,12 @@ lineage:
     id: DSET-PLAN-002
     artifact_id: DSET-PLAN-002
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-PLAN-002-0-3-1-release.md
+    child_of: []
+    parent_to: []
+  -
+    id: DSET-PLAN-003
+    artifact_id: DSET-PLAN-003
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-PLAN-003-external-review-packet.md
     child_of: []
     parent_to: []
   -

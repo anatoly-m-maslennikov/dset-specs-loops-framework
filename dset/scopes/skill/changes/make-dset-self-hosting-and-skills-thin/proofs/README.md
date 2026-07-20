@@ -16,3 +16,4 @@ diagnose failure.
 - [Codex host installation attempt](DSET-EVIDENCE-RECORD-018-codex-host-install-attempt.md)
 - [Independent DSET remediation review](DSET-EVIDENCE-RECORD-019-independent-review-remediation.md)
 - [Exact-head Codex host installation attempt](DSET-EVIDENCE-RECORD-020-codex-host-install-attempt.md)
+- [Independent Claude review attempt](DSET-EVIDENCE-RECORD-021-claude-review-attempt.md)
