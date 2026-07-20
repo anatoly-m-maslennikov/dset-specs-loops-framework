@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import tempfile
 import unittest
@@ -7,6 +8,10 @@ from pathlib import Path
 
 from dset_toolchain.adopter import create_adopter
 from dset_toolchain.layout import discover_layout
+from dset_toolchain.legacy_authority import (
+    legacy_authority_ids,
+    validate_legacy_authority_ledger,
+)
 from dset_toolchain.semantic_atoms import (
     append_lifecycle_event,
     archive_atom,
@@ -15,6 +20,7 @@ from dset_toolchain.semantic_atoms import (
     seal_atom,
     validate_semantic_atoms,
 )
+from dset_toolchain.semantic_types import build_semantic_classification_index
 from dset_toolchain.yaml_subset import dump, load
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -62,6 +68,61 @@ class SemanticAtomTests(unittest.TestCase):
             "legacy Decision authority changed without native successors",
             messages,
         )
+
+    def test_legacy_ledger_keeps_historical_yaml_identity_after_toml_cutover(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+            root = Path(raw)
+            governance = root / "dset/governance"
+            package_root = root / "dset/specs/packages/sample"
+            governance.mkdir(parents=True)
+            package_root.mkdir(parents=True)
+            (root / "dset/dset.yaml").write_text(
+                'schema_version: "1.0"\n', encoding="utf-8"
+            )
+            historical = package_root / "package.yaml"
+            historical.write_text(
+                "contracts:\n  - DSET-CONTRACT-GOV-001\n",
+                encoding="utf-8",
+            )
+            (package_root / "package.toml").write_text(
+                "contracts = []\n", encoding="utf-8"
+            )
+            selector = "contracts:DSET-CONTRACT-GOV-001"
+            digest = hashlib.sha256(f"{selector}\n".encode()).hexdigest()
+            (governance / "legacy-authority.yaml").write_text(
+                'schema_version: "1.0"\n'
+                "records:\n"
+                "  -\n"
+                "    semantic_id: DSET-CONTRACT-GOV-001\n"
+                "    type: decision\n"
+                "    subtype: contract\n"
+                "    fragments:\n"
+                "      -\n"
+                "        path: dset/specs/packages/sample/package.yaml\n"
+                f"        selector: {selector}\n"
+                f"        sha256: {digest}\n",
+                encoding="utf-8",
+            )
+
+            self.assertEqual(validate_legacy_authority_ledger(root), [])
+            self.assertIn("DSET-CONTRACT-GOV-001", legacy_authority_ids(root))
+            rows = {
+                str(item["id"]): item
+                for item in build_semantic_classification_index(root)
+            }
+            self.assertEqual(rows["DSET-CONTRACT-GOV-001"]["subtype"], "contract")
+            self.assertTrue(rows["DSET-CONTRACT-GOV-001"]["compatibility"])
+
+            historical.write_text("contracts: []\n", encoding="utf-8")
+            messages = [
+                item.message for item in validate_legacy_authority_ledger(root)
+            ]
+            self.assertIn(
+                "legacy Decision authority changed without native successors",
+                messages,
+            )
 
     def test_four_type_atom_is_sealed_and_later_mutation_fails(self) -> None:
         self._write_atom()

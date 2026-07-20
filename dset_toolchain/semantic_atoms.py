@@ -12,7 +12,7 @@ from .diagnostics import Diagnostic
 from .frontmatter import FrontmatterError
 from .frontmatter import metadata as frontmatter_metadata
 from .layout import discover_layout
-from .legacy_authority import validate_legacy_authority_ledger
+from .legacy_authority import legacy_authority_ids, validate_legacy_authority_ledger
 from .lineage import ArtifactRelation, parse_authored_relations
 from .semantic_types import SEMANTIC_ID_KINDS, SEMANTIC_SUBTYPES
 from .settings import load_project_settings
@@ -593,7 +593,7 @@ def _validate_event_graph(
 
 
 def _known_semantic_ids(root: Path, atoms: dict[str, SemanticAtom]) -> set[str]:
-    identifiers = set(atoms)
+    identifiers = set(atoms) | legacy_authority_ids(root)
     layout = discover_layout(root)
     if layout.intake_path.is_file():
         data = load(layout.intake_path)

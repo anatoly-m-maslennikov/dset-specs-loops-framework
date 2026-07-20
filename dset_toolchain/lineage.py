@@ -10,6 +10,7 @@ from .diagnostics import Diagnostic
 from .frontmatter import FrontmatterError
 from .frontmatter import metadata as frontmatter_metadata
 from .layout import discover_layout
+from .legacy_authority import legacy_authority_ids
 from .semantic_types import SEMANTIC_SUBTYPES
 from .yaml_subset import YamlSubsetError, load
 
@@ -708,7 +709,7 @@ def _reject_reverse_fields(
 
 
 def _known_relation_ids(root: Path) -> set[str]:
-    identifiers: set[str] = set()
+    identifiers = legacy_authority_ids(root)
     layout = discover_layout(root)
     if layout.intake_path.is_file():
         data = load(layout.intake_path)

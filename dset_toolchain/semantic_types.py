@@ -9,6 +9,7 @@ from .diagnostics import Diagnostic
 from .frontmatter import FrontmatterError
 from .frontmatter import metadata as frontmatter_metadata
 from .layout import discover_layout
+from .legacy_authority import legacy_shared_package_paths
 from .yaml_subset import YamlSubsetError, load
 
 SEMANTIC_SUBTYPES: dict[str, frozenset[str]] = {
@@ -222,6 +223,27 @@ def _collect(
                         package_classification,
                         origin=f"package:{field}",
                         status="defined",
+                        modern=False,
+                    )
+
+    for path in legacy_shared_package_paths(root):
+        data = _safe_load(path, diagnostics)
+        if not isinstance(data, dict):
+            continue
+        for field, package_classification in FIELD_CLASSIFICATION.items():
+            values = data.get(field, [])
+            if not isinstance(values, list):
+                continue
+            for identifier in values:
+                if isinstance(identifier, str):
+                    _register(
+                        records,
+                        diagnostics,
+                        path,
+                        identifier,
+                        package_classification,
+                        origin=f"legacy_package:{field}",
+                        status="historical",
                         modern=False,
                     )
 

@@ -14,6 +14,7 @@ from unittest.mock import patch
 import dset_toolchain.toml_migration as toml_migration
 from dset_toolchain.cli import main
 from dset_toolchain.layout import RepositoryLayout
+from dset_toolchain.lineage import validate_artifact_relations
 from dset_toolchain.toml_codec import loads as load_toml
 from dset_toolchain.toml_migration import (
     MigrationPlan,
@@ -56,6 +57,12 @@ class TomlMigrationTests(unittest.TestCase):
         )
 
     def selector_sealed_package_fixture(self) -> Path:
+        for layer in ("meta", "gov", "tool", "skill", "ops"):
+            (self.root / f"dset/scopes/{layer}").mkdir(parents=True, exist_ok=True)
+        self.write(
+            "dset/scopes/meta/dset.yaml",
+            'schema_version: "1.2"\n',
+        )
         package = self.write(
             "dset/scopes/gov/specs/packages/example/package.yaml",
             'schema_version: "1.2"\n'
@@ -399,6 +406,52 @@ class TomlMigrationTests(unittest.TestCase):
             list[str], stale_output.runtime_readiness["missing_or_stale"]
         )
         self.assertTrue(set(targets) & set(stale_output_items))
+
+    def test_inactive_historical_package_id_remains_a_relation_target(self) -> None:
+        package = self.selector_sealed_package_fixture()
+        package.write_text(
+            package.read_text(encoding="utf-8").replace(
+                "tests: []",
+                "tests:\n  - DSET-TEST-GOV-012",
+            ),
+            encoding="utf-8",
+        )
+        atom = self.root / "dset/scopes/gov/atoms/DSET-ATOMIC-RECORD-061.md"
+        atom.write_text(
+            atom.read_text(encoding="utf-8").replace(
+                "+++\n\n# Test",
+                '[[relations]]\ntype = "replacement_of"\n'
+                'target = "DSET-TEST-GOV-012"\n+++\n\n# Test',
+            ),
+            encoding="utf-8",
+        )
+        self.write(
+            "dset/scopes/gov/governance/lifecycle.yaml",
+            'schema_version: "1.0"\n'
+            "events:\n"
+            "  -\n"
+            "    id: DSET-LIFECYCLE-EVENT-001\n"
+            "    atom_id: DSET-TEST-GOV-012\n"
+            "    event: absorbed\n"
+            "    related:\n"
+            "      - DSET-TEST-GOV-040\n",
+        )
+
+        apply_toml_migration(self.root, bypass_runtime_readiness=True)
+
+        successor = load_toml(package.with_suffix(".toml").read_text(encoding="utf-8"))
+        self.assertNotIn("DSET-TEST-GOV-012", successor["tests"])
+        self.assertIn("DSET-TEST-GOV-040", successor["tests"])
+        messages = [
+            diagnostic.message
+            for diagnostic in validate_artifact_relations(self.root)
+        ]
+        self.assertFalse(
+            any(
+                "unresolved relation target: DSET-TEST-GOV-012" in item
+                for item in messages
+            )
+        )
 
     def test_references_cover_root_relative_bare_and_retained_carriers(self) -> None:
         self.standard_fixture()
