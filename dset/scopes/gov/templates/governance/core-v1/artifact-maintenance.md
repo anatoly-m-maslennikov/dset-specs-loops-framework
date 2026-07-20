@@ -75,6 +75,30 @@ atom or link a separate rationale artifact; keep evergreen implementation
 references focused on current executable truth. Templates prompt for rationale,
 and structured schemas permit a non-empty bounded value without requiring it.
 
+## Artifact-creation strictness and promotion eligibility
+
+Root `dset.toml` selects `artifact_creation_strictness` independently from
+other optional capabilities. The default is `medium`; `high` is opt-in.
+
+At medium strictness, emit an accepted atom only when its authority, one primary
+claim, Type, owning structural scope, provenance, and material links are clear.
+Optional non-authoritative detail may remain explicitly unknown. A material
+unknown that could change the claim becomes a separate Question or blocks the
+emission.
+
+At high strictness, do not emit while authority, meaning, boundary, Type,
+scope, priority, lineage, acceptance, conflict state, or proof obligation is
+materially ambiguous. Ask focused questions until the atom can safely remain
+immutable, or stop without writing it.
+
+Before emission, assess whether the unchanged claim belongs at the immediately
+broader enabled scope under narrowest-common-scope ownership. Propose eligible
+feature-to-group, feature/group-to-project, or layer-to-project promotion one
+step at a time. Promotion requires operator acceptance and is never automatic.
+Local evidence, implementation, exceptions, and vocabulary remain local. A
+later promotion emits a new linked broader-scope atom; it never moves or edits
+the original.
+
 ## Commit and session provenance
 
 Every commit that changes evergreen truth or implementation artifacts must name

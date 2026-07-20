@@ -98,6 +98,10 @@ When two entities are mutually related, define each independently first using sh
   are valid. With no local child, an inherited parent applies directly. A child
   states whether it implements, refines, replaces, cancels, verifies, or reveals
   a problem; the neutral link alone does not imply that meaning.
+- Apply the project artifact-creation strictness before emitting an immutable
+  atom. At high strictness, resolve every material ambiguity through focused
+  questions first. At every strictness, check the immediately broader enabled
+  scope and propose an eligible promotion without performing it automatically.
 
 ## Rationale and Decisions
 

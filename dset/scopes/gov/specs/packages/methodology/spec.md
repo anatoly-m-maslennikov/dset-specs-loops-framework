@@ -621,3 +621,30 @@ implementation commit cites the governing IDs; and Test execution produces an
 Evidence Record. DSET derives every `parent_to` edge and the complete
 APP-PLAN-to-evidence path without modifying any parent or copying every
 ancestor into each child.
+
+## DSET-REQUIREMENT-GOV-035 — Atom creation has configurable strictness
+
+Root `dset.toml` must expose independent
+`optional_capabilities.artifact_creation_strictness` with `medium` as the
+default and `high` as the stricter alternative. At `medium`, DSET may emit one
+accepted atom when authority, primary claim, Type, owning structural scope,
+provenance, and material links are clear; optional non-authoritative detail may
+remain explicitly unknown. At `high`, every material authority, meaning,
+boundary, Type, scope, priority, lineage, acceptance, conflict, and proof
+question must be resolved before emission. Otherwise DSET asks focused
+questions or stops without writing an atom.
+
+Before emission, DSET must assess eligibility for the immediately broader
+enabled scope under narrowest-common-scope ownership. Eligible feature claims
+may be proposed for their feature group, feature-group or feature claims for
+the project, and layer claims for the project. Promotion is proposed one step
+at a time, requires operator acceptance, and never generalizes claims that
+depend on local evidence, implementation, exceptions, or vocabulary. A later
+promotion of an immutable atom emits a new linked broader-scope atom rather
+than moving or editing the old one.
+
+**Scenario DSET-SCENARIO-GOV-036:** With strictness `high`, an accepted feature
+claim with an ambiguous exception is not emitted until the operator resolves
+the exception. Once precise, DSET notices that the claim applies unchanged to
+every feature in its group and proposes one feature-to-group promotion; it
+does not write at group scope or jump to project scope without acceptance.

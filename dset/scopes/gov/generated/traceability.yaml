@@ -553,7 +553,8 @@ lineage:
     artifact_id: DSET-ATOMIC-RECORD-003
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-003-project-scope-ownership.md
     child_of: []
-    parent_to: []
+    parent_to:
+      - DSET-REQUIREMENT-GOV-035
   -
     id: DSET-REQUIREMENT-GOV-033
     artifact_id: DSET-ATOMIC-RECORD-004
@@ -561,6 +562,7 @@ lineage:
     child_of: []
     parent_to:
       - DSET-REQUIREMENT-GOV-034
+      - DSET-REQUIREMENT-GOV-035
   -
     id: DSET-REQUIREMENT-GOV-034
     artifact_id: DSET-ATOMIC-RECORD-005
@@ -569,6 +571,14 @@ lineage:
       - DSET-REQUIREMENT-GOV-033
     parent_to:
       - DSET-EVIDENCE-RECORD-003
+  -
+    id: DSET-REQUIREMENT-GOV-035
+    artifact_id: DSET-ATOMIC-RECORD-008
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-008-artifact-creation-strictness.md
+    child_of:
+      - DSET-REQUIREMENT-GOV-032
+      - DSET-REQUIREMENT-GOV-033
+    parent_to: []
   -
     id: DSET-REQUIREMENT-SKILL-010
     artifact_id: DSET-ATOMIC-RECORD-006
