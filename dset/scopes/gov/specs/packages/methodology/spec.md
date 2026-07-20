@@ -18,6 +18,7 @@ presentation.
 | `DSET-DECISION-GOV-013` | Use ten typed forward artifact relations, derived inverses, and range-based evergreen projection frontiers |
 | `DSET-DECISION-GOV-014` | Normalize explicit null to omission only for governed optional-unset TOML fields; block every other null |
 | `DSET-DECISION-GOV-015` | Keep standards-compliant JSON Schema files as canonical external-format contract carriers without editable TOML duplicates |
+| `DSET-DECISION-GOV-016` | Preserve selector-sealed package YAML as historical authority and use one sibling package TOML as the current editable registry |
 
 Absorbed predecessors remain immutable history and are excluded from the active
 compilation set by append-only lifecycle events.
@@ -772,3 +773,17 @@ classifies and retains them, creates no editable TOML duplicate, and continues
 validating them as JSON Schema. Replacing this boundary with a DSET schema DSL
 and generated adapter requires separate accepted authority, a lossless mapping,
 and a freshness gate.
+
+## DSET-DECISION-GOV-016 — Native package registries succeed sealed YAML
+
+When a package YAML contains selector-sealed legacy Decision fragments, DSET
+preserves that YAML byte-for-byte as historical compatibility authority. The
+migration emits one sibling `package.toml` as the current editable registry,
+initializes it from the preserved semantic values, and reconciles it with active
+native atoms and current evergreen artifact paths.
+
+Readers prefer `package.toml` after cutover. New package IDs and paths are
+written only to TOML. YAML remains finite read-only input for its registered
+historical fragments, so the two carriers never become competing writable
+owners. Readiness binds the preserved YAML digest and exact successor output;
+missing, changed, incomplete, ambiguous, or competing successors stop cutover.
