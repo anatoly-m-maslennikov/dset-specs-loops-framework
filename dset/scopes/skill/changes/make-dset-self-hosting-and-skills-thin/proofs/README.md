@@ -4,3 +4,5 @@ Store bounded, redacted evidence and disposable proof-of-fit outputs here. Each
 promoted proof records LLM session IDs or explicit `none` for human-only work.
 Keep raw generated logs ephemeral unless a concise excerpt is required to
 diagnose failure.
+
+- [Artifact-role lifecycle self-application](DSET-EVIDENCE-RECORD-001-artifact-role-lifecycle.md)
