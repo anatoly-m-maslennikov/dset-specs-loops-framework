@@ -13,7 +13,7 @@ relations:
       scope:
         kind: project
         id: dset-specs-loops-framework
-      through: DSET-ATOMIC-RECORD-040
+      through: DSET-ATOMIC-RECORD-046
   - type: projection_of
     range:
       semantic_type: qa

@@ -342,6 +342,7 @@ changes:
       - DSET-DECISION-GOV-009
       - DSET-DECISION-GOV-012
       - DSET-DECISION-GOV-013
+      - DSET-DECISION-GOV-014
       - DSET-DECISION-OPS-001
       - DSET-DECISION-OPS-002
       - DSET-DECISION-OPS-003
@@ -767,6 +768,18 @@ semantic_classifications:
       - modern_atom
     carriers:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-035-typed-artifact-relations.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-DECISION-GOV-014
+    type: decision
+    subtype: none
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-046-toml-optional-unset-normalization.md
     carrier_statuses:
       - accepted
     lifecycle_events: []
@@ -4049,6 +4062,25 @@ semantic_atoms:
     absorbed_by: []
     archived: false
   -
+    id: DSET-DECISION-GOV-014
+    carrier_id: DSET-ATOMIC-RECORD-046
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-046-toml-optional-unset-normalization.md
+    sha256: 608f02e358b8654296f4ed7f25cc4b800a1347086153d1e3eab081acb545e2c5
+    type: decision
+    subtype: none
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-DECISION-GOV-014
+    relations:
+      -
+        type: child_of
+        origin: authored
+        target: DSET-REQUIREMENT-GOV-036
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
     id: DSET-DECISION-OPS-005
     carrier_id: DSET-ATOMIC-RECORD-032
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-032-delivery-lifecycle.md
@@ -5857,6 +5889,15 @@ relations:
     target: DSET-QUESTION-GOV-004
     llm_session_ids: []
   -
+    source: DSET-DECISION-GOV-014
+    source_kind: artifact
+    source_artifact_id: DSET-ATOMIC-RECORD-046
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-046-toml-optional-unset-normalization.md
+    type: child_of
+    origin: authored
+    target: DSET-REQUIREMENT-GOV-036
+    llm_session_ids: []
+  -
     source: DSET-DECISION-OPS-005
     source_kind: artifact
     source_artifact_id: DSET-ATOMIC-RECORD-032
@@ -6201,7 +6242,7 @@ relations:
       scope:
         kind: project
         id: dset-specs-loops-framework
-      through: DSET-ATOMIC-RECORD-040
+      through: DSET-ATOMIC-RECORD-046
       layer: gov
     llm_session_ids: []
   -
@@ -6529,6 +6570,22 @@ relations:
     target: DSET-DECISION-SKILL-001
     origin: commit_trailer
     llm_session_ids: []
+  -
+    source: c920c0aaf871ded9161182872c134e74cf9ca947
+    source_kind: commit
+    type: implementation_of
+    target: DSET-REQUIREMENT-GOV-036
+    origin: commit_trailer
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    source: c920c0aaf871ded9161182872c134e74cf9ca947
+    source_kind: commit
+    type: implementation_of
+    target: DSET-REQUIREMENT-SKILL-012
+    origin: commit_trailer
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
     source: ca8ff03bc4ce735fbad136d1cf416f6b5da81abc
     source_kind: commit

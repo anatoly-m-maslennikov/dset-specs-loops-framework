@@ -16,6 +16,7 @@ presentation.
 | `DSET-DECISION-GOV-010` | Use the bounded `critical`, `high`, `medium`, `low`, `deferred` priority profile with `medium` as default |
 | `DSET-DECISION-GOV-012` | Use Delivery as the shared primary artifact type for six flat release-lifecycle roles |
 | `DSET-DECISION-GOV-013` | Use ten typed forward artifact relations, derived inverses, and range-based evergreen projection frontiers |
+| `DSET-DECISION-GOV-014` | Normalize explicit null to omission only for governed optional-unset TOML fields; block every other null |
 
 Absorbed predecessors remain immutable history and are excluded from the active
 compilation set by append-only lifecycle events.
@@ -722,3 +723,13 @@ path.
 source, TOML destination, reference rewrite, external exception, and digest.
 Apply produces a valid repository and adopter, a second apply is a no-op, and a
 stale generated JSON Schema adapter fails without becoming authority.
+
+## DSET-DECISION-GOV-014 — TOML null normalization is allowlisted
+
+TOML migration preserves governed semantic values. Because TOML has no null,
+an explicit null may become an omitted field only when the owning schema and
+runtime define absence as exactly optional and unset. The initial allowlist is
+`promotion.parent_scope`, intake `items[].decision`, and pull-request-history
+`pull_requests[].merge_commit`. The migration report records every omission by
+source and key path. Every other null blocks conversion, and expanding the
+allowlist requires new accepted authority and deterministic equivalence proof.
