@@ -1,6 +1,6 @@
 ---
 name: dset-implement
-description: Execute authorized DSET implementation tasks against accepted specifications, plans, contracts, and Decisions. Use when prerequisites are satisfied and the operator has asked for actual code, documentation, test, eval-asset, configuration, or methodology changes; stop before claiming verification or release readiness.
+description: Deliver a bounded DSET implementation outcome from raw or prepared intent. Use when the operator wants code, documentation, methodology, tests, eval assets, or configuration changed; repository-local entry criteria decide and prepare missing prerequisites.
 ---
 
 # DSET Implement
@@ -18,4 +18,4 @@ This is the thin wrapper for `implement`; resolved repository-local documents ow
 
 ## Handoff
 
-Return changed implementation/test/eval assets, task and Decision provenance, residual work, and available session identity. Never edit emitted atoms; stop before claiming conformance, verification, completion, or release.
+Follow the resolved entry-criteria closure: invoke `dset-decisions` first, then conditionally invoke proof and implementation planning before building. Re-read authority and require progress after every child run. Return changed assets, provenance, residual work, and session identity; stop on the resolved criteria and before claiming verification or release readiness.

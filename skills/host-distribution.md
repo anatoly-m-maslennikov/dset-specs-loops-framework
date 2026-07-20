@@ -24,7 +24,7 @@ path APIs on Linux, macOS, native Windows, and WSL.
 The installer rejects symlinked source content and creates real copied skill
 folders. It requires the exact 16-skill catalog: `dset`, `dset-init`,
 `dset-repair-governance`, `dset-decompose`, `dset-diagnose`, `dset-clarify`,
-`dset-landscape`, `dset-prototype`, `dset-decide`, `dset-plan-proof`,
+`dset-landscape`, `dset-prototype`, `dset-decisions`, `dset-plan-proof`,
 `dset-plan-implementation`, `dset-implement`, `dset-verify`, `dset-triage`,
 `dset-release`, and `dset-complete`.
 

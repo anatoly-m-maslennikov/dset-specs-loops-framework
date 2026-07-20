@@ -21,7 +21,7 @@ MODE_WORKFLOWS = {
     "clarify": "domain-clarification",
     "landscape": "landscape",
     "prototype": "prototyping",
-    "decide": "decide",
+    "decisions": "decisions",
     "plan-proof": "plan-proof",
     "plan-implementation": "plan-implementation",
     "implement": "implement",

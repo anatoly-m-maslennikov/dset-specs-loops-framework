@@ -1,0 +1,4 @@
+interface:
+  display_name: "DSET Decisions"
+  short_description: "Reconcile governed atomic decisions"
+  default_prompt: "Use $dset-decisions to reconcile current intent through repository-local governance."

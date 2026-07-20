@@ -50,7 +50,7 @@ _NEXT_MODES = {
     "clarify",
     "landscape",
     "prototype",
-    "decide",
+    "decisions",
     "plan-proof",
     "plan-implementation",
     "implement",

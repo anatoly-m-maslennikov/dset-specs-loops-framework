@@ -180,7 +180,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/skill/templates/governance/core-v1/skill-runs.md
-      sha256: f986746a31e591b5b9fb33306a4a5802cb0502efc5eb467aeeacc0d8fd3ce6a9
+      sha256: 2ff9673388df6bb458acff2d328ecfd13c4e69fec938b5006305dfc207d44a3a
   -
     id: DSET-RULE-RELEASE
     layer: OPS
@@ -228,7 +228,7 @@ rules:
       profile: core-v1
       version: "0.3"
       template: dset/scopes/skill/templates/governance/core-v1/lifecycle-orchestration.md
-      sha256: 546196f6e9ae7e6e93ccf53b1671b4e3e627af157585f46d1ffa85fc8d47bfc3
+      sha256: 1e1871398d8eed7fefa513638c851263bbc7c8b54651193b0458cc4601cc526e
   -
     id: DSET-RULE-DIAGNOSIS
     layer: SKILL
@@ -374,7 +374,7 @@ workflows:
       - DSET-RULE-DELEGATION-BUDGET
       - DSET-RULE-SKILL-RUNS
   -
-    id: decide
+    id: decisions
     rules:
       - DSET-RULE-ARCHITECTURE
       - DSET-RULE-DOMAIN-SPEC
@@ -450,7 +450,7 @@ wrappers:
   -
     workflow: lifecycle-orchestration
     path: skills/dset/SKILL.md
-    sha256: b63b28291ca9d3ad7eedc3d706eb100dbb9f10501ac005ab64b1273bcca49ef7
+    sha256: 66165d08a6273a0915031fa6a71072879163919c228a9ea128b4d603d01de20c
   -
     workflow: domain-clarification
     path: skills/dset-clarify/SKILL.md
@@ -480,9 +480,9 @@ wrappers:
     path: skills/dset-landscape/SKILL.md
     sha256: 153aeac8cf089cdb6545841f95c3318224f1bed11b8b77e177ccac928b25dcff
   -
-    workflow: decide
-    path: skills/dset-decide/SKILL.md
-    sha256: 0d2cae5b55762d02dddf6554653470395d2f50c83a0abe8ed60d805b43aa450c
+    workflow: decisions
+    path: skills/dset-decisions/SKILL.md
+    sha256: 14aa23ad3ad5594647c2d20714f22b525ca7b700c48a7290968145d799c6a31f
   -
     workflow: plan-proof
     path: skills/dset-plan-proof/SKILL.md
@@ -494,7 +494,7 @@ wrappers:
   -
     workflow: implement
     path: skills/dset-implement/SKILL.md
-    sha256: 9e664c4782a9085d794e030cd787b39462460659dfa206d1066c06ee552c043f
+    sha256: 6759c258a116635ed1ff25dc8ea059d52e04a880b3043ac82bd6c3e17aca0463
   -
     workflow: verify
     path: skills/dset-verify/SKILL.md

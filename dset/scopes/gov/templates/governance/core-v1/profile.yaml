@@ -282,7 +282,7 @@ workflows:
       - DSET-RULE-DELEGATION-BUDGET
       - DSET-RULE-SKILL-RUNS
   -
-    id: decide
+    id: decisions
     rules:
       - DSET-RULE-ARCHITECTURE
       - DSET-RULE-DOMAIN-SPEC
@@ -380,8 +380,8 @@ wrappers:
     workflow: landscape
     path: skills/dset-landscape/SKILL.md
   -
-    workflow: decide
-    path: skills/dset-decide/SKILL.md
+    workflow: decisions
+    path: skills/dset-decisions/SKILL.md
   -
     workflow: plan-proof
     path: skills/dset-plan-proof/SKILL.md

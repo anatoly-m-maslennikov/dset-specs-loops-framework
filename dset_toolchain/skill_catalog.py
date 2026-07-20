@@ -9,7 +9,7 @@ PUBLIC_SKILL_WORKFLOWS = {
     "dset-clarify": "domain-clarification",
     "dset-landscape": "landscape",
     "dset-prototype": "prototyping",
-    "dset-decide": "decide",
+    "dset-decisions": "decisions",
     "dset-plan-proof": "plan-proof",
     "dset-plan-implementation": "plan-implementation",
     "dset-implement": "implement",

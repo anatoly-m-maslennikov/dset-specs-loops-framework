@@ -25,12 +25,14 @@ recommendation and every Change need not execute every mode in sequence:
    choice lacks comparable evidence.
 7. `prototype`: an explicitly requested bounded experiment is needed to compare
    solution evidence.
-8. `decide`: a consequential resolved question lacks its Decision.
+8. `decisions`: accepted operator/session directives are not reconciled into
+   current atomic records and compiled owners.
 9. `plan-proof`: accepted behavior lacks a complete test or applicable eval
    plan.
 10. `plan-implementation`: accepted behavior and proof exist but the build plan
    is incomplete.
-11. `implement`: approved tasks remain and their prerequisites are satisfied.
+11. `implement`: an implementation outcome is requested or approved tasks
+    remain; missing entry criteria activate its allowed prerequisite closure.
 12. `verify`: implementation or governing artifacts changed after the latest
     applicable proof.
 13. `triage-work`: a durable problem, opportunity, or question is
@@ -43,12 +45,18 @@ that mode is applicable and the override is recorded. Conflicting or
 insufficient state stops with the unresolved evidence instead of guessing.
 
 Return the first useful result as soon as the selected mode reaches its declared
-output boundary. Report the recommended handoff separately; do not continue
+exit criteria. Report the recommended handoff separately; do not continue
 merely to advance through the mode list.
+
+Public skills are entered by desired outcome. The operator need not manually
+satisfy their entry criteria or know the prerequisite workflow graph. Each
+entrypoint below may traverse only its registered prerequisite closure; the
+requested outcome remains the root run and every child remains in the same DSET
+session.
 
 ## Public entrypoint boundaries
 
-| Entrypoint | Trigger and first useful result | Stop/return boundary |
+| Entrypoint | Desired outcome and entry criteria | Exit/stop criteria |
 |---|---|---|
 | `dset` | Catch-all lifecycle request; returns one mode, its evidence, and the next authorized handoff | Does not perform a specialist workflow merely because it can name one |
 | `dset-init` | No valid DSET root exists; returns an exact initialization preview and, only after write authorization, materialization plus validation result | Stops after preview when unauthorized and after validation when authorized; never continues into governed work |
@@ -58,10 +66,10 @@ merely to advance through the mode list.
 | `dset-diagnose` | Explicit investigation request, current problem, or failed proof; returns evidence, cause confidence, and repair options | Stops before modifying the system unless repair receives separate authorization |
 | `dset-landscape` | A consequential solution, dependency, framework, or language choice lacks comparable evidence; returns eligible candidates and comparison state | Stops before selection or implementation |
 | `dset-prototype` | Explicit bounded experiment where solution uncertainty blocks a decision; returns comparable disposable evidence | Stops before production adoption or promotion |
-| `dset-decide` | A consequential resolved question has sufficient evidence but no durable Decision; returns the immutable Decision and its compilation handoff | Stops before changing implementation merely because a Decision was emitted |
+| `dset-decisions` | Reconcile accepted directives from available current input/session and repository evidence into missing atomic records and compiled handoffs; acceptance and owning scope must be clear | Returns emitted IDs and compilation state; stops on uncertain acceptance, unresolved meaning, missing authority, or before implementation |
 | `dset-plan-proof` | Accepted behavior lacks complete deterministic tests or applicable qualitative evals; returns separate current test and eval plans | Stops before implementation or proof execution |
 | `dset-plan-implementation` | Accepted behavior and proof obligations exist but executable work is incomplete; returns a dependency-ordered build plan and Change tasks | Stops before implementation |
-| `dset-implement` | Authorized, prerequisite-satisfied Change tasks remain; returns bounded implementation, tests/eval assets, and provenance | Stops before claiming verification or release readiness |
+| `dset-implement` | A bounded implementation outcome is requested; the chain first reconciles Decisions, then requires complete separate proof plans, an executable implementation plan, and implementation authorization | Returns bounded implementation plus test/eval assets and provenance; stops before claiming verification or release readiness |
 | `dset-verify` | Implementation or governing artifacts changed after applicable proof; returns deterministic test results, eval evidence where applicable, and conformance status | Stops before repairing failures or releasing |
 | `dset-triage` | A Decision, Question, Problem, or QA atom lacks semantic classification, ownership, priority, or Change/tracker linkage; returns Type/subtype routing and priority state | Stops before diagnosis, decision, proof planning, or implementation |
 | `dset-release` | Explicit release request or verified release-ready change; returns prepared/verified release state and, only with release authority, publication result | Stops on any mismatch, missing gate, collision, or new authorization boundary |
@@ -92,15 +100,35 @@ queried live when it controls a decision. When owners disagree across concerns,
 report the mismatch and refresh the derived surface; never let a cache or run
 record override its source authority.
 
-## Chaining and authorization
+## Entry-criteria closure and authorization
 
-One invocation selects one bounded mode by default. It may invoke one
-registered specialist workflow and then must re-read authoritative state before
-selecting anything else. Automatic chaining stops after two workflow
-transitions, on any failure or ambiguity, before any new authorization class,
-or when the selected workflow reaches its own stop condition. Writes, external
-messages, publication, and other consequential effects require the same
-authorization they would require if invoked directly.
+One invocation owns one requested outcome and may invoke only registered
+prerequisite workflows needed to satisfy that outcome's missing entry criteria.
+After each transition, re-read authoritative state and record which criterion
+became satisfied. Stop on unchanged or repeated state, a workflow cycle, no
+progress, failure, ambiguity, the selected workflow's exit condition, or before
+crossing a new authorization class. There is no fixed transition count; the
+closure is finite because every transition must remove a missing criterion.
+Writes, external messages, publication, and other consequential effects require
+the same authorization they would require if invoked directly.
+
+The `implement` closure is ordered:
+
+1. invoke `decisions` and reconcile available current host-session history,
+   the DSET checkpoint and run records, Git, and current artifacts;
+2. invoke `plan-proof` when separate Test or applicable Evaluation plans are
+   incomplete;
+3. invoke `plan-implementation` when the executable plan is incomplete; and
+4. invoke `implement` only when all resolved entry criteria and authorization
+   are satisfied.
+
+The `decisions` workflow treats session/checkpoint/run content as candidate
+evidence, never authority. It emits only accepted atomic directives, preserves
+session and LLM-session provenance, compiles required current projections, and
+never edits an existing atom. Unclear acceptance or meaning produces an exact
+Question or handoff; it is not silently decided. After compaction or unavailable
+history, repository owners and the bounded checkpoint are reconciled and every
+material unknown remains visible.
 
 The primary `dset` entrypoint owns session start, checkpoint, and resume for
 the whole chain. A direct specialist invocation joins a matching explicit
@@ -113,7 +141,7 @@ another user-facing skill.
 
 The governed direct-entry map is `decompose` → `dset-decompose`, `diagnose` →
 `dset-diagnose`, `clarify` → `dset-clarify`, `landscape` → `dset-landscape`,
-`prototype` → `dset-prototype`, `decide` → `dset-decide`, `plan-proof` →
+`prototype` → `dset-prototype`, `decisions` → `dset-decisions`, `plan-proof` →
 `dset-plan-proof`, `plan-implementation` → `dset-plan-implementation`,
 `implement` → `dset-implement`, `verify` → `dset-verify`, `triage-work` →
 `dset-triage`, `release` → `dset-release`, and `complete` → `dset-complete`.

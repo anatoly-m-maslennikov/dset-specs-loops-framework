@@ -83,6 +83,14 @@ re-read the repository, Git, active Change, proof, governance, and applicable
 hosted owners. Mark stale checkpoint fields and recompute the next action; a
 checkpoint never overrides newer authoritative state.
 
+When `decisions` reconciles current intent, it may inspect only host history
+that the current invocation can actually access plus the bounded checkpoint,
+run records, Git, and current artifacts. Those inputs propose candidate atomic
+directives; they do not prove acceptance. Every emitted atom records the
+available contributing `llm_session_ids`. Missing history after compaction is
+reported as unknown when repository and checkpoint evidence cannot establish
+the directive without invention.
+
 When checkpoint persistence is unavailable, return a bounded portable handoff
 with `persistence: unavailable`. Low-risk read-only work may continue when its
 rules allow it. A context handoff, consequential action, or compacted-session

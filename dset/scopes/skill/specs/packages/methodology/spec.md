@@ -37,13 +37,13 @@ adopter's convention, and report its local rule paths and ruleset identity.
 
 ## DSET-REQUIREMENT-SKILL-004 — Every lifecycle mode has a public wrapper
 
-The release target must expose `dset` as the catch-all lifecycle and next-step orchestrator plus one thin direct-entry wrapper for every stable lifecycle mode: `dset-init`, `dset-repair-governance`, `dset-decompose`, `dset-diagnose`, `dset-clarify`, `dset-landscape`, `dset-prototype`, `dset-decide`, `dset-plan-proof`, `dset-plan-implementation`, `dset-implement`, `dset-verify`, `dset-triage`, `dset-release`, and `dset-complete`. Governed direct wrappers resolve one registered repository-local workflow. Initialization and governance repair are the only bounded pre-resolution exceptions. The project-owned `DSET-RULE-LIFECYCLE` rule defines trigger precedence, first useful output, stop boundaries, and chaining.
+The release target must expose `dset` as the catch-all lifecycle and next-step orchestrator plus one thin direct-entry wrapper for every stable lifecycle mode: `dset-init`, `dset-repair-governance`, `dset-decompose`, `dset-diagnose`, `dset-clarify`, `dset-landscape`, `dset-prototype`, `dset-decisions`, `dset-plan-proof`, `dset-plan-implementation`, `dset-implement`, `dset-verify`, `dset-triage`, `dset-release`, and `dset-complete`. Governed direct wrappers resolve one registered repository-local workflow. Initialization and governance repair are the only bounded pre-resolution exceptions. The project-owned `DSET-RULE-LIFECYCLE` rule defines desired outcomes, entry and exit criteria, trigger precedence, stop boundaries, and allowed prerequisite chaining.
 
 **Scenario DSET-SCENARIO-SKILL-004:** An operator who does not know the next action enters through `dset`; an operator or automation that already knows the applicable mode invokes its direct wrapper and receives the same governed workflow and stop boundary.
 
 ## DSET-REQUIREMENT-SKILL-005 — The primary skill orchestrates local rules
 
-After a valid local registry resolves, `dset` must use the `lifecycle-orchestration` workflow and stable modes `decompose`, `diagnose`, `clarify`, `landscape`, `prototype`, `decide`, `plan-proof`, `plan-implementation`, `implement`, `verify`, `triage-work`, `release`, and `complete`. `DSET-RULE-LIFECYCLE` owns precedence, the exact specialist-workflow map, per-concern authority/freshness, bounded chaining, and authorization stops. One invocation selects one mode by default and may cross at most two workflow transitions with an authoritative-state reread between them.
+After a valid local registry resolves, `dset` must use the `lifecycle-orchestration` workflow and stable modes `decompose`, `diagnose`, `clarify`, `landscape`, `prototype`, `decisions`, `plan-proof`, `plan-implementation`, `implement`, `verify`, `triage-work`, `release`, and `complete`. `DSET-RULE-LIFECYCLE` owns precedence, the exact specialist-workflow map, per-concern authority/freshness, finite entry-criteria closure, and authorization stops. A transition is allowed only when it satisfies a missing entry criterion; authoritative state is reread after each transition, and no progress, repeated state, cycles, ambiguity, failure, or a new authorization class stops the chain.
 
 Before local resolution, the distribution owns exactly two bounded direct-entry exceptions: `dset-init` invokes the `dset init` dry-run/authorize/materialize/validate/stop transaction; `dset-repair-governance` invokes `dset rules check`, emits stable validation/ownership diagnostics and a repair handoff, then stops. Neither exception may make project decisions, use invalid local rules, or continue into governed work in the same invocation.
 
@@ -76,3 +76,29 @@ The public skills must share one internal session-continuity capability rather t
 A checkpoint contains only a bounded objective, scope and artifact/run pointers, authorization state, authority snapshot, and next handoff. It excludes full prompts, source content, arbitrary tool output, and secrets. Resume prefers an explicit or host-provided session ID; otherwise it may select only one compatible newest active checkpoint and must stop on ambiguity. It re-reads repository, Git, Change, proof, governance, and applicable hosted state before recomputing the next action. Conversation memory and checkpoints remain advisory and cannot override those owners.
 
 **Scenario DSET-SCENARIO-SKILL-009:** An operator invokes `dset`, which chains clarification and planning before the host compacts context. The next invocation reloads the same checkpoint, detects a newer Git change, invalidates the stale next-action hint, and recommends fresh verification without asking the operator to reconstruct the session or invoke a sixth skill.
+
+## DSET-REQUIREMENT-SKILL-010 — Skills enter through outcome criteria
+
+A public DSET skill accepts the desired outcome even when prerequisite artifacts
+are incomplete. The repository-local lifecycle rule owns its entry criteria,
+allowed prerequisite workflows, exit criteria, and stops. Missing criteria may
+be satisfied through a finite registered workflow closure in one DSET session;
+every transition must make observable progress and re-read authority.
+
+`dset-implement` must first invoke `decisions` to reconcile available host
+session history, bounded DSET continuity records, Git, and repository artifacts
+into missing accepted atomic records. It then invokes `plan-proof` when the
+separate Test or Evaluation plans are incomplete and `plan-implementation` when
+the executable plan is incomplete. Only then may implementation begin.
+
+Session and run history are candidate evidence rather than authority. The
+decisions workflow never invents acceptance, silently resolves uncertainty, or
+edits an emitted atom. Missing context is returned explicitly. Repeated state,
+cycles, no progress, ambiguity, failure, and new authorization boundaries stop
+the closure.
+
+**Scenario DSET-SCENARIO-SKILL-010:** An operator asks `dset-implement` to build
+a feature described only in the current session. The same DSET session records
+accepted atomic directives, creates separate Test and Evaluation plans plus an
+implementation plan where missing, then implements. If acceptance is unclear,
+the chain stops with the exact Question instead of fabricating a Decision.

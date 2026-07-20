@@ -43,7 +43,7 @@ class SelfHostTests(unittest.TestCase):
                 "work-triage",
                 "decompose",
                 "landscape",
-                "decide",
+                "decisions",
                 "plan-proof",
                 "plan-implementation",
                 "implement",

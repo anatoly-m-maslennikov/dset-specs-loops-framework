@@ -8,6 +8,7 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 |---|---|
 | **Workflow wrapper** | A thin skill or runtime adapter that discovers the repository, invokes one registered workflow, reports the resolved ruleset, and hands off output without owning substantive rules |
 | **Lifecycle orchestrator** | The primary `dset` workflow wrapper that inspects authoritative project/change state, selects a bounded next action, and chains registered workflows without owning their rules |
+| **Entry-criteria closure** | The finite project-governed sequence of prerequisite workflows needed to make a requested outcome admissible, with an authoritative-state reread and observable progress after every transition |
 | **Skill-run record** | Bounded structured machine-local evidence of one invocation, stored under ignored `.dset/runs/` for investigation and heuristics without becoming project truth |
 | **Session checkpoint** | Bounded replaceable machine-local recovery state for one operator-visible DSET session, stored under ignored `.dset/sessions/` and reconciled with authoritative state before reuse |
 | **Delegation budget** | Project-owned policy for inherited model/effort, useful subagent fan-out, roles, rounds, context/evidence depth, tool/live-eval allowance, and stopping thresholds |
@@ -23,3 +24,4 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 - **DSET-INVARIANT-SKILL-006:** Subagents request the main session's model and reasoning effort by default; capability and effective configuration are attested when possible, and every uncertainty or deviation is explicit.
 - **DSET-INVARIANT-SKILL-007:** One tree-wide low/medium/high budget preserves requested scope, required proof, and safety while bounding unique agents, depth, and rounds; nominal token price alone never proves a cheaper plan.
 - **DSET-INVARIANT-SKILL-008:** One operator-visible session links its public entrypoint, automatically chained skills, governed model-only workflows, and delegated runs; bounded checkpoint recovery survives context compaction without overriding newer repository, Git, proof, or hosted state.
+- **DSET-INVARIANT-SKILL-009:** Public skills accept desired outcomes and may satisfy missing entry criteria only through a finite registered prerequisite closure; every transition makes progress and preserves session provenance, while no progress, repeated state, cycles, ambiguity, failure, or new authorization stops the chain.

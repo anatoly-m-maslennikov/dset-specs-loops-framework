@@ -95,9 +95,10 @@ class SkillWrapperTests(unittest.TestCase):
 
     def test_primary_and_direct_stop_boundaries_are_distinct(self) -> None:
         primary = self._skill_text("dset")
-        self.assertIn("general, multi-stage, or next-action", primary)
+        self.assertIn("general, multi-stage, or uncertain", primary)
         self.assertNotIn("Route any DSET lifecycle request", primary)
-        self.assertIn("at most two workflow transitions", primary)
+        self.assertIn("finite entry-criteria closure", primary)
+        self.assertIn("stop on repeated state, cycles, no progress", primary)
 
         boundaries = {
             "dset-decompose": "stop before specification or implementation",
@@ -105,10 +106,10 @@ class SkillWrapperTests(unittest.TestCase):
             "dset-diagnose": "stop before implementing a fix",
             "dset-landscape": "stop before a Decision or implementation",
             "dset-prototype": "stop before adoption or promotion",
-            "dset-decide": "stop before implementation",
+            "dset-decisions": "before implementation",
             "dset-plan-proof": "stop before implementation or execution",
             "dset-plan-implementation": "stop before implementation",
-            "dset-implement": "stop before claiming conformance",
+            "dset-implement": "before claiming verification",
             "dset-verify": "stop before repair or release",
             "dset-triage": "stop before solving the work",
             "dset-release": "Publication requires separate explicit authority",
@@ -117,6 +118,43 @@ class SkillWrapperTests(unittest.TestCase):
         for name, boundary in boundaries.items():
             with self.subTest(skill=name):
                 self.assertIn(boundary, self._skill_text(name))
+
+    def test_implementation_uses_governed_entry_criteria_closure(self) -> None:
+        lifecycle = (
+            ROOT
+            / "dset/scopes/skill/governance/lifecycle-orchestration.md"
+        ).read_text(encoding="utf-8")
+        template = (
+            ROOT
+            / "dset/scopes/skill/templates/governance/core-v1/"
+            "lifecycle-orchestration.md"
+        ).read_text(encoding="utf-8")
+        self.assertEqual(lifecycle, template)
+
+        closure = lifecycle.split("The `implement` closure is ordered:", 1)[1]
+        closure = closure.split("The `decisions` workflow", 1)[0]
+        positions = [
+            closure.index(f"`{workflow}`")
+            for workflow in (
+                "decisions",
+                "plan-proof",
+                "plan-implementation",
+                "implement",
+            )
+        ]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn("every transition must remove a missing criterion", lifecycle)
+        self.assertIn("unchanged or repeated state", lifecycle)
+        self.assertNotIn("two workflow transitions", lifecycle)
+
+        implement = self._skill_text("dset-implement")
+        self.assertIn("invoke `dset-decisions` first", implement)
+        self.assertIn(
+            "conditionally invoke proof and implementation planning", implement
+        )
+        decisions = self._skill_text("dset-decisions")
+        self.assertIn("Never invent acceptance", decisions)
+        self.assertIn("session provenance", decisions)
 
 
 if __name__ == "__main__":

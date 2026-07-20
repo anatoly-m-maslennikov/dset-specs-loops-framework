@@ -1,4 +1,0 @@
-interface:
-  display_name: "DSET Decide"
-  short_description: "Record a governed DSET Decision"
-  default_prompt: "Use $dset-decide to resolve and run the repository-local decision workflow."

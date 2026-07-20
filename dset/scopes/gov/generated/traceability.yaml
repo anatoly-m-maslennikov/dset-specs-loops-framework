@@ -200,6 +200,7 @@ changes:
       - DSET-REQUIREMENT-SKILL-007
       - DSET-REQUIREMENT-SKILL-008
       - DSET-REQUIREMENT-SKILL-009
+      - DSET-REQUIREMENT-SKILL-010
       - DSET-REQUIREMENT-TOOL-004
       - DSET-REQUIREMENT-TOOL-018
       - DSET-REQUIREMENT-TOOL-019
@@ -245,6 +246,7 @@ changes:
       - DSET-TEST-SKILL-008
       - DSET-TEST-SKILL-009
       - DSET-TEST-SKILL-011
+      - DSET-TEST-SKILL-012
       - DSET-TEST-TOOL-005
       - DSET-TEST-TOOL-016
       - DSET-TEST-TOOL-017
@@ -282,6 +284,7 @@ changes:
       - DSET-EVAL-SKILL-006
       - DSET-EVAL-SKILL-008
       - DSET-EVAL-SKILL-009
+      - DSET-EVAL-SKILL-010
       - DSET-EVAL-TOOL-005
       - DSET-EVAL-TOOL-006
     intake:
@@ -558,6 +561,12 @@ lineage:
       - DSET-REQUIREMENT-GOV-033
     parent_to:
       - DSET-EVIDENCE-RECORD-003
+  -
+    id: DSET-REQUIREMENT-SKILL-010
+    artifact_id: DSET-ATOMIC-RECORD-006
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-006-entry-criteria-skill-chains.md
+    child_of: []
+    parent_to: []
   -
     id: DSET-SPECIFICATION-001
     artifact_id: DSET-SPECIFICATION-001

@@ -8,7 +8,7 @@ the implementation scope to its current layer-owned Requirement owners.
 | Framework-first self-hosting and bounded recursion | `DSET-REQUIREMENT-OPS-003`, `DSET-REQUIREMENT-TOOL-004` |
 | Repository-owned rules, fail-closed ownership, customization, and one owner | `DSET-REQUIREMENT-GOV-014..017` |
 | Separate test/eval proof | `DSET-REQUIREMENT-META-007` |
-| Thin wrappers, local-rule following, lifecycle-mode entrypoints, runs, budget, and continuity | `DSET-REQUIREMENT-SKILL-002..009` |
+| Thin wrappers, local-rule following, lifecycle-mode entrypoints, runs, budget, continuity, and outcome-first entry closure | `DSET-REQUIREMENT-SKILL-002..010` |
 | Release transaction, RC/final gate, and coordinated version identity | `DSET-REQUIREMENT-OPS-004..007` |
 | Intake routing and stable layer-qualified IDs | `DSET-REQUIREMENT-GOV-018..019` |
 | Neutral repository or Work Area scope | `DSET-REQUIREMENT-META-011` |
@@ -54,9 +54,24 @@ Connected accepted IDs are `DSET-REQUIREMENT-META-007`,
 `DSET-REQUIREMENT-SKILL-004`, `DSET-REQUIREMENT-SKILL-005`,
 `DSET-REQUIREMENT-SKILL-006`, `DSET-REQUIREMENT-SKILL-007`,
 `DSET-REQUIREMENT-SKILL-008`, `DSET-REQUIREMENT-SKILL-009`,
+`DSET-REQUIREMENT-SKILL-010`,
 `DSET-REQUIREMENT-OPS-003`, `DSET-REQUIREMENT-OPS-004`,
 `DSET-REQUIREMENT-OPS-005`, `DSET-REQUIREMENT-OPS-006`,
 `DSET-REQUIREMENT-OPS-007`, and `DSET-REQUIREMENT-OPS-013`.
+
+## ADDED — DSET-REQUIREMENT-SKILL-010 Outcome-first entry closure
+
+Public skills accept a desired outcome rather than requiring the operator to
+invoke every prerequisite skill manually. Repository-local lifecycle rules own
+entry criteria, allowed prerequisite workflows, exit criteria, and stops. Each
+transition must satisfy a missing criterion and re-read authority; no progress,
+repeated state, cycles, ambiguity, failure, or a new authorization boundary
+stops the finite closure.
+
+`dset-implement` invokes `decisions` first, conditionally prepares separate
+Test/Evaluation and implementation plans, and implements only after all entry
+criteria are satisfied. Session history is candidate evidence rather than
+authority, so reconciliation never invents acceptance or edits immutable atoms.
 
 ## ADDED — DSET-REQUIREMENT-GOV-029 MECE artifact classification
 

@@ -1,6 +1,6 @@
 ---
 name: dset
-description: Route a general, multi-stage, or next-action DSET request through repository-local governance. Use for initialization, decomposition, landscape or decision work, proof or implementation planning, implementation, verification, work triage, completion checks, or an explicit request for the next governed action; prefer the matching specialist for a direct clarification, diagnosis, prototype, or release request.
+description: Reach a general, multi-stage, or uncertain DSET outcome through repository-local governance. Use when the operator wants progress without choosing prerequisite skills manually; prefer a direct skill only when its desired outcome is already clear.
 ---
 
 # DSET
@@ -18,4 +18,4 @@ This is the thin primary wrapper for `lifecycle-orchestration`; resolved reposit
 
 ## Route and hand off
 
-After reading the rules, use the installed distribution runtime adapter only when exposed; otherwise return `persistence: unavailable` and obey the resolved stop behavior. Re-read authoritative owners after each transition, recommend exactly one mode, and accept an override only when resolved rules permit it. Route authorized writes through the resolved artifact owner and maintenance disposition; never edit an emitted atomic artifact. Perform at most two workflow transitions and stop on output, ambiguity, failure, or before newly required authority.
+After reading the rules, use the installed distribution runtime adapter only when exposed; otherwise return `persistence: unavailable` and obey the resolved stop behavior. Follow the finite entry-criteria closure returned by local governance, re-read authority after each transition, and require observable progress. Preserve one session and route writes through resolved owners. Never edit an emitted atom; stop on repeated state, cycles, no progress, ambiguity, failure, an exit criterion, or newly required authority.

@@ -757,7 +757,7 @@ class GovernanceTests(unittest.TestCase):
             "work-triage": "dset-triage",
             "decompose": "dset-decompose",
             "landscape": "dset-landscape",
-            "decide": "dset-decide",
+            "decisions": "dset-decisions",
             "plan-proof": "dset-plan-proof",
             "plan-implementation": "dset-plan-implementation",
             "implement": "dset-implement",
