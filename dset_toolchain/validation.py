@@ -10,6 +10,7 @@ from typing import Any
 from urllib.parse import unquote
 
 from . import __version__
+from .carrier_transitions import transition_aliases, validate_carrier_transition_ledger
 from .commit_provenance import validate_commit_provenance
 from .compilation import compilation_is_fresh, compilation_path
 from .dependencies import validate_dependency_policy
@@ -205,6 +206,11 @@ def validate_repository(root: Path) -> list[Diagnostic]:
             if path.is_dir() and re.match(r"^\d{4}-\d{2}-\d{2}-", path.name):
                 diagnostics.extend(validate_change(root, path, archived=True))
     diagnostics.extend(_validate_markdown(root))
+    transition_ledger = root / "dset/scopes/gov/migrations/carrier-transitions.toml"
+    diagnostics.extend(
+        _diag("DSET-E168", transition_ledger, issue)
+        for issue in validate_carrier_transition_ledger(root)
+    )
     diagnostics.extend(validate_semantic_atoms(root))
     diagnostics.extend(validate_semantic_classifications(root))
     diagnostics.extend(validate_artifact_lineage(root))
@@ -1557,11 +1563,19 @@ def _legacy_structured_entries(
             "path",
             "sha256",
             "current_owner",
+            "current_path",
+            "current_sha256",
+            "transition_id",
             "artifact_type",
             "artifact_subtype",
             "retained_for",
         }
-        required = allowed - {"artifact_subtype"}
+        required = allowed - {
+            "artifact_subtype",
+            "current_path",
+            "current_sha256",
+            "transition_id",
+        }
         if not required.issubset(item) or set(item) - allowed:
             diagnostics.append(
                 _diag(
@@ -1644,12 +1658,33 @@ def _legacy_structured_entries(
             continue
         source = (root / raw_path).resolve()
         owner = (root / raw_owner).resolve()
+        raw_current = item.get("current_path")
+        current_digest = item.get("current_sha256")
+        transition_id = item.get("transition_id")
+        transitioned = all(
+            isinstance(value, str)
+            for value in (raw_current, current_digest, transition_id)
+        )
+        if (
+            any(
+                value is not None
+                for value in (raw_current, current_digest, transition_id)
+            )
+            and not transitioned
+        ):
+            diagnostics.append(
+                _diag(
+                    "DSET-E156",
+                    registry_path,
+                    f"legacy transition seal is incomplete: {raw_path}",
+                )
+            )
         invalid_source = (
             not _within_root(root, source)
             or not source.is_file()
             or source.is_symlink()
         )
-        if invalid_source:
+        if invalid_source and not transitioned:
             diagnostics.append(
                 _diag(
                     "DSET-E156",
@@ -1657,7 +1692,7 @@ def _legacy_structured_entries(
                     f"legacy snapshot is missing: {raw_path}",
                 )
             )
-        else:
+        elif not invalid_source:
             expected = item.get("sha256")
             actual = hashlib.sha256(source.read_bytes()).hexdigest()
             if (
@@ -1670,6 +1705,24 @@ def _legacy_structured_entries(
                         "DSET-E156",
                         registry_path,
                         f"legacy snapshot digest changed: {raw_path}",
+                    )
+                )
+        if transitioned:
+            assert isinstance(raw_current, str)
+            assert isinstance(current_digest, str)
+            current = (root / raw_current).resolve()
+            if (
+                not _within_root(root, current)
+                or not current.is_file()
+                or current.is_symlink()
+                or hashlib.sha256(current.read_bytes()).hexdigest() != current_digest
+            ):
+                diagnostics.append(
+                    _diag(
+                        "DSET-E156",
+                        registry_path,
+                        "legacy transition carrier is missing or changed: "
+                        f"{raw_current}",
                     )
                 )
         if not _within_root(root, owner) or not owner.is_file() or owner.is_symlink():
@@ -2091,6 +2144,11 @@ def _validate_current_artifact_classifications(
         direct = _direct_artifact_classification(path)
         is_legacy_evidence = relative in legacy_evidence
         historical = legacy_structured.get(relative)
+        transitioned = [
+            entry
+            for entry in legacy_structured.values()
+            if entry.get("current_path") == relative
+        ]
         if len(matched_exclusions) > 1:
             diagnostics.append(
                 _diag(
@@ -2115,6 +2173,7 @@ def _validate_current_artifact_classifications(
             and not matched_rules
             and not is_legacy_evidence
             and historical is None
+            and not transitioned
             and not matched_exclusions
         ):
             diagnostics.append(
@@ -3124,6 +3183,7 @@ def _validate_provenance(root: Path) -> list[Diagnostic]:
 
 def _validate_markdown(root: Path) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
+    aliases = transition_aliases(root)
     for path in _markdown_paths(root):
         if any(part in MARKDOWN_IGNORED_PARTS for part in path.relative_to(root).parts):
             continue
@@ -3159,7 +3219,7 @@ def _validate_markdown(root: Path) -> list[Diagnostic]:
             if "{{" in target:
                 continue
             resolved = (path.parent / unquote(target)).resolve()
-            if not resolved.exists():
+            if not resolved.exists() and not aliases.get(resolved, resolved).exists():
                 diagnostics.append(
                     _diag(
                         "DSET-E113",

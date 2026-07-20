@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dset.dev/schemas/carrier-transition.schema.json",
+  "title": "DSET carrier-transition ledger",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "transitions"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "transitions": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/transition"}
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "gitObject": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+    "transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "authority_decision",
+        "carrier_ids",
+        "semantic_ids",
+        "original_path",
+        "original_format",
+        "original_sha256",
+        "source_git_blob",
+        "current_path",
+        "current_format",
+        "current_sha256",
+        "source_semantic_sha256",
+        "current_semantic_sha256",
+        "null_paths",
+        "declared_loss",
+        "source_commit",
+        "transitioned_at",
+        "llm_session_ids"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^DSET-CARRIER-TRANSITION-[A-F0-9]{16}$"
+        },
+        "kind": {
+          "enum": ["structured_yaml", "markdown_frontmatter", "markdown_links"]
+        },
+        "authority_decision": {"const": "DSET-DECISION-GOV-018"},
+        "carrier_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"
+          }
+        },
+        "semantic_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"
+          }
+        },
+        "original_path": {"type": "string", "minLength": 1},
+        "original_format": {"type": "string", "minLength": 1},
+        "original_sha256": {"$ref": "#/$defs/sha256"},
+        "source_git_blob": {"$ref": "#/$defs/gitObject"},
+        "current_path": {"type": "string", "minLength": 1},
+        "current_format": {"type": "string", "minLength": 1},
+        "current_sha256": {"$ref": "#/$defs/sha256"},
+        "source_semantic_sha256": {"$ref": "#/$defs/sha256"},
+        "current_semantic_sha256": {"$ref": "#/$defs/sha256"},
+        "null_paths": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^/"}
+        },
+        "declared_loss": {"type": "array", "maxItems": 0},
+        "link_rewrites": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["source", "target", "original_path", "current_path"],
+            "properties": {
+              "source": {"type": "string", "minLength": 1},
+              "target": {"type": "string", "minLength": 1},
+              "original_path": {"type": "string", "minLength": 1},
+              "current_path": {"type": "string", "minLength": 1}
+            }
+          }
+        },
+        "source_commit": {"$ref": "#/$defs/gitObject"},
+        "transitioned_at": {"type": "string", "format": "date-time"},
+        "llm_session_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"kind": {"const": "markdown_links"}}},
+          "then": {"required": ["link_rewrites"]}
+        }
+      ]
+    }
+  }
+}

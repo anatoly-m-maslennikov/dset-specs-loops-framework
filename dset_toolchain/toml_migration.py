@@ -23,6 +23,18 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from .carrier_transitions import (
+    CarrierTransitionError,
+    historical_envelope,
+    markdown_link_transition,
+    markdown_transition,
+)
+from .carrier_transitions import ledger_path as carrier_transition_ledger_path
+from .carrier_transitions import render_ledger as render_transition_ledger
+from .compilation import compilation_path
+from .frontmatter import parse as parse_frontmatter
+from .health import health_path
+from .layout import discover_layout
 from .semantic_atoms import TERMINAL_STATES, collect_semantic_atoms
 from .toml_codec import TomlCodecError
 from .toml_codec import dumps as dump_toml
@@ -243,7 +255,14 @@ def plan_toml_migration(
         root, paths
     )
     blockers.extend(immutable_blockers)
+    transition_entries, transition_sources, transition_blockers = (
+        _carrier_transition_entries(root, paths, legacy_structured, immutable)
+    )
+    entries.extend(transition_entries)
+    blockers.extend(transition_blockers)
     for path in paths:
+        if path in transition_sources:
+            continue
         classification = _exception_classification(root, path, immutable)
         if classification is not None:
             exceptions.append(classification)
@@ -282,7 +301,9 @@ def plan_toml_migration(
                     entries.append(entry)
 
     entries.sort(key=lambda item: (_relative(root, item.source), item.kind))
-    successors, successor_blockers = _package_successors(root, shared_packages, entries)
+    successors, successor_blockers = _package_successors(
+        root, shared_packages - transition_sources, entries
+    )
     blockers.extend(successor_blockers)
     blockers.extend(_collision_blockers(root, entries, successors))
     successor_mapping = {successor.source: successor.target for successor in successors}
@@ -302,6 +323,7 @@ def plan_toml_migration(
         successor_mapping,
         legacy_structured=set(legacy_structured),
         historical_trace_sources=shared_packages,
+        transition_sources=transition_sources,
     )
     blockers.extend(reference_blockers)
     runtime_readiness, runtime_blockers = _runtime_readiness(
@@ -310,7 +332,7 @@ def plan_toml_migration(
         references,
         exceptions,
         successors,
-        tuple(sorted(legacy_structured)),
+        tuple(sorted(set(legacy_structured) - transition_sources)),
     )
     if bypass_runtime_readiness:
         runtime_readiness = {**runtime_readiness, "bypassed_for_proof": True}
@@ -324,7 +346,7 @@ def plan_toml_migration(
         blockers=tuple(sorted(set(blockers))),
         runtime_readiness=runtime_readiness,
         package_successors=tuple(successors),
-        preserved_structured=tuple(sorted(legacy_structured)),
+        preserved_structured=tuple(sorted(set(legacy_structured) - transition_sources)),
     )
 
 
@@ -348,7 +370,10 @@ def apply_toml_migration(
         entry.source
         for entry in plan.entries
         if entry.source != entry.target
-        and entry.source not in plan.preserved_structured
+        and (
+            entry.source not in plan.preserved_structured
+            or entry.kind == "historical-envelope"
+        )
     }
     _preflight_apply(plan)
     backup_root = plan.root / ".dset" / "toml-migration-backups" / plan.digest
@@ -358,6 +383,7 @@ def apply_toml_migration(
         and (plan.root / "scripts" / "build_bootstrap_bundle.py").is_file()
     )
     generated = {bundle_path} if regenerates_bundle else set()
+    generated.update(_existing_reconciliation_outputs(plan.root))
     affected = sorted(set(writes) | deletes | generated)
     originals = {
         path: path.read_bytes() if path.exists() else None for path in affected
@@ -398,6 +424,18 @@ def _project_files(root: Path) -> list[Path]:
         if path.is_file():
             paths.append(path)
     return sorted(paths, key=lambda item: item.relative_to(root).as_posix())
+
+
+def _existing_reconciliation_outputs(root: Path) -> set[Path]:
+    layout = discover_layout(root)
+    candidates = {
+        layout.governance_path,
+        compilation_path(root),
+        layout.traceability_path,
+    }
+    with suppress(KeyError, OSError, TypeError, ValueError, YamlSubsetError):
+        candidates.add(health_path(root))
+    return {path for path in candidates if path.is_file()}
 
 
 def _exception_classification(
@@ -490,7 +528,7 @@ def _immutable_classifications(
                     path_set,
                     classifications,
                     blockers,
-                    str(record["path"]),
+                    str(record.get("current_path", record["path"])),
                     "immutable-sealed-atom",
                     "canonical-history",
                 )
@@ -531,6 +569,7 @@ def _immutable_classifications(
                         )
                         continue
                     raw_path = str(fragment["path"])
+                    active_path = str(fragment.get("current_path", raw_path))
                     selector = fragment.get("selector")
                     shared = selector != "whole-carrier"
                     _register_immutable_path(
@@ -538,7 +577,7 @@ def _immutable_classifications(
                         path_set,
                         classifications,
                         blockers,
-                        raw_path,
+                        active_path,
                         "immutable-legacy-decision-carrier",
                         "canonical-history",
                         shared=shared,
@@ -549,9 +588,11 @@ def _immutable_classifications(
                         selector,
                         fragment.get("sha256"),
                         blockers,
+                        current_path=fragment.get("current_path"),
+                        current_digest=fragment.get("current_sha256"),
                     )
-                    if shared:
-                        shared_paths.add((root / raw_path).resolve())
+                    if shared and not isinstance(fragment.get("current_path"), str):
+                        shared_paths.add((root / active_path).resolve())
 
     for path in paths:
         relative = path.relative_to(root)
@@ -590,10 +631,14 @@ def _validate_legacy_fragment(
     selector: object,
     declared_digest: object,
     blockers: list[str],
+    *,
+    current_path: object = None,
+    current_digest: object = None,
 ) -> None:
     """Verify the ledger-bound fragment without altering its historical carrier."""
 
-    path = (root / raw_path).resolve()
+    active_raw = str(current_path) if isinstance(current_path, str) else raw_path
+    path = (root / active_raw).resolve()
     if not _is_within_root(root, path) or not path.is_file():
         return
     if not isinstance(selector, str) or not isinstance(declared_digest, str):
@@ -603,11 +648,25 @@ def _validate_legacy_fragment(
         return
     if selector == "whole-carrier":
         actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        expected = (
+            current_digest if isinstance(current_digest, str) else declared_digest
+        )
     else:
         field, separator, identifier = selector.partition(":")
+        if isinstance(current_digest, str):
+            carrier_digest = hashlib.sha256(path.read_bytes()).hexdigest()
+            if carrier_digest != current_digest:
+                blockers.append(
+                    f"immutability: current legacy carrier digest changed: {active_raw}"
+                )
+                return
         try:
             data = load_structured(path)
-        except (OSError, UnicodeError, YamlSubsetError) as error:
+            if isinstance(current_path, str) and path.name.endswith(".legacy.toml"):
+                from .carrier_transitions import decode_historical_envelope
+
+                data = decode_historical_envelope(path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, ValueError, YamlSubsetError) as error:
             blockers.append(
                 f"immutability: cannot read selector-sealed carrier {raw_path}: {error}"
             )
@@ -620,7 +679,8 @@ def _validate_legacy_fragment(
             )
             return
         actual = hashlib.sha256(f"{selector}\n".encode()).hexdigest()
-    if actual != declared_digest:
+        expected = declared_digest
+    if actual != expected:
         blockers.append(
             "immutability: selector-sealed legacy fragment digest changed: "
             f"{raw_path}#{selector}"
@@ -685,6 +745,9 @@ def _legacy_structured_registry(
         raw_path = item.get("path")
         raw_owner = item.get("current_owner")
         digest = item.get("sha256")
+        raw_current = item.get("current_path")
+        current_digest = item.get("current_sha256")
+        current_transition = item.get("transition_id")
         if not isinstance(raw_path, str) or not isinstance(raw_owner, str):
             blockers.append("legacy-structured: path and current_owner are required")
             continue
@@ -712,6 +775,20 @@ def _legacy_structured_registry(
             )
             continue
         if not source.is_file() or source.is_symlink():
+            if all(
+                isinstance(value, str)
+                for value in (raw_current, current_digest, current_transition)
+            ):
+                current = (root / str(raw_current)).resolve()
+                if (
+                    _is_within_root(root, current)
+                    and current.is_file()
+                    and not current.is_symlink()
+                    and hashlib.sha256(current.read_bytes()).hexdigest()
+                    == current_digest
+                ):
+                    owners.add(owner)
+                    continue
             blockers.append(
                 f"legacy-structured: registered snapshot is missing: {raw_path}"
             )
@@ -723,6 +800,281 @@ def _legacy_structured_registry(
         result[source] = {**item, "current_owner": owner}
         owners.add(owner)
     return result, blockers
+
+
+def _carrier_transition_entries(
+    root: Path,
+    paths: list[Path],
+    legacy_structured: dict[Path, dict[str, Any]],
+    immutable: dict[Path, dict[str, object]],
+) -> tuple[list[MigrationEntry], set[Path], list[str]]:
+    """Plan GOV-018 carriers plus their append-only reseal registries."""
+
+    # GOV-018 is feature-gated by its canonical append-only ledger. Older
+    # repositories and compatibility fixtures retain the previous behavior
+    # until they materialize that authority.
+    if not carrier_transition_ledger_path(root).is_file():
+        return [], set(), []
+
+    entries: list[MigrationEntry] = []
+    blockers: list[str] = []
+    transition_sources: set[Path] = set()
+    records: list[dict[str, Any]] = []
+    by_source: dict[str, tuple[MigrationEntry, dict[str, Any]]] = {}
+
+    candidates: list[tuple[Path, Path, str]] = []
+    for source in sorted(legacy_structured):
+        if source.is_file():
+            target = source.with_name(f"{source.stem}.legacy.toml")
+            candidates.append((source, target, "structured"))
+    for source in sorted(paths):
+        classification = _exception_classification(root, source, immutable)
+        if (
+            _is_owned_markdown(root, source)
+            and _has_yaml_frontmatter(source)
+            and not (
+                classification is not None
+                and str(classification["category"])
+                in {"host-skill-frontmatter", "github-actions"}
+            )
+        ):
+            candidates.append((source, source, "markdown"))
+
+    seen: set[Path] = set()
+    for source, target, kind in candidates:
+        if source in seen:
+            continue
+        seen.add(source)
+        if target != source and target.exists():
+            blockers.append(
+                f"carrier-transition: target collision {_relative(root, target)}"
+            )
+            continue
+        try:
+            if kind == "structured":
+                rendered, record = historical_envelope(root, source, target)
+                entry_kind = "historical-envelope"
+            else:
+                rendered, record = markdown_transition(root, source)
+                entry_kind = "immutable-frontmatter"
+        except (OSError, UnicodeError, ValueError, CarrierTransitionError) as error:
+            blockers.append(f"carrier-transition: {_relative(root, source)}: {error}")
+            continue
+        carrier_ids, semantic_ids = _transition_identities(root, source)
+        record["carrier_ids"] = carrier_ids
+        record["semantic_ids"] = semantic_ids
+        entry = MigrationEntry(
+            entry_kind,
+            source,
+            target,
+            source.read_text(encoding="utf-8"),
+            rendered,
+            tuple(f"null:{item}" for item in record["null_paths"]),
+        )
+        entries.append(entry)
+        records.append(record)
+        transition_sources.add(source)
+        by_source[_relative(root, source)] = (entry, record)
+
+    historical_mapping = {
+        entry.source.resolve(): entry.target.resolve()
+        for entry in entries
+        if entry.kind == "historical-envelope"
+    }
+    for source in sorted(paths):
+        classification = immutable.get(source)
+        if (
+            source in transition_sources
+            or source.suffix != ".md"
+            or classification is None
+            or classification.get("category") != "immutable-promoted-proof"
+        ):
+            continue
+        try:
+            result = markdown_link_transition(root, source, historical_mapping)
+        except (OSError, UnicodeError, ValueError, CarrierTransitionError) as error:
+            blockers.append(f"carrier-transition: {_relative(root, source)}: {error}")
+            continue
+        if result is None:
+            continue
+        rendered, record = result
+        carrier_ids, semantic_ids = _transition_identities(root, source)
+        record["carrier_ids"] = carrier_ids
+        record["semantic_ids"] = semantic_ids
+        entry = MigrationEntry(
+            "immutable-links",
+            source,
+            source,
+            source.read_text(encoding="utf-8"),
+            rendered,
+        )
+        entries.append(entry)
+        records.append(record)
+        transition_sources.add(source)
+        by_source[_relative(root, source)] = (entry, record)
+
+    if not records:
+        return entries, transition_sources, blockers
+
+    for relative in (
+        "dset/scopes/gov/governance/atoms.toml",
+        "dset/scopes/gov/governance/legacy-authority.toml",
+        "dset/scopes/gov/artifact-types.toml",
+    ):
+        path = root / relative
+        if not path.is_file():
+            continue
+        try:
+            data = load_structured(path)
+            if not isinstance(data, dict):
+                raise CarrierTransitionError("registry root must be a mapping")
+            _reseal_transition_registry(relative, data, by_source)
+            rendered = dump_toml(data)
+        except (OSError, UnicodeError, ValueError, CarrierTransitionError) as error:
+            blockers.append(f"carrier-transition: cannot reseal {relative}: {error}")
+            continue
+        before = path.read_text(encoding="utf-8")
+        if rendered != before:
+            entries.append(
+                MigrationEntry("transition-registry", path, path, before, rendered)
+            )
+
+    ledger = carrier_transition_ledger_path(root)
+    if not ledger.is_file():
+        blockers.append(
+            "carrier-transition: missing canonical ledger "
+            + ledger.relative_to(root).as_posix()
+        )
+    else:
+        try:
+            before = ledger.read_text(encoding="utf-8")
+            rendered = render_transition_ledger(root, records)
+        except (OSError, UnicodeError, ValueError, CarrierTransitionError) as error:
+            blockers.append(f"carrier-transition: cannot update ledger: {error}")
+        else:
+            if rendered != before:
+                entries.append(
+                    MigrationEntry(
+                        "transition-registry", ledger, ledger, before, rendered
+                    )
+                )
+    return entries, transition_sources, blockers
+
+
+def _transition_identities(root: Path, source: Path) -> tuple[list[str], list[str]]:
+    relative = _relative(root, source)
+    carrier_ids: set[str] = set()
+    semantic_ids: set[str] = set()
+    for stems, record_field in (
+        (("dset/scopes/gov/governance/atoms",), "records"),
+        (("dset/scopes/gov/governance/legacy-authority",), "records"),
+    ):
+        data, _errors = _load_history_ledger(root, stems, "carrier transition")
+        values = data.get(record_field) if isinstance(data, dict) else None
+        if not isinstance(values, list):
+            continue
+        for item in values:
+            if not isinstance(item, dict):
+                continue
+            if item.get("path") == relative:
+                carrier = item.get("carrier_id")
+                semantic = item.get("semantic_id")
+                if isinstance(carrier, str):
+                    carrier_ids.add(carrier)
+                if isinstance(semantic, str):
+                    semantic_ids.add(semantic)
+            fragments = item.get("fragments")
+            if isinstance(fragments, list) and any(
+                isinstance(fragment, dict) and fragment.get("path") == relative
+                for fragment in fragments
+            ):
+                value = item.get("semantic_id")
+                if isinstance(value, str):
+                    semantic_ids.add(value)
+    type_registry = root / "dset/scopes/gov/artifact-types.toml"
+    if type_registry.is_file():
+        try:
+            registry_data = load_structured(type_registry)
+        except (OSError, UnicodeError, YamlSubsetError):
+            registry_data = {}
+        legacy = (
+            registry_data.get("legacy_structured")
+            if isinstance(registry_data, dict)
+            else None
+        )
+        if isinstance(legacy, list):
+            for item in legacy:
+                if not isinstance(item, dict) or item.get("path") != relative:
+                    continue
+                retained = item.get("retained_for")
+                if not isinstance(retained, list):
+                    continue
+                semantic_ids.update(
+                    str(identity["semantic_id"])
+                    for identity in retained
+                    if isinstance(identity, dict)
+                    and isinstance(identity.get("semantic_id"), str)
+                )
+    try:
+        metadata = parse_frontmatter(source.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, ValueError):
+        metadata = None
+    if metadata is not None:
+        carrier = metadata[0].get("artifact_id")
+        semantic = metadata[0].get("semantic_id")
+        if isinstance(carrier, str):
+            carrier_ids.add(carrier)
+        if isinstance(semantic, str):
+            semantic_ids.add(semantic)
+    return sorted(carrier_ids), sorted(semantic_ids)
+
+
+def _reseal_transition_registry(
+    relative: str,
+    data: dict[str, Any],
+    by_source: dict[str, tuple[MigrationEntry, dict[str, Any]]],
+) -> None:
+    records = data.get("records")
+    if relative.endswith("atoms.toml") and isinstance(records, list):
+        for item in records:
+            if not isinstance(item, dict) or not isinstance(item.get("path"), str):
+                continue
+            transition = by_source.get(str(item["path"]))
+            if transition is not None:
+                entry, record = transition
+                item["current_path"] = record["current_path"]
+                item["current_sha256"] = entry.target_digest
+                item["transition_id"] = record["id"]
+        return
+    if relative.endswith("legacy-authority.toml") and isinstance(records, list):
+        for item in records:
+            fragments = item.get("fragments") if isinstance(item, dict) else None
+            if not isinstance(fragments, list):
+                continue
+            for fragment in fragments:
+                if not isinstance(fragment, dict) or not isinstance(
+                    fragment.get("path"), str
+                ):
+                    continue
+                transition = by_source.get(str(fragment["path"]))
+                if transition is None:
+                    continue
+                entry, record = transition
+                fragment["current_path"] = record["current_path"]
+                fragment["current_sha256"] = entry.target_digest
+                fragment["transition_id"] = record["id"]
+        return
+    legacy = data.get("legacy_structured")
+    if relative.endswith("artifact-types.toml") and isinstance(legacy, list):
+        for item in legacy:
+            if not isinstance(item, dict) or not isinstance(item.get("path"), str):
+                continue
+            transition = by_source.get(str(item["path"]))
+            if transition is not None:
+                entry, record = transition
+                item["current_path"] = record["current_path"]
+                item["current_sha256"] = entry.target_digest
+                item["transition_id"] = record["id"]
 
 
 def _toml_cutover_complete(root: Path) -> bool:
@@ -1527,6 +1879,7 @@ def _reference_rewrites(
     *,
     legacy_structured: set[Path] | None = None,
     historical_trace_sources: set[Path] | None = None,
+    transition_sources: set[Path] | None = None,
 ) -> tuple[list[ReferenceRewrite], list[str]]:
     mapping = {
         entry.source: entry.target for entry in entries if entry.source != entry.target
@@ -1536,10 +1889,13 @@ def _reference_rewrites(
         return [], []
     legacy_carriers = legacy_structured or set()
     historical_sources = historical_trace_sources or set()
+    sealed_transition_sources = transition_sources or set()
     converting_sources = {entry.source for entry in entries}
     rewrites: list[ReferenceRewrite] = []
     blockers: list[str] = []
     for path in paths:
+        if path in sealed_transition_sources:
+            continue
         if path in legacy_carriers and path not in converting_sources:
             continue
         classification = _exception_classification(root, path, immutable)
@@ -1762,8 +2118,14 @@ def _atomic_write_text(path: Path, content: str) -> None:
 def _validate_staged_tree(plan: MigrationPlan, writes: dict[Path, str]) -> None:
     for entry in plan.entries:
         staged = writes[entry.target]
-        if entry.kind == "structured":
+        if entry.kind in {
+            "structured",
+            "historical-envelope",
+            "transition-registry",
+        }:
             load_toml(staged)
+        elif entry.kind == "immutable-links":
+            continue
         else:
             if not staged.startswith("+++\n"):
                 raise TomlMigrationError(

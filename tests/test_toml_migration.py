@@ -1211,7 +1211,11 @@ class TomlMigrationTests(unittest.TestCase):
         before = atom.read_bytes()
         plan = plan_toml_migration(staged, bypass_runtime_readiness=True)
 
-        self.assertTrue(plan.ready)
+        self.assertFalse(plan.ready)
+        self.assertTrue(
+            any("source Git blob" in blocker for blocker in plan.blockers),
+            plan.blockers,
+        )
         self.assertEqual(len(plan.package_successors), 5)
         for successor in plan.package_successors:
             with self.subTest(target=successor.target):

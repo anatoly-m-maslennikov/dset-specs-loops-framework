@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 from typing import Any
 
+from .carrier_transitions import decode_historical_envelope
 from .diagnostics import Diagnostic
 from .layout import discover_layout
 from .yaml_subset import YamlSubsetError, dump, load
@@ -108,13 +109,18 @@ def legacy_shared_package_paths(root: Path) -> tuple[Path, ...]:
             if not isinstance(fragment, dict):
                 continue
             raw_path = fragment.get("path")
+            current_path = fragment.get("current_path")
             selector = fragment.get("selector")
             if not isinstance(raw_path, str) or selector == "whole-carrier":
                 continue
-            candidate = (root / raw_path).resolve()
+            active = current_path if isinstance(current_path, str) else raw_path
+            candidate = (root / active).resolve()
             if (
                 _within(root, candidate)
-                and candidate.name in {"package.yaml", "package.yml"}
+                and (
+                    candidate.name in {"package.yaml", "package.yml"}
+                    or candidate.name == "package.legacy.toml"
+                )
                 and candidate.is_file()
             ):
                 paths.add(candidate)
@@ -127,7 +133,7 @@ def legacy_authority_ids(root: Path) -> set[str]:
     identifiers: set[str] = set()
     for path in legacy_shared_package_paths(root):
         try:
-            data = load(path)
+            data = _load_fragment_carrier(path)
         except (OSError, UnicodeError, YamlSubsetError):
             continue
         if not isinstance(data, dict):
@@ -208,17 +214,32 @@ def _validate_recorded_fragment(
     assert isinstance(raw_path, str)
     assert isinstance(selector, str)
     assert isinstance(expected, str)
-    path = (root / raw_path).resolve()
+    raw_current = fragment.get("current_path")
+    current_digest = fragment.get("current_sha256")
+    transition_id = fragment.get("transition_id")
+    transitioned = isinstance(raw_current, str)
+    if transitioned and not all(
+        isinstance(item, str) for item in (current_digest, transition_id)
+    ):
+        return f"legacy authority current seal is incomplete: {semantic_id}"
+    active = str(raw_current) if transitioned else raw_path
+    path = (root / active).resolve()
     if not _within(root, path) or not path.is_file():
         return f"legacy authority carrier is missing: {raw_path}"
     if selector == "whole-carrier":
         payload = path.read_bytes()
+        expected = current_digest if transitioned else expected
     else:
+        if (
+            transitioned
+            and hashlib.sha256(path.read_bytes()).hexdigest() != current_digest
+        ):
+            return f"legacy authority current carrier digest changed: {semantic_id}"
         field, separator, selected_id = selector.partition(":")
         if not separator or selected_id != semantic_id:
             return f"legacy authority selector is invalid: {semantic_id}"
         try:
-            data = load(path)
+            data = _load_fragment_carrier(path)
         except (OSError, UnicodeError, YamlSubsetError):
             return f"legacy authority carrier is invalid: {raw_path}"
         values = data.get(field) if isinstance(data, dict) else None
@@ -228,6 +249,12 @@ def _validate_recorded_fragment(
     if hashlib.sha256(payload).hexdigest() != expected:
         return f"legacy authority fragment digest changed: {semantic_id}"
     return None
+
+
+def _load_fragment_carrier(path: Path) -> Any:
+    if path.name.endswith(".legacy.toml"):
+        return decode_historical_envelope(path.read_text(encoding="utf-8"))
+    return load(path)
 
 
 def _within(root: Path, path: Path) -> bool:

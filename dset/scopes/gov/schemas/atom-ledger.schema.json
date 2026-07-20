@@ -16,6 +16,12 @@
           "carrier_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-ATOMIC-RECORD-[0-9]{3,}$"},
           "path": {"type": "string", "minLength": 1},
           "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "current_path": {"type": "string", "minLength": 1},
+          "current_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "transition_id": {
+            "type": "string",
+            "pattern": "^DSET-CARRIER-TRANSITION-[A-F0-9]{16}$"
+          },
           "type": {"enum": ["decision", "question", "problem", "qa"]},
           "subtype": {"enum": ["none", "requirement", "constraint", "contract", "user_story", "outcome", "scenario", "invariant", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]}
         },

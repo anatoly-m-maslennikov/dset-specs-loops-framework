@@ -273,7 +273,7 @@ class SemanticAtomTests(unittest.TestCase):
                 },
             )
 
-    def test_retired_atom_moves_byte_for_byte_with_stable_lookup(self) -> None:
+    def test_retired_atom_requires_registered_carrier_transition(self) -> None:
         original = self._write_atom().encode()
         seal_atom(self.root, self.atom_path)
         append_lifecycle_event(
@@ -288,15 +288,15 @@ class SemanticAtomTests(unittest.TestCase):
             },
         )
 
-        archived = archive_atom(self.root, "DSET-CONTRACT-001")
+        with self.assertRaisesRegex(ValueError, "registered carrier transition"):
+            archive_atom(self.root, "DSET-CONTRACT-001")
 
-        self.assertEqual(archived.read_bytes(), original)
-        self.assertFalse(self.atom_path.exists())
+        self.assertEqual(self.atom_path.read_bytes(), original)
         self.assertEqual(validate_semantic_atoms(self.root), [])
         row = build_semantic_atom_index(self.root)[0]
-        self.assertTrue(row["archived"])
+        self.assertFalse(row["archived"])
         self.assertEqual(row["current_status"], "retired")
-        self.assertEqual(row["path"], archived.relative_to(self.root).as_posix())
+        self.assertEqual(row["path"], self.atom_path.relative_to(self.root).as_posix())
 
     def _write_atom(self) -> str:
         text = self._atom_text(

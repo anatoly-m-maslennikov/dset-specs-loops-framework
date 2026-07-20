@@ -24,7 +24,13 @@
               "properties": {
                 "path": {"type": "string", "minLength": 1},
                 "selector": {"type": "string", "minLength": 1},
-                "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+                "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+                "current_path": {"type": "string", "minLength": 1},
+                "current_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+                "transition_id": {
+                  "type": "string",
+                  "pattern": "^DSET-CARRIER-TRANSITION-[A-F0-9]{16}$"
+                }
               },
               "additionalProperties": false
             }

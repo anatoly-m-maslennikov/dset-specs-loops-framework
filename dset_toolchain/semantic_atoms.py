@@ -296,37 +296,9 @@ def archive_atom(root: Path, semantic_id: str) -> Path:
             + ", ".join(sorted(active_dependants))
         )
 
-    destination = source.parent / "archive" / source.name
-    if destination.exists():
-        raise FileExistsError(f"atom archive destination exists: {destination}")
-    ledger_path = _ledger_path(root)
-    ledger = _load_or_empty(ledger_path, "records")
-    records = ledger["records"]
-    assert isinstance(records, list)
-    record = next(
-        (
-            item
-            for item in records
-            if isinstance(item, dict) and item.get("semantic_id") == semantic_id
-        ),
-        None,
+    raise ValueError(
+        "atom archival requires an authorized registered carrier transition"
     )
-    if record is None or record.get("sha256") != atom.sha256:
-        raise ValueError("atom archive requires a current digest-bound ledger record")
-    updated = dict(record)
-    updated["path"] = destination.relative_to(root).as_posix()
-    records[records.index(record)] = updated
-    temporary = ledger_path.with_suffix(ledger_path.suffix + ".tmp")
-    temporary.write_text(dump(ledger, ledger_path), encoding="utf-8")
-    destination.parent.mkdir(parents=True, exist_ok=True)
-    source.replace(destination)
-    try:
-        temporary.replace(ledger_path)
-    except Exception:
-        destination.replace(source)
-        temporary.unlink(missing_ok=True)
-        raise
-    return destination
 
 
 def _parse_atom(
@@ -669,17 +641,26 @@ def _validate_ledger(root: Path, atoms: dict[str, SemanticAtom]) -> list[Diagnos
             )
             continue
         expected = _ledger_record(atom)
-        for field in ("carrier_id", "path", "sha256", "type", "subtype"):
-            if record.get(field) != expected.get(field):
+        comparisons = {
+            "carrier_id": "carrier_id",
+            "type": "type",
+            "subtype": "subtype",
+            "current_path" if "current_path" in record else "path": "path",
+            "current_sha256" if "current_sha256" in record else "sha256": "sha256",
+        }
+        for recorded_field, expected_field in comparisons.items():
+            if record.get(recorded_field) != expected.get(expected_field):
                 diagnostics.append(
                     Diagnostic(
                         "DSET-E161",
                         root / atom.path,
-                        f"sealed atom {field} changed: {identifier}",
+                        f"sealed atom {recorded_field} changed: {identifier}",
                     )
                 )
     for identifier in sorted(set(indexed) - set(atoms)):
-        record_path = indexed[identifier].get("path")
+        record_path = indexed[identifier].get(
+            "current_path", indexed[identifier].get("path")
+        )
         if not isinstance(record_path, str) or not (root / record_path).is_file():
             diagnostics.append(
                 Diagnostic("DSET-E161", path, f"sealed atom is missing: {identifier}")

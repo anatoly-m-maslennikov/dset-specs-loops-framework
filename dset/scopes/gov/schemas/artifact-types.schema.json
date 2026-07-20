@@ -112,6 +112,12 @@
           "type": "string",
           "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?/)(?!.*[*?\\[\\]])[^\\\\]+\\.toml$"
         },
+        "current_path": {"type": "string", "minLength": 1},
+        "current_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "transition_id": {
+          "type": "string",
+          "pattern": "^DSET-CARRIER-TRANSITION-[A-F0-9]{16}$"
+        },
         "artifact_type": {"$ref": "#/$defs/id"},
         "artifact_subtype": {"$ref": "#/$defs/id"},
         "retained_for": {
