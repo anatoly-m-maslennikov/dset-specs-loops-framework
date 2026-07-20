@@ -24,7 +24,7 @@ class SelfHostTests(unittest.TestCase):
         self.assertIn("fetch-depth: 0", checkout)
 
     def test_fixed_point_uses_released_and_candidate_validators(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as raw:
             report = run_self_host(ROOT, Path(raw))
         self.assertEqual(report["released_validator"], "bootstrap-transition")
         self.assertIn(
@@ -57,7 +57,7 @@ class SelfHostTests(unittest.TestCase):
 
     def test_bad_released_ref_fails_at_first_boundary(self) -> None:
         with (
-            tempfile.TemporaryDirectory() as raw,
+            tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as raw,
             self.assertRaises(DsetCommandError) as captured,
         ):
             run_self_host(ROOT, Path(raw), released_ref="0" * 40)
@@ -65,7 +65,7 @@ class SelfHostTests(unittest.TestCase):
 
     def test_bad_candidate_command_fails_before_adopter(self) -> None:
         with (
-            tempfile.TemporaryDirectory() as raw,
+            tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as raw,
             self.assertRaises(DsetCommandError) as captured,
         ):
             run_self_host(
