@@ -17,6 +17,7 @@ presentation.
 | `DSET-DECISION-GOV-012` | Use Delivery as the shared primary artifact type for six flat release-lifecycle roles |
 | `DSET-DECISION-GOV-013` | Use ten typed forward artifact relations, derived inverses, and range-based evergreen projection frontiers |
 | `DSET-DECISION-GOV-014` | Normalize explicit null to omission only for governed optional-unset TOML fields; block every other null |
+| `DSET-DECISION-GOV-015` | Keep standards-compliant JSON Schema files as canonical external-format contract carriers without editable TOML duplicates |
 
 Absorbed predecessors remain immutable history and are excluded from the active
 compilation set by append-only lifecycle events.
@@ -733,3 +734,12 @@ runtime define absence as exactly optional and unset. The initial allowlist is
 `pull_requests[].merge_commit`. The migration report records every omission by
 source and key path. Every other null blocks conversion, and expanding the
 allowlist requires new accepted authority and deterministic equivalence proof.
+
+## DSET-DECISION-GOV-015 — JSON Schema remains at its standard boundary
+
+Files whose primary contract is JSON Schema remain canonical JSON as an
+externally prescribed interoperability boundary. Generic TOML migration
+classifies and retains them, creates no editable TOML duplicate, and continues
+validating them as JSON Schema. Replacing this boundary with a DSET schema DSL
+and generated adapter requires separate accepted authority, a lossless mapping,
+and a freshness gate.

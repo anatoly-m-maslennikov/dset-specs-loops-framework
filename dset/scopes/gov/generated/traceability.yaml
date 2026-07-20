@@ -343,6 +343,7 @@ changes:
       - DSET-DECISION-GOV-012
       - DSET-DECISION-GOV-013
       - DSET-DECISION-GOV-014
+      - DSET-DECISION-GOV-015
       - DSET-DECISION-OPS-001
       - DSET-DECISION-OPS-002
       - DSET-DECISION-OPS-003
@@ -780,6 +781,18 @@ semantic_classifications:
       - modern_atom
     carriers:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-046-toml-optional-unset-normalization.md
+    carrier_statuses:
+      - accepted
+    lifecycle_events: []
+  -
+    id: DSET-DECISION-GOV-015
+    type: decision
+    subtype: none
+    compatibility: false
+    origins:
+      - modern_atom
+    carriers:
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-047-json-schema-boundary.md
     carrier_statuses:
       - accepted
     lifecycle_events: []
@@ -4081,6 +4094,25 @@ semantic_atoms:
     absorbed_by: []
     archived: false
   -
+    id: DSET-DECISION-GOV-015
+    carrier_id: DSET-ATOMIC-RECORD-047
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-047-json-schema-boundary.md
+    sha256: 616d99210390a7c3e5be98af437e36ac539ab7d06a3e9663732d84b42145c806
+    type: decision
+    subtype: none
+    emission_status: accepted
+    current_status: accepted
+    priority: high
+    priority_source: atom:DSET-DECISION-GOV-015
+    relations:
+      -
+        type: child_of
+        origin: authored
+        target: DSET-REQUIREMENT-GOV-036
+    lifecycle_events: []
+    absorbed_by: []
+    archived: false
+  -
     id: DSET-DECISION-OPS-005
     carrier_id: DSET-ATOMIC-RECORD-032
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-032-delivery-lifecycle.md
@@ -5073,6 +5105,22 @@ relations:
     origin: commit_trailer
     llm_session_ids: []
   -
+    source: 234633e84c16b5bc002e5ff38dc3d58c50c2b640
+    source_kind: commit
+    type: implementation_of
+    target: DSET-DECISION-GOV-014
+    origin: commit_trailer
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    source: 234633e84c16b5bc002e5ff38dc3d58c50c2b640
+    source_kind: commit
+    type: implementation_of
+    target: DSET-REQUIREMENT-GOV-036
+    origin: commit_trailer
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
     source: 23fe405a9c705b323ffcf2fb8d82d7151c27cfb5
     source_kind: commit
     type: implementation_of
@@ -5914,6 +5962,15 @@ relations:
     target: DSET-REQUIREMENT-GOV-036
     llm_session_ids: []
   -
+    source: DSET-DECISION-GOV-015
+    source_kind: artifact
+    source_artifact_id: DSET-ATOMIC-RECORD-047
+    source_path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-047-json-schema-boundary.md
+    type: child_of
+    origin: authored
+    target: DSET-REQUIREMENT-GOV-036
+    llm_session_ids: []
+  -
     source: DSET-DECISION-OPS-005
     source_kind: artifact
     source_artifact_id: DSET-ATOMIC-RECORD-032
@@ -6258,7 +6315,7 @@ relations:
       scope:
         kind: project
         id: dset-specs-loops-framework
-      through: DSET-ATOMIC-RECORD-046
+      through: DSET-ATOMIC-RECORD-047
       layer: gov
     llm_session_ids: []
   -

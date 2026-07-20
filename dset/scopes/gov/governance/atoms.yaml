@@ -36,6 +36,13 @@ records:
     type: decision
     subtype: none
   -
+    semantic_id: DSET-DECISION-GOV-015
+    carrier_id: DSET-ATOMIC-RECORD-047
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-047-json-schema-boundary.md
+    sha256: 616d99210390a7c3e5be98af437e36ac539ab7d06a3e9663732d84b42145c806
+    type: decision
+    subtype: none
+  -
     semantic_id: DSET-DECISION-OPS-005
     carrier_id: DSET-ATOMIC-RECORD-032
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-032-delivery-lifecycle.md

@@ -12,6 +12,9 @@ Every normative rule ID has one editable governing document. Hubs navigate, wrap
   Markdown. Keep host/ecosystem/wire/runtime formats and generated compatibility
   adapters explicit and non-authoritative. Never keep editable YAML/JSON and
   TOML copies of the same claim.
+- Keep standards-compliant JSON Schema files as canonical external contract
+  carriers. Validate and retain them as JSON; do not create an editable TOML
+  duplicate or call them generated without a governed source and freshness map.
 - Confirm authorization before editing existing project artifacts.
 - Write each conclusion to its owning accepted package, active change, decision, runbook, proof plan, or evidence artifact.
 - Keep deterministic tests and qualitative/probabilistic evals separate.
