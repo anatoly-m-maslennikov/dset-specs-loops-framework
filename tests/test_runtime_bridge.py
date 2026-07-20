@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any, cast
 
 from dset_toolchain.adopter import create_adopter
+from dset_toolchain.layout import discover_layout
 from dset_toolchain.runtime import RuntimeStateError, load_invocation
 from dset_toolchain.runtime_bridge import (
     advance_runtime_closure,
@@ -18,6 +19,7 @@ from dset_toolchain.runtime_bridge import (
 )
 from dset_toolchain.skill_catalog import PUBLIC_SKILL_WORKFLOWS
 from dset_toolchain.skill_context import resolve_skill_context
+from dset_toolchain.yaml_subset import dump
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -216,7 +218,7 @@ class RuntimeBridgeTests(unittest.TestCase):
                     objective="Do not misroute a settings defect",
                 )
 
-            registry = adopter / "dset" / "governance.yaml"
+            registry = discover_layout(adopter).governance_path
             registry.write_text("invalid governance\n", encoding="utf-8")
             context = resolve_skill_context(
                 adopter,
@@ -231,9 +233,11 @@ class RuntimeBridgeTests(unittest.TestCase):
             outer = Path(raw) / "outer"
             shutil.copytree(ROOT / "dset", outer / "dset")
             nested = outer / "nested"
-            manifest = nested / "dset" / "scopes" / "meta" / "dset.yaml"
+            manifest = nested / "dset" / "scopes" / "meta" / "dset.toml"
             manifest.parent.mkdir(parents=True)
-            manifest.write_text('schema_version: "1.2"\n', encoding="utf-8")
+            manifest.write_text(
+                dump({"schema_version": "1.2"}, manifest), encoding="utf-8"
+            )
             with self.assertRaisesRegex(ValueError, "competing DSET project roots"):
                 resolve_skill_context(
                     nested,

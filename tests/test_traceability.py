@@ -43,9 +43,11 @@ class TraceabilityTests(unittest.TestCase):
             for item in trace["changes"]
             if item["slug"] == "make-dset-self-hosting-and-skills-thin"
         )
+        layout = discover_layout(ROOT)
+        active_change = layout.find_change(str(current["id"]))
         active_manifest = cast(
             dict[str, Any],
-            load(discover_layout(ROOT).find_change(str(current["id"])) / "change.yaml"),
+            load(layout.structured_file(active_change, "change.toml")),
         )
         self.assertEqual(current["intake"], sorted(active_manifest["intake"]))
         self.assertEqual(current["decisions"], sorted(active_manifest["decisions"]))

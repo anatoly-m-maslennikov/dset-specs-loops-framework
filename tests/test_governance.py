@@ -48,7 +48,9 @@ class GovernanceTests(unittest.TestCase):
 
     def test_valid_registry_resolves_stable_order(self) -> None:
         self.assertEqual(validate_governance(self.root), [])
-        registry = cast(dict[str, Any], load(self.root / "dset" / "governance.yaml"))
+        registry = cast(
+            dict[str, Any], load(discover_layout(self.root).governance_path)
+        )
         self.assertEqual(registry["schema_version"], 1.1)
         self.assertTrue(
             all(
@@ -110,7 +112,7 @@ class GovernanceTests(unittest.TestCase):
         )
 
     def test_resolution_is_stable_and_read_only(self) -> None:
-        registry = self.root / "dset" / "governance.yaml"
+        registry = discover_layout(self.root).governance_path
         before = hashlib.sha256(registry.read_bytes()).hexdigest()
         first, first_diagnostics = resolve_workflow(self.root, "diagnosis")
         second, second_diagnostics = resolve_workflow(self.root, "diagnosis")
@@ -252,7 +254,9 @@ class GovernanceTests(unittest.TestCase):
             self.assertNotIn("Replaced source template", local.read_text())
 
     def test_generated_wrappers_match_canonical_sources(self) -> None:
-        registry = cast(dict[str, Any], load(self.root / "dset" / "governance.yaml"))
+        registry = cast(
+            dict[str, Any], load(discover_layout(self.root).governance_path)
+        )
         for wrapper in cast(list[dict[str, Any]], registry["wrappers"]):
             with self.subTest(workflow=wrapper["workflow"]):
                 generated = self.root / str(wrapper["path"])
@@ -267,13 +271,15 @@ class GovernanceTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as raw:
             target = Path(raw) / "release-adopter"
             (target / "dset").mkdir(parents=True)
-            (target / "dset" / "dset.yaml").write_text(
+            manifest_path = target / "dset" / "dset.toml"
+            manifest_path.write_text(
                 dump(
                     {
                         "schema_version": 1.1,
                         "profiles": {"repository_governance": "core-v1"},
                         "release": {"status": "applicable"},
-                    }
+                    },
+                    manifest_path,
                 ),
                 encoding="utf-8",
             )
@@ -300,7 +306,7 @@ class GovernanceTests(unittest.TestCase):
             for wrapper in registry["wrappers"]
             if wrapper["workflow"] != "prototyping"
         ]
-        path.write_text(dump(registry), encoding="utf-8")
+        path.write_text(dump(registry, path), encoding="utf-8")
         self.assertEqual(validate_governance(self.root), [])
 
     def test_materialization_refuses_existing_destination(self) -> None:
@@ -345,7 +351,7 @@ class GovernanceTests(unittest.TestCase):
             registry_path = materialize_governance(ROOT, target)
             self.assertEqual(
                 registry_path,
-                target / "dset" / "scopes" / "gov" / "governance.yaml",
+                discover_layout(target).governance_path,
             )
             registry = cast(dict[str, Any], load(registry_path))
             for rule in cast(list[dict[str, Any]], registry["rules"]):
@@ -438,7 +444,8 @@ class GovernanceTests(unittest.TestCase):
         )
 
     def test_temporary_adopter_materializes_current_project_inputs(self) -> None:
-        manifest = cast(dict[str, Any], load(self.root / "dset" / "dset.yaml"))
+        layout = discover_layout(self.root)
+        manifest = cast(dict[str, Any], load(layout.manifest_path))
         self.assertEqual(manifest["schema_version"], 1.1)
         self.assertEqual(manifest["project"]["key"], "DSET")
         self.assertEqual(manifest["contracts"], ["DSET-CONTRACT-001"])
@@ -446,15 +453,17 @@ class GovernanceTests(unittest.TestCase):
         self.assertEqual(manifest["outcomes"], [])
         self.assertNotIn("delegation_budget", manifest["profiles"])
         self.assertEqual(manifest["release"]["status"], "not-applicable")
-        self.assertEqual(manifest["work_items"]["registry"], "dset/intake.yaml")
+        self.assertEqual(manifest["work_items"]["registry"], "dset/intake.toml")
         self.assertTrue((self.root / "dset_settings.toml").is_file())
         self.assertFalse((self.root / "dset.toml").exists())
-        self.assertTrue((self.root / "dset" / "artifact-types.yaml").is_file())
-        self.assertTrue((self.root / "dset" / "budget.yaml").is_file())
-        self.assertTrue((self.root / "dset" / "intake.yaml").is_file())
+        self.assertTrue(layout.artifact_type_registry_path.is_file())
+        self.assertTrue(layout.budget_path.is_file())
+        self.assertTrue(layout.intake_path.is_file())
+        package_root = self.root / "dset" / "specs" / "packages" / "sample"
+        package_path = layout.structured_file(package_root, "package.toml")
         package = cast(
             dict[str, Any],
-            load(self.root / "dset" / "specs" / "packages" / "sample" / "package.yaml"),
+            load(package_path),
         )
         self.assertEqual(package["contracts"], ["DSET-CONTRACT-001"])
         self.assertEqual(package["stories"], [])
@@ -469,7 +478,7 @@ class GovernanceTests(unittest.TestCase):
                 self.root / "dset" / "specs" / "packages" / "sample" / "outcomes.md"
             ).is_file()
         )
-        registry = cast(dict[str, Any], load(self.root / "dset" / "governance.yaml"))
+        registry = cast(dict[str, Any], load(layout.governance_path))
         release = next(
             rule
             for rule in cast(list[dict[str, Any]], registry["rules"])
@@ -591,19 +600,20 @@ class GovernanceTests(unittest.TestCase):
             )
 
     def test_validator_uses_the_manifest_project_key(self) -> None:
-        manifest_path = self.root / "dset" / "dset.yaml"
+        layout = discover_layout(self.root)
+        manifest_path = layout.manifest_path
         manifest = cast(dict[str, Any], load(manifest_path))
         manifest["project"]["key"] = "ACME"
         manifest["contracts"] = ["ACME-CONTRACT-001"]
-        manifest_path.write_text(dump(manifest), encoding="utf-8")
+        manifest_path.write_text(dump(manifest, manifest_path), encoding="utf-8")
 
         package_root = self.root / "dset" / "specs" / "packages" / "sample"
-        package_path = package_root / "package.yaml"
+        package_path = layout.structured_file(package_root, "package.toml")
         package = cast(dict[str, Any], load(package_path))
         package["requirements"] = ["ACME-REQUIREMENT-001"]
         package["tests"] = ["ACME-TEST-001"]
         package["contracts"] = ["ACME-CONTRACT-001"]
-        package_path.write_text(dump(package), encoding="utf-8")
+        package_path.write_text(dump(package, package_path), encoding="utf-8")
         for filename in ("spec.md", "test-plan.md", "contracts.md"):
             path = package_root / filename
             path.write_text(
@@ -623,7 +633,7 @@ class GovernanceTests(unittest.TestCase):
         self.assertEqual(validate_repository(self.root), [])
 
     def test_legacy_intake_enforces_type_and_registered_layer(self) -> None:
-        path = self.root / "dset" / "intake.yaml"
+        path = discover_layout(self.root).intake_path
         baseline = cast(dict[str, Any], load(path))
         valid: dict[str, Any] = {
             "id": "DSET-QUESTION-GOV-001",
@@ -632,13 +642,13 @@ class GovernanceTests(unittest.TestCase):
             "status": "open",
             "title": "Choice",
             "statement": "Which bounded option applies?",
-            "owner_change": None,
+            "owner_change": "pending",
             "decision": "pending",
             "llm_session_ids": [],
             "external_refs": [],
         }
         baseline["items"] = [valid]
-        path.write_text(dump(baseline), encoding="utf-8")
+        path.write_text(dump(baseline, path), encoding="utf-8")
         self.assertNotIn(
             "DSET-E142", {item.code for item in validate_repository(self.root)}
         )
@@ -651,7 +661,7 @@ class GovernanceTests(unittest.TestCase):
         for invalid in invalid_cases:
             with self.subTest(identifier=invalid["id"], scope=invalid["scope"]):
                 baseline["items"] = [invalid]
-                path.write_text(dump(baseline), encoding="utf-8")
+                path.write_text(dump(baseline, path), encoding="utf-8")
                 self.assertIn(
                     "DSET-E142", {item.code for item in validate_repository(self.root)}
                 )
@@ -701,11 +711,13 @@ class GovernanceTests(unittest.TestCase):
 
     def test_story_and_outcome_records_require_structured_fields(self) -> None:
         package_root = self.root / "dset" / "specs" / "packages" / "sample"
-        manifest_path = package_root / "package.yaml"
+        manifest_path = discover_layout(self.root).structured_file(
+            package_root, "package.toml"
+        )
         manifest = cast(dict[str, Any], load(manifest_path))
         manifest["stories"] = ["DSET-STORY-001"]
         manifest["outcomes"] = ["DSET-OUTCOME-001"]
-        manifest_path.write_text(dump(manifest), encoding="utf-8")
+        manifest_path.write_text(dump(manifest, manifest_path), encoding="utf-8")
         (package_root / "stories.md").write_text(
             "# User Stories\n\n## DSET-STORY-001 — Incomplete\n\nActor only.\n",
             encoding="utf-8",
@@ -769,7 +781,7 @@ class GovernanceTests(unittest.TestCase):
         }
         registry = cast(
             dict[str, Any],
-            load(ROOT / "dset" / "scopes" / "gov" / "governance.yaml"),
+            load(discover_layout(ROOT).governance_path),
         )
         registered = {
             item["workflow"]: item["path"]
@@ -805,7 +817,7 @@ class GovernanceTests(unittest.TestCase):
         with self.assertRaises(DsetCommandError) as captured:
             materialize_governance(ROOT, self.root, "missing-profile")
         self.assertEqual(captured.exception.code, "DSET-E140")
-        (self.root / "dset" / "dset.yaml").unlink()
+        discover_layout(self.root).manifest_path.unlink()
         self.assertEqual(validate_repository(self.root)[0].code, "DSET-E001")
 
     def test_comparison_and_decision_templates_separate_selection(self) -> None:
@@ -874,7 +886,7 @@ class GovernanceTests(unittest.TestCase):
 
     def test_fpf_provenance_bounds_each_adaptation(self) -> None:
         provenance = cast(
-            dict[str, Any], load(ROOT / "dset/scopes/gov/provenance.yaml")
+            dict[str, Any], load(discover_layout(ROOT).provenance_path)
         )
         fpf = next(
             source
@@ -976,7 +988,13 @@ class GovernanceTests(unittest.TestCase):
         self.assertIn("portable Markdown", tool)
 
         archived_ids: set[str] = set()
-        for path in ROOT.glob("dset/scopes/*/changes/archive/*/change.yaml"):
+        layout = discover_layout(ROOT)
+        archived_manifests = (
+            path
+            for root in layout.archive_change_roots
+            for path in layout.structured_named_files(root, "change")
+        )
+        for path in archived_manifests:
             manifest = cast(dict[str, Any], load(path))
             for group in ("requirements", "tests", "evals"):
                 archived_ids.update(cast(list[str], manifest.get(group, [])))
@@ -994,29 +1012,31 @@ class GovernanceTests(unittest.TestCase):
         scopes = root / "dset" / "scopes"
         for layer in ("meta", "gov", "tool", "skill", "ops"):
             (scopes / layer).mkdir(parents=True)
-        (scopes / "meta" / "dset.yaml").write_text(
+        manifest_path = scopes / "meta" / "dset.toml"
+        manifest_path.write_text(
             dump(
                 {
                     "schema_version": "1.2",
                     "profiles": {"repository_governance": "core-v1"},
-                }
+                },
+                manifest_path,
             ),
             encoding="utf-8",
         )
 
     @staticmethod
     def _registry(root: Path) -> tuple[Path, dict[str, Any]]:
-        path = root / "dset" / "governance.yaml"
+        path = discover_layout(root).governance_path
         return path, cast(dict[str, Any], load(path))
 
     @classmethod
     def _write_registry(cls, root: Path, data: dict[str, Any]) -> None:
         path, _ = cls._registry(root)
-        path.write_text(dump(data), encoding="utf-8")
+        path.write_text(dump(data, path), encoding="utf-8")
 
     @staticmethod
     def _remove_registry(root: Path) -> None:
-        (root / "dset" / "governance.yaml").unlink()
+        discover_layout(root).governance_path.unlink()
 
     @classmethod
     def _missing_owner(cls, root: Path) -> None:

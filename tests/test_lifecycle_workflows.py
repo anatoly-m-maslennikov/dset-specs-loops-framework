@@ -6,12 +6,14 @@ from pathlib import Path
 from typing import Any, cast
 
 from dset_toolchain.governance import resolve_workflow
+from dset_toolchain.layout import discover_layout
 from dset_toolchain.skill_catalog import REGISTERED_SKILL_WORKFLOWS
 from dset_toolchain.yaml_subset import load
 
 ROOT = Path(__file__).resolve().parents[1]
-REGISTRY = ROOT / "dset/scopes/gov/governance.yaml"
-PROFILE = ROOT / "dset/scopes/gov/templates/governance/core-v1/profile.yaml"
+LAYOUT = discover_layout(ROOT)
+REGISTRY = LAYOUT.governance_path
+PROFILE = LAYOUT.find_template("governance/core-v1/profile.toml")
 LIFECYCLE = ROOT / "dset/scopes/skill/governance/lifecycle-orchestration.md"
 
 EXCEPTION_MODES = {"initialize", "repair-governance"}

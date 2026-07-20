@@ -4,6 +4,7 @@ import re
 import unittest
 from pathlib import Path
 
+from dset_toolchain.layout import discover_layout
 from dset_toolchain.skill_catalog import (
     PRE_RESOLUTION_SKILLS,
     PUBLIC_SKILL_WORKFLOWS,
@@ -75,7 +76,7 @@ class SkillWrapperTests(unittest.TestCase):
                 read_at = text.index("returned project-owned")
                 self.assertLess(context_at, read_at)
 
-        registry = load(ROOT / "dset/scopes/gov/governance.yaml")
+        registry = load(discover_layout(ROOT).governance_path)
         workflows = {item["id"]: item["rules"] for item in registry["workflows"]}
         for name, workflow in PUBLIC_SKILL_WORKFLOWS.items():
             if name in PRE_RESOLUTION_SKILLS or name == "dset":

@@ -13,6 +13,7 @@ from dset_toolchain.bootstrap import (
     initialize_project,
     parse_work_area,
 )
+from dset_toolchain.layout import discover_layout
 from dset_toolchain.validation import validate_repository
 from dset_toolchain.yaml_subset import load
 from scripts.build_bootstrap_bundle import render_bundle
@@ -68,11 +69,12 @@ class BootstrapTests(unittest.TestCase):
             self.assertTrue(result.executed)
             self.assertEqual(validate_repository(target), [])
             self.assertTrue((target / "skills" / "dset" / "SKILL.md").is_file())
-            manifest = load(target / "dset" / "scopes" / "meta" / "dset.yaml")
+            layout = discover_layout(target)
+            manifest = load(layout.manifest_path)
             self.assertEqual(manifest["project"]["repository_slug"], "sample-app")
             self.assertNotIn("delegation_budget", manifest["profiles"])
             self.assertNotIn("workspace_default", manifest["change_contract"])
-            self.assertTrue((target / "dset/scopes/gov/artifact-types.yaml").is_file())
+            self.assertTrue(layout.artifact_type_registry_path.is_file())
             self.assertTrue((target / "dset_settings.toml").is_file())
             self.assertFalse((target / "dset.toml").exists())
             self.assertEqual(
@@ -97,7 +99,7 @@ class BootstrapTests(unittest.TestCase):
 
             self.assertTrue(result.executed)
             self.assertEqual(validate_repository(target), [])
-            manifest = load(target / "dset/scopes/meta/dset.yaml")
+            manifest = load(discover_layout(target).manifest_path)
             self.assertEqual(manifest["supportability"]["status"], "applicable")
             runbook = (target / "dset/scopes/ops/supportability/README.md").read_text(
                 encoding="utf-8"

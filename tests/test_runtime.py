@@ -17,6 +17,7 @@ from dset_toolchain.runtime import (
     start_run,
     update_checkpoint,
 )
+from dset_toolchain.yaml_subset import dump
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -25,9 +26,11 @@ class RuntimeTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
         self.root = Path(self.temporary.name)
-        manifest = self.root / "dset" / "scopes" / "meta" / "dset.yaml"
+        manifest = self.root / "dset" / "scopes" / "meta" / "dset.toml"
         manifest.parent.mkdir(parents=True)
-        manifest.write_text('schema_version: "1.2"\n', encoding="utf-8")
+        manifest.write_text(
+            dump({"schema_version": "1.2"}, manifest), encoding="utf-8"
+        )
 
     def tearDown(self) -> None:
         self.temporary.cleanup()

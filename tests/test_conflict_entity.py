@@ -3,6 +3,7 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
+from dset_toolchain.layout import discover_layout
 from dset_toolchain.yaml_subset import load
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -52,7 +53,9 @@ class ConflictEntityTests(unittest.TestCase):
         self.assertIn("must not be silently retyped", rules)
 
     def test_conflict_proof_ids_are_registered(self) -> None:
-        package = load(GOV_PACKAGE / "package.yaml")
+        package = load(
+            discover_layout(ROOT).structured_file(GOV_PACKAGE, "package.toml")
+        )
         assert isinstance(package, dict)
         self.assertIn("DSET-REQUIREMENT-GOV-027", package["requirements"])
         self.assertIn("DSET-TEST-GOV-027", package["tests"])
