@@ -161,6 +161,10 @@ path_rules:
     artifact_type: implementation
     artifact_subtype: configuration
   -
+    pattern: "**/templates/enforcement-profiles/*.yaml"
+    artifact_type: implementation
+    artifact_subtype: configuration
+  -
     pattern: "**/templates/intake.yaml"
     artifact_type: implementation
     artifact_subtype: configuration

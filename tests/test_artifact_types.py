@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path, PurePosixPath
@@ -167,6 +168,28 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
                 for item in diagnostics
             )
         )
+
+    def test_git_ignored_runtime_artifacts_are_outside_classification(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            (root / ".gitignore").write_text("tmp/\n", encoding="utf-8")
+            ignored = root / "tmp/APP-SPECIFICATION-001-runtime.md"
+            ignored.parent.mkdir(parents=True)
+            ignored.write_text(
+                "---\nartifact_type: unknown\n"
+                "artifact_id: APP-SPECIFICATION-001\n---\n",
+                encoding="utf-8",
+            )
+            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+
+            diagnostics = validate_artifact_type_registry(
+                root,
+                REGISTRY_PATH,
+                self.registry,
+                project_key="APP",
+            )
+
+            self.assertEqual(diagnostics, [])
 
     def test_type_only_names_are_default_and_subtype_names_are_opt_in(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

@@ -12,7 +12,7 @@ llm_session_ids: []
 > This generated view is not authority. Follow each link to its canonical
 > owner and refresh explicitly after source changes.
 
-- **Source digest:** `9f33e667e97209eeb1074910eccd42afdbfc2e9bfa913bc80d8859dee187b930`
+- **Source digest:** `2ec15de8f2b5f4e7c84f6e28c31912acba13ee22e3ccc41a622f74182b9d837d`
 - **Renderer:** `dset health` schema 1.0
 
 ## Coverage
@@ -33,12 +33,12 @@ llm_session_ids: []
 
 ## Artifact inventory
 
-- **Governed artifacts:** 342
-- **By role:** atomic=34, derived_or_navigation=84, evergreen=88, implementation=115, transactional=21
-- **By type:** analysis_report=20, atomic_record=34, change=9, derived_view=1, evidence_record=12, implementation=115, navigation=52, plan=40, readiness_record=2, release_record=1, specification=48, verification=8
-- **By subtype:** architecture=5, behavior=10, configuration=9, design=7, documentation=33, domain_model=6, evaluation_plan=14, external_audit_analysis=1, governance=15, health_dashboard=1, hub=52, implementation_plan=7, proposal=8, release_plan=2, review_report=1, roadmap=2, root_cause_analysis=1, run_record=9, solution_landscape=7, source_code=35, technical_investigation=2, test_implementation=38, test_plan=14, test_result=2, version_scope=5
-- **By layer:** gov=68, meta=24, ops=33, repository=4, skill=102, tool=111
-- **By effective priority:** critical=1, high=8, medium=327, unknown=6
+- **Governed artifacts:** 343
+- **By role:** atomic=34, derived_or_navigation=84, evergreen=88, implementation=116, transactional=21
+- **By type:** analysis_report=20, atomic_record=34, change=9, derived_view=1, evidence_record=12, implementation=116, navigation=52, plan=40, readiness_record=2, release_record=1, specification=48, verification=8
+- **By subtype:** architecture=5, behavior=10, configuration=10, design=7, documentation=33, domain_model=6, evaluation_plan=14, external_audit_analysis=1, governance=15, health_dashboard=1, hub=52, implementation_plan=7, proposal=8, release_plan=2, review_report=1, roadmap=2, root_cause_analysis=1, run_record=9, solution_landscape=7, source_code=35, technical_investigation=2, test_implementation=38, test_plan=14, test_result=2, version_scope=5
+- **By layer:** gov=68, meta=24, ops=33, repository=4, skill=102, tool=112
+- **By effective priority:** critical=1, high=8, medium=328, unknown=6
 - **By status:** absorbed=3, accepted=12, archived=4, in-progress=1, open=22, resolved=11
 
 ## Semantic inventory
@@ -85,7 +85,7 @@ llm_session_ids: []
 ## Drill-downs
 
 - **Packages:** methodology=25
-- **Work Areas:** delivery=0, documentation=1, methodology=1, project-control=267, skills=34, tests=38, toolchain=35
+- **Work Areas:** delivery=0, documentation=1, methodology=1, project-control=268, skills=34, tests=38, toolchain=35
 
 ## Canonical return paths
 

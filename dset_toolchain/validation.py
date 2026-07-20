@@ -1461,19 +1461,7 @@ def _validate_current_artifact_classifications(
     include_subtype_in_names: bool,
 ) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
-    ignored_parts = {
-        ".git",
-        ".mypy_cache",
-        ".pytest_cache",
-        ".ruff_cache",
-        ".uv-cache",
-        ".venv",
-        "__pycache__",
-        "dist",
-    }
-    for path in root.rglob("*"):
-        if not path.is_file() or any(part in ignored_parts for part in path.parts):
-            continue
+    for path in _project_visible_files(root):
         relative = path.relative_to(root).as_posix()
         matched_rules = [
             rule for rule in rules if _path_rule_matches(relative, rule[0])
@@ -2492,6 +2480,12 @@ def _validate_markdown(root: Path) -> list[Diagnostic]:
 def _markdown_paths(root: Path) -> list[Path]:
     """Return project-visible Markdown, honoring Git ignores when available."""
 
+    return [path for path in _project_visible_files(root) if path.suffix == ".md"]
+
+
+def _project_visible_files(root: Path) -> list[Path]:
+    """Return tracked and unignored files, with a non-Git filesystem fallback."""
+
     try:
         result = subprocess.run(
             [
@@ -2501,8 +2495,6 @@ def _markdown_paths(root: Path) -> list[Path]:
                 "--cached",
                 "--others",
                 "--exclude-standard",
-                "--",
-                "*.md",
             ],
             cwd=root,
             check=False,
@@ -2514,7 +2506,14 @@ def _markdown_paths(root: Path) -> list[Path]:
         return sorted(
             root / item.decode("utf-8") for item in result.stdout.split(b"\0") if item
         )
-    return sorted(root.rglob("*.md"))
+    return sorted(
+        path
+        for path in root.rglob("*")
+        if path.is_file()
+        and not any(
+            part in MARKDOWN_IGNORED_PARTS for part in path.relative_to(root).parts
+        )
+    )
 
 
 def _without_code(text: str) -> str:
