@@ -354,6 +354,7 @@ changes:
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-004-entry-criteria-skill-chains.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-005-shared-skill-runtime.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-006-artifact-emission-gate.md
+      - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-007-executable-entry-criteria-closure.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/end-to-end-toolchain-verification-2026-07-16.md
       - dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/expanded-skill-surface-verification-2026-07-16.md
@@ -547,6 +548,13 @@ lineage:
       - DSET-REQUIREMENT-GOV-035
     parent_to: []
   -
+    id: DSET-EVIDENCE-RECORD-007
+    artifact_id: DSET-EVIDENCE-RECORD-007
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-007-executable-entry-criteria-closure.md
+    child_of:
+      - DSET-REQUIREMENT-SKILL-010
+    parent_to: []
+  -
     id: DSET-PLAN-001
     artifact_id: DSET-PLAN-001
     path: dset/scopes/ops/planning/DSET-PLAN-001-0-4-core-vertical-cut.md
@@ -603,6 +611,7 @@ lineage:
     child_of: []
     parent_to:
       - DSET-EVIDENCE-RECORD-004
+      - DSET-EVIDENCE-RECORD-007
       - DSET-REQUIREMENT-SKILL-011
   -
     id: DSET-REQUIREMENT-SKILL-011
