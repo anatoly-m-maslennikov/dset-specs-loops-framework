@@ -4867,6 +4867,22 @@ relations:
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
   -
+    source: 02fc9f1b4b1c0cb52c2bfcaf6f474c73c6fc9b9c
+    source_kind: commit
+    type: implementation_of
+    target: DSET-DECISION-GOV-015
+    origin: commit_trailer
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    source: 02fc9f1b4b1c0cb52c2bfcaf6f474c73c6fc9b9c
+    source_kind: commit
+    type: implementation_of
+    target: DSET-REQUIREMENT-GOV-036
+    origin: commit_trailer
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
     source: 08608add74f4632d768fffa3a2d4a7eb3dbde58e
     source_kind: commit
     type: implementation_of
@@ -5195,6 +5211,30 @@ relations:
     source_kind: commit
     type: implementation_of
     target: DSET-REQUIREMENT-GOV-027
+    origin: commit_trailer
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    source: 2ed412fb2c7d8b3894b6c3df244338c1affca14e
+    source_kind: commit
+    type: implementation_of
+    target: DSET-DECISION-GOV-014
+    origin: commit_trailer
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    source: 2ed412fb2c7d8b3894b6c3df244338c1affca14e
+    source_kind: commit
+    type: implementation_of
+    target: DSET-DECISION-GOV-015
+    origin: commit_trailer
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    source: 2ed412fb2c7d8b3894b6c3df244338c1affca14e
+    source_kind: commit
+    type: implementation_of
+    target: DSET-REQUIREMENT-GOV-036
     origin: commit_trailer
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
@@ -6511,6 +6551,14 @@ relations:
     source_kind: commit
     type: implementation_of
     target: DSET-REQUIREMENT-GOV-023
+    origin: commit_trailer
+    llm_session_ids:
+      - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
+  -
+    source: b048a1a1eaf52d34a4c2fbad262f42020c027ae7
+    source_kind: commit
+    type: implementation_of
+    target: DSET-DECISION-GOV-015
     origin: commit_trailer
     llm_session_ids:
       - codex:019f591f-04f6-70f2-8de7-828b7cccc69d
