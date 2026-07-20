@@ -295,7 +295,13 @@ def plan_toml_migration(
         }
     )
     references, reference_blockers = _reference_rewrites(
-        root, paths, entries, immutable, successor_mapping
+        root,
+        paths,
+        entries,
+        immutable,
+        successor_mapping,
+        legacy_structured=set(legacy_structured),
+        historical_trace_sources=shared_packages,
     )
     blockers.extend(reference_blockers)
     runtime_readiness, runtime_blockers = _runtime_readiness(
@@ -1510,6 +1516,9 @@ def _reference_rewrites(
     entries: list[MigrationEntry],
     immutable: dict[Path, dict[str, object]] | None = None,
     successor_mapping: dict[Path, Path] | None = None,
+    *,
+    legacy_structured: set[Path] | None = None,
+    historical_trace_sources: set[Path] | None = None,
 ) -> tuple[list[ReferenceRewrite], list[str]]:
     mapping = {
         entry.source: entry.target for entry in entries if entry.source != entry.target
@@ -1517,9 +1526,14 @@ def _reference_rewrites(
     mapping.update(successor_mapping or {})
     if not mapping:
         return [], []
+    legacy_carriers = legacy_structured or set()
+    historical_sources = historical_trace_sources or set()
+    converting_sources = {entry.source for entry in entries}
     rewrites: list[ReferenceRewrite] = []
     blockers: list[str] = []
     for path in paths:
+        if path in legacy_carriers and path not in converting_sources:
+            continue
         classification = _exception_classification(root, path, immutable)
         # Tests intentionally retain legacy YAML fixtures so one staged suite
         # can verify the compatibility readers after the production tree has
@@ -1545,8 +1559,15 @@ def _reference_rewrites(
         except (OSError, UnicodeError):
             continue
         remaining = text
+        path_mapping = mapping
+        if _is_generated_traceability(root, path):
+            path_mapping = {
+                source: target
+                for source, target in mapping.items()
+                if source not in historical_sources
+            }
         for source_text, target_texts in _reference_spellings(
-            root, path, mapping
+            root, path, path_mapping
         ).items():
             count = remaining.count(source_text)
             if not count:
@@ -1565,6 +1586,11 @@ def _reference_rewrites(
         rewrites,
         key=lambda item: (_relative(root, item.path), item.source, item.target),
     ), blockers
+
+
+def _is_generated_traceability(root: Path, path: Path) -> bool:
+    relative = path.relative_to(root)
+    return path.stem == "traceability" and "generated" in relative.parts
 
 
 def _is_runtime_source(root: Path, path: Path) -> bool:

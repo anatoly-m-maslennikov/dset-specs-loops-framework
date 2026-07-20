@@ -465,14 +465,83 @@ class TomlMigrationTests(unittest.TestCase):
         self.assertEqual(second.references, ())
         self.assertEqual(second.package_successors[0].status, "current")
 
+    def test_post_cutover_traceability_is_a_historical_carrier_fixed_point(
+        self,
+    ) -> None:
+        package = self.selector_sealed_package_fixture()
+        mutable = self.write(
+            "README.md",
+            "See dset/scopes/gov/specs/packages/example/package.yaml.\n",
+        )
+        apply_toml_migration(self.root, bypass_runtime_readiness=True)
+        package_toml = package.with_suffix(".toml")
+        trace_yaml = self.write(
+            "dset/scopes/gov/generated/traceability.yaml",
+            "schema_version: 1.3\n"
+            "semantic_atoms:\n"
+            "  -\n"
+            "    id: DSET-LEGACY-001\n"
+            "    carriers:\n"
+            f"      - {package.relative_to(self.root).as_posix()}\n",
+        )
+        trace_toml = self.write(
+            "dset/scopes/gov/generated/traceability.toml",
+            'schema_version = "1.3"\n\n'
+            "[[semantic_atoms]]\n"
+            'id = "DSET-LEGACY-001"\n'
+            f'carriers = ["{package.relative_to(self.root).as_posix()}"]\n\n'
+            "[[semantic_atoms]]\n"
+            'id = "DSET-NATIVE-001"\n'
+            f'carriers = ["{package_toml.relative_to(self.root).as_posix()}"]\n',
+        )
+        yaml_before = trace_yaml.read_bytes()
+        toml_before = trace_toml.read_bytes()
+        self.write(
+            "dset/scopes/gov/artifact-types.toml",
+            'schema_version = "1.0"\n\n'
+            "[[legacy_structured]]\n"
+            f'path = "{trace_yaml.relative_to(self.root).as_posix()}"\n'
+            f'sha256 = "{hashlib.sha256(yaml_before).hexdigest()}"\n'
+            f'current_owner = "{trace_toml.relative_to(self.root).as_posix()}"\n',
+        )
+
+        fixed_point = plan_toml_migration(self.root, bypass_runtime_readiness=True)
+
+        self.assertTrue(fixed_point.ready, fixed_point.blockers)
+        self.assertEqual(fixed_point.entries, ())
+        self.assertEqual(fixed_point.references, ())
+        self.assertEqual(trace_yaml.read_bytes(), yaml_before)
+        self.assertEqual(trace_toml.read_bytes(), toml_before)
+        rows = {
+            item["id"]: item
+            for item in load_toml(trace_toml.read_text(encoding="utf-8"))[
+                "semantic_atoms"
+            ]
+        }
+        self.assertEqual(
+            rows["DSET-LEGACY-001"]["carriers"],
+            [package.relative_to(self.root).as_posix()],
+        )
+        self.assertEqual(
+            rows["DSET-NATIVE-001"]["carriers"],
+            [package_toml.relative_to(self.root).as_posix()],
+        )
+        self.assertIn("package.toml", mutable.read_text(encoding="utf-8"))
+
+        reapplied = apply_toml_migration(self.root, bypass_runtime_readiness=True)
+        self.assertEqual(reapplied.entries, ())
+        self.assertEqual(reapplied.references, ())
+
     def test_registered_snapshot_is_preserved_with_toml_only_current_reads(
         self,
     ) -> None:
         for layer in ("meta", "gov", "tool", "skill", "ops"):
             (self.root / f"dset/scopes/{layer}").mkdir(parents=True, exist_ok=True)
         self.write("dset/scopes/meta/dset.yaml", 'schema_version: "1.2"\n')
+        self.write("dset/scopes/gov/current.yaml", "id: current\n")
         snapshot = self.write(
-            "dset/scopes/gov/items.yaml", "schema_version: 1.0\nid: historical\n"
+            "dset/scopes/gov/items.yaml",
+            "schema_version: 1.0\nid: historical\ntarget: current.yaml\n",
         )
         before = snapshot.read_bytes()
         proof = self.write(
@@ -505,6 +574,8 @@ class TomlMigrationTests(unittest.TestCase):
         owner = snapshot.with_suffix(".toml")
         self.assertEqual(snapshot.read_bytes(), before)
         self.assertTrue(owner.is_file())
+        self.assertIn("current.toml", owner.read_text(encoding="utf-8"))
+        self.assertIn("current.yaml", snapshot.read_text(encoding="utf-8"))
         self.assertIn("items.yaml", proof.read_text(encoding="utf-8"))
         self.assertIn("items.toml", mutable.read_text(encoding="utf-8"))
         second = apply_toml_migration(self.root, bypass_runtime_readiness=True)
