@@ -9,11 +9,9 @@ This is the diagnostic pre-resolution exception. Invalid local governance never 
 
 ## Diagnose
 
-1. Walk upward from the target and identify the candidate schema 1.2 `dset/scopes/meta/dset.yaml` or legacy `dset/dset.yaml`; stop on no root or competing roots.
-2. Select exactly one available CLI entrypoint before invocation: the `dset` executable, otherwise the active Python interpreter with the installed `dset_toolchain` module. Stop if neither exists. Never retry the alternate after a nonzero result.
-3. Run the selected entrypoint with `rules check --root ROOT --format json`. Do not run `rules resolve` against governance that failed validation.
-4. Report each stable schema, ownership, path, digest, applicability, and conflict diagnostic with its local file identity and proposed repair owner.
-5. Preserve the invalid repository as evidence. Do not copy template content, select project policy, or mutate the registry under this invocation.
+1. Invoke the installed shared runtime exactly once with `dset skills context --skill dset-repair-governance --target TARGET --objective OBJECTIVE`. Require `status: invalid-governance`; stop on no root, competing roots, valid governance, an unavailable launcher, or command failure.
+2. Report every returned stable schema, ownership, path, digest, applicability, and conflict diagnostic with its local file identity and proposed repair owner.
+3. Preserve the invalid repository as evidence. Do not resolve substantive rules, copy template content, select project policy, or mutate the registry under this invocation.
 
 ## Stop
 

@@ -41,16 +41,9 @@ PUBLIC_SKILL_MODES = {
 PRE_RESOLUTION_SKILLS = frozenset({"dset-init", "dset-repair-governance"})
 
 SKILL_INVOCATION_MARKERS = {
-    skill_id: f"rules resolve {workflow_id} --format json"
-    for skill_id, workflow_id in PUBLIC_SKILL_WORKFLOWS.items()
-    if skill_id not in PRE_RESOLUTION_SKILLS
+    skill_id: f"skills context --skill {skill_id} --target TARGET"
+    for skill_id in PUBLIC_SKILL_WORKFLOWS
 }
-SKILL_INVOCATION_MARKERS.update(
-    {
-        "dset-init": "init TARGET --project-key KEY",
-        "dset-repair-governance": "rules check --root ROOT --format json",
-    }
-)
 
 REGISTERED_SKILL_WORKFLOWS = {
     skill_id: workflow_id

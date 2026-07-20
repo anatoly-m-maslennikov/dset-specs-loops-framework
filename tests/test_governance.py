@@ -781,7 +781,9 @@ class GovernanceTests(unittest.TestCase):
                 path = ROOT / "skills" / skill / "SKILL.md"
                 text = path.read_text(encoding="utf-8")
                 self.assertLessEqual(len(text.splitlines()), 24)
-                self.assertIn(f"rules resolve {workflow}", text)
+                self.assertIn(
+                    f"skills context --skill {skill} --target TARGET", text
+                )
                 self.assertNotIn("## Workflow", text)
                 self.assertNotIn("git bisect", text)
                 self.assertNotIn("proofs/<candidate>-fit", text)
@@ -796,8 +798,7 @@ class GovernanceTests(unittest.TestCase):
                 self.assertTrue(interface["display_name"])
                 self.assertIn(f"${skill}", interface["default_prompt"])
                 self.assertIn("DSET-RULE-SKILL-RUNS", resolved_workflows[workflow])
-                if workflow == "lifecycle-orchestration":
-                    self.assertIn("DSET-RULE-LIFECYCLE", resolved_workflows[workflow])
+                self.assertIn("DSET-RULE-LIFECYCLE", resolved_workflows[workflow])
 
     def test_manifest_and_template_boundaries_are_stable(self) -> None:
         with self.assertRaises(DsetCommandError) as captured:

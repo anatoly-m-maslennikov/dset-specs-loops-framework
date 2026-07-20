@@ -138,16 +138,7 @@ rules:
     reason: The primary DSET entrypoint requires deterministic modes, precedence, authority, and stops
     depends_on:
       - DSET-RULE-ARCHITECTURE
-      - DSET-RULE-DOMAIN-SPEC
-      - DSET-RULE-TEST-PLAN
-      - DSET-RULE-EVAL-PLAN
-      - DSET-RULE-SUPPORTABILITY
-      - DSET-RULE-ARTIFACT-MAINTENANCE
-      - DSET-RULE-ARTIFACT-CLASSIFICATION
-      - DSET-RULE-WORK-ITEMS
-      - DSET-RULE-DELEGATION-BUDGET
       - DSET-RULE-SKILL-RUNS
-      - DSET-RULE-RELEASE
     precedence_over: []
   -
     id: DSET-RULE-DIAGNOSIS
@@ -208,6 +199,7 @@ workflows:
       - DSET-RULE-ARTIFACT-CLASSIFICATION
       - DSET-RULE-DELEGATION-BUDGET
       - DSET-RULE-SKILL-RUNS
+      - DSET-RULE-LIFECYCLE
   -
     id: diagnosis
     rules:
@@ -220,6 +212,7 @@ workflows:
       - DSET-RULE-ARTIFACT-CLASSIFICATION
       - DSET-RULE-DELEGATION-BUDGET
       - DSET-RULE-SKILL-RUNS
+      - DSET-RULE-LIFECYCLE
       - DSET-RULE-DIAGNOSIS
   -
     id: prototyping
@@ -233,6 +226,7 @@ workflows:
       - DSET-RULE-ARTIFACT-CLASSIFICATION
       - DSET-RULE-DELEGATION-BUDGET
       - DSET-RULE-SKILL-RUNS
+      - DSET-RULE-LIFECYCLE
       - DSET-RULE-PROTOTYPING
   -
     id: release
@@ -248,6 +242,7 @@ workflows:
       - DSET-RULE-DELEGATION-BUDGET
       - DSET-RULE-SKILL-RUNS
       - DSET-RULE-RELEASE
+      - DSET-RULE-LIFECYCLE
   -
     id: work-triage
     rules:
@@ -258,6 +253,7 @@ workflows:
       - DSET-RULE-DELEGATION-BUDGET
       - DSET-RULE-SKILL-RUNS
       - DSET-RULE-WORK-ITEMS
+      - DSET-RULE-LIFECYCLE
   -
     id: decompose
     rules:
@@ -269,6 +265,7 @@ workflows:
       - DSET-RULE-DELEGATION-BUDGET
       - DSET-RULE-SKILL-RUNS
       - DSET-RULE-WORK-ITEMS
+      - DSET-RULE-LIFECYCLE
   -
     id: landscape
     rules:
@@ -281,6 +278,7 @@ workflows:
       - DSET-RULE-ARTIFACT-CLASSIFICATION
       - DSET-RULE-DELEGATION-BUDGET
       - DSET-RULE-SKILL-RUNS
+      - DSET-RULE-LIFECYCLE
   -
     id: decisions
     rules:
@@ -292,6 +290,7 @@ workflows:
       - DSET-RULE-DELEGATION-BUDGET
       - DSET-RULE-SKILL-RUNS
       - DSET-RULE-WORK-ITEMS
+      - DSET-RULE-LIFECYCLE
   -
     id: plan-proof
     rules:
@@ -304,6 +303,7 @@ workflows:
       - DSET-RULE-ARTIFACT-CLASSIFICATION
       - DSET-RULE-DELEGATION-BUDGET
       - DSET-RULE-SKILL-RUNS
+      - DSET-RULE-LIFECYCLE
   -
     id: plan-implementation
     rules:
@@ -317,6 +317,7 @@ workflows:
       - DSET-RULE-ARTIFACT-CLASSIFICATION
       - DSET-RULE-DELEGATION-BUDGET
       - DSET-RULE-SKILL-RUNS
+      - DSET-RULE-LIFECYCLE
   -
     id: implement
     rules:
@@ -331,6 +332,7 @@ workflows:
       - DSET-RULE-DELEGATION-BUDGET
       - DSET-RULE-SKILL-RUNS
       - DSET-RULE-WORK-ITEMS
+      - DSET-RULE-LIFECYCLE
   -
     id: verify
     rules:
@@ -344,6 +346,7 @@ workflows:
       - DSET-RULE-ARTIFACT-CLASSIFICATION
       - DSET-RULE-DELEGATION-BUDGET
       - DSET-RULE-SKILL-RUNS
+      - DSET-RULE-LIFECYCLE
   -
     id: complete
     rules:
@@ -354,6 +357,7 @@ workflows:
       - DSET-RULE-DELEGATION-BUDGET
       - DSET-RULE-SKILL-RUNS
       - DSET-RULE-WORK-ITEMS
+      - DSET-RULE-LIFECYCLE
 wrappers:
   -
     workflow: lifecycle-orchestration

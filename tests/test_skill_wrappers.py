@@ -9,6 +9,7 @@ from dset_toolchain.skill_catalog import (
     PUBLIC_SKILL_WORKFLOWS,
     SKILL_INVOCATION_MARKERS,
 )
+from dset_toolchain.yaml_subset import load
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS = ROOT / "skills"
@@ -32,8 +33,8 @@ class SkillWrapperTests(unittest.TestCase):
                 self.assertIn(f"name: {name}\n", text)
                 self.assertRegex(text, r"(?m)^description: \S")
                 self.assertIn(marker, text)
-                self.assertIn("Select exactly one available", text)
-                self.assertIn("Never retry the alternate after a nonzero result", text)
+                self.assertEqual(text.count("dset skills context"), 1)
+                self.assertIn("installed shared runtime", text)
                 self.assertFalse(any(fragment in text for fragment in forbidden))
 
                 metadata = (SKILLS / name / "agents" / "openai.yaml").read_text(
@@ -48,38 +49,38 @@ class SkillWrapperTests(unittest.TestCase):
                 self.assertGreaterEqual(len(match.group(1)), 25)
                 self.assertLessEqual(len(match.group(1)), 64)
 
-    def test_governed_wrappers_fail_closed_after_local_resolution(self) -> None:
-        for name, workflow in PUBLIC_SKILL_WORKFLOWS.items():
+    def test_governed_wrappers_fail_closed_after_shared_context(self) -> None:
+        for name in PUBLIC_SKILL_WORKFLOWS:
             if name in PRE_RESOLUTION_SKILLS:
                 continue
             with self.subTest(skill=name):
                 text = self._skill_text(name)
                 self.assertIn(
-                    f"rules resolve {workflow} --format json",
+                    f"skills context --skill {name} --target TARGET",
                     text,
                 )
-                self.assertIn("Walk upward from the target", text)
                 self.assertIn(
                     "resolved repository-local documents own substantive behavior",
                     text,
                 )
-                self.assertIn(
-                    "without fallback to the wrapper, memory, installed templates, "
-                    "or remote framework prose",
-                    text,
-                )
-                self.assertIn("`conflict_resolution` coverage", text)
-                self.assertIn("Empty `conflicts` is unassured", text)
-                self.assertIn(
-                    "selected rules require unavailable conflict coverage", text
-                )
-                self.assertIn("`persistence: unavailable`", text)
+                self.assertIn("never select an alternate runtime", text)
+                self.assertIn("required unavailable conflict coverage", text)
+                self.assertNotIn("Walk upward from the target", text)
+                self.assertNotIn("rules resolve", text)
 
-                resolve_at = text.index(f"rules resolve {workflow}")
-                read_at = text.index("Read the returned rule documents")
-                runtime_at = text.index("runtime adapter only when exposed")
-                self.assertLess(resolve_at, read_at)
-                self.assertLess(read_at, runtime_at)
+                context_at = text.index("dset skills context")
+                read_at = text.index("returned project-owned")
+                self.assertLess(context_at, read_at)
+
+        registry = load(ROOT / "dset/scopes/gov/governance.yaml")
+        workflows = {
+            item["id"]: item["rules"] for item in registry["workflows"]
+        }
+        for name, workflow in PUBLIC_SKILL_WORKFLOWS.items():
+            if name in PRE_RESOLUTION_SKILLS or name == "dset":
+                continue
+            with self.subTest(workflow=workflow):
+                self.assertIn("DSET-RULE-LIFECYCLE", workflows[workflow])
 
     def test_pre_resolution_exceptions_are_bounded(self) -> None:
         initialize = self._skill_text("dset-init")
@@ -89,16 +90,15 @@ class SkillWrapperTests(unittest.TestCase):
         self.assertIn("continue into another lifecycle mode", initialize)
 
         repair = self._skill_text("dset-repair-governance")
-        self.assertIn("Do not run `rules resolve`", repair)
-        self.assertIn("Do not copy template content", repair)
+        self.assertIn("Require `status: invalid-governance`", repair)
+        self.assertIn("Do not resolve substantive rules", repair)
         self.assertIn("Stop before any write", repair)
 
     def test_primary_and_direct_stop_boundaries_are_distinct(self) -> None:
         primary = self._skill_text("dset")
         self.assertIn("general, multi-stage, or uncertain", primary)
         self.assertNotIn("Route any DSET lifecycle request", primary)
-        self.assertIn("finite entry-criteria closure", primary)
-        self.assertIn("stop on repeated state, cycles, no progress", primary)
+        self.assertNotIn("finite entry-criteria closure", primary)
 
         boundaries = {
             "dset-decompose": "stop before specification or implementation",
@@ -148,13 +148,8 @@ class SkillWrapperTests(unittest.TestCase):
         self.assertNotIn("two workflow transitions", lifecycle)
 
         implement = self._skill_text("dset-implement")
-        self.assertIn("invoke `dset-decisions` first", implement)
-        self.assertIn(
-            "conditionally invoke proof and implementation planning", implement
-        )
-        decisions = self._skill_text("dset-decisions")
-        self.assertIn("Never invent acceptance", decisions)
-        self.assertIn("session provenance", decisions)
+        self.assertNotIn("invoke `dset-decisions` first", implement)
+        self.assertNotIn("conditionally invoke proof", implement)
 
 
 if __name__ == "__main__":
