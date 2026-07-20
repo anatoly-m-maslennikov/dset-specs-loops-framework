@@ -10,7 +10,13 @@ from typing import Any
 from urllib.parse import unquote
 
 from . import __version__
-from .carrier_transitions import transition_aliases, validate_carrier_transition_ledger
+from .carrier_transitions import (
+    load_ledger as load_transition_ledger,
+)
+from .carrier_transitions import (
+    transition_aliases,
+    validate_carrier_transition_ledger,
+)
 from .commit_provenance import validate_commit_provenance
 from .compilation import compilation_is_fresh, compilation_path
 from .dependencies import validate_dependency_policy
@@ -1735,7 +1741,13 @@ def _legacy_structured_entries(
             )
         diagnostics.extend(
             _validate_retention_identities(
-                root, registry_path, raw_path, item.get("retained_for"), ledger
+                root,
+                registry_path,
+                raw_path,
+                item.get("retained_for"),
+                ledger,
+                current_path=item.get("current_path"),
+                transition_id=item.get("transition_id"),
             )
         )
 
@@ -1798,6 +1810,9 @@ def _validate_retention_identities(
     snapshot: str,
     raw_identities: object,
     ledger: list[dict[str, Any]],
+    *,
+    current_path: object = None,
+    transition_id: object = None,
 ) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     if not isinstance(raw_identities, list) or not raw_identities:
@@ -1810,6 +1825,9 @@ def _validate_retention_identities(
         ]
     seen: set[tuple[str, str]] = set()
     snapshot_path = (root / snapshot).resolve()
+    transition_target = _registered_transition_target(
+        root, snapshot, current_path, transition_id
+    )
     for identity in raw_identities:
         if not isinstance(identity, dict):
             diagnostics.append(
@@ -1870,7 +1888,11 @@ def _validate_retention_identities(
                 not _within_root(root, carrier)
                 or not carrier.is_file()
                 or "/proofs/" not in f"/{value}"
-                or not _carrier_references_path(root, carrier, snapshot_path)
+                or not (
+                    _carrier_references_path(root, carrier, snapshot_path)
+                    or transition_target is not None
+                    and _carrier_references_path(root, carrier, transition_target)
+                )
             ):
                 diagnostics.append(
                     _diag(
@@ -1880,6 +1902,35 @@ def _validate_retention_identities(
                     )
                 )
     return diagnostics
+
+
+def _registered_transition_target(
+    root: Path,
+    original_path: str,
+    current_path: object,
+    transition_id: object,
+) -> Path | None:
+    if not isinstance(current_path, str) or not isinstance(transition_id, str):
+        return None
+    try:
+        data = load_transition_ledger(root)
+    except (OSError, UnicodeError, ValueError):
+        return None
+    transitions = data.get("transitions")
+    if not isinstance(transitions, list):
+        return None
+    matches = [
+        item
+        for item in transitions
+        if isinstance(item, dict)
+        and item.get("id") == transition_id
+        and item.get("original_path") == original_path
+        and item.get("current_path") == current_path
+    ]
+    if len(matches) != 1:
+        return None
+    target = (root / current_path).resolve()
+    return target if _within_root(root, target) and target.is_file() else None
 
 
 def _semantic_retention_carriers(

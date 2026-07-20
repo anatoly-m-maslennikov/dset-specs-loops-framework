@@ -1211,12 +1211,22 @@ class TomlMigrationTests(unittest.TestCase):
         before = atom.read_bytes()
         plan = plan_toml_migration(staged, bypass_runtime_readiness=True)
 
-        self.assertFalse(plan.ready)
-        self.assertTrue(
-            any("source Git blob" in blocker for blocker in plan.blockers),
-            plan.blockers,
+        legacy_packages = list(
+            staged.glob("dset/scopes/*/specs/packages/*/package.yaml")
         )
-        self.assertEqual(len(plan.package_successors), 5)
+        if legacy_packages:
+            self.assertFalse(plan.ready)
+            self.assertTrue(
+                any(
+                    "requires a Git HEAD" in blocker or "source Git blob" in blocker
+                    for blocker in plan.blockers
+                ),
+                plan.blockers,
+            )
+            self.assertEqual(len(plan.package_successors), 5)
+        else:
+            self.assertTrue(plan.ready, plan.blockers)
+            self.assertEqual(plan.package_successors, ())
         for successor in plan.package_successors:
             with self.subTest(target=successor.target):
                 expected = "current" if successor.target.is_file() else "pending"

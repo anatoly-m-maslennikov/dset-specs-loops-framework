@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://dset.dev/schemas/carrier-transition.schema.json",
+  "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/dset/scopes/gov/schemas/carrier-transition.schema.json",
   "title": "DSET carrier-transition ledger",
   "type": "object",
   "additionalProperties": false,

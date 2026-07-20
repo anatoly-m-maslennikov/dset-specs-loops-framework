@@ -7,6 +7,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
+import dset_toolchain.validation as validation
 from dset_toolchain.carrier_transitions import (
     decode_historical_envelope,
     load_ledger,
@@ -14,6 +15,7 @@ from dset_toolchain.carrier_transitions import (
 )
 from dset_toolchain.frontmatter import parse as parse_frontmatter
 from dset_toolchain.toml_codec import dumps as dump_toml
+from dset_toolchain.toml_codec import loads as load_toml
 from dset_toolchain.toml_migration import (
     TomlMigrationError,
     apply_toml_migration,
@@ -55,6 +57,10 @@ class CarrierTransitionTests(unittest.TestCase):
             "dset/scopes/gov/migrations/carrier-transitions.toml",
             'schema_version = "1.0"\ntransitions = []\n',
         )
+        self.proof = self._write(
+            "dset/scopes/gov/proofs/historical.md",
+            "# Historical proof\n\nSee [intake](../intake.yaml).\n",
+        )
         registry = {
             "schema_version": "1.0",
             "legacy_structured": [
@@ -62,6 +68,14 @@ class CarrierTransitionTests(unittest.TestCase):
                     "path": self.source.relative_to(self.root).as_posix(),
                     "sha256": hashlib.sha256(self.source.read_bytes()).hexdigest(),
                     "current_owner": self.owner.relative_to(self.root).as_posix(),
+                    "retained_for": [
+                        {
+                            "carrier_path": self.proof.relative_to(
+                                self.root
+                            ).as_posix(),
+                            "reason": "Historical proof link.",
+                        }
+                    ],
                 }
             ],
         }
@@ -110,7 +124,12 @@ class CarrierTransitionTests(unittest.TestCase):
         self.assertTrue(plan.ready, plan.blockers)
         self.assertEqual(
             {entry.kind for entry in plan.entries},
-            {"historical-envelope", "immutable-frontmatter", "transition-registry"},
+            {
+                "historical-envelope",
+                "immutable-frontmatter",
+                "immutable-links",
+                "transition-registry",
+            },
         )
 
         apply_toml_migration(self.root, bypass_runtime_readiness=True)
@@ -133,7 +152,7 @@ class CarrierTransitionTests(unittest.TestCase):
 
         ledger = load_ledger(self.root)
         records = ledger["transitions"]
-        self.assertEqual(len(records), 2)
+        self.assertEqual(len(records), 3)
         self.assertEqual(validate_carrier_transition_ledger(self.root), [])
         self.assertTrue(all(item["declared_loss"] == [] for item in records))
         self.assertTrue(all(item["source_git_blob"] for item in records))
@@ -143,6 +162,31 @@ class CarrierTransitionTests(unittest.TestCase):
             ],
             ["DSET-ATOMIC-RECORD-999"],
         )
+        self.assertIn("../intake.legacy.toml", self.proof.read_text(encoding="utf-8"))
+
+        registry_path = self.root / "dset/scopes/gov/artifact-types.toml"
+        registry = load_toml(registry_path.read_text(encoding="utf-8"))
+        retained = registry["legacy_structured"][0]
+        diagnostics = validation._validate_retention_identities(
+            self.root,
+            registry_path,
+            retained["path"],
+            retained["retained_for"],
+            [],
+            current_path=retained["current_path"],
+            transition_id=retained["transition_id"],
+        )
+        self.assertEqual(diagnostics, [])
+        diagnostics = validation._validate_retention_identities(
+            self.root,
+            registry_path,
+            retained["path"],
+            retained["retained_for"],
+            [],
+            current_path=retained["current_path"],
+            transition_id="DSET-CARRIER-TRANSITION-0000000000000000",
+        )
+        self.assertTrue(diagnostics)
 
         second = plan_toml_migration(self.root, bypass_runtime_readiness=True)
         self.assertTrue(second.ready, second.blockers)
