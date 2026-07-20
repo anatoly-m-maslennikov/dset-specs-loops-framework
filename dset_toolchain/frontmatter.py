@@ -40,8 +40,10 @@ def parse(text: str) -> tuple[dict[str, Any], str, str] | None:
             raise FrontmatterError(str(error)) from error
         if not isinstance(value, dict):
             raise FrontmatterError("frontmatter root must be a mapping")
-        return value, "".join(lines[index + 1 :]), (
-            "yaml" if delimiter == "---" else "toml"
+        return (
+            value,
+            "".join(lines[index + 1 :]),
+            ("yaml" if delimiter == "---" else "toml"),
         )
     raise FrontmatterError("frontmatter opening delimiter has no closing delimiter")
 

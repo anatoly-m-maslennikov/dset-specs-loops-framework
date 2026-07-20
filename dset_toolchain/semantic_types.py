@@ -201,7 +201,7 @@ def _collect(
                     modern=False,
                 )
 
-    for path in sorted(root.rglob("package.yaml")):
+    for path in discover_layout(root).structured_named_files(root, "package"):
         relative = path.relative_to(root)
         if any(part in IGNORED_PARTS for part in relative.parts):
             continue
@@ -344,7 +344,8 @@ def _safe_load(path: Path, diagnostics: list[Diagnostic]) -> Any:
 
 def _lifecycle_events(root: Path) -> list[dict[str, Any]]:
     try:
-        path = discover_layout(root).governance_root / "lifecycle.yaml"
+        layout = discover_layout(root)
+        path = layout.structured_file(layout.governance_root, "lifecycle.toml")
     except ValueError:
         return []
     try:

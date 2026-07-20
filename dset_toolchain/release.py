@@ -12,7 +12,7 @@ from typing import Any
 
 from .frontmatter import FrontmatterError
 from .frontmatter import parse as parse_frontmatter
-from .layout import discover_layout
+from .layout import RepositoryLayout, discover_layout
 from .yaml_subset import dump, load
 
 _SEMVER = re.compile(
@@ -252,7 +252,9 @@ def plan_release(root: Path) -> ReleasePlan:
     )
     return ReleasePlan(
         owner_change=owner_id,
-        owner_manifest=owner_path.relative_to(root).as_posix() + "/change.yaml",
+        owner_manifest=RepositoryLayout.structured_file(owner_path, "change.toml")
+        .relative_to(root)
+        .as_posix(),
         release_class=release_class,
         base_ref=base_ref,
         base_commit=base_commit,
@@ -344,7 +346,7 @@ def _release_owner(
         if not root.is_dir():
             continue
         for path in sorted(root.iterdir()):
-            manifest_path = path / "change.yaml"
+            manifest_path = RepositoryLayout.structured_file(path, "change.toml")
             if path.name == "archive" or not manifest_path.is_file():
                 continue
             data = _mapping(load(manifest_path), f"Change manifest {manifest_path}")
@@ -362,7 +364,7 @@ def _release_owner(
             if not root.is_dir():
                 continue
             for path in sorted(root.iterdir()):
-                manifest_path = path / "change.yaml"
+                manifest_path = RepositoryLayout.structured_file(path, "change.toml")
                 if not manifest_path.is_file():
                     continue
                 data = _mapping(load(manifest_path), f"Change manifest {manifest_path}")

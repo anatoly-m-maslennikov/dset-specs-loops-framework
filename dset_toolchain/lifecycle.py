@@ -238,8 +238,7 @@ def _advance_strict_closure(
         raise LifecycleClosureError("invalid child status")
     if workflow_id not in {None, "implement"}:
         raise LifecycleClosureError(
-            "strict implementation accepts only implement, received "
-            f"{workflow_id}"
+            f"strict implementation accepts only implement, received {workflow_id}"
         )
     if workflow_id == "implement" and child_status != "succeeded":
         closure["status"] = "stopped"

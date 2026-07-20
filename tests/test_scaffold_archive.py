@@ -27,12 +27,15 @@ class ScaffoldArchiveTests(unittest.TestCase):
             self.assertTrue((change / "test-plan.md").is_file())
             self.assertTrue((change / "eval-plan.md").is_file())
             self.assertFalse((change / "design.md").exists())
-            manifest = (change / "change.yaml").read_text(encoding="utf-8")
+            manifest_path = discover_layout(target).structured_file(
+                change, "change.toml"
+            )
+            manifest = manifest_path.read_text(encoding="utf-8")
             self.assertNotIn("{{", manifest)
             self.assertIn("DSET-REQUIREMENT-001", manifest)
             self.assertIn("DSET-CONTRACT-001", manifest)
-            self.assertIn("stories: []", manifest)
-            self.assertIn("outcomes: []", manifest)
+            self.assertEqual(load(manifest_path)["stories"], [])
+            self.assertEqual(load(manifest_path)["outcomes"], [])
             with self.assertRaises(FileExistsError):
                 create_change(target, "add-login", "accounts", "small")
 
@@ -43,7 +46,11 @@ class ScaffoldArchiveTests(unittest.TestCase):
             change = create_change(
                 target, "govern-login", "accounts", "small", layer="GOV"
             )
-            manifest = (change / "change.yaml").read_text(encoding="utf-8")
+            manifest = (
+                discover_layout(target)
+                .structured_file(change, "change.toml")
+                .read_text(encoding="utf-8")
+            )
             self.assertIn("DSET-REQUIREMENT-GOV-001", manifest)
             self.assertIn("DSET-CONTRACT-GOV-001", manifest)
             with self.assertRaisesRegex(ValueError, "unknown ID layer"):
@@ -63,14 +70,18 @@ class ScaffoldArchiveTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as raw:
             target = Path(raw) / "adopter"
             self._copy_support(target)
-            manifest_path = target / "dset" / "dset.yaml"
+            manifest_path = discover_layout(target).manifest_path
             manifest = load(manifest_path)
             manifest["project"]["key"] = "ACME"
-            manifest_path.write_text(dump(manifest), encoding="utf-8")
+            manifest_path.write_text(dump(manifest, manifest_path), encoding="utf-8")
             change = create_change(
                 target, "govern-login", "accounts", "small", layer="GOV"
             )
-            rendered = (change / "change.yaml").read_text(encoding="utf-8")
+            rendered = (
+                discover_layout(target)
+                .structured_file(change, "change.toml")
+                .read_text(encoding="utf-8")
+            )
             self.assertIn("ACME-REQUIREMENT-GOV-001", rendered)
             self.assertIn("ACME-CONTRACT-GOV-001", rendered)
             specification = (change / "specs" / "accounts.md").read_text(

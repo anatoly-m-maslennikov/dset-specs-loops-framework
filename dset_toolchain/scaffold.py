@@ -63,9 +63,14 @@ def create_change(
             (destination / directory).mkdir(parents=True, exist_ok=True)
         for relative in sorted(files):
             template_relative = Path("change") / relative
-            if relative == "change.yaml":
+            relative_path = Path(relative)
+            if relative_path.stem == "change" and relative_path.suffix in {
+                ".toml",
+                ".yaml",
+                ".yml",
+            }:
                 template_family = "layered" if layout.layered else "legacy"
-                template_relative = Path("change") / template_family / relative
+                template_relative = Path("change") / template_family / relative_path
             source = layout.find_template(template_relative)
             target = destination / relative
             _copy_template(source, target, replacements)
@@ -100,11 +105,27 @@ def create_change(
 def _copy_template(source: Path, target: Path, replacements: dict[str, str]) -> None:
     if not source.is_file():
         raise FileNotFoundError(f"template is missing: {source}")
+    if target.suffix == ".toml" and source.suffix in {".toml", ".yaml", ".yml"}:
+        data = _replace_values(load(source), replacements)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(dump(data, target), encoding="utf-8")
+        return
     text = source.read_text(encoding="utf-8")
     for old, new in replacements.items():
         text = text.replace(old, new)
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(text, encoding="utf-8")
+
+
+def _replace_values(value: object, replacements: dict[str, str]) -> object:
+    if isinstance(value, dict):
+        return {key: _replace_values(item, replacements) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_replace_values(item, replacements) for item in value]
+    if isinstance(value, str):
+        for old, new in replacements.items():
+            value = value.replace(old, new)
+    return value
 
 
 def _project_key(root: Path) -> str:
@@ -185,7 +206,10 @@ def _next_change_id(root: Path, layer: str) -> str:
     for change_root in (*layout.active_change_roots, *layout.archive_change_roots):
         if not change_root.is_dir():
             continue
-        for manifest in change_root.glob("*/change.yaml"):
+        for directory in change_root.iterdir():
+            manifest = layout.structured_file(directory, "change.toml")
+            if not directory.is_dir() or not manifest.is_file():
+                continue
             data = load(manifest)
             identifier = data.get("id") if isinstance(data, dict) else None
             if isinstance(identifier, str) and identifier.startswith(prefix):
@@ -204,7 +228,7 @@ def _materialize_layered_manifest(
     target: dict[str, object] | None,
     workspace_mode: str | None,
 ) -> None:
-    path = destination / "change.yaml"
+    path = discover_layout(root).structured_file(destination, "change.toml")
     data = load(path)
     if not isinstance(data, dict):
         raise ValueError("change template root must be a mapping")

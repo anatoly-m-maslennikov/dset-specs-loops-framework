@@ -7,7 +7,7 @@ from .governance import materialize_governance
 from .layout import RepositoryLayout, discover_layout
 from .legacy_authority import write_legacy_authority_ledger
 from .traceability import write_traceability
-from .yaml_subset import dump
+from .yaml_subset import dump, load
 
 
 def create_adopter(source_root: Path, destination: Path) -> Path:
@@ -44,7 +44,10 @@ def _write_adopter_files(source_root: Path, root: Path) -> None:
     (dset / "supportability").mkdir()
     _copy_schemas(source_layout, dset / "schemas")
     _copy_templates(source_layout, dset / "templates")
-    shutil.copytree(source_layout.history_root, dset / "history")
+    (dset / "history").mkdir()
+    _copy_structured(
+        source_layout.history_path, dset / "history" / "pull-requests.toml"
+    )
     (root / "skills").mkdir()
     shutil.copyfile(source_root / "skills" / "README.md", root / "skills" / "README.md")
     shutil.copyfile(
@@ -70,7 +73,7 @@ def _write_adopter_files(source_root: Path, root: Path) -> None:
             "status": "not-applicable",
             "reason": "ephemeral fixture has no protected publication path",
         },
-        "work_items": {"registry": "dset/intake.yaml"},
+        "work_items": {"registry": "dset/intake.toml"},
         "contracts": ["DSET-CONTRACT-001"],
         "stories": [],
         "outcomes": [],
@@ -79,7 +82,6 @@ def _write_adopter_files(source_root: Path, root: Path) -> None:
             "accepted_truth_root": "specs/packages",
             "active_changes_root": "changes",
             "archive_root": "changes/archive",
-            "global_truth_root": None,
         },
         "packages": [
             {"id": "sample", "path": "specs/packages/sample", "status": "active"}
@@ -88,7 +90,6 @@ def _write_adopter_files(source_root: Path, root: Path) -> None:
             "runtime_risk": "non-production",
             "durability_topology": "files",
             "enforcement": "none",
-            "artifact": None,
             "repository_governance": "core-v1",
         },
         "change_contract": {
@@ -101,19 +102,19 @@ def _write_adopter_files(source_root: Path, root: Path) -> None:
         "verification": {"commands": ["{python} -m dset_toolchain check ."]},
         "canonical_command": "python -m dset_toolchain check .",
     }
-    manifest_path = dset / "dset.yaml"
+    manifest_path = dset / "dset.toml"
     manifest_path.write_text(dump(manifest, manifest_path), encoding="utf-8")
     shutil.copyfile(
         source_layout.find_template("dset_settings.toml"),
         root / "dset_settings.toml",
     )
-    shutil.copyfile(
-        source_layout.find_template("artifact-types.yaml"),
-        dset / "artifact-types.yaml",
+    _copy_structured(
+        source_layout.find_template("artifact-types.toml"),
+        dset / "artifact-types.toml",
     )
-    shutil.copyfile(source_layout.find_template("budget.yaml"), dset / "budget.yaml")
-    _write_legacy_intake(dset / "intake.yaml")
-    provenance_path = dset / "provenance.yaml"
+    _copy_structured(source_layout.find_template("budget.toml"), dset / "budget.toml")
+    _write_legacy_intake(dset / "intake.toml")
+    provenance_path = dset / "provenance.toml"
     provenance_path.write_text(
         dump({"schema_version": 1.0, "sources": []}, provenance_path), encoding="utf-8"
     )
@@ -150,8 +151,8 @@ The temporary adopter never becomes framework truth.
 ## Start here
 
 - [Governance](governance/README.md)
-- [Project intake](intake.yaml)
-- [Delegation budget](budget.yaml)
+- [Project intake](intake.toml)
+- [Delegation budget](budget.toml)
 - [Accepted sample package](specs/packages/sample/README.md)
 - [Active changes](changes/README.md)
 - [Templates](templates/README.md)
@@ -248,12 +249,24 @@ The temporary adopter must pass DSET validation without external effects.
             "eval_plan": "eval-plan.md",
         },
     }
-    package_path = package / "package.yaml"
+    package_path = package / "package.toml"
     package_path.write_text(dump(package_manifest, package_path), encoding="utf-8")
 
 
 def _write(path: Path, content: str) -> None:
     path.write_text(content, encoding="utf-8")
+
+
+def _copy_structured(source: Path, destination: Path) -> None:
+    data = load(source)
+    if source.name in {"pull-requests.toml", "pull-requests.yaml", "pull-requests.yml"}:
+        pull_requests = data.get("pull_requests") if isinstance(data, dict) else None
+        if isinstance(pull_requests, list):
+            for record in pull_requests:
+                if isinstance(record, dict) and record.get("merge_commit") is None:
+                    record.pop("merge_commit", None)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_text(dump(data, destination), encoding="utf-8")
 
 
 def _copy_schemas(source: RepositoryLayout, destination: Path) -> None:

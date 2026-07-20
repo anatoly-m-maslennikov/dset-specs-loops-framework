@@ -31,9 +31,7 @@ RELATION_TYPES = frozenset(
         "relates_to",
     }
 )
-ACYCLIC_RELATION_TYPES = frozenset(
-    {"child_of", "override_of", "replacement_of"}
-)
+ACYCLIC_RELATION_TYPES = frozenset({"child_of", "override_of", "replacement_of"})
 PROJECTION_SOURCE_TYPES = frozenset(
     {"specification", "procedure", "plan", "derived_view", "navigation"}
 )
@@ -538,9 +536,7 @@ def _range_matches(node: RelationNode, selector: ProjectionRange) -> bool:
         return False
     if selector.layer is not None and node.layer != selector.layer:
         return False
-    return (
-        node.scope_kind == selector.scope_kind and node.scope_id == selector.scope_id
-    )
+    return node.scope_kind == selector.scope_kind and node.scope_id == selector.scope_id
 
 
 def _replacement_diagnostics(
@@ -722,7 +718,7 @@ def _known_relation_ids(root: Path) -> set[str]:
             for item in items
             if isinstance(item, dict) and isinstance(item.get("id"), str)
         )
-    for path in sorted(root.rglob("package.yaml")):
+    for path in discover_layout(root).structured_named_files(root, "package"):
         identifiers.update(_package_ids(path))
     return identifiers
 
@@ -781,7 +777,8 @@ def _absorption_edges(root: Path) -> dict[str, str]:
 
 
 def _lifecycle_events(root: Path) -> list[dict[str, Any]]:
-    path = discover_layout(root).governance_root / "lifecycle.yaml"
+    layout = discover_layout(root)
+    path = layout.structured_file(layout.governance_root, "lifecycle.toml")
     if not path.is_file():
         return []
     try:

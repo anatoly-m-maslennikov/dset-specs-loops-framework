@@ -88,7 +88,8 @@ def validate_legacy_authority_ledger(root: Path) -> list[Diagnostic]:
 
 
 def legacy_authority_ledger_path(root: Path) -> Path:
-    return discover_layout(root.resolve()).governance_root / "legacy-authority.yaml"
+    layout = discover_layout(root.resolve())
+    return layout.structured_file(layout.governance_root, "legacy-authority.toml")
 
 
 def _authority_fragment(

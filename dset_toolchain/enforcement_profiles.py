@@ -33,14 +33,14 @@ def resolve_profile_path(root: Path, profile_id: str) -> Path:
     """Resolve an applied profile, with references limited to framework source."""
 
     layout = discover_layout(root.resolve())
-    local = layout.layer_root("tool") / "profiles" / f"{profile_id}.yaml"
+    local = layout.structured_file(
+        layout.layer_root("tool") / "profiles", f"{profile_id}.toml"
+    )
     if local.is_file():
         return local
-    candidate = (
-        layout.layer_root("tool")
-        / "templates"
-        / "enforcement-profiles"
-        / f"{profile_id}.yaml"
+    candidate = layout.structured_file(
+        layout.layer_root("tool") / "templates" / "enforcement-profiles",
+        f"{profile_id}.toml",
     )
     if candidate.is_file() and _repository_role(layout.manifest_path) == (
         "framework-source-and-adopter"

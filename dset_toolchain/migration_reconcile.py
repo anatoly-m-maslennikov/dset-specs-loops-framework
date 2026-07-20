@@ -16,11 +16,6 @@ from typing import Any
 from .compilation import compilation_path, write_compilation
 from .health import health_path, write_health
 from .layout import discover_layout
-from .legacy_authority import (
-    legacy_authority_ledger_path,
-    write_legacy_authority_ledger,
-)
-from .semantic_atoms import collect_semantic_atoms
 from .traceability import write_traceability
 from .yaml_subset import dump, load
 
@@ -31,19 +26,10 @@ def reconcile_migrated_tree(root: Path) -> tuple[Path, ...]:
     root = root.resolve()
     changed: list[Path] = []
     layout = discover_layout(root)
-    atom_ledger = layout.structured_file(layout.governance_root, "atoms.yaml")
-    if atom_ledger.is_file():
-        _rebase_atom_seals(root, atom_ledger)
-        changed.append(atom_ledger)
-
     registry = layout.governance_path
     if registry.is_file():
         _rebase_governance_sources(root, registry)
         changed.append(registry)
-
-    legacy = legacy_authority_ledger_path(root)
-    if legacy.is_file():
-        changed.append(write_legacy_authority_ledger(root))
 
     compiled = compilation_path(root)
     if compiled.is_file():
@@ -57,29 +43,6 @@ def reconcile_migrated_tree(root: Path) -> tuple[Path, ...]:
     if dashboard.is_file():
         changed.append(write_health(root))
     return tuple(changed)
-
-
-def _rebase_atom_seals(root: Path, ledger_path: Path) -> None:
-    atoms, diagnostics = collect_semantic_atoms(root)
-    if diagnostics:
-        raise ValueError(diagnostics[0].message)
-    data = load(ledger_path)
-    records = data.get("records") if isinstance(data, dict) else None
-    if not isinstance(records, list):
-        raise ValueError("atom seal ledger requires records")
-    by_id = {
-        atom.semantic_id: atom
-        for atom in atoms.values()
-    }
-    for record in records:
-        if not isinstance(record, dict):
-            raise ValueError("atom seal ledger contains a non-mapping record")
-        identifier = record.get("semantic_id")
-        atom = by_id.get(identifier) if isinstance(identifier, str) else None
-        if atom is None:
-            raise ValueError(f"atom seal has no migrated carrier: {identifier}")
-        record["sha256"] = atom.sha256
-    _atomic_structured_write(ledger_path, data)
 
 
 def _rebase_governance_sources(root: Path, registry_path: Path) -> None:

@@ -6,6 +6,7 @@ import unittest
 from pathlib import Path
 
 from dset_toolchain.adopter import create_adopter
+from dset_toolchain.layout import discover_layout
 from dset_toolchain.semantic_atoms import (
     append_lifecycle_event,
     archive_atom,
@@ -46,11 +47,14 @@ class SemanticAtomTests(unittest.TestCase):
                 json.loads((schema_root / name).read_text(encoding="utf-8"))
 
     def test_legacy_authority_fragments_are_immutable(self) -> None:
-        package = self.root / "dset/specs/packages/sample/package.yaml"
+        package_root = self.root / "dset/specs/packages/sample"
+        package = discover_layout(self.root).structured_file(
+            package_root, "package.toml"
+        )
         data = load(package)
         assert isinstance(data, dict)
         data["contracts"] = []
-        package.write_text(dump(data), encoding="utf-8")
+        package.write_text(dump(data, package), encoding="utf-8")
 
         messages = [item.message for item in validate_semantic_atoms(self.root)]
 

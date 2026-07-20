@@ -11,22 +11,30 @@ LAYERS: Final[tuple[str, ...]] = ("meta", "gov", "tool", "skill", "ops")
 LEGACY_SCHEMA_VERSIONS: Final[frozenset[str]] = frozenset({"1.0", "1.1"})
 LAYERED_SCHEMA_VERSION: Final[str] = "1.2"
 LEGACY_AUTHORITY_PATHS: Final[tuple[str, ...]] = (
+    "artifact-types.toml",
     "artifact-types.yaml",
+    "artifacts.toml",
     "artifacts.yaml",
+    "budget.toml",
     "budget.yaml",
     "changes",
     "fixtures",
     "governance",
+    "governance.toml",
     "governance.yaml",
     "history",
+    "intake.toml",
     "intake.yaml",
     "migrations",
+    "provenance.toml",
     "provenance.yaml",
     "schemas",
     "specs",
     "supportability",
     "templates",
+    "traceability.toml",
     "traceability.yaml",
+    "version.toml",
     "version.yaml",
 )
 
@@ -69,12 +77,12 @@ class RepositoryLayout:
     @property
     def manifest_path(self) -> Path:
         if self.layered:
-            return self.structured_file(self.layer_root("meta"), "dset.yaml")
-        return self.structured_file(self.dset_root, "dset.yaml")
+            return self.structured_file(self.layer_root("meta"), "dset.toml")
+        return self.structured_file(self.dset_root, "dset.toml")
 
     @property
     def governance_path(self) -> Path:
-        return self._owned_file("gov", "governance.yaml")
+        return self._owned_file("gov", self._preferred_name("governance"))
 
     @property
     def governance_root(self) -> Path:
@@ -82,27 +90,30 @@ class RepositoryLayout:
 
     @property
     def artifact_registry_path(self) -> Path:
-        return self._owned_file("gov", "artifacts.yaml")
+        return self._owned_file("gov", self._preferred_name("artifacts"))
 
     @property
     def artifact_type_registry_path(self) -> Path:
-        return self._owned_file("gov", "artifact-types.yaml")
+        return self._owned_file("gov", self._preferred_name("artifact-types"))
 
     @property
     def intake_path(self) -> Path:
-        return self._owned_file("gov", "intake.yaml")
+        return self._owned_file("gov", self._preferred_name("intake"))
 
     @property
     def provenance_path(self) -> Path:
-        return self._owned_file("gov", "provenance.yaml")
+        return self._owned_file("gov", self._preferred_name("provenance"))
 
     @property
     def traceability_path(self) -> Path:
         if self.layered:
             return self.structured_file(
-                self.layer_root("gov") / "generated", "traceability.yaml"
+                self.layer_root("gov") / "generated",
+                self._preferred_name("traceability"),
             )
-        return self.structured_file(self.dset_root, "traceability.yaml")
+        return self.structured_file(
+            self.dset_root, self._preferred_name("traceability")
+        )
 
     @property
     def migrations_root(self) -> Path:
@@ -110,11 +121,11 @@ class RepositoryLayout:
 
     @property
     def version_path(self) -> Path:
-        return self._owned_file("meta", "version.yaml")
+        return self._owned_file("meta", self._preferred_name("version"))
 
     @property
     def budget_path(self) -> Path:
-        return self._owned_file("skill", "budget.yaml")
+        return self._owned_file("skill", self._preferred_name("budget"))
 
     @property
     def history_root(self) -> Path:
@@ -122,7 +133,9 @@ class RepositoryLayout:
 
     @property
     def history_path(self) -> Path:
-        return self.structured_file(self.history_root, "pull-requests.yaml")
+        return self.structured_file(
+            self.history_root, self._preferred_name("pull-requests")
+        )
 
     @property
     def supportability_root(self) -> Path:
@@ -183,19 +196,41 @@ class RepositoryLayout:
         fragments: list[Path] = []
         for root in self.package_roots:
             if root.is_dir():
-                for suffix in (".toml", ".yaml", ".yml"):
-                    fragments.extend(root.glob(f"*/package{suffix}"))
+                fragments.extend(self.structured_named_files(root, "package"))
         return tuple(sorted(fragments))
 
     @staticmethod
     def structured_file(directory: Path, name: str) -> Path:
-        """Resolve an authority file, preferring TOML after cutover."""
+        """Resolve canonical TOML with explicit legacy YAML read fallback."""
 
-        legacy = directory / name
-        if legacy.suffix.lower() not in {".yaml", ".yml"}:
-            return legacy
-        toml = legacy.with_suffix(".toml")
-        return toml if toml.is_file() else legacy
+        requested = directory / name
+        if requested.suffix.lower() not in {".toml", ".yaml", ".yml"}:
+            return requested
+        stem = requested.with_suffix("")
+        canonical = stem.with_suffix(".toml")
+        legacy = (stem.with_suffix(".yaml"), stem.with_suffix(".yml"))
+        if canonical.is_file():
+            return canonical
+        for candidate in legacy:
+            if candidate.is_file():
+                return candidate
+        return canonical if requested.suffix.lower() == ".toml" else requested
+
+    @staticmethod
+    def structured_named_files(root: Path, stem: str) -> tuple[Path, ...]:
+        """Return one TOML-preferred carrier per directory for a basename."""
+
+        by_parent: dict[Path, list[Path]] = {}
+        for suffix in (".toml", ".yaml", ".yml"):
+            for path in root.rglob(f"{stem}{suffix}"):
+                by_parent.setdefault(path.parent, []).append(path)
+        selected: list[Path] = []
+        for parent, candidates in sorted(by_parent.items()):
+            canonical = parent / f"{stem}.toml"
+            selected.append(
+                canonical if canonical in candidates else sorted(candidates)[0]
+            )
+        return tuple(selected)
 
     def active_change_root(self, layer: str | None = None) -> Path:
         if not self.layered:
@@ -260,15 +295,23 @@ class RepositoryLayout:
     def _owned_directory(self, layer: str, name: str) -> Path:
         return self._owned_file(layer, name)
 
+    def _preferred_name(self, stem: str) -> str:
+        suffix = ".toml" if self.manifest_path.suffix == ".toml" else ".yaml"
+        return f"{stem}{suffix}"
+
     @staticmethod
     def _find_unique(roots: tuple[Path, ...], relative: str | Path, kind: str) -> Path:
         normalized = _canonical_relative(relative)
         candidates: list[Path] = []
         for root in roots:
-            legacy = root / normalized
-            candidates.append(legacy)
-            if legacy.suffix.lower() in {".yaml", ".yml"}:
-                candidates.append(legacy.with_suffix(".toml"))
+            requested = root / normalized
+            if requested.suffix.lower() in {".toml", ".yaml", ".yml"}:
+                stem = requested.with_suffix("")
+                candidates.extend(
+                    stem.with_suffix(suffix) for suffix in (".toml", ".yaml", ".yml")
+                )
+            else:
+                candidates.append(requested)
         matches = [path for path in candidates if path.is_file()]
         if not matches:
             raise FileNotFoundError(f"{kind} is missing: {relative}")
@@ -362,6 +405,5 @@ def _canonical_relative(relative: str | Path) -> Path:
     return Path(*segments)
 
 
-def _manifest_candidate(legacy: Path) -> Path:
-    toml = legacy.with_suffix(".toml")
-    return toml if toml.is_file() else legacy
+def _manifest_candidate(requested: Path) -> Path:
+    return RepositoryLayout.structured_file(requested.parent, requested.name)

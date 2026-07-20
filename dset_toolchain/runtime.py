@@ -14,6 +14,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
+from .layout import discover_layout, has_manifest
 from .lifecycle import advance_closure, initial_closure
 from .skill_catalog import PUBLIC_SKILL_MODES, PUBLIC_SKILL_WORKFLOWS
 from .yaml_subset import load
@@ -650,11 +651,10 @@ def _existing_storage(root: Path | None) -> _Storage | None:
 def _is_dset_root(root: Path | None) -> bool:
     if root is None or not root.is_dir():
         return False
-    authorities = (
-        root / "dset" / "scopes" / "meta" / "dset.yaml",
-        root / "dset" / "dset.yaml",
-    )
-    return sum(path.is_file() for path in authorities) == 1
+    try:
+        return has_manifest(root)
+    except ValueError:
+        return False
 
 
 def _load_explicit_checkpoint(
@@ -805,8 +805,8 @@ def _normalize_scope(
 
 
 def _repository_identity(root: Path) -> str:
-    manifest_path = root / "dset" / "scopes" / "meta" / "dset.yaml"
     try:
+        manifest_path = discover_layout(root).manifest_path
         manifest = load(manifest_path)
     except (OSError, UnicodeError, ValueError):
         manifest = {}

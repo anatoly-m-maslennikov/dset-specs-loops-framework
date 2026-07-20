@@ -19,7 +19,7 @@ SPDX = re.compile(r"^[A-Za-z0-9][A-Za-z0-9.+-]*$")
 def dependency_policy_path(root: Path) -> Path:
     layout = discover_layout(root.resolve())
     owner = layout.layer_root("tool") if layout.layered else layout.dset_root
-    return owner / "dependency-policy.yaml"
+    return layout.structured_file(owner, "dependency-policy.toml")
 
 
 def validate_dependency_policy(

@@ -608,7 +608,7 @@ def _known_semantic_ids(root: Path, atoms: dict[str, SemanticAtom]) -> set[str]:
         match = re.search(r"-\s*\*\*Decision ID:\*\*\s*`([^`]+)`", text)
         if match:
             identifiers.add(match.group(1))
-    for path in sorted(root.rglob("package.yaml")):
+    for path in discover_layout(root).structured_named_files(root, "package"):
         try:
             data = load(path)
         except (OSError, UnicodeError, YamlSubsetError):
@@ -770,11 +770,13 @@ def _digest(path: Path) -> str:
 
 
 def _ledger_path(root: Path) -> Path:
-    return discover_layout(root).governance_root / "atoms.yaml"
+    layout = discover_layout(root)
+    return layout.structured_file(layout.governance_root, "atoms.toml")
 
 
 def _lifecycle_path(root: Path) -> Path:
-    return discover_layout(root).governance_root / "lifecycle.yaml"
+    layout = discover_layout(root)
+    return layout.structured_file(layout.governance_root, "lifecycle.toml")
 
 
 def _atom_diag(path: Path, message: str) -> Diagnostic:

@@ -63,7 +63,7 @@ class SemanticTypeCompatibilityTests(unittest.TestCase):
                     "status": "open",
                 }
             )
-            intake_path.write_text(dump(intake), encoding="utf-8")
+            intake_path.write_text(dump(intake, intake_path), encoding="utf-8")
 
             messages = [
                 diagnostic.message

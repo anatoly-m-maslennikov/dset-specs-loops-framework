@@ -28,9 +28,7 @@ class TomlCodecError(ValueError):
 
 _BARE_KEY = re.compile(r"^[A-Za-z0-9_-]+$")
 _INTEGER = re.compile(r"^[+-]?[0-9][0-9_]*$")
-_FLOAT = re.compile(
-    r"^[+-]?(?:[0-9][0-9_]*\.[0-9_]+|[0-9][0-9_]*[eE][+-]?[0-9_]+)$"
-)
+_FLOAT = re.compile(r"^[+-]?(?:[0-9][0-9_]*\.[0-9_]+|[0-9][0-9_]*[eE][+-]?[0-9_]+)$")
 
 
 def load(path: Path) -> dict[str, Any]:
@@ -201,8 +199,7 @@ def _loads_subset(text: str) -> dict[str, Any]:
             array = line.startswith("[[") and line.endswith("]]")
             raw_path = line[2:-2] if array else line[1:-1]
             keys = [
-                _parse_key(piece.strip(), line_number)
-                for piece in raw_path.split(".")
+                _parse_key(piece.strip(), line_number) for piece in raw_path.split(".")
             ]
             current = _select_table(root, keys, array, line_number)
             continue

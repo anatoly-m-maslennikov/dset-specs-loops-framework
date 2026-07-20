@@ -30,4 +30,13 @@ def required_artifacts(root: Path, profile: str) -> tuple[set[str], set[str]]:
         files.update(current.get("files", []))
 
     collect(profile)
-    return documents | files | {"change.yaml"}, directories
+    suffix = (
+        ".toml" if discover_layout(root).manifest_path.suffix == ".toml" else ".yaml"
+    )
+    canonical_files = {
+        str(Path(value).with_suffix(suffix))
+        if Path(value).suffix.lower() in {".yaml", ".yml"}
+        else value
+        for value in files
+    }
+    return documents | canonical_files | {f"change{suffix}"}, directories
