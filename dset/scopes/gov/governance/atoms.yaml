@@ -85,6 +85,20 @@ records:
     type: problem
     subtype: defect
   -
+    semantic_id: DSET-DEFECT-GOV-005
+    carrier_id: DSET-ATOMIC-RECORD-057
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-057-classification-enforcement.md
+    sha256: a9b2303a279ba39252c2b10c53c76af7331e49e9de4f93cadf860c85d7bdf8cb
+    type: problem
+    subtype: defect
+  -
+    semantic_id: DSET-DEFECT-GOV-006
+    carrier_id: DSET-ATOMIC-RECORD-059
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-059-evidence-record-contract.md
+    sha256: ab6b47e23a722aab2248bb18825d132f4461b2a0305f238be08e0ad4880a1dec
+    type: problem
+    subtype: defect
+  -
     semantic_id: DSET-DEFECT-OPS-001
     carrier_id: DSET-ATOMIC-RECORD-028
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-028-release-truth.md
@@ -117,6 +131,27 @@ records:
     carrier_id: DSET-ATOMIC-RECORD-045
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-045-atomic-replacement-source.md
     sha256: c30f4999ab306cd1b124f3fec0e222dad27f27bca15b12ff4c2234cbcf8c30f2
+    type: problem
+    subtype: defect
+  -
+    semantic_id: DSET-DEFECT-TOOL-004
+    carrier_id: DSET-ATOMIC-RECORD-055
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-055-immutable-toml-migration.md
+    sha256: cc31131d684c728ee3e3610ba0e090f3bbbca6c671212bbd237a7d2fce1cc2c3
+    type: problem
+    subtype: defect
+  -
+    semantic_id: DSET-DEFECT-TOOL-005
+    carrier_id: DSET-ATOMIC-RECORD-056
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-056-relation-bound-health.md
+    sha256: 39a343b8ccabe070f25dabb56b7d0af14c4754f8fa97c5f4e9344ceb500118bb
+    type: problem
+    subtype: defect
+  -
+    semantic_id: DSET-DEFECT-TOOL-006
+    carrier_id: DSET-ATOMIC-RECORD-058
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-058-conflict-source-truth.md
+    sha256: 2d0dd35aa576c75f558064da67f87af7ab16f9944473c67b88fb5a90111f546b
     type: problem
     subtype: defect
   -
@@ -260,6 +295,20 @@ records:
     type: decision
     subtype: requirement
   -
+    semantic_id: DSET-REQUIREMENT-GOV-038
+    carrier_id: DSET-ATOMIC-RECORD-051
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-051-artifact-naming-setting.md
+    sha256: a8175d524b7b6133949f185f027e6c8e043537d44af3703267d79518813204c4
+    type: decision
+    subtype: requirement
+  -
+    semantic_id: DSET-REQUIREMENT-GOV-039
+    carrier_id: DSET-ATOMIC-RECORD-052
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-052-artifact-creation-setting.md
+    sha256: cb7534d722783c7915ff394b02bb5485db0d27fe4df45631f0cc640b56681398
+    type: decision
+    subtype: requirement
+  -
     semantic_id: DSET-REQUIREMENT-SKILL-010
     carrier_id: DSET-ATOMIC-RECORD-006
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-006-entry-criteria-skill-chains.md
@@ -278,6 +327,13 @@ records:
     carrier_id: DSET-ATOMIC-RECORD-039
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-039-implementation-preparation-mode.md
     sha256: 62d4935fad190d1b3d3c06c0d99f2b25826f65149bf5307b2b5aff7c843f6529
+    type: decision
+    subtype: requirement
+  -
+    semantic_id: DSET-REQUIREMENT-SKILL-013
+    carrier_id: DSET-ATOMIC-RECORD-053
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-053-implementation-mode-setting.md
+    sha256: fbbdad86c9d7ca34c5dc023740b04cb6b5b939361e3ff909f495ea83d5d7470b
     type: decision
     subtype: requirement
   -
@@ -320,6 +376,13 @@ records:
     carrier_id: DSET-ATOMIC-RECORD-049
     path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-049-verbose-project-settings-test.md
     sha256: db02d80840e3c245783281ca8070559c92b0c19653e92fe5705704c9e191bb94
+    type: qa
+    subtype: test
+  -
+    semantic_id: DSET-TEST-GOV-039
+    carrier_id: DSET-ATOMIC-RECORD-054
+    path: dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-054-canonical-settings-selections-test.md
+    sha256: f536d80ac9ac187587f1a745b1e6ec91b8135fac2e6eb93036592223d6ef84b4
     type: qa
     subtype: test
   -

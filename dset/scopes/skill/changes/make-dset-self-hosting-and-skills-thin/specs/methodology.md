@@ -8,7 +8,7 @@ the implementation scope to its current layer-owned Requirement owners.
 | Framework-first self-hosting and bounded recursion | `DSET-REQUIREMENT-OPS-003`, `DSET-REQUIREMENT-TOOL-004` |
 | Repository-owned rules, fail-closed ownership, customization, and one owner | `DSET-REQUIREMENT-GOV-014..017` |
 | Separate test/eval proof | `DSET-REQUIREMENT-META-007` |
-| Thin wrappers, local-rule following, lifecycle-mode entrypoints, runs, budget, continuity, and outcome-first entry closure | `DSET-REQUIREMENT-SKILL-002..010` |
+| Thin wrappers, local-rule following, lifecycle-mode entrypoints, runs, budget, continuity, shared runtime, and selectable implementation preparation | `DSET-REQUIREMENT-SKILL-002..009`, `DSET-REQUIREMENT-SKILL-011`, `DSET-REQUIREMENT-SKILL-013` |
 | Release transaction, RC/final gate, and coordinated version identity | `DSET-REQUIREMENT-OPS-004..007` |
 | Intake routing and stable layer-qualified IDs | `DSET-REQUIREMENT-GOV-018..019` |
 | Neutral repository or Work Area scope | `DSET-REQUIREMENT-META-011` |
@@ -20,7 +20,8 @@ the implementation scope to its current layer-owned Requirement owners.
 | Workflow-independent Problem, Question, and Conflict semantics | `DSET-REQUIREMENT-GOV-027` |
 | Recommended optional rationale for Decisions and other atomic artifacts | `DSET-REQUIREMENT-GOV-028` |
 | Independent MECE artifact classification and Analysis Report boundaries | `DSET-REQUIREMENT-GOV-029` |
-| Type-first artifact names and independently selectable subtype-name capability | `DSET-REQUIREMENT-GOV-030` |
+| Type-first artifact names and independently selectable subtype-name capability | `DSET-REQUIREMENT-GOV-038` |
+| Medium/high immutable-artifact admission strictness | `DSET-REQUIREMENT-GOV-039` |
 | One-level-down project/group/feature/layer architecture views | `DSET-REQUIREMENT-GOV-031` |
 | Narrowest-common-scope ownership for project, group, feature, and layer truth | `DSET-REQUIREMENT-GOV-032` |
 | Parent-to-child artifact inheritance, local implementation/cancellation, and direct fallback | `DSET-REQUIREMENT-GOV-033` |
@@ -46,7 +47,8 @@ Connected accepted IDs are `DSET-REQUIREMENT-META-007`,
 `DSET-REQUIREMENT-GOV-026`, `DSET-REQUIREMENT-GOV-027`,
 `DSET-REQUIREMENT-GOV-028`,
 `DSET-REQUIREMENT-GOV-029`,
-`DSET-REQUIREMENT-GOV-030`, `DSET-REQUIREMENT-GOV-031`,
+`DSET-REQUIREMENT-GOV-031`, `DSET-REQUIREMENT-GOV-038`,
+`DSET-REQUIREMENT-GOV-039`,
 `DSET-REQUIREMENT-GOV-032`,
 `DSET-REQUIREMENT-GOV-033`,
 `DSET-REQUIREMENT-GOV-034`,
@@ -58,12 +60,12 @@ Connected accepted IDs are `DSET-REQUIREMENT-META-007`,
 `DSET-REQUIREMENT-SKILL-004`, `DSET-REQUIREMENT-SKILL-005`,
 `DSET-REQUIREMENT-SKILL-006`, `DSET-REQUIREMENT-SKILL-007`,
 `DSET-REQUIREMENT-SKILL-008`, `DSET-REQUIREMENT-SKILL-009`,
-`DSET-REQUIREMENT-SKILL-010`,
+`DSET-REQUIREMENT-SKILL-011`, `DSET-REQUIREMENT-SKILL-013`,
 `DSET-REQUIREMENT-OPS-003`, `DSET-REQUIREMENT-OPS-004`,
 `DSET-REQUIREMENT-OPS-005`, `DSET-REQUIREMENT-OPS-006`,
 `DSET-REQUIREMENT-OPS-007`, and `DSET-REQUIREMENT-OPS-013`.
 
-## ADDED — DSET-REQUIREMENT-SKILL-010 Outcome-first entry closure
+## ADDED — DSET-REQUIREMENT-SKILL-013 Selectable implementation preparation
 
 Public skills accept a desired outcome rather than requiring the operator to
 invoke every prerequisite skill manually. Repository-local lifecycle rules own
@@ -72,9 +74,11 @@ transition must satisfy a missing criterion and re-read authority; no progress,
 repeated state, cycles, ambiguity, failure, or a new authorization boundary
 stops the finite closure.
 
-`dset-implement` invokes `decisions` first, conditionally prepares separate
-Test/Evaluation and implementation plans, and implements only after all entry
-criteria are satisfied. Session history is candidate evidence rather than
+Root `dset_settings.toml` selects `workflows.implement.mode`. Lazy mode invokes
+`decisions` first, conditionally prepares separate Test/Evaluation and
+implementation plans, and implements only after all entry criteria are
+satisfied. Strict mode performs implementation only and stops on missing
+accepted prerequisites. Session history is candidate evidence rather than
 authority, so reconciliation never invents acceptance or edits immutable atoms.
 
 ## ADDED — DSET-REQUIREMENT-GOV-029 MECE artifact classification

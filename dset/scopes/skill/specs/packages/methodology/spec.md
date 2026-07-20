@@ -89,12 +89,12 @@ A checkpoint contains only a bounded objective, scope and artifact/run pointers,
 
 **Scenario DSET-SCENARIO-SKILL-009:** An operator invokes `dset`, which chains clarification and planning before the host compacts context. The next invocation reloads the same checkpoint, detects a newer Git change, invalidates the stale next-action hint, and recommends fresh verification without asking the operator to reconstruct the session or invoke a sixth skill.
 
-## DSET-REQUIREMENT-SKILL-012 — Implementation preparation is project-selectable
+## DSET-REQUIREMENT-SKILL-013 — Implementation preparation is project-selectable
 
-A public DSET skill accepts the desired outcome. Root `dset_settings.toml` selects
-`lazy` or `strict` preparation for `dset-implement`; missing configuration uses
-the documented `lazy` default. The repository-local lifecycle rule owns both
-modes, their entry criteria, exit criteria, and stops.
+A public DSET skill accepts the desired outcome. Root `dset_settings.toml`
+selects `lazy` or `strict` through `workflows.implement.mode`; missing
+configuration uses the documented `lazy` default. The repository-local
+lifecycle rule owns both modes, their entry criteria, exit criteria, and stops.
 
 In `lazy` mode, `dset-implement` first invokes `decisions` to reconcile
 available host-session history, bounded DSET continuity records, Git, and
@@ -124,9 +124,9 @@ implementation plans where needed, then implements. An automation selecting
 strict mode runs only implementation from its prepared accepted inputs and
 stops rather than creating a missing Decision or plan.
 
-`DSET-REQUIREMENT-SKILL-010` is absorbed by
-`DSET-REQUIREMENT-SKILL-012` and remains listed for historical compilation and
-lineage only.
+`DSET-REQUIREMENT-SKILL-012` is absorbed by
+`DSET-REQUIREMENT-SKILL-013`; both it and its earlier predecessor remain
+immutable history.
 
 ## DSET-REQUIREMENT-SKILL-011 — Skills use one deterministic shared runtime
 

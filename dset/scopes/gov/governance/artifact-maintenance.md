@@ -58,9 +58,10 @@ sealed legacy fragment disappears or changes. New authority uses native atoms;
 a deliberate replacement requires a native successor and lifecycle event, not
 regeneration of the compatibility ledger.
 
-A successor atom may declare `absorbs` links to older atoms. Absorption is
+A successor atom declares `replacement_of` relations to older atoms. Matching
+append-only lifecycle events mark the predecessors `absorbed`. Replacement is
 explicit, acyclic, validated, and never inferred from a timestamp, ID, or file
-order. It removes the older atom from the active compilation set without
+order. Absorption removes the older atom from the active compilation set without
 editing or deleting it. The successor carries forward or explicitly replaces
 every still-applicable consequence. A partial replacement links the affected
 claims and leaves all other older claims active; it does not absorb the entire

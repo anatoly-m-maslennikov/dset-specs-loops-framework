@@ -558,7 +558,7 @@ Evidence Record, Verification assesses its support, and a Readiness Record
 records an explicit blocked gate until the required evidence passes. No
 workflow position changes any semantic or artifact classification.
 
-## DSET-REQUIREMENT-GOV-030 — Artifact names default to primary type
+## DSET-REQUIREMENT-GOV-038 — Artifact names default to primary type
 
 New artifact IDs and filenames must include the primary artifact type token by
 default. The optional direct artifact subtype remains metadata and cannot force
@@ -574,6 +574,9 @@ Roadmap uses the same `DELIVERY` sequence with `artifact_subtype: roadmap`. An
 adopter that explicitly enables subtype-bearing names may include those subtype
 tokens in new artifacts, while every existing stable identity remains
 unchanged.
+
+`DSET-REQUIREMENT-GOV-030` is absorbed by
+`DSET-REQUIREMENT-GOV-038` and remains immutable history.
 
 ## DSET-REQUIREMENT-GOV-031 — Architecture views descend one level
 
@@ -666,7 +669,7 @@ is stored.
 Its authority is absorbed and fully replaced by `DSET-DECISION-GOV-013`; it is
 not part of the active compilation set.
 
-## DSET-REQUIREMENT-GOV-035 — Atom creation has configurable strictness
+## DSET-REQUIREMENT-GOV-039 — Atom creation has configurable strictness
 
 Root `dset_settings.toml` must expose independent
 `artifacts.creation_strictness` with `medium` as the
@@ -698,6 +701,9 @@ claim with an ambiguous exception is not emitted until the operator resolves
 the exception. Once precise, DSET notices that the claim applies unchanged to
 every feature in its group and proposes one feature-to-group promotion; it
 does not write at group scope or jump to project scope without acceptance.
+
+`DSET-REQUIREMENT-GOV-035` is absorbed by
+`DSET-REQUIREMENT-GOV-039` and remains immutable history.
 
 ## DSET-REQUIREMENT-GOV-037 — Project settings are verbose and separate from project truth
 
