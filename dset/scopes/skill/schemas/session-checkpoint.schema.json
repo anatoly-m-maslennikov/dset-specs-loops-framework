@@ -13,7 +13,7 @@
     "updated_at": {"type": "string", "format": "date-time", "maxLength": 40},
     "status": {"enum": ["active", "paused", "completed", "stopped"]},
     "persistence": {"enum": ["persisted", "unavailable"]},
-    "public_entrypoint": {"enum": ["dset", "dset-init", "dset-repair-governance", "dset-decompose", "dset-diagnose", "dset-clarify", "dset-landscape", "dset-prototype", "dset-decisions", "dset-plan-proof", "dset-plan-implementation", "dset-implement", "dset-verify", "dset-triage", "dset-release", "dset-complete"]},
+    "public_entrypoint": {"enum": ["dset", "dset-init", "dset-repair-governance", "dset-decompose", "dset-diagnose", "dset-clarify", "dset-landscape", "dset-prototype", "dset-decisions", "dset-plan-proof", "dset-plan-implementation", "dset-implement", "dset-verify", "dset-overview", "dset-triage", "dset-release", "dset-complete"]},
     "root_run_id": {"$ref": "#/$defs/id"},
     "latest_run_id": {"$ref": "#/$defs/id"},
     "active_run_ids": {"type": "array", "maxItems": 32, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
@@ -89,7 +89,7 @@
       "type": "object",
       "required": ["mode", "reason_code", "requires_authorization"],
       "properties": {
-        "mode": {"enum": ["initialize", "repair-governance", "decompose", "diagnose", "clarify", "landscape", "prototype", "decisions", "plan-proof", "plan-implementation", "implement", "verify", "triage-work", "release", "complete"]},
+        "mode": {"enum": ["initialize", "repair-governance", "decompose", "diagnose", "clarify", "landscape", "prototype", "decisions", "plan-proof", "plan-implementation", "implement", "verify", "overview", "triage-work", "release", "complete"]},
         "reason_code": {"$ref": "#/$defs/id"},
         "requires_authorization": {"enum": ["none", "repository-write", "external-write", "publication"]}
       },

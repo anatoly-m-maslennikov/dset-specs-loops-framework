@@ -52,6 +52,7 @@ _NEXT_MODES = {
     "plan-implementation",
     "implement",
     "verify",
+    "overview",
     "triage-work",
     "release",
     "complete",

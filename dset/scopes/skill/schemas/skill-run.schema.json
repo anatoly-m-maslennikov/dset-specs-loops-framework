@@ -45,7 +45,7 @@
     "next_signals": {
       "type": "array",
       "maxItems": 16,
-      "items": {"enum": ["initialize", "repair-governance", "decompose", "diagnose", "clarify", "landscape", "prototype", "decisions", "plan-proof", "plan-implementation", "implement", "verify", "triage-work", "release", "complete"]}
+      "items": {"enum": ["initialize", "repair-governance", "decompose", "diagnose", "clarify", "landscape", "prototype", "decisions", "plan-proof", "plan-implementation", "implement", "verify", "overview", "triage-work", "release", "complete"]}
     },
     "budget": {
       "type": "object",

@@ -7,10 +7,11 @@
 The Decision compiles as the repository-local, self-hosting, thin-wrapper,
 bounded-session, integration-first DSET 0.3 operating shape.
 
-### DSET-DECISION-SKILL-002 — Public wrapper surface
+### DSET-DECISION-SKILL-003 — Public wrapper surface
 
-The Decision compiles as the public catch-all `dset` wrapper plus one thin
-direct wrapper for every registered stable lifecycle mode.
+The Decision compiles as the public catch-all `dset` wrapper, one thin direct
+wrapper for every registered stable lifecycle mode, and the supplemental
+read-only `dset-overview` wrapper over generated project health.
 
 ## DSET-REQUIREMENT-SKILL-001 — Workflow skills remain focused
 
@@ -49,9 +50,9 @@ adopter's convention, and report its local rule paths and ruleset identity.
 
 ## DSET-REQUIREMENT-SKILL-004 — Every lifecycle mode has a public wrapper
 
-The release target must expose `dset` as the catch-all lifecycle and next-step orchestrator plus one thin direct-entry wrapper for every stable lifecycle mode: `dset-init`, `dset-repair-governance`, `dset-decompose`, `dset-diagnose`, `dset-clarify`, `dset-landscape`, `dset-prototype`, `dset-decisions`, `dset-plan-proof`, `dset-plan-implementation`, `dset-implement`, `dset-verify`, `dset-triage`, `dset-release`, and `dset-complete`. Governed direct wrappers resolve one registered repository-local workflow. Initialization and governance repair are the only bounded pre-resolution exceptions. The project-owned `DSET-RULE-LIFECYCLE` rule defines desired outcomes, entry and exit criteria, trigger precedence, stop boundaries, and allowed prerequisite chaining.
+The release target must expose `dset` as the catch-all lifecycle and next-step orchestrator plus one thin direct-entry wrapper for every stable lifecycle mode: `dset-init`, `dset-repair-governance`, `dset-decompose`, `dset-diagnose`, `dset-clarify`, `dset-landscape`, `dset-prototype`, `dset-decisions`, `dset-plan-proof`, `dset-plan-implementation`, `dset-implement`, `dset-verify`, `dset-triage`, `dset-release`, and `dset-complete`. It must also expose `dset-overview` as a supplemental read-only view over generated project health; Overview is not a lifecycle mode and cannot refresh derived state or perform its recommended handoff. Governed direct wrappers resolve one registered repository-local workflow. Initialization and governance repair are the only bounded pre-resolution exceptions. The project-owned `DSET-RULE-LIFECYCLE` rule defines desired outcomes, entry and exit criteria, trigger precedence, stop boundaries, and allowed prerequisite chaining.
 
-**Scenario DSET-SCENARIO-SKILL-004:** An operator who does not know the next action enters through `dset`; an operator or automation that already knows the applicable mode invokes its direct wrapper and receives the same governed workflow and stop boundary.
+**Scenario DSET-SCENARIO-SKILL-004:** An operator who wants current health invokes `dset-overview` and receives a read-only coverage/freshness summary; an operator who does not know the next action enters through `dset`; an operator or automation that already knows the applicable mode invokes its direct wrapper and receives the same governed workflow and stop boundary.
 
 ## DSET-REQUIREMENT-SKILL-005 — The primary skill orchestrates local rules
 

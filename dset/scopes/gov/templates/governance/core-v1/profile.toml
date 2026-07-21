@@ -208,6 +208,10 @@ rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-BUILD", "DSET-RULE-DOMAIN-SPEC", "
 id = "complete"
 rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-WORK-ITEMS", "DSET-RULE-LIFECYCLE"]
 
+[[workflows]]
+id = "overview"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-WORK-ITEMS", "DSET-RULE-LIFECYCLE"]
+
 [[wrappers]]
 workflow = "lifecycle-orchestration"
 path = "skills/dset/SKILL.md"
@@ -263,3 +267,7 @@ path = "skills/dset-verify/SKILL.md"
 [[wrappers]]
 workflow = "complete"
 path = "skills/dset-complete/SKILL.md"
+
+[[wrappers]]
+workflow = "overview"
+path = "skills/dset-overview/SKILL.md"

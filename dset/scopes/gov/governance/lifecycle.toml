@@ -656,3 +656,12 @@ occurred_at = "2026-07-21T05:20:05+04:00"
 related = ["DSET-EVALUATION-GOV-029"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The cross-layer successor retains release-role interpretation checks while evaluating the new Version name explicitly."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-074"
+atom_id = "DSET-DECISION-SKILL-002"
+event = "absorbed"
+occurred_at = "2026-07-21T06:00:00+04:00"
+related = ["DSET-DECISION-SKILL-003"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "The successor retains all sixteen lifecycle entrypoints and adds one supplemental read-only Overview entrypoint without changing lifecycle routing."

@@ -224,7 +224,7 @@ customization = "unmodified"
 profile = "core-v1"
 version = "0.3"
 template = "dset/scopes/skill/templates/governance/core-v1/lifecycle-orchestration.md"
-sha256 = "1f15148f5d1fb55691c0c05b291583bd2ad32c5a95fa08580e1372d2f9f8cb01"
+sha256 = "807c78c31368ee52e8c04bc9c0331b1f32622c53877c8cf44b547bb8f46c023f"
 
 [[rules]]
 id = "DSET-RULE-DIAGNOSIS"
@@ -316,6 +316,10 @@ rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-BUILD", "DSET-RULE-DOMAIN-SPEC", "
 id = "complete"
 rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-WORK-ITEMS", "DSET-RULE-LIFECYCLE"]
 
+[[workflows]]
+id = "overview"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-WORK-ITEMS", "DSET-RULE-LIFECYCLE"]
+
 [[wrappers]]
 workflow = "lifecycle-orchestration"
 path = "skills/dset/SKILL.md"
@@ -385,3 +389,8 @@ sha256 = "ec3c9643325090b24411016b4fc175f2c01f9ac7dfb24ea7bc444c35850fc117"
 workflow = "complete"
 path = "skills/dset-complete/SKILL.md"
 sha256 = "bee23f861776c3da06a3f72db8074b951b9b8494fc51c3c8ed6f63e4e07c3992"
+
+[[wrappers]]
+workflow = "overview"
+path = "skills/dset-overview/SKILL.md"
+sha256 = "ad3f814c61d51d5aaf3c7eda9b546f25333ddb498a9559d89848f4784a97ca1f"

@@ -33,6 +33,7 @@ MODE_WORKFLOWS = {
     "complete": "complete",
 }
 PUBLIC_WRAPPER_WORKFLOWS = set(REGISTERED_SKILL_WORKFLOWS.values())
+SUPPLEMENTAL_WORKFLOWS = {"overview"}
 
 
 def _workflow_ids(data: dict[str, Any]) -> set[str]:
@@ -50,6 +51,7 @@ class LifecycleWorkflowTests(unittest.TestCase):
 
         self.assertEqual(modes, EXCEPTION_MODES | set(MODE_WORKFLOWS))
         self.assertTrue(set(MODE_WORKFLOWS.values()).issubset(registered))
+        self.assertTrue(SUPPLEMENTAL_WORKFLOWS.issubset(registered))
 
     def test_every_governed_mode_resolves_its_public_wrapper(self) -> None:
         registry = cast(dict[str, Any], load(REGISTRY))

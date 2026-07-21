@@ -22,6 +22,7 @@ project policy is retained or copied across that boundary.
 - [`dset-init`](dset-init/SKILL.md) — preview and, only when authorized, initialize a repository or monorepo Work Area.
 - [`dset-implement`](dset-implement/SKILL.md) — follows the repository's documented `workflows.implement.mode`: lazy preparation closes only governed missing criteria, while strict is implementation-only and stops on insufficient inputs.
 - [`dset-verify`](dset-verify/SKILL.md) — check implementation and governance against accepted truth and proof plans.
+- [`dset-overview`](dset-overview/SKILL.md) — show current artifacts, coverage, freshness, and open obligations without changing the repository.
 - [`dset-release`](dset-release/SKILL.md) — prepare or verify a release and publish only under separate explicit authority.
 
 ### Direct and advanced entries
@@ -41,8 +42,8 @@ project policy is retained or copied across that boundary.
 The base skills accept desired outcomes. `dset` routes an uncertain request to
 one next mode and handoff; it does not execute the selected specialist.
 Specialist entrypoints may traverse only their registered prerequisite closure,
-notably the lazy `dset-implement` workflow. These 16 folders are the exact
-implemented source catalog. Fourteen wrappers
+notably the lazy `dset-implement` workflow. These 17 folders are the exact
+implemented source catalog. Fifteen wrappers
 resolve repository-local workflows; `dset-init` and
 `dset-repair-governance` are the only bounded pre-resolution exceptions. The
 primary router owns the shared session checkpoint/resume boundary; there
