@@ -10,6 +10,14 @@ and Release Record. Milestone remains a Roadmap entry. Release Record combines
 delivered summary and publication identity. The absorbed OPS Decisions remain
 immutable history and do not participate in active compilation.
 
+### DSET-DECISION-OPS-008 — Portable text-byte policy
+
+The repository pins Git-controlled text worktree content to LF with the root
+policy `* text=auto eol=lf`. The checkout boundary therefore preserves the
+byte identity of immutable carriers on Linux, macOS, native Windows, and WSL
+without weakening carrier-digest validation. Content detected as binary is not
+line-ending normalized.
+
 ## DSET-REQUIREMENT-OPS-001 — Production supportability is explicit and risk-scaled
 
 Every production-bound tool must define a supportability contract appropriate to its runtime risk profile and deployment topology. The contract covers incident triggers or objectives; operator-usable evidence; end-to-end correlation and deploy/change identity; safe read-only diagnostics and permissions; retention, redaction, access, deletion, volume, cardinality, and sampling bounds; runbook, escalation, rollback or kill-switch paths; and traceability from an incident to governing requirements, changes, PRs, and fixes. Telemetry is diagnostic evidence, not a competing business-state authority. A non-production tool may mark the contract not applicable only with a reason.

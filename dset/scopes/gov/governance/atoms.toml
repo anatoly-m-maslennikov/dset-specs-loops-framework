@@ -137,6 +137,14 @@ type = "decision"
 subtype = "none"
 
 [[records]]
+semantic_id = "DSET-DECISION-OPS-008"
+carrier_id = "DSET-ATOMIC-RECORD-084"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-084-portable-text-byte-policy.md"
+sha256 = "e5591e10ebfad5efa31607408c117a982ea059c9e59c287bfab8222d3693215a"
+type = "decision"
+subtype = "none"
+
+[[records]]
 semantic_id = "DSET-DECISION-SKILL-003"
 carrier_id = "DSET-ATOMIC-RECORD-081"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-081-overview-public-entrypoint.md"
@@ -214,6 +222,14 @@ subtype = "defect"
 current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-028-release-truth.md"
 current_sha256 = "e09f4c3a8b635fb3dad1a4302f3b31bea226f458bcee55ffc611be45900a2ce8"
 transition_id = "DSET-CARRIER-TRANSITION-A4E175CABD42D25F"
+
+[[records]]
+semantic_id = "DSET-DEFECT-OPS-002"
+carrier_id = "DSET-ATOMIC-RECORD-083"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-083-windows-line-ending-drift.md"
+sha256 = "fb637f0c305ba54b4892dcf4e0c55b9ce3d25eb90e63a3e2f94c48ff9f28da1a"
+type = "problem"
+subtype = "defect"
 
 [[records]]
 semantic_id = "DSET-DEFECT-SKILL-001"

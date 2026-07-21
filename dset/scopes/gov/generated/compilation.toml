@@ -264,12 +264,28 @@ sha256 = "79228829236e95e362ce4130c55f8d4d4293f8eff09915917bd239bcc2646c70"
 
 [[records.projections]]
 path = "dset/scopes/ops/specs/packages/methodology/spec.md"
-sha256 = "d68af88d1fcd011ba218a6af73c6256c2ff80a51bf332598e6cdc4868d476fd0"
+sha256 = "5dead31a9e282256486273881b180c1a08c3615edda4dea74e2da8c3815bbc93"
 
 [[records.projections.fragments]]
 kind = "section"
 line = 5
 sha256 = "de13828c0c3bbca9e4a6eeadb33995719883539c19826310420cec673131330c"
+
+[[records]]
+id = "DSET-DECISION-OPS-008"
+
+[records.source]
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-084-portable-text-byte-policy.md"
+sha256 = "e5591e10ebfad5efa31607408c117a982ea059c9e59c287bfab8222d3693215a"
+
+[[records.projections]]
+path = "dset/scopes/ops/specs/packages/methodology/spec.md"
+sha256 = "5dead31a9e282256486273881b180c1a08c3615edda4dea74e2da8c3815bbc93"
+
+[[records.projections.fragments]]
+kind = "section"
+line = 13
+sha256 = "a1ed33620e38399f6330343a7e978635616fe99a2b8d4d7ef749a3583c00d2b5"
 
 [[records]]
 id = "DSET-DECISION-SKILL-001"
@@ -1048,11 +1064,11 @@ sha256 = "1f8031b6eba3d736952c4a92b6ed8aa2b82ed7bc6431229231d60ef3f92173fb"
 
 [[records.projections]]
 path = "dset/scopes/ops/specs/packages/methodology/spec.md"
-sha256 = "d68af88d1fcd011ba218a6af73c6256c2ff80a51bf332598e6cdc4868d476fd0"
+sha256 = "5dead31a9e282256486273881b180c1a08c3615edda4dea74e2da8c3815bbc93"
 
 [[records.projections.fragments]]
 kind = "section"
-line = 13
+line = 21
 sha256 = "d6f85434567b1822c4a7eed6523df824020ac803df7d29999ffba55d74a1cb0f"
 
 [[records]]
@@ -1064,11 +1080,11 @@ sha256 = "1f8031b6eba3d736952c4a92b6ed8aa2b82ed7bc6431229231d60ef3f92173fb"
 
 [[records.projections]]
 path = "dset/scopes/ops/specs/packages/methodology/spec.md"
-sha256 = "d68af88d1fcd011ba218a6af73c6256c2ff80a51bf332598e6cdc4868d476fd0"
+sha256 = "5dead31a9e282256486273881b180c1a08c3615edda4dea74e2da8c3815bbc93"
 
 [[records.projections.fragments]]
 kind = "section"
-line = 21
+line = 29
 sha256 = "c757e5656644f827b35c1ef842c84b089b8bd4b0c8dd8bbe36f3fb2e460a9697"
 
 [[records]]
@@ -1080,11 +1096,11 @@ sha256 = "1f8031b6eba3d736952c4a92b6ed8aa2b82ed7bc6431229231d60ef3f92173fb"
 
 [[records.projections]]
 path = "dset/scopes/ops/specs/packages/methodology/spec.md"
-sha256 = "d68af88d1fcd011ba218a6af73c6256c2ff80a51bf332598e6cdc4868d476fd0"
+sha256 = "5dead31a9e282256486273881b180c1a08c3615edda4dea74e2da8c3815bbc93"
 
 [[records.projections.fragments]]
 kind = "section"
-line = 27
+line = 35
 sha256 = "cf435fcafb0d3f219fc1fecdb4f363932ab81843298e43a37dd203307d4392e1"
 
 [[records]]
@@ -1096,11 +1112,11 @@ sha256 = "1f8031b6eba3d736952c4a92b6ed8aa2b82ed7bc6431229231d60ef3f92173fb"
 
 [[records.projections]]
 path = "dset/scopes/ops/specs/packages/methodology/spec.md"
-sha256 = "d68af88d1fcd011ba218a6af73c6256c2ff80a51bf332598e6cdc4868d476fd0"
+sha256 = "5dead31a9e282256486273881b180c1a08c3615edda4dea74e2da8c3815bbc93"
 
 [[records.projections.fragments]]
 kind = "section"
-line = 33
+line = 41
 sha256 = "1bb9c15c37d266606fe5b83daf8e3a6db3b0fc1e3454ebde6dda89c468534fe6"
 
 [[records]]
@@ -1112,11 +1128,11 @@ sha256 = "1f8031b6eba3d736952c4a92b6ed8aa2b82ed7bc6431229231d60ef3f92173fb"
 
 [[records.projections]]
 path = "dset/scopes/ops/specs/packages/methodology/spec.md"
-sha256 = "d68af88d1fcd011ba218a6af73c6256c2ff80a51bf332598e6cdc4868d476fd0"
+sha256 = "5dead31a9e282256486273881b180c1a08c3615edda4dea74e2da8c3815bbc93"
 
 [[records.projections.fragments]]
 kind = "section"
-line = 39
+line = 47
 sha256 = "0a172aca78ebcccae329b4c0fab02d8545633f1d1952f3550e5baf0f2b087b7d"
 
 [[records]]
@@ -1128,11 +1144,11 @@ sha256 = "1f8031b6eba3d736952c4a92b6ed8aa2b82ed7bc6431229231d60ef3f92173fb"
 
 [[records.projections]]
 path = "dset/scopes/ops/specs/packages/methodology/spec.md"
-sha256 = "d68af88d1fcd011ba218a6af73c6256c2ff80a51bf332598e6cdc4868d476fd0"
+sha256 = "5dead31a9e282256486273881b180c1a08c3615edda4dea74e2da8c3815bbc93"
 
 [[records.projections.fragments]]
 kind = "section"
-line = 45
+line = 53
 sha256 = "3bdb4f421363ec544e5031fa1d099927384bb66c58648858ed4c14cfd0dda879"
 
 [[records]]
@@ -1144,11 +1160,11 @@ sha256 = "1f8031b6eba3d736952c4a92b6ed8aa2b82ed7bc6431229231d60ef3f92173fb"
 
 [[records.projections]]
 path = "dset/scopes/ops/specs/packages/methodology/spec.md"
-sha256 = "d68af88d1fcd011ba218a6af73c6256c2ff80a51bf332598e6cdc4868d476fd0"
+sha256 = "5dead31a9e282256486273881b180c1a08c3615edda4dea74e2da8c3815bbc93"
 
 [[records.projections.fragments]]
 kind = "section"
-line = 51
+line = 59
 sha256 = "9823f838b28a4a62067fb9b8bf795949db9936415c485191bd2b3a83c813cde8"
 
 [[records]]
@@ -1160,11 +1176,11 @@ sha256 = "1f8031b6eba3d736952c4a92b6ed8aa2b82ed7bc6431229231d60ef3f92173fb"
 
 [[records.projections]]
 path = "dset/scopes/ops/specs/packages/methodology/spec.md"
-sha256 = "d68af88d1fcd011ba218a6af73c6256c2ff80a51bf332598e6cdc4868d476fd0"
+sha256 = "5dead31a9e282256486273881b180c1a08c3615edda4dea74e2da8c3815bbc93"
 
 [[records.projections.fragments]]
 kind = "section"
-line = 57
+line = 65
 sha256 = "8bae5e22e6016bd1469ef60522c8f2ed09a20cb4637fca2e69f7d7fce00bc9b1"
 
 [[records]]
