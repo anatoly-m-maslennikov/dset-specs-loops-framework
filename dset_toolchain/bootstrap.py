@@ -10,7 +10,7 @@ from contextlib import contextmanager, suppress
 from dataclasses import dataclass
 from datetime import date
 from importlib import resources
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any, cast
 
 from .governance import materialize_governance
@@ -201,7 +201,7 @@ def _validate_inputs(
     for item in work_areas:
         if _KEBAB.fullmatch(item.identifier) is None:
             raise InitializationError("work-area IDs must be lowercase kebab-case")
-        candidate = Path(item.path)
+        candidate = PurePosixPath(item.path)
         if (
             candidate.is_absolute()
             or "\\" in item.path

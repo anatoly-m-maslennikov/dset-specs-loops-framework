@@ -757,12 +757,14 @@ class TomlMigrationTests(unittest.TestCase):
 
     def test_inactive_historical_package_id_remains_a_relation_target(self) -> None:
         package = self.selector_sealed_package_fixture()
-        package.write_text(
-            package.read_text(encoding="utf-8").replace(
+        package.write_bytes(
+            package.read_text(encoding="utf-8")
+            .replace(
                 "tests: []",
                 "tests:\n  - DSET-TEST-GOV-012",
-            ),
-            encoding="utf-8",
+            )
+            .replace("\n", "\r\n")
+            .encode("utf-8")
         )
         atom = self.root / "dset/scopes/gov/atoms/DSET-ATOMIC-RECORD-061.md"
         atom.write_text(

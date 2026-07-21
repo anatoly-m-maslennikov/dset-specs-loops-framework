@@ -1255,7 +1255,7 @@ def _package_successors(
                 isinstance(value, str) for value in values
             ):
                 data[field] = sorted(dict.fromkeys(values))
-        source_text = source.read_text(encoding="utf-8")
+        source_text = source.read_bytes().decode("utf-8")
         try:
             target_text = dump_toml(data)
         except TomlCodecError as error:
