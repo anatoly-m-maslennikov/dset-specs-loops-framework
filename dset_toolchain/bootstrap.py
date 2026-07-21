@@ -149,7 +149,9 @@ def distribution_source(source_root: Path | None = None) -> Iterator[tuple[Path,
             raise InitializationError(f"source is not a schema 1.2 DSET root: {source}")
         yield source, f"path:{source.as_posix()}"
         return
-    with tempfile.TemporaryDirectory(prefix="dset-source-") as raw:
+    with tempfile.TemporaryDirectory(
+        prefix="dset-source-", ignore_cleanup_errors=True
+    ) as raw:
         source = Path(raw)
         bundle = _load_bundle()
         files = cast(dict[str, str], bundle["files"])

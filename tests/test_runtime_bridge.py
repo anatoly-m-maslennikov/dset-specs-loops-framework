@@ -70,7 +70,9 @@ class RuntimeBridgeTests(unittest.TestCase):
     def test_cli_handoff_preserves_explicit_session_until_terminal_finish(
         self,
     ) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+        with tempfile.TemporaryDirectory(
+            dir=ROOT.parent, ignore_cleanup_errors=True
+        ) as raw:
             adopter = Path(raw) / "adopter"
             create_adopter(ROOT, adopter)
             primary = resolve_skill_context(
@@ -178,7 +180,9 @@ class RuntimeBridgeTests(unittest.TestCase):
             self.assertFalse((adopter / ".dset" / "runs").exists())
 
     def test_bridge_accepts_every_catalog_entry_and_rejects_mismatches(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+        with tempfile.TemporaryDirectory(
+            dir=ROOT.parent, ignore_cleanup_errors=True
+        ) as raw:
             adopter = Path(raw) / "adopter"
             shutil.copytree(ROOT / "dset", adopter / "dset")
             shutil.copytree(ROOT / "skills", adopter / "skills")
