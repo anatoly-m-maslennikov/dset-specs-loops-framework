@@ -14,6 +14,7 @@ from dset_toolchain.bootstrap import (
     parse_work_area,
 )
 from dset_toolchain.layout import discover_layout
+from dset_toolchain.scaffold import create_change
 from dset_toolchain.validation import validate_repository
 from dset_toolchain.yaml_subset import load
 from scripts.build_bootstrap_bundle import render_bundle
@@ -70,6 +71,7 @@ class BootstrapTests(unittest.TestCase):
             self.assertEqual(validate_repository(target), [])
             self.assertTrue((target / "skills" / "dset" / "SKILL.md").is_file())
             layout = discover_layout(target)
+            self.assertEqual(layout.schema_version, "1.2")
             self.assertEqual(
                 layout.manifest_path.suffix,
                 discover_layout(ROOT).manifest_path.suffix,
@@ -80,6 +82,10 @@ class BootstrapTests(unittest.TestCase):
             )
             manifest = load(layout.manifest_path)
             self.assertEqual(manifest["project"]["repository_slug"], "sample-app")
+            self.assertEqual(
+                manifest["work_areas"],
+                [{"id": "source", "path": "src"}],
+            )
             self.assertNotIn("delegation_budget", manifest["profiles"])
             self.assertNotIn("workspace_default", manifest["change_contract"])
             self.assertTrue(layout.artifact_type_registry_path.is_file())
@@ -88,6 +94,42 @@ class BootstrapTests(unittest.TestCase):
             self.assertEqual(
                 (target / "README.md").read_text(encoding="utf-8"), "# Existing\n"
             )
+
+            default_change = create_change(
+                target,
+                "default-workspace",
+                "methodology",
+                "small",
+                layer="tool",
+                work_areas=["source"],
+            )
+            default_data = load(layout.structured_file(default_change, "change.toml"))
+            self.assertEqual(default_data["target"]["work_areas"], ["source"])
+            self.assertEqual(
+                default_data["workspace"]["isolation"],
+                "integration-branch",
+            )
+            self.assertEqual(default_data["workspace"]["branch"], "dev")
+
+            isolated_change = create_change(
+                target,
+                "isolated-workspace",
+                "methodology",
+                "small",
+                layer="tool",
+                workspace_mode="branch-worktree",
+            )
+            isolated_data = load(layout.structured_file(isolated_change, "change.toml"))
+            self.assertEqual(
+                isolated_data["workspace"]["isolation"],
+                "branch-worktree",
+            )
+            self.assertEqual(
+                isolated_data["workspace"]["branch"],
+                "dset/isolated-workspace",
+            )
+            self.assertEqual(isolated_data["workspace"]["base_ref"], "dev")
+            self.assertEqual(validate_repository(target), [])
 
     def test_execute_detects_hosted_automation_supportability(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

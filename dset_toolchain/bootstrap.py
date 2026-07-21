@@ -261,6 +261,8 @@ def _stage_project(
             "reason": (
                 "bootstrap default; configure a protected publication path explicitly"
             ),
+            "integration_branch": "dev",
+            "protected_branch": "main",
         },
         "work_items": {"registry": f"dset/scopes/gov/intake{structured_suffix}"},
         "structure": {"layout": "layered-v1"},
