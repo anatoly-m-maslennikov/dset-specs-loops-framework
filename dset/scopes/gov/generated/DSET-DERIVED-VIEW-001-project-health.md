@@ -12,7 +12,7 @@ llm_session_ids = []
 > This generated view is not authority. Follow each link to its canonical
 > owner and refresh explicitly after source changes.
 
-- **Source digest:** `56b5b1e2ba26ebb5933485daec26a89d84b50ae4a338b5c42f24ecbc37ba2372`
+- **Source digest:** `70ae4f2a7af822a737ee121c72b1e939734ffa892d367d7f908f2daf6c19a7a8`
 - **Renderer:** `dset health` schema 1.0
 
 ## Coverage
@@ -33,12 +33,12 @@ llm_session_ids = []
 
 ## Artifact inventory
 
-- **Governed artifacts:** 594
-- **By role:** atomic=117, derived_or_navigation=84, evergreen=168, implementation=169, transactional=56
-- **By type:** analysis_report=23, atomic_record=117, derived_view=1, evidence_record=44, implementation=169, navigation=52, plan=42, procedure=22, specification=95, verification=8, version=21
+- **Governed artifacts:** 595
+- **By role:** atomic=117, derived_or_navigation=84, evergreen=169, implementation=169, transactional=56
+- **By type:** analysis_report=23, atomic_record=117, derived_view=1, evidence_record=44, implementation=169, navigation=52, plan=43, procedure=22, specification=95, verification=8, version=21
 - **By subtype:** architecture=7, behavior=29, change=9, configuration=79, design=7, domain_model=6, evaluation_plan=14, evaluation_result=5, external_audit_analysis=2, governance=46, health_dashboard=1, hub=52, implementation_plan=9, migration=3, playbook=19, proposal=8, readiness_record=2, release_plan=2, release_record=1, review_report=2, roadmap=2, root_cause_analysis=1, run_record=9, runbook=3, solution_landscape=7, source_code=43, technical_investigation=3, test_implementation=44, test_plan=14, test_result=28, version_scope=5
-- **By layer:** gov=111, meta=36, ops=45, repository=27, skill=234, tool=141
-- **By effective priority:** critical=31, high=48, medium=509, unknown=6
+- **By layer:** gov=111, meta=36, ops=45, repository=27, skill=235, tool=141
+- **By effective priority:** critical=31, high=48, medium=510, unknown=6
 - **By status:** absorbed=22, accepted=45, open=19, resolved=39
 
 ## Semantic inventory
@@ -89,7 +89,7 @@ llm_session_ids = []
 ## Drill-downs
 
 - **Packages:** methodology=46
-- **Work Areas:** delivery=5, documentation=8, methodology=10, project-control=490, skills=36, tests=43, toolchain=44
+- **Work Areas:** delivery=5, documentation=8, methodology=10, project-control=491, skills=36, tests=43, toolchain=44
 
 ## Canonical return paths
 
