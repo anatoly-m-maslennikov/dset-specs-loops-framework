@@ -31,3 +31,4 @@ diagnose failure.
 - [Complete TOML cutover](DSET-EVIDENCE-RECORD-033-complete-toml-cutover.md)
 - [Current generated adopter](DSET-EVIDENCE-RECORD-034-current-generated-adopter.md)
 - [Version artifact Type](DSET-EVIDENCE-RECORD-035-version-artifact-type.md)
+- [Real host installation boundary](DSET-EVIDENCE-RECORD-036-real-host-install-boundary.md)
