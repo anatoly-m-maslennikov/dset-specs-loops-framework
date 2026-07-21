@@ -57,7 +57,8 @@ def validate_evidence_records(
 
     root = root.resolve()
     diagnostics: list[Diagnostic] = []
-    for path in paths:
+    for candidate in paths:
+        path = candidate.resolve()
         if path.suffix.lower() != ".md" or "templates" in path.relative_to(root).parts:
             continue
         relative = path.relative_to(root).as_posix()

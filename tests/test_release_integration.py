@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class ReleaseIntegrationTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
-        self.root = Path(self.temporary.name)
+        self.root = Path(self.temporary.name).resolve()
         self.change = self._write_project()
 
     def tearDown(self) -> None:

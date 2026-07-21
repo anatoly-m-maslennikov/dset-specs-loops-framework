@@ -42,6 +42,7 @@ def archive_plan(root: Path, change_id: str, archive_date: date) -> tuple[Path, 
 
 
 def execute_archive(root: Path, change_id: str, archive_date: date) -> Path:
+    root = discover_layout(root).root
     source, destination = archive_plan(root, change_id, archive_date)
     manifest_path = discover_layout(root).structured_file(source, "change.yaml")
     original = manifest_path.read_text(encoding="utf-8")

@@ -19,7 +19,7 @@ FIXTURES = discover_layout(ROOT).fixtures_root
 class ScaffoldArchiveTests(unittest.TestCase):
     def test_new_creates_profile_without_overwrite(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            target = Path(raw) / "adopter"
+            target = (Path(raw) / "adopter").resolve()
             self._copy_support(target)
             change = create_change(
                 target, "add-login", "accounts", "small", "Add login"
@@ -41,7 +41,7 @@ class ScaffoldArchiveTests(unittest.TestCase):
 
     def test_new_uses_only_registered_optional_layers(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            target = Path(raw) / "adopter"
+            target = (Path(raw) / "adopter").resolve()
             self._copy_support(target)
             change = create_change(
                 target, "govern-login", "accounts", "small", layer="GOV"
@@ -68,7 +68,7 @@ class ScaffoldArchiveTests(unittest.TestCase):
 
     def test_new_uses_a_generic_project_prefix(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            target = Path(raw) / "adopter"
+            target = (Path(raw) / "adopter").resolve()
             self._copy_support(target)
             manifest_path = discover_layout(target).manifest_path
             manifest = load(manifest_path)
@@ -92,7 +92,7 @@ class ScaffoldArchiveTests(unittest.TestCase):
 
     def test_archive_is_dry_run_then_guarded_move(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            target = Path(raw) / "adopter"
+            target = (Path(raw) / "adopter").resolve()
             self._copy_support(target)
             source = target / "dset" / "changes" / "fixture-standard"
             shutil.copytree(FIXTURES / "bases" / "standard", source)

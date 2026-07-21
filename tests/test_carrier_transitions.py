@@ -26,7 +26,7 @@ from dset_toolchain.toml_migration import (
 class CarrierTransitionTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
-        self.root = Path(self.temporary.name)
+        self.root = Path(self.temporary.name).resolve()
         self.source = self._write(
             "dset/scopes/gov/intake.yaml",
             'schema_version: "1.0"\nitems:\n  - id: DSET-ITEM-001\n'

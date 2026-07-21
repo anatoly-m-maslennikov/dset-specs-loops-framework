@@ -32,7 +32,7 @@ class BootstrapTests(unittest.TestCase):
 
     def test_preview_does_not_touch_existing_repository(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            target = Path(raw) / "existing"
+            target = (Path(raw) / "existing").resolve()
             target.mkdir()
             marker = target / "existing.txt"
             marker.write_text("keep", encoding="utf-8")
@@ -51,7 +51,7 @@ class BootstrapTests(unittest.TestCase):
 
     def test_execute_initializes_and_validates_nonempty_repository(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            target = Path(raw) / "existing"
+            target = (Path(raw) / "existing").resolve()
             (target / "src").mkdir(parents=True)
             (target / "README.md").write_text("# Existing\n", encoding="utf-8")
             dependency = target / "node_modules/dependency/README.md"
@@ -133,7 +133,7 @@ class BootstrapTests(unittest.TestCase):
 
     def test_execute_detects_hosted_automation_supportability(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            target = Path(raw) / "automated"
+            target = (Path(raw) / "automated").resolve()
             workflow = target / ".github/workflows/ci.yml"
             workflow.parent.mkdir(parents=True)
             workflow.write_text("name: CI\n", encoding="utf-8")
@@ -158,7 +158,7 @@ class BootstrapTests(unittest.TestCase):
 
     def test_execute_ignores_git_ignored_runtime_markdown(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            target = Path(raw) / "existing"
+            target = (Path(raw) / "existing").resolve()
             target.mkdir()
             (target / ".gitignore").write_text("tmp/\n", encoding="utf-8")
             runtime = target / "tmp/runtime/system.md"
@@ -180,7 +180,7 @@ class BootstrapTests(unittest.TestCase):
 
     def test_existing_destination_stops_without_partial_write(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            target = Path(raw) / "existing"
+            target = (Path(raw) / "existing").resolve()
             suffix = discover_layout(ROOT).manifest_path.suffix
             manifest = target / "dset" / "scopes" / "meta" / f"dset{suffix}"
             manifest.parent.mkdir(parents=True)

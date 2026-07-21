@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class LayeredValidationTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
-        self.root = Path(self.temporary.name)
+        self.root = Path(self.temporary.name).resolve()
         self.scopes = self.root / "dset" / "scopes"
         for layer in LAYERS:
             (self.scopes / layer).mkdir(parents=True)

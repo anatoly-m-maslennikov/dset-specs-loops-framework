@@ -35,7 +35,7 @@ class FixtureTests(unittest.TestCase):
         cases = cast(list[FixtureCase], matrix["cases"])
         for case in cases:
             with self.subTest(case=case["id"]), tempfile.TemporaryDirectory() as raw:
-                project = Path(raw) / "legacy-adopter"
+                project = (Path(raw) / "legacy-adopter").resolve()
                 create_adopter(ROOT, project)
                 change = self._materialize(case, project / "cases")
                 archived = case.get("status") == "archived"
@@ -57,7 +57,7 @@ class FixtureTests(unittest.TestCase):
 
     def test_legacy_adrs_field_is_accepted_only_for_schema_1_0(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            project = Path(raw) / "legacy-adopter"
+            project = (Path(raw) / "legacy-adopter").resolve()
             create_adopter(ROOT, project)
             target = project / "cases"
             target.mkdir()

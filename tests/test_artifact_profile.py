@@ -13,7 +13,7 @@ from dset_toolchain.validation import validate_artifact_registry
 class ArtifactProfileTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
-        self.root = Path(self.temporary.name)
+        self.root = Path(self.temporary.name).resolve()
         (self.root / "dset").mkdir()
         (self.root / "docs").mkdir()
         (self.root / "methodology").mkdir()

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Iterator
 from dataclasses import dataclass
-from pathlib import Path
+from pathlib import Path, PurePath
 from typing import Final
 
 from .yaml_subset import YamlSubsetError, load
@@ -392,8 +392,8 @@ def _schema_version(path: Path) -> str | None:
     return None
 
 
-def _canonical_relative(relative: str | Path) -> Path:
-    raw = str(relative)
+def _canonical_relative(relative: str | PurePath) -> Path:
+    raw = relative.as_posix() if isinstance(relative, PurePath) else str(relative)
     if (
         not raw
         or raw.startswith("/")

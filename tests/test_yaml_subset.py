@@ -59,7 +59,7 @@ class YamlSubsetTests(unittest.TestCase):
 
     def test_toml_array_tables_in_frontmatter_are_not_wiki_links(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             document = root / "dset" / "record.md"
             document.parent.mkdir()
             document.write_text(

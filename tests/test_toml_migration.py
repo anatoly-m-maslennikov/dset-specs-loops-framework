@@ -32,7 +32,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class TomlMigrationTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory(dir=ROOT.parent)
-        self.root = Path(self.temporary.name) / "fixture"
+        self.root = (Path(self.temporary.name) / "fixture").resolve()
         self.root.mkdir()
 
     def tearDown(self) -> None:
@@ -691,7 +691,7 @@ class TomlMigrationTests(unittest.TestCase):
 
         self.temporary.cleanup()
         self.temporary = tempfile.TemporaryDirectory(dir=ROOT.parent)
-        self.root = Path(self.temporary.name) / "fixture"
+        self.root = (Path(self.temporary.name) / "fixture").resolve()
         self.root.mkdir()
         package = self.selector_sealed_package_fixture()
         package.with_suffix(".toml").write_text(
@@ -867,7 +867,7 @@ class TomlMigrationTests(unittest.TestCase):
         )
 
         with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
-            unsupported_root = Path(raw)
+            unsupported_root = Path(raw).resolve()
             path = unsupported_root / "dset/scopes/gov/value.yaml"
             path.parent.mkdir(parents=True)
             path.write_text("value: null\n", encoding="utf-8")

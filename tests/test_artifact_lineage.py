@@ -21,7 +21,7 @@ class ArtifactRelationTests(unittest.TestCase):
         self,
     ) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             self._artifact(root, "TARGET", "APP-DECISION-GOV-001")
             sources = {
                 "child_of": ("atomic_record", "decision", None),
@@ -70,7 +70,7 @@ class ArtifactRelationTests(unittest.TestCase):
         }
         for name, (through, expected) in cases.items():
             with self.subTest(name=name), tempfile.TemporaryDirectory() as raw:
-                root = Path(raw)
+                root = Path(raw).resolve()
                 self._atom(root, 1, "APP-DECISION-GOV-001")
                 self._atom(root, 2, "APP-DECISION-GOV-002")
                 self._atom(root, 3, "APP-DECISION-TOOL-003")
@@ -109,7 +109,7 @@ class ArtifactRelationTests(unittest.TestCase):
         }
         for name, (extra, expected) in cases.items():
             with self.subTest(name=name), tempfile.TemporaryDirectory() as raw:
-                root = Path(raw)
+                root = Path(raw).resolve()
                 self._artifact(root, "TARGET", "APP-DECISION-001")
                 self._artifact(root, "SOURCE", "APP-DECISION-002", extra=extra)
                 messages = [item.message for item in validate_artifact_relations(root)]
@@ -117,7 +117,7 @@ class ArtifactRelationTests(unittest.TestCase):
 
     def test_self_relations_and_structural_cycles_fail_closed(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             self._artifact(
                 root,
                 "SELF",
@@ -144,7 +144,7 @@ class ArtifactRelationTests(unittest.TestCase):
 
     def test_replacement_requires_matching_absorption(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             self._artifact(root, "OLD", "APP-DECISION-001")
             self._artifact(
                 root,
@@ -161,7 +161,7 @@ class ArtifactRelationTests(unittest.TestCase):
 
     def test_inactive_legacy_child_of_remains_readable(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             self._artifact(
                 root,
                 "OLD",
@@ -196,7 +196,7 @@ class ArtifactRelationTests(unittest.TestCase):
         self,
     ) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             self._git(root, "init")
             self._git(root, "config", "user.name", "DSET Test")
             self._git(root, "config", "user.email", "dset@example.invalid")

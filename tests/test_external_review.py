@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class ExternalReviewTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
-        self.work = Path(self.temporary.name)
+        self.work = Path(self.temporary.name).resolve()
         self.packet = self.work / "review-packet.md"
         create_review_packet(
             ROOT,

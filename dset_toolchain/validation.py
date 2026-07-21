@@ -1960,6 +1960,9 @@ def _semantic_retention_carriers(
 
 
 def _carrier_references_path(root: Path, carrier: Path, target: Path) -> bool:
+    root = root.resolve()
+    carrier = carrier.resolve()
+    target = target.resolve()
     if target in _local_link_targets(carrier):
         return True
     text = carrier.read_text(encoding="utf-8")

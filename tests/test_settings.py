@@ -53,7 +53,7 @@ class ProjectSettingsTests(unittest.TestCase):
 
     def test_legacy_1_0_names_remain_read_compatible(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             (root / LEGACY_SETTINGS_FILENAME).write_text(
                 "\n".join(
                     (
@@ -83,7 +83,7 @@ class ProjectSettingsTests(unittest.TestCase):
 
     def test_previous_1_1_contract_remains_read_compatible(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             (root / LEGACY_SETTINGS_FILENAME).write_text(
                 "\n".join(
                     (
@@ -110,7 +110,7 @@ class ProjectSettingsTests(unittest.TestCase):
 
     def test_competing_settings_filenames_fail_closed(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             for name in (SETTINGS_FILENAME, LEGACY_SETTINGS_FILENAME):
                 (root / name).write_text('schema_version = "1.2"\n', encoding="utf-8")
             _settings, issues = load_project_settings(root)
@@ -137,7 +137,7 @@ class ProjectSettingsTests(unittest.TestCase):
         self,
     ) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             path = root / SETTINGS_FILENAME
             path.write_text(
                 "\n".join(
@@ -164,7 +164,7 @@ class ProjectSettingsTests(unittest.TestCase):
 
     def test_invalid_new_behavior_values_name_the_owning_keys(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             (root / SETTINGS_FILENAME).write_text(
                 "\n".join(
                     (

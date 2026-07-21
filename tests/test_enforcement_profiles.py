@@ -110,7 +110,7 @@ class EnforcementProfileTests(unittest.TestCase):
 
     def test_target_inspection_is_read_only_and_detects_drift(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
-            target = Path(raw)
+            target = Path(raw).resolve()
             profile = copy.deepcopy(self.profile)
             scripts = cast(dict[str, str], profile["toolchain"]["scripts"])
             package = {"scripts": scripts}
@@ -185,7 +185,7 @@ class EnforcementProfileTests(unittest.TestCase):
 
     def test_adopter_cannot_execute_a_framework_reference_as_local_truth(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
-            target = Path(raw)
+            target = Path(raw).resolve()
             meta = target / "dset/scopes/meta"
             template = (
                 target

@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class CompilationTests(unittest.TestCase):
     def test_loose_id_mentions_are_not_compiled_claim_fragments(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            path = Path(raw) / "spec.md"
+            path = (Path(raw) / "spec.md").resolve()
             path.write_text(
                 "A loose mention of DSET-REQUIREMENT-GOV-035 is not a claim.\n",
                 encoding="utf-8",
@@ -48,7 +48,7 @@ class CompilationTests(unittest.TestCase):
 
     def test_projection_change_makes_explicit_compilation_stale(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             shutil.copytree(ROOT / "dset", root / "dset")
             write_compilation(root)
             self.assertTrue(compilation_is_fresh(root))

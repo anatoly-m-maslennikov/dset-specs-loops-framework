@@ -27,7 +27,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class PriorityConflictTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory(dir=ROOT.parent)
-        self.root = Path(self.temporary.name)
+        self.root = Path(self.temporary.name).resolve()
         (self.root / "README.md").write_text("# Conflict evidence\n", encoding="utf-8")
 
     def tearDown(self) -> None:

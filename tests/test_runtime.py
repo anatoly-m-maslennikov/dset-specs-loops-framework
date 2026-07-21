@@ -25,7 +25,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class RuntimeTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
-        self.root = Path(self.temporary.name)
+        self.root = Path(self.temporary.name).resolve()
         manifest = self.root / "dset" / "scopes" / "meta" / "dset.toml"
         manifest.parent.mkdir(parents=True)
         manifest.write_text(dump({"schema_version": "1.2"}, manifest), encoding="utf-8")

@@ -42,7 +42,7 @@ class SkillDistributionTests(unittest.TestCase):
             dir=ROOT.parent,
             ignore_cleanup_errors=True,
         )
-        self.root = Path(self.temporary.name)
+        self.root = Path(self.temporary.name).resolve()
         self.source = self.root / "source"
         shutil.copytree(ROOT / "skills", self.source / "skills")
         shutil.copytree(

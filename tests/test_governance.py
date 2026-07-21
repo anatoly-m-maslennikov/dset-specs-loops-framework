@@ -40,7 +40,7 @@ def _framework_schema(name: str) -> Path:
 class GovernanceTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
-        self.root = Path(self.temporary.name) / "adopter"
+        self.root = (Path(self.temporary.name) / "adopter").resolve()
         create_adopter(ROOT, self.root)
 
     def tearDown(self) -> None:
@@ -140,7 +140,7 @@ class GovernanceTests(unittest.TestCase):
         }
         for name, (expected, mutation) in cases.items():
             with self.subTest(case=name), tempfile.TemporaryDirectory() as raw:
-                target = Path(raw) / "adopter"
+                target = (Path(raw) / "adopter").resolve()
                 create_adopter(ROOT, target)
                 mutation(target)
                 codes = {item.code for item in validate_governance(target)}
@@ -179,7 +179,7 @@ class GovernanceTests(unittest.TestCase):
     def test_same_wrappers_resolve_each_projects_local_governance(self) -> None:
         results: dict[str, dict[str, object]] = {}
         with tempfile.TemporaryDirectory() as raw:
-            parent = Path(raw)
+            parent = Path(raw).resolve()
             for label in ("project-a", "project-b"):
                 project = parent / label
                 create_adopter(ROOT, project)
@@ -229,13 +229,13 @@ class GovernanceTests(unittest.TestCase):
 
     def test_materialized_rules_do_not_read_changed_source_template(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            source = Path(raw) / "framework"
+            source = (Path(raw) / "framework").resolve()
             source.mkdir()
             for name in ("dset", "skills"):
                 source_path = ROOT / name
                 target_path = source / name
                 shutil.copytree(source_path, target_path)
-            target = Path(raw) / "materialized-adopter"
+            target = (Path(raw) / "materialized-adopter").resolve()
             create_adopter(source, target)
             template = discover_layout(source).find_template(
                 "governance/core-v1/domain-spec-authoring.md"
@@ -269,7 +269,7 @@ class GovernanceTests(unittest.TestCase):
 
     def test_release_applicable_adopter_installs_all_registered_wrappers(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            target = Path(raw) / "release-adopter"
+            target = (Path(raw) / "release-adopter").resolve()
             (target / "dset").mkdir(parents=True)
             manifest_path = target / "dset" / "dset.toml"
             manifest_path.write_text(
@@ -346,7 +346,7 @@ class GovernanceTests(unittest.TestCase):
 
     def test_schema_12_materializes_rules_into_their_owning_layers(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            target = Path(raw) / "layered-adopter"
+            target = (Path(raw) / "layered-adopter").resolve()
             self._make_layered_project(target)
             registry_path = materialize_governance(ROOT, target)
             self.assertEqual(
@@ -373,8 +373,8 @@ class GovernanceTests(unittest.TestCase):
 
     def test_layered_source_templates_are_resolved_across_all_roots(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            source = Path(raw) / "layered-framework"
-            target = Path(raw) / "layered-adopter"
+            source = (Path(raw) / "layered-framework").resolve()
+            target = (Path(raw) / "layered-adopter").resolve()
             self._make_layered_project(source)
             self._make_layered_project(target)
             layout = discover_layout(ROOT)

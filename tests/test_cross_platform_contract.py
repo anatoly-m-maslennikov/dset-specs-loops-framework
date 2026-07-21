@@ -58,7 +58,7 @@ class CrossPlatformContractTests(unittest.TestCase):
 
     def test_cli_handles_spaces_and_unicode_without_shell_assumptions(self) -> None:
         with tempfile.TemporaryDirectory(prefix="dset portability ") as raw:
-            target = Path(raw) / "project ünicode"
+            target = (Path(raw) / "project ünicode").resolve()
             target.mkdir()
             output = io.StringIO()
             with contextlib.redirect_stdout(output):

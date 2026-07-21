@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class EndToEndCliTests(unittest.TestCase):
     def test_initialize_runtime_and_codex_distribution(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            target = Path(raw) / "project"
+            target = (Path(raw) / "project").resolve()
             (target / "src").mkdir(parents=True)
             output = io.StringIO()
             with contextlib.redirect_stdout(output):
@@ -91,7 +91,7 @@ class EndToEndCliTests(unittest.TestCase):
             self.assertEqual(result, 0)
             self.assertEqual(json.loads(output.getvalue())["status"], "succeeded")
 
-            destination = Path(raw) / "codex-skills"
+            destination = (Path(raw) / "codex-skills").resolve()
             output = io.StringIO()
             with contextlib.redirect_stdout(output):
                 result = main(

@@ -16,7 +16,7 @@ TEMPLATE = ROOT / "dset/scopes/gov/templates/evidence-record.md"
 class EvidenceRecordTests(unittest.TestCase):
     def test_native_toml_record_enforces_the_bounded_core(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             path = root / "APP-EVIDENCE-RECORD-001.md"
             path.write_text(render(self._record(), "\n# Result\n"), encoding="utf-8")
             self.assertEqual(validate_evidence_records(root, [path], frozenset()), [])
@@ -36,7 +36,7 @@ class EvidenceRecordTests(unittest.TestCase):
 
     def test_yaml_is_only_accepted_for_an_exact_legacy_path(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             path = root / "dset/change/proofs/old.md"
             path.parent.mkdir(parents=True)
             path.write_text(

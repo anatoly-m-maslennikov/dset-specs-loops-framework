@@ -59,7 +59,7 @@ class ProjectHealthTests(unittest.TestCase):
 
     def test_source_digest_uses_case_sensitive_posix_path_order(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             (root / "a.txt").write_text("lower\n", encoding="utf-8")
             (root / "Z.txt").write_text("upper\n", encoding="utf-8")
 

@@ -73,7 +73,7 @@ class SemanticAtomTests(unittest.TestCase):
         self,
     ) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             governance = root / "dset/governance"
             package_root = root / "dset/specs/packages/sample"
             governance.mkdir(parents=True)

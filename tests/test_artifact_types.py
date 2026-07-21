@@ -59,7 +59,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
         self,
     ) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             registry_path = root / "dset/scopes/gov/artifact-types.yaml"
             snapshot = root / "dset/scopes/gov/items.yaml"
             snapshot.parent.mkdir(parents=True)
@@ -213,7 +213,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
             }
         )
         with tempfile.TemporaryDirectory() as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             path = root / "dset/sample/spec.md"
             path.parent.mkdir(parents=True)
             path.write_text("# Spec\n", encoding="utf-8")
@@ -224,7 +224,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
 
     def test_direct_metadata_subtype_mismatch_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             path = root / "APP-SPECIFICATION-001-example.md"
             path.write_text(
                 "---\n"
@@ -249,7 +249,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
 
     def test_git_ignored_runtime_artifacts_are_outside_classification(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             (root / ".gitignore").write_text("tmp/\n", encoding="utf-8")
             ignored = root / "tmp/APP-SPECIFICATION-001-runtime.md"
             ignored.parent.mkdir(parents=True)
@@ -271,7 +271,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
 
     def test_unclassified_carrier_fails_closed_and_exclusion_is_explicit(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             path = root / "notes.md"
             path.write_text("# Notes\n", encoding="utf-8")
             diagnostics = validate_artifact_type_registry(
@@ -323,7 +323,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
 
     def test_type_only_names_are_default_and_subtype_names_are_opt_in(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
-            root = Path(raw)
+            root = Path(raw).resolve()
             base = root / "APP-VERSION-001-core.md"
             self._write_classified(base, "APP-VERSION-001")
             self.assertEqual(

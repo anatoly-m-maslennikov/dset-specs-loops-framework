@@ -142,7 +142,7 @@ class TraceabilityTests(unittest.TestCase):
 
     def test_write_is_stable_and_checkable(self) -> None:
         with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as raw:
-            target = Path(raw)
+            target = Path(raw).resolve()
             shutil.copytree(ROOT / "dset", target / "dset")
             write_traceability(target)
             trace_path = discover_layout(target).traceability_path
