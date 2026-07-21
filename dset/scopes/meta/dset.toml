@@ -84,6 +84,16 @@ resolves = []
 session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
 rationale = "Preserve the immutable commit while replacing its unaccepted Change-delta Requirement with active Work Area and release-configuration authority."
 
+[[commit_provenance.corrections]]
+commit = "6b60f0ce767c700e5e4221a5da8858c137ef4b92"
+original_message_sha256 = "fa73afb3e4f34731f3e1936188d3ea31b0a1b2ca6cae82d1982eea2e95729af0"
+mode = "implementation"
+decision_ids = ["DSET-REQUIREMENT-GOV-025"]
+verifies = []
+resolves = []
+session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+rationale = "Preserve the immutable packet commit while removing its accidental mixture of implementation and evidence provenance trailers."
+
 [verification]
 commands = ["uv run ruff format --check dset_toolchain tests", "uv run ruff check dset_toolchain tests", "uv run mypy dset_toolchain tests", "{python} -m unittest discover -s tests -v", "git diff --check"]
 
