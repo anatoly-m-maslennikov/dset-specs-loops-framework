@@ -155,7 +155,7 @@
   separate logical commit, then regenerate adapters/derived views and record
   deterministic evidence after the complete repository and adopter gates pass.
 
-## Batch 12 — Complete DSET-owned TOML cutover — in progress
+## Batch 12 — Complete DSET-owned TOML cutover — complete
 
 - Replace byte-level immutability with semantic immutability under
   `DSET-DECISION-GOV-018`; permit carrier changes only through a lossless,

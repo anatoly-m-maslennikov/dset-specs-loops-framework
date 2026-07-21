@@ -584,3 +584,12 @@ occurred_at = "2026-07-21T02:15:07+04:00"
 related = ["DSET-TEST-GOV-043"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The successor preserves digest, link, ownership, rollback, and idempotency checks while eliminating the retained-YAML exception."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-066"
+atom_id = "DSET-DEFECT-TOOL-007"
+event = "resolved"
+occurred_at = "2026-07-21T04:13:20+04:00"
+related = ["DSET-DECISION-GOV-018", "DSET-REQUIREMENT-GOV-040", "DSET-INVARIANT-GOV-027"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "All DSET-owned YAML artifact and Markdown YAML-frontmatter carriers now use lossless TOML transitions with current validation, zero-change repetition, and complete deterministic proof."
