@@ -12,7 +12,7 @@ llm_session_ids = []
 > This generated view is not authority. Follow each link to its canonical
 > owner and refresh explicitly after source changes.
 
-- **Source digest:** `d5ea9fdbc76c252891966d4a4d4372fd39c30202ae18c3836f983867830f9d04`
+- **Source digest:** `5a1cce4f9cf7d9388bf14e4ed74a6d5f22a04eaf125624bb42c64a3dab69016b`
 - **Renderer:** `dset health` schema 1.0
 
 ## Coverage
@@ -51,10 +51,10 @@ llm_session_ids = []
 
 ## Typed relation inventory
 
-- **Forward relations:** 430
-- **By type:** analysis_of=1, check_of=25, child_of=45, evidence_for=19, implementation_of=289, projection_of=6, relates_to=19, replacement_of=21, resolution_of=5
-- **By origin:** authored=110, commit_trailer=289, legacy_child_of=31
-- **By source kind:** artifact=141, commit=289
+- **Forward relations:** 431
+- **By type:** analysis_of=1, check_of=25, child_of=45, evidence_for=19, implementation_of=290, projection_of=6, relates_to=19, replacement_of=21, resolution_of=5
+- **By origin:** authored=110, commit_trailer=290, legacy_child_of=31
+- **By source kind:** artifact=141, commit=290
 
 ## Unresolved work
 

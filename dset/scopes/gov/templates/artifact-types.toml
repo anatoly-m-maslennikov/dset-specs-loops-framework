@@ -396,6 +396,11 @@ artifact_type = "implementation"
 artifact_subtype = "test_implementation"
 
 [[path_rules]]
+pattern = ".gitattributes"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
 pattern = ".github/workflows/*.yml"
 artifact_type = "implementation"
 artifact_subtype = "configuration"

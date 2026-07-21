@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import contextlib
 import io
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -12,6 +13,32 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class CrossPlatformContractTests(unittest.TestCase):
+    def test_repository_pins_text_worktree_bytes_to_lf(self) -> None:
+        paths = (
+            "dset_toolchain/validation.py",
+            "dset/scopes/ops/governance/release.md",
+            "dset/scopes/gov/migrations/carrier-transitions.toml",
+            "dset/scopes/gov/generated/traceability.toml",
+        )
+        for path in paths:
+            result = subprocess.run(
+                [
+                    "git",
+                    "-c",
+                    "core.autocrlf=true",
+                    "check-attr",
+                    "eol",
+                    "--",
+                    path,
+                ],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            with self.subTest(path=path):
+                self.assertEqual(result.stdout.strip(), f"{path}: eol: lf")
+
     def test_hosted_matrix_covers_linux_macos_and_native_windows(self) -> None:
         workflow = (ROOT / ".github" / "workflows" / "dset.yml").read_text(
             encoding="utf-8"
