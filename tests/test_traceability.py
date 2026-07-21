@@ -99,13 +99,26 @@ class TraceabilityTests(unittest.TestCase):
             if item["source"] == "DSET-SPECIFICATION-001"
             and item["type"] == "projection_of"
         ]
-        self.assertEqual(len(projection_ranges), 3)
+        self.assertEqual(len(projection_ranges), 6)
         self.assertEqual(
             {item["through"] for item in projection_ranges},
             {
                 "DSET-ATOMIC-RECORD-074",
                 "DSET-ATOMIC-RECORD-075",
                 "DSET-ATOMIC-RECORD-050",
+                "DSET-ATOMIC-RECORD-078",
+                "DSET-ATOMIC-RECORD-079",
+                "DSET-ATOMIC-RECORD-080",
+            },
+        )
+        self.assertEqual(
+            {
+                (item["scope"]["kind"], item["scope"]["id"])
+                for item in projection_ranges
+            },
+            {
+                ("project", "dset-specs-loops-framework"),
+                ("layer", "gov"),
             },
         )
         atoms = {item["id"]: item for item in trace["semantic_atoms"]}
