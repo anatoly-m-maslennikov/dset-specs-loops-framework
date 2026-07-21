@@ -94,6 +94,16 @@ resolves = []
 session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
 rationale = "Preserve the immutable packet commit while removing its accidental mixture of implementation and evidence provenance trailers."
 
+[[commit_provenance.corrections]]
+commit = "422ca999caef80ffb703ce7c1ffa0bb9d1bde15b"
+original_message_sha256 = "290abb36e62784fbeb42854cf3aaeaf5daae7a6a5d0b6cd684b13585d85726e3"
+mode = "implementation"
+decision_ids = ["DSET-DECISION-GOV-020"]
+verifies = []
+resolves = []
+session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+rationale = "Preserve the immutable generated-view commit while removing its accidental Test-evidence trailer from implementation provenance."
+
 [verification]
 commands = ["uv run ruff format --check dset_toolchain tests", "uv run ruff check dset_toolchain tests", "uv run mypy dset_toolchain tests", "{python} -m unittest discover -s tests -v", "git diff --check"]
 
