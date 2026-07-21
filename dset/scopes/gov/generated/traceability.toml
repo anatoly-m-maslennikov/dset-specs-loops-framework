@@ -5938,6 +5938,14 @@ origin = "commit_trailer"
 llm_session_ids = []
 
 [[relations]]
+source = "4bc9e9cf655537d3d9c6c10d11c991688eba7cae"
+source_kind = "commit"
+type = "implementation_of"
+target = "DSET-DECISION-OPS-008"
+origin = "commit_trailer"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+
+[[relations]]
 source = "4f82976a24c9537f45883ca9276b8a57a39d1e6b"
 source_kind = "commit"
 type = "implementation_of"
