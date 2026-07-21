@@ -39,3 +39,4 @@ diagnose failure.
 - [Portable text fixed point](DSET-EVIDENCE-RECORD-041-portable-text-fixed-point.md)
 - [Claude review packet 006 approval boundary](DSET-EVIDENCE-RECORD-042-claude-review-packet-006-boundary.md)
 - [Claude review packet 007](DSET-EVIDENCE-RECORD-043-claude-review-packet-007.md)
+- [Windows hosted repair boundary](DSET-EVIDENCE-RECORD-044-windows-hosted-repair-boundary.md)
