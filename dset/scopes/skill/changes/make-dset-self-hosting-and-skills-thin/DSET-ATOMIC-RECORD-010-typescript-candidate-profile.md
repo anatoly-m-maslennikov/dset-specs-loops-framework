@@ -1,16 +1,14 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-010
-type: decision
-subtype: requirement
-semantic_id: DSET-REQUIREMENT-TOOL-020
-status: accepted
-priority: high
-child_of:
-  - DSET-DECISION-GOV-002
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-010"
+type = "decision"
+subtype = "requirement"
+semantic_id = "DSET-REQUIREMENT-TOOL-020"
+status = "accepted"
+priority = "high"
+child_of = ["DSET-DECISION-GOV-002"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
++++
 
 # Requirement — Derive the TypeScript profile from a pinned pilot
 

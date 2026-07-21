@@ -1,10 +1,9 @@
----
-artifact_type: evidence_record
-artifact_subtype: run_record
-artifact_id: DSET-EVIDENCE-RECORD-001
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "evidence_record"
+artifact_subtype = "run_record"
+artifact_id = "DSET-EVIDENCE-RECORD-001"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
++++
 
 # Artifact-role lifecycle self-application — 2026-07-20
 

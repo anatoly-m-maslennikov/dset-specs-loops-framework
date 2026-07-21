@@ -149,7 +149,7 @@ id = "DSET-DECISION-GOV-010"
 
 [records.source]
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-009-priority-profile.md"
-sha256 = "7ce545c825d004d1870742906b4eae10441082344d994e5e447d224b24624a98"
+sha256 = "e04b2b8c715bf0189422a1edb609fd77e78cebf8bb0de700c7fb9675fadc8e7d"
 
 [[records.projections]]
 path = "dset/scopes/gov/specs/packages/methodology/spec.md"
@@ -165,7 +165,7 @@ id = "DSET-DECISION-GOV-012"
 
 [records.source]
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-033-delivery-artifact-type.md"
-sha256 = "38dbc1ca184d4eae2e7de28c5a8fb88bb6f332f17862704c1f2cddcfe27969b0"
+sha256 = "4720019a0b9ea22b1320e38c62984afe8ad56d12e418c14f408cc883135780b6"
 
 [[records.projections]]
 path = "dset/scopes/gov/specs/packages/methodology/spec.md"
@@ -181,7 +181,7 @@ id = "DSET-DECISION-GOV-013"
 
 [records.source]
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-035-typed-artifact-relations.md"
-sha256 = "4cc08243f3eb5d2f560507e3b140d8c8c7cac1f94df586e326cb455cdd8ac5e6"
+sha256 = "cc51e1a05595e044625f7d0939c8db8bc2cae1a5aa993f189590cbaa9dd3a44f"
 
 [[records.projections]]
 path = "dset/scopes/gov/specs/packages/methodology/spec.md"
@@ -202,7 +202,7 @@ id = "DSET-DECISION-GOV-014"
 
 [records.source]
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-046-toml-optional-unset-normalization.md"
-sha256 = "608f02e358b8654296f4ed7f25cc4b800a1347086153d1e3eab081acb545e2c5"
+sha256 = "3e53ba2e8075bf22c04c6cc0f1cfdb5bce4fcfce6343c52b1c9cf82a3a7cae2f"
 
 [[records.projections]]
 path = "dset/scopes/gov/specs/packages/methodology/spec.md"
@@ -223,7 +223,7 @@ id = "DSET-DECISION-GOV-015"
 
 [records.source]
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-047-json-schema-boundary.md"
-sha256 = "616d99210390a7c3e5be98af437e36ac539ab7d06a3e9663732d84b42145c806"
+sha256 = "6fdcbfd124dc42a740d9faf4439bb9437b3892fecd1c7985efb675bf0c4218c2"
 
 [[records.projections]]
 path = "dset/scopes/gov/specs/packages/methodology/spec.md"
@@ -260,7 +260,7 @@ id = "DSET-DECISION-OPS-006"
 
 [records.source]
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-034-delivery-lifecycle.md"
-sha256 = "c268399053fe389faaa9479e3b8118450d8e4d3a0397ccd700ad5d940ed80c09"
+sha256 = "7379dfe3e124485913bd89bd0e6ce76c29ab207fcbe320cd14789c0cd2523e71"
 
 [[records.projections]]
 path = "dset/scopes/ops/specs/packages/methodology/spec.md"
@@ -788,7 +788,7 @@ id = "DSET-REQUIREMENT-GOV-031"
 
 [records.source]
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-002-multilevel-architecture-views.md"
-sha256 = "6ff98586cdbd23a5e7a747fa6cc451de4e1de98247029b232b94d0020d22b726"
+sha256 = "a5df0d01bfeaef49e73011a8a66ad290318bc8b1b37b4df22015452bb9f58ddf"
 
 [[records.projections]]
 path = "dset/scopes/gov/specs/packages/methodology/spec.md"
@@ -804,7 +804,7 @@ id = "DSET-REQUIREMENT-GOV-032"
 
 [records.source]
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-003-project-scope-ownership.md"
-sha256 = "9f367bbaa2ab3c153320c359217bb83efd0879b57910c07de0ce3fed18a02dc0"
+sha256 = "14b301daa8f95a4d9b3eaa25ed0d596f135dbc69dca2f46787017568e2bb7654"
 
 [[records.projections]]
 path = "dset/scopes/gov/specs/packages/methodology/spec.md"
@@ -1316,7 +1316,7 @@ id = "DSET-REQUIREMENT-SKILL-011"
 
 [records.source]
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-007-shared-skill-runtime.md"
-sha256 = "b6d69a52b9d02a90ab137605bc197993d7180c0d9ef466f7911e608dd514b6d7"
+sha256 = "4a773571dd5c8e26805ed58dea4af36720af29b70ae8d4cb33a02dda2428bd19"
 
 [[records.projections]]
 path = "dset/scopes/skill/specs/packages/methodology/spec.md"
@@ -1444,7 +1444,7 @@ id = "DSET-REQUIREMENT-TOOL-021"
 
 [records.source]
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-013-typescript-candidate-profile.md"
-sha256 = "d3c822b79966626f0f581dd955b95de17732b482b5c1e24f8ef7bd0a45e1aaa6"
+sha256 = "131085eb71402ab8a1b8e324e45dbd6d84e772a2a2631b603329d71cf726de0a"
 
 [[records.projections]]
 path = "dset/scopes/tool/specs/packages/methodology/spec.md"
@@ -1460,7 +1460,7 @@ id = "DSET-REQUIREMENT-TOOL-022"
 
 [records.source]
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-017-typescript-profile-instantiation.md"
-sha256 = "b1da13680501f566a532b1adb298f7b833a37cc241c3a301273ec0da44ca3348"
+sha256 = "1ae198d311d0cf9b7c15a017ad5b044b9cab47db4a4ff3b7770234dd6e2d2bb3"
 
 [[records.projections]]
 path = "dset/scopes/tool/specs/packages/methodology/spec.md"

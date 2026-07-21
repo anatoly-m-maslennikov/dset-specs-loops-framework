@@ -1,14 +1,13 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-003
-type: decision
-subtype: requirement
-semantic_id: DSET-REQUIREMENT-GOV-032
-status: accepted
-priority: unknown
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-003"
+type = "decision"
+subtype = "requirement"
+semantic_id = "DSET-REQUIREMENT-GOV-032"
+status = "accepted"
+priority = "unknown"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
++++
 
 # Requirement — Own cross-child truth at the narrowest common scope
 

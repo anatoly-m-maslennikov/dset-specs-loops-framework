@@ -1,14 +1,13 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-030
-type: problem
-subtype: gap
-semantic_id: DSET-GAP-TOOL-002
-status: accepted
-priority: medium
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-030"
+type = "problem"
+subtype = "gap"
+semantic_id = "DSET-GAP-TOOL-002"
+status = "accepted"
+priority = "medium"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
++++
 
 # Gap — Host installation lacks transaction-wide rollback
 

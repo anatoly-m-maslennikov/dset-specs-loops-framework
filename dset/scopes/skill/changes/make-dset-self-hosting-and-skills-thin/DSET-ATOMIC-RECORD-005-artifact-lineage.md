@@ -1,16 +1,14 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-005
-type: decision
-subtype: requirement
-semantic_id: DSET-REQUIREMENT-GOV-034
-status: accepted
-priority: unknown
-child_of:
-  - DSET-REQUIREMENT-GOV-033
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-005"
+type = "decision"
+subtype = "requirement"
+semantic_id = "DSET-REQUIREMENT-GOV-034"
+status = "accepted"
+priority = "unknown"
+child_of = ["DSET-REQUIREMENT-GOV-033"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
++++
 
 # Requirement — Trace every child through its immediate parents
 

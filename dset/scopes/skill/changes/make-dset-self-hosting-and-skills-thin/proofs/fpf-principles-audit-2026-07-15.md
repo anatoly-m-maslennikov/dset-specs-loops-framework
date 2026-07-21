@@ -53,7 +53,7 @@
    Change; reliance-bearing work requires durable artifacts.
 
 Exact upstream pattern-to-DSET surface mappings are recorded in
-[`provenance.yaml`](../../../../gov/provenance.yaml). FPF remains a cited
+[`provenance.yaml`](../../../../gov/provenance.legacy.toml). FPF remains a cited
 concept source, not a rule owner.
 
 ## Corrections made from the audit

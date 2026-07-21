@@ -12,7 +12,7 @@
 - State at evidence capture: open, mergeable, and draft
 - Pushed head: `114fc3c90d39e1273cbc8cafadd33c67057d5bad`
 
-GitHub is authoritative for PR state, changed files, checks, and the eventual merge result. The committed [PR history snapshot](../../../../../ops/history/pull-requests.yaml) and [traceability index](../../../../../gov/generated/traceability.yaml) are reproducible discovery aids, not competing runtime authorities.
+GitHub is authoritative for PR state, changed files, checks, and the eventual merge result. The committed [PR history snapshot](../../../../../ops/history/pull-requests.legacy.toml) and [traceability index](../../../../../gov/generated/traceability.legacy.toml) are reproducible discovery aids, not competing runtime authorities.
 
 ## Pushed-head checks
 

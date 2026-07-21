@@ -50,7 +50,8 @@ class ConflictEntityTests(unittest.TestCase):
         self.assertIn("never workflow", artifacts)
         self.assertIn("not from a workflow", authoring)
         self.assertIn("Type is determined by meaning", rules)
-        self.assertIn("must not be silently retyped", rules)
+        normalized_rules = " ".join(rules.split())
+        self.assertIn("must not be silently retyped or renamed", normalized_rules)
 
     def test_conflict_proof_ids_are_registered(self) -> None:
         package = load(

@@ -1,14 +1,13 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-022
-type: problem
-subtype: gap
-semantic_id: DSET-GAP-GOV-001
-status: accepted
-priority: high
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-022"
+type = "problem"
+subtype = "gap"
+semantic_id = "DSET-GAP-GOV-001"
+status = "accepted"
+priority = "high"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
++++
 
 # Gap — Legacy authority lacks immutable-content protection
 

@@ -1,16 +1,14 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-017
-type: decision
-subtype: requirement
-semantic_id: DSET-REQUIREMENT-TOOL-022
-status: accepted
-priority: high
-child_of:
-  - DSET-REQUIREMENT-TOOL-021
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-017"
+type = "decision"
+subtype = "requirement"
+semantic_id = "DSET-REQUIREMENT-TOOL-022"
+status = "accepted"
+priority = "high"
+child_of = ["DSET-REQUIREMENT-TOOL-021"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
++++
 
 # Requirement — Separate profile references from applied instances
 

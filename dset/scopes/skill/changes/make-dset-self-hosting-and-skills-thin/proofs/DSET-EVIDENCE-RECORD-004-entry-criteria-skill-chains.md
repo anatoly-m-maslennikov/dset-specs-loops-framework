@@ -1,12 +1,10 @@
----
-artifact_type: evidence_record
-artifact_subtype: run_record
-artifact_id: DSET-EVIDENCE-RECORD-004
-child_of:
-  - DSET-REQUIREMENT-SKILL-010
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "evidence_record"
+artifact_subtype = "run_record"
+artifact_id = "DSET-EVIDENCE-RECORD-004"
+child_of = ["DSET-REQUIREMENT-SKILL-010"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
++++
 
 # Entry-criteria skill-chain verification — 2026-07-20
 

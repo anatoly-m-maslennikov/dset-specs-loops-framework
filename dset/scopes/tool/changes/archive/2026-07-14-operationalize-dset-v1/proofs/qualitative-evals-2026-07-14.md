@@ -42,7 +42,7 @@ Non-blocking observation: `dset-prototype` treats an explicit request to run the
 
 The evaluator produced one writable `dset/` target while mapping accepted domain/spec truth, deterministic test plans, qualitative/probabilistic eval plans, active implementation work, and completed history to distinct owners. Old roots become read-only only after verified archival and ownership cutover. Test/eval separation survived the mapping.
 
-The corrected [migration map template](../../../../../gov/migrations/migration-map.template.yaml) now carries owner, writer, consumers, current status, target artifacts, disposition, retention, and read-only state. A mixed legacy root must use multiple source entries when active and completed artifacts need different dispositions; this is an authoring decision, not a second writable authority.
+The corrected [migration map template](../../../../../gov/migrations/migration-map.template.legacy.toml) now carries owner, writer, consumers, current status, target artifacts, disposition, retention, and read-only state. A mixed legacy root must use multiple source entries when active and completed artifacts need different dispositions; this is an authoring decision, not a second writable authority.
 
 ## Disposition
 

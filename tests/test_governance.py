@@ -929,7 +929,7 @@ class GovernanceTests(unittest.TestCase):
             "resolver accepts every governed artifact pairing",
             "evidence never rewrites authority",
             "Atomic artifacts are immutable",
-            "move byte-for-byte",
+            "registered carrier transition",
         ):
             self.assertIn(phrase, live)
 
@@ -944,7 +944,7 @@ class GovernanceTests(unittest.TestCase):
             "Atomic authority sources",
             "Later state is an append-only lifecycle event",
             "active atom wins over a stale compiled projection",
-            "move byte-for-byte",
+            "lossless carrier transition",
             "smallest independently reviewable primary project claim",
             "acceptance act grants authority to Decision",
             "QA atom defines a check",

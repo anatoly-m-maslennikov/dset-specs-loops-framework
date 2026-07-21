@@ -1,24 +1,24 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-037
-type: qa
-subtype: evaluation
-semantic_id: DSET-EVALUATION-GOV-026
-status: accepted
-priority: medium
-authority: "operator:anatoly-m-maslennikov"
-claim: "Independent reviewers consistently select the narrowest correct relation and use relates_to only as a non-semantic fallback."
-scope:
-  kind: project
-  id: dset-specs-loops-framework
-promotion:
-  parent_scope: null
-relations:
-  - type: check_of
-    target: DSET-DECISION-GOV-013
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-037"
+type = "qa"
+subtype = "evaluation"
+semantic_id = "DSET-EVALUATION-GOV-026"
+status = "accepted"
+priority = "medium"
+authority = "operator:anatoly-m-maslennikov"
+claim = "Independent reviewers consistently select the narrowest correct relation and use relates_to only as a non-semantic fallback."
+promotion = {}
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+
+[scope]
+kind = "project"
+id = "dset-specs-loops-framework"
+
+[[relations]]
+type = "check_of"
+target = "DSET-DECISION-GOV-013"
++++
 
 # Evaluation — Judge typed-relation clarity
 

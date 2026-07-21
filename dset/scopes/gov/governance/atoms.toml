@@ -15,6 +15,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "7ce545c825d004d1870742906b4eae10441082344d994e5e447d224b24624a98"
 type = "decision"
 subtype = "none"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-009-priority-profile.md"
+current_sha256 = "e04b2b8c715bf0189422a1edb609fd77e78cebf8bb0de700c7fb9675fadc8e7d"
+transition_id = "DSET-CARRIER-TRANSITION-836EDACA881C3407"
 
 [[records]]
 semantic_id = "DSET-DECISION-GOV-011"
@@ -23,6 +26,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "11e6a8a25e69e36a3f02a18982c1965921d082759da28ea4ba601b12e4b4caca"
 type = "decision"
 subtype = "none"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-031-delivery-artifact-type.md"
+current_sha256 = "e22529d70705243e65dd6633839e7c93238d7928d2832eb0c774a643f8887bd4"
+transition_id = "DSET-CARRIER-TRANSITION-B44BBAF45BD610A4"
 
 [[records]]
 semantic_id = "DSET-DECISION-GOV-012"
@@ -31,6 +37,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "38dbc1ca184d4eae2e7de28c5a8fb88bb6f332f17862704c1f2cddcfe27969b0"
 type = "decision"
 subtype = "none"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-033-delivery-artifact-type.md"
+current_sha256 = "4720019a0b9ea22b1320e38c62984afe8ad56d12e418c14f408cc883135780b6"
+transition_id = "DSET-CARRIER-TRANSITION-0CF65C881362C65A"
 
 [[records]]
 semantic_id = "DSET-DECISION-GOV-013"
@@ -39,6 +48,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "4cc08243f3eb5d2f560507e3b140d8c8c7cac1f94df586e326cb455cdd8ac5e6"
 type = "decision"
 subtype = "none"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-035-typed-artifact-relations.md"
+current_sha256 = "cc51e1a05595e044625f7d0939c8db8bc2cae1a5aa993f189590cbaa9dd3a44f"
+transition_id = "DSET-CARRIER-TRANSITION-9A4A19C5751E0DDF"
 
 [[records]]
 semantic_id = "DSET-DECISION-GOV-014"
@@ -47,6 +59,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "608f02e358b8654296f4ed7f25cc4b800a1347086153d1e3eab081acb545e2c5"
 type = "decision"
 subtype = "none"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-046-toml-optional-unset-normalization.md"
+current_sha256 = "3e53ba2e8075bf22c04c6cc0f1cfdb5bce4fcfce6343c52b1c9cf82a3a7cae2f"
+transition_id = "DSET-CARRIER-TRANSITION-DC69FBD8A4F2EB2A"
 
 [[records]]
 semantic_id = "DSET-DECISION-GOV-015"
@@ -55,6 +70,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "616d99210390a7c3e5be98af437e36ac539ab7d06a3e9663732d84b42145c806"
 type = "decision"
 subtype = "none"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-047-json-schema-boundary.md"
+current_sha256 = "6fdcbfd124dc42a740d9faf4439bb9437b3892fecd1c7985efb675bf0c4218c2"
+transition_id = "DSET-CARRIER-TRANSITION-B89CDC01562BFBC4"
 
 [[records]]
 semantic_id = "DSET-DECISION-GOV-016"
@@ -87,6 +105,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "c9534c4ced0955f7c761469267964ab9f90048f7e635556d93ee0401e6cec869"
 type = "decision"
 subtype = "none"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-032-delivery-lifecycle.md"
+current_sha256 = "70c1598e1046c0a46e0529130ca6c1b825b3f5b9ab4dd3a26ff94d58abc0f9c0"
+transition_id = "DSET-CARRIER-TRANSITION-7C248FBF2DC1B611"
 
 [[records]]
 semantic_id = "DSET-DECISION-OPS-006"
@@ -95,6 +116,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "c268399053fe389faaa9479e3b8118450d8e4d3a0397ccd700ad5d940ed80c09"
 type = "decision"
 subtype = "none"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-034-delivery-lifecycle.md"
+current_sha256 = "7379dfe3e124485913bd89bd0e6ce76c29ab207fcbe320cd14789c0cd2523e71"
+transition_id = "DSET-CARRIER-TRANSITION-D78B78F1C2601E95"
 
 [[records]]
 semantic_id = "DSET-DEFECT-GOV-001"
@@ -103,6 +127,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "c8916dcabeb3626e63a1702ee1e544df41bcfd09d5e92f0740ac570600bf813e"
 type = "problem"
 subtype = "defect"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-020-lifecycle-transition-validation.md"
+current_sha256 = "41e4f915061e3dd2c9b9a87c5007ee841d196b4aedac9701bd9778a9b50c1db2"
+transition_id = "DSET-CARRIER-TRANSITION-F8741FBF01DF615A"
 
 [[records]]
 semantic_id = "DSET-DEFECT-GOV-002"
@@ -111,6 +138,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "46a3e2cc0077cb7d75796a04061d3da183fb19f3318008c7f9f08bc30cb63fc4"
 type = "problem"
 subtype = "defect"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-021-compilation-consequence.md"
+current_sha256 = "7e36a685d57486605aa55b53156503502c81ac055ef02b53c0e6010150cd844e"
+transition_id = "DSET-CARRIER-TRANSITION-F69DF6427FAD95FD"
 
 [[records]]
 semantic_id = "DSET-DEFECT-GOV-003"
@@ -119,6 +149,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "d5447e39a2be17f889359d0c1c1716195f398c0f81aac426319f7c1a623f6e15"
 type = "problem"
 subtype = "defect"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-023-artifact-emission-gate.md"
+current_sha256 = "9d4fe12113f6a2978d57af1b5eef15bf210d2b9d93b4233f155519c8e0a19600"
+transition_id = "DSET-CARRIER-TRANSITION-039730F5EBCB1D48"
 
 [[records]]
 semantic_id = "DSET-DEFECT-GOV-004"
@@ -127,6 +160,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "f7f17af4dcde168a95e4c2b6dbd40dfad4e84131d54ed2fcdabd155cbc80c2f4"
 type = "problem"
 subtype = "defect"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-029-stale-verification-claims.md"
+current_sha256 = "65d2439ab34201a83a01d07d913957df5bef50198c9d54b18b9bed28ff00fae7"
+transition_id = "DSET-CARRIER-TRANSITION-658366067DB7AD68"
 
 [[records]]
 semantic_id = "DSET-DEFECT-GOV-005"
@@ -151,6 +187,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "869119533fe7126886751edff95011adb5ebeee9b10a7c6580bce5cf1786ff22"
 type = "problem"
 subtype = "defect"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-028-release-truth.md"
+current_sha256 = "e09f4c3a8b635fb3dad1a4302f3b31bea226f458bcee55ffc611be45900a2ce8"
+transition_id = "DSET-CARRIER-TRANSITION-A4E175CABD42D25F"
 
 [[records]]
 semantic_id = "DSET-DEFECT-SKILL-001"
@@ -159,6 +198,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "a2b2aa2dd70043f3ad968e4d884c02bd258251673b95cffff146d4586a83fe7e"
 type = "problem"
 subtype = "defect"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-026-llm-session-provenance.md"
+current_sha256 = "5eff59b33076db4888e1f1587a27c0782bc475ab15d67246b831e2c89a99ec66"
+transition_id = "DSET-CARRIER-TRANSITION-76BC58102F9B289F"
 
 [[records]]
 semantic_id = "DSET-DEFECT-SKILL-002"
@@ -191,6 +233,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "cf096a1d59fcffa93e37c0d4fec939e8479e4cc4e815db2948a513911ade577d"
 type = "problem"
 subtype = "defect"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-024-runtime-terminalization.md"
+current_sha256 = "954a494858663832bf94626e43e256e19cbd1fd751f7b16ccb8070419c1cc8dc"
+transition_id = "DSET-CARRIER-TRANSITION-B3BB221E0E1C36E1"
 
 [[records]]
 semantic_id = "DSET-DEFECT-TOOL-002"
@@ -199,6 +244,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "63b8b80f6d91813d060c73c068ff80fcb18927b4a891d348c1820bf541635647"
 type = "problem"
 subtype = "defect"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-038-legacy-relation-sealing.md"
+current_sha256 = "62a12acc94a3898c66afdc6e3e10f3992c4cd258c20211866fe9cb0a7133265e"
+transition_id = "DSET-CARRIER-TRANSITION-1377648E17328F44"
 
 [[records]]
 semantic_id = "DSET-DEFECT-TOOL-003"
@@ -207,6 +255,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "c30f4999ab306cd1b124f3fec0e222dad27f27bca15b12ff4c2234cbcf8c30f2"
 type = "problem"
 subtype = "defect"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-045-atomic-replacement-source.md"
+current_sha256 = "ba328b145bd5b8e66dcb58de5e6561d707a4a2fa1cac23d49c935a970c24641f"
+transition_id = "DSET-CARRIER-TRANSITION-1EAFE6903B27ACCC"
 
 [[records]]
 semantic_id = "DSET-DEFECT-TOOL-004"
@@ -247,6 +298,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "fa8ffd595ead482771ee012fb0d081762e1ad058395d7173f8c11bc92be08b2f"
 type = "qa"
 subtype = "evaluation"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-037-typed-artifact-relations-evaluation.md"
+current_sha256 = "2e0a1f7cbfc86f9883a99594b9d86567ab1d3273b7a5839dca05ffb8a71ac0cd"
+transition_id = "DSET-CARRIER-TRANSITION-1CBFB26DB3256BB0"
 
 [[records]]
 semantic_id = "DSET-EVALUATION-GOV-027"
@@ -255,6 +309,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "0877a3ff29d8f0377e63fe53fc3b7bdda773cbf69ad31300b7b79ba20c79a0f6"
 type = "qa"
 subtype = "evaluation"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-044-canonical-toml-artifacts-evaluation.md"
+current_sha256 = "350104cae7f0c76bd7f2170e7acf3194082b7b428033083970a984d252f9bdf9"
+transition_id = "DSET-CARRIER-TRANSITION-8E5D4D56CB8D7E38"
 
 [[records]]
 semantic_id = "DSET-EVALUATION-GOV-028"
@@ -271,6 +328,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "2f95d1ec62368bd0a5b584ad2af48f32485eb18f7a6f2f9ee88dfc8d2cad2434"
 type = "qa"
 subtype = "evaluation"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-043-implementation-preparation-mode-evaluation.md"
+current_sha256 = "8786cfcf3aa3ebfad82570b0991d733a819a66e6367aa996d1c86aaef9e3cbf7"
+transition_id = "DSET-CARRIER-TRANSITION-0BF33DEA75169ACF"
 
 [[records]]
 semantic_id = "DSET-EVALUATION-TOOL-002"
@@ -279,6 +339,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "0fed3637e6c004e61ff2a3e73c3d5cd30d0561a66d3d4b4fe114e793687a4014"
 type = "qa"
 subtype = "evaluation"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-012-typescript-candidate-evaluation.md"
+current_sha256 = "773958d6b81cb0fc3e1d0d4542fc9f0e06121501a273026eafb97f0eabc3c2c5"
+transition_id = "DSET-CARRIER-TRANSITION-A02AD723B26C9F9F"
 
 [[records]]
 semantic_id = "DSET-EVALUATION-TOOL-003"
@@ -287,6 +350,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "87d9171a858fbd5fc2c71e074350801314dc3da3e4e3caeed80052225a312d8b"
 type = "qa"
 subtype = "evaluation"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-015-typescript-candidate-evaluation.md"
+current_sha256 = "00efda90f7a40ae1f8687fee65ad0ef02a1a82b4d1fcc9ee3ba3584992663111"
+transition_id = "DSET-CARRIER-TRANSITION-CE6625E769CE9F89"
 
 [[records]]
 semantic_id = "DSET-EVALUATION-TOOL-004"
@@ -295,6 +361,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "73518e67d9075166f046bc29e571cb899e0e6013a41b6c55b1f7f4230edd2b68"
 type = "qa"
 subtype = "evaluation"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-019-typescript-profile-instantiation-evaluation.md"
+current_sha256 = "f7116d3e8b47b13199e24e90dee6d442436a8e23c9744efe4036492c211b7f3f"
+transition_id = "DSET-CARRIER-TRANSITION-CAA5FAAE9B8EB41E"
 
 [[records]]
 semantic_id = "DSET-GAP-GOV-001"
@@ -303,6 +372,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "3abf15cf57d47e99e4ab7dadf7ea18e47d998d20c8b066ce12e6ee8b64acb3b4"
 type = "problem"
 subtype = "gap"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-022-legacy-immutability.md"
+current_sha256 = "5f17b035a8d02a00219d5c5e04d6583f203e864d1c1f7827c52657eb782ad289"
+transition_id = "DSET-CARRIER-TRANSITION-BC6D4F94EE43AF7F"
 
 [[records]]
 semantic_id = "DSET-GAP-SKILL-001"
@@ -311,6 +383,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "b6b5c1f0b395a157aff5b711ba68f703f76fa1fb1b1e622405b213d92633c227"
 type = "problem"
 subtype = "gap"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-025-installed-launcher-discovery.md"
+current_sha256 = "39cba8cbf17ac1bd08d185f8109108934fdb122ba520c45babce7a38c2aaffb5"
+transition_id = "DSET-CARRIER-TRANSITION-FCB17BF00D36D33C"
 
 [[records]]
 semantic_id = "DSET-GAP-TOOL-001"
@@ -319,6 +394,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "44888a2a73c96aff5a2ec271860eacb296d17eeb5ad31f5b2355e894b6d7850a"
 type = "problem"
 subtype = "gap"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-027-commit-provenance-gate.md"
+current_sha256 = "f77c0d2c504b37981a0459243b111f07360a232c4b81f9000ba4224ce5513af4"
+transition_id = "DSET-CARRIER-TRANSITION-E0B2EA523537CAC2"
 
 [[records]]
 semantic_id = "DSET-GAP-TOOL-002"
@@ -327,6 +405,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "8bd936dd5dec7718f05fc6a7ec8085fa79e369f0fb839c26465ff7a197592df2"
 type = "problem"
 subtype = "gap"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-030-installer-transaction.md"
+current_sha256 = "aff1da8a3208660ace686822cef2401241df233f121b894fb487117eac8a9632"
+transition_id = "DSET-CARRIER-TRANSITION-2E069CC11A3A5AFB"
 
 [[records]]
 semantic_id = "DSET-INVARIANT-GOV-027"
@@ -343,6 +424,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "b7af5e995e537f67f3e99741d2f875d60edb81d71883db71ec0151f7c9d20950"
 type = "problem"
 subtype = "none"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-016-initializer-supportability.md"
+current_sha256 = "df15b4b175e4269039def68c11455eeb1d0edb065b9f25dc7124518f17a9613e"
+transition_id = "DSET-CARRIER-TRANSITION-0B628BC1C6FC2A4D"
 
 [[records]]
 semantic_id = "DSET-REQUIREMENT-GOV-030"
@@ -351,6 +435,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "4a3cf9e7f8b574c82093377cf59eb15758866dc577ba9094cd40b8821bfb8277"
 type = "decision"
 subtype = "requirement"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-001-artifact-type-name-policy.md"
+current_sha256 = "421025aff9955ae2a40c4e8e08d4af0e974da58b4094640089058725a853a4b2"
+transition_id = "DSET-CARRIER-TRANSITION-6EFCA908B3F811F0"
 
 [[records]]
 semantic_id = "DSET-REQUIREMENT-GOV-031"
@@ -359,6 +446,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "6ff98586cdbd23a5e7a747fa6cc451de4e1de98247029b232b94d0020d22b726"
 type = "decision"
 subtype = "requirement"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-002-multilevel-architecture-views.md"
+current_sha256 = "a5df0d01bfeaef49e73011a8a66ad290318bc8b1b37b4df22015452bb9f58ddf"
+transition_id = "DSET-CARRIER-TRANSITION-B61E896DF4A8F43D"
 
 [[records]]
 semantic_id = "DSET-REQUIREMENT-GOV-032"
@@ -367,6 +457,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "9f367bbaa2ab3c153320c359217bb83efd0879b57910c07de0ce3fed18a02dc0"
 type = "decision"
 subtype = "requirement"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-003-project-scope-ownership.md"
+current_sha256 = "14b301daa8f95a4d9b3eaa25ed0d596f135dbc69dca2f46787017568e2bb7654"
+transition_id = "DSET-CARRIER-TRANSITION-2AED95935E158458"
 
 [[records]]
 semantic_id = "DSET-REQUIREMENT-GOV-033"
@@ -375,6 +468,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "38ec923a1e0d0933192156cd39c2a185497b536a016816f1eea4f7e10b97e80e"
 type = "decision"
 subtype = "requirement"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-004-artifact-inheritance.md"
+current_sha256 = "19a8ee9a2e8e4b99bc816faac65989c84f620cb56bec68e808e75dd1c1b8eea8"
+transition_id = "DSET-CARRIER-TRANSITION-778C37C2F10FBA9E"
 
 [[records]]
 semantic_id = "DSET-REQUIREMENT-GOV-034"
@@ -383,6 +479,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "1b1254c9c1e0906a61c19d0f14c697cf298f760927be463ebfc2f693497e9811"
 type = "decision"
 subtype = "requirement"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-005-artifact-lineage.md"
+current_sha256 = "669d8214085ae3297beb26e27e041ff41e405f73c5f7b628f01932ace401a873"
+transition_id = "DSET-CARRIER-TRANSITION-9F66E08A64607F39"
 
 [[records]]
 semantic_id = "DSET-REQUIREMENT-GOV-035"
@@ -391,6 +490,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "434e4eb6f6cf65c590ce9a28d6c84da5ca2cb8dd4135c209f35573dae4560294"
 type = "decision"
 subtype = "requirement"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-008-artifact-creation-strictness.md"
+current_sha256 = "e70c8cadbe8a9c87e69e4dd948546ac0e6874133977c17ede0d944629e18e588"
+transition_id = "DSET-CARRIER-TRANSITION-12380986075E1BD4"
 
 [[records]]
 semantic_id = "DSET-REQUIREMENT-GOV-036"
@@ -399,6 +501,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "99e8a1ded652b79ff1e39293058146af35f2b20bc40c995e2b85782649ee09aa"
 type = "decision"
 subtype = "requirement"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-040-canonical-toml-artifacts.md"
+current_sha256 = "de21ba240675bc84b5a1c4220ce14400b4e557ff23d7618166f6b7aa4d9b69be"
+transition_id = "DSET-CARRIER-TRANSITION-17BF4EC3D2CF4969"
 
 [[records]]
 semantic_id = "DSET-REQUIREMENT-GOV-037"
@@ -439,6 +544,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "0b8845164ec3ec43ad148c93999d5a8c8b52a768fc77d0d2155dff7106f548e6"
 type = "decision"
 subtype = "requirement"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-006-entry-criteria-skill-chains.md"
+current_sha256 = "0865d9aa303ae7b36df944a2249d2f5c484da4a6f1f73f40e03b48d05d7f966e"
+transition_id = "DSET-CARRIER-TRANSITION-7BA7A58B6003E3DD"
 
 [[records]]
 semantic_id = "DSET-REQUIREMENT-SKILL-011"
@@ -447,6 +555,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "b6d69a52b9d02a90ab137605bc197993d7180c0d9ef466f7911e608dd514b6d7"
 type = "decision"
 subtype = "requirement"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-007-shared-skill-runtime.md"
+current_sha256 = "4a773571dd5c8e26805ed58dea4af36720af29b70ae8d4cb33a02dda2428bd19"
+transition_id = "DSET-CARRIER-TRANSITION-80BF0AEDAF67314C"
 
 [[records]]
 semantic_id = "DSET-REQUIREMENT-SKILL-012"
@@ -455,6 +566,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "62d4935fad190d1b3d3c06c0d99f2b25826f65149bf5307b2b5aff7c843f6529"
 type = "decision"
 subtype = "requirement"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-039-implementation-preparation-mode.md"
+current_sha256 = "2f4ea8f8785cfc7747a5361f48207d29cca0887b068606725979385bfda5799d"
+transition_id = "DSET-CARRIER-TRANSITION-F9F233D346A301FD"
 
 [[records]]
 semantic_id = "DSET-REQUIREMENT-SKILL-013"
@@ -471,6 +585,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "386eac9e61fbbad35369818e7cc153f39fad19876c25141213d65d625053f6ca"
 type = "decision"
 subtype = "requirement"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-010-typescript-candidate-profile.md"
+current_sha256 = "9d8548d2a6307fdd11d6f92e10a42ab6c8b6cad342adf9380bc164fa233aeb4e"
+transition_id = "DSET-CARRIER-TRANSITION-A7FC24B5B4C7EDA4"
 
 [[records]]
 semantic_id = "DSET-REQUIREMENT-TOOL-021"
@@ -479,6 +596,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "d3c822b79966626f0f581dd955b95de17732b482b5c1e24f8ef7bd0a45e1aaa6"
 type = "decision"
 subtype = "requirement"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-013-typescript-candidate-profile.md"
+current_sha256 = "131085eb71402ab8a1b8e324e45dbd6d84e772a2a2631b603329d71cf726de0a"
+transition_id = "DSET-CARRIER-TRANSITION-C055E06F5E08A3B2"
 
 [[records]]
 semantic_id = "DSET-REQUIREMENT-TOOL-022"
@@ -487,6 +607,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "b1da13680501f566a532b1adb298f7b833a37cc241c3a301273ec0da44ca3348"
 type = "decision"
 subtype = "requirement"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-017-typescript-profile-instantiation.md"
+current_sha256 = "1ae198d311d0cf9b7c15a017ad5b044b9cab47db4a4ff3b7770234dd6e2d2bb3"
+transition_id = "DSET-CARRIER-TRANSITION-6D3E2554527B4A8E"
 
 [[records]]
 semantic_id = "DSET-TEST-GOV-036"
@@ -495,6 +618,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "16fb6e65d53c1daa38729c1436cbd6893be11c497faab7202e8c4813db6de649"
 type = "qa"
 subtype = "test"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-036-typed-artifact-relations-test.md"
+current_sha256 = "4c3f931063874dabbe09a5ae3bb5edd47648c494c56c77328e09c651e7d6cc52"
+transition_id = "DSET-CARRIER-TRANSITION-ABA595CB7E057A84"
 
 [[records]]
 semantic_id = "DSET-TEST-GOV-037"
@@ -503,6 +629,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "908641b4e83d84a4f076fcef8a277f18e425e64ffdd14e69bb397bfd22416571"
 type = "qa"
 subtype = "test"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-042-canonical-toml-artifacts-test.md"
+current_sha256 = "efa295093bfa9db49a23e358dba09d480d92a0b7d1bace559c07000838ce272c"
+transition_id = "DSET-CARRIER-TRANSITION-0D1ECE4010C1CC33"
 
 [[records]]
 semantic_id = "DSET-TEST-GOV-038"
@@ -559,6 +688,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "9480ecb61122ed209f1d54affc36b03eba8f33a8f570034df61495726ff17c13"
 type = "qa"
 subtype = "test"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-041-implementation-preparation-mode-test.md"
+current_sha256 = "dbe400e0103c02b08c6a7cd30e3031b31f51ee1edd5c461561f3081376f1e162"
+transition_id = "DSET-CARRIER-TRANSITION-49F09144596332FB"
 
 [[records]]
 semantic_id = "DSET-TEST-SKILL-015"
@@ -591,6 +723,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "cd1c4697dc362e256b8fe25deed19e59d99596ca23c33810933b2afb2104a77c"
 type = "qa"
 subtype = "test"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-011-typescript-candidate-test.md"
+current_sha256 = "41a9d657bdf25b7f823b10510cab7d9bbac1cb183493c6057aa012bd1fe13a2e"
+transition_id = "DSET-CARRIER-TRANSITION-376BB4CDBA1B20E3"
 
 [[records]]
 semantic_id = "DSET-TEST-TOOL-021"
@@ -599,6 +734,9 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "bd14a862ee60548ec636360a92affaf375d00af3359b27eb9b3aef073a52744a"
 type = "qa"
 subtype = "test"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-014-typescript-candidate-test.md"
+current_sha256 = "67de18d495d944184a8749216fce2d43f421276bd2ccde05ad81f2f6cc3e0523"
+transition_id = "DSET-CARRIER-TRANSITION-4A9FB6903984811A"
 
 [[records]]
 semantic_id = "DSET-TEST-TOOL-022"
@@ -607,3 +745,6 @@ path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-AT
 sha256 = "2924a436681279f0f9a64b3431ee9c135e951a2e0e363f40da27c6c632d0ac0a"
 type = "qa"
 subtype = "test"
+current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-018-typescript-profile-instantiation-test.md"
+current_sha256 = "c834d1be52d391e794ee3320c63b9dd1b283b3aab78cd9ba129cf9627bf10543"
+transition_id = "DSET-CARRIER-TRANSITION-DA5314BEE24D5C07"

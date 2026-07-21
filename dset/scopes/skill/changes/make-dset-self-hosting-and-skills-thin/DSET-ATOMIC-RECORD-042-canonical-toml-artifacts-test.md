@@ -1,24 +1,24 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-042
-type: qa
-subtype: test
-semantic_id: DSET-TEST-GOV-037
-status: accepted
-priority: high
-authority: "operator:anatoly-m-maslennikov"
-claim: "Deterministic migration and validation prove canonical TOML artifact equivalence, reference closure, freshness, and external-format boundaries."
-scope:
-  kind: project
-  id: dset-specs-loops-framework
-promotion:
-  parent_scope: null
-relations:
-  - type: check_of
-    target: DSET-REQUIREMENT-GOV-036
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-042"
+type = "qa"
+subtype = "test"
+semantic_id = "DSET-TEST-GOV-037"
+status = "accepted"
+priority = "high"
+authority = "operator:anatoly-m-maslennikov"
+claim = "Deterministic migration and validation prove canonical TOML artifact equivalence, reference closure, freshness, and external-format boundaries."
+promotion = {}
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+
+[scope]
+kind = "project"
+id = "dset-specs-loops-framework"
+
+[[relations]]
+type = "check_of"
+target = "DSET-REQUIREMENT-GOV-036"
++++
 
 # Test — Validate canonical TOML migration
 

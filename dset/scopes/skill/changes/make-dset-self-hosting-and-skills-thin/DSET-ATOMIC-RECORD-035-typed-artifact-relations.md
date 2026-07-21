@@ -1,27 +1,31 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-035
-type: decision
-semantic_id: DSET-DECISION-GOV-013
-status: accepted
-priority: high
-authority: "operator:anatoly-m-maslennikov"
-claim: "DSET artifact traceability uses ten mutually exclusive typed relations, derived inverses, and range-based evergreen projection frontiers."
-scope:
-  kind: project
-  id: dset-specs-loops-framework
-promotion:
-  parent_scope: null
-relations:
-  - type: resolution_of
-    target: DSET-QUESTION-GOV-004
-  - type: replacement_of
-    target: DSET-REQUIREMENT-GOV-033
-  - type: replacement_of
-    target: DSET-REQUIREMENT-GOV-034
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-035"
+type = "decision"
+semantic_id = "DSET-DECISION-GOV-013"
+status = "accepted"
+priority = "high"
+authority = "operator:anatoly-m-maslennikov"
+claim = "DSET artifact traceability uses ten mutually exclusive typed relations, derived inverses, and range-based evergreen projection frontiers."
+promotion = {}
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+
+[scope]
+kind = "project"
+id = "dset-specs-loops-framework"
+
+[[relations]]
+type = "resolution_of"
+target = "DSET-QUESTION-GOV-004"
+
+[[relations]]
+type = "replacement_of"
+target = "DSET-REQUIREMENT-GOV-033"
+
+[[relations]]
+type = "replacement_of"
+target = "DSET-REQUIREMENT-GOV-034"
++++
 
 # Decision — Use typed artifact relations
 

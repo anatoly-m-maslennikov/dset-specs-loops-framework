@@ -63,7 +63,7 @@
   resume runtime are incomplete.
 - `DSET-PROBLEM-OPS-001`: no exact-current-head GitHub proof.
 - Open design Questions are recorded in
-  [`intake.yaml`](../../../../gov/intake.yaml); they add no accepted behavior.
+  [`intake.yaml`](../../../../gov/intake.legacy.toml); they add no accepted behavior.
 
 ## Delivery/version result
 

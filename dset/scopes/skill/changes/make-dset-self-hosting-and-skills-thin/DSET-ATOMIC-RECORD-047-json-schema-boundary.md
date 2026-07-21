@@ -1,23 +1,23 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-047
-type: decision
-semantic_id: DSET-DECISION-GOV-015
-status: accepted
-priority: high
-authority: "operator:anatoly-m-maslennikov"
-claim: "Standards-compliant JSON Schema files are externally prescribed contract carriers and remain canonical JSON exceptions rather than generated copies of a private TOML schema dialect."
-scope:
-  kind: project
-  id: dset-specs-loops-framework
-promotion:
-  parent_scope: null
-relations:
-  - type: child_of
-    target: DSET-REQUIREMENT-GOV-036
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-047"
+type = "decision"
+semantic_id = "DSET-DECISION-GOV-015"
+status = "accepted"
+priority = "high"
+authority = "operator:anatoly-m-maslennikov"
+claim = "Standards-compliant JSON Schema files are externally prescribed contract carriers and remain canonical JSON exceptions rather than generated copies of a private TOML schema dialect."
+promotion = {}
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+
+[scope]
+kind = "project"
+id = "dset-specs-loops-framework"
+
+[[relations]]
+type = "child_of"
+target = "DSET-REQUIREMENT-GOV-036"
++++
 
 # Decision — Keep JSON Schema at its standard boundary
 

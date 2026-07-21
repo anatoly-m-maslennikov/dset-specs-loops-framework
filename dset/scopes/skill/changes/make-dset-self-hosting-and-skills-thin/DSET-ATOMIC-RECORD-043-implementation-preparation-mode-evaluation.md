@@ -1,26 +1,28 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-043
-type: qa
-subtype: evaluation
-semantic_id: DSET-EVALUATION-SKILL-012
-status: accepted
-priority: medium
-authority: "operator:anatoly-m-maslennikov"
-claim: "Operators consistently understand lazy as self-preparing and strict as implementation-only without learning internal skill choreography."
-scope:
-  kind: project
-  id: dset-specs-loops-framework
-promotion:
-  parent_scope: null
-relations:
-  - type: check_of
-    target: DSET-REQUIREMENT-SKILL-012
-  - type: replacement_of
-    target: DSET-EVAL-SKILL-010
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-043"
+type = "qa"
+subtype = "evaluation"
+semantic_id = "DSET-EVALUATION-SKILL-012"
+status = "accepted"
+priority = "medium"
+authority = "operator:anatoly-m-maslennikov"
+claim = "Operators consistently understand lazy as self-preparing and strict as implementation-only without learning internal skill choreography."
+promotion = {}
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+
+[scope]
+kind = "project"
+id = "dset-specs-loops-framework"
+
+[[relations]]
+type = "check_of"
+target = "DSET-REQUIREMENT-SKILL-012"
+
+[[relations]]
+type = "replacement_of"
+target = "DSET-EVAL-SKILL-010"
++++
 
 # Evaluation — Judge implementation-mode clarity
 

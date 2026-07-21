@@ -1,33 +1,28 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-032
-type: decision
-semantic_id: DSET-DECISION-OPS-005
-status: accepted
-priority: high
-authority: "operator:anatoly-m-maslennikov"
-claim: "The release lifecycle uses six flat Delivery subtypes while preserving explicit reference and gate boundaries."
-scope:
-  kind: layer
-  id: ops
-promotion:
-  parent_scope:
-    kind: project
-    id: dset-specs-loops-framework
-  affected_children:
-    - meta
-    - gov
-    - tool
-    - skill
-    - ops
-  applies_unchanged: false
-  local_context_required: true
-child_of:
-  - DSET-DECISION-OPS-004
-  - DSET-DECISION-GOV-011
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-032"
+type = "decision"
+semantic_id = "DSET-DECISION-OPS-005"
+status = "accepted"
+priority = "high"
+authority = "operator:anatoly-m-maslennikov"
+claim = "The release lifecycle uses six flat Delivery subtypes while preserving explicit reference and gate boundaries."
+child_of = ["DSET-DECISION-OPS-004", "DSET-DECISION-GOV-011"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+
+[scope]
+kind = "layer"
+id = "ops"
+
+[promotion]
+affected_children = ["meta", "gov", "tool", "skill", "ops"]
+applies_unchanged = false
+local_context_required = true
+
+[promotion.parent_scope]
+kind = "project"
+id = "dset-specs-loops-framework"
++++
 
 # Decision — Run releases through six flat Delivery roles
 

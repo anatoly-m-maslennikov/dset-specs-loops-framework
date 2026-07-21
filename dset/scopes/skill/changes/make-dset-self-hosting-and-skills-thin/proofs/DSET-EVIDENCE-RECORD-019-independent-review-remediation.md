@@ -1,13 +1,11 @@
----
-artifact_type: evidence_record
-artifact_subtype: review_report
-artifact_id: DSET-EVIDENCE-RECORD-019
-priority: critical
-child_of:
-  - DSET-REQUIREMENT-SKILL-011
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "evidence_record"
+artifact_subtype = "review_report"
+artifact_id = "DSET-EVIDENCE-RECORD-019"
+priority = "critical"
+child_of = ["DSET-REQUIREMENT-SKILL-011"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
++++
 
 # Review report — independent DSET remediation and current local gate
 

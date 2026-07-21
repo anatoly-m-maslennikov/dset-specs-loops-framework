@@ -1,24 +1,24 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-036
-type: qa
-subtype: test
-semantic_id: DSET-TEST-GOV-036
-status: accepted
-priority: high
-authority: "operator:anatoly-m-maslennikov"
-claim: "Deterministic validation proves the typed-relation vocabulary, direction, integrity, compatibility, projection ranges, and generated traceability contract."
-scope:
-  kind: project
-  id: dset-specs-loops-framework
-promotion:
-  parent_scope: null
-relations:
-  - type: check_of
-    target: DSET-DECISION-GOV-013
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-036"
+type = "qa"
+subtype = "test"
+semantic_id = "DSET-TEST-GOV-036"
+status = "accepted"
+priority = "high"
+authority = "operator:anatoly-m-maslennikov"
+claim = "Deterministic validation proves the typed-relation vocabulary, direction, integrity, compatibility, projection ranges, and generated traceability contract."
+promotion = {}
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+
+[scope]
+kind = "project"
+id = "dset-specs-loops-framework"
+
+[[relations]]
+type = "check_of"
+target = "DSET-DECISION-GOV-013"
++++
 
 # Test — Validate typed artifact relations
 

@@ -1,13 +1,11 @@
----
-artifact_type: evidence_record
-artifact_subtype: evaluation_result
-artifact_id: DSET-EVIDENCE-RECORD-014
-priority: high
-child_of:
-  - DSET-EVALUATION-TOOL-003
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "evidence_record"
+artifact_subtype = "evaluation_result"
+artifact_id = "DSET-EVIDENCE-RECORD-014"
+priority = "high"
+child_of = ["DSET-EVALUATION-TOOL-003"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
++++
 
 # Evaluation result — OYOHA candidate review
 

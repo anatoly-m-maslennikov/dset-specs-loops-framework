@@ -38,7 +38,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class SkillDistributionTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.temporary = tempfile.TemporaryDirectory(dir=ROOT.parent)
+        self.temporary = tempfile.TemporaryDirectory(
+            dir=ROOT.parent,
+            ignore_cleanup_errors=True,
+        )
         self.root = Path(self.temporary.name)
         self.source = self.root / "source"
         shutil.copytree(ROOT / "skills", self.source / "skills")

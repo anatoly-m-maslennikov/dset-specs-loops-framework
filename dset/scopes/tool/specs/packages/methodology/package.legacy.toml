@@ -1,0 +1,30 @@
+schema_version = "1.0"
+transition_id = "DSET-CARRIER-TRANSITION-0946399221434426"
+authority_decision = "DSET-DECISION-GOV-018"
+original_path = "dset/scopes/tool/specs/packages/methodology/package.yaml"
+original_format = "yaml"
+original_sha256 = "cbf2fba881d9081281c1adc33f0c06e1203e7637736ad6f1ee1958a238be5a2c"
+semantic_sha256 = "3f1bc6b0d7c721e91b6d9adef5260e413ecb98b005fee5bb4607642d96233291"
+null_paths = []
+declared_loss = []
+
+[payload]
+schema_version = "1.2"
+package_id = "methodology"
+layer = "tool"
+requirements = ["DSET-REQUIREMENT-TOOL-001", "DSET-REQUIREMENT-TOOL-002", "DSET-REQUIREMENT-TOOL-003", "DSET-REQUIREMENT-TOOL-004", "DSET-REQUIREMENT-TOOL-018", "DSET-REQUIREMENT-TOOL-019", "DSET-REQUIREMENT-TOOL-021", "DSET-REQUIREMENT-TOOL-022"]
+tests = ["DSET-TEST-TOOL-001", "DSET-TEST-TOOL-002", "DSET-TEST-TOOL-003", "DSET-TEST-TOOL-004", "DSET-TEST-TOOL-005", "DSET-TEST-TOOL-018", "DSET-TEST-TOOL-019", "DSET-TEST-TOOL-021", "DSET-TEST-TOOL-022"]
+evals = ["DSET-EVAL-TOOL-001", "DSET-EVALUATION-TOOL-003", "DSET-EVALUATION-TOOL-004"]
+contracts = ["DSET-CONTRACT-TOOL-001", "DSET-CONTRACT-TOOL-002"]
+stories = []
+outcomes = []
+
+[payload.artifacts]
+hub = "README.md"
+domain = "domain.md"
+spec = "spec.md"
+contracts = "contracts.md"
+stories = "stories.md"
+outcomes = "outcomes.md"
+test_plan = "test-plan.md"
+eval_plan = "eval-plan.md"

@@ -1,26 +1,28 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-041
-type: qa
-subtype: test
-semantic_id: DSET-TEST-SKILL-014
-status: accepted
-priority: high
-authority: "operator:anatoly-m-maslennikov"
-claim: "Deterministic tests prove lazy prerequisite closure and strict implementation-only behavior from project settings."
-scope:
-  kind: project
-  id: dset-specs-loops-framework
-promotion:
-  parent_scope: null
-relations:
-  - type: check_of
-    target: DSET-REQUIREMENT-SKILL-012
-  - type: replacement_of
-    target: DSET-TEST-SKILL-012
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-041"
+type = "qa"
+subtype = "test"
+semantic_id = "DSET-TEST-SKILL-014"
+status = "accepted"
+priority = "high"
+authority = "operator:anatoly-m-maslennikov"
+claim = "Deterministic tests prove lazy prerequisite closure and strict implementation-only behavior from project settings."
+promotion = {}
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+
+[scope]
+kind = "project"
+id = "dset-specs-loops-framework"
+
+[[relations]]
+type = "check_of"
+target = "DSET-REQUIREMENT-SKILL-012"
+
+[[relations]]
+type = "replacement_of"
+target = "DSET-TEST-SKILL-012"
++++
 
 # Test — Validate implementation preparation modes
 

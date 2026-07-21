@@ -1,13 +1,12 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-016
-type: problem
-semantic_id: DSET-PROBLEM-TOOL-006
-status: accepted
-priority: high
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-016"
+type = "problem"
+semantic_id = "DSET-PROBLEM-TOOL-006"
+status = "accepted"
+priority = "high"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
++++
 
 # Problem — Initializer contradicts active automation
 

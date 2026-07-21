@@ -1,23 +1,23 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-046
-type: decision
-semantic_id: DSET-DECISION-GOV-014
-status: accepted
-priority: high
-authority: "operator:anatoly-m-maslennikov"
-claim: "TOML migration may omit an explicit null only for a governed field whose declared meaning is exactly optional and unset; every other null blocks migration."
-scope:
-  kind: project
-  id: dset-specs-loops-framework
-promotion:
-  parent_scope: null
-relations:
-  - type: child_of
-    target: DSET-REQUIREMENT-GOV-036
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-046"
+type = "decision"
+semantic_id = "DSET-DECISION-GOV-014"
+status = "accepted"
+priority = "high"
+authority = "operator:anatoly-m-maslennikov"
+claim = "TOML migration may omit an explicit null only for a governed field whose declared meaning is exactly optional and unset; every other null blocks migration."
+promotion = {}
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+
+[scope]
+kind = "project"
+id = "dset-specs-loops-framework"
+
+[[relations]]
+type = "child_of"
+target = "DSET-REQUIREMENT-GOV-036"
++++
 
 # Decision — Normalize only declared optional-unset nulls
 

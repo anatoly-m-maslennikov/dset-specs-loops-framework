@@ -1,12 +1,10 @@
----
-artifact_type: evidence_record
-artifact_subtype: test_result
-artifact_id: DSET-EVIDENCE-RECORD-021
-priority: high
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
-  - "claude:51fd6eb1-de4d-4ac4-9eb3-e00801a0f40d"
----
++++
+artifact_type = "evidence_record"
+artifact_subtype = "test_result"
+artifact_id = "DSET-EVIDENCE-RECORD-021"
+priority = "high"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d", "claude:51fd6eb1-de4d-4ac4-9eb3-e00801a0f40d"]
++++
 
 # Test result — independent Claude review attempt
 

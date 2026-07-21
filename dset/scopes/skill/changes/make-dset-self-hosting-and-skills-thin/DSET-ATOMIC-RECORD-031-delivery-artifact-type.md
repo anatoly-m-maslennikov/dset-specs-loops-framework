@@ -1,22 +1,20 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-031
-type: decision
-semantic_id: DSET-DECISION-GOV-011
-status: accepted
-priority: high
-authority: "operator:anatoly-m-maslennikov"
-claim: "Delivery is the canonical artifact type for the six release-lifecycle roles."
-scope:
-  kind: project
-  id: dset-specs-loops-framework
-promotion:
-  parent_scope: null
-child_of:
-  - DSET-DECISION-GOV-009
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-031"
+type = "decision"
+semantic_id = "DSET-DECISION-GOV-011"
+status = "accepted"
+priority = "high"
+authority = "operator:anatoly-m-maslennikov"
+claim = "Delivery is the canonical artifact type for the six release-lifecycle roles."
+promotion = {}
+child_of = ["DSET-DECISION-GOV-009"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+
+[scope]
+kind = "project"
+id = "dset-specs-loops-framework"
++++
 
 # Decision — Use Delivery for the release lifecycle
 

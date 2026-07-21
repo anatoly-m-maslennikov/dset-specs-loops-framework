@@ -1,22 +1,21 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-040
-type: decision
-subtype: requirement
-semantic_id: DSET-REQUIREMENT-GOV-036
-status: accepted
-priority: high
-authority: "operator:anatoly-m-maslennikov"
-claim: "TOML is the canonical encoding for DSET-owned structured artifacts and DSET Markdown frontmatter, with explicit generated or host-mandated format boundaries."
-scope:
-  kind: project
-  id: dset-specs-loops-framework
-promotion:
-  parent_scope: null
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
-rationale: "TOML makes configuration and artifact metadata easier to scan and removes indentation-dependent authority from DSET-owned structured files."
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-040"
+type = "decision"
+subtype = "requirement"
+semantic_id = "DSET-REQUIREMENT-GOV-036"
+status = "accepted"
+priority = "high"
+authority = "operator:anatoly-m-maslennikov"
+claim = "TOML is the canonical encoding for DSET-owned structured artifacts and DSET Markdown frontmatter, with explicit generated or host-mandated format boundaries."
+promotion = {}
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "TOML makes configuration and artifact metadata easier to scan and removes indentation-dependent authority from DSET-owned structured files."
+
+[scope]
+kind = "project"
+id = "dset-specs-loops-framework"
++++
 
 # Requirement — Use canonical TOML artifacts
 

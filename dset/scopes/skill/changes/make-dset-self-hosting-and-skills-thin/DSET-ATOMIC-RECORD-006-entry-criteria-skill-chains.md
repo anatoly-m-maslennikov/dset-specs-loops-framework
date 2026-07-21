@@ -1,14 +1,13 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-006
-type: decision
-subtype: requirement
-semantic_id: DSET-REQUIREMENT-SKILL-010
-status: accepted
-priority: unknown
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-006"
+type = "decision"
+subtype = "requirement"
+semantic_id = "DSET-REQUIREMENT-SKILL-010"
+status = "accepted"
+priority = "unknown"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
++++
 
 # Requirement — Enter skills by desired outcome
 

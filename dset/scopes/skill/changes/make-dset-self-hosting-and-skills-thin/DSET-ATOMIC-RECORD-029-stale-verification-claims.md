@@ -1,14 +1,13 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-029
-type: problem
-subtype: defect
-semantic_id: DSET-DEFECT-GOV-004
-status: accepted
-priority: high
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-029"
+type = "problem"
+subtype = "defect"
+semantic_id = "DSET-DEFECT-GOV-004"
+status = "accepted"
+priority = "high"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
++++
 
 # Defect — Verification retains invalidated pass claims
 

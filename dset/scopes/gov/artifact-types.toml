@@ -36,6 +36,9 @@ sha256 = "4fbb3bba040b5daf4440b65b4900c1e8ed7c2a637403086402853e4efa2490dc"
 current_owner = "dset/scopes/meta/specs/packages/methodology/package.toml"
 artifact_type = "implementation"
 artifact_subtype = "configuration"
+current_path = "dset/scopes/meta/specs/packages/methodology/package.legacy.toml"
+current_sha256 = "5c902a43ce7ee414af4a3c87ec89034faa05bf587300968a1f2bb5f27b43e8f2"
+transition_id = "DSET-CARRIER-TRANSITION-FE3ED2F97C161EDB"
 
 [[legacy_structured.retained_for]]
 semantic_id = "DSET-CONTRACT-META-001"
@@ -91,6 +94,9 @@ sha256 = "36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074"
 current_owner = "dset/scopes/gov/specs/packages/methodology/package.toml"
 artifact_type = "implementation"
 artifact_subtype = "configuration"
+current_path = "dset/scopes/gov/specs/packages/methodology/package.legacy.toml"
+current_sha256 = "b6d8a4bfcc1f3a7a69d3369bf7e8f819034e921120df91adc6ab633a1c08fd98"
+transition_id = "DSET-CARRIER-TRANSITION-C40BA6F6A543DF81"
 
 [[legacy_structured.retained_for]]
 semantic_id = "DSET-REQUIREMENT-GOV-001"
@@ -238,6 +244,9 @@ sha256 = "cbf2fba881d9081281c1adc33f0c06e1203e7637736ad6f1ee1958a238be5a2c"
 current_owner = "dset/scopes/tool/specs/packages/methodology/package.toml"
 artifact_type = "implementation"
 artifact_subtype = "configuration"
+current_path = "dset/scopes/tool/specs/packages/methodology/package.legacy.toml"
+current_sha256 = "8b9ff373065f9f1838e228ec380b3d8a7271f110505b69b3af7bf9673097c205"
+transition_id = "DSET-CARRIER-TRANSITION-0946399221434426"
 
 [[legacy_structured.retained_for]]
 semantic_id = "DSET-CONTRACT-TOOL-001"
@@ -285,6 +294,9 @@ sha256 = "8d13339aed1d48b874618d2699b86adbfb25298e78836bf98db718ad5a0dbd5f"
 current_owner = "dset/scopes/skill/specs/packages/methodology/package.toml"
 artifact_type = "implementation"
 artifact_subtype = "configuration"
+current_path = "dset/scopes/skill/specs/packages/methodology/package.legacy.toml"
+current_sha256 = "a09e9873386e21282309c8d5a23fdefa33195877f11d1c11e95a4addddc309f0"
+transition_id = "DSET-CARRIER-TRANSITION-759BFF370D07CBD6"
 
 [[legacy_structured.retained_for]]
 semantic_id = "DSET-CONTRACT-SKILL-001"
@@ -344,6 +356,9 @@ sha256 = "8fdaf12df71c216c49ec626950e3010d3a0a32a8a5e0b300a11d80c8692395fa"
 current_owner = "dset/scopes/ops/specs/packages/methodology/package.toml"
 artifact_type = "implementation"
 artifact_subtype = "configuration"
+current_path = "dset/scopes/ops/specs/packages/methodology/package.legacy.toml"
+current_sha256 = "bfdd7bcbfe0f24e1df7c61d11480aabd8e61fed2118da45f537c7c0b91a3956c"
+transition_id = "DSET-CARRIER-TRANSITION-A595D6DA8C837C2C"
 
 [[legacy_structured.retained_for]]
 semantic_id = "DSET-CONTRACT-OPS-001"
@@ -387,6 +402,9 @@ sha256 = "a27bd2fde8900df5eeb6ba9726ebc644dac6e91085bdade54137c2ba614a098f"
 current_owner = "dset/scopes/gov/provenance.toml"
 artifact_type = "implementation"
 artifact_subtype = "configuration"
+current_path = "dset/scopes/gov/provenance.legacy.toml"
+current_sha256 = "cda083abe863c9515a4af9fc8421d5143b7c73213b0f8ee1e914fe8d4a805e60"
+transition_id = "DSET-CARRIER-TRANSITION-577AD7CA15578D8F"
 
 [[legacy_structured.retained_for]]
 semantic_id = "DSET-DECISION-GOV-002"
@@ -414,6 +432,9 @@ sha256 = "0003383a985ecad880182f0971df5480b87a2328a161feee7da66854513d686e"
 current_owner = "dset/scopes/gov/intake.toml"
 artifact_type = "implementation"
 artifact_subtype = "configuration"
+current_path = "dset/scopes/gov/intake.legacy.toml"
+current_sha256 = "06e67cba2a873141d55e6ae8d635dd92febb8f44fbc4081748ab1f58a2092781"
+transition_id = "DSET-CARRIER-TRANSITION-F41CF947185B7C48"
 
 [[legacy_structured.retained_for]]
 carrier_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/schema-self-application-audit-2026-07-15.md"
@@ -425,6 +446,9 @@ sha256 = "a6175b0f646b61d5e42da43ee7ef26f1032688b62afcc7ed2e2b88c812e590c3"
 current_owner = "dset/scopes/ops/history/pull-requests.toml"
 artifact_type = "implementation"
 artifact_subtype = "configuration"
+current_path = "dset/scopes/ops/history/pull-requests.legacy.toml"
+current_sha256 = "dc1de968f66af5953b0892042f3d47e898f1e55573cb741688e4262f70961392"
+transition_id = "DSET-CARRIER-TRANSITION-86AABA1C59A70E14"
 
 [[legacy_structured.retained_for]]
 carrier_path = "dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/proofs/github-delivery-evidence-2026-07-14.md"
@@ -436,6 +460,9 @@ sha256 = "0a6c0fead5ca7d003a64b020fef8610729d184717ed329a571b80d8417a2e53b"
 current_owner = "dset/scopes/gov/generated/traceability.toml"
 artifact_type = "derived_view"
 artifact_subtype = "traceability_index"
+current_path = "dset/scopes/gov/generated/traceability.legacy.toml"
+current_sha256 = "3b5202a9c87a87b62181ce1e54c856e6a2c3728197cb66c4796165d632cd5be0"
+transition_id = "DSET-CARRIER-TRANSITION-C1ACD9A9D4BE2FF0"
 
 [[legacy_structured.retained_for]]
 carrier_path = "dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/proofs/github-delivery-evidence-2026-07-14.md"
@@ -447,6 +474,9 @@ sha256 = "64c5e571aabe0700e337b5b1e07531c941b61e529d73593c8af945e91211cdf6"
 current_owner = "dset/scopes/gov/migrations/migration-map.template.toml"
 artifact_type = "implementation"
 artifact_subtype = "migration"
+current_path = "dset/scopes/gov/migrations/migration-map.template.legacy.toml"
+current_sha256 = "9049a7f00277c02b45fad86e00f4b9923d1c9a9886ed12d5abb2d0a6d2f81a8a"
+transition_id = "DSET-CARRIER-TRANSITION-CCC00A129E103906"
 
 [[legacy_structured.retained_for]]
 carrier_path = "dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1/proofs/qualitative-evals-2026-07-14.md"

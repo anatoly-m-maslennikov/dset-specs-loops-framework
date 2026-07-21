@@ -1,16 +1,14 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-011
-type: qa
-subtype: test
-semantic_id: DSET-TEST-TOOL-020
-status: accepted
-priority: high
-child_of:
-  - DSET-REQUIREMENT-TOOL-020
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-011"
+type = "qa"
+subtype = "test"
+semantic_id = "DSET-TEST-TOOL-020"
+status = "accepted"
+priority = "high"
+child_of = ["DSET-REQUIREMENT-TOOL-020"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
++++
 
 # Test — Validate the TypeScript candidate profile
 

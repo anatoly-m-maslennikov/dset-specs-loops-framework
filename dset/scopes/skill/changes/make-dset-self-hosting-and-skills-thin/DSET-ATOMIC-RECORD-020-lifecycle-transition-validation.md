@@ -1,14 +1,13 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-020
-type: problem
-subtype: defect
-semantic_id: DSET-DEFECT-GOV-001
-status: accepted
-priority: critical
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-020"
+type = "problem"
+subtype = "defect"
+semantic_id = "DSET-DEFECT-GOV-001"
+status = "accepted"
+priority = "critical"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
++++
 
 # Defect — Lifecycle transitions are not enforced
 

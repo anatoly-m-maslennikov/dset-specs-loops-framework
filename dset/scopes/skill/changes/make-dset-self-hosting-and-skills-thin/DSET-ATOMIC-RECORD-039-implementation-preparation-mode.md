@@ -1,25 +1,25 @@
----
-artifact_type: atomic_record
-artifact_id: DSET-ATOMIC-RECORD-039
-type: decision
-subtype: requirement
-semantic_id: DSET-REQUIREMENT-SKILL-012
-status: accepted
-priority: high
-authority: "operator:anatoly-m-maslennikov"
-claim: "Each project selects lazy or strict dset-implement preparation, with lazy as the documented default."
-scope:
-  kind: project
-  id: dset-specs-loops-framework
-promotion:
-  parent_scope: null
-relations:
-  - type: replacement_of
-    target: DSET-REQUIREMENT-SKILL-010
-llm_session_ids:
-  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
-rationale: "One entrypoint should serve operators who want automatic prerequisite closure and automations that require a preparation-free implementation boundary."
----
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-039"
+type = "decision"
+subtype = "requirement"
+semantic_id = "DSET-REQUIREMENT-SKILL-012"
+status = "accepted"
+priority = "high"
+authority = "operator:anatoly-m-maslennikov"
+claim = "Each project selects lazy or strict dset-implement preparation, with lazy as the documented default."
+promotion = {}
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "One entrypoint should serve operators who want automatic prerequisite closure and automations that require a preparation-free implementation boundary."
+
+[scope]
+kind = "project"
+id = "dset-specs-loops-framework"
+
+[[relations]]
+type = "replacement_of"
+target = "DSET-REQUIREMENT-SKILL-010"
++++
 
 # Requirement — Select implementation preparation mode
 
