@@ -12,6 +12,13 @@ from .validation import validate_repository
 from .yaml_subset import load
 
 
+def _verification_args(command: object) -> list[str]:
+    """Expand exact command placeholders without reparsing native paths."""
+
+    args = shlex.split(str(command))
+    return [sys.executable if arg == "{python}" else arg for arg in args]
+
+
 def verify_repository(root: Path) -> list[Diagnostic]:
     diagnostics = validate_repository(root)
     if diagnostics:
@@ -20,7 +27,7 @@ def verify_repository(root: Path) -> list[Diagnostic]:
     manifest = load(layout.manifest_path)
     verification = manifest.get("verification", {})
     for command in verification.get("commands", []):
-        args = shlex.split(str(command).replace("{python}", sys.executable))
+        args = _verification_args(command)
         result = subprocess.run(
             args,
             cwd=root,
