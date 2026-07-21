@@ -35,3 +35,4 @@ diagnose failure.
 - [Current Claude review attempt](DSET-EVIDENCE-RECORD-037-current-claude-review-attempt.md)
 - [Read-only Overview skill](DSET-EVIDENCE-RECORD-038-overview-skill.md)
 - [Project-scoped host boundary](DSET-EVIDENCE-RECORD-039-project-scoped-host-boundary.md)
+- [Claude review packet 005](DSET-EVIDENCE-RECORD-040-claude-review-packet-005.md)
