@@ -74,6 +74,16 @@ resolves = []
 session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
 rationale = "Preserve the immutable commit while removing a Test ID from implementation authority."
 
+[[commit_provenance.corrections]]
+commit = "cee6f4322bbfe3f408f0f644d1abb99ded4c86a7"
+original_message_sha256 = "d9cee712ef5ad37bf6427df1a753103c794e83d15dd7f77bbc8d6b6a5eebea8d"
+mode = "implementation"
+decision_ids = ["DSET-REQUIREMENT-META-011", "DSET-REQUIREMENT-OPS-005"]
+verifies = []
+resolves = []
+session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+rationale = "Preserve the immutable commit while replacing its unaccepted Change-delta Requirement with active Work Area and release-configuration authority."
+
 [verification]
 commands = ["uv run ruff format --check dset_toolchain tests", "uv run ruff check dset_toolchain tests", "uv run mypy dset_toolchain tests", "{python} -m unittest discover -s tests -v", "git diff --check"]
 
