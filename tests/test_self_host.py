@@ -49,6 +49,7 @@ class SelfHostTests(unittest.TestCase):
                 "implement",
                 "verify",
                 "complete",
+                "overview",
             ],
         )
         self.assertTrue(report["wrappers_unchanged"])
