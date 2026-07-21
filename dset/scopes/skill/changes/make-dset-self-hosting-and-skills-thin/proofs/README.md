@@ -38,3 +38,4 @@ diagnose failure.
 - [Claude review packet 005](DSET-EVIDENCE-RECORD-040-claude-review-packet-005.md)
 - [Portable text fixed point](DSET-EVIDENCE-RECORD-041-portable-text-fixed-point.md)
 - [Claude review packet 006 approval boundary](DSET-EVIDENCE-RECORD-042-claude-review-packet-006-boundary.md)
+- [Claude review packet 007](DSET-EVIDENCE-RECORD-043-claude-review-packet-007.md)
