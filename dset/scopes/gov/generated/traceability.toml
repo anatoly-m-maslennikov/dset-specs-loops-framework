@@ -8673,6 +8673,14 @@ origin = "commit_trailer"
 llm_session_ids = []
 
 [[relations]]
+source = "cac409f268b3971b9aa1749599f6591dd18182bd"
+source_kind = "commit"
+type = "implementation_of"
+target = "DSET-DECISION-GOV-002"
+origin = "commit_trailer"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+
+[[relations]]
 source = "cb4c06a2dbe8982301f73c1d9e7bc70db809a72c"
 source_kind = "commit"
 type = "implementation_of"
