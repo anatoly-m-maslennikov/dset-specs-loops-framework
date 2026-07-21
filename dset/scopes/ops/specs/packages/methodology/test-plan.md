@@ -16,6 +16,7 @@ This fragment owns exact deterministic proof for its listed IDs. Shared package 
 | **DSET-TEST-OPS-018** | DSET-DECISION-OPS-009, DSET-CONTRACT-TOOL-001 | Require case-sensitive POSIX relative-path text to own project-health source traversal instead of host-native Path ordering | `python -m unittest tests.test_health` plus hosted platform matrix |
 | **DSET-TEST-OPS-019** | DSET-DECISION-OPS-010, DSET-CONTRACT-TOOL-001 | Require a Windows Python path with backslashes and spaces to remain one exact subprocess argument after verification-template expansion | `python -m unittest tests.test_verification` plus hosted platform matrix |
 | **DSET-TEST-OPS-020** | DSET-DECISION-OPS-011, DSET-CONTRACT-TOOL-001 | Require aliased repository paths to compare by resolved identity and Windows relative Path values to serialize as canonical POSIX repository text | Layout, archive, evidence, and hosted platform regressions |
+| **DSET-TEST-OPS-021** | DSET-DECISION-OPS-012, DSET-CONTRACT-TOOL-001 | Require temporary Git repositories and byte-sensitive fixtures to preserve exact worktree/blob identity independent of Windows newline defaults | Carrier-transition, semantic-atom, migration, bootstrap, artifact-type, and hosted platform regressions |
 
 ## Regression policy
 

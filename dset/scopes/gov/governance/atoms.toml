@@ -177,6 +177,14 @@ type = "decision"
 subtype = "none"
 
 [[records]]
+semantic_id = "DSET-DECISION-OPS-012"
+carrier_id = "DSET-ATOMIC-RECORD-099"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-099-deterministic-git-fixture-bytes.md"
+sha256 = "46ecc9f34b946568911ea3a0760b6e7e74ab2e28a0d6b2704940013d27f9564b"
+type = "decision"
+subtype = "none"
+
+[[records]]
 semantic_id = "DSET-DECISION-SKILL-003"
 carrier_id = "DSET-ATOMIC-RECORD-081"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-081-overview-public-entrypoint.md"
@@ -392,6 +400,14 @@ semantic_id = "DSET-DEFECT-TOOL-009"
 carrier_id = "DSET-ATOMIC-RECORD-095"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-095-platform-path-alias-boundaries.md"
 sha256 = "e446816680c5d9504b407d20cc53065438982b8dde1d98bf6b6447882ea0e55d"
+type = "problem"
+subtype = "defect"
+
+[[records]]
+semantic_id = "DSET-DEFECT-TOOL-010"
+carrier_id = "DSET-ATOMIC-RECORD-098"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-098-windows-fixture-byte-policy.md"
+sha256 = "e823bb237fea263f874d721b6c397682171b786b1e26d9b3d059249addb28d7e"
 type = "problem"
 subtype = "defect"
 
@@ -838,6 +854,14 @@ semantic_id = "DSET-TEST-OPS-020"
 carrier_id = "DSET-ATOMIC-RECORD-097"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-097-canonical-filesystem-path-boundary-test.md"
 sha256 = "6becc0da178ce1a89bd77440350698cac4ee7802cc0ef139c4231a9a1c7974d5"
+type = "qa"
+subtype = "test"
+
+[[records]]
+semantic_id = "DSET-TEST-OPS-021"
+carrier_id = "DSET-ATOMIC-RECORD-100"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-100-deterministic-git-fixture-bytes-test.md"
+sha256 = "ac4cc10f8d575b2c4d3a2576adf06b75371048895db302b62e6a0c9ed6cc2f21"
 type = "qa"
 subtype = "test"
 
