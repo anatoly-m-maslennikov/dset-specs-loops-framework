@@ -51,10 +51,10 @@ llm_session_ids = []
 
 ## Typed relation inventory
 
-- **Forward relations:** 437
-- **By type:** analysis_of=1, check_of=26, child_of=47, evidence_for=19, implementation_of=292, projection_of=6, relates_to=19, replacement_of=21, resolution_of=6
-- **By origin:** authored=114, commit_trailer=292, legacy_child_of=31
-- **By source kind:** artifact=145, commit=292
+- **Forward relations:** 438
+- **By type:** analysis_of=1, check_of=26, child_of=47, evidence_for=19, implementation_of=293, projection_of=6, relates_to=19, replacement_of=21, resolution_of=6
+- **By origin:** authored=114, commit_trailer=293, legacy_child_of=31
+- **By source kind:** artifact=145, commit=293
 
 ## Unresolved work
 
