@@ -738,6 +738,14 @@ type = "qa"
 subtype = "test"
 
 [[records]]
+semantic_id = "DSET-TEST-OPS-017"
+carrier_id = "DSET-ATOMIC-RECORD-085"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-085-portable-text-byte-policy-test.md"
+sha256 = "1d609dd8ea329c916d6b85f18f6e8e9b0fc3356ae646a397a6da02bfdd6d3f8e"
+type = "qa"
+subtype = "test"
+
+[[records]]
 semantic_id = "DSET-TEST-SKILL-014"
 carrier_id = "DSET-ATOMIC-RECORD-041"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-041-implementation-preparation-mode-test.md"
