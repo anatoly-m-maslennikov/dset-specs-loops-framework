@@ -12,6 +12,8 @@ This fragment owns exact deterministic proof for its listed IDs. Shared package 
 | **DSET-TEST-OPS-006** | DSET-REQUIREMENT-OPS-006, DSET-INVARIANT-OPS-005 | Reject RC/final transitions whose exact-SHA readiness artifact has incomplete scope, failed/applicability proof, missing pilot/distribution evidence, blockers, or a substantive final-promotion diff | Release-readiness fixture matrix |
 | **DSET-TEST-OPS-007** | DSET-REQUIREMENT-OPS-007, DSET-INVARIANT-OPS-006 | Require canonical product identity and exact SemVer-to-PEP-440 RC equivalence while accepting independent schema/profile/template compatibility versions | Version-surface consistency fixtures |
 | **Historical DSET-TEST-OPS-016** | DSET-DECISION-OPS-006 | Delivery-name release-role proof is superseded by cross-layer `DSET-TEST-GOV-044` | Historical release-role fixtures |
+| **DSET-TEST-OPS-017** | DSET-DECISION-OPS-008, DSET-CONTRACT-TOOL-001 | Require representative source, governance, migration, and generated paths to resolve to the repository-owned LF worktree policy | `python -m unittest tests.test_cross_platform_contract` plus hosted platform matrix |
+| **DSET-TEST-OPS-018** | DSET-DECISION-OPS-009, DSET-CONTRACT-TOOL-001 | Require case-sensitive POSIX relative-path text to own project-health source traversal instead of host-native Path ordering | `python -m unittest tests.test_health` plus hosted platform matrix |
 
 ## Regression policy
 

@@ -153,6 +153,14 @@ type = "decision"
 subtype = "none"
 
 [[records]]
+semantic_id = "DSET-DECISION-OPS-009"
+carrier_id = "DSET-ATOMIC-RECORD-090"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-090-canonical-health-path-order.md"
+sha256 = "3262e65e970ea50b3b21a05d17cdac1367e6cb7e3ab488082b284ca84f736531"
+type = "decision"
+subtype = "none"
+
+[[records]]
 semantic_id = "DSET-DECISION-SKILL-003"
 carrier_id = "DSET-ATOMIC-RECORD-081"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-081-overview-public-entrypoint.md"
@@ -244,6 +252,14 @@ semantic_id = "DSET-DEFECT-OPS-002"
 carrier_id = "DSET-ATOMIC-RECORD-083"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-083-windows-line-ending-drift.md"
 sha256 = "fb637f0c305ba54b4892dcf4e0c55b9ce3d25eb90e63a3e2f94c48ff9f28da1a"
+type = "problem"
+subtype = "defect"
+
+[[records]]
+semantic_id = "DSET-DEFECT-OPS-003"
+carrier_id = "DSET-ATOMIC-RECORD-089"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-089-platform-dependent-health-order.md"
+sha256 = "a0244466c2a6cd9ffcd51163decbdaffc8c6bb86c1ee28e4c88989ab6df16df2"
 type = "problem"
 subtype = "defect"
 
@@ -766,6 +782,14 @@ semantic_id = "DSET-TEST-OPS-017"
 carrier_id = "DSET-ATOMIC-RECORD-085"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-085-portable-text-byte-policy-test.md"
 sha256 = "1d609dd8ea329c916d6b85f18f6e8e9b0fc3356ae646a397a6da02bfdd6d3f8e"
+type = "qa"
+subtype = "test"
+
+[[records]]
+semantic_id = "DSET-TEST-OPS-018"
+carrier_id = "DSET-ATOMIC-RECORD-091"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-091-canonical-health-path-order-test.md"
+sha256 = "ed984d92dddebe5d7b034a8d261c7891c3e8f62e7cfe7ba0688284806c00a3c3"
 type = "qa"
 subtype = "test"
 

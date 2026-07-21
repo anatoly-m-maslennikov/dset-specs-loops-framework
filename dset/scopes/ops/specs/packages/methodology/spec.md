@@ -18,6 +18,14 @@ byte identity of immutable carriers on Linux, macOS, native Windows, and WSL
 without weakening carrier-digest validation. Content detected as binary is not
 line-ending normalized.
 
+### DSET-DECISION-OPS-009 — Canonical project-health path ordering
+
+Derived project-health source digests order included files by their
+case-sensitive POSIX relative-path text before hashing that same path text and
+the current working-tree bytes. The digest therefore remains sensitive to
+uncommitted content while producing one traversal order on Linux, macOS,
+native Windows, and WSL.
+
 ## DSET-REQUIREMENT-OPS-001 — Production supportability is explicit and risk-scaled
 
 Every production-bound tool must define a supportability contract appropriate to its runtime risk profile and deployment topology. The contract covers incident triggers or objectives; operator-usable evidence; end-to-end correlation and deploy/change identity; safe read-only diagnostics and permissions; retention, redaction, access, deletion, volume, cardinality, and sampling bounds; runbook, escalation, rollback or kill-switch paths; and traceability from an incident to governing requirements, changes, PRs, and fixes. Telemetry is diagnostic evidence, not a competing business-state authority. A non-production tool may mark the contract not applicable only with a reason.
