@@ -169,6 +169,14 @@ type = "decision"
 subtype = "none"
 
 [[records]]
+semantic_id = "DSET-DECISION-OPS-011"
+carrier_id = "DSET-ATOMIC-RECORD-096"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-096-canonical-filesystem-path-boundary.md"
+sha256 = "b47585fc42e1bd6759bd11b3cdb2c83fde8c02d405aeac681943adc3f1c43040"
+type = "decision"
+subtype = "none"
+
+[[records]]
 semantic_id = "DSET-DECISION-SKILL-003"
 carrier_id = "DSET-ATOMIC-RECORD-081"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-081-overview-public-entrypoint.md"
@@ -376,6 +384,14 @@ semantic_id = "DSET-DEFECT-TOOL-008"
 carrier_id = "DSET-ATOMIC-RECORD-092"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-092-windows-python-placeholder-parsing.md"
 sha256 = "86ac4b51cd8b33ed75eec90854ae14766d086e843af36b6bab433a5c02892c7e"
+type = "problem"
+subtype = "defect"
+
+[[records]]
+semantic_id = "DSET-DEFECT-TOOL-009"
+carrier_id = "DSET-ATOMIC-RECORD-095"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-095-platform-path-alias-boundaries.md"
+sha256 = "e446816680c5d9504b407d20cc53065438982b8dde1d98bf6b6447882ea0e55d"
 type = "problem"
 subtype = "defect"
 
@@ -814,6 +830,14 @@ semantic_id = "DSET-TEST-OPS-019"
 carrier_id = "DSET-ATOMIC-RECORD-094"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-094-platform-native-verification-placeholder-test.md"
 sha256 = "50396aaec5f268362ca0921dc7740f83d61c43bee2a10df98c9b2b4eeb707e36"
+type = "qa"
+subtype = "test"
+
+[[records]]
+semantic_id = "DSET-TEST-OPS-020"
+carrier_id = "DSET-ATOMIC-RECORD-097"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-097-canonical-filesystem-path-boundary-test.md"
+sha256 = "6becc0da178ce1a89bd77440350698cac4ee7802cc0ef139c4231a9a1c7974d5"
 type = "qa"
 subtype = "test"
 
