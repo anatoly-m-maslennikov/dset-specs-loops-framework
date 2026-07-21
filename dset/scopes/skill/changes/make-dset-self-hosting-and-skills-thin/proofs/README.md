@@ -36,3 +36,5 @@ diagnose failure.
 - [Read-only Overview skill](DSET-EVIDENCE-RECORD-038-overview-skill.md)
 - [Project-scoped host boundary](DSET-EVIDENCE-RECORD-039-project-scoped-host-boundary.md)
 - [Claude review packet 005](DSET-EVIDENCE-RECORD-040-claude-review-packet-005.md)
+- [Portable text fixed point](DSET-EVIDENCE-RECORD-041-portable-text-fixed-point.md)
+- [Claude review packet 006 approval boundary](DSET-EVIDENCE-RECORD-042-claude-review-packet-006-boundary.md)
