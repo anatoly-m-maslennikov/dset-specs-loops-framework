@@ -7,6 +7,7 @@ from types import SimpleNamespace
 
 from dset_toolchain.adopter import create_adopter
 from dset_toolchain.health import (
+    _ordered_source_entries,
     _qa_ids,
     build_health_model,
     health_is_fresh,
@@ -55,6 +56,16 @@ class ProjectHealthTests(unittest.TestCase):
         self.assertFalse(health_is_fresh(self.root))
         self.assertEqual(write_health(self.root), path)
         self.assertTrue(health_is_fresh(self.root))
+
+    def test_source_digest_uses_case_sensitive_posix_path_order(self) -> None:
+        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+            root = Path(raw)
+            (root / "a.txt").write_text("lower\n", encoding="utf-8")
+            (root / "Z.txt").write_text("upper\n", encoding="utf-8")
+
+            ordered = [relative for relative, _ in _ordered_source_entries(root)]
+
+        self.assertEqual(ordered, ["Z.txt", "a.txt"])
 
     def test_model_has_repository_drill_downs_and_honest_coverage(self) -> None:
         model = build_health_model(self.root)

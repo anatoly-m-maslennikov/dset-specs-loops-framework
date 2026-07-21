@@ -638,7 +638,18 @@ def _canonical_package_manifest(root: Path, path: Path) -> bool:
 
 def _source_digest(root: Path) -> str:
     digest = hashlib.sha256()
-    for path in sorted(root.rglob("*")):
+    for relative, path in _ordered_source_entries(root):
+        digest.update(relative.encode())
+        digest.update(b"\0")
+        digest.update(path.read_bytes())
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def _ordered_source_entries(root: Path) -> list[tuple[str, Path]]:
+    """Return governed source files in one host-independent path order."""
+    entries: list[tuple[str, Path]] = []
+    for path in root.rglob("*"):
         if not path.is_file():
             continue
         relative = path.relative_to(root)
@@ -646,11 +657,8 @@ def _source_digest(root: Path) -> str:
             continue
         if "generated" in relative.parts or relative.parts[0] == ".dset":
             continue
-        digest.update(relative.as_posix().encode())
-        digest.update(b"\0")
-        digest.update(path.read_bytes())
-        digest.update(b"\0")
-    return digest.hexdigest()
+        entries.append((relative.as_posix(), path))
+    return sorted(entries, key=lambda entry: entry[0])
 
 
 def _frontmatter(path: Path) -> dict[str, Any] | None:
