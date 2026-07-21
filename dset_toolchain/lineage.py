@@ -203,7 +203,15 @@ def build_commit_implementation_relations(root: Path) -> list[dict[str, Any]]:
     """Derive typed implementation relations from immutable Git trailers."""
     try:
         completed = subprocess.run(
-            ["git", "log", "--no-merges", "--format=%H%x1f%B%x1e"],
+            [
+                "git",
+                "log",
+                "--no-merges",
+                "--format=%H%x1f%B%x1e",
+                "--",
+                ".",
+                ":(exclude)**/generated/**",
+            ],
             cwd=root,
             check=True,
             capture_output=True,

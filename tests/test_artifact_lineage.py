@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -190,6 +191,67 @@ class ArtifactRelationTests(unittest.TestCase):
         self.assertTrue(matching)
         self.assertTrue(all(row["type"] == "implementation_of" for row in rows))
         self.assertTrue(matching[0]["llm_session_ids"])
+
+    def test_generated_only_commits_do_not_form_implementation_relations(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            self._git(root, "init")
+            self._git(root, "config", "user.name", "DSET Test")
+            self._git(root, "config", "user.email", "dset@example.invalid")
+
+            source = root / "source.py"
+            source.write_text("value = 1\n", encoding="utf-8")
+            substantive = self._commit(
+                root,
+                "feat: add source\n\n"
+                "Implements: APP-DECISION-GOV-001\n"
+                "Session: codex:test",
+            )
+
+            generated = root / "dset/generated/trace.toml"
+            generated.parent.mkdir(parents=True)
+            generated.write_text('state = "fresh"\n', encoding="utf-8")
+            refresh = self._commit(
+                root,
+                "chore: refresh trace\n\n"
+                "Implements: APP-DECISION-GOV-002\n"
+                "Session: codex:test",
+            )
+
+            source.write_text("value = 2\n", encoding="utf-8")
+            generated.write_text('state = "updated"\n', encoding="utf-8")
+            mixed = self._commit(
+                root,
+                "feat: update source and trace\n\n"
+                "Implements: APP-DECISION-GOV-003\n"
+                "Session: codex:test",
+            )
+
+            rows = build_commit_implementation_relations(root)
+            sources = {row["source"] for row in rows}
+
+            self.assertIn(substantive, sources)
+            self.assertIn(mixed, sources)
+            self.assertNotIn(refresh, sources)
+
+    @staticmethod
+    def _git(root: Path, *args: str) -> str:
+        completed = subprocess.run(
+            ["git", *args],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        return completed.stdout.strip()
+
+    @classmethod
+    def _commit(cls, root: Path, message: str) -> str:
+        cls._git(root, "add", "-A")
+        cls._git(root, "commit", "-m", message)
+        return cls._git(root, "rev-parse", "HEAD")
 
     @classmethod
     def _replacement_fixture(cls, root: Path) -> None:
