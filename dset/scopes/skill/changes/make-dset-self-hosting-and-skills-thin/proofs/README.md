@@ -33,3 +33,4 @@ diagnose failure.
 - [Version artifact Type](DSET-EVIDENCE-RECORD-035-version-artifact-type.md)
 - [Real host installation boundary](DSET-EVIDENCE-RECORD-036-real-host-install-boundary.md)
 - [Current Claude review attempt](DSET-EVIDENCE-RECORD-037-current-claude-review-attempt.md)
+- [Read-only Overview skill](DSET-EVIDENCE-RECORD-038-overview-skill.md)
