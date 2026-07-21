@@ -570,6 +570,16 @@ carrier_statuses = ["accepted"]
 lifecycle_events = []
 
 [[semantic_classifications]]
+id = "DSET-DECISION-OPS-009"
+type = "decision"
+subtype = "none"
+compatibility = false
+origins = ["modern_atom"]
+carriers = ["dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-090-canonical-health-path-order.md"]
+carrier_statuses = ["accepted"]
+lifecycle_events = []
+
+[[semantic_classifications]]
 id = "DSET-DECISION-SKILL-001"
 type = "decision"
 subtype = "none"
@@ -686,6 +696,16 @@ subtype = "defect"
 compatibility = false
 origins = ["modern_atom"]
 carriers = ["dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-083-windows-line-ending-drift.md"]
+carrier_statuses = ["accepted"]
+lifecycle_events = []
+
+[[semantic_classifications]]
+id = "DSET-DEFECT-OPS-003"
+type = "problem"
+subtype = "defect"
+compatibility = false
+origins = ["modern_atom"]
+carriers = ["dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-089-platform-dependent-health-order.md"]
 carrier_statuses = ["accepted"]
 lifecycle_events = []
 
@@ -3114,9 +3134,19 @@ id = "DSET-TEST-OPS-017"
 type = "qa"
 subtype = "test"
 compatibility = false
-origins = ["modern_atom"]
-carriers = ["dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-085-portable-text-byte-policy-test.md"]
-carrier_statuses = ["accepted"]
+origins = ["modern_atom", "package:tests"]
+carriers = ["dset/scopes/ops/specs/packages/methodology/package.toml", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-085-portable-text-byte-policy-test.md"]
+carrier_statuses = ["accepted", "defined"]
+lifecycle_events = []
+
+[[semantic_classifications]]
+id = "DSET-TEST-OPS-018"
+type = "qa"
+subtype = "test"
+compatibility = false
+origins = ["modern_atom", "package:tests"]
+carriers = ["dset/scopes/ops/specs/packages/methodology/package.toml", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-091-canonical-health-path-order-test.md"]
+carrier_statuses = ["accepted", "defined"]
 lifecycle_events = []
 
 [[semantic_classifications]]
@@ -3728,6 +3758,31 @@ origin = "authored"
 target = "DSET-CONTRACT-TOOL-001"
 
 [[semantic_atoms]]
+id = "DSET-DECISION-OPS-009"
+carrier_id = "DSET-ATOMIC-RECORD-090"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-090-canonical-health-path-order.md"
+sha256 = "3262e65e970ea50b3b21a05d17cdac1367e6cb7e3ab488082b284ca84f736531"
+type = "decision"
+subtype = "none"
+emission_status = "accepted"
+current_status = "accepted"
+priority = "critical"
+priority_source = "atom:DSET-DECISION-OPS-009"
+lifecycle_events = []
+absorbed_by = []
+archived = false
+
+[[semantic_atoms.relations]]
+type = "resolution_of"
+origin = "authored"
+target = "DSET-DEFECT-OPS-003"
+
+[[semantic_atoms.relations]]
+type = "child_of"
+origin = "authored"
+target = "DSET-CONTRACT-TOOL-001"
+
+[[semantic_atoms]]
 id = "DSET-DECISION-SKILL-003"
 carrier_id = "DSET-ATOMIC-RECORD-081"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-081-overview-public-entrypoint.md"
@@ -3898,6 +3953,26 @@ emission_status = "accepted"
 current_status = "accepted"
 priority = "critical"
 priority_source = "atom:DSET-DEFECT-OPS-002"
+lifecycle_events = []
+absorbed_by = []
+archived = false
+
+[[semantic_atoms.relations]]
+type = "child_of"
+origin = "authored"
+target = "DSET-CONTRACT-TOOL-001"
+
+[[semantic_atoms]]
+id = "DSET-DEFECT-OPS-003"
+carrier_id = "DSET-ATOMIC-RECORD-089"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-089-platform-dependent-health-order.md"
+sha256 = "a0244466c2a6cd9ffcd51163decbdaffc8c6bb86c1ee28e4c88989ab6df16df2"
+type = "problem"
+subtype = "defect"
+emission_status = "accepted"
+current_status = "accepted"
+priority = "critical"
+priority_source = "atom:DSET-DEFECT-OPS-003"
 lifecycle_events = []
 absorbed_by = []
 archived = false
@@ -5005,6 +5080,31 @@ archived = false
 type = "check_of"
 origin = "authored"
 target = "DSET-DECISION-OPS-008"
+
+[[semantic_atoms.relations]]
+type = "check_of"
+origin = "authored"
+target = "DSET-CONTRACT-TOOL-001"
+
+[[semantic_atoms]]
+id = "DSET-TEST-OPS-018"
+carrier_id = "DSET-ATOMIC-RECORD-091"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-091-canonical-health-path-order-test.md"
+sha256 = "ed984d92dddebe5d7b034a8d261c7891c3e8f62e7cfe7ba0688284806c00a3c3"
+type = "qa"
+subtype = "test"
+emission_status = "accepted"
+current_status = "accepted"
+priority = "critical"
+priority_source = "atom:DSET-TEST-OPS-018"
+lifecycle_events = []
+absorbed_by = []
+archived = false
+
+[[semantic_atoms.relations]]
+type = "check_of"
+origin = "authored"
+target = "DSET-DECISION-OPS-009"
 
 [[semantic_atoms.relations]]
 type = "check_of"
@@ -7113,6 +7213,26 @@ target = "DSET-DEFECT-OPS-002"
 llm_session_ids = []
 
 [[relations]]
+source = "DSET-DECISION-OPS-009"
+source_kind = "artifact"
+source_artifact_id = "DSET-ATOMIC-RECORD-090"
+source_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-090-canonical-health-path-order.md"
+type = "child_of"
+origin = "authored"
+target = "DSET-CONTRACT-TOOL-001"
+llm_session_ids = []
+
+[[relations]]
+source = "DSET-DECISION-OPS-009"
+source_kind = "artifact"
+source_artifact_id = "DSET-ATOMIC-RECORD-090"
+source_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-090-canonical-health-path-order.md"
+type = "resolution_of"
+origin = "authored"
+target = "DSET-DEFECT-OPS-003"
+llm_session_ids = []
+
+[[relations]]
 source = "DSET-DECISION-SKILL-003"
 source_kind = "artifact"
 source_artifact_id = "DSET-ATOMIC-RECORD-081"
@@ -7157,6 +7277,16 @@ source = "DSET-DEFECT-OPS-002"
 source_kind = "artifact"
 source_artifact_id = "DSET-ATOMIC-RECORD-083"
 source_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-083-windows-line-ending-drift.md"
+type = "child_of"
+origin = "authored"
+target = "DSET-CONTRACT-TOOL-001"
+llm_session_ids = []
+
+[[relations]]
+source = "DSET-DEFECT-OPS-003"
+source_kind = "artifact"
+source_artifact_id = "DSET-ATOMIC-RECORD-089"
+source_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-089-platform-dependent-health-order.md"
 type = "child_of"
 origin = "authored"
 target = "DSET-CONTRACT-TOOL-001"
@@ -8222,6 +8352,26 @@ source_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/
 type = "check_of"
 origin = "authored"
 target = "DSET-DECISION-OPS-008"
+llm_session_ids = []
+
+[[relations]]
+source = "DSET-TEST-OPS-018"
+source_kind = "artifact"
+source_artifact_id = "DSET-ATOMIC-RECORD-091"
+source_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-091-canonical-health-path-order-test.md"
+type = "check_of"
+origin = "authored"
+target = "DSET-CONTRACT-TOOL-001"
+llm_session_ids = []
+
+[[relations]]
+source = "DSET-TEST-OPS-018"
+source_kind = "artifact"
+source_artifact_id = "DSET-ATOMIC-RECORD-091"
+source_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-091-canonical-health-path-order-test.md"
+type = "check_of"
+origin = "authored"
+target = "DSET-DECISION-OPS-009"
 llm_session_ids = []
 
 [[relations]]
