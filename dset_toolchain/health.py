@@ -700,7 +700,7 @@ def _role(artifact_type: str, artifact_subtype: str | None) -> str:
         return "atomic"
     if artifact_type in {"specification", "plan", "procedure"}:
         return "evergreen"
-    if artifact_type == "delivery":
+    if artifact_type == "version":
         if artifact_subtype in {"roadmap", "version_scope", "release_plan"}:
             return "evergreen"
         return "transactional"

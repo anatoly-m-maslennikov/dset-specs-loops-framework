@@ -2,8 +2,8 @@
 
 **Status:** Historical predecessor roadmap for the published `0.3.1` baseline.
 Unchecked items are not current DSET `0.4` obligations. Active work is owned by
-the [0.4 Version Scope](../dset/scopes/ops/planning/DSET-DELIVERY-002-0-4-self-hosted-core.md)
-and [Roadmap](../dset/scopes/ops/planning/DSET-DELIVERY-005-0-4-core-vertical-cut.md).
+the [0.4 Version Scope](../dset/scopes/ops/planning/DSET-VERSION-002-0-4-self-hosted-core.md)
+and [Roadmap](../dset/scopes/ops/planning/DSET-VERSION-005-0-4-core-vertical-cut.md).
 
 **Historical outcome:** Make DSET self-hosting before external adoption, make
 skills thin wrappers over repository-local governing documents, prove that
@@ -229,7 +229,7 @@ entities and not deterministic test substitutes.
 ## Historical definition of done
 
 This checklist records the former `0.3` boundary and is not the active release
-gate. `DSET-DELIVERY-002` owns the current DSET-only `0.4` exit criteria;
+gate. `DSET-VERSION-002` owns the current DSET-only `0.4` exit criteria;
 external-adopter rows below are preserved only as historical routing context.
 
 - [ ] The released validator checks the candidate change, and the candidate checks both this repository and one generated adopter.

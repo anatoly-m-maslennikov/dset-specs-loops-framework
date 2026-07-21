@@ -2,9 +2,9 @@
 
 ## Active Decision source compilation
 
-### DSET-DECISION-OPS-006 — Flat Delivery lifecycle roles
+### DSET-DECISION-OPS-007 — Flat Version lifecycle roles
 
-The Decision compiles as six flat peer roles under the primary Delivery
+The Decision compiles as six flat peer roles under the primary Version
 artifact type: Roadmap, Version Scope, Change, Release Plan, Readiness Record,
 and Release Record. Milestone remains a Roadmap entry. Release Record combines
 delivered summary and publication identity. The absorbed OPS Decisions remain
@@ -57,7 +57,7 @@ The framework product version, CLI package version, release notes, rendered Git 
 ## DSET-REQUIREMENT-OPS-013 — Release lifecycle artifacts are flat and typed
 
 Every release-applicable project must represent release planning, bounded work,
-gates, and history with six peer roles under the primary Delivery artifact
+gates, and history with six peer roles under the primary Version artifact
 type: Roadmap, Version Scope, Change, Release Plan, Readiness Record, and
 Release Record. Roadmap targets one next-minor Version Scope and owns milestone
 entries; Version Scope defines one version line; Change groups one bounded

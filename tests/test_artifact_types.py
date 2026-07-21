@@ -115,7 +115,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
             },
         )
         self.assertEqual(
-            catalog["delivery"],
+            catalog["version"],
             {
                 "roadmap",
                 "version_scope",
@@ -324,8 +324,8 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
     def test_type_only_names_are_default_and_subtype_names_are_opt_in(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)
-            base = root / "APP-DELIVERY-001-core.md"
-            self._write_classified(base, "APP-DELIVERY-001")
+            base = root / "APP-VERSION-001-core.md"
+            self._write_classified(base, "APP-VERSION-001")
             self.assertEqual(
                 validate_artifact_type_registry(
                     root,
@@ -336,10 +336,10 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
                 [],
             )
             base.unlink()
-            advanced = root / "APP-DELIVERY-VERSION-SCOPE-001-core.md"
+            advanced = root / "APP-VERSION-VERSION-SCOPE-001-core.md"
             self._write_classified(
                 advanced,
-                "APP-DELIVERY-VERSION-SCOPE-001",
+                "APP-VERSION-VERSION-SCOPE-001",
             )
             default_diagnostics = validate_artifact_type_registry(
                 root,
@@ -375,7 +375,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
             ROOT / "dset/scopes/gov/governance/artifact-classification.md"
         ).read_text(encoding="utf-8")
         for phrase in (
-            "`delivery`",
+            "`version`",
             "`roadmap`",
             "`version_scope`",
             "`change`",
@@ -403,7 +403,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
         path.write_text(
             render_frontmatter(
                 {
-                    "artifact_type": "delivery",
+                    "artifact_type": "version",
                     "artifact_subtype": "version_scope",
                     "artifact_id": artifact_id,
                 },

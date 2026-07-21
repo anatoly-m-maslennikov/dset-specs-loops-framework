@@ -35,8 +35,8 @@ emitted content.
 The base naming convention uses the primary artifact type token in a new
 artifact ID and filename. Optional artifact subtypes live in direct metadata
 and do not enter the structural name. For example, a Version Scope is
-`DSET-DELIVERY-001-0-4-core.md` with `artifact_subtype: version_scope`; a
-Roadmap uses the same `DELIVERY` sequence with `artifact_subtype: roadmap`.
+`DSET-VERSION-001-0-4-core.md` with `artifact_subtype: version_scope`; a
+Roadmap uses the same `VERSION` sequence with `artifact_subtype: roadmap`.
 
 Projects may opt into subtype tokens for newly emitted artifacts with
 `artifacts.subtype_in_names = true` in root `dset_settings.toml`.
@@ -52,7 +52,7 @@ identity.
   work.
 - Procedure describes a reusable method; Plan describes one intended
   enactment.
-- Delivery owns bounded delivery intent, transaction, gate, and publication
+- Version owns bounded version intent, transaction, gate, and publication
   records; Plan owns intended implementation or proof work.
 - Implementation realizes accepted truth or QA definitions; Verification
   assesses what evidence supports.
@@ -68,10 +68,10 @@ External Audit Analysis is the project's interpretation and triage of it.
 
 ## Release lifecycle
 
-Release lifecycle artifacts remain flat peers under one primary `delivery`
+Release lifecycle artifacts remain flat peers under one primary `version`
 type. Its direct subtypes are `roadmap`, `version_scope`, `change`,
 `release_plan`, `readiness_record`, and `release_record`. They share one
-project-wide `DELIVERY` identity sequence. Milestones are Roadmap entries.
+project-wide `VERSION` identity sequence. Milestones are Roadmap entries.
 Release Notes and changelogs are rendered or derived from immutable Release
 Records.
 

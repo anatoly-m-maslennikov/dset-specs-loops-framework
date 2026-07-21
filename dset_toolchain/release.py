@@ -402,7 +402,7 @@ def _readiness_passed(path: Path, candidate_commit: str) -> bool:
     data, _body, _format = parsed
     if (
         not isinstance(data, dict)
-        or data.get("artifact_type") != "delivery"
+        or data.get("artifact_type") != "version"
         or data.get("artifact_subtype") != "readiness_record"
     ):
         raise ReleaseError("release readiness must use a Readiness Record")

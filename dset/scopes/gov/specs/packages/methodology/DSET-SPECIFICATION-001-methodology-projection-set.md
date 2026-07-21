@@ -45,6 +45,44 @@ through = "DSET-ATOMIC-RECORD-050"
 [relations.range.scope]
 kind = "project"
 id = "dset-specs-loops-framework"
+
+[[relations]]
+type = "projection_of"
+
+[relations.range]
+semantic_type = "decision"
+layer = "gov"
+through = "DSET-ATOMIC-RECORD-078"
+
+[relations.range.scope]
+kind = "layer"
+id = "gov"
+
+[[relations]]
+type = "projection_of"
+
+[relations.range]
+semantic_type = "qa"
+subtype = "test"
+layer = "gov"
+through = "DSET-ATOMIC-RECORD-079"
+
+[relations.range.scope]
+kind = "layer"
+id = "gov"
+
+[[relations]]
+type = "projection_of"
+
+[relations.range]
+semantic_type = "qa"
+subtype = "evaluation"
+layer = "gov"
+through = "DSET-ATOMIC-RECORD-080"
+
+[relations.range.scope]
+kind = "layer"
+id = "gov"
 +++
 
 # Methodology projection set

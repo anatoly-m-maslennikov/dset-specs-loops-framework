@@ -27,11 +27,11 @@ schema_version = "1.2"
 #
 # Accepted:
 # - false (default): type-only structural name.
-#   Example: DSET-DELIVERY-001-0-4-core.md
-#   Inside the artifact: artifact_type = "delivery" and
+#   Example: DSET-VERSION-001-0-4-core.md
+#   Inside the artifact: artifact_type = "version" and
 #   artifact_subtype = "version_scope".
 # - true: add the direct subtype token.
-#   Example: DSET-DELIVERY-VERSION-SCOPE-001-0-4-core.md
+#   Example: DSET-VERSION-VERSION-SCOPE-001-0-4-core.md
 #
 # Existing IDs and filenames are immutable and are never renamed when this
 # value changes. The setting affects the carrier name only; it does not change
@@ -43,7 +43,7 @@ schema_version = "1.2"
 # - specification: domain_model, behavior, architecture, design, governance
 # - procedure: playbook, runbook
 # - plan: implementation_plan, test_plan, evaluation_plan
-# - delivery: roadmap, version_scope, change, release_plan, readiness_record,
+# - version: roadmap, version_scope, change, release_plan, readiness_record,
 #   release_record
 # - implementation: source_code, documentation, configuration, migration,
 #   test_implementation, evaluation_implementation
@@ -129,4 +129,3 @@ scale = ["critical", "high", "medium", "low", "deferred"]
 #
 # Accepted: one value present in priority.scale. Default: "medium".
 default = "medium"
-

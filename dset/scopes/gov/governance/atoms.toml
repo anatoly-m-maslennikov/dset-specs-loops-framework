@@ -99,6 +99,14 @@ type = "decision"
 subtype = "none"
 
 [[records]]
+semantic_id = "DSET-DECISION-GOV-019"
+carrier_id = "DSET-ATOMIC-RECORD-078"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-078-version-artifact-classification.md"
+sha256 = "2a3c4c058c37fb7354c6bc370b481584da243df139a915c2bb821f0f68acf390"
+type = "decision"
+subtype = "none"
+
+[[records]]
 semantic_id = "DSET-DECISION-OPS-005"
 carrier_id = "DSET-ATOMIC-RECORD-032"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-032-delivery-lifecycle.md"
@@ -119,6 +127,14 @@ subtype = "none"
 current_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-034-delivery-lifecycle.md"
 current_sha256 = "7379dfe3e124485913bd89bd0e6ce76c29ab207fcbe320cd14789c0cd2523e71"
 transition_id = "DSET-CARRIER-TRANSITION-D78B78F1C2601E95"
+
+[[records]]
+semantic_id = "DSET-DECISION-OPS-007"
+carrier_id = "DSET-ATOMIC-RECORD-077"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-077-version-lifecycle-type.md"
+sha256 = "79228829236e95e362ce4130c55f8d4d4293f8eff09915917bd239bcc2646c70"
+type = "decision"
+subtype = "none"
 
 [[records]]
 semantic_id = "DSET-DEFECT-GOV-001"
@@ -318,6 +334,14 @@ semantic_id = "DSET-EVALUATION-GOV-028"
 carrier_id = "DSET-ATOMIC-RECORD-050"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-050-verbose-project-settings-evaluation.md"
 sha256 = "0acee9747599519f949835531fcb0d01859efdfa8b2f6a02d1da3574e61b7dbc"
+type = "qa"
+subtype = "evaluation"
+
+[[records]]
+semantic_id = "DSET-EVALUATION-GOV-029"
+carrier_id = "DSET-ATOMIC-RECORD-080"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-080-version-name-interpretability-evaluation.md"
+sha256 = "c781bd13c244ba24f4ff062a5814967d451a0fbd009806e561c48587dd15fda9"
 type = "qa"
 subtype = "evaluation"
 
@@ -678,6 +702,14 @@ semantic_id = "DSET-TEST-GOV-043"
 carrier_id = "DSET-ATOMIC-RECORD-075"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-075-complete-toml-cutover-test.md"
 sha256 = "0858aeaec6e7f76d0053961b41c4892eb0dba7a157f0d5856b859715bfcaeaae"
+type = "qa"
+subtype = "test"
+
+[[records]]
+semantic_id = "DSET-TEST-GOV-044"
+carrier_id = "DSET-ATOMIC-RECORD-079"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-079-version-artifact-classification-test.md"
+sha256 = "c0edefe06f59233d9286ae59637504e90ed19fce9946e4029eafa5af717d712a"
 type = "qa"
 subtype = "test"
 

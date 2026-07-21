@@ -1,9 +1,9 @@
 +++
-artifact_type = "delivery"
+artifact_type = "version"
 artifact_subtype = "readiness_record"
-artifact_id = "{{project_key}}-DELIVERY-{{sequence}}"
-version_scope_ref = "{{project_key}}-DELIVERY-{{version_scope_sequence}}"
-release_plan_ref = "{{project_key}}-DELIVERY-{{release_plan_sequence}}"
+artifact_id = "{{project_key}}-VERSION-{{sequence}}"
+version_scope_ref = "{{project_key}}-VERSION-{{version_scope_sequence}}"
+release_plan_ref = "{{project_key}}-VERSION-{{release_plan_sequence}}"
 candidate_sha = "pending"
 disposition = "blocked"
 llm_session_ids = []

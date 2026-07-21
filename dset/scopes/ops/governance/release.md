@@ -8,28 +8,28 @@ manifest: schema 1.2 `dset/scopes/meta/dset.toml` or the legacy central path.
 Generic DSET skills use configured roles, never hard-coded branch or forge
 names.
 
-## Six flat Delivery lifecycle artifacts
+## Six flat Version lifecycle artifacts
 
-The release lifecycle has six peer roles under one primary `delivery` artifact
+The release lifecycle has six peer roles under one primary `version` artifact
 type. They are connected by typed references; none owns, contains, or
 subclasses another:
 
-- **Roadmap** is `delivery/roadmap` and orders the mutable route from the
+- **Roadmap** is `version/roadmap` and orders the mutable route from the
   published baseline to one next-minor Version Scope. Milestones are Roadmap
   entries.
-- **Version Scope** is `delivery/version_scope` and owns promises,
+- **Version Scope** is `version/version_scope` and owns promises,
   exclusions, and exit criteria for one declared version line.
-- **Change** is `delivery/change` and groups accepted work and evidence for one
+- **Change** is `version/change` and groups accepted work and evidence for one
   bounded delivery.
-- **Release Plan** is `delivery/release_plan` and selects one exact proposed
+- **Release Plan** is `version/release_plan` and selects one exact proposed
   version and its participating Changes.
-- **Readiness Record** is `delivery/readiness_record` and owns the explicit
+- **Readiness Record** is `version/readiness_record` and owns the explicit
   ready-or-blocked disposition for one exact candidate.
-- **Release Record** is `delivery/release_record` and immutably owns the delivered
+- **Release Record** is `version/release_record` and immutably owns the delivered
   summary, migration notes, protected merge SHA, tag, packages, and publisher
   identity after publication.
 
-All six use one project-wide `DELIVERY` identity sequence. The subtype remains
+All six use one project-wide `VERSION` identity sequence. The subtype remains
 metadata unless subtype-bearing names are explicitly enabled.
 
 All applicable artifacts reference the stable Version Scope identity through

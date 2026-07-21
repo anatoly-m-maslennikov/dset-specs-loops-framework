@@ -1,7 +1,7 @@
 +++
-artifact_type = "delivery"
+artifact_type = "version"
 artifact_subtype = "version_scope"
-artifact_id = "DSET-DELIVERY-001"
+artifact_id = "DSET-VERSION-001"
 version_line = "0.3"
 status = "published-snapshot"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
@@ -39,6 +39,6 @@ claim only; it does not convert unfinished 0.4/0.5 work into a 0.3 promise.
 
 ## Governing provenance
 
-Compiled from `DSET-DECISION-OPS-006` and its absorbed release Decisions. The
+Compiled from `DSET-DECISION-OPS-007` and its absorbed release Decisions. The
 published snapshot is preserved; later corrections use a new Decision and
 version artifact.

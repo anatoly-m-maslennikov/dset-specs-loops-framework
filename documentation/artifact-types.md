@@ -198,7 +198,7 @@ It defines eleven artifact types:
 | `specification` | `domain_model`, `behavior`, `architecture`, `design`, `governance` |
 | `procedure` | `playbook`, `runbook` |
 | `plan` | `implementation_plan`, `test_plan`, `evaluation_plan` |
-| `delivery` | `roadmap`, `version_scope`, `change`, `release_plan`, `readiness_record`, `release_record` |
+| `version` | `roadmap`, `version_scope`, `change`, `release_plan`, `readiness_record`, `release_record` |
 | `implementation` | `source_code`, `documentation`, `configuration`, `migration`, `test_implementation`, `evaluation_implementation` |
 | `evidence_record` | `test_result`, `evaluation_result`, `review_report`, `run_record` |
 | `verification` | None |
@@ -213,7 +213,7 @@ rule.
 
 New artifact IDs and filenames use the primary artifact type token by default;
 the optional subtype remains metadata. For example, Version Scope may use
-`APP-DELIVERY-001-0-4-core.md`, and Roadmap uses the same `DELIVERY` sequence.
+`APP-VERSION-001-0-4-core.md`, and Roadmap uses the same `VERSION` sequence.
 Projects may opt newly emitted artifacts into
 subtype tokens with
 `artifacts.subtype_in_names = true` in root `dset_settings.toml`.
@@ -228,16 +228,16 @@ accepted conclusion is emitted separately as a Decision, Question, Problem, or
 QA atom.
 
 Critical boundaries are: Specification versus intended Plan; reusable
-Procedure versus one enactment Plan; Plan versus bounded Delivery;
+Procedure versus one enactment Plan; Plan versus bounded Version;
 Implementation versus observed Evidence Record; Evidence Record versus derived
 Verification; Verification versus an explicit Readiness Record gate decision;
 and release readiness versus immutable Release Record publication history.
 Derived View and Navigation never become authority.
 
-The flat Release lifecycle uses the primary `delivery` type with direct
+The flat Release lifecycle uses the primary `version` type with direct
 subtypes `roadmap`, `version_scope`, `change`, `release_plan`,
 `readiness_record`, and `release_record`. All six share one project-wide
-`DELIVERY` identity sequence. Milestones are Roadmap entries. Release Notes and
+`VERSION` identity sequence. Milestones are Roadmap entries. Release Notes and
 changelogs are rendered or derived from Release Records.
 
 ## Lifecycle and authority

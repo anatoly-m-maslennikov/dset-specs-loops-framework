@@ -62,8 +62,8 @@ allow_empty_subtype = true
 subtypes = ["implementation_plan", "test_plan", "evaluation_plan"]
 
 [[artifact_types]]
-id = "delivery"
-primary_question = "What bounded delivery intent, transaction, gate, or publication record does this artifact own?"
+id = "version"
+primary_question = "What bounded version intent, transaction, gate, or publication record does this artifact own?"
 allow_empty_subtype = true
 subtypes = ["roadmap", "version_scope", "change", "release_plan", "readiness_record", "release_record"]
 
@@ -324,32 +324,32 @@ artifact_subtype = "evaluation_plan"
 
 [[path_rules]]
 pattern = "**/version-scope.md"
-artifact_type = "delivery"
+artifact_type = "version"
 artifact_subtype = "version_scope"
 
 [[path_rules]]
 pattern = "**/roadmap.md"
-artifact_type = "delivery"
+artifact_type = "version"
 artifact_subtype = "roadmap"
 
 [[path_rules]]
 pattern = "**/release-plan.md"
-artifact_type = "delivery"
+artifact_type = "version"
 artifact_subtype = "release_plan"
 
 [[path_rules]]
 pattern = "**/readiness-record.md"
-artifact_type = "delivery"
+artifact_type = "version"
 artifact_subtype = "readiness_record"
 
 [[path_rules]]
 pattern = "**/release-record.md"
-artifact_type = "delivery"
+artifact_type = "version"
 artifact_subtype = "release_record"
 
 [[path_rules]]
 pattern = "**/change.toml"
-artifact_type = "delivery"
+artifact_type = "version"
 artifact_subtype = "change"
 
 [[path_rules]]

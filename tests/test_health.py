@@ -146,9 +146,9 @@ class ProjectHealthTests(unittest.TestCase):
             ),
         )
 
-    def test_delivery_roles_are_derived_from_direct_subtypes(self) -> None:
+    def test_version_roles_are_derived_from_direct_subtypes(self) -> None:
         before = build_health_model(self.root)["artifact_counts"]["by_role"]
-        folder = self.root / "dset/delivery-role-fixtures"
+        folder = self.root / "dset/version-role-fixtures"
         folder.mkdir(parents=True)
         subtypes = (
             "roadmap",
@@ -159,11 +159,11 @@ class ProjectHealthTests(unittest.TestCase):
             "release_record",
         )
         for sequence, subtype in enumerate(subtypes, start=900):
-            (folder / f"DSET-DELIVERY-{sequence}.md").write_text(
+            (folder / f"DSET-VERSION-{sequence}.md").write_text(
                 "+++\n"
-                'artifact_type = "delivery"\n'
+                'artifact_type = "version"\n'
                 f'artifact_subtype = "{subtype}"\n'
-                f'artifact_id = "DSET-DELIVERY-{sequence}"\n'
+                f'artifact_id = "DSET-VERSION-{sequence}"\n'
                 'priority = "medium"\n'
                 "llm_session_ids = []\n"
                 "+++\n",

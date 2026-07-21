@@ -13,13 +13,13 @@ CHANGE = ROOT / "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 
 
 class ReleaseArtifactTests(unittest.TestCase):
-    def test_release_templates_share_delivery_classification(self) -> None:
+    def test_release_templates_share_version_classification(self) -> None:
         expected = {
-            "version-scope.md": ("delivery", "version_scope"),
-            "roadmap.md": ("delivery", "roadmap"),
-            "release-plan.md": ("delivery", "release_plan"),
-            "readiness-record.md": ("delivery", "readiness_record"),
-            "release-record.md": ("delivery", "release_record"),
+            "version-scope.md": ("version", "version_scope"),
+            "roadmap.md": ("version", "roadmap"),
+            "release-plan.md": ("version", "release_plan"),
+            "readiness-record.md": ("version", "readiness_record"),
+            "release-record.md": ("version", "release_record"),
         }
         self.assertEqual(
             {path.name for path in TEMPLATES.glob("*.md") if path.name != "README.md"},
@@ -35,24 +35,24 @@ class ReleaseArtifactTests(unittest.TestCase):
 
     def test_dset_self_applies_type_first_release_names(self) -> None:
         expected = {
-            "DSET-DELIVERY-001-0-3-foundation.md": (
-                "DSET-DELIVERY-001",
+            "DSET-VERSION-001-0-3-foundation.md": (
+                "DSET-VERSION-001",
                 "version_scope",
             ),
-            "DSET-DELIVERY-002-0-4-self-hosted-core.md": (
-                "DSET-DELIVERY-002",
+            "DSET-VERSION-002-0-4-self-hosted-core.md": (
+                "DSET-VERSION-002",
                 "version_scope",
             ),
-            "DSET-DELIVERY-003-0-5-adopter-ready.md": (
-                "DSET-DELIVERY-003",
+            "DSET-VERSION-003-0-5-adopter-ready.md": (
+                "DSET-VERSION-003",
                 "version_scope",
             ),
-            "DSET-DELIVERY-004-1-0-stable.md": (
-                "DSET-DELIVERY-004",
+            "DSET-VERSION-004-1-0-stable.md": (
+                "DSET-VERSION-004",
                 "version_scope",
             ),
-            "DSET-DELIVERY-005-0-4-core-vertical-cut.md": (
-                "DSET-DELIVERY-005",
+            "DSET-VERSION-005-0-4-core-vertical-cut.md": (
+                "DSET-VERSION-005",
                 "roadmap",
             ),
         }
@@ -66,31 +66,31 @@ class ReleaseArtifactTests(unittest.TestCase):
                 self.assertEqual(metadata["artifact_id"], artifact_id)
                 self.assertEqual(metadata["artifact_subtype"], subtype)
 
-    def test_dset_delivery_sequence_covers_current_release_carriers(self) -> None:
+    def test_dset_version_sequence_covers_current_release_carriers(self) -> None:
         expected = {
-            CHANGE / "DSET-DELIVERY-006-0-3-1-release.md": (
-                "DSET-DELIVERY-006",
+            CHANGE / "DSET-VERSION-006-0-3-1-release.md": (
+                "DSET-VERSION-006",
                 "release_plan",
             ),
-            CHANGE / "DSET-DELIVERY-007-0-3-1-readiness.md": (
-                "DSET-DELIVERY-007",
+            CHANGE / "DSET-VERSION-007-0-3-1-readiness.md": (
+                "DSET-VERSION-007",
                 "readiness_record",
             ),
         }
         for path, (artifact_id, subtype) in expected.items():
             with self.subTest(path=path.name):
                 metadata = self._frontmatter(path)
-                self.assertEqual(metadata["artifact_type"], "delivery")
+                self.assertEqual(metadata["artifact_type"], "version")
                 self.assertEqual(metadata["artifact_id"], artifact_id)
                 self.assertEqual(metadata["artifact_subtype"], subtype)
 
-        all_delivery_ids = [
+        all_version_ids = [
             self._frontmatter(path)["artifact_id"]
-            for path in sorted(PLANNING.glob("DSET-DELIVERY-*.md"))
+            for path in sorted(PLANNING.glob("DSET-VERSION-*.md"))
         ] + [artifact_id for artifact_id, _ in expected.values()]
         self.assertEqual(
-            all_delivery_ids,
-            [f"DSET-DELIVERY-{sequence:03d}" for sequence in range(1, 8)],
+            all_version_ids,
+            [f"DSET-VERSION-{sequence:03d}" for sequence in range(1, 8)],
         )
 
     def test_release_reference_chain_and_gate_boundaries_are_explicit(self) -> None:

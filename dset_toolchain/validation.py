@@ -117,7 +117,7 @@ ARTIFACT_TYPE_SUBTYPES: dict[str, frozenset[str]] = {
             "evaluation_plan",
         }
     ),
-    "delivery": frozenset(
+    "version": frozenset(
         {
             "roadmap",
             "version_scope",

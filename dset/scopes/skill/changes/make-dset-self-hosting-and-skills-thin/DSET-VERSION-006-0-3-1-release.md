@@ -1,8 +1,8 @@
 +++
-artifact_type = "delivery"
+artifact_type = "version"
 artifact_subtype = "release_plan"
-artifact_id = "DSET-DELIVERY-006"
-version_scope_ref = "DSET-DELIVERY-001"
+artifact_id = "DSET-VERSION-006"
+version_scope_ref = "DSET-VERSION-001"
 proposed_version = "0.3.1"
 status = "closed_blocked"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
@@ -21,7 +21,7 @@ llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 
 ## Included scope
 
-Deliver the DSET 0.3 foundation represented by `DSET-DELIVERY-001` and
+Deliver the DSET 0.3 foundation represented by `DSET-VERSION-001` and
 this Change. Later work on the branch is outside the pinned candidate until the
 declaration and this plan are deliberately refreshed.
 

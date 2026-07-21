@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Seed the five file-backed release templates within the six-role Delivery
+Seed the five file-backed release templates within the six-role Version
 lifecycle. Change uses the project Change manifest template; all six use direct
 artifact classification and typed references.
 

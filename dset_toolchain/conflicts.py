@@ -681,7 +681,7 @@ def _metadata_role(metadata: dict[str, Any]) -> str:
         "derived_view": "derived_view",
         "navigation": "derived_view",
     }.get(str(artifact_type))
-    if artifact_type == "delivery" and subtype == "readiness_record":
+    if artifact_type == "version" and subtype == "readiness_record":
         mapped = "readiness"
     declared = metadata.get("conflict_role")
     if mapped is not None and declared is not None and declared != mapped:
