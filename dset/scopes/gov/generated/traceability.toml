@@ -108,7 +108,7 @@ contracts = ["DSET-CONTRACT-META-001", "DSET-CONTRACT-OPS-001", "DSET-CONTRACT-O
 stories = []
 outcomes = []
 pull_request = "pending"
-evidence = ["dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-001-artifact-role-lifecycle.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-002-project-scope-ownership.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-003-artifact-lineage.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-004-entry-criteria-skill-chains.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-005-shared-skill-runtime.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-006-artifact-emission-gate.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-007-executable-entry-criteria-closure.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-008-governed-conflict-runtime.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-009-semantic-type-migration.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-010-release-runtime-reconciliation.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-011-typescript-candidate-profile.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-012-oyoha-local-adoption.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-013-oyoha-local-rule-cutover.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-014-oyoha-independent-evaluation.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-015-claudian-clean-room.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-016-oyoha-supportability-slice.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-017-typescript-profile-instantiation.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-018-codex-host-install-attempt.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-019-independent-review-remediation.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-020-codex-host-install-attempt.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-021-claude-review-attempt.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-022-codex-host-invocation-attempt.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-023-typed-artifact-relations.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-024-legacy-relation-sealing.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-025-verbose-project-settings.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-026-canonical-settings-selections.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-027-native-package-successors.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-028-legacy-structured-snapshots.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-029-installed-skill-integrity.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-030-location-independent-launchers.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-031-session-handoff-terminalization.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-032-semantic-carrier-transitions.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-033-complete-toml-cutover.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-034-current-generated-adopter.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-035-version-artifact-type.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/end-to-end-toolchain-verification-2026-07-16.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/expanded-skill-surface-verification-2026-07-16.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/five-skill-source-verification-2026-07-16.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-flat-type-model-review-2026-07-20.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-governance-constitution-review-2026-07-16.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-principles-audit-2026-07-15.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-principles-reaudit-2026-07-15.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/hosted-fixed-point-2026-07-14.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/invariant-contract-verification-2026-07-14.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/layered-work-area-verification-2026-07-15.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/local-fixed-point-2026-07-14.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/local-gate-2026-07-15.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/recursive-session-provenance-2026-07-16.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/schema-self-application-audit-2026-07-15.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/schema-self-application-reaudit-2026-07-15.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/skill-runtime-consistency-2026-07-16.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/wrapper-rule-inventory-2026-07-14.md"]
+evidence = ["dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-001-artifact-role-lifecycle.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-002-project-scope-ownership.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-003-artifact-lineage.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-004-entry-criteria-skill-chains.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-005-shared-skill-runtime.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-006-artifact-emission-gate.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-007-executable-entry-criteria-closure.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-008-governed-conflict-runtime.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-009-semantic-type-migration.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-010-release-runtime-reconciliation.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-011-typescript-candidate-profile.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-012-oyoha-local-adoption.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-013-oyoha-local-rule-cutover.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-014-oyoha-independent-evaluation.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-015-claudian-clean-room.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-016-oyoha-supportability-slice.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-017-typescript-profile-instantiation.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-018-codex-host-install-attempt.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-019-independent-review-remediation.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-020-codex-host-install-attempt.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-021-claude-review-attempt.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-022-codex-host-invocation-attempt.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-023-typed-artifact-relations.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-024-legacy-relation-sealing.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-025-verbose-project-settings.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-026-canonical-settings-selections.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-027-native-package-successors.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-028-legacy-structured-snapshots.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-029-installed-skill-integrity.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-030-location-independent-launchers.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-031-session-handoff-terminalization.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-032-semantic-carrier-transitions.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-033-complete-toml-cutover.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-034-current-generated-adopter.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-035-version-artifact-type.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-036-real-host-install-boundary.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-037-current-claude-review-attempt.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-038-overview-skill.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/clarify-rename-verification-2026-07-14.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/end-to-end-toolchain-verification-2026-07-16.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/expanded-skill-surface-verification-2026-07-16.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/five-skill-source-verification-2026-07-16.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-flat-type-model-review-2026-07-20.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-governance-constitution-review-2026-07-16.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-principles-audit-2026-07-15.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/fpf-principles-reaudit-2026-07-15.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/hosted-fixed-point-2026-07-14.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/invariant-contract-verification-2026-07-14.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/layered-work-area-verification-2026-07-15.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/local-fixed-point-2026-07-14.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/local-gate-2026-07-15.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/recursive-session-provenance-2026-07-16.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/schema-self-application-audit-2026-07-15.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/schema-self-application-reaudit-2026-07-15.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/skill-runtime-consistency-2026-07-16.md", "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/wrapper-rule-inventory-2026-07-14.md"]
 slug = "make-dset-self-hosting-and-skills-thin"
 primary_layer = "skill"
 affected_layers = ["gov", "meta", "ops", "skill", "tool"]
@@ -566,6 +566,16 @@ subtype = "none"
 compatibility = true
 origins = ["legacy_decision"]
 carriers = ["dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-SKILL-002.md"]
+carrier_statuses = ["accepted"]
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-074"]
+
+[[semantic_classifications]]
+id = "DSET-DECISION-SKILL-003"
+type = "decision"
+subtype = "none"
+compatibility = false
+origins = ["modern_atom"]
+carriers = ["dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-081-overview-public-entrypoint.md"]
 carrier_statuses = ["accepted"]
 lifecycle_events = []
 
@@ -3080,16 +3090,6 @@ carrier_statuses = ["defined"]
 lifecycle_events = []
 
 [[semantic_classifications]]
-id = "DSET-TEST-SKILL-004"
-type = "qa"
-subtype = "test"
-compatibility = true
-origins = ["package:tests"]
-carriers = ["dset/scopes/skill/specs/packages/methodology/package.toml"]
-carrier_statuses = ["defined"]
-lifecycle_events = []
-
-[[semantic_classifications]]
 id = "DSET-TEST-SKILL-005"
 type = "qa"
 subtype = "test"
@@ -3186,6 +3186,16 @@ subtype = "test"
 compatibility = false
 origins = ["modern_atom", "package:tests"]
 carriers = ["dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-069-session-handoff-terminalization-test.md", "dset/scopes/skill/specs/packages/methodology/package.toml"]
+carrier_statuses = ["accepted", "defined"]
+lifecycle_events = []
+
+[[semantic_classifications]]
+id = "DSET-TEST-SKILL-018"
+type = "qa"
+subtype = "test"
+compatibility = false
+origins = ["modern_atom", "package:tests"]
+carriers = ["dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-082-overview-public-entrypoint-test.md", "dset/scopes/skill/specs/packages/methodology/package.toml"]
 carrier_statuses = ["accepted", "defined"]
 lifecycle_events = []
 
@@ -3606,6 +3616,26 @@ archived = false
 type = "replacement_of"
 origin = "authored"
 target = "DSET-DECISION-OPS-006"
+
+[[semantic_atoms]]
+id = "DSET-DECISION-SKILL-003"
+carrier_id = "DSET-ATOMIC-RECORD-081"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-081-overview-public-entrypoint.md"
+sha256 = "02e5468568a8591e3d5672ff6eaa6232572afb4041e6a54fd1b1537a07474d2c"
+type = "decision"
+subtype = "none"
+emission_status = "accepted"
+current_status = "accepted"
+priority = "high"
+priority_source = "atom:DSET-DECISION-SKILL-003"
+lifecycle_events = []
+absorbed_by = []
+archived = false
+
+[[semantic_atoms.relations]]
+type = "replacement_of"
+origin = "authored"
+target = "DSET-DECISION-SKILL-002"
 
 [[semantic_atoms]]
 id = "DSET-DEFECT-GOV-001"
@@ -4872,6 +4902,26 @@ origin = "authored"
 target = "DSET-REQUIREMENT-SKILL-009"
 
 [[semantic_atoms]]
+id = "DSET-TEST-SKILL-018"
+carrier_id = "DSET-ATOMIC-RECORD-082"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-082-overview-public-entrypoint-test.md"
+sha256 = "608072c0960e646a7219f3ba4ba4673bcc12892547986352e2a4ab96a7d5882b"
+type = "qa"
+subtype = "test"
+emission_status = "accepted"
+current_status = "accepted"
+priority = "high"
+priority_source = "atom:DSET-TEST-SKILL-018"
+lifecycle_events = []
+absorbed_by = []
+archived = false
+
+[[semantic_atoms.relations]]
+type = "check_of"
+origin = "authored"
+target = "DSET-DECISION-SKILL-003"
+
+[[semantic_atoms]]
 id = "DSET-TEST-TOOL-020"
 carrier_id = "DSET-ATOMIC-RECORD-011"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-011-typescript-candidate-test.md"
@@ -6044,6 +6094,14 @@ origin = "commit_trailer"
 llm_session_ids = []
 
 [[relations]]
+source = "6b60f0ce767c700e5e4221a5da8858c137ef4b92"
+source_kind = "commit"
+type = "implementation_of"
+target = "DSET-REQUIREMENT-GOV-025"
+origin = "commit_trailer"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+
+[[relations]]
 source = "6b8aa6955fdf4c534c2f43d6e5071ccdbc2fd0f5"
 source_kind = "commit"
 type = "implementation_of"
@@ -6772,6 +6830,16 @@ target = "DSET-DECISION-OPS-006"
 llm_session_ids = []
 
 [[relations]]
+source = "DSET-DECISION-SKILL-003"
+source_kind = "artifact"
+source_artifact_id = "DSET-ATOMIC-RECORD-081"
+source_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-081-overview-public-entrypoint.md"
+type = "replacement_of"
+origin = "authored"
+target = "DSET-DECISION-SKILL-002"
+llm_session_ids = []
+
+[[relations]]
 source = "DSET-DEFECT-GOV-005"
 source_kind = "artifact"
 source_artifact_id = "DSET-ATOMIC-RECORD-057"
@@ -7312,6 +7380,36 @@ target = "DSET-TEST-GOV-044"
 llm_session_ids = []
 
 [[relations]]
+source = "DSET-EVIDENCE-RECORD-036"
+source_kind = "artifact"
+source_artifact_id = "DSET-EVIDENCE-RECORD-036"
+source_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-036-real-host-install-boundary.md"
+type = "evidence_for"
+origin = "authored"
+target = "DSET-TEST-SKILL-018"
+llm_session_ids = []
+
+[[relations]]
+source = "DSET-EVIDENCE-RECORD-037"
+source_kind = "artifact"
+source_artifact_id = "DSET-EVIDENCE-RECORD-037"
+source_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-037-current-claude-review-attempt.md"
+type = "evidence_for"
+origin = "authored"
+target = "DSET-DECISION-GOV-002"
+llm_session_ids = []
+
+[[relations]]
+source = "DSET-EVIDENCE-RECORD-038"
+source_kind = "artifact"
+source_artifact_id = "DSET-EVIDENCE-RECORD-038"
+source_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-038-overview-skill.md"
+type = "evidence_for"
+origin = "authored"
+target = "DSET-TEST-SKILL-018"
+llm_session_ids = []
+
+[[relations]]
 source = "DSET-INVARIANT-GOV-027"
 source_kind = "artifact"
 source_artifact_id = "DSET-ATOMIC-RECORD-074"
@@ -7801,6 +7899,16 @@ source_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/
 type = "check_of"
 origin = "authored"
 target = "DSET-REQUIREMENT-SKILL-009"
+llm_session_ids = []
+
+[[relations]]
+source = "DSET-TEST-SKILL-018"
+source_kind = "artifact"
+source_artifact_id = "DSET-ATOMIC-RECORD-082"
+source_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-082-overview-public-entrypoint-test.md"
+type = "check_of"
+origin = "authored"
+target = "DSET-DECISION-SKILL-003"
 llm_session_ids = []
 
 [[relations]]
