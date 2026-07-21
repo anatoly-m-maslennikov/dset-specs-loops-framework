@@ -3,8 +3,10 @@ from __future__ import annotations
 import json
 import tempfile
 import unittest
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
+from unittest.mock import patch
 
+import dset_toolchain.bootstrap as bootstrap
 from dset_toolchain.bootstrap import (
     InitializationError,
     WorkArea,
@@ -212,6 +214,25 @@ class BootstrapTests(unittest.TestCase):
                     project_license="MIT",
                     work_areas=(area,),
                 )
+
+    def test_posix_absolute_work_area_is_rejected_under_windows_semantics(
+        self,
+    ) -> None:
+        with (
+            patch.object(bootstrap, "Path", PureWindowsPath),
+            self.assertRaisesRegex(
+                InitializationError,
+                "work-area paths must be repository-relative",
+            ),
+        ):
+            bootstrap._validate_inputs(
+                "APP",
+                "sample-app",
+                "Sample App",
+                "MIT",
+                "project",
+                (WorkArea("docs", "/absolute"),),
+            )
 
 
 if __name__ == "__main__":
