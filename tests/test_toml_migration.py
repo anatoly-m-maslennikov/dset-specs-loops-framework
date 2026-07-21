@@ -25,6 +25,7 @@ from dset_toolchain.toml_migration import (
     plan_toml_migration,
     prove_runtime_readiness,
 )
+from tests.git_fixtures import initialize_exact_git_repository
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -41,7 +42,7 @@ class TomlMigrationTests(unittest.TestCase):
     def write(self, relative: str, content: str) -> Path:
         path = self.root / relative
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(content, encoding="utf-8")
+        path.write_text(content, encoding="utf-8", newline="\n")
         return path
 
     def initialize_git_fixture(self) -> None:
@@ -50,12 +51,7 @@ class TomlMigrationTests(unittest.TestCase):
             ".dset/toml-migration-runtime-readiness.json\n"
             ".dset/toml-migration-backups/\n",
         )
-        subprocess.run(
-            ["git", "init", "-q"],
-            cwd=self.root,
-            check=True,
-            capture_output=True,
-        )
+        initialize_exact_git_repository(self.root)
         self.commit_git_fixture("fixture")
 
     def commit_git_fixture(self, message: str) -> None:

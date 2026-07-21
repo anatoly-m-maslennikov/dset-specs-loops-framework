@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -18,6 +17,7 @@ from dset_toolchain.scaffold import create_change
 from dset_toolchain.validation import validate_repository
 from dset_toolchain.yaml_subset import load
 from scripts.build_bootstrap_bundle import render_bundle
+from tests.git_fixtures import initialize_exact_git_repository
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -164,7 +164,7 @@ class BootstrapTests(unittest.TestCase):
             runtime = target / "tmp/runtime/system.md"
             runtime.parent.mkdir(parents=True)
             runtime.write_text("[[host-only-link]]\n", encoding="utf-8")
-            subprocess.run(["git", "init", "-q"], cwd=target, check=True)
+            initialize_exact_git_repository(target)
 
             result = initialize_project(
                 target,

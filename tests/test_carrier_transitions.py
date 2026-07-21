@@ -21,6 +21,7 @@ from dset_toolchain.toml_migration import (
     apply_toml_migration,
     plan_toml_migration,
 )
+from tests.git_fixtures import initialize_exact_git_repository
 
 
 class CarrierTransitionTests(unittest.TestCase):
@@ -80,9 +81,7 @@ class CarrierTransitionTests(unittest.TestCase):
             ],
         }
         self._write("dset/scopes/gov/artifact-types.toml", dump_toml(registry))
-        subprocess.run(
-            ["git", "init", "-q"], cwd=self.root, check=True, capture_output=True
-        )
+        initialize_exact_git_repository(self.root)
         subprocess.run(
             ["git", "add", "-A"], cwd=self.root, check=True, capture_output=True
         )
@@ -112,7 +111,7 @@ class CarrierTransitionTests(unittest.TestCase):
     def _write(self, relative: str, text: str) -> Path:
         path = self.root / relative
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(text, encoding="utf-8")
+        path.write_text(text, encoding="utf-8", newline="\n")
         return path
 
     def test_apply_preserves_semantics_git_return_and_is_a_noop(self) -> None:

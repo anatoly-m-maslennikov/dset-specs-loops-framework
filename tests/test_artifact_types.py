@@ -3,7 +3,6 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
-import subprocess
 import tempfile
 import unittest
 from pathlib import Path, PurePosixPath
@@ -17,6 +16,7 @@ from dset_toolchain.validation import (
     validate_artifact_type_registry,
 )
 from dset_toolchain.yaml_subset import load
+from tests.git_fixtures import initialize_exact_git_repository
 
 ROOT = Path(__file__).resolve().parents[1]
 LAYOUT = discover_layout(ROOT)
@@ -258,7 +258,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
                 "artifact_id: APP-SPECIFICATION-001\n---\n",
                 encoding="utf-8",
             )
-            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+            initialize_exact_git_repository(root)
 
             diagnostics = validate_artifact_type_registry(
                 root,

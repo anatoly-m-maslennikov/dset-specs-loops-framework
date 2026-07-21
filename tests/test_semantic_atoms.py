@@ -274,7 +274,8 @@ class SemanticAtomTests(unittest.TestCase):
             )
 
     def test_retired_atom_requires_registered_carrier_transition(self) -> None:
-        original = self._write_atom().encode()
+        self._write_atom()
+        original = self.atom_path.read_bytes()
         seal_atom(self.root, self.atom_path)
         append_lifecycle_event(
             self.root,
