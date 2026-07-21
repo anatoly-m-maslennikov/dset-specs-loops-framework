@@ -107,6 +107,14 @@ type = "decision"
 subtype = "none"
 
 [[records]]
+semantic_id = "DSET-DECISION-GOV-020"
+carrier_id = "DSET-ATOMIC-RECORD-087"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-087-generated-only-provenance-boundary.md"
+sha256 = "d41276a6557fe5f1ea046fb22259210ffd438e25bfa4e73fc4d336cb5ade9b43"
+type = "decision"
+subtype = "none"
+
+[[records]]
 semantic_id = "DSET-DECISION-OPS-005"
 carrier_id = "DSET-ATOMIC-RECORD-032"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-032-delivery-lifecycle.md"
@@ -209,6 +217,14 @@ semantic_id = "DSET-DEFECT-GOV-006"
 carrier_id = "DSET-ATOMIC-RECORD-059"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-059-evidence-record-contract.md"
 sha256 = "ab6b47e23a722aab2248bb18825d132f4461b2a0305f238be08e0ad4880a1dec"
+type = "problem"
+subtype = "defect"
+
+[[records]]
+semantic_id = "DSET-DEFECT-GOV-007"
+carrier_id = "DSET-ATOMIC-RECORD-086"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-086-generated-refresh-self-reference.md"
+sha256 = "e2c3f631adf96a7e52906db4e20164db956faab56a09213b009977dbda175cc3"
 type = "problem"
 subtype = "defect"
 
@@ -734,6 +750,14 @@ semantic_id = "DSET-TEST-GOV-044"
 carrier_id = "DSET-ATOMIC-RECORD-079"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-079-version-artifact-classification-test.md"
 sha256 = "c0edefe06f59233d9286ae59637504e90ed19fce9946e4029eafa5af717d712a"
+type = "qa"
+subtype = "test"
+
+[[records]]
+semantic_id = "DSET-TEST-GOV-045"
+carrier_id = "DSET-ATOMIC-RECORD-088"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-088-generated-only-provenance-test.md"
+sha256 = "13bba87da7938ee91400326fc05fa71b1f23a245a4c93233b9cd681ec56096bf"
 type = "qa"
 subtype = "test"
 

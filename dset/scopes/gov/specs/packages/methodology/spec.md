@@ -2,6 +2,14 @@
 
 ## Active Decision source compilation
 
+### DSET-DECISION-GOV-020 — Generated-only provenance boundary
+
+Commit provenance is mandatory for every governed commit. Derived commit
+relations and implementation coverage exclude commits whose changed paths are
+entirely under `generated/` directories, because a generated mirror cannot be
+an input to the semantic graph that generates it. Commits that change any
+non-generated governed path remain relation inputs.
+
 This evergreen GOV projection compiles the active consequences of these
 general Decisions. Their immutable carriers retain rationale and history; this
 specification and the registered governing rules own the current executable
