@@ -161,6 +161,14 @@ type = "decision"
 subtype = "none"
 
 [[records]]
+semantic_id = "DSET-DECISION-OPS-010"
+carrier_id = "DSET-ATOMIC-RECORD-093"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-093-platform-native-verification-placeholder.md"
+sha256 = "1782bef5f4f8dfae7cd1b5356faea29cd72811e90b228019e36e9e463fabe3a8"
+type = "decision"
+subtype = "none"
+
+[[records]]
 semantic_id = "DSET-DECISION-SKILL-003"
 carrier_id = "DSET-ATOMIC-RECORD-081"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-081-overview-public-entrypoint.md"
@@ -360,6 +368,14 @@ semantic_id = "DSET-DEFECT-TOOL-007"
 carrier_id = "DSET-ATOMIC-RECORD-076"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-076-yaml-artifact-gap.md"
 sha256 = "f2de41abcead5cdc15b5ca457cf94bed9cd6ae562169d560ca43a7e621de3a6a"
+type = "problem"
+subtype = "defect"
+
+[[records]]
+semantic_id = "DSET-DEFECT-TOOL-008"
+carrier_id = "DSET-ATOMIC-RECORD-092"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-092-windows-python-placeholder-parsing.md"
+sha256 = "86ac4b51cd8b33ed75eec90854ae14766d086e843af36b6bab433a5c02892c7e"
 type = "problem"
 subtype = "defect"
 
@@ -790,6 +806,14 @@ semantic_id = "DSET-TEST-OPS-018"
 carrier_id = "DSET-ATOMIC-RECORD-091"
 path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-091-canonical-health-path-order-test.md"
 sha256 = "ed984d92dddebe5d7b034a8d261c7891c3e8f62e7cfe7ba0688284806c00a3c3"
+type = "qa"
+subtype = "test"
+
+[[records]]
+semantic_id = "DSET-TEST-OPS-019"
+carrier_id = "DSET-ATOMIC-RECORD-094"
+path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/DSET-ATOMIC-RECORD-094-platform-native-verification-placeholder-test.md"
+sha256 = "50396aaec5f268362ca0921dc7740f83d61c43bee2a10df98c9b2b4eeb707e36"
 type = "qa"
 subtype = "test"
 

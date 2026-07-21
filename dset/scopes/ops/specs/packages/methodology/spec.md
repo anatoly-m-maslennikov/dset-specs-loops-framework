@@ -26,6 +26,13 @@ the current working-tree bytes. The digest therefore remains sensitive to
 uncommitted content while producing one traversal order on Linux, macOS,
 native Windows, and WSL.
 
+### DSET-DECISION-OPS-010 — Platform-native verification placeholders
+
+Verification command templates are tokenized before exact-token placeholders
+are replaced. An argument equal to `{python}` becomes the current Python
+executable as one direct subprocess argument, so Windows backslashes, spaces,
+and other platform-native path syntax are never reparsed as shell text.
+
 ## DSET-REQUIREMENT-OPS-001 — Production supportability is explicit and risk-scaled
 
 Every production-bound tool must define a supportability contract appropriate to its runtime risk profile and deployment topology. The contract covers incident triggers or objectives; operator-usable evidence; end-to-end correlation and deploy/change identity; safe read-only diagnostics and permissions; retention, redaction, access, deletion, volume, cardinality, and sampling bounds; runbook, escalation, rollback or kill-switch paths; and traceability from an incident to governing requirements, changes, PRs, and fixes. Telemetry is diagnostic evidence, not a competing business-state authority. A non-production tool may mark the contract not applicable only with a reason.
