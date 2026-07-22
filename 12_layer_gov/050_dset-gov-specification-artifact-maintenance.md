@@ -8,6 +8,9 @@ Every normative rule ID has one editable governing document. Hubs navigate, wrap
 
 ## Writes and cutover
 
+- Treat every operator input in a governed project as intake. Classify and emit
+  one or more immutable semantic atoms before implementing its consequences;
+  split independent claims and never derive Type from the workflow.
 - Use TOML for DSET-owned structured artifacts and TOML frontmatter for DSET
   Markdown. Keep host/ecosystem/wire/runtime formats and generated compatibility
   adapters explicit and non-authoritative. Never keep editable YAML/JSON and
@@ -22,6 +25,10 @@ Every normative rule ID has one editable governing document. Hubs navigate, wrap
   compiled projection, transactional context/evidence, or implementation.
   Status and applicability determine whether an atomic source is active.
 - Materialized rules become project-owned immediately. Later framework releases provide an explicit comparison and proposed delta, never an invisible overwrite.
+- Author reusable methodology only in the repository-root source. Refresh the
+  installed `.dset/000_dset_methodology/` snapshot only through an explicit
+  one-way operator synchronization command; never mirror ordinary edits or
+  copy installed files back into the source.
 - Record intentional local customization with `dset rules refresh`, retaining the source profile, version, unique template carrier name, and digest as provenance.
 - During migration, map every old rule/spec/plan/decision/runbook/evidence surface and make the old writer a concise pointer, read-only history, verified archive, or remove it only after cutover proof.
 - Refuse an existing destination and keep the previous owner writable when validation fails.

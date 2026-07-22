@@ -150,11 +150,12 @@ feature-group hub shows its features. Every feature or layer hub shows the main
 functions, capabilities, or components it immediately owns. A project does not
 create empty diagrams for structural levels it has not enabled.
 
-Each view stays one level deep, links its owning hubs or artifacts, and remains
-consistent with current accepted truth. It is Navigation or compiled
-Specification/Architecture, never independent authority. Cross-level details
-belong in the child view rather than expanding one whole-project diagram until
-it becomes unreadable.
+Each view stays one level deep, links its owning hubs, atomic-artifact folders,
+or long-lived non-atomic owners, and remains consistent with current accepted
+truth. It never links individual atoms or `.dset_runtime` descendants. It is
+Navigation or compiled Specification/Architecture, never independent
+authority. Cross-level details belong in the child view rather than expanding
+one whole-project diagram until it becomes unreadable.
 
 ## Features versus layers
 

@@ -128,7 +128,9 @@ When two entities are mutually related, define each independently first using sh
 ## Hubs
 
 - Keep purpose, boundaries, and start routes concise.
-- Link stable child areas and owning documents, not every file generated below them.
+- Link stable child areas, atomic-artifact folders, evergreen files, settings,
+  and other long-lived non-atomic owners.
+- Never list individual atomic artifacts or anything below `.dset_runtime/`.
 - Do not hide normative rules or long explanations in a navigation page.
 
 ## Playbooks and runbooks

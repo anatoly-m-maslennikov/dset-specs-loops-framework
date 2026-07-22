@@ -28,7 +28,12 @@ An operating area may additionally link its validation command, maintenance play
 
 - The root hub links each registered top-level area hub.
 - Each registered area declares one parent hub; the parent chain must terminate at the root hub without cycles.
-- GitHub hubs may link stable atomic owners because GitHub has no portable backlink query. Keep this list curated and purpose-oriented, not exhaustive.
+- Link stable child areas, evergreen specifications and plans, settings, and
+  other long-lived non-atomic owners directly.
+- Represent atomic artifacts only by their containing folders. Never enumerate
+  or link individual atomic carriers from a hub.
+- Never list or link anything below `.dset_runtime/`. A hub may name the runtime
+  root only to explain that it is excluded from durable navigation.
 - Generated, archived, fixture, and evidence directories do not receive hubs unless they are stable reader-facing areas with their own navigation need.
 - Use relative Markdown links that resolve on GitHub. Do not use Obsidian wiki links, local absolute paths, or private application state.
 
@@ -38,4 +43,8 @@ Do not create a hub for a thin folder, one-off change, dated archive, generated 
 
 ## Maintenance invariant
 
-Adding or removing a governed area updates its registry entry, its hub, its parent hub route, and verification in the same change. Adding an atomic file normally updates only the owning area hub when the file becomes a stable start route.
+Adding or removing a governed area updates its registry entry, its hub, its
+parent hub route, and verification in the same change. Adding or removing an
+individual atom never changes a hub. Update navigation only when an
+atomic-artifact folder or a stable long-lived non-atomic owner is added,
+removed, or renamed.

@@ -17,16 +17,17 @@ recommendation and every Change need not execute every mode in sequence:
 
 1. `initialize`: no valid DSET root exists.
 2. `repair-governance`: a DSET root exists but selected ownership is invalid.
-3. `decompose`: package, feature, or service boundaries are materially
+3. `decisions`: every new operator input to a valid governed project must be
+   classified and emitted as one or more current atomic records before its
+   consequences continue.
+4. `decompose`: package, feature, or service boundaries are materially
    unresolved.
-4. `diagnose`: an observed problem or failing proof requires cause-finding.
-5. `clarify`: an open domain or specification question blocks a decision.
-6. `landscape`: a consequential solution, dependency, framework, or language
+5. `diagnose`: an observed problem or failing proof requires cause-finding.
+6. `clarify`: an open domain or specification question blocks a decision.
+7. `landscape`: a consequential solution, dependency, framework, or language
    choice lacks comparable evidence.
-7. `prototype`: an explicitly requested bounded experiment is needed to compare
+8. `prototype`: an explicitly requested bounded experiment is needed to compare
    solution evidence.
-8. `decisions`: accepted operator/session directives are not reconciled into
-   current atomic records.
 9. `compile`: an affected evergreen specification or plan must be current for
    the requested downstream workflow and accepted atoms remain beyond its
    recorded frontier.
@@ -177,12 +178,14 @@ authorization, provenance, terminal-finish, Verification, and release
 boundaries as lazy mode.
 
 The `decisions` workflow treats session/checkpoint/run content as candidate
-evidence, never authority. It emits only accepted atomic directives, preserves
+evidence, never authority. Every fresh operator input is immediate intake. The
+workflow classifies it into one or more semantic atoms before any requested
+consequence continues, emits only accepted atomic directives, preserves
 session and LLM-session provenance, identifies affected evergreen owners, and
-never edits an existing atom or compiles projections implicitly. Unclear acceptance or meaning produces an exact
-Question or handoff; it is not silently decided. After compaction or unavailable
-history, repository owners and the bounded checkpoint are reconciled and every
-material unknown remains visible.
+never edits an existing atom or compiles projections implicitly. Unclear
+acceptance or meaning produces an exact Question or handoff; it is not silently
+decided. After compaction or unavailable history, repository owners and the
+bounded checkpoint are reconciled and every material unknown remains visible.
 
 The primary `dset` entrypoint owns session start, checkpoint, and resume for
 the whole chain. Only initial DSET entry may omit a DSET `session_id`. An active

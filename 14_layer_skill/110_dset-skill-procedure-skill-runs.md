@@ -114,6 +114,12 @@ available contributing `llm_session_ids`. Missing history after compaction is
 reported as unknown when repository and checkpoint evidence cannot establish
 the directive without invention.
 
+Every fresh operator input is itself a required intake candidate. Before a
+requested consequence continues, `decisions` must classify and emit all clear
+primary claims as separate semantic atoms. It asks focused questions and stops
+when strictness, authority, meaning, or acceptance prevents safe immutable
+emission.
+
 When checkpoint persistence is unavailable, return a bounded portable handoff
 with `persistence: unavailable`. Low-risk read-only work may continue when its
 rules allow it. A context handoff, consequential action, or compacted-session

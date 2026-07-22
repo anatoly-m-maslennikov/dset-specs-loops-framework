@@ -190,6 +190,11 @@ python -m dset_toolchain methodology sync .
 python -m dset_toolchain methodology sync . --execute
 ```
 
+Synchronization is explicit and one-way: ordinary root-source edits never
+rewrite `.dset/000_dset_methodology/`, and installed files are never copied
+back into the root source. Run the execute form only when the operator requests
+the refresh.
+
 The main operator surface is `dset`. Direct entries
 include decisions, semantic compilation, proof planning, implementation
 planning, implementation, verification, overview, diagnosis, clarification,

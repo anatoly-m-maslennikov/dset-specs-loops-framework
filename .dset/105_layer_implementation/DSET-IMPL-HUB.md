@@ -8,10 +8,8 @@ artifacts that authorize their environment, code, Test, and Evaluation rules.
 ## Current profile
 
 - `DSET-IMPL-REFERENCE-profile-local-python-tools.toml`
-- `DSET-REQUIREMENT-IMPL-001-local-python-tools-profile.md`
-- `DSET-REQUIREMENT-IMPL-002-portable-dry-run-and-diagnostics.md`
-- `DSET-REQUIREMENT-IMPL-003-place-and-explain-settings-and-constants.md`
-- `DSET-PROBLEM-IMPL-001-implementation-profile-assurance-is-deferred.md`
+- `decision/` — accepted profile Requirements and Decisions.
+- `problem/` — current implementation-profile Problems.
 
 ## Boundaries
 
@@ -22,5 +20,5 @@ contract; OPS remains post-implementation delivery and operation.
 
 ## Start here
 
-Use the current profile reference first, then its accepted Requirements and
-open conformance Problems.
+Use the current profile reference first, then browse the atomic folders by
+semantic Type.

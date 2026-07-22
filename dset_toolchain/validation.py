@@ -2907,11 +2907,14 @@ def _validate_artifact_hubs(
 ) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     root_id = root_entry.get("id")
+    atoms, _ = collect_semantic_atoms(root)
+    atomic_names = {(atom.semantic_id, Path(atom.path).name) for atom in atoms.values()}
     for entry in [root_entry, *areas]:
         hub = _artifact_carrier(root, entry.get("hub"))
         if hub is None or not hub.is_file():
             continue
-        headings = _level_two_headings(hub.read_text(encoding="utf-8"))
+        hub_text = hub.read_text(encoding="utf-8")
+        headings = _level_two_headings(hub_text)
         required = {"purpose", "boundaries"}
         if not required.issubset(headings):
             diagnostics.append(
@@ -2923,6 +2926,37 @@ def _validate_artifact_hubs(
         if headings.isdisjoint(navigation):
             diagnostics.append(
                 _diag("DSET-E123", hub, "hub requires a navigation section")
+            )
+        named_atoms = sorted(
+            semantic_id
+            for semantic_id, carrier_name in atomic_names
+            if semantic_id in hub_text or carrier_name in hub_text
+        )
+        if named_atoms:
+            diagnostics.append(
+                _diag(
+                    "DSET-E123",
+                    hub,
+                    "hub must link atomic-artifact folders, not individual "
+                    f"atoms: {', '.join(named_atoms)}",
+                )
+            )
+        runtime_descendants = sorted(
+            set(
+                re.findall(
+                    r"\.dset_runtime/[^\s`\)\]\}>]+",
+                    hub_text,
+                )
+            )
+        )
+        if runtime_descendants:
+            diagnostics.append(
+                _diag(
+                    "DSET-E123",
+                    hub,
+                    "hub must not include .dset_runtime descendants: "
+                    + ", ".join(runtime_descendants),
+                )
             )
     root_hub = _artifact_carrier(root, root_entry.get("hub"))
     if root_hub is None or not root_hub.is_file() or not isinstance(root_id, str):

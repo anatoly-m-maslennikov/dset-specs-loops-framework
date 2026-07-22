@@ -193,7 +193,12 @@ Universal rules must require answer-first writing, one primary question, explici
 
 ## DSET-REQUIREMENT-GOV-012 — Documentation v1 is executable
 
-The `documentation-v1` profile must provide a machine-readable governed-area registry and deterministic checks for profile identity, required hubs, unique area IDs/roots, valid owner/purpose/parent fields, reachable parent hierarchy, required hub sections, root-to-area navigation, and existing portable links. Qualitative authoring judgments remain evals rather than brittle keyword gates.
+The `documentation-v1` profile must provide a machine-readable governed-area
+registry and deterministic checks for profile identity, required hubs, unique
+area IDs/roots, valid owner/purpose/parent fields, reachable parent hierarchy,
+required hub sections, root-to-area navigation, folder-level atomic
+navigation, `.dset_runtime` descendant exclusion, and existing portable links.
+Qualitative authoring judgments remain evals rather than brittle keyword gates.
 
 **Scenario DSET-SCENARIO-GOV-013:** Removing an area hub or pointing an area at a missing parent produces a stable diagnostic through `dset check`; debating whether rationale is sufficiently separated remains a rubric-based eval.
 
@@ -1007,3 +1012,26 @@ deterministic validation.
 If a backward dependency cannot be removed or re-homed without falsifying the
 architecture, DSET proposes reclassifying the coupled owners as features with
 horizontal Contracts and waits for operator acceptance.
+
+## DSET-REQUIREMENT-GOV-052 — Synchronize installed methodology explicitly
+
+Reusable methodology is authored only in the repository-root source. Ordinary
+source edits never rewrite `.dset/000_dset_methodology/`, and installed files
+are never copied back into the source. Only an explicit operator
+synchronization command may validate and copy the root source unidirectionally
+into the installed methodology snapshot.
+
+The installed snapshot may therefore remain behind the working source between
+explicit synchronizations. Consumers must report that version boundary rather
+than silently mixing source and installed files.
+
+## DSET-REQUIREMENT-GOV-053 — Navigate atoms at folder level
+
+Hubs directly list only stable child areas, atomic-artifact folders, evergreen
+specifications and plans, settings, and other long-lived non-atomic owners. A
+hub never enumerates or links individual atomic carriers. Adding an atom does
+not require a hub edit.
+
+Hubs never list or link files or directories below `.dset_runtime/`. They may
+name the runtime root only to state that transient runtime state is outside
+durable navigation.

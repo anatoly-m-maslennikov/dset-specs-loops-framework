@@ -14,7 +14,7 @@ The profile governs declared areas, not every incidental Markdown file. Change p
 | Artifact classification | The artifact-type registry and schema exist; type IDs, direct subtypes, primary questions, direct metadata, and path rules are valid and unambiguous |
 | Area identity | Area IDs and roots are unique; owner and purpose are non-empty; roots and hubs exist |
 | Parent hierarchy | Exactly one root hub exists; each area parent resolves; parent chains terminate without cycles |
-| Hub shape | Each area hub contains Purpose, Boundaries, and Start here/Navigation sections |
+| Hub shape | Each area hub contains Purpose, Boundaries, and Start here/Navigation sections; it names atomic collections only by folder and excludes `.dset_runtime` descendants |
 | Root navigation | The repository root hub links every registered top-level area hub |
 | Portability | Local Markdown links resolve; GitHub alert syntax is supported; wiki links are rejected |
 

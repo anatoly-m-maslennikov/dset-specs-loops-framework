@@ -15,6 +15,7 @@ The installed methodology used to govern this repository is headed by
 by `DSET-PROJECT-HUB.md` and its applied layer hubs.
 
 The source layers may be changed while the installed methodology stays pinned
-to the last accepted edition. A governed framework update validates and
-materializes the next accepted edition without mixing source and applied
+to the last accepted edition. Ordinary edits never mirror in either direction.
+Only an explicit operator synchronization command validates and copies the
+root source into the next installed edition without mixing source and applied
 artifacts.

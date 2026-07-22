@@ -768,10 +768,6 @@ def discover_layout(root: Path) -> RepositoryLayout:
     scopes = legacy_root / "scopes"
     if is_slim:
         if structure_layout == SEPARATED_METHODOLOGY_LAYOUT:
-            methodology_directories = (
-                "00_project",
-                *METHODOLOGY_LAYER_DIRECTORIES.values(),
-            )
             applied_directories = (
                 APPLIED_PROJECT_ROOT,
                 *APPLIED_LAYER_DIRECTORIES.values(),
@@ -780,10 +776,7 @@ def discover_layout(root: Path) -> RepositoryLayout:
             missing_layers = [
                 path
                 for path in (
-                    *(
-                        current_root / METHODOLOGY_ROOT / directory
-                        for directory in methodology_directories
-                    ),
+                    current_root / METHODOLOGY_ROOT,
                     *(current_root / directory for directory in applied_directories),
                 )
                 if not path.is_dir()
