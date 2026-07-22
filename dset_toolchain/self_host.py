@@ -1,3 +1,5 @@
+"""Provide DSET self host behavior."""
+
 from __future__ import annotations
 
 import hashlib

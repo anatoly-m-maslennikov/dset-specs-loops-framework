@@ -1,3 +1,5 @@
+"""Provide DSET artifact emission behavior."""
+
 from __future__ import annotations
 
 import re
@@ -11,9 +13,12 @@ from .semantic_types import SEMANTIC_SUBTYPES, build_semantic_classification_ind
 from .settings import load_project_settings
 from .yaml_subset import load
 
+# SESSION_PATTERN validates session pattern; this module owns the accepted syntax.
 SESSION_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
+# AUTHORITY_PATTERN validates authority pattern; this module owns the accepted syntax.
 AUTHORITY_PATTERN = re.compile(r"^(?:operator|repository|external):[A-Za-z0-9._:-]+$")
 
+# MEDIUM_FIELDS defines medium fields; this module owns the default.
 MEDIUM_FIELDS = (
     "authority",
     "claim",
@@ -25,12 +30,14 @@ MEDIUM_FIELDS = (
     "acceptance",
     "promotion",
 )
+# HIGH_FIELDS defines high fields; this module owns the default.
 HIGH_FIELDS = (
     "boundary",
     "lineage",
     "conflict_state",
     "verification_obligation",
 )
+# FIELD_QUESTIONS defines field questions; this module owns the default.
 FIELD_QUESTIONS = {
     "authority": "Who or what authorizes this atomic claim?",
     "claim": "What is the one precise primary claim to preserve?",
@@ -46,6 +53,7 @@ FIELD_QUESTIONS = {
     "conflict_state": "Is any applicable authority conflict unresolved?",
     "verification_obligation": "What proof obligation applies, including none?",
 }
+# ALLOWED_PROMOTION_STEPS defines allowed promotion steps; this module owns the default.
 ALLOWED_PROMOTION_STEPS = frozenset(
     {
         ("feature", "feature_group"),

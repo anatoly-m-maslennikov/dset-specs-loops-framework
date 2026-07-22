@@ -1,3 +1,10 @@
+"""Verify DSET methodology sync behavior.
+
+Assurance scope: deterministic behavior owned by this module.
+Non-obvious fixtures: documented by the fixture that owns them.
+Host requirements: an isolated supported Python environment.
+"""
+
 from __future__ import annotations
 
 import os
@@ -9,7 +16,9 @@ from pathlib import Path
 from dset_toolchain.methodology_sync import methodology_drift
 from tests import repository_root
 
+# ROOT locates the repository fixture; repository layout is authoritative.
 ROOT = repository_root(Path(__file__))
+# METHODOLOGY defines methodology; this module owns the default.
 METHODOLOGY = ROOT / ".dset" / "000_dset_methodology"
 
 

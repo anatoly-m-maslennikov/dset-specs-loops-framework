@@ -1,3 +1,5 @@
+"""Provide DSET lifecycle behavior."""
+
 from __future__ import annotations
 
 import copy
@@ -6,6 +8,7 @@ import json
 from collections.abc import Mapping
 from typing import Any
 
+# IMPLEMENT_CRITERIA defines implement criteria; this module owns the default.
 IMPLEMENT_CRITERIA = (
     "decisions_reconciled",
     "evergreen_current",
@@ -14,6 +17,7 @@ IMPLEMENT_CRITERIA = (
     "implementation_authorized",
     "implementation_complete",
 )
+# IMPLEMENT_WORKFLOWS defines implement workflows; this module owns the default.
 IMPLEMENT_WORKFLOWS = (
     "decisions",
     "compile",
@@ -21,7 +25,9 @@ IMPLEMENT_WORKFLOWS = (
     "plan-implementation",
     "implement",
 )
+# IMPLEMENTATION_MODES defines implementation modes; this module owns the default.
 IMPLEMENTATION_MODES = frozenset({"lazy", "strict"})
+# WORKFLOW_PROGRESS defines workflow progress; this module owns the default.
 WORKFLOW_PROGRESS = {
     "decisions": "decisions_reconciled",
     "compile": "evergreen_current",

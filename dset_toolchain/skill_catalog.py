@@ -1,5 +1,8 @@
+"""Provide DSET skill catalog behavior."""
+
 from __future__ import annotations
 
+# PUBLIC_SKILL_WORKFLOWS defines public skill workflows; this module owns the default.
 PUBLIC_SKILL_WORKFLOWS = {
     "dset": "lifecycle-orchestration",
     "dset-init": "initialize",
@@ -21,6 +24,7 @@ PUBLIC_SKILL_WORKFLOWS = {
     "dset-complete": "complete",
 }
 
+# PUBLIC_SKILL_MODES defines public skill modes; this module owns the default.
 PUBLIC_SKILL_MODES = {
     "dset": None,
     "dset-init": "initialize",
@@ -42,13 +46,16 @@ PUBLIC_SKILL_MODES = {
     "dset-complete": "complete",
 }
 
+# PRE_RESOLUTION_SKILLS defines pre resolution skills; this module owns the default.
 PRE_RESOLUTION_SKILLS = frozenset({"dset-init", "dset-repair-governance"})
 
+# SKILL_INVOCATION_MARKERS defines skill invocation markers; this module owns the default.
 SKILL_INVOCATION_MARKERS = {
     skill_id: f"skills context --skill {skill_id} --target TARGET"
     for skill_id in PUBLIC_SKILL_WORKFLOWS
 }
 
+# REGISTERED_SKILL_WORKFLOWS defines registered skill workflows; this module owns the default.
 REGISTERED_SKILL_WORKFLOWS = {
     skill_id: workflow_id
     for skill_id, workflow_id in PUBLIC_SKILL_WORKFLOWS.items()

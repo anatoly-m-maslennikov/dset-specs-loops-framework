@@ -1,3 +1,5 @@
+"""Provide DSET skill distribution behavior."""
+
 from __future__ import annotations
 
 import argparse
@@ -20,10 +22,15 @@ from .skill_catalog import PUBLIC_SKILL_WORKFLOWS, SKILL_INVOCATION_MARKERS
 from .skill_context import resolve_skill_context
 from .temp_paths import temporary_directory
 
+# SKILL_WORKFLOWS defines skill workflows; this module owns the default.
 SKILL_WORKFLOWS = PUBLIC_SKILL_WORKFLOWS
+# HOSTS defines hosts; this module owns the default.
 HOSTS = {"claude", "codex"}
+# RECEIPT_SCHEMA_VERSION defines receipt schema version; this module owns the default.
 RECEIPT_SCHEMA_VERSION = "1.1"
+# RUNTIME_PACKAGE_SCHEMA_VERSION defines runtime package schema version; this module owns the default.
 RUNTIME_PACKAGE_SCHEMA_VERSION = "2.0"
+# RECEIPT_FIELDS defines receipt fields; this module owns the default.
 RECEIPT_FIELDS = {
     "schema_version",
     "host",
@@ -41,7 +48,9 @@ RECEIPT_FIELDS = {
     "handoff_observed",
     "stop_boundary_observed",
 }
+# MAX_RECEIPT_BYTES bounds max receipt bytes in bytes; this module owns the limit.
 MAX_RECEIPT_BYTES = 16 * 1024
+# _DSET_CODE_COMMAND validates dset code command; this module owns the accepted syntax.
 _DSET_CODE_COMMAND = re.compile(r"`dset(?=\s)")
 
 

@@ -1,3 +1,5 @@
+"""Provide DSET validation behavior."""
+
 from __future__ import annotations
 
 import hashlib
@@ -48,10 +50,15 @@ from .semantic_types import classify_semantic_id, validate_semantic_classificati
 from .settings import load_project_settings, selected_settings_path
 from .yaml_subset import YamlSubsetError, load
 
+# ID_PATTERN validates id pattern; this module owns the accepted syntax.
 ID_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
+# CHANGE_PATTERN validates change pattern; this module owns the accepted syntax.
 CHANGE_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+# PROJECT_KEY_PATTERN validates project key pattern; this module owns the accepted syntax.
 PROJECT_KEY_PATTERN = re.compile(r"^[A-Z][A-Z0-9]*$")
+# TRACE_LAYERS defines trace layers; this module owns the default.
 TRACE_LAYERS = tuple(LAYER_ID_TOKENS.values())
+# TRACE_TYPES defines trace types; this module owns the default.
 TRACE_TYPES = (
     "DECISION",
     "REQUIREMENT",
@@ -75,9 +82,13 @@ TRACE_TYPES = (
     "TASK",
     "CHANGE",
 )
+# LINK_PATTERN validates link pattern; this module owns the accepted syntax.
 LINK_PATTERN = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
+# CALLOUT_PATTERN validates callout pattern; this module owns the accepted syntax.
 CALLOUT_PATTERN = re.compile(r"^> \[!([^\]]+)\]", re.MULTILINE)
+# GITHUB_CALLOUTS defines github callouts; this module owns the default.
 GITHUB_CALLOUTS = {"NOTE", "TIP", "IMPORTANT", "WARNING", "CAUTION"}
+# MARKDOWN_IGNORED_PARTS defines markdown ignored parts; this module owns the default.
 MARKDOWN_IGNORED_PARTS = frozenset(
     {
         ".cache",
@@ -95,12 +106,16 @@ MARKDOWN_IGNORED_PARTS = frozenset(
         "tmp",
     }
 )
+# LLM_SESSION_ID_PATTERN validates llm session id pattern; this module owns the accepted syntax.
 LLM_SESSION_ID_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
+# LLM_SESSION_FIELD_PATTERN validates llm session field pattern; this module owns the accepted syntax.
 LLM_SESSION_FIELD_PATTERN = re.compile(
     r"^\s*(?:-\s*)?\*\*LLM session IDs?:\*\*\s*(.*)$",
     re.IGNORECASE,
 )
+# ARTIFACT_CLASSIFICATION_PATTERN validates artifact classification pattern; this module owns the accepted syntax.
 ARTIFACT_CLASSIFICATION_PATTERN = re.compile(r"^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$")
+# ARTIFACT_TYPE_SUBTYPES defines artifact type subtypes; this module owns the default.
 ARTIFACT_TYPE_SUBTYPES: dict[str, frozenset[str]] = {
     "atomic_record": frozenset(),
     "analysis_report": frozenset(
@@ -2242,6 +2257,7 @@ def _carrier_references_path(
     return False
 
 
+# _TRANSITION_INDEX_CACHE validates transition index cache; this module owns the accepted syntax.
 _TRANSITION_INDEX_CACHE: dict[
     tuple[str, int, int], tuple[dict[Path, Path], dict[Path, frozenset[Path]]]
 ] = {}

@@ -1,3 +1,5 @@
+"""Provide DSET evidence behavior."""
+
 from __future__ import annotations
 
 import re
@@ -11,13 +13,19 @@ from .frontmatter import FrontmatterError
 from .frontmatter import load as load_frontmatter
 from .identity import has_logical_part
 
+# ID_PATTERN validates id pattern; this module owns the accepted syntax.
 ID_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
+# SESSION_PATTERN validates session pattern; this module owns the accepted syntax.
 SESSION_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
+# EVIDENCE_SUBTYPES defines evidence subtypes; this module owns the default.
 EVIDENCE_SUBTYPES = frozenset(
     {"test_result", "evaluation_result", "review_report", "run_record"}
 )
+# POLARITIES defines polarities; this module owns the default.
 POLARITIES = frozenset({"supports", "contradicts", "mixed", "inconclusive"})
+# CURRENTNESS defines currentness; this module owns the default.
 CURRENTNESS = frozenset({"current", "stale", "superseded"})
+# REQUIRED_FIELDS defines required fields; this module owns the default.
 REQUIRED_FIELDS = frozenset(
     {
         "schema_version",
@@ -37,6 +45,7 @@ REQUIRED_FIELDS = frozenset(
         "relations",
     }
 )
+# OPTIONAL_FIELDS defines optional fields; this module owns the default.
 OPTIONAL_FIELDS = frozenset(
     {
         "observed_at",

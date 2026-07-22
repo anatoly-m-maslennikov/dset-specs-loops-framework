@@ -1,3 +1,5 @@
+"""Provide DSET runtime behavior."""
+
 from __future__ import annotations
 
 import copy
@@ -19,17 +21,28 @@ from .lifecycle import advance_closure, initial_closure
 from .skill_catalog import PUBLIC_SKILL_MODES, PUBLIC_SKILL_WORKFLOWS
 from .yaml_subset import load
 
+# RUN_SCHEMA_VERSION defines run schema version; this module owns the default.
 RUN_SCHEMA_VERSION = "1.2"
+# CHECKPOINT_SCHEMA_VERSION defines checkpoint schema version; this module owns the default.
 CHECKPOINT_SCHEMA_VERSION = "1.3"
+# MAX_RECORD_BYTES bounds max record bytes in bytes; this module owns the limit.
 MAX_RECORD_BYTES = 64 * 1024
+# MAX_RUN_AGE defines max run age; this module owns the default.
 MAX_RUN_AGE = timedelta(days=30)
+# MAX_RUN_COUNT defines max run count; this module owns the default.
 MAX_RUN_COUNT = 200
+# MAX_RUN_BYTES bounds max run bytes in bytes; this module owns the limit.
 MAX_RUN_BYTES = 20 * 1024 * 1024
 
+# _ID validates id; this module owns the accepted syntax.
 _ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
+# _LLM_SESSION_ID validates llm session id; this module owns the accepted syntax.
 _LLM_SESSION_ID = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
+# _STABLE_CODE validates stable code; this module owns the accepted syntax.
 _STABLE_CODE = re.compile(r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+){1,5}$")
+# _PUBLIC_ENTRYPOINTS validates public entrypoints; this module owns the accepted syntax.
 _PUBLIC_ENTRYPOINTS = frozenset(PUBLIC_SKILL_WORKFLOWS)
+# _INVOCATION_SOURCES validates invocation sources; this module owns the accepted syntax.
 _INVOCATION_SOURCES = {
     "operator",
     "public-skill",
@@ -37,8 +50,11 @@ _INVOCATION_SOURCES = {
     "governed-model",
     "delegated-run",
 }
+# _RUN_STATUSES validates run statuses; this module owns the accepted syntax.
 _RUN_STATUSES = {"succeeded", "failed", "stopped", "interrupted"}
+# _SESSION_STATUSES validates session statuses; this module owns the accepted syntax.
 _SESSION_STATUSES = {"active", "paused", "completed", "stopped"}
+# _NEXT_MODES validates next modes; this module owns the accepted syntax.
 _NEXT_MODES = {
     "initialize",
     "repair-governance",
@@ -58,12 +74,14 @@ _NEXT_MODES = {
     "release",
     "complete",
 }
+# _NEXT_AUTHORIZATIONS validates next authorizations; this module owns the accepted syntax.
 _NEXT_AUTHORIZATIONS = {
     "none",
     "repository-write",
     "external-write",
     "publication",
 }
+# _AUTHORIZATION_CLASSES validates authorization classes; this module owns the accepted syntax.
 _AUTHORIZATION_CLASSES = {
     "read-only",
     "repository-write",
@@ -71,7 +89,9 @@ _AUTHORIZATION_CLASSES = {
     "publication",
     "unknown",
 }
+# _AUTHORIZATION_STATES validates authorization states; this module owns the accepted syntax.
 _AUTHORIZATION_STATES = {"granted", "not-granted", "consumed", "unknown"}
+# _PARAMETER_NAMES validates parameter names; this module owns the accepted syntax.
 _PARAMETER_NAMES = {
     "operation",
     "change_profile",
@@ -84,6 +104,7 @@ _PARAMETER_NAMES = {
     "result_class",
     "risk_class",
 }
+# _CATEGORY_VALUES validates category values; this module owns the accepted syntax.
 _CATEGORY_VALUES = {
     "none",
     "small",

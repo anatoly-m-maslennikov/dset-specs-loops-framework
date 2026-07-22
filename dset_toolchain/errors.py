@@ -1,3 +1,5 @@
+"""Provide DSET errors behavior."""
+
 from __future__ import annotations
 
 import contextlib

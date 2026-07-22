@@ -1,3 +1,5 @@
+"""Provide DSET settings behavior."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -7,13 +9,21 @@ from typing import Any
 from .toml_codec import TomlCodecError
 from .toml_codec import load as load_toml
 
+# SETTINGS_FILENAME defines settings filename; this module owns the default.
 SETTINGS_FILENAME = "dset_settings.toml"
+# SETTINGS_DIRECTORY defines settings directory; this module owns the default.
 SETTINGS_DIRECTORY = ".dset"
+# LEGACY_SETTINGS_FILENAME defines legacy settings filename; this module owns the default.
 LEGACY_SETTINGS_FILENAME = "dset.toml"
+# SETTINGS_SCHEMA_VERSION defines settings schema version; this module owns the default.
 SETTINGS_SCHEMA_VERSION = "1.5"
+# PREVIOUS_SETTINGS_SCHEMA_VERSION defines previous settings schema version; this module owns the default.
 PREVIOUS_SETTINGS_SCHEMA_VERSION = "1.4"
+# HIDDEN_SETTINGS_SCHEMA_VERSION defines hidden settings schema version; this module owns the default.
 HIDDEN_SETTINGS_SCHEMA_VERSION = "1.3"
+# LEGACY_SETTINGS_SCHEMA_VERSION defines legacy settings schema version; this module owns the default.
 LEGACY_SETTINGS_SCHEMA_VERSION = "1.0"
+# SUPPORTED_SETTINGS_SCHEMA_VERSIONS defines supported settings schema versions; this module owns the default.
 SUPPORTED_SETTINGS_SCHEMA_VERSIONS = frozenset(
     {
         LEGACY_SETTINGS_SCHEMA_VERSION,
@@ -24,11 +34,17 @@ SUPPORTED_SETTINGS_SCHEMA_VERSIONS = frozenset(
         SETTINGS_SCHEMA_VERSION,
     }
 )
+# ARTIFACT_CREATION_STRICTNESS defines artifact creation strictness; this module owns the default.
 ARTIFACT_CREATION_STRICTNESS = frozenset({"medium", "high"})
+# IMPLEMENTATION_MODES defines implementation modes; this module owns the default.
 IMPLEMENTATION_MODES = frozenset({"lazy", "strict"})
+# CHANGE_WORKSPACE_MODES defines change workspace modes; this module owns the default.
 CHANGE_WORKSPACE_MODES = frozenset({"integration-branch", "branch-worktree"})
+# DELEGATION_BUDGET_PROFILES defines delegation budget profiles; this module owns the default.
 DELEGATION_BUDGET_PROFILES = frozenset({"low", "medium", "high"})
+# SEMANTIC_COMPILATION_MODES defines semantic compilation modes; this module owns the default.
 SEMANTIC_COMPILATION_MODES = frozenset({"on_demand", "eager"})
+# DEFAULT_PRIORITY_SCALE defines default priority scale; this module owns the default.
 DEFAULT_PRIORITY_SCALE = ("critical", "high", "medium", "low", "deferred")
 
 

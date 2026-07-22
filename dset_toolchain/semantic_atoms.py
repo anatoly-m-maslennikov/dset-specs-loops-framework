@@ -1,3 +1,5 @@
+"""Provide DSET semantic atoms behavior."""
+
 from __future__ import annotations
 
 import hashlib
@@ -25,8 +27,11 @@ from .semantic_types import (
 from .settings import load_project_settings
 from .yaml_subset import YamlSubsetError, dump, load
 
+# ID_PATTERN validates id pattern; this module owns the accepted syntax.
 ID_PATTERN = re.compile(r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$")
+# SESSION_PATTERN validates session pattern; this module owns the accepted syntax.
 SESSION_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
+# EVENTS defines events; this module owns the default.
 EVENTS = frozenset(
     {
         "accepted",
@@ -41,7 +46,9 @@ EVENTS = frozenset(
         "withdrawn",
     }
 )
+# TERMINAL_STATES defines terminal states; this module owns the default.
 TERMINAL_STATES = frozenset({"absorbed", "rejected", "retired", "withdrawn"})
+# REOPENABLE_STATES defines reopenable states; this module owns the default.
 REOPENABLE_STATES = frozenset({"answered", "confirmed", "resolved"})
 
 

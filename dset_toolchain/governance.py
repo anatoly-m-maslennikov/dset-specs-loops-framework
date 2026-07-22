@@ -1,3 +1,5 @@
+"""Provide DSET governance behavior."""
+
 from __future__ import annotations
 
 import difflib
@@ -21,14 +23,23 @@ from .layout import (
 from .project_data import project_section, write_project_section
 from .yaml_subset import YamlSubsetError, dump, load
 
+# RULE_PATTERN validates rule pattern; this module owns the accepted syntax.
 RULE_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
+# WORKFLOW_PATTERN validates workflow pattern; this module owns the accepted syntax.
 WORKFLOW_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+# SHA256_PATTERN validates sha256 pattern; this module owns the accepted syntax.
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
+# CUSTOMIZATION defines customization; this module owns the default.
 CUSTOMIZATION = {"unmodified", "custom"}
+# APPLICABILITY defines applicability; this module owns the default.
 APPLICABILITY = {"applicable", "not-applicable"}
+# RULE_LAYERS defines rule layers; this module owns the default.
 RULE_LAYERS = set(LAYER_ID_TOKENS.values())
+# RULE_LAYER_RANK defines rule layer rank; this module owns the default.
 RULE_LAYER_RANK = {LAYER_ID_TOKENS[layer]: index for index, layer in enumerate(LAYERS)}
+# GOVERNANCE_SCHEMA_VERSION defines governance schema version; this module owns the default.
 GOVERNANCE_SCHEMA_VERSION = 1.1
+# SLIM_RULE_TARGETS defines slim rule targets; this module owns the default.
 SLIM_RULE_TARGETS = {
     "architecture.md": "specification-architecture.md",
     "build-rules.md": "specification-build-rules.md",

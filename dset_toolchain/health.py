@@ -1,3 +1,5 @@
+"""Provide DSET health behavior."""
+
 from __future__ import annotations
 
 import hashlib
@@ -20,7 +22,9 @@ from .semantic_types import build_semantic_classification_index
 from .settings import load_project_settings
 from .yaml_subset import YamlSubsetError, load
 
+# INACTIVE_STATUSES defines inactive statuses; this module owns the default.
 INACTIVE_STATUSES = frozenset({"absorbed", "rejected", "retired", "withdrawn"})
+# IGNORED_PARTS defines ignored parts; this module owns the default.
 IGNORED_PARTS = frozenset(
     {
         ".git",

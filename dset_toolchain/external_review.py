@@ -1,3 +1,5 @@
+"""Provide DSET external review behavior."""
+
 from __future__ import annotations
 
 import hashlib
@@ -17,10 +19,15 @@ from .project_data import project_section
 from .settings import load_project_settings
 from .yaml_subset import load
 
+# ID_PATTERN validates id pattern; this module owns the accepted syntax.
 ID_PATTERN = re.compile(r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$")
+# FINDING_PATTERN validates finding pattern; this module owns the accepted syntax.
 FINDING_PATTERN = re.compile(r"^[A-Z][A-Z0-9]*-REVIEW-FINDING-[0-9]{3,}$")
+# SESSION_PATTERN validates session pattern; this module owns the accepted syntax.
 SESSION_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
+# SHA_PATTERN validates sha pattern; this module owns the accepted syntax.
 SHA_PATTERN = re.compile(r"^[0-9a-f]{40}$")
+# DISPOSITIONS defines dispositions; this module owns the default.
 DISPOSITIONS = frozenset(
     {
         "reject",

@@ -44,8 +44,11 @@ from .yaml_subset import YamlSubsetError
 from .yaml_subset import load as load_structured
 from .yaml_subset import loads as load_yaml
 
+# MIGRATION_SCHEMA_VERSION defines migration schema version; this module owns the default.
 MIGRATION_SCHEMA_VERSION = "1.0"
+# _STRUCTURED_SUFFIXES validates structured suffixes; this module owns the accepted syntax.
 _STRUCTURED_SUFFIXES = {".yaml", ".yml", ".json"}
+# _IGNORED_TOP_LEVEL validates ignored top level; this module owns the accepted syntax.
 _IGNORED_TOP_LEVEL = {
     ".git",
     ".cache",
@@ -55,7 +58,9 @@ _IGNORED_TOP_LEVEL = {
     "dist",
     "__pycache__",
 }
+# _RUNTIME_READINESS_PATH validates runtime readiness path; this module owns the accepted syntax.
 _RUNTIME_READINESS_PATH = ".dset_runtime/toml-migration-runtime-readiness.json"
+# _NON_REWRITABLE_EXCEPTIONS validates non rewritable exceptions; this module owns the accepted syntax.
 _NON_REWRITABLE_EXCEPTIONS = {
     "cli-wire-json",
     "external-json-schema",
@@ -65,6 +70,7 @@ _NON_REWRITABLE_EXCEPTIONS = {
     "machine-local-runtime-journal",
     "retained-symlink",
 }
+# _PACKAGE_FIELD_BY_CLASSIFICATION validates package field by classification; this module owns the accepted syntax.
 _PACKAGE_FIELD_BY_CLASSIFICATION: dict[tuple[str, str | None], str] = {
     ("decision", "requirement"): "requirements",
     ("decision", "contract"): "contracts",
@@ -73,6 +79,7 @@ _PACKAGE_FIELD_BY_CLASSIFICATION: dict[tuple[str, str | None], str] = {
     ("qa", "test"): "tests",
     ("qa", "evaluation"): "evals",
 }
+# _PACKAGE_ARTIFACT_BY_FIELD validates package artifact by field; this module owns the accepted syntax.
 _PACKAGE_ARTIFACT_BY_FIELD = {
     "requirements": "spec",
     "contracts": "contracts",

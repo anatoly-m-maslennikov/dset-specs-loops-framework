@@ -1,3 +1,10 @@
+"""Verify DSET fixtures behavior.
+
+Assurance scope: deterministic behavior owned by this module.
+Non-obvious fixtures: documented by the fixture that owns them.
+Host requirements: an isolated supported Python environment.
+"""
+
 from __future__ import annotations
 
 import shutil
@@ -12,8 +19,11 @@ from dset_toolchain.validation import validate_change
 from dset_toolchain.yaml_subset import dump, load
 from tests import repository_root
 
+# ROOT locates the repository fixture; repository layout is authoritative.
 ROOT = repository_root(Path(__file__))
+# LAYOUT defines layout; this module owns the default.
 LAYOUT = discover_layout(ROOT)
+# FIXTURES defines fixtures; this module owns the default.
 FIXTURES = LAYOUT.fixtures_root
 
 

@@ -1,3 +1,5 @@
+"""Provide DSET runtime bridge behavior."""
+
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence

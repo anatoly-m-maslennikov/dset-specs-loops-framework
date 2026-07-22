@@ -1,3 +1,5 @@
+"""Provide DSET compilation behavior."""
+
 from __future__ import annotations
 
 import hashlib
@@ -11,8 +13,11 @@ from .project_data import lifecycle_events
 from .semantic_atoms import collect_semantic_atoms
 from .yaml_subset import YamlSubsetError, dump, load
 
+# DECISION_FIELDS defines decision fields; this module owns the default.
 DECISION_FIELDS = ("requirements", "contracts", "stories", "outcomes")
+# INACTIVE_EVENTS defines inactive events; this module owns the default.
 INACTIVE_EVENTS = frozenset({"absorbed", "rejected", "retired", "withdrawn"})
+# IGNORED_PARTS defines ignored parts; this module owns the default.
 IGNORED_PARTS = frozenset(
     {
         ".git",

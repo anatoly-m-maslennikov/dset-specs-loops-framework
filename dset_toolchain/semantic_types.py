@@ -1,3 +1,5 @@
+"""Provide DSET semantic types behavior."""
+
 from __future__ import annotations
 
 import re
@@ -14,6 +16,7 @@ from .legacy_authority import legacy_shared_package_paths
 from .project_data import lifecycle_events, project_section
 from .yaml_subset import YamlSubsetError, load
 
+# SEMANTIC_SUBTYPES defines semantic subtypes; this module owns the default.
 SEMANTIC_SUBTYPES: dict[str, frozenset[str]] = {
     "requirement": frozenset(
         {
@@ -30,6 +33,7 @@ SEMANTIC_SUBTYPES: dict[str, frozenset[str]] = {
     "problem": frozenset({"defect", "gap", "debt"}),
     "qa": frozenset({"test", "evaluation"}),
 }
+# SEMANTIC_ID_KINDS defines semantic id kinds; this module owns the default.
 SEMANTIC_ID_KINDS: dict[tuple[str, str | None], str] = {
     ("requirement", None): "REQUIREMENT",
     ("requirement", "constraint"): "CONSTRAINT",
@@ -50,10 +54,12 @@ SEMANTIC_ID_KINDS: dict[tuple[str, str | None], str] = {
     ("qa", "test"): "TEST",
     ("qa", "evaluation"): "EVALUATION",
 }
+# KIND_CLASSIFICATION defines kind classification; this module owns the default.
 KIND_CLASSIFICATION = {
     kind: classification for classification, kind in SEMANTIC_ID_KINDS.items()
 }
 KIND_CLASSIFICATION["EVAL"] = ("qa", "evaluation")
+# FIELD_CLASSIFICATION defines field classification; this module owns the default.
 FIELD_CLASSIFICATION: dict[str, tuple[str, str | None]] = {
     "requirements": ("requirement", None),
     "contracts": ("requirement", "contract"),
@@ -62,6 +68,7 @@ FIELD_CLASSIFICATION: dict[str, tuple[str, str | None]] = {
     "tests": ("qa", "test"),
     "evals": ("qa", "evaluation"),
 }
+# LEGACY_INTAKE_CLASSIFICATION defines legacy intake classification; this module owns the default.
 LEGACY_INTAKE_CLASSIFICATION: dict[str, tuple[str, str | None]] = {
     "decision": ("decision", None),
     "requirement": ("requirement", None),
@@ -82,8 +89,11 @@ LEGACY_INTAKE_CLASSIFICATION: dict[str, tuple[str, str | None]] = {
     "test": ("qa", "test"),
     "evaluation": ("qa", "evaluation"),
 }
+# DECISION_ID_RE defines decision id re; this module owns the default.
 DECISION_ID_RE = re.compile(r"-\s*\*\*Decision ID:\*\*\s*`([^`]+)`")
+# STATUS_RE defines status re; this module owns the default.
 STATUS_RE = re.compile(r"-\s*\*\*Status:\*\*\s*([^\n]+)")
+# IGNORED_PARTS defines ignored parts; this module owns the default.
 IGNORED_PARTS = frozenset(
     {
         ".git",

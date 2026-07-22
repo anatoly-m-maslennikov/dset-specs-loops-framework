@@ -1,3 +1,10 @@
+"""Verify DSET lifecycle workflows behavior.
+
+Assurance scope: deterministic behavior owned by this module.
+Non-obvious fixtures: documented by the fixture that owns them.
+Host requirements: an isolated supported Python environment.
+"""
+
 from __future__ import annotations
 
 import re
@@ -11,13 +18,20 @@ from dset_toolchain.skill_catalog import REGISTERED_SKILL_WORKFLOWS
 from dset_toolchain.yaml_subset import load
 from tests import repository_root
 
+# ROOT locates the repository fixture; repository layout is authoritative.
 ROOT = repository_root(Path(__file__))
+# LAYOUT defines layout; this module owns the default.
 LAYOUT = discover_layout(ROOT)
+# REGISTRY defines registry; this module owns the default.
 REGISTRY = LAYOUT.governance_path
+# PROFILE defines profile; this module owns the default.
 PROFILE = LAYOUT.find_template("governance/core-v1/profile.toml")
+# LIFECYCLE defines lifecycle; this module owns the default.
 LIFECYCLE = ROOT / ".dset/04_layer_skill/procedure-lifecycle-orchestration.md"
 
+# EXCEPTION_MODES defines exception modes; this module owns the default.
 EXCEPTION_MODES = {"initialize", "repair-governance"}
+# MODE_WORKFLOWS defines mode workflows; this module owns the default.
 MODE_WORKFLOWS = {
     "decompose": "decompose",
     "diagnose": "diagnosis",
@@ -33,7 +47,9 @@ MODE_WORKFLOWS = {
     "release": "release",
     "complete": "complete",
 }
+# PUBLIC_WRAPPER_WORKFLOWS defines public wrapper workflows; this module owns the default.
 PUBLIC_WRAPPER_WORKFLOWS = set(REGISTERED_SKILL_WORKFLOWS.values())
+# SUPPLEMENTAL_WORKFLOWS defines supplemental workflows; this module owns the default.
 SUPPLEMENTAL_WORKFLOWS = {"overview"}
 
 

@@ -1,3 +1,10 @@
+"""Verify DSET settings behavior.
+
+Assurance scope: deterministic behavior owned by this module.
+Non-obvious fixtures: documented by the fixture that owns them.
+Host requirements: an isolated supported Python environment.
+"""
+
 from __future__ import annotations
 
 import json
@@ -17,6 +24,7 @@ from dset_toolchain.toml_codec import loads as load_toml
 from dset_toolchain.validation import validate_repository
 from tests import repository_root
 
+# ROOT locates the repository fixture; repository layout is authoritative.
 ROOT = repository_root(Path(__file__))
 
 

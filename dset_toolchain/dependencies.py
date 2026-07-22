@@ -1,3 +1,5 @@
+"""Provide DSET dependencies behavior."""
+
 from __future__ import annotations
 
 import re
@@ -9,10 +11,15 @@ from .diagnostics import Diagnostic
 from .layout import discover_layout
 from .yaml_subset import YamlSubsetError, load
 
+# PACKAGE_BLOCK defines package block; this module owns the default.
 PACKAGE_BLOCK = re.compile(r"(?ms)^\[\[package\]\]\n(.*?)(?=^\[\[package\]\]|\Z)")
+# NAME defines name; this module owns the default.
 NAME = re.compile(r'^name = "([^"]+)"$', re.MULTILINE)
+# VERSION defines version; this module owns the default.
 VERSION = re.compile(r'^version = "([^"]+)"$', re.MULTILINE)
+# REGISTRY defines registry; this module owns the default.
 REGISTRY = re.compile(r'^source = \{ registry = "([^"]+)" \}$', re.MULTILINE)
+# SPDX defines spdx; this module owns the default.
 SPDX = re.compile(r"^[A-Za-z0-9][A-Za-z0-9.+-]*$")
 
 

@@ -1,3 +1,10 @@
+"""Verify DSET conflict entity behavior.
+
+Assurance scope: deterministic behavior owned by this module.
+Non-obvious fixtures: documented by the fixture that owns them.
+Host requirements: an isolated supported Python environment.
+"""
+
 from __future__ import annotations
 
 import unittest
@@ -7,8 +14,11 @@ from dset_toolchain.layout import discover_layout
 from dset_toolchain.yaml_subset import load
 from tests import repository_root
 
+# ROOT locates the repository fixture; repository layout is authoritative.
 ROOT = repository_root(Path(__file__))
+# GOV_PACKAGE defines gov package; this module owns the default.
 GOV_PACKAGE = ROOT / ".dset" / "02_layer_gov"
+# DECISIONS defines decisions; this module owns the default.
 DECISIONS = GOV_PACKAGE / "decision"
 
 

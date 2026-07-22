@@ -1,3 +1,10 @@
+"""Verify DSET skill wrappers behavior.
+
+Assurance scope: deterministic behavior owned by this module.
+Non-obvious fixtures: documented by the fixture that owns them.
+Host requirements: an isolated supported Python environment.
+"""
+
 from __future__ import annotations
 
 import re
@@ -13,7 +20,9 @@ from dset_toolchain.skill_catalog import (
 from dset_toolchain.yaml_subset import load
 from tests import repository_root
 
+# ROOT locates the repository fixture; repository layout is authoritative.
 ROOT = repository_root(Path(__file__))
+# SKILLS defines skills; this module owns the default.
 SKILLS = ROOT / "skills"
 
 

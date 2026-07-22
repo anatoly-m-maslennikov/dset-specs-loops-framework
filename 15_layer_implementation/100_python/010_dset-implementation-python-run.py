@@ -1,3 +1,12 @@
+"""Run the DSET python run entrypoint.
+
+Invocation: execute this file with optional documented CLI flags.
+Inputs and outputs: command arguments in; diagnostics and status out.
+Mutable effects: disabled by --dry-run.
+Exit statuses: zero succeeds; nonzero reports an actionable failure.
+Environment: an isolated supported Python environment.
+"""
+
 from __future__ import annotations
 
 import sys

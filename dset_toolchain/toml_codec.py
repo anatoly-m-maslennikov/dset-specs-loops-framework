@@ -26,8 +26,11 @@ class TomlCodecError(ValueError):
     """Raised when a value is outside DSET's portable TOML subset."""
 
 
+# _BARE_KEY validates bare key; this module owns the accepted syntax.
 _BARE_KEY = re.compile(r"^[A-Za-z0-9_-]+$")
+# _INTEGER validates integer; this module owns the accepted syntax.
 _INTEGER = re.compile(r"^[+-]?[0-9][0-9_]*$")
+# _FLOAT validates float; this module owns the accepted syntax.
 _FLOAT = re.compile(r"^[+-]?(?:[0-9][0-9_]*\.[0-9_]+|[0-9][0-9_]*[eE][+-]?[0-9_]+)$")
 
 

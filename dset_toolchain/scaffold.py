@@ -1,3 +1,5 @@
+"""Provide DSET scaffold behavior."""
+
 from __future__ import annotations
 
 import re
@@ -13,6 +15,7 @@ from .profiles import VALID_PROFILES, required_artifacts
 from .settings import load_project_settings
 from .yaml_subset import dump, load
 
+# TRACE_LAYERS defines trace layers; this module owns the default.
 TRACE_LAYERS = tuple(LAYER_ID_TOKENS.values())
 
 

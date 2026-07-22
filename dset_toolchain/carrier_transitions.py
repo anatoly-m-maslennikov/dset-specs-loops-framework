@@ -18,9 +18,13 @@ from .toml_codec import dumps as dump_toml
 from .toml_codec import loads as load_toml
 from .yaml_subset import load as load_structured
 
+# SCHEMA_VERSION defines schema version; this module owns the default.
 SCHEMA_VERSION = "1.0"
+# AUTHORITY_DECISION defines authority decision; this module owns the default.
 AUTHORITY_DECISION = "DSET-DECISION-GOV-018"
+# LAYOUT_AUTHORITY defines layout authority; this module owns the default.
 LAYOUT_AUTHORITY = "DSET-REQUIREMENT-GOV-041"
+# AUTHORITY_DECISIONS defines authority decisions; this module owns the default.
 AUTHORITY_DECISIONS = frozenset(
     {
         AUTHORITY_DECISION,
@@ -29,14 +33,19 @@ AUTHORITY_DECISIONS = frozenset(
         "DSET-DECISION-GOV-022",
     }
 )
+# SESSION_ID defines session id; this module owns the default.
 SESSION_ID = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+# LEDGER_RELATIVE defines ledger relative; this module owns the default.
 LEDGER_RELATIVE = Path(".dset/100_project/legacy/migrations/carrier-transitions.toml")
+# LEGACY_LEDGER_RELATIVES defines legacy ledger relatives; this module owns the default.
 LEGACY_LEDGER_RELATIVES = (
     Path("00_project/migrations/carrier-transitions.toml"),
     Path("dset/scopes/gov/migrations/carrier-transitions.toml"),
     Path("dset/migrations/carrier-transitions.toml"),
 )
+# _NULL_SENTINEL validates null sentinel; this module owns the accepted syntax.
 _NULL_SENTINEL = "__DSET_EXPLICIT_NULL__"
+# _MARKDOWN_LINK validates markdown link; this module owns the accepted syntax.
 _MARKDOWN_LINK = re.compile(r"(?<!!)\[([^\]]+)\]\(([^)]+)\)")
 
 

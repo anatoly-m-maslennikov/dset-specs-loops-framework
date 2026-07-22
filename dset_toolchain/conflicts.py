@@ -1,3 +1,5 @@
+"""Provide DSET conflicts behavior."""
+
 from __future__ import annotations
 
 import hashlib
@@ -22,6 +24,7 @@ from .settings import load_project_settings
 from .toml_codec import loads as load_toml
 from .yaml_subset import load as load_structured
 
+# ROLES defines roles; this module owns the default.
 ROLES = frozenset(
     {
         "atomic_authority",
@@ -35,7 +38,9 @@ ROLES = frozenset(
         "derived_view",
     }
 )
+# ASSURANCE_ROLES defines assurance roles; this module owns the default.
 ASSURANCE_ROLES = frozenset({"qa", "evidence", "verification", "readiness"})
+# AUTHORITY_ROLES defines authority roles; this module owns the default.
 AUTHORITY_ROLES = frozenset({"atomic_authority", "external_authority"})
 
 

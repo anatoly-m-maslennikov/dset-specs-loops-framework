@@ -1,3 +1,5 @@
+"""Provide DSET layout behavior."""
+
 from __future__ import annotations
 
 import re
@@ -8,6 +10,7 @@ from typing import Final
 
 from .yaml_subset import YamlSubsetError, load
 
+# LAYERS defines layers; this module owns the default.
 LAYERS: Final[tuple[str, ...]] = (
     "meta",
     "gov",
@@ -16,6 +19,7 @@ LAYERS: Final[tuple[str, ...]] = (
     "implementation",
     "ops",
 )
+# LAYER_ID_TOKENS defines layer id tokens; this module owns the default.
 LAYER_ID_TOKENS: Final[dict[str, str]] = {
     "meta": "META",
     "gov": "GOV",
@@ -24,9 +28,11 @@ LAYER_ID_TOKENS: Final[dict[str, str]] = {
     "implementation": "IMPL",
     "ops": "OPS",
 }
+# ID_TOKEN_LAYERS defines id token layers; this module owns the default.
 ID_TOKEN_LAYERS: Final[dict[str, str]] = {
     token: layer for layer, token in LAYER_ID_TOKENS.items()
 }
+# LAYER_DIRECTORIES defines layer directories; this module owns the default.
 LAYER_DIRECTORIES: Final[dict[str, str]] = {
     "meta": "01_layer_meta",
     "gov": "02_layer_gov",
@@ -35,6 +41,7 @@ LAYER_DIRECTORIES: Final[dict[str, str]] = {
     "implementation": "05_layer_implementation",
     "ops": "06_layer_ops",
 }
+# RECURSIVE_LAYER_DIRECTORIES defines recursive layer directories; this module owns the default.
 RECURSIVE_LAYER_DIRECTORIES: Final[dict[str, str]] = {
     "meta": "01_layer_meta",
     "gov": "02_layer_gov",
@@ -43,6 +50,7 @@ RECURSIVE_LAYER_DIRECTORIES: Final[dict[str, str]] = {
     "implementation": "05_layer_implementation",
     "ops": "06_layer_ops",
 }
+# METHODOLOGY_LAYER_DIRECTORIES defines methodology layer directories; this module owns the default.
 METHODOLOGY_LAYER_DIRECTORIES: Final[dict[str, str]] = {
     "meta": "01_meta",
     "gov": "02_gov",
@@ -51,6 +59,7 @@ METHODOLOGY_LAYER_DIRECTORIES: Final[dict[str, str]] = {
     "implementation": "05_implementation",
     "ops": "06_ops",
 }
+# APPLIED_LAYER_DIRECTORIES defines applied layer directories; this module owns the default.
 APPLIED_LAYER_DIRECTORIES: Final[dict[str, str]] = {
     "meta": "101_layer_meta",
     "gov": "102_layer_gov",
@@ -59,6 +68,7 @@ APPLIED_LAYER_DIRECTORIES: Final[dict[str, str]] = {
     "implementation": "105_layer_implementation",
     "ops": "106_layer_ops",
 }
+# PRODUCT_LAYER_DIRECTORIES defines product layer directories; this module owns the default.
 PRODUCT_LAYER_DIRECTORIES: Final[dict[str, str]] = {
     "meta": "11_layer_meta",
     "gov": "12_layer_gov",
@@ -67,21 +77,37 @@ PRODUCT_LAYER_DIRECTORIES: Final[dict[str, str]] = {
     "implementation": "15_layer_implementation",
     "ops": "16_layer_ops",
 }
+# LEGACY_SLIM_LAYOUT defines legacy slim layout; this module owns the default.
 LEGACY_SLIM_LAYOUT: Final[str] = "slim-v1"
+# NUMBERED_LAYER_LAYOUT defines numbered layer layout; this module owns the default.
 NUMBERED_LAYER_LAYOUT: Final[str] = "numbered-layers-v1"
+# RECURSIVE_FRAMEWORK_LAYOUT defines recursive framework layout; this module owns the default.
 RECURSIVE_FRAMEWORK_LAYOUT: Final[str] = "recursive-framework-v1"
+# SEPARATED_METHODOLOGY_LAYOUT defines separated methodology layout; this module owns the default.
 SEPARATED_METHODOLOGY_LAYOUT: Final[str] = "separated-methodology-v1"
+# LEGACY_SCHEMA_VERSIONS defines legacy schema versions; this module owns the default.
 LEGACY_SCHEMA_VERSIONS: Final[frozenset[str]] = frozenset({"1.0", "1.1"})
+# LAYERED_SCHEMA_VERSION defines layered schema version; this module owns the default.
 LAYERED_SCHEMA_VERSION: Final[str] = "1.2"
+# SLIM_SCHEMA_VERSION defines slim schema version; this module owns the default.
 SLIM_SCHEMA_VERSION: Final[str] = "1.3"
+# RECURSIVE_SCHEMA_VERSION defines recursive schema version; this module owns the default.
 RECURSIVE_SCHEMA_VERSION: Final[str] = "1.4"
+# SEPARATED_SCHEMA_VERSION defines separated schema version; this module owns the default.
 SEPARATED_SCHEMA_VERSION: Final[str] = "1.5"
+# CURRENT_DSET_ROOT defines current dset root; this module owns the default.
 CURRENT_DSET_ROOT: Final[str] = ".dset"
+# LEGAL_FILES_ROOT defines legal files root; this module owns the default.
 LEGAL_FILES_ROOT: Final[str] = "LICENSES"
+# METHODOLOGY_ROOT defines methodology root; this module owns the default.
 METHODOLOGY_ROOT: Final[str] = "000_dset_methodology"
+# APPLIED_PROJECT_ROOT defines applied project root; this module owns the default.
 APPLIED_PROJECT_ROOT: Final[str] = "100_project"
+# APPLIED_VERSIONS_ROOT defines applied versions root; this module owns the default.
 APPLIED_VERSIONS_ROOT: Final[str] = "150_versions"
+# LEGACY_DSET_ROOT defines legacy dset root; this module owns the default.
 LEGACY_DSET_ROOT: Final[str] = "dset"
+# LEGACY_AUTHORITY_PATHS defines legacy authority paths; this module owns the default.
 LEGACY_AUTHORITY_PATHS: Final[tuple[str, ...]] = (
     "artifact-types.toml",
     "artifact-types.yaml",

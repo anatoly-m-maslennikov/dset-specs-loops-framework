@@ -1,3 +1,5 @@
+"""Provide DSET skill context behavior."""
+
 from __future__ import annotations
 
 from collections.abc import Sequence
@@ -16,6 +18,7 @@ from .skill_catalog import (
 )
 from .yaml_subset import load
 
+# CONTEXT_SCHEMA_VERSION defines context schema version; this module owns the default.
 CONTEXT_SCHEMA_VERSION = "1.0"
 
 

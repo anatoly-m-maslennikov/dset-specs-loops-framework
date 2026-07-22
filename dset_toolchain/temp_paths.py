@@ -1,3 +1,5 @@
+"""Provide DSET temp paths behavior."""
+
 from __future__ import annotations
 
 import os

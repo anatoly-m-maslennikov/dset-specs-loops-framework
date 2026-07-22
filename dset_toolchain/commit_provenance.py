@@ -1,3 +1,5 @@
+"""Provide DSET commit provenance behavior."""
+
 from __future__ import annotations
 
 import hashlib
@@ -13,10 +15,15 @@ from .layout import discover_layout
 from .semantic_types import build_semantic_classification_index
 from .yaml_subset import load
 
+# ID_PATTERN validates id pattern; this module owns the accepted syntax.
 ID_PATTERN = re.compile(r"[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+")
+# SESSION_PATTERN validates session pattern; this module owns the accepted syntax.
 SESSION_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
+# COMMIT_PATTERN validates commit pattern; this module owns the accepted syntax.
 COMMIT_PATTERN = re.compile(r"^[0-9a-f]{40}$")
+# DIGEST_PATTERN validates digest pattern; this module owns the accepted syntax.
 DIGEST_PATTERN = re.compile(r"^[0-9a-f]{64}$")
+# CORRECTION_FIELDS defines correction fields; this module owns the default.
 CORRECTION_FIELDS = {
     "commit",
     "original_message_sha256",

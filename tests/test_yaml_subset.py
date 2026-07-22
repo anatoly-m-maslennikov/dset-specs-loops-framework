@@ -1,3 +1,10 @@
+"""Verify DSET yaml subset behavior.
+
+Assurance scope: deterministic behavior owned by this module.
+Non-obvious fixtures: documented by the fixture that owns them.
+Host requirements: an isolated supported Python environment.
+"""
+
 from __future__ import annotations
 
 import unittest
@@ -12,6 +19,7 @@ from dset_toolchain.validation import _validate_markdown
 from dset_toolchain.yaml_subset import dump, load, loads
 from tests import repository_root, unique_carrier
 
+# ROOT locates the repository fixture; repository layout is authoritative.
 ROOT = repository_root(Path(__file__))
 
 

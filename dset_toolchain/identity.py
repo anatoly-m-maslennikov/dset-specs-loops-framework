@@ -1,16 +1,21 @@
+"""Provide DSET identity behavior."""
+
 from __future__ import annotations
 
 import re
 from collections.abc import Iterator
 from pathlib import Path
 
+# IDENTITY_FIELDS defines identity fields; this module owns the default.
 IDENTITY_FIELDS = (
     "artifact_id",
     "semantic_id",
     "document_id",
     "rule_id",
 )
+# TEXT_SUFFIXES defines text suffixes; this module owns the default.
 TEXT_SUFFIXES = {".json", ".md", ".toml", ".txt"}
+# NUMBERED_PREFIX defines numbered prefix; this module owns the default.
 NUMBERED_PREFIX = re.compile(r"^[0-9]+_")
 
 

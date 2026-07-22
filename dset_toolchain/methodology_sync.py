@@ -1,3 +1,5 @@
+"""Provide DSET methodology sync behavior."""
+
 from __future__ import annotations
 
 import hashlib
@@ -7,6 +9,7 @@ from pathlib import Path
 
 from .layout import METHODOLOGY_ROOT, discover_layout
 
+# SOURCE_TO_INSTALLED defines source to installed; this module owns the default.
 SOURCE_TO_INSTALLED = (
     ("10_project", "00_project"),
     ("11_layer_meta", "01_meta"),
@@ -16,15 +19,19 @@ SOURCE_TO_INSTALLED = (
     ("15_layer_implementation", "05_implementation"),
     ("16_layer_ops", "06_ops"),
 )
+# EXECUTABLE_SOURCE_TO_INSTALLED defines executable source to installed; this module owns the default.
 EXECUTABLE_SOURCE_TO_INSTALLED = (
     ("dset_toolchain", "05_implementation/100_python/dset_toolchain"),
     ("tests", "05_implementation/110_tests/tests"),
 )
+# ALL_SOURCE_TO_INSTALLED defines all source to installed; this module owns the default.
 ALL_SOURCE_TO_INSTALLED = SOURCE_TO_INSTALLED + EXECUTABLE_SOURCE_TO_INSTALLED
+# IMPLEMENTATION_EXECUTABLE_SUBTREES defines implementation executable subtrees; this module owns the default.
 IMPLEMENTATION_EXECUTABLE_SUBTREES = (
     Path("100_python/dset_toolchain"),
     Path("110_tests/tests"),
 )
+# SOURCE_ONLY_CARRIERS defines source only carriers; this module owns the default.
 SOURCE_ONLY_CARRIERS = frozenset({"000_dset-project-hub.md"})
 
 

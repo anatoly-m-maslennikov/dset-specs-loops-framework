@@ -1,3 +1,5 @@
+"""Provide DSET legacy authority behavior."""
+
 from __future__ import annotations
 
 import hashlib
@@ -10,6 +12,7 @@ from .diagnostics import Diagnostic
 from .layout import discover_layout
 from .yaml_subset import YamlSubsetError, dump, load
 
+# ID_PATTERN validates id pattern; this module owns the accepted syntax.
 ID_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
 
 

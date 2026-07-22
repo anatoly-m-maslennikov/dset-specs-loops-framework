@@ -1,3 +1,10 @@
+"""Verify DSET release artifacts behavior.
+
+Assurance scope: deterministic behavior owned by this module.
+Non-obvious fixtures: documented by the fixture that owns them.
+Host requirements: an isolated supported Python environment.
+"""
+
 from __future__ import annotations
 
 import unittest
@@ -7,8 +14,11 @@ from typing import Any
 from dset_toolchain.frontmatter import metadata as frontmatter_metadata
 from tests import repository_root
 
+# ROOT locates the repository fixture; repository layout is authoritative.
 ROOT = repository_root(Path(__file__))
+# TEMPLATES defines templates; this module owns the default.
 TEMPLATES = ROOT / ".dset/05_layer_ops/templates/release"
+# PLANNING defines planning; this module owns the default.
 PLANNING = ROOT / "10_versions"
 
 

@@ -1,3 +1,5 @@
+"""Provide DSET archive behavior."""
+
 from __future__ import annotations
 
 import re

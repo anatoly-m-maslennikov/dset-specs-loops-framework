@@ -1,3 +1,5 @@
+"""Provide DSET lineage behavior."""
+
 from __future__ import annotations
 
 import re
@@ -16,10 +18,15 @@ from .project_data import lifecycle_events, project_section
 from .semantic_types import SEMANTIC_SUBTYPES, build_semantic_classification_index
 from .yaml_subset import YamlSubsetError, load
 
+# ID_PATTERN validates id pattern; this module owns the accepted syntax.
 ID_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
+# SESSION_PATTERN validates session pattern; this module owns the accepted syntax.
 SESSION_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
+# ATOM_PATTERN validates atom pattern; this module owns the accepted syntax.
 ATOM_PATTERN = re.compile(r"-ATOMIC-RECORD-([0-9]+)$")
+# INACTIVE_EVENTS defines inactive events; this module owns the default.
 INACTIVE_EVENTS = frozenset({"absorbed", "rejected", "retired", "withdrawn"})
+# RELATION_TYPES defines relation types; this module owns the default.
 RELATION_TYPES = frozenset(
     {
         "child_of",
@@ -34,12 +41,17 @@ RELATION_TYPES = frozenset(
         "relates_to",
     }
 )
+# ACYCLIC_RELATION_TYPES defines acyclic relation types; this module owns the default.
 ACYCLIC_RELATION_TYPES = frozenset({"child_of", "override_of", "replacement_of"})
+# PROJECTION_SOURCE_TYPES defines projection source types; this module owns the default.
 PROJECTION_SOURCE_TYPES = frozenset(
     {"specification", "procedure", "plan", "derived_view", "navigation"}
 )
+# SEMANTIC_TYPES defines semantic types; this module owns the default.
 SEMANTIC_TYPES = frozenset(SEMANTIC_SUBTYPES)
+# SCOPE_KINDS defines scope kinds; this module owns the default.
 SCOPE_KINDS = frozenset({"project", "layer", "feature_group", "feature"})
+# REVERSE_FIELDS defines reverse fields; this module owns the default.
 REVERSE_FIELDS = frozenset(
     {
         "parent_to",
@@ -53,6 +65,7 @@ REVERSE_FIELDS = frozenset(
         "replaced_by",
     }
 )
+# IGNORED_PARTS defines ignored parts; this module owns the default.
 IGNORED_PARTS = frozenset(
     {
         ".git",

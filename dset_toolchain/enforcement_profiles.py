@@ -1,3 +1,5 @@
+"""Provide DSET enforcement profiles behavior."""
+
 from __future__ import annotations
 
 import fnmatch
@@ -12,7 +14,9 @@ from .diagnostics import Diagnostic
 from .layout import discover_layout
 from .yaml_subset import YamlSubsetError, load
 
+# PROFILE_SCHEMA_VERSION defines profile schema version; this module owns the default.
 PROFILE_SCHEMA_VERSION = "1.0"
+# GATE_IDS defines gate ids; this module owns the default.
 GATE_IDS = (
     "conformance",
     "purity",
@@ -21,11 +25,17 @@ GATE_IDS = (
     "lint_static_analysis",
     "secret_hygiene",
 )
+# PROFILE_STATUSES defines profile statuses; this module owns the default.
 PROFILE_STATUSES = frozenset({"candidate", "active", "custom"})
+# PROFILE_ROLES defines profile roles; this module owns the default.
 PROFILE_ROLES = frozenset({"reference", "applied"})
+# REVISION_POLICIES defines revision policies; this module owns the default.
 REVISION_POLICIES = frozenset({"exact", "descendant"})
+# GATE_STATUSES defines gate statuses; this module owns the default.
 GATE_STATUSES = frozenset({"enforced", "ratcheted", "blocked", "not-applicable"})
+# _ID validates id; this module owns the accepted syntax.
 _ID = re.compile(r"^[a-z][a-z0-9-]*$")
+# _SHA validates sha; this module owns the accepted syntax.
 _SHA = re.compile(r"^[0-9a-f]{40}$")
 
 

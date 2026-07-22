@@ -1,3 +1,5 @@
+"""Provide DSET release behavior."""
+
 from __future__ import annotations
 
 import json
@@ -16,15 +18,20 @@ from .layout import RepositoryLayout, discover_layout
 from .project_data import project_section, write_project_section
 from .yaml_subset import dump, load
 
+# _SEMVER validates semver; this module owns the accepted syntax.
 _SEMVER = re.compile(
     r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)"
     r"(?:-rc\.(0|[1-9][0-9]*))?$"
 )
+# RELEASE_CLASSES defines release classes; this module owns the default.
 RELEASE_CLASSES = {"bootstrap", "small", "normal", "rc", "final", "breaking"}
+# _FULL_SHA validates full sha; this module owns the accepted syntax.
 _FULL_SHA = re.compile(r"^[0-9a-f]{40}$")
+# _PROJECT_VERSION validates project version; this module owns the accepted syntax.
 _PROJECT_VERSION = re.compile(
     r'(?ms)(^\[project\]\s*$.*?^version\s*=\s*")([^"]+)("\s*$)'
 )
+# _MODULE_VERSION validates module version; this module owns the accepted syntax.
 _MODULE_VERSION = re.compile(r'(?m)^__version__\s*=\s*"([^"]+)"\s*$')
 
 

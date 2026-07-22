@@ -1,3 +1,10 @@
+"""Verify DSET artifact types behavior.
+
+Assurance scope: deterministic behavior owned by this module.
+Non-obvious fixtures: documented by the fixture that owns them.
+Host requirements: an isolated supported Python environment.
+"""
+
 from __future__ import annotations
 
 import copy
@@ -19,10 +26,15 @@ from dset_toolchain.yaml_subset import load
 from tests import repository_root
 from tests.git_fixtures import initialize_exact_git_repository
 
+# ROOT locates the repository fixture; repository layout is authoritative.
 ROOT = repository_root(Path(__file__))
+# LAYOUT defines layout; this module owns the default.
 LAYOUT = discover_layout(ROOT)
+# REGISTRY_PATH defines registry path; this module owns the default.
 REGISTRY_PATH = LAYOUT.artifact_type_registry_path
+# TEMPLATE_PATH defines template path; this module owns the default.
 TEMPLATE_PATH = LAYOUT.find_template("artifact-types.toml")
+# SCHEMA_PATH defines schema path; this module owns the default.
 SCHEMA_PATH = ROOT / ".dset/02_layer_gov/schemas/artifact-types.schema.json"
 
 

@@ -1,3 +1,5 @@
+"""Provide DSET bootstrap behavior."""
+
 from __future__ import annotations
 
 import hashlib
@@ -29,7 +31,9 @@ from .temp_paths import temporary_directory
 from .validation import validate_repository
 from .yaml_subset import dump, load
 
+# _KEBAB validates kebab; this module owns the accepted syntax.
 _KEBAB = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+# _PROJECT_KEY validates project key; this module owns the accepted syntax.
 _PROJECT_KEY = re.compile(r"^[A-Z][A-Z0-9]*$")
 
 

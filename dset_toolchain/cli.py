@@ -1,3 +1,5 @@
+"""Provide DSET cli behavior."""
+
 from __future__ import annotations
 
 import argparse
