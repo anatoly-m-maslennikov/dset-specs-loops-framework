@@ -511,7 +511,7 @@ customization = "unmodified"
 profile = "core-v1"
 version = "0.3"
 template = "010_dset-gov-templates-governance-core-v1-architecture.md"
-sha256 = "d407212cea4bcdf492b631667c6a6becfe02753b60c6918032cc0919caaf617b"
+sha256 = "3b9a09a1ce5028947f50ec6529050438c766175fee4baebf9ff853c1ca84f694"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-BUILD"
@@ -630,7 +630,7 @@ customization = "unmodified"
 profile = "core-v1"
 version = "0.3"
 template = "050_dset-gov-templates-governance-core-v1-work-items.md"
-sha256 = "61447c22741684e20014f41a1072cdbabba0701779021f11bd6a4dd78731544a"
+sha256 = "ce78b0dc5e4bc858a0e769c2c8707564491c5b2f656767a0cb8d06eb9bce32b4"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-ARTIFACT-CLASSIFICATION"
@@ -681,7 +681,7 @@ customization = "unmodified"
 profile = "core-v1"
 version = "0.3"
 template = "040_dset-skill-templates-governance-core-v1-skill-runs.md"
-sha256 = "c3eac49aa90601ea79380d98723375046a10def9c86e74a7ec52d8b42401c80d"
+sha256 = "60639f92b0196a82d540e89d3d4e4a31db846f15127289b4eeb63dde0a5440a8"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-RELEASE"
@@ -715,7 +715,7 @@ customization = "unmodified"
 profile = "core-v1"
 version = "0.3"
 template = "020_dset-skill-templates-governance-core-v1-lifecycle-orchestration.md"
-sha256 = "16e5a0eb2b8ec184531321ae242c521f6e85909ce4755b6687d6c067d132f1ac"
+sha256 = "dda6c2f127b501f4dd31588aa255165bc5bf0e7836d525a7eca46361c636f4af"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-DIAGNOSIS"

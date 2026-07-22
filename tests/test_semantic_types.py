@@ -21,7 +21,6 @@ from dset_toolchain.semantic_types import (
     validate_semantic_classifications,
 )
 from dset_toolchain.temp_paths import temporary_directory
-from dset_toolchain.yaml_subset import dump, load
 from tests import repository_root
 
 # ROOT locates the repository fixture; repository layout is authoritative.
@@ -91,19 +90,26 @@ class SemanticTypeCompatibilityTests(unittest.TestCase):
     def test_carrier_and_id_kind_mismatch_fails_closed(self) -> None:
         with temporary_directory() as raw:
             root = create_adopter(ROOT, Path(raw) / "adopter")
-            intake_path = discover_layout(root).intake_path
-            intake = load(intake_path)
-            assert isinstance(intake, dict)
-            items = intake["items"]
-            assert isinstance(items, list)
-            items.append(
-                {
-                    "id": "DSET-PROBLEM-GOV-001",
-                    "type": "opportunity",
-                    "status": "open",
-                }
+            carrier = (
+                discover_layout(root).project_root
+                / "question"
+                / "DSET-PROBLEM-GOV-001-mismatched-kind.md"
             )
-            intake_path.write_text(dump(intake, intake_path), encoding="utf-8")
+            carrier.parent.mkdir(parents=True, exist_ok=True)
+            carrier.write_text(
+                """+++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-TEST"
+type = "question"
+subtype = "opportunity"
+semantic_id = "DSET-PROBLEM-GOV-001"
+status = "open"
++++
+
+# Deliberately mismatched semantic identity
+""",
+                encoding="utf-8",
+            )
 
             messages = [
                 diagnostic.message
