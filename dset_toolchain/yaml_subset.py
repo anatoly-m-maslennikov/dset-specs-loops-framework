@@ -37,7 +37,7 @@ def load(path: Path) -> Any:
 
 
 def loads(text: str) -> Any:
-    """Handle loads using the declared repository contract."""
+    """Parse the supported indentation-based YAML compatibility subset."""
     entries = _entries(text)
     if not entries:
         return {}
@@ -48,38 +48,80 @@ def loads(text: str) -> Any:
             stack.pop()
         parent = stack[-1][1]
         if content == "-" or content.startswith("- "):
-            if not isinstance(parent, list):
-                raise _error(line_number, "list item outside a list")
-            rest = content[1:].strip()
-            if not rest:
-                child = _next_container(entries, index, indent)
-                parent.append(child)
-                stack.append((indent, child))
-                continue
-            if _is_inline_mapping(rest):
-                key, raw = _split_mapping(rest, line_number)
-                item: dict[str, Any] = {}
-                parent.append(item)
-                stack.append((indent, item))
-                if raw:
-                    item[key] = _parse_scalar(raw)
-                else:
-                    child = _next_container(entries, index, indent)
-                    item[key] = child
-                    stack.append((indent + 1, child))
-                continue
-            parent.append(_parse_scalar(rest))
-            continue
-        if not isinstance(parent, dict):
-            raise _error(line_number, "mapping entry outside a mapping")
-        key, raw = _split_mapping(content, line_number)
-        if raw:
-            parent[key] = _parse_scalar(raw)
-            continue
-        child = _next_container(entries, index, indent)
-        parent[key] = child
-        stack.append((indent, child))
+            _parse_list_entry(
+                entries, index, indent, content, line_number, parent, stack
+            )
+        else:
+            _parse_mapping_entry(
+                entries, index, indent, content, line_number, parent, stack
+            )
     return root
+
+
+def _parse_list_entry(
+    entries: list[tuple[int, str, int]],
+    index: int,
+    indent: int,
+    content: str,
+    line_number: int,
+    parent: Any,
+    stack: list[tuple[int, Any]],
+) -> None:
+    """Parse one list item and update the container stack."""
+    if not isinstance(parent, list):
+        raise _error(line_number, "list item outside a list")
+    rest = content[1:].strip()
+    if not rest:
+        child = _next_container(entries, index, indent)
+        parent.append(child)
+        stack.append((indent, child))
+    elif _is_inline_mapping(rest):
+        _parse_inline_mapping(entries, index, indent, rest, line_number, parent, stack)
+    else:
+        parent.append(_parse_scalar(rest))
+
+
+def _parse_inline_mapping(
+    entries: list[tuple[int, str, int]],
+    index: int,
+    indent: int,
+    content: str,
+    line_number: int,
+    parent: list[Any],
+    stack: list[tuple[int, Any]],
+) -> None:
+    """Parse the mapping form allowed directly after a list marker."""
+    key, raw = _split_mapping(content, line_number)
+    item: dict[str, Any] = {}
+    parent.append(item)
+    stack.append((indent, item))
+    if raw:
+        item[key] = _parse_scalar(raw)
+        return
+    child = _next_container(entries, index, indent)
+    item[key] = child
+    stack.append((indent + 1, child))
+
+
+def _parse_mapping_entry(
+    entries: list[tuple[int, str, int]],
+    index: int,
+    indent: int,
+    content: str,
+    line_number: int,
+    parent: Any,
+    stack: list[tuple[int, Any]],
+) -> None:
+    """Parse one mapping item and update the container stack."""
+    if not isinstance(parent, dict):
+        raise _error(line_number, "mapping entry outside a mapping")
+    key, raw = _split_mapping(content, line_number)
+    if raw:
+        parent[key] = _parse_scalar(raw)
+        return
+    child = _next_container(entries, index, indent)
+    parent[key] = child
+    stack.append((indent, child))
 
 
 def dump(data: Any, path: Path | None = None) -> str:

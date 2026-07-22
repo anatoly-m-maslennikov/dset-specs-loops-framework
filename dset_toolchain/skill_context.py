@@ -31,7 +31,6 @@ def resolve_skill_context(
     llm_session_ids: Sequence[str] = (),
 ) -> dict[str, object]:
     """Resolve one explicit target into its project-owned DSET workflow context."""
-
     if skill_id not in PUBLIC_SKILL_WORKFLOWS:
         raise ValueError(f"unknown public skill: {skill_id}")
     requested = target.resolve()
@@ -46,7 +45,29 @@ def resolve_skill_context(
     if settings_issues:
         raise ValueError("; ".join(settings_issues))
     scope, work_area = _target_scope(root, requested)
-    started = start_runtime(
+    started = _start_skill_runtime(
+        root,
+        skill_id,
+        objective,
+        session_id,
+        llm_session_ids,
+        scope,
+        settings.implementation_mode,
+    )
+    return _resolved_context(root, requested, skill_id, work_area, settings, started)
+
+
+def _start_skill_runtime(
+    root: Path,
+    skill_id: str,
+    objective: str,
+    session_id: str | None,
+    llm_session_ids: Sequence[str],
+    scope: dict[str, Any],
+    implementation_mode: str,
+) -> dict[str, object]:
+    """Start one runtime using the public skill's governed mode."""
+    return start_runtime(
         root,
         public_entrypoint=skill_id,
         workflow_id=PUBLIC_SKILL_WORKFLOWS[skill_id],
@@ -56,9 +77,20 @@ def resolve_skill_context(
         llm_session_ids=llm_session_ids,
         scope=scope,
         implementation_mode=(
-            settings.implementation_mode if skill_id == "dset-implement" else None
+            implementation_mode if skill_id == "dset-implement" else None
         ),
     )
+
+
+def _resolved_context(
+    root: Path,
+    requested: Path,
+    skill_id: str,
+    work_area: str | None,
+    settings: Any,
+    started: dict[str, object],
+) -> dict[str, object]:
+    """Render the durable context returned to a thin skill wrapper."""
     resolved = started["resolved"]
     assert isinstance(resolved, dict)
     checkpoint = started["checkpoint"]

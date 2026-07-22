@@ -130,9 +130,19 @@ def projected_authority_ids(root: Path) -> set[str]:
 
 
 def _authority_sources(root: Path) -> dict[str, Path]:
-    """Handle sources using the declared repository contract."""
+    """Collect every active Decision authority carrier."""
     lifecycle = _lifecycle_status(root)
     sources: dict[str, Path] = {}
+    _collect_atomic_authority(root, lifecycle, sources)
+    _collect_legacy_decisions(root, lifecycle, sources)
+    _collect_package_authority(root, lifecycle, sources)
+    return sources
+
+
+def _collect_atomic_authority(
+    root: Path, lifecycle: dict[str, str], sources: dict[str, Path]
+) -> None:
+    """Collect accepted atomic Decisions that remain active."""
     atoms, diagnostics = collect_semantic_atoms(root)
     if diagnostics:
         raise ValueError(diagnostics[0].message)
@@ -143,6 +153,12 @@ def _authority_sources(root: Path) -> dict[str, Path]:
             and lifecycle.get(atom.semantic_id) not in INACTIVE_EVENTS
         ):
             sources[atom.semantic_id] = root / atom.path
+
+
+def _collect_legacy_decisions(
+    root: Path, lifecycle: dict[str, str], sources: dict[str, Path]
+) -> None:
+    """Collect accepted pre-atom Decision documents."""
     layout = discover_layout(root)
     paths = iter_control_files(root, "*.md") if layout.separated else root.rglob("*.md")
     for path in paths:
@@ -158,6 +174,12 @@ def _authority_sources(root: Path) -> dict[str, Path]:
         identifier = match.group(1)
         if lifecycle.get(identifier) not in INACTIVE_EVENTS:
             sources[identifier] = path
+
+
+def _collect_package_authority(
+    root: Path, lifecycle: dict[str, str], sources: dict[str, Path]
+) -> None:
+    """Collect compatibility Decision lists from package carriers."""
     for path in discover_layout(root).structured_named_files(root, "package"):
         if _ignored(root, path) or "specs" not in path.parts:
             continue
@@ -177,7 +199,6 @@ def _authority_sources(root: Path) -> dict[str, Path]:
                     and lifecycle.get(identifier) not in INACTIVE_EVENTS
                 ):
                     sources.setdefault(identifier, path)
-    return sources
 
 
 def _projection_paths(root: Path) -> list[Path]:

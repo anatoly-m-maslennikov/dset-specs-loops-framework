@@ -66,7 +66,6 @@ def validate_evidence_records(
     allow_unversioned_legacy: bool = False,
 ) -> list[Diagnostic]:
     """Validate native Evidence Records while preserving a finite legacy set."""
-
     root = root.resolve()
     diagnostics: list[Diagnostic] = []
     for candidate in paths:
@@ -76,42 +75,64 @@ def validate_evidence_records(
         ):
             continue
         relative = path.relative_to(root).as_posix()
-        try:
-            parsed = load_frontmatter(path)
-        except (OSError, UnicodeError, FrontmatterError) as error:
-            if relative in legacy_paths:
-                continue
-            diagnostics.append(_diag(path, str(error)))
-            continue
-        metadata = parsed[0] if parsed is not None else None
-        artifact_type = metadata.get("artifact_type") if metadata is not None else None
-        if relative in legacy_paths:
-            if artifact_type not in {None, "evidence_record"}:
-                diagnostics.append(
-                    _diag(
-                        path,
-                        "legacy evidence compatibility path has a conflicting "
-                        "artifact type",
-                    )
-                )
-            continue
-        if (
-            allow_unversioned_legacy
-            and artifact_type == "evidence_record"
-            and metadata is not None
-            and "schema_version" not in metadata
-        ):
-            continue
-        if artifact_type != "evidence_record":
-            continue
-        if parsed is None or parsed[2] != "toml":
-            diagnostics.append(
-                _diag(path, "new Evidence Records require TOML frontmatter")
+        diagnostics.extend(
+            _validate_evidence_candidate(
+                path,
+                relative in legacy_paths,
+                allow_unversioned_legacy,
             )
-            continue
-        assert metadata is not None
-        diagnostics.extend(_validate_native_record(path, metadata))
+        )
     return diagnostics
+
+
+def _validate_evidence_candidate(
+    path: Path,
+    legacy: bool,
+    allow_unversioned_legacy: bool,
+) -> list[Diagnostic]:
+    """Validate one candidate after repository routing selected it."""
+    try:
+        parsed = load_frontmatter(path)
+    except (OSError, UnicodeError, FrontmatterError) as error:
+        return [] if legacy else [_diag(path, str(error))]
+    metadata = parsed[0] if parsed is not None else None
+    artifact_type = metadata.get("artifact_type") if metadata is not None else None
+    if legacy:
+        return _legacy_type_diagnostics(path, artifact_type)
+    if _allowed_unversioned(metadata, artifact_type, allow_unversioned_legacy):
+        return []
+    if artifact_type != "evidence_record":
+        return []
+    if parsed is None or parsed[2] != "toml":
+        return [_diag(path, "new Evidence Records require TOML frontmatter")]
+    assert metadata is not None
+    return _validate_native_record(path, metadata)
+
+
+def _legacy_type_diagnostics(path: Path, artifact_type: object) -> list[Diagnostic]:
+    """Reject a legacy compatibility carrier that declares another type."""
+    if artifact_type in {None, "evidence_record"}:
+        return []
+    return [
+        _diag(
+            path,
+            "legacy evidence compatibility path has a conflicting artifact type",
+        )
+    ]
+
+
+def _allowed_unversioned(
+    metadata: dict[str, Any] | None,
+    artifact_type: object,
+    enabled: bool,
+) -> bool:
+    """Return whether explicit migration compatibility admits this carrier."""
+    return bool(
+        enabled
+        and artifact_type == "evidence_record"
+        and metadata is not None
+        and "schema_version" not in metadata
+    )
 
 
 def _validate_native_record(path: Path, data: dict[str, Any]) -> list[Diagnostic]:
