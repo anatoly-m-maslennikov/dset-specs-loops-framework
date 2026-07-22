@@ -20,14 +20,14 @@ llm_session_ids = []
 | Closure | Numerator | Denominator | Excluded | N/A | Unknown | Stale |
 |---|---:|---:|---:|---:|---:|---:|
 | Decision authority compiled into evergreen truth | 31 | 31 | 0 | 0 | 0 | 0 |
-| Decision authority linked from implementation commits | 20 | 27 | 4 | 0 | 7 | 0 |
+| Decision authority linked from implementation commits | 22 | 27 | 4 | 0 | 5 | 0 |
 | Applicable authority connected to Test or Evaluation | 19 | 31 | 0 | 0 | 12 | 0 |
 | QA definitions connected to current evidence | 12 | 30 | 0 | 0 | 18 | 0 |
 
 ### Coverage gaps
 
 - **Decision authority compiled into evergreen truth:** none
-- **Decision authority linked from implementation commits:** `DSET-DECISION-OPS-009`, `DSET-DECISION-OPS-011`, `DSET-DECISION-SKILL-003`, `DSET-INVARIANT-GOV-027`, `DSET-REQUIREMENT-GOV-040`, `DSET-REQUIREMENT-GOV-044`, `DSET-REQUIREMENT-GOV-045`
+- **Decision authority linked from implementation commits:** `DSET-DECISION-OPS-009`, `DSET-DECISION-OPS-011`, `DSET-DECISION-SKILL-003`, `DSET-INVARIANT-GOV-027`, `DSET-REQUIREMENT-GOV-040`
 - **Applicable authority connected to Test or Evaluation:** `DSET-DECISION-GOV-001`, `DSET-DECISION-GOV-002`, `DSET-DECISION-GOV-008`, `DSET-DECISION-GOV-010`, `DSET-DECISION-GOV-014`, `DSET-DECISION-GOV-015`, `DSET-DECISION-SKILL-001`, `DSET-INVARIANT-GOV-027`, `DSET-REQUIREMENT-GOV-031`, `DSET-REQUIREMENT-GOV-032`, `DSET-REQUIREMENT-TOOL-021`, `DSET-REQUIREMENT-TOOL-022`
 - **QA definitions connected to current evidence:** `DSET-EVALUATION-GOV-026`, `DSET-EVALUATION-GOV-028`, `DSET-EVALUATION-GOV-029`, `DSET-EVALUATION-GOV-032`, `DSET-EVALUATION-GOV-033`, `DSET-EVALUATION-GOV-034`, `DSET-EVALUATION-SKILL-012`, `DSET-EVALUATION-TOOL-003`, `DSET-EVALUATION-TOOL-004`, `DSET-TEST-GOV-045`, `DSET-TEST-GOV-049`, `DSET-TEST-GOV-050`, `DSET-TEST-OPS-018`, `DSET-TEST-OPS-019`, `DSET-TEST-OPS-020`, `DSET-TEST-SKILL-014`, `DSET-TEST-TOOL-021`, `DSET-TEST-TOOL-022`
 
@@ -51,10 +51,10 @@ llm_session_ids = []
 
 ## Typed relation inventory
 
-- **Forward relations:** 489
-- **By type:** analysis_of=1, check_of=44, child_of=58, evidence_for=25, implementation_of=299, projection_of=6, relates_to=19, replacement_of=27, resolution_of=10
-- **By origin:** authored=159, commit_trailer=299, legacy_child_of=31
-- **By source kind:** artifact=190, commit=299
+- **Forward relations:** 491
+- **By type:** analysis_of=1, check_of=44, child_of=58, evidence_for=25, implementation_of=301, projection_of=6, relates_to=19, replacement_of=27, resolution_of=10
+- **By origin:** authored=159, commit_trailer=301, legacy_child_of=31
+- **By source kind:** artifact=190, commit=301
 
 ## Unresolved work
 
