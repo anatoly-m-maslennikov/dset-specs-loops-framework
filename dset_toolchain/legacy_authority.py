@@ -212,17 +212,13 @@ def _recorded_fragment_errors(root: Path, ledger: object) -> list[str]:
 def _validate_recorded_fragment(
     root: Path, semantic_id: str, fragment: object
 ) -> str | None:
-    """Validate recorded fragment using the declared repository contract."""
+    """Validate one sealed legacy authority fragment."""
     if not isinstance(fragment, dict):
         return f"legacy authority fragment is malformed: {semantic_id}"
-    raw_path = fragment.get("path")
-    selector = fragment.get("selector")
-    expected = fragment.get("sha256")
-    if not all(isinstance(item, str) for item in (raw_path, selector, expected)):
+    identity = _fragment_identity(fragment)
+    if identity is None:
         return f"legacy authority fragment seal is incomplete: {semantic_id}"
-    assert isinstance(raw_path, str)
-    assert isinstance(selector, str)
-    assert isinstance(expected, str)
+    raw_path, selector, expected = identity
     raw_current = fragment.get("current_path")
     current_digest = fragment.get("current_sha256")
     transition_id = fragment.get("transition_id")
@@ -239,24 +235,46 @@ def _validate_recorded_fragment(
         payload = path.read_bytes()
         expected = current_digest if transitioned else expected
     else:
-        if (
-            transitioned
-            and hashlib.sha256(path.read_bytes()).hexdigest() != current_digest
-        ):
-            return f"legacy authority current carrier digest changed: {semantic_id}"
-        field, separator, selected_id = selector.partition(":")
-        if not separator or selected_id != semantic_id:
-            return f"legacy authority selector is invalid: {semantic_id}"
-        try:
-            data = _load_fragment_carrier(path)
-        except (OSError, UnicodeError, YamlSubsetError):
-            return f"legacy authority carrier is invalid: {raw_path}"
-        values = data.get(field) if isinstance(data, dict) else None
-        if not isinstance(values, list) or semantic_id not in values:
-            return f"legacy authority selector is missing: {semantic_id}"
+        error = _validate_selected_fragment(
+            path, raw_path, selector, semantic_id, transitioned, current_digest
+        )
+        if error is not None:
+            return error
         payload = f"{selector}\n".encode()
     if hashlib.sha256(payload).hexdigest() != expected:
         return f"legacy authority fragment digest changed: {semantic_id}"
+    return None
+
+
+def _fragment_identity(fragment: dict[str, Any]) -> tuple[str, str, str] | None:
+    """Return the required path, selector, and digest strings."""
+    values = (fragment.get("path"), fragment.get("selector"), fragment.get("sha256"))
+    if not all(isinstance(item, str) for item in values):
+        return None
+    return str(values[0]), str(values[1]), str(values[2])
+
+
+def _validate_selected_fragment(
+    path: Path,
+    raw_path: str,
+    selector: str,
+    semantic_id: str,
+    transitioned: bool,
+    current_digest: object,
+) -> str | None:
+    """Validate a list-field selector and optional relocation digest."""
+    if transitioned and hashlib.sha256(path.read_bytes()).hexdigest() != current_digest:
+        return f"legacy authority current carrier digest changed: {semantic_id}"
+    field, separator, selected_id = selector.partition(":")
+    if not separator or selected_id != semantic_id:
+        return f"legacy authority selector is invalid: {semantic_id}"
+    try:
+        data = _load_fragment_carrier(path)
+    except (OSError, UnicodeError, YamlSubsetError):
+        return f"legacy authority carrier is invalid: {raw_path}"
+    values = data.get(field) if isinstance(data, dict) else None
+    if not isinstance(values, list) or semantic_id not in values:
+        return f"legacy authority selector is missing: {semantic_id}"
     return None
 
 

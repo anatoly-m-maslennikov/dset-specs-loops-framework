@@ -40,47 +40,14 @@ def start_runtime(
     authority_snapshot: Mapping[str, Any] | None = None,
     implementation_mode: str | None = None,
 ) -> dict[str, object]:
-    """Start runtime using the declared repository contract."""
-    expected = PUBLIC_SKILL_WORKFLOWS.get(public_entrypoint)
-    if expected is None:
-        raise ValueError(f"unknown public skill: {public_entrypoint}")
-    if expected != workflow_id:
-        raise ValueError(
-            "public skill/workflow mismatch: "
-            f"{public_entrypoint} requires {expected}, received {workflow_id}"
-        )
-    expected_mode = PUBLIC_SKILL_MODES[public_entrypoint]
-    if mode_id is not None and public_entrypoint != "dset" and mode_id != expected_mode:
-        raise ValueError(
-            "public skill/mode mismatch: "
-            f"{public_entrypoint} requires {expected_mode}, received {mode_id}"
-        )
-    resolved, diagnostics = resolve_workflow(root, workflow_id)
-    if diagnostics:
-        diagnostic = diagnostics[0]
-        raise DsetCommandError(diagnostic.code, diagnostic.path, diagnostic.message)
-    assert resolved is not None
-    identity = _ruleset_identity(resolved)
+    """Start a governed runtime for one public or chained skill."""
+    expected_mode = _validate_public_binding(public_entrypoint, workflow_id, mode_id)
+    resolved = _resolved_workflow(root, workflow_id)
     selected_mode = mode_id if mode_id is not None else expected_mode
-    selected_implementation_mode = "lazy"
-    if public_entrypoint == "dset-implement":
-        settings, issues = load_project_settings(root)
-        if issues:
-            raise ValueError("; ".join(issues))
-        selected_implementation_mode = (
-            implementation_mode
-            if implementation_mode is not None
-            else settings.implementation_mode
-        )
-        if selected_implementation_mode not in IMPLEMENTATION_MODES:
-            raise ValueError("implementation preparation mode must be lazy or strict")
-    if session_id is None:
-        active = resume_checkpoint(root, scope=scope)
-        if active is not None:
-            raise ValueError(
-                "active DSET session requires explicit session ID: "
-                f"{active['session_id']}"
-            )
+    selected_implementation_mode = _implementation_mode(
+        root, public_entrypoint, implementation_mode
+    )
+    _require_explicit_resumption(root, session_id, scope)
     invocation = start_run(
         root,
         public_entrypoint=public_entrypoint,
@@ -92,7 +59,7 @@ def start_runtime(
         invocation_source=invocation_source,
         parent_run_id=parent_run_id,
         root_run_id=root_run_id,
-        ruleset_identity=identity,
+        ruleset_identity=_ruleset_identity(resolved),
         scope=scope,
         parameters=parameters,
         budget=budget,
@@ -108,6 +75,63 @@ def start_runtime(
         "checkpoint": invocation.checkpoint,
         "resolved": resolved,
     }
+
+
+def _validate_public_binding(
+    entrypoint: str, workflow_id: str, mode_id: str | None
+) -> str:
+    """Validate the public skill's fixed workflow and default mode."""
+    expected = PUBLIC_SKILL_WORKFLOWS.get(entrypoint)
+    if expected is None:
+        raise ValueError(f"unknown public skill: {entrypoint}")
+    if expected != workflow_id:
+        raise ValueError(
+            "public skill/workflow mismatch: "
+            f"{entrypoint} requires {expected}, received {workflow_id}"
+        )
+    expected_mode = PUBLIC_SKILL_MODES[entrypoint]
+    if mode_id is not None and entrypoint != "dset" and mode_id != expected_mode:
+        raise ValueError(
+            "public skill/mode mismatch: "
+            f"{entrypoint} requires {expected_mode}, received {mode_id}"
+        )
+    return expected_mode
+
+
+def _resolved_workflow(root: Path, workflow_id: str) -> Mapping[str, Any]:
+    """Resolve governance or raise the first deterministic diagnostic."""
+    resolved, diagnostics = resolve_workflow(root, workflow_id)
+    if diagnostics:
+        diagnostic = diagnostics[0]
+        raise DsetCommandError(diagnostic.code, diagnostic.path, diagnostic.message)
+    assert resolved is not None
+    return resolved
+
+
+def _implementation_mode(root: Path, entrypoint: str, requested: str | None) -> str:
+    """Resolve lazy or strict preparation only for implementation runs."""
+    if entrypoint != "dset-implement":
+        return "lazy"
+    settings, issues = load_project_settings(root)
+    if issues:
+        raise ValueError("; ".join(issues))
+    selected = requested if requested is not None else settings.implementation_mode
+    if selected not in IMPLEMENTATION_MODES:
+        raise ValueError("implementation preparation mode must be lazy or strict")
+    return selected
+
+
+def _require_explicit_resumption(
+    root: Path, session_id: str | None, scope: Mapping[str, Any] | None
+) -> None:
+    """Stop implicit attachment to an already-active session."""
+    if session_id is None:
+        active = resume_checkpoint(root, scope=scope)
+        if active is not None:
+            raise ValueError(
+                "active DSET session requires explicit session ID: "
+                f"{active['session_id']}"
+            )
 
 
 def _ruleset_identity(resolved: Mapping[str, Any]) -> str:

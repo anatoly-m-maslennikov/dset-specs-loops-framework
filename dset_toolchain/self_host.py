@@ -25,9 +25,44 @@ def run_self_host(
     released_ref: str | None = None,
     candidate_command: list[str] | None = None,
 ) -> dict[str, Any]:
-    """Run self host using the declared repository contract."""
+    """Run the bounded released, candidate, adopter, and customization proof."""
     root = root.resolve()
     work_root = work_root.resolve()
+    released = _released_contract(root)
+    reference = released_ref or str(released.get("commit", ""))
+    adopter = work_root / "temporary-adopter"
+    released_status, released_diagnostic = _validate_released(
+        root, work_root, reference, released
+    )
+    _validate_candidate_and_adopter(root, adopter, candidate_command)
+    adopter_registry = project_section(adopter, "governance_registry")
+    workflow_ids = tuple(
+        str(item["workflow"])
+        for item in adopter_registry.get("wrappers", [])
+        if isinstance(item, dict) and isinstance(item.get("workflow"), str)
+    )
+    resolved, wrapper_before = _resolve_workflows(adopter, workflow_ids)
+    rule_path = _customize_adopter(root, adopter, resolved["domain-clarification"])
+    customized, wrappers_unchanged = _resolve_customized(
+        adopter, workflow_ids, wrapper_before, rule_path
+    )
+    return {
+        "released_validator": released_status,
+        "released_validator_diagnostic": released_diagnostic,
+        "candidate_repository": "pass",
+        "temporary_adopter": "pass",
+        "customization": customized["domain-clarification"]["customization"],
+        "workflows_resolved": list(workflow_ids),
+        "wrappers_unchanged": wrappers_unchanged,
+        "wrapper_unchanged": wrappers_unchanged,
+        "recursion_stopped": not discover_layout(adopter).version_path.exists(),
+        "released_ref": reference,
+        "adopter": adopter.as_posix(),
+    }
+
+
+def _released_contract(root: Path) -> dict[str, Any]:
+    """Load the released-validator contract after checking its carrier."""
     version_path = discover_layout(root).version_path
     if not version_path.is_file():
         raise DsetCommandError(
@@ -35,12 +70,15 @@ def run_self_host(
         )
     version = project_section(root, "version_registry")
     released = version.get("released_validator", {})
-    reference = released_ref or str(released.get("commit", ""))
+    return released if isinstance(released, dict) else {}
+
+
+def _validate_released(
+    root: Path, work_root: Path, reference: str, released: dict[str, Any]
+) -> tuple[str, str | None]:
+    """Run the released validator and classify an allowed bootstrap transition."""
     extracted = work_root / "released-validator"
-    adopter = work_root / "temporary-adopter"
     _extract_released(root, reference, extracted)
-    released_status = "pass"
-    released_diagnostic: str | None = None
     try:
         _run_validator(
             [sys.executable, "-m", "dset_toolchain", "check", str(root)],
@@ -51,8 +89,14 @@ def run_self_host(
     except DsetCommandError as error:
         if released.get("assurance") != "bootstrap-transition":
             raise
-        released_status = "bootstrap-transition"
-        released_diagnostic = error.message[:2000]
+        return "bootstrap-transition", error.message[:2000]
+    return "pass", None
+
+
+def _validate_candidate_and_adopter(
+    root: Path, adopter: Path, candidate_command: list[str] | None
+) -> None:
+    """Validate the candidate repository and a freshly initialized adopter."""
     command = candidate_command or [
         sys.executable,
         "-m",
@@ -73,12 +117,12 @@ def run_self_host(
         "DSET-E141",
         "candidate validator rejected the temporary adopter",
     )
-    adopter_registry = project_section(adopter, "governance_registry")
-    workflow_ids = tuple(
-        str(item["workflow"])
-        for item in adopter_registry.get("wrappers", [])
-        if isinstance(item, dict) and isinstance(item.get("workflow"), str)
-    )
+
+
+def _resolve_workflows(
+    adopter: Path, workflow_ids: tuple[str, ...]
+) -> tuple[dict[str, dict[str, Any]], dict[str, str]]:
+    """Resolve every wrapper workflow and snapshot wrapper digests."""
     resolved_workflows: dict[str, dict[str, Any]] = {}
     wrapper_before: dict[str, str] = {}
     for workflow_id in workflow_ids:
@@ -90,21 +134,26 @@ def run_self_host(
                 f"temporary adopter workflow did not resolve: {workflow_id}",
             )
         resolved_workflows[workflow_id] = resolved
-        wrapper_path = _wrapper_path(adopter, resolved["wrapper"])
-        wrapper_before[workflow_id] = _sha256(wrapper_path)
-    resolved = resolved_workflows["domain-clarification"]
+        wrapper_before[workflow_id] = _sha256(
+            _wrapper_path(adopter, resolved["wrapper"])
+        )
+    return resolved_workflows, wrapper_before
+
+
+def _customize_adopter(root: Path, adopter: Path, resolved: dict[str, Any]) -> Path:
+    """Apply and validate one bounded project-local governance customization."""
     rule = next(
         item for item in resolved["rules"] if item["id"] == "DSET-RULE-DOMAIN-SPEC"
     )
-    rule_path = _rule_path(adopter, rule)
-    rule_path.write_text(
-        rule_path.read_text(encoding="utf-8")
+    path = _rule_path(adopter, rule)
+    path.write_text(
+        path.read_text(encoding="utf-8")
         + "\n<!-- bounded self-host customization -->\n",
         encoding="utf-8",
     )
     if "DSET-E139" not in {item.code for item in validate_governance(adopter)}:
         raise DsetCommandError(
-            "DSET-E141", rule_path, "local customization was not detected"
+            "DSET-E141", path, "local customization was not detected"
         )
     refresh_customization(adopter)
     _run_validator(
@@ -113,34 +162,33 @@ def run_self_host(
         "DSET-E141",
         "customized temporary adopter did not validate",
     )
-    customized_workflows: dict[str, dict[str, Any]] = {}
-    wrappers_unchanged = True
+    return path
+
+
+def _resolve_customized(
+    adopter: Path,
+    workflow_ids: tuple[str, ...],
+    wrapper_before: dict[str, str],
+    rule_path: Path,
+) -> tuple[dict[str, dict[str, Any]], bool]:
+    """Resolve customized workflows and prove thin wrappers stayed unchanged."""
+    workflows: dict[str, dict[str, Any]] = {}
+    unchanged = True
     for workflow_id in workflow_ids:
-        customized, diagnostics = resolve_workflow(adopter, workflow_id)
-        if diagnostics or customized is None:
+        resolved, diagnostics = resolve_workflow(adopter, workflow_id)
+        if diagnostics or resolved is None:
             raise DsetCommandError(
                 "DSET-E141",
                 rule_path,
                 f"customized workflow did not resolve: {workflow_id}",
             )
-        customized_workflows[workflow_id] = customized
-        wrapper_path = _wrapper_path(adopter, customized["wrapper"])
-        wrappers_unchanged = (
-            wrappers_unchanged and _sha256(wrapper_path) == wrapper_before[workflow_id]
+        workflows[workflow_id] = resolved
+        unchanged = (
+            unchanged
+            and _sha256(_wrapper_path(adopter, resolved["wrapper"]))
+            == wrapper_before[workflow_id]
         )
-    return {
-        "released_validator": released_status,
-        "released_validator_diagnostic": released_diagnostic,
-        "candidate_repository": "pass",
-        "temporary_adopter": "pass",
-        "customization": customized_workflows["domain-clarification"]["customization"],
-        "workflows_resolved": list(workflow_ids),
-        "wrappers_unchanged": wrappers_unchanged,
-        "wrapper_unchanged": wrappers_unchanged,
-        "recursion_stopped": not discover_layout(adopter).version_path.exists(),
-        "released_ref": reference,
-        "adopter": adopter.as_posix(),
-    }
+    return workflows, unchanged
 
 
 def _wrapper_path(root: Path, wrapper: Any) -> Path:
