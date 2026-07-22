@@ -1,168 +1,38 @@
-"""Provide DSET semantic types behavior."""
+"""Expose the stable semantic Type API from focused implementation modules."""
 
 from __future__ import annotations
 
-import re
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
 
-from .diagnostics import Diagnostic
-from .frontmatter import FrontmatterError
-from .frontmatter import metadata as frontmatter_metadata
-from .identity import iter_control_files, logical_part
-from .layout import discover_layout
-from .legacy_authority import legacy_shared_package_paths
-from .project_data import lifecycle_events, project_section
-from .yaml_subset import YamlSubsetError, load
-
-# SEMANTIC_SUBTYPES defines semantic subtypes; this module owns the default.
-SEMANTIC_SUBTYPES: dict[str, frozenset[str]] = {
-    "decision": frozenset(
-        {"requirement", "constraint", "contract", "implementation_decision"}
-    ),
-    "question": frozenset({"conflict", "risk", "opportunity"}),
-    "problem": frozenset({"defect", "gap", "debt"}),
-    "qa": frozenset({"test", "evaluation"}),
-}
-# SEMANTIC_ID_KINDS defines semantic id kinds; this module owns the default.
-SEMANTIC_ID_KINDS: dict[tuple[str, str | None], str] = {
-    ("decision", None): "DECISION",
-    ("decision", "requirement"): "REQ",
-    ("decision", "constraint"): "CONSTR",
-    ("decision", "contract"): "CONTR",
-    ("decision", "implementation_decision"): "IMPDEC",
-    ("question", None): "QUESTION",
-    ("question", "conflict"): "CONFLICT",
-    ("question", "risk"): "RISK",
-    ("question", "opportunity"): "OPPORTUNITY",
-    ("problem", None): "PROBLEM",
-    ("problem", "defect"): "DEFECT",
-    ("problem", "gap"): "GAP",
-    ("problem", "debt"): "DEBT",
-    ("qa", "test"): "TEST",
-    ("qa", "evaluation"): "EVALUATION",
-}
-# SEMANTIC_TYPE_ID_KINDS defines type-only naming axes for atomic identities.
-SEMANTIC_TYPE_ID_KINDS: dict[str, str] = {
-    "decision": "DECISION",
-    "question": "QUESTION",
-    "problem": "PROBLEM",
-    "qa": "QA",
-}
-# KIND_CLASSIFICATION defines kind classification; this module owns the default.
-KIND_CLASSIFICATION = {
-    **{kind: classification for classification, kind in SEMANTIC_ID_KINDS.items()},
-    # Historical kinds remain immutable compatibility input.
-    "REQUIREMENT": ("decision", "requirement"),
-    "CONSTRAINT": ("decision", "constraint"),
-    "CONTRACT": ("decision", "contract"),
-    "STORY": ("decision", "requirement"),
-    "OUTCOME": ("decision", "requirement"),
-    "SCENARIO": ("decision", "requirement"),
-    "INVARIANT": ("decision", "requirement"),
-    "EVAL": ("qa", "evaluation"),
-    "QA": ("qa", None),
-}
-# FIELD_CLASSIFICATION defines field classification; this module owns the default.
-FIELD_CLASSIFICATION: dict[str, tuple[str, str | None]] = {
-    "requirements": ("decision", "requirement"),
-    "contracts": ("decision", "contract"),
-    "stories": ("decision", "requirement"),
-    "outcomes": ("decision", "requirement"),
-    "tests": ("qa", "test"),
-    "evals": ("qa", "evaluation"),
-}
-# LEGACY_INTAKE_CLASSIFICATION defines legacy intake classification; this module owns the default.
-LEGACY_INTAKE_CLASSIFICATION: dict[str, tuple[str, str | None]] = {
-    "decision": ("decision", None),
-    "requirement": ("decision", "requirement"),
-    "constraint": ("decision", "constraint"),
-    "contract": ("decision", "contract"),
-    "implementation_decision": ("decision", "implementation_decision"),
-    "user_story": ("decision", "requirement"),
-    "outcome": ("decision", "requirement"),
-    "scenario": ("decision", "requirement"),
-    "invariant": ("decision", "requirement"),
-    "question": ("question", None),
-    "conflict": ("question", "conflict"),
-    "risk": ("question", "risk"),
-    "opportunity": ("question", "opportunity"),
-    "problem": ("problem", None),
-    "defect": ("problem", "defect"),
-    "gap": ("problem", "gap"),
-    "debt": ("problem", "debt"),
-    "test": ("qa", "test"),
-    "evaluation": ("qa", "evaluation"),
-}
-# DECISION_ID_RE defines decision id re; this module owns the default.
-DECISION_ID_RE = re.compile(r"-\s*\*\*Decision ID:\*\*\s*`([^`]+)`")
-# STATUS_RE defines status re; this module owns the default.
-STATUS_RE = re.compile(r"-\s*\*\*Status:\*\*\s*([^\n]+)")
-# IGNORED_PARTS defines ignored parts; this module owns the default.
-IGNORED_PARTS = frozenset(
-    {
-        ".git",
-        ".cache",
-        ".venv",
-        ".mypy_cache",
-        ".pytest_cache",
-        ".ruff_cache",
-        "__pycache__",
-        "dist",
-        "templates",
-    }
+from .semantic_type_index import (
+    build_semantic_classification_index,
+    validate_semantic_classifications,
+)
+from .semantic_type_model import (
+    KIND_CLASSIFICATION,
+    SEMANTIC_ID_KINDS,
+    SEMANTIC_SUBTYPES,
+    SEMANTIC_TYPE_ID_KINDS,
+    classify_semantic_id,
+    normalize_semantic_classification,
+    semantic_id_matches_classification,
+    semantic_naming_axis,
 )
 
-
-@dataclass
-class _Classification:
-    """Represent classification behavior and state."""
-
-    semantic_id: str
-    semantic_type: str
-    subtype: str | None
-    carriers: set[str]
-    origins: set[str]
-    statuses: set[str]
-    modern: bool
-
-
-def classify_semantic_id(identifier: str) -> tuple[str, str | None] | None:
-    """Classify a stable semantic ID without changing its spelling."""
-    matches = {
-        KIND_CLASSIFICATION[token]
-        for token in identifier.split("-")
-        if token in KIND_CLASSIFICATION
-    }
-    if len(matches) != 1:
-        return None
-    return next(iter(matches))
-
-
-def semantic_naming_axis(
-    semantic_type: str,
-    subtype: str | None,
-    *,
-    include_subtype: bool,
-) -> str:
-    """Return the project-wide sequence axis selected for a new atom."""
-    if include_subtype and subtype is not None:
-        return SEMANTIC_ID_KINDS[(semantic_type, subtype)]
-    return SEMANTIC_TYPE_ID_KINDS[semantic_type]
-
-
-def semantic_id_matches_classification(
-    identifier: str,
-    semantic_type: str,
-    subtype: str | None,
-) -> bool:
-    """Accept either a type-axis or subtype-axis identity for one atom."""
-    classification = classify_semantic_id(identifier)
-    return classification in {
-        (semantic_type, subtype),
-        (semantic_type, None),
-    }
+# __all__ defines the supported compatibility facade for existing callers.
+__all__ = [
+    "KIND_CLASSIFICATION",
+    "SEMANTIC_ID_KINDS",
+    "SEMANTIC_SUBTYPES",
+    "SEMANTIC_TYPE_ID_KINDS",
+    "build_semantic_classification_index",
+    "classify_semantic_id",
+    "next_semantic_sequence",
+    "normalize_semantic_classification",
+    "semantic_id_matches_classification",
+    "semantic_naming_axis",
+    "validate_semantic_classifications",
+]
 
 
 def next_semantic_sequence(
@@ -173,343 +43,25 @@ def next_semantic_sequence(
     include_subtype: bool,
 ) -> int:
     """Return the next project-wide number for the configured naming axis."""
-    numbers: list[int] = []
-    for row in build_semantic_classification_index(root):
-        if row["type"] != semantic_type:
-            continue
-        if include_subtype and row["subtype"] != (subtype or "none"):
-            continue
-        tail = str(row["id"]).rsplit("-", 1)[-1]
-        if tail.isdigit():
-            numbers.append(int(tail))
+    numbers = [
+        number
+        for row in build_semantic_classification_index(root)
+        if (number := _matching_number(row, semantic_type, subtype, include_subtype))
+        is not None
+    ]
     return max(numbers, default=0) + 1
 
 
-def normalize_semantic_classification(
-    semantic_type: str, subtype: str | None
-) -> tuple[str, str | None]:
-    """Return the canonical four-Type classification for a carrier.
-
-    Emitted atoms are immutable. Historical richer required-claim kinds and the
-    brief peer-Requirement vocabulary remain compatibility input while new
-    atoms use the four current Decision subtypes.
-    """
-    if semantic_type == "requirement":
-        if subtype in {"constraint", "contract"}:
-            return "decision", subtype
-        return "decision", "requirement"
-    if semantic_type != "decision" or subtype is None:
-        return semantic_type, subtype
-    if subtype in SEMANTIC_SUBTYPES["decision"]:
-        return semantic_type, subtype
-    if subtype in {"user_story", "outcome", "scenario", "invariant"}:
-        return "decision", "requirement"
-    return semantic_type, subtype
-
-
-def build_semantic_classification_index(root: Path) -> list[dict[str, Any]]:
-    """Build semantic classification index using the declared repository contract."""
-    root = root.resolve()
-    records, diagnostics = _collect(root)
-    if diagnostics:
-        raise ValueError(diagnostics[0].message)
-    lifecycle = _lifecycle_events(root.resolve())
-    rows: list[dict[str, Any]] = []
-    for record in records.values():
-        events = [
-            str(event["id"])
-            for event in lifecycle
-            if event.get("atom_id") == record.semantic_id
-        ]
-        rows.append(
-            {
-                "id": record.semantic_id,
-                "type": record.semantic_type,
-                "subtype": record.subtype or "none",
-                "compatibility": not record.modern,
-                "origins": sorted(record.origins),
-                "carriers": sorted(
-                    Path(carrier).relative_to(root).as_posix()
-                    for carrier in record.carriers
-                ),
-                "carrier_statuses": sorted(record.statuses),
-                "lifecycle_events": events,
-            }
-        )
-    return sorted(rows, key=lambda item: str(item["id"]))
-
-
-def validate_semantic_classifications(root: Path) -> list[Diagnostic]:
-    """Validate semantic classifications using the declared repository contract."""
-    _, diagnostics = _collect(root.resolve())
-    return sorted(set(diagnostics))
-
-
-def _collect(
-    root: Path,
-) -> tuple[dict[str, _Classification], list[Diagnostic]]:
-    """Collect collect using the declared repository contract."""
-    records: dict[str, _Classification] = {}
-    diagnostics: list[Diagnostic] = []
-
-    layout = discover_layout(root)
-    paths = (
-        iter_control_files(root, "*.md")
-        if layout.separated
-        else sorted(root.rglob("*.md"))
-    )
-    for path in paths:
-        relative = path.relative_to(root)
-        if (
-            relative.parts[:1] == (".dset_runtime",)
-            or relative.parts[:2]
-            == (
-                ".dset",
-                "runtime",
-            )
-            or any(logical_part(part) in IGNORED_PARTS for part in relative.parts)
-        ):
-            continue
-        metadata = _frontmatter(path)
-        if metadata and metadata.get("artifact_type") == "atomic_record":
-            identifier = metadata.get("semantic_id")
-            semantic_type = metadata.get("type")
-            subtype = metadata.get("subtype")
-            if isinstance(identifier, str) and isinstance(semantic_type, str):
-                classification = normalize_semantic_classification(
-                    semantic_type, _normalized_subtype(subtype)
-                )
-                authored = (semantic_type, _normalized_subtype(subtype))
-                _register(
-                    records,
-                    diagnostics,
-                    path,
-                    identifier,
-                    classification,
-                    origin="modern_atom",
-                    status=str(metadata.get("status", "unknown")),
-                    modern=(
-                        classification == authored
-                        and SEMANTIC_ID_KINDS.get(classification)
-                        in identifier.split("-")
-                    ),
-                )
-            continue
-        if path.name.startswith("decision-") or (
-            path.parent.name == "decision" and path.name.startswith("DSET-DECISION-")
-        ):
-            text = path.read_text(encoding="utf-8")
-            match = DECISION_ID_RE.search(text)
-            if match:
-                status_match = STATUS_RE.search(text)
-                _register(
-                    records,
-                    diagnostics,
-                    path,
-                    match.group(1),
-                    ("decision", None),
-                    origin="legacy_decision",
-                    status=(
-                        status_match.group(1).strip() if status_match else "unknown"
-                    ),
-                    modern=False,
-                )
-
-    package_sources: list[tuple[Path, dict[str, Any]]] = []
-    if layout.separated:
-        catalog = project_section(root, "package_catalog")
-        packages = catalog.get("packages", [])
-        if isinstance(packages, list):
-            package_sources = [
-                (layout.settings_path, package)
-                for package in packages
-                if isinstance(package, dict)
-            ]
-    else:
-        for path in layout.structured_named_files(root, "package"):
-            data = _safe_load(path, diagnostics)
-            if isinstance(data, dict):
-                package_sources.append((path, data))
-    for path, data in package_sources:
-        relative = path.relative_to(root)
-        if (
-            relative.parts[:1] == (".dset_runtime",)
-            or relative.parts[:2]
-            == (
-                ".dset",
-                "runtime",
-            )
-            or any(logical_part(part) in IGNORED_PARTS for part in relative.parts)
-        ):
-            continue
-        for field, package_classification in FIELD_CLASSIFICATION.items():
-            values = data.get(field, [])
-            if not isinstance(values, list):
-                continue
-            for identifier in values:
-                if isinstance(identifier, str):
-                    _register(
-                        records,
-                        diagnostics,
-                        path,
-                        identifier,
-                        package_classification,
-                        origin=f"package:{field}",
-                        status="defined",
-                        modern=False,
-                    )
-
-    for path in legacy_shared_package_paths(root):
-        data = _safe_load(path, diagnostics)
-        if not isinstance(data, dict):
-            continue
-        for field, package_classification in FIELD_CLASSIFICATION.items():
-            values = data.get(field, [])
-            if not isinstance(values, list):
-                continue
-            for identifier in values:
-                if isinstance(identifier, str):
-                    _register(
-                        records,
-                        diagnostics,
-                        path,
-                        identifier,
-                        package_classification,
-                        origin=f"legacy_package:{field}",
-                        status="historical",
-                        modern=False,
-                    )
-
-    try:
-        intake_path = discover_layout(root).intake_path
-    except ValueError:
-        intake_path = root / "dset/intake.yaml"
-    data = (
-        _safe_load(intake_path, diagnostics)
-        if intake_path.is_file() and not (layout.recursive or layout.separated)
-        else None
-    )
-    items = data.get("items", []) if isinstance(data, dict) else []
-    if isinstance(items, list):
-        for item in items:
-            if not isinstance(item, dict) or not isinstance(item.get("id"), str):
-                continue
-            raw_type = item.get("type")
-            raw_subtype = item.get("subtype")
-            intake_classification: tuple[str, str | None] | None
-            if raw_type in SEMANTIC_SUBTYPES:
-                intake_classification = normalize_semantic_classification(
-                    str(raw_type), _normalized_subtype(raw_subtype)
-                )
-            else:
-                intake_classification = LEGACY_INTAKE_CLASSIFICATION.get(str(raw_type))
-            if intake_classification is None:
-                diagnostics.append(
-                    Diagnostic(
-                        "DSET-E166",
-                        intake_path,
-                        f"intake semantic type is not recognized: {raw_type}",
-                    )
-                )
-                continue
-            _register(
-                records,
-                diagnostics,
-                intake_path,
-                str(item["id"]),
-                intake_classification,
-                origin="intake_compatibility",
-                status=str(item.get("status", "unknown")),
-                modern=False,
-            )
-    return records, diagnostics
-
-
-def _normalized_subtype(value: object) -> str | None:
-    if value is None or value == "none":
+def _matching_number(
+    row: dict[str, object],
+    semantic_type: str,
+    subtype: str | None,
+    include_subtype: bool,
+) -> int | None:
+    """Extract a row sequence when it belongs to the requested naming axis."""
+    if row.get("type") != semantic_type:
         return None
-    return str(value)
-
-
-def _register(
-    records: dict[str, _Classification],
-    diagnostics: list[Diagnostic],
-    path: Path,
-    identifier: str,
-    classification: tuple[str, str | None],
-    *,
-    origin: str,
-    status: str,
-    modern: bool,
-) -> None:
-    """Handle register using the declared repository contract."""
-    semantic_type, subtype = classification
-    if semantic_type not in SEMANTIC_SUBTYPES or (
-        subtype is not None and subtype not in SEMANTIC_SUBTYPES[semantic_type]
-    ):
-        diagnostics.append(
-            Diagnostic("DSET-E166", path, f"invalid flat classification: {identifier}")
-        )
-        return
-    by_id = classify_semantic_id(identifier)
-    if by_id != classification:
-        diagnostics.append(
-            Diagnostic(
-                "DSET-E166",
-                path,
-                f"semantic ID kind disagrees with carrier classification: {identifier}",
-            )
-        )
-        return
-    relative = path.as_posix()
-    existing = records.get(identifier)
-    if existing is None:
-        records[identifier] = _Classification(
-            identifier,
-            semantic_type,
-            subtype,
-            {relative},
-            {origin},
-            {status},
-            modern,
-        )
-        return
-    if (existing.semantic_type, existing.subtype) != classification:
-        diagnostics.append(
-            Diagnostic(
-                "DSET-E166",
-                path,
-                f"semantic carriers disagree on Type/subtype: {identifier}",
-            )
-        )
-        return
-    existing.carriers.add(relative)
-    existing.origins.add(origin)
-    existing.statuses.add(status)
-    existing.modern = existing.modern or modern
-
-
-def _frontmatter(path: Path) -> dict[str, Any] | None:
-    try:
-        data = frontmatter_metadata(path)
-    except (OSError, UnicodeError, FrontmatterError):
+    if include_subtype and row.get("subtype") != (subtype or "none"):
         return None
-    return data if isinstance(data, dict) else None
-
-
-def _safe_load(path: Path, diagnostics: list[Diagnostic]) -> Any:
-    """Handle load using the declared repository contract."""
-    try:
-        return load(path)
-    except (OSError, UnicodeError, YamlSubsetError) as error:
-        diagnostics.append(
-            Diagnostic("DSET-E166", path, f"cannot classify carrier: {error}")
-        )
-        return None
-
-
-def _lifecycle_events(root: Path) -> list[dict[str, Any]]:
-    try:
-        return lifecycle_events(root)
-    except ValueError:
-        return []
+    tail = str(row.get("id", "")).rsplit("-", 1)[-1]
+    return int(tail) if tail.isdigit() else None
