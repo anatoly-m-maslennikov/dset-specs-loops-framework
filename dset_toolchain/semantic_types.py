@@ -52,22 +52,18 @@ SEMANTIC_TYPE_ID_KINDS: dict[str, str] = {
 }
 # KIND_CLASSIFICATION defines kind classification; this module owns the default.
 KIND_CLASSIFICATION = {
-    kind: classification for classification, kind in SEMANTIC_ID_KINDS.items()
+    **{kind: classification for classification, kind in SEMANTIC_ID_KINDS.items()},
+    # Historical kinds remain immutable compatibility input.
+    "REQUIREMENT": ("decision", "requirement"),
+    "CONSTRAINT": ("decision", "constraint"),
+    "CONTRACT": ("decision", "contract"),
+    "STORY": ("decision", "requirement"),
+    "OUTCOME": ("decision", "requirement"),
+    "SCENARIO": ("decision", "requirement"),
+    "INVARIANT": ("decision", "requirement"),
+    "EVAL": ("qa", "evaluation"),
+    "QA": ("qa", None),
 }
-# Historical kinds remain immutable compatibility input.
-KIND_CLASSIFICATION.update(
-    {
-        "REQUIREMENT": ("decision", "requirement"),
-        "CONSTRAINT": ("decision", "constraint"),
-        "CONTRACT": ("decision", "contract"),
-        "STORY": ("decision", "requirement"),
-        "OUTCOME": ("decision", "requirement"),
-        "SCENARIO": ("decision", "requirement"),
-        "INVARIANT": ("decision", "requirement"),
-    }
-)
-KIND_CLASSIFICATION["EVAL"] = ("qa", "evaluation")
-KIND_CLASSIFICATION["QA"] = ("qa", None)
 # FIELD_CLASSIFICATION defines field classification; this module owns the default.
 FIELD_CLASSIFICATION: dict[str, tuple[str, str | None]] = {
     "requirements": ("decision", "requirement"),

@@ -106,6 +106,10 @@ MARKDOWN_IGNORED_PARTS = frozenset(
         "tmp",
     }
 )
+# _TRANSITION_INDEX_CACHE caches relocation aliases by ledger revision.
+_TRANSITION_INDEX_CACHE: dict[
+    tuple[str, int, int], tuple[dict[Path, Path], dict[Path, frozenset[Path]]]
+] = {}
 # LLM_SESSION_ID_PATTERN validates llm session id pattern; this module owns the accepted syntax.
 LLM_SESSION_ID_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
 # LLM_SESSION_FIELD_PATTERN validates llm session field pattern; this module owns the accepted syntax.
@@ -2279,12 +2283,6 @@ def _carrier_references_path(
             ):
                 return True
     return False
-
-
-# _TRANSITION_INDEX_CACHE validates transition index cache; this module owns the accepted syntax.
-_TRANSITION_INDEX_CACHE: dict[
-    tuple[str, int, int], tuple[dict[Path, Path], dict[Path, frozenset[Path]]]
-] = {}
 
 
 def _transition_indexes(
