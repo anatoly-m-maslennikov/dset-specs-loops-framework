@@ -754,7 +754,10 @@ def _path_ignored(root: Path, path: Path) -> bool:
 
 
 def _relative_ignored(relative: Path) -> bool:
-    if relative.parts[:2] == (".dset", "runtime"):
+    if relative.parts[:1] == (".dset_runtime",) or relative.parts[:2] == (
+        ".dset",
+        "runtime",
+    ):
         return True
     return any(
         part in IGNORED_PARTS

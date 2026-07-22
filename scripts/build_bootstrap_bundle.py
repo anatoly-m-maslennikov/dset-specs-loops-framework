@@ -19,8 +19,14 @@ def selected_files(root: Path = ROOT) -> list[Path]:
     for layer in ("meta", "gov", "tool", "skill", "ops"):
         layer_root = root / ".dset" / layer
         for folder in ("schemas", "templates"):
+            source_root = layer_root / folder
             selected.extend(
-                path for path in (layer_root / folder).rglob("*") if path.is_file()
+                path
+                for path in source_root.rglob("*")
+                if path.is_file()
+                and not any(
+                    part.startswith(".") for part in path.relative_to(source_root).parts
+                )
             )
     for skill_id in sorted(PUBLIC_SKILL_WORKFLOWS):
         selected.extend(

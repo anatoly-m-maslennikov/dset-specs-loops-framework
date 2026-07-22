@@ -1,16 +1,16 @@
 from __future__ import annotations
 
 import subprocess
-import tempfile
 import unittest
 from pathlib import Path
 
+from dset_toolchain.temp_paths import temporary_directory
 from tests.git_fixtures import initialize_exact_git_repository
 
 
 class GitFixtureTests(unittest.TestCase):
     def test_repository_owns_deterministic_newline_policy(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             initialize_exact_git_repository(root)
 

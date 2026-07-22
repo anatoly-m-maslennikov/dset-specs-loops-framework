@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import tempfile
 import unittest
 from pathlib import Path
 
@@ -12,6 +11,7 @@ from dset_toolchain.semantic_types import (
     classify_semantic_id,
     validate_semantic_classifications,
 )
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.yaml_subset import dump, load
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -49,7 +49,7 @@ class SemanticTypeCompatibilityTests(unittest.TestCase):
         self.assertEqual(validate_semantic_classifications(ROOT), [])
 
     def test_carrier_and_id_kind_mismatch_fails_closed(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+        with temporary_directory() as raw:
             root = create_adopter(ROOT, Path(raw) / "adopter")
             intake_path = discover_layout(root).intake_path
             intake = load(intake_path)

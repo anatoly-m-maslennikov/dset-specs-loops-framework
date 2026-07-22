@@ -36,6 +36,7 @@ from .frontmatter import parse as parse_frontmatter
 from .health import health_path
 from .layout import discover_layout
 from .semantic_atoms import TERMINAL_STATES, collect_semantic_atoms
+from .temp_paths import temporary_directory
 from .toml_codec import TomlCodecError
 from .toml_codec import dumps as dump_toml
 from .toml_codec import loads as load_toml
@@ -54,7 +55,7 @@ _IGNORED_TOP_LEVEL = {
     "dist",
     "__pycache__",
 }
-_RUNTIME_READINESS_PATH = ".dset/runtime/toml-migration-runtime-readiness.json"
+_RUNTIME_READINESS_PATH = ".dset_runtime/toml-migration-runtime-readiness.json"
 _NON_REWRITABLE_EXCEPTIONS = {
     "cli-wire-json",
     "external-json-schema",
@@ -376,9 +377,7 @@ def apply_toml_migration(
         )
     }
     _preflight_apply(plan)
-    backup_root = (
-        plan.root / ".dset" / "runtime" / "toml-migration-backups" / plan.digest
-    )
+    backup_root = plan.root / ".dset_runtime" / "toml-migration-backups" / plan.digest
     bundle_path = plan.root / "dset_toolchain" / "bootstrap_bundle.json"
     regenerates_bundle = (
         bundle_path.is_file()
@@ -418,7 +417,7 @@ def _project_files(root: Path) -> list[Path]:
         relative = path.relative_to(root)
         if any(part in _IGNORED_TOP_LEVEL for part in relative.parts):
             continue
-        if relative.parts[:3] == (".dset", "runtime", "toml-migration-backups"):
+        if relative.parts[:2] == (".dset_runtime", "toml-migration-backups"):
             continue
         if path.is_symlink():
             paths.append(path)
@@ -458,7 +457,7 @@ def _exception_classification(
     relative = path.relative_to(root)
     parts = relative.parts
     suffix = path.suffix.lower()
-    if parts[:2] == (".dset", "runtime"):
+    if parts[:1] == (".dset_runtime",) or parts[:2] == (".dset", "runtime"):
         if suffix == ".json":
             return _exception(root, path, "machine-local-runtime-journal")
         return None
@@ -2304,11 +2303,7 @@ def prove_runtime_readiness(root: Path) -> dict[str, object]:
         root, source_plan.package_successors, source_plan.preserved_structured
     )
     source_tool_digest = _tool_digest(root)
-    with tempfile.TemporaryDirectory(
-        prefix="dset-toml-proof-",
-        dir=root.parent,
-        ignore_cleanup_errors=True,
-    ) as raw:
+    with temporary_directory(prefix="dset-toml-proof-") as raw:
         staged, git_context = _stage_proof_tree(root, Path(raw))
         staged_plan = apply_toml_migration(staged, bypass_runtime_readiness=True)
         results = [git_context, *_proof_commands(staged)]
@@ -2508,9 +2503,11 @@ def _overlay_proof_working_tree(root: Path, staged: Path) -> None:
         if not raw_path:
             continue
         relative = Path(os.fsdecode(raw_path))
-        if any(part in _IGNORED_TOP_LEVEL for part in relative.parts) or relative.parts[
-            :2
-        ] == (".dset", "runtime"):
+        if (
+            any(part in _IGNORED_TOP_LEVEL for part in relative.parts)
+            or relative.parts[:1] == (".dset_runtime",)
+            or relative.parts[:2] == (".dset", "runtime")
+        ):
             continue
         source = root / relative
         target = staged / relative

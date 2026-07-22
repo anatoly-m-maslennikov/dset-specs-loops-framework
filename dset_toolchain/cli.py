@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-import tempfile
 from collections.abc import Sequence
 from datetime import date
 from pathlib import Path
@@ -63,6 +62,7 @@ from .self_host import run_self_host
 from .semantic_atoms import append_lifecycle_event, archive_atom, seal_atom
 from .skill_catalog import PUBLIC_SKILL_WORKFLOWS
 from .skill_distribution import main as skill_distribution_main
+from .temp_paths import temporary_directory
 from .toml_migration import (
     MigrationPlan,
     apply_toml_migration,
@@ -520,9 +520,7 @@ def main(argv: list[str] | None = None) -> int:
                     root, args.work_dir, released_ref=args.released_ref
                 )
             else:
-                with tempfile.TemporaryDirectory(
-                    prefix="dset-self-host-", dir=_self_host_temp_parent(root)
-                ) as raw:
+                with temporary_directory(prefix="dset-self-host-") as raw:
                     report = run_self_host(
                         root, Path(raw), released_ref=args.released_ref
                     )
@@ -808,16 +806,6 @@ def _print_migration_report(
     )
     for blocker in plan.blockers:
         print(f"BLOCKED {blocker}")
-
-
-def _self_host_temp_parent(root: Path) -> str | None:
-    system_temp = Path(tempfile.gettempdir()).resolve()
-    repository = root.resolve()
-    try:
-        system_temp.relative_to(repository)
-    except ValueError:
-        return None
-    return str(repository.parent)
 
 
 def _repository_root(raw: Path | None) -> Path:

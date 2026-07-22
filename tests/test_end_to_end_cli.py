@@ -4,20 +4,20 @@ import contextlib
 import io
 import json
 import os
-import tempfile
 import unittest
 from pathlib import Path
 from unittest import mock
 
 from dset_toolchain.cli import main
 from dset_toolchain.skill_distribution import SKILL_WORKFLOWS
+from dset_toolchain.temp_paths import temporary_directory
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class EndToEndCliTests(unittest.TestCase):
     def test_initialize_runtime_and_codex_distribution(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             target = (Path(raw) / "project").resolve()
             (target / "src").mkdir(parents=True)
             output = io.StringIO()

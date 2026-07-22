@@ -3,7 +3,6 @@ from __future__ import annotations
 import contextlib
 import io
 import json
-import tempfile
 import unittest
 from pathlib import Path
 from typing import Any
@@ -12,13 +11,14 @@ from dset_toolchain.adopter import create_adopter
 from dset_toolchain.artifact_emission import assess_artifact_candidate
 from dset_toolchain.cli import main
 from dset_toolchain.settings import load_project_settings
+from dset_toolchain.temp_paths import temporary_directory
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class ArtifactEmissionTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.temporary = tempfile.TemporaryDirectory(dir=ROOT.parent)
+        self.temporary = temporary_directory()
         self.root = create_adopter(ROOT, Path(self.temporary.name) / "adopter")
 
     def tearDown(self) -> None:

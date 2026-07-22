@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import tempfile
 import unittest
 from pathlib import Path
 from typing import Any
@@ -20,13 +19,14 @@ from dset_toolchain.semantic_atoms import (
     collect_semantic_atoms,
     seal_atom,
 )
+from dset_toolchain.temp_paths import temporary_directory
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class PriorityConflictTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.temporary = tempfile.TemporaryDirectory(dir=ROOT.parent)
+        self.temporary = temporary_directory()
         self.root = Path(self.temporary.name).resolve()
         (self.root / "README.md").write_text("# Conflict evidence\n", encoding="utf-8")
 

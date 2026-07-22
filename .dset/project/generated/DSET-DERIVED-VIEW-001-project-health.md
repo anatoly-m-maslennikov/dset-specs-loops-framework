@@ -12,7 +12,7 @@ llm_session_ids = []
 > This generated view is not authority. Follow each link to its canonical
 > owner and refresh explicitly after source changes.
 
-- **Source digest:** `c9b092ef9c11ede6a42322e6a86c13ec36296368bc28b6c7df94a251c734c8bc`
+- **Source digest:** `b609d989e524fec5c620d51fe0ec551d9229ceebaa9f6895d555b3ef45477d08`
 - **Renderer:** `dset health` schema 1.0
 
 ## Coverage
@@ -20,41 +20,41 @@ llm_session_ids = []
 | Closure | Numerator | Denominator | Excluded | N/A | Unknown | Stale |
 |---|---:|---:|---:|---:|---:|---:|
 | Decision authority compiled into evergreen truth | 29 | 29 | 0 | 0 | 0 | 0 |
-| Decision authority linked from implementation commits | 20 | 25 | 4 | 0 | 5 | 0 |
+| Decision authority linked from implementation commits | 19 | 25 | 4 | 0 | 6 | 0 |
 | Applicable authority connected to Test or Evaluation | 17 | 29 | 0 | 0 | 12 | 0 |
-| QA definitions connected to current evidence | 12 | 26 | 0 | 0 | 14 | 0 |
+| QA definitions connected to current evidence | 11 | 26 | 0 | 0 | 15 | 0 |
 
 ### Coverage gaps
 
 - **Decision authority compiled into evergreen truth:** none
-- **Decision authority linked from implementation commits:** `DSET-DECISION-OPS-009`, `DSET-DECISION-OPS-011`, `DSET-DECISION-SKILL-003`, `DSET-INVARIANT-GOV-027`, `DSET-REQUIREMENT-GOV-040`
+- **Decision authority linked from implementation commits:** `DSET-DECISION-OPS-009`, `DSET-DECISION-OPS-011`, `DSET-DECISION-SKILL-003`, `DSET-INVARIANT-GOV-027`, `DSET-REQUIREMENT-GOV-040`, `DSET-REQUIREMENT-GOV-043`
 - **Applicable authority connected to Test or Evaluation:** `DSET-DECISION-GOV-001`, `DSET-DECISION-GOV-002`, `DSET-DECISION-GOV-008`, `DSET-DECISION-GOV-010`, `DSET-DECISION-GOV-014`, `DSET-DECISION-GOV-015`, `DSET-DECISION-SKILL-001`, `DSET-INVARIANT-GOV-027`, `DSET-REQUIREMENT-GOV-031`, `DSET-REQUIREMENT-GOV-032`, `DSET-REQUIREMENT-TOOL-021`, `DSET-REQUIREMENT-TOOL-022`
-- **QA definitions connected to current evidence:** `DSET-EVALUATION-GOV-026`, `DSET-EVALUATION-GOV-028`, `DSET-EVALUATION-GOV-029`, `DSET-EVALUATION-GOV-031`, `DSET-EVALUATION-SKILL-012`, `DSET-EVALUATION-TOOL-003`, `DSET-EVALUATION-TOOL-004`, `DSET-TEST-GOV-045`, `DSET-TEST-OPS-018`, `DSET-TEST-OPS-019`, `DSET-TEST-OPS-020`, `DSET-TEST-SKILL-014`, `DSET-TEST-TOOL-021`, `DSET-TEST-TOOL-022`
+- **QA definitions connected to current evidence:** `DSET-EVALUATION-GOV-026`, `DSET-EVALUATION-GOV-028`, `DSET-EVALUATION-GOV-029`, `DSET-EVALUATION-GOV-032`, `DSET-EVALUATION-SKILL-012`, `DSET-EVALUATION-TOOL-003`, `DSET-EVALUATION-TOOL-004`, `DSET-TEST-GOV-045`, `DSET-TEST-GOV-048`, `DSET-TEST-OPS-018`, `DSET-TEST-OPS-019`, `DSET-TEST-OPS-020`, `DSET-TEST-SKILL-014`, `DSET-TEST-TOOL-021`, `DSET-TEST-TOOL-022`
 
 ## Artifact inventory
 
-- **Governed artifacts:** 607
-- **By role:** atomic=131, derived_or_navigation=75, evergreen=170, implementation=172, transactional=59
-- **By type:** analysis_report=23, atomic_record=131, derived_view=1, evidence_record=47, implementation=172, navigation=43, plan=44, procedure=31, specification=86, verification=8, version=21
-- **By subtype:** architecture=4, behavior=6, change=9, configuration=79, design=6, domain_model=1, evaluation_plan=14, evaluation_result=6, external_audit_analysis=2, governance=69, health_dashboard=1, hub=43, implementation_plan=10, migration=3, playbook=28, proposal=8, readiness_record=2, release_plan=2, release_record=1, review_report=2, roadmap=2, root_cause_analysis=1, run_record=9, runbook=3, solution_landscape=6, source_code=43, technical_investigation=2, test_implementation=47, test_plan=14, test_result=30, version_scope=5
-- **By layer:** gov=149, meta=34, ops=46, repository=137, skill=87, tool=154
-- **By effective priority:** critical=44, high=48, medium=509, unknown=6
-- **By status:** absorbed=25, accepted=57, open=19, resolved=39
+- **Governed artifacts:** 612
+- **By role:** atomic=134, derived_or_navigation=75, evergreen=170, implementation=174, transactional=59
+- **By type:** analysis_report=23, atomic_record=134, derived_view=1, evidence_record=47, implementation=174, navigation=43, plan=44, procedure=31, specification=86, verification=8, version=21
+- **By subtype:** architecture=4, behavior=6, change=9, configuration=79, design=6, domain_model=1, evaluation_plan=14, evaluation_result=6, external_audit_analysis=2, governance=69, health_dashboard=1, hub=43, implementation_plan=10, migration=3, playbook=28, proposal=8, readiness_record=2, release_plan=2, release_record=1, review_report=2, roadmap=2, root_cause_analysis=1, run_record=9, runbook=3, solution_landscape=6, source_code=44, technical_investigation=2, test_implementation=48, test_plan=14, test_result=30, version_scope=5
+- **By layer:** gov=152, meta=34, ops=46, repository=137, skill=87, tool=156
+- **By effective priority:** critical=46, high=48, medium=512, unknown=6
+- **By status:** absorbed=28, accepted=57, open=19, resolved=39
 
 ## Semantic inventory
 
-- **Semantic claims:** 332
-- **By Type:** decision=125, problem=44, qa=144, question=19
-- **By direct subtype:** conflict=1, contract=6, defect=24, evaluation=53, gap=4, invariant=1, opportunity=3, requirement=83, test=91
-- **Native immutable atoms:** 106
+- **Semantic claims:** 335
+- **By Type:** decision=126, problem=44, qa=146, question=19
+- **By direct subtype:** conflict=1, contract=6, defect=24, evaluation=54, gap=4, invariant=1, opportunity=3, requirement=84, test=92
+- **Native immutable atoms:** 109
 - **Compatibility-classified legacy IDs:** 226
 
 ## Typed relation inventory
 
-- **Forward relations:** 476
-- **By type:** analysis_of=1, check_of=38, child_of=56, evidence_for=24, implementation_of=298, projection_of=6, relates_to=19, replacement_of=24, resolution_of=10
-- **By origin:** authored=147, commit_trailer=298, legacy_child_of=31
-- **By source kind:** artifact=178, commit=298
+- **Forward relations:** 481
+- **By type:** analysis_of=1, check_of=40, child_of=56, evidence_for=24, implementation_of=298, projection_of=6, relates_to=19, replacement_of=27, resolution_of=10
+- **By origin:** authored=152, commit_trailer=298, legacy_child_of=31
+- **By source kind:** artifact=183, commit=298
 
 ## Unresolved work
 
@@ -89,7 +89,7 @@ llm_session_ids = []
 ## Drill-downs
 
 - **Packages:** methodology=0
-- **Work Areas:** delivery=5, documentation=8, methodology=10, project-control=456, skills=36, tests=46, toolchain=44
+- **Work Areas:** delivery=5, documentation=8, methodology=10, project-control=459, skills=36, tests=47, toolchain=45
 
 ## Canonical return paths
 

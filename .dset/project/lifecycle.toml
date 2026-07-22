@@ -692,3 +692,30 @@ occurred_at = "2026-07-22T06:50:02+04:00"
 related = ["DSET-EVALUATION-GOV-031"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The successor tests the distinctive hidden root and the explicit distinction between stored control paths and Markdown links."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-078"
+atom_id = "DSET-REQUIREMENT-GOV-042"
+event = "absorbed"
+occurred_at = "2026-07-22T20:56:57+04:00"
+related = ["DSET-REQUIREMENT-GOV-043"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "The successor keeps .dset as committed control truth while moving resumable runtime state to the sibling .dset_runtime root and disposable POSIX scratch to /tmp."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-079"
+atom_id = "DSET-TEST-GOV-047"
+event = "absorbed"
+occurred_at = "2026-07-22T20:56:58+04:00"
+related = ["DSET-TEST-GOV-048"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "The successor preserves hidden-control-root and compatibility coverage while proving the separate runtime and scratch lifecycles and absence of repository scratch leakage."
+
+[[events]]
+id = "DSET-LIFECYCLE-EVENT-080"
+atom_id = "DSET-EVALUATION-GOV-031"
+event = "absorbed"
+occurred_at = "2026-07-22T20:56:59+04:00"
+related = ["DSET-EVALUATION-GOV-032"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "The successor retains control-root interpretability while adding the distinct ignored runtime root, disposable scratch root, and bounded atomic-publication exception."

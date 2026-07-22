@@ -1,17 +1,17 @@
 from __future__ import annotations
 
-import tempfile
 import unittest
 from datetime import date
 from pathlib import Path
 
 from dset_toolchain.dependencies import validate_dependency_policy
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.yaml_subset import dump
 
 
 class DependencyPolicyTests(unittest.TestCase):
     def test_exact_lock_registry_license_and_provenance_pass(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root, policy = self._project(Path(raw))
             self.assertEqual(
                 validate_dependency_policy(
@@ -55,7 +55,7 @@ class DependencyPolicyTests(unittest.TestCase):
             "expired": "exception expired",
         }
         for name, mutate in mutations.items():
-            with self.subTest(name=name), tempfile.TemporaryDirectory() as raw:
+            with self.subTest(name=name), temporary_directory() as raw:
                 root, policy = self._project(Path(raw), mutate=mutate)
                 messages = [
                     item.message

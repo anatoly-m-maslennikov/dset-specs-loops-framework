@@ -6,7 +6,6 @@ import io
 import json
 import re
 import shutil
-import tempfile
 import unittest
 from pathlib import Path
 from typing import Any, cast
@@ -25,6 +24,7 @@ from dset_toolchain.governance import (
 from dset_toolchain.layout import discover_layout
 from dset_toolchain.legacy_authority import write_legacy_authority_ledger
 from dset_toolchain.skill_catalog import REGISTERED_SKILL_WORKFLOWS
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.validation import validate_repository
 from dset_toolchain.yaml_subset import dump, load
 
@@ -39,7 +39,7 @@ def _framework_schema(name: str) -> Path:
 
 class GovernanceTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.temporary = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
+        self.temporary = temporary_directory()
         self.root = (Path(self.temporary.name) / "adopter").resolve()
         create_adopter(ROOT, self.root)
 
@@ -139,7 +139,7 @@ class GovernanceTests(unittest.TestCase):
             "wrapper-mismatch": ("DSET-E138", self._wrapper_mismatch),
         }
         for name, (expected, mutation) in cases.items():
-            with self.subTest(case=name), tempfile.TemporaryDirectory() as raw:
+            with self.subTest(case=name), temporary_directory() as raw:
                 target = (Path(raw) / "adopter").resolve()
                 create_adopter(ROOT, target)
                 mutation(target)
@@ -178,7 +178,7 @@ class GovernanceTests(unittest.TestCase):
 
     def test_same_wrappers_resolve_each_projects_local_governance(self) -> None:
         results: dict[str, dict[str, object]] = {}
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             parent = Path(raw).resolve()
             for label in ("project-a", "project-b"):
                 project = parent / label
@@ -228,7 +228,7 @@ class GovernanceTests(unittest.TestCase):
         self.assertNotIn("project-a local output rule.", str(second["rule_text"]))
 
     def test_materialized_rules_do_not_read_changed_source_template(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             source = (Path(raw) / "framework").resolve()
             source.mkdir()
             for name in (".dset", "skills"):
@@ -268,7 +268,7 @@ class GovernanceTests(unittest.TestCase):
                 )
 
     def test_release_applicable_adopter_installs_all_registered_wrappers(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             target = (Path(raw) / "release-adopter").resolve()
             (target / "dset").mkdir(parents=True)
             manifest_path = target / "dset" / "dset.toml"
@@ -345,7 +345,7 @@ class GovernanceTests(unittest.TestCase):
         )
 
     def test_schema_12_materializes_rules_into_their_owning_layers(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             target = (Path(raw) / "layered-adopter").resolve()
             self._make_layered_project(target)
             registry_path = materialize_governance(ROOT, target)
@@ -372,7 +372,7 @@ class GovernanceTests(unittest.TestCase):
             self.assertEqual(validate_governance(target), [])
 
     def test_layered_source_templates_are_resolved_across_all_roots(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             source = (Path(raw) / "layered-framework").resolve()
             target = (Path(raw) / "layered-adopter").resolve()
             self._make_layered_project(source)

@@ -3,7 +3,7 @@
 ## Authority and lifecycle
 
 The DSET runtime adapter owns one immutable JSON record per invocation under
-ignored `.dset/runtime/runs/`. The filename is
+ignored `.dset_runtime/runs/`. The filename is
 `<UTC-basic-time>-<random-run-id>.json`; creation must be atomic and must not
 overwrite another record. A started record has `status: running`. Normal exit
 atomically replaces only that run's temporary file with a terminal
@@ -71,14 +71,14 @@ that same prefix; it never authorizes an ambient executable, a different Python
 runtime, or a shell-dependent fallback.
 
 The runtime atomically maintains one replaceable checkpoint per session under
-ignored `.dset/runtime/sessions/<session-id>.json`. A checkpoint contains the same
+ignored `.dset_runtime/sessions/<session-id>.json`. A checkpoint contains the same
 bounded `llm_session_ids`, a bounded objective summary, current
 project/package/Change and repository-or-Work-Area target, resolved ruleset,
 completed and pending stable IDs or artifact paths, authorization state, the
 last authoritative-state snapshot, and the next recommended handoff. It must
 not contain full prompts, source content, arbitrary tool output, credentials,
 or an unbounded conversation summary. Immutable invocation evidence remains in
-`.dset/runtime/runs/`; the checkpoint is only a recovery index over those runs and the
+`.dset_runtime/runs/`; the checkpoint is only a recovery index over those runs and the
 repository's authoritative artifacts.
 
 The checkpoint also carries a bounded `active_run_ids` stack. Starting a child

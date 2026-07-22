@@ -3,7 +3,6 @@ from __future__ import annotations
 import copy
 import json
 import subprocess
-import tempfile
 import unittest
 from pathlib import Path
 from typing import Any, cast
@@ -15,6 +14,7 @@ from dset_toolchain.enforcement_profiles import (
     validate_profile_data,
     validate_profile_file,
 )
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.yaml_subset import dump
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -108,7 +108,7 @@ class EnforcementProfileTests(unittest.TestCase):
                 self.assertIn(expected.lower(), rendered.lower())
 
     def test_target_inspection_is_read_only_and_detects_drift(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+        with temporary_directory() as raw:
             target = Path(raw).resolve()
             profile = copy.deepcopy(self.profile)
             scripts = cast(dict[str, str], profile["toolchain"]["scripts"])
@@ -183,7 +183,7 @@ class EnforcementProfileTests(unittest.TestCase):
         self.assertEqual(resolve_profile_path(ROOT, "typescript-v1-candidate"), PROFILE)
 
     def test_adopter_cannot_execute_a_framework_reference_as_local_truth(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+        with temporary_directory() as raw:
             target = Path(raw).resolve()
             meta = target / "dset/scopes/meta"
             template = (

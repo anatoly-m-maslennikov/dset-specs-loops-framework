@@ -3,7 +3,6 @@ from __future__ import annotations
 import contextlib
 import io
 import json
-import tempfile
 import unittest
 from pathlib import Path
 from typing import Any, cast
@@ -16,6 +15,7 @@ from dset_toolchain.release import (
     plan_release,
     prepare_release,
 )
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.yaml_subset import dump, load
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class ReleaseIntegrationTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.temporary = tempfile.TemporaryDirectory()
+        self.temporary = temporary_directory()
         self.root = Path(self.temporary.name).resolve()
         self.change = self._write_project()
 

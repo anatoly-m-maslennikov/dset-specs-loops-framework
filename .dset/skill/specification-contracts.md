@@ -4,7 +4,7 @@
 
 `dset` is the primary operator entrypoint for lifecycle and next-step advice. Every stable lifecycle mode also has an explicit public direct-entry skill listed in [the skills hub](../../skills/README.md). Governed wrappers resolve registered project-local workflows; `dset-init` and `dset-repair-governance` are the only bounded pre-resolution exceptions. Runtime, host-distribution, and publication capability must still be claimed only when its separate proof passes.
 
-All governed target skills are thin wrappers over the repository governance registry. The registered `DSET-RULE-LIFECYCLE`, `DSET-RULE-SKILL-RUNS`, `DSET-RULE-RELEASE`, `DSET-RULE-DELEGATION-BUDGET`, and `DSET-RULE-WORK-ITEMS` documents own substantive behavior. Versioned bounded local run records under `.dset/runtime/runs/` are operational evidence only and are excluded from committed project truth.
+All governed target skills are thin wrappers over the repository governance registry. The registered `DSET-RULE-LIFECYCLE`, `DSET-RULE-SKILL-RUNS`, `DSET-RULE-RELEASE`, `DSET-RULE-DELEGATION-BUDGET`, and `DSET-RULE-WORK-ITEMS` documents own substantive behavior. Versioned bounded local run records under `.dset_runtime/runs/` are operational evidence only and are excluded from committed project truth.
 
 The distributed skill packages are project-agnostic. They do not ship one
 global project policy: every governed invocation discovers its target's owning

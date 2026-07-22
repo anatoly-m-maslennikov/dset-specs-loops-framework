@@ -207,8 +207,8 @@ tempCodeRunnerFile.py
 .ruff_cache/
 
 # DSET machine-local operational evidence
-.dset/runtime/*
-!.dset/runtime/.gitignore
+.dset_runtime/*
+!.dset_runtime/.gitignore
 
 # PyPI configuration file
 .pypirc

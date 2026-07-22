@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-import tempfile
 import unittest
 from pathlib import Path
 
 from dset_toolchain.frontmatter import parse as parse_frontmatter
 from dset_toolchain.frontmatter import render as render_frontmatter
 from dset_toolchain.layout import discover_layout
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.toml_codec import loads as load_toml
 from dset_toolchain.validation import _validate_markdown
 from dset_toolchain.yaml_subset import dump, load, loads
@@ -58,7 +58,7 @@ class YamlSubsetTests(unittest.TestCase):
         self.assertEqual(parse_frontmatter(rendered)[2], "toml")  # type: ignore[index]
 
     def test_toml_array_tables_in_frontmatter_are_not_wiki_links(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             document = root / "dset" / "record.md"
             document.parent.mkdir()

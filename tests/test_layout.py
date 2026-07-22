@@ -2,17 +2,17 @@ from __future__ import annotations
 
 import json
 import os
-import tempfile
 import unittest
 from pathlib import Path, PureWindowsPath
 
 from dset_toolchain.layout import LAYERS, _canonical_relative, discover_layout
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.yaml_subset import dump
 
 
 class RepositoryLayoutTest(unittest.TestCase):
     def test_slim_layout_uses_one_config_and_direct_owners(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             dset = root / ".dset"
             for layer in LAYERS:
@@ -43,7 +43,7 @@ class RepositoryLayoutTest(unittest.TestCase):
                 discover_layout(root)
 
     def test_legacy_layout_preserves_central_paths(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             dset = root / "dset"
             dset.mkdir()
@@ -72,7 +72,7 @@ class RepositoryLayoutTest(unittest.TestCase):
             self.assertEqual(layout.archive_change_roots, (dset / "changes/archive",))
 
     def test_layered_layout_discovers_owned_and_distributed_paths(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             scopes = root / "dset" / "scopes"
             for layer in LAYERS:
@@ -133,7 +133,7 @@ class RepositoryLayoutTest(unittest.TestCase):
             self.assertEqual(layout.package_fragments(), (package,))
 
     def test_layout_conflicts_and_unsafe_paths_fail_closed(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             dset = root / "dset"
             (dset / "scopes" / "meta").mkdir(parents=True)
@@ -143,7 +143,7 @@ class RepositoryLayoutTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "layout conflict"):
                 discover_layout(root)
 
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             scopes = root / "dset" / "scopes"
             for layer in LAYERS:
@@ -155,7 +155,7 @@ class RepositoryLayoutTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "authorities coexist"):
                 discover_layout(root)
 
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             dset = root / "dset"
             dset.mkdir()
@@ -171,7 +171,7 @@ class RepositoryLayoutTest(unittest.TestCase):
                     layout.resolve_dset_path(unsafe)
 
     def test_archived_change_lookup_uses_manifest_identity(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             dset = root / "dset"
             archive = dset / "changes" / "archive"
@@ -193,7 +193,7 @@ class RepositoryLayoutTest(unittest.TestCase):
             )
 
     def test_distributed_schema_names_are_unique(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             scopes = root / "dset" / "scopes"
             for layer in LAYERS:
@@ -219,7 +219,7 @@ class RepositoryLayoutTest(unittest.TestCase):
 
     @unittest.skipIf(os.name == "nt", "directory symlink creation is not portable")
     def test_layout_returns_canonical_identity_for_directory_alias(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             target = Path(raw).resolve()
             alias = target.parent / f"{target.name}-alias"
             alias.symlink_to(target, target_is_directory=True)

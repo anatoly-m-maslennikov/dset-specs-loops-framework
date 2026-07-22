@@ -74,8 +74,8 @@ class SessionContractTests(unittest.TestCase):
 
     def test_session_state_is_ignored_machine_local_evidence(self) -> None:
         ignored = (ROOT / ".gitignore").read_text(encoding="utf-8").splitlines()
-        self.assertIn(".dset/runtime/*", ignored)
-        self.assertIn("!.dset/runtime/.gitignore", ignored)
+        self.assertIn(".dset_runtime/*", ignored)
+        self.assertIn("!.dset_runtime/.gitignore", ignored)
 
 
 if __name__ == "__main__":

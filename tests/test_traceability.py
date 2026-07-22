@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 import shutil
-import tempfile
 import unittest
 from pathlib import Path
 from typing import Any, cast
 
 from dset_toolchain.layout import discover_layout
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.traceability import (
     build_traceability,
     trace_is_fresh,
@@ -103,9 +103,9 @@ class TraceabilityTests(unittest.TestCase):
         self.assertEqual(
             {item["through"] for item in projection_ranges},
             {
-                "DSET-ATOMIC-RECORD-104",
-                "DSET-ATOMIC-RECORD-105",
-                "DSET-ATOMIC-RECORD-106",
+                "DSET-ATOMIC-RECORD-107",
+                "DSET-ATOMIC-RECORD-108",
+                "DSET-ATOMIC-RECORD-109",
                 "DSET-ATOMIC-RECORD-078",
                 "DSET-ATOMIC-RECORD-079",
                 "DSET-ATOMIC-RECORD-080",
@@ -141,7 +141,7 @@ class TraceabilityTests(unittest.TestCase):
         self.assertTrue(classifications["DSET-OPPORTUNITY-GOV-001"]["compatibility"])
 
     def test_write_is_stable_and_checkable(self) -> None:
-        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as raw:
+        with temporary_directory() as raw:
             target = Path(raw).resolve()
             shutil.copytree(
                 ROOT / ".dset",

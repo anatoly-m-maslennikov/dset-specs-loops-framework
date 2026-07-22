@@ -3,7 +3,6 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
-import tempfile
 import unittest
 from pathlib import Path, PurePosixPath
 from typing import Any
@@ -11,6 +10,7 @@ from typing import Any
 from dset_toolchain.frontmatter import metadata as frontmatter_metadata
 from dset_toolchain.frontmatter import render as render_frontmatter
 from dset_toolchain.layout import discover_layout
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.validation import (
     ARTIFACT_TYPE_SUBTYPES,
     validate_artifact_type_registry,
@@ -38,7 +38,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
         self.assertNotEqual(self.registry, template)
         for key in set(template) - {"legacy_structured"}:
             self.assertEqual(self.registry[key], template[key])
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             self.assertEqual(
                 validate_artifact_type_registry(Path(raw), TEMPLATE_PATH, template),
                 [],
@@ -58,7 +58,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
     def test_legacy_structured_registry_fails_missing_owner_and_unregistered_pair(
         self,
     ) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             registry_path = root / "dset/gov/artifact-types.yaml"
             snapshot = root / "dset/gov/items.yaml"
@@ -150,6 +150,9 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
             for template_root in LAYOUT.template_roots
             for path in template_root.rglob("*")
             if path.is_file()
+            and not any(
+                part.startswith(".") for part in path.relative_to(template_root).parts
+            )
         )
         self.assertTrue(template_files)
         for path in template_files:
@@ -212,7 +215,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
                 "artifact_subtype": "behavior",
             }
         )
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             path = root / "dset/sample/spec.md"
             path.parent.mkdir(parents=True)
@@ -223,7 +226,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
         )
 
     def test_direct_metadata_subtype_mismatch_is_rejected(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             path = root / "APP-SPECIFICATION-001-example.md"
             path.write_text(
@@ -248,7 +251,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
         )
 
     def test_git_ignored_runtime_artifacts_are_outside_classification(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             (root / ".gitignore").write_text("tmp/\n", encoding="utf-8")
             ignored = root / "tmp/APP-SPECIFICATION-001-runtime.md"
@@ -270,7 +273,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
             self.assertEqual(diagnostics, [])
 
     def test_unclassified_carrier_fails_closed_and_exclusion_is_explicit(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             path = root / "notes.md"
             path.write_text("# Notes\n", encoding="utf-8")
@@ -324,7 +327,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
         self.assertTrue(all(not any(char in path for char in "*?[]") for path in paths))
 
     def test_type_only_names_are_default_and_subtype_names_are_opt_in(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             base = root / "APP-VERSION-001-core.md"
             self._write_classified(base, "APP-VERSION-001")

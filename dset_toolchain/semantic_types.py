@@ -164,8 +164,14 @@ def _collect(
 
     for path in sorted(root.rglob("*.md")):
         relative = path.relative_to(root)
-        if relative.parts[:2] == (".dset", "runtime") or any(
-            part in IGNORED_PARTS for part in relative.parts
+        if (
+            relative.parts[:1] == (".dset_runtime",)
+            or relative.parts[:2]
+            == (
+                ".dset",
+                "runtime",
+            )
+            or any(part in IGNORED_PARTS for part in relative.parts)
         ):
             continue
         metadata = _frontmatter(path)
@@ -207,8 +213,14 @@ def _collect(
 
     for path in discover_layout(root).structured_named_files(root, "package"):
         relative = path.relative_to(root)
-        if relative.parts[:2] == (".dset", "runtime") or any(
-            part in IGNORED_PARTS for part in relative.parts
+        if (
+            relative.parts[:1] == (".dset_runtime",)
+            or relative.parts[:2]
+            == (
+                ".dset",
+                "runtime",
+            )
+            or any(part in IGNORED_PARTS for part in relative.parts)
         ):
             continue
         data = _safe_load(path, diagnostics)

@@ -4,7 +4,6 @@ import contextlib
 import io
 import json
 import shutil
-import tempfile
 import unittest
 from pathlib import Path
 from typing import Any, cast
@@ -24,6 +23,7 @@ from dset_toolchain.runtime_bridge import (
 )
 from dset_toolchain.skill_catalog import PUBLIC_SKILL_WORKFLOWS
 from dset_toolchain.skill_context import resolve_skill_context
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.yaml_subset import dump
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -31,7 +31,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class RuntimeBridgeTests(unittest.TestCase):
     def test_host_bridge_spans_process_shaped_calls(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             adopter = (Path(raw) / "adopter ünicode").resolve()
             create_adopter(ROOT, adopter)
             started = start_runtime(
@@ -70,9 +70,7 @@ class RuntimeBridgeTests(unittest.TestCase):
     def test_cli_handoff_preserves_explicit_session_until_terminal_finish(
         self,
     ) -> None:
-        with tempfile.TemporaryDirectory(
-            dir=ROOT.parent, ignore_cleanup_errors=True
-        ) as raw:
+        with temporary_directory() as raw:
             adopter = (Path(raw) / "adopter").resolve()
             create_adopter(ROOT, adopter)
             primary = resolve_skill_context(
@@ -154,7 +152,7 @@ class RuntimeBridgeTests(unittest.TestCase):
                 )
 
     def test_bridge_rejects_unknown_workflow_before_run_creation(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             adopter = (Path(raw) / "adopter").resolve()
             create_adopter(ROOT, adopter)
             with self.assertRaises(ValueError):
@@ -167,7 +165,7 @@ class RuntimeBridgeTests(unittest.TestCase):
             self.assertFalse((adopter / ".dset" / "runs").exists())
 
     def test_public_skill_requires_llm_session_provenance(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             adopter = (Path(raw) / "adopter").resolve()
             create_adopter(ROOT, adopter)
             with self.assertRaisesRegex(ValueError, "host-session provenance"):
@@ -180,9 +178,7 @@ class RuntimeBridgeTests(unittest.TestCase):
             self.assertFalse((adopter / ".dset" / "runs").exists())
 
     def test_bridge_accepts_every_catalog_entry_and_rejects_mismatches(self) -> None:
-        with tempfile.TemporaryDirectory(
-            dir=ROOT.parent, ignore_cleanup_errors=True
-        ) as raw:
+        with temporary_directory() as raw:
             adopter = (Path(raw) / "adopter").resolve()
             shutil.copytree(
                 ROOT / ".dset",
@@ -212,7 +208,7 @@ class RuntimeBridgeTests(unittest.TestCase):
                 )
 
     def test_context_resolves_explicit_nested_work_area_target(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+        with temporary_directory() as raw:
             adopter = (Path(raw) / "adopter").resolve()
             shutil.copytree(
                 ROOT / ".dset",
@@ -254,7 +250,7 @@ class RuntimeBridgeTests(unittest.TestCase):
     def test_context_applies_strict_implementation_mode_without_prerequisites(
         self,
     ) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+        with temporary_directory() as raw:
             adopter = (Path(raw) / "adopter").resolve()
             create_adopter(ROOT, adopter)
             settings = adopter / "dset_settings.toml"
@@ -295,7 +291,7 @@ class RuntimeBridgeTests(unittest.TestCase):
             finish_runtime(adopter, str(run["run_id"]), status="stopped")
 
     def test_context_returns_rootless_initialization_without_writing(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+        with temporary_directory() as raw:
             target = (Path(raw) / "new-project").resolve()
             context = resolve_skill_context(
                 target,
@@ -307,7 +303,7 @@ class RuntimeBridgeTests(unittest.TestCase):
             self.assertFalse(target.exists())
 
     def test_repair_context_is_bounded_to_governance_diagnostics(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+        with temporary_directory() as raw:
             adopter = (Path(raw) / "adopter").resolve()
             create_adopter(ROOT, adopter)
             settings = adopter / "dset_settings.toml"
@@ -330,7 +326,7 @@ class RuntimeBridgeTests(unittest.TestCase):
             self.assertTrue(context["diagnostics"])
 
     def test_context_rejects_competing_project_roots(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+        with temporary_directory() as raw:
             outer = (Path(raw) / "outer").resolve()
             shutil.copytree(
                 ROOT / ".dset",
@@ -351,7 +347,7 @@ class RuntimeBridgeTests(unittest.TestCase):
                 )
 
     def test_child_runs_advance_one_persisted_implementation_closure(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+        with temporary_directory() as raw:
             adopter = (Path(raw) / "adopter").resolve()
             create_adopter(ROOT, adopter)
             started = start_runtime(

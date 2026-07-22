@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import tempfile
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
@@ -16,6 +15,7 @@ from dset_toolchain.health import (
     write_health,
 )
 from dset_toolchain.layout import discover_layout
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.yaml_subset import dump, load
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class ProjectHealthTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.temporary = tempfile.TemporaryDirectory(dir=ROOT.parent)
+        self.temporary = temporary_directory()
         self.root = create_adopter(ROOT, Path(self.temporary.name) / "adopter")
 
     def tearDown(self) -> None:
@@ -58,7 +58,7 @@ class ProjectHealthTests(unittest.TestCase):
         self.assertTrue(health_is_fresh(self.root))
 
     def test_source_digest_uses_case_sensitive_posix_path_order(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             (root / "a.txt").write_text("lower\n", encoding="utf-8")
             (root / "Z.txt").write_text("upper\n", encoding="utf-8")

@@ -3,11 +3,11 @@ from __future__ import annotations
 import contextlib
 import io
 import subprocess
-import tempfile
 import unittest
 from pathlib import Path
 
 from dset_toolchain.cli import main
+from dset_toolchain.temp_paths import temporary_directory
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -57,7 +57,7 @@ class CrossPlatformContractTests(unittest.TestCase):
         self.assertIn("shell: wsl.exe bash -e {0}", workflow)
 
     def test_cli_handles_spaces_and_unicode_without_shell_assumptions(self) -> None:
-        with tempfile.TemporaryDirectory(prefix="dset portability ") as raw:
+        with temporary_directory(prefix="dset portability ") as raw:
             target = (Path(raw) / "project ünicode").resolve()
             target.mkdir()
             output = io.StringIO()

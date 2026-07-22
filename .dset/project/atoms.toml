@@ -1147,3 +1147,27 @@ path = ".dset/gov/qa/DSET-EVALUATION-GOV-031-hidden-layout-interpretability.md"
 sha256 = "c7c507455dd8378c8217bfea086b4c34d2cf54d60e6325aac4b459458634ba70"
 type = "qa"
 subtype = "evaluation"
+
+[[records]]
+semantic_id = "DSET-REQUIREMENT-GOV-043"
+carrier_id = "DSET-ATOMIC-RECORD-107"
+path = ".dset/gov/decision/DSET-REQUIREMENT-GOV-043-control-runtime-and-scratch-boundaries.md"
+sha256 = "9248fd6a313f5c2df345bfc53f89a565662715bf68301e67645982fb083fb999"
+type = "decision"
+subtype = "requirement"
+
+[[records]]
+semantic_id = "DSET-TEST-GOV-048"
+carrier_id = "DSET-ATOMIC-RECORD-108"
+path = ".dset/gov/qa/DSET-TEST-GOV-048-control-runtime-and-scratch-boundaries-test.md"
+sha256 = "6be90133120e50eb16c7c6edad3ea2e8aa0ffe2dc602efbee90a4153cb96f0a7"
+type = "qa"
+subtype = "test"
+
+[[records]]
+semantic_id = "DSET-EVALUATION-GOV-032"
+carrier_id = "DSET-ATOMIC-RECORD-109"
+path = ".dset/gov/qa/DSET-EVALUATION-GOV-032-runtime-boundary-interpretability.md"
+sha256 = "d0952956441295a36bf62c04e84518718413dc1434a6d13279d33d1e649161d7"
+type = "qa"
+subtype = "evaluation"

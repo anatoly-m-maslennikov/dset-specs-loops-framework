@@ -861,7 +861,7 @@ forward semantic immutability, append-only lifecycle, explicit acyclic
 replacement and absorption, role-before-priority conflict handling, universal
 priority, retirement, and stable lookup.
 
-## DSET-REQUIREMENT-GOV-042 — Use the hidden project control root
+## DSET-REQUIREMENT-GOV-043 — Separate control, runtime, and scratch state
 
 A current DSET project has one writable settings and project-manifest carrier
 at `.dset/dset_settings.toml`. Project-wide evergreen artifacts, records,
@@ -869,8 +869,12 @@ registries, migrations, evidence, verification, and generated views live under
 `.dset/project/`; Version lifecycle artifacts, Changes, archives, and delivery
 history live under `.dset/versions/`; and layer-owned truth lives directly under
 `.dset/meta/`, `.dset/gov/`, `.dset/tool/`, `.dset/skill/`, and `.dset/ops/`.
-Replaceable run, session, cache, and migration-backup state lives under the
-ignored `.dset/runtime/` boundary and cannot become project authority.
+Resumable run, session, cache, readiness, and migration-recovery state lives
+under the ignored sibling `.dset_runtime/` root and cannot become project
+authority. Disposable DSET scratch and test workspaces live under `/tmp` on
+POSIX, or the native operating-system temporary root on Windows, and must be
+deleted when their operation exits. Ambient POSIX temporary-directory
+variables cannot redirect them into the repository.
 
 Persisted DSET paths in settings, registries, manifests, relations, reports,
 and generated artifacts are relative to the repository root. Markdown links
@@ -882,5 +886,7 @@ Schema 1.0–1.2 layouts and root settings are migration inputs only. New
 initialization emits schema 1.3 directly. Migration must preserve semantic IDs,
 immutable carrier bytes, source Git return addresses, and registered relocation
 chains while rewriting mutable references and generated views to current
-paths. Competing current and legacy configuration carriers fail closed. This
-Requirement replaces `DSET-REQUIREMENT-GOV-041`.
+paths. Competing current and legacy configuration carriers fail closed.
+Same-directory staging needed for atomic publication is bounded to its
+transaction and must be replaced or removed before return. This Requirement
+replaces `DSET-REQUIREMENT-GOV-042`.

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import subprocess
-import tempfile
 import unittest
 from pathlib import Path
 from typing import Any
@@ -14,13 +13,14 @@ from dset_toolchain.lineage import (
     collect_artifact_relations,
     validate_artifact_relations,
 )
+from dset_toolchain.temp_paths import temporary_directory
 
 
 class ArtifactRelationTests(unittest.TestCase):
     def test_all_canonical_forward_relations_are_indexed_without_inverses(
         self,
     ) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             self._artifact(root, "TARGET", "APP-DECISION-GOV-001")
             sources = {
@@ -69,7 +69,7 @@ class ArtifactRelationTests(unittest.TestCase):
             "unknown": ("APP-ATOMIC-RECORD-999", "must name an atom carrier"),
         }
         for name, (through, expected) in cases.items():
-            with self.subTest(name=name), tempfile.TemporaryDirectory() as raw:
+            with self.subTest(name=name), temporary_directory() as raw:
                 root = Path(raw).resolve()
                 self._atom(root, 1, "APP-DECISION-GOV-001")
                 self._atom(root, 2, "APP-DECISION-GOV-002")
@@ -108,7 +108,7 @@ class ArtifactRelationTests(unittest.TestCase):
             ),
         }
         for name, (extra, expected) in cases.items():
-            with self.subTest(name=name), tempfile.TemporaryDirectory() as raw:
+            with self.subTest(name=name), temporary_directory() as raw:
                 root = Path(raw).resolve()
                 self._artifact(root, "TARGET", "APP-DECISION-001")
                 self._artifact(root, "SOURCE", "APP-DECISION-002", extra=extra)
@@ -116,7 +116,7 @@ class ArtifactRelationTests(unittest.TestCase):
                 self.assertTrue(any(expected in item for item in messages), messages)
 
     def test_self_relations_and_structural_cycles_fail_closed(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             self._artifact(
                 root,
@@ -143,7 +143,7 @@ class ArtifactRelationTests(unittest.TestCase):
             self.assertTrue(any("relation cycle" in item for item in messages))
 
     def test_replacement_requires_matching_absorption(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             self._artifact(root, "OLD", "APP-DECISION-001")
             self._artifact(
@@ -160,7 +160,7 @@ class ArtifactRelationTests(unittest.TestCase):
             )
 
     def test_inactive_legacy_child_of_remains_readable(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             self._artifact(
                 root,
@@ -195,7 +195,7 @@ class ArtifactRelationTests(unittest.TestCase):
     def test_generated_only_commits_do_not_form_implementation_relations(
         self,
     ) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             self._git(root, "init")
             self._git(root, "config", "user.name", "DSET Test")

@@ -739,7 +739,10 @@ def _valid_sessions(value: object) -> bool:
 
 
 def _ignored(relative: Path) -> bool:
-    if relative.parts[:2] == (".dset", "runtime"):
+    if relative.parts[:1] == (".dset_runtime",) or relative.parts[:2] == (
+        ".dset",
+        "runtime",
+    ):
         return True
     ignored = {".git", ".cache", ".venv", "__pycache__", "dist"}
     return any(

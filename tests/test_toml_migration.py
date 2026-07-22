@@ -4,7 +4,6 @@ import hashlib
 import json
 import shutil
 import subprocess
-import tempfile
 import unittest
 from contextlib import redirect_stdout
 from io import StringIO
@@ -17,6 +16,7 @@ import dset_toolchain.validation as validation
 from dset_toolchain.cli import main
 from dset_toolchain.layout import RepositoryLayout
 from dset_toolchain.lineage import validate_artifact_relations
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.toml_codec import loads as load_toml
 from dset_toolchain.toml_migration import (
     MigrationPlan,
@@ -32,7 +32,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class TomlMigrationTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.temporary = tempfile.TemporaryDirectory(dir=ROOT.parent)
+        self.temporary = temporary_directory()
         self.root = (Path(self.temporary.name) / "fixture").resolve()
         self.root.mkdir()
 
@@ -48,8 +48,8 @@ class TomlMigrationTests(unittest.TestCase):
     def initialize_git_fixture(self) -> None:
         self.write(
             ".gitignore",
-            ".dset/runtime/toml-migration-runtime-readiness.json\n"
-            ".dset/runtime/toml-migration-backups/\n",
+            ".dset_runtime/toml-migration-runtime-readiness.json\n"
+            ".dset_runtime/toml-migration-backups/\n",
         )
         initialize_exact_git_repository(self.root)
         self.commit_git_fixture("fixture")
@@ -98,7 +98,7 @@ class TomlMigrationTests(unittest.TestCase):
             preview.package_successors,
         )
         self.write(
-            ".dset/runtime/toml-migration-runtime-readiness.json",
+            ".dset_runtime/toml-migration-runtime-readiness.json",
             json.dumps(
                 {
                     "targets": targets,
@@ -277,7 +277,7 @@ class TomlMigrationTests(unittest.TestCase):
         applied = apply_toml_migration(self.root)
 
         self.assertTrue(preview.ready)
-        recovery = self.root / ".dset/runtime/toml-migration-backups" / applied.digest
+        recovery = self.root / ".dset_runtime/toml-migration-backups" / applied.digest
         self.assertTrue((recovery / "manifest.json").is_file())
         visible = {
             path.relative_to(self.root).as_posix()
@@ -287,7 +287,7 @@ class TomlMigrationTests(unittest.TestCase):
         self.assertNotIn("dset/scopes/gov/items.yaml", visible)
         self.assertFalse(
             any(
-                path.startswith(".dset/runtime/toml-migration-backups/")
+                path.startswith(".dset_runtime/toml-migration-backups/")
                 for path in visible
             )
         )
@@ -313,7 +313,7 @@ class TomlMigrationTests(unittest.TestCase):
         self.add_minimal_runtime_gate()
         self.initialize_git_fixture()
         self.write_current_runtime_readiness()
-        recovery_root = self.root / ".dset/runtime/toml-migration-backups"
+        recovery_root = self.root / ".dset_runtime/toml-migration-backups"
 
         with (
             patch(
@@ -543,7 +543,7 @@ class TomlMigrationTests(unittest.TestCase):
             "def render_bundle(root):\n    return '{}\\n'\n",
         )
         evidence_path = (
-            self.root / ".dset/runtime/toml-migration-runtime-readiness.json"
+            self.root / ".dset_runtime/toml-migration-runtime-readiness.json"
         )
 
         for evidence in (None, {"targets": {"stale": "digest"}}):
@@ -552,7 +552,7 @@ class TomlMigrationTests(unittest.TestCase):
                     evidence_path.unlink(missing_ok=True)
                 else:
                     self.write(
-                        ".dset/runtime/toml-migration-runtime-readiness.json",
+                        ".dset_runtime/toml-migration-runtime-readiness.json",
                         json.dumps(evidence),
                     )
                 before = subprocess.run(
@@ -691,7 +691,7 @@ class TomlMigrationTests(unittest.TestCase):
         )
 
         self.temporary.cleanup()
-        self.temporary = tempfile.TemporaryDirectory(dir=ROOT.parent)
+        self.temporary = temporary_directory()
         self.root = (Path(self.temporary.name) / "fixture").resolve()
         self.root.mkdir()
         package = self.selector_sealed_package_fixture()
@@ -732,7 +732,7 @@ class TomlMigrationTests(unittest.TestCase):
             ),
         }
         evidence_path = self.write(
-            ".dset/runtime/toml-migration-runtime-readiness.json",
+            ".dset_runtime/toml-migration-runtime-readiness.json",
             json.dumps(evidence),
         )
 
@@ -869,7 +869,7 @@ class TomlMigrationTests(unittest.TestCase):
             "target collision dset/scopes/gov/record.toml", collision.blockers[0]
         )
 
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+        with temporary_directory() as raw:
             unsupported_root = Path(raw).resolve()
             path = unsupported_root / "dset/scopes/gov/value.yaml"
             path.parent.mkdir(parents=True)
@@ -952,7 +952,7 @@ class TomlMigrationTests(unittest.TestCase):
             self.root, list(refreshed.entries), list(refreshed.references)
         )
         self.write(
-            ".dset/runtime/toml-migration-runtime-readiness.json",
+            ".dset_runtime/toml-migration-runtime-readiness.json",
             json.dumps(
                 {
                     "targets": targets,
@@ -1037,7 +1037,7 @@ class TomlMigrationTests(unittest.TestCase):
         self.assertFalse(source.with_suffix(".toml").exists())
         stored = json.loads(
             (
-                self.root / ".dset/runtime/toml-migration-runtime-readiness.json"
+                self.root / ".dset_runtime/toml-migration-runtime-readiness.json"
             ).read_text(encoding="utf-8")
         )
         self.assertEqual(stored["targets"], evidence["targets"])

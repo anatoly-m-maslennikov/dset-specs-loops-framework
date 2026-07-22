@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import tempfile
 import unittest
 from pathlib import Path
 
@@ -21,6 +20,7 @@ from dset_toolchain.semantic_atoms import (
     validate_semantic_atoms,
 )
 from dset_toolchain.semantic_types import build_semantic_classification_index
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.yaml_subset import dump, load
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,7 +28,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class SemanticAtomTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.temporary = tempfile.TemporaryDirectory(dir=ROOT.parent)
+        self.temporary = temporary_directory()
         self.root = create_adopter(ROOT, Path(self.temporary.name) / "adopter")
         self.atom_path = (
             self.root / "dset/changes/DSET-ATOMIC-RECORD-001-output-contract.md"
@@ -72,7 +72,7 @@ class SemanticAtomTests(unittest.TestCase):
     def test_legacy_ledger_keeps_historical_yaml_identity_after_toml_cutover(
         self,
     ) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             governance = root / "dset/governance"
             package_root = root / "dset/specs/packages/sample"

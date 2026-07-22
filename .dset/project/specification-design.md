@@ -26,7 +26,7 @@ evidence boundaries; Decisions remain separate records of choices and rationale.
 | Hosted PR/check state | GitHub | GitHub workflows/rulesets | Live query | Delivery runbook |
 | Protected delivery proof | GitHub workflow artifact, run/check identity, actual PR SHA, target ruleset | GitHub and protected integration | Every release PR head | Hosted run/check and protected-branch acceptance or block evidence |
 | Product/package release identity | Change release declaration; `.dset/versions/version.toml` and package metadata are mirrors | Reviewed integration-to-protected release PR | Exactly once per accepted PR | Version transition and surface-consistency tests |
-| Local skill-run evidence | Ignored `.dset/runtime/runs/` records | Invoked skill/runtime | Every run; bounded retention | Schema/redaction tests and authoritative-state comparison |
+| Local skill-run evidence | Ignored `.dset_runtime/runs/` records | Invoked skill/runtime | Every run; bounded retention | Schema/redaction tests and authoritative-state comparison |
 | Immutable published release | Configured protected merge commit, tag, and publisher release | Post-merge automation | Successful release PR merge | Tag/commit/release identity check and recovery runbook |
 | Delegation budget | Resolved project orchestration/budget rule plus current main-session configuration | Orchestrator; explicit operator override | Before each delegation batch | Plan/actual run records and task-relevant evals |
 
@@ -67,7 +67,7 @@ No adopter application runtime or production data is changed. The CLI reads repo
   for Codex, render its exact package-local launcher into each installed
   wrapper, and keep skill folders limited to thin outcome wrappers.
 - Keep `dset` as the catch-all entrypoint and expose one thin direct wrapper for every stable lifecycle mode; do not claim the expanded source, distribution, or host surface before its separate implementation proof.
-- Store bounded skill-run evidence under ignored `.dset/runtime/runs/`; never let heuristics override accepted artifacts, Git history, or hosted state.
+- Store bounded skill-run evidence under ignored `.dset_runtime/runs/`; never let heuristics override accepted artifacts, Git history, or hosted state.
 - Use the complete bootstrap/pre-1.0/RC/final/post-1.0 transition table and never derive 1.0 by decimal arithmetic.
 - Treat the change release declaration as the single pre-merge owner; publish/retry immutable tag/release objects idempotently from the protected merge commit.
 - Inherit the main model and reasoning effort for subagents by default; use a medium two-or-three-agent fan-out only when the task benefits and runtime capacity permits.

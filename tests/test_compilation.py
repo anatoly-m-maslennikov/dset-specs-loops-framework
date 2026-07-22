@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import shutil
-import tempfile
 import unittest
 from pathlib import Path
 
@@ -13,13 +12,14 @@ from dset_toolchain.compilation import (
     compilation_path,
     write_compilation,
 )
+from dset_toolchain.temp_paths import temporary_directory
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class CompilationTests(unittest.TestCase):
     def test_loose_id_mentions_are_not_compiled_claim_fragments(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             path = (Path(raw) / "spec.md").resolve()
             path.write_text(
                 "A loose mention of DSET-REQUIREMENT-GOV-035 is not a claim.\n",
@@ -47,7 +47,7 @@ class CompilationTests(unittest.TestCase):
         self.assertTrue(all(item["projections"] for item in records.values()))
 
     def test_projection_change_makes_explicit_compilation_stale(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             shutil.copytree(ROOT / ".dset", root / ".dset")
             write_compilation(root)

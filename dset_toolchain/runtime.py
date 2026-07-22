@@ -262,7 +262,7 @@ def start_run(
     _require_id(selected_root_run)
     _require_nullable_id(selected_parent_run)
     checkpoint_relative = (
-        f".dset/runtime/sessions/{selected_session_id}.json"
+        f".dset_runtime/sessions/{selected_session_id}.json"
         if storage is not None
         else None
     )
@@ -629,8 +629,8 @@ def _storage_for_root(root: Path | None) -> _Storage | None:
         return None
     assert root is not None
     resolved = root.resolve()
-    runs = resolved / ".dset" / "runtime" / "runs"
-    sessions = resolved / ".dset" / "runtime" / "sessions"
+    runs = resolved / ".dset_runtime" / "runs"
+    sessions = resolved / ".dset_runtime" / "sessions"
     try:
         runs.mkdir(parents=True, exist_ok=True)
         sessions.mkdir(parents=True, exist_ok=True)
@@ -644,8 +644,8 @@ def _existing_storage(root: Path | None) -> _Storage | None:
         return None
     assert root is not None
     resolved = root.resolve()
-    runs = resolved / ".dset" / "runtime" / "runs"
-    sessions = resolved / ".dset" / "runtime" / "sessions"
+    runs = resolved / ".dset_runtime" / "runs"
+    sessions = resolved / ".dset_runtime" / "sessions"
     if not sessions.is_dir():
         return None
     return _Storage(resolved, runs, sessions)

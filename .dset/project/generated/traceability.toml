@@ -1364,8 +1364,18 @@ id = "DSET-EVALUATION-GOV-031"
 type = "qa"
 subtype = "evaluation"
 compatibility = false
+origins = ["modern_atom"]
+carriers = [".dset/gov/qa/DSET-EVALUATION-GOV-031-hidden-layout-interpretability.md"]
+carrier_statuses = ["accepted"]
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-080"]
+
+[[semantic_classifications]]
+id = "DSET-EVALUATION-GOV-032"
+type = "qa"
+subtype = "evaluation"
+compatibility = false
 origins = ["modern_atom", "package:evals"]
-carriers = [".dset/gov/package.toml", ".dset/gov/qa/DSET-EVALUATION-GOV-031-hidden-layout-interpretability.md"]
+carriers = [".dset/gov/package.toml", ".dset/gov/qa/DSET-EVALUATION-GOV-032-runtime-boundary-interpretability.md"]
 carrier_statuses = ["accepted", "defined"]
 lifecycle_events = []
 
@@ -2214,8 +2224,18 @@ id = "DSET-REQUIREMENT-GOV-042"
 type = "decision"
 subtype = "requirement"
 compatibility = false
+origins = ["modern_atom"]
+carriers = [".dset/gov/decision/DSET-REQUIREMENT-GOV-042-hidden-project-control-root.md"]
+carrier_statuses = ["accepted"]
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-078"]
+
+[[semantic_classifications]]
+id = "DSET-REQUIREMENT-GOV-043"
+type = "decision"
+subtype = "requirement"
+compatibility = false
 origins = ["modern_atom", "package:requirements"]
-carriers = [".dset/gov/decision/DSET-REQUIREMENT-GOV-042-hidden-project-control-root.md", ".dset/gov/package.toml"]
+carriers = [".dset/gov/decision/DSET-REQUIREMENT-GOV-043-control-runtime-and-scratch-boundaries.md", ".dset/gov/package.toml"]
 carrier_statuses = ["accepted", "defined"]
 lifecycle_events = []
 
@@ -3064,8 +3084,18 @@ id = "DSET-TEST-GOV-047"
 type = "qa"
 subtype = "test"
 compatibility = false
+origins = ["modern_atom"]
+carriers = [".dset/gov/qa/DSET-TEST-GOV-047-hidden-project-control-root-test.md"]
+carrier_statuses = ["accepted"]
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-079"]
+
+[[semantic_classifications]]
+id = "DSET-TEST-GOV-048"
+type = "qa"
+subtype = "test"
+compatibility = false
 origins = ["modern_atom", "package:tests"]
-carriers = [".dset/gov/package.toml", ".dset/gov/qa/DSET-TEST-GOV-047-hidden-project-control-root-test.md"]
+carriers = [".dset/gov/package.toml", ".dset/gov/qa/DSET-TEST-GOV-048-control-runtime-and-scratch-boundaries-test.md"]
 carrier_statuses = ["accepted", "defined"]
 lifecycle_events = []
 
@@ -4597,11 +4627,11 @@ sha256 = "c7c507455dd8378c8217bfea086b4c34d2cf54d60e6325aac4b459458634ba70"
 type = "qa"
 subtype = "evaluation"
 emission_status = "accepted"
-current_status = "accepted"
+current_status = "absorbed"
 priority = "medium"
 priority_source = "atom:DSET-EVALUATION-GOV-031"
-lifecycle_events = []
-absorbed_by = []
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-080"]
+absorbed_by = ["DSET-EVALUATION-GOV-032"]
 archived = false
 
 [[semantic_atoms.relations]]
@@ -4613,6 +4643,31 @@ target = "DSET-REQUIREMENT-GOV-042"
 type = "replacement_of"
 origin = "authored"
 target = "DSET-EVALUATION-GOV-030"
+
+[[semantic_atoms]]
+id = "DSET-EVALUATION-GOV-032"
+carrier_id = "DSET-ATOMIC-RECORD-109"
+path = ".dset/gov/qa/DSET-EVALUATION-GOV-032-runtime-boundary-interpretability.md"
+sha256 = "d0952956441295a36bf62c04e84518718413dc1434a6d13279d33d1e649161d7"
+type = "qa"
+subtype = "evaluation"
+emission_status = "accepted"
+current_status = "accepted"
+priority = "medium"
+priority_source = "atom:DSET-EVALUATION-GOV-032"
+lifecycle_events = []
+absorbed_by = []
+archived = false
+
+[[semantic_atoms.relations]]
+type = "check_of"
+origin = "authored"
+target = "DSET-REQUIREMENT-GOV-043"
+
+[[semantic_atoms.relations]]
+type = "replacement_of"
+origin = "authored"
+target = "DSET-EVALUATION-GOV-031"
 
 [[semantic_atoms]]
 id = "DSET-EVALUATION-SKILL-012"
@@ -5047,9 +5102,29 @@ sha256 = "522b01b67f3a74c556729f0c1364030e28ab4289f331b9a15bd5a917a6336067"
 type = "decision"
 subtype = "requirement"
 emission_status = "accepted"
-current_status = "accepted"
+current_status = "absorbed"
 priority = "critical"
 priority_source = "atom:DSET-REQUIREMENT-GOV-042"
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-078"]
+absorbed_by = ["DSET-REQUIREMENT-GOV-043"]
+archived = false
+
+[[semantic_atoms.relations]]
+type = "replacement_of"
+origin = "authored"
+target = "DSET-REQUIREMENT-GOV-041"
+
+[[semantic_atoms]]
+id = "DSET-REQUIREMENT-GOV-043"
+carrier_id = "DSET-ATOMIC-RECORD-107"
+path = ".dset/gov/decision/DSET-REQUIREMENT-GOV-043-control-runtime-and-scratch-boundaries.md"
+sha256 = "9248fd6a313f5c2df345bfc53f89a565662715bf68301e67645982fb083fb999"
+type = "decision"
+subtype = "requirement"
+emission_status = "accepted"
+current_status = "accepted"
+priority = "critical"
+priority_source = "atom:DSET-REQUIREMENT-GOV-043"
 lifecycle_events = []
 absorbed_by = []
 archived = false
@@ -5057,7 +5132,7 @@ archived = false
 [[semantic_atoms.relations]]
 type = "replacement_of"
 origin = "authored"
-target = "DSET-REQUIREMENT-GOV-041"
+target = "DSET-REQUIREMENT-GOV-042"
 
 [[semantic_atoms]]
 id = "DSET-REQUIREMENT-SKILL-010"
@@ -5459,11 +5534,11 @@ sha256 = "37745026e493eedd3bb801d763029dccc026f47611c2250b0b4dd159d6eb96c3"
 type = "qa"
 subtype = "test"
 emission_status = "accepted"
-current_status = "accepted"
+current_status = "absorbed"
 priority = "critical"
 priority_source = "atom:DSET-TEST-GOV-047"
-lifecycle_events = []
-absorbed_by = []
+lifecycle_events = ["DSET-LIFECYCLE-EVENT-079"]
+absorbed_by = ["DSET-TEST-GOV-048"]
 archived = false
 
 [[semantic_atoms.relations]]
@@ -5475,6 +5550,31 @@ target = "DSET-REQUIREMENT-GOV-042"
 type = "replacement_of"
 origin = "authored"
 target = "DSET-TEST-GOV-046"
+
+[[semantic_atoms]]
+id = "DSET-TEST-GOV-048"
+carrier_id = "DSET-ATOMIC-RECORD-108"
+path = ".dset/gov/qa/DSET-TEST-GOV-048-control-runtime-and-scratch-boundaries-test.md"
+sha256 = "6be90133120e50eb16c7c6edad3ea2e8aa0ffe2dc602efbee90a4153cb96f0a7"
+type = "qa"
+subtype = "test"
+emission_status = "accepted"
+current_status = "accepted"
+priority = "critical"
+priority_source = "atom:DSET-TEST-GOV-048"
+lifecycle_events = []
+absorbed_by = []
+archived = false
+
+[[semantic_atoms.relations]]
+type = "check_of"
+origin = "authored"
+target = "DSET-REQUIREMENT-GOV-043"
+
+[[semantic_atoms.relations]]
+type = "replacement_of"
+origin = "authored"
+target = "DSET-TEST-GOV-047"
 
 [[semantic_atoms]]
 id = "DSET-TEST-OPS-017"
@@ -8077,6 +8177,26 @@ target = "DSET-EVALUATION-GOV-030"
 llm_session_ids = []
 
 [[relations]]
+source = "DSET-EVALUATION-GOV-032"
+source_kind = "artifact"
+source_artifact_id = "DSET-ATOMIC-RECORD-109"
+source_path = ".dset/gov/qa/DSET-EVALUATION-GOV-032-runtime-boundary-interpretability.md"
+type = "check_of"
+origin = "authored"
+target = "DSET-REQUIREMENT-GOV-043"
+llm_session_ids = []
+
+[[relations]]
+source = "DSET-EVALUATION-GOV-032"
+source_kind = "artifact"
+source_artifact_id = "DSET-ATOMIC-RECORD-109"
+source_path = ".dset/gov/qa/DSET-EVALUATION-GOV-032-runtime-boundary-interpretability.md"
+type = "replacement_of"
+origin = "authored"
+target = "DSET-EVALUATION-GOV-031"
+llm_session_ids = []
+
+[[relations]]
 source = "DSET-EVALUATION-SKILL-012"
 source_kind = "artifact"
 source_artifact_id = "DSET-ATOMIC-RECORD-043"
@@ -8677,6 +8797,16 @@ target = "DSET-REQUIREMENT-GOV-041"
 llm_session_ids = []
 
 [[relations]]
+source = "DSET-REQUIREMENT-GOV-043"
+source_kind = "artifact"
+source_artifact_id = "DSET-ATOMIC-RECORD-107"
+source_path = ".dset/gov/decision/DSET-REQUIREMENT-GOV-043-control-runtime-and-scratch-boundaries.md"
+type = "replacement_of"
+origin = "authored"
+target = "DSET-REQUIREMENT-GOV-042"
+llm_session_ids = []
+
+[[relations]]
 source = "DSET-REQUIREMENT-SKILL-011"
 source_kind = "artifact"
 source_artifact_id = "DSET-ATOMIC-RECORD-007"
@@ -8765,7 +8895,7 @@ llm_session_ids = []
 
 [relations.range]
 semantic_type = "decision"
-through = "DSET-ATOMIC-RECORD-104"
+through = "DSET-ATOMIC-RECORD-107"
 layer = "gov"
 
 [relations.range.scope]
@@ -8821,7 +8951,7 @@ llm_session_ids = []
 
 [relations.range]
 semantic_type = "qa"
-through = "DSET-ATOMIC-RECORD-105"
+through = "DSET-ATOMIC-RECORD-108"
 subtype = "test"
 layer = "gov"
 
@@ -8840,7 +8970,7 @@ llm_session_ids = []
 
 [relations.range]
 semantic_type = "qa"
-through = "DSET-ATOMIC-RECORD-106"
+through = "DSET-ATOMIC-RECORD-109"
 subtype = "evaluation"
 layer = "gov"
 
@@ -9046,6 +9176,26 @@ source_path = ".dset/gov/qa/DSET-TEST-GOV-047-hidden-project-control-root-test.m
 type = "replacement_of"
 origin = "authored"
 target = "DSET-TEST-GOV-046"
+llm_session_ids = []
+
+[[relations]]
+source = "DSET-TEST-GOV-048"
+source_kind = "artifact"
+source_artifact_id = "DSET-ATOMIC-RECORD-108"
+source_path = ".dset/gov/qa/DSET-TEST-GOV-048-control-runtime-and-scratch-boundaries-test.md"
+type = "check_of"
+origin = "authored"
+target = "DSET-REQUIREMENT-GOV-043"
+llm_session_ids = []
+
+[[relations]]
+source = "DSET-TEST-GOV-048"
+source_kind = "artifact"
+source_artifact_id = "DSET-ATOMIC-RECORD-108"
+source_path = ".dset/gov/qa/DSET-TEST-GOV-048-control-runtime-and-scratch-boundaries-test.md"
+type = "replacement_of"
+origin = "authored"
+target = "DSET-TEST-GOV-047"
 llm_session_ids = []
 
 [[relations]]

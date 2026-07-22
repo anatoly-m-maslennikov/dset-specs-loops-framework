@@ -34,6 +34,8 @@ from dset_toolchain.toml_codec import loads as loads_toml  # noqa: E402
 
 OLD_DSET = ROOT / "dset"
 CURRENT_DSET = ROOT / ".dset"
+LEGACY_RUNTIME = CURRENT_DSET / "runtime"
+CURRENT_RUNTIME = ROOT / ".dset_runtime"
 OLD_SCOPES = OLD_DSET / "scopes"
 NEW_SETTINGS = CURRENT_DSET / "dset_settings.toml"
 OLD_SETTINGS = ROOT / "dset_settings.toml"
@@ -795,11 +797,34 @@ def _repair_mutable_links() -> None:
     adopter.write_text(text, encoding="utf-8", newline="\n")
 
 
+def _migrate_runtime_boundary() -> None:
+    """Move schema 1.3 runtime state out of the committed control root."""
+
+    CURRENT_RUNTIME.mkdir(exist_ok=True)
+    if LEGACY_RUNTIME.is_dir():
+        for source in sorted(LEGACY_RUNTIME.iterdir()):
+            target = CURRENT_RUNTIME / source.name
+            if source.name == ".gitignore" and target.exists():
+                source.unlink()
+                continue
+            if target.exists():
+                raise ValueError(
+                    "runtime boundary collision: "
+                    f"{_relative(source)} -> {_relative(target)}"
+                )
+            shutil.move(source, target)
+        LEGACY_RUNTIME.rmdir()
+    (CURRENT_RUNTIME / ".gitignore").write_text(
+        "*\n!.gitignore\n", encoding="utf-8", newline="\n"
+    )
+
+
 def apply() -> None:
     resumed = NEW_SETTINGS.is_file() and not OLD_SETTINGS.exists()
     if resumed:
         mapping = build_historical_mapping()
         _resume_mutable_rewrites(mapping)
+        _migrate_runtime_boundary()
         print("resumed schema 1.3 mutable-reference migration")
         return
     if (
@@ -873,6 +898,7 @@ def apply() -> None:
     _update_artifact_type_registry()
     _refresh_governance_hashes()
     _repair_mutable_links()
+    _migrate_runtime_boundary()
 
     for directory in sorted(
         (path for path in (CURRENT_DSET).rglob("*") if path.is_dir()),

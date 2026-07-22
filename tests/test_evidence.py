@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 import json
-import tempfile
 import unittest
 from pathlib import Path
 
 from dset_toolchain.evidence import validate_evidence_records
 from dset_toolchain.frontmatter import render
+from dset_toolchain.temp_paths import temporary_directory
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = ROOT / ".dset/gov/schemas/evidence-record.schema.json"
@@ -15,7 +15,7 @@ TEMPLATE = ROOT / ".dset/gov/templates/evidence-record.md"
 
 class EvidenceRecordTests(unittest.TestCase):
     def test_native_toml_record_enforces_the_bounded_core(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             path = root / "APP-EVIDENCE-RECORD-001.md"
             path.write_text(render(self._record(), "\n# Result\n"), encoding="utf-8")
@@ -35,7 +35,7 @@ class EvidenceRecordTests(unittest.TestCase):
             self.assertIn("Evidence Record polarity is invalid", messages)
 
     def test_yaml_is_only_accepted_for_an_exact_legacy_path(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             path = root / "dset/change/proofs/old.md"
             path.parent.mkdir(parents=True)

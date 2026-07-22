@@ -14,7 +14,12 @@ This repository is the public source for the DSET framework, executable toolchai
 
 ## Boundaries
 
-Framework rules and release assets live here. Each adopting repository owns its own behavioral truth and changes under its local `dset/` root. Installed skills, cached tooling, private working notes, and external project artifacts are not independent framework authorities.
+Framework rules and release assets live here. Each adopting repository owns
+its own behavioral truth and changes under its local `.dset/` root. Ignored
+resumable DSET runtime state lives separately under `.dset_runtime/`, while
+disposable process scratch uses `/tmp` on POSIX or the native temporary root on
+Windows. Installed skills, cached tooling, private working notes, and external
+project artifacts are not independent framework authorities.
 
 Repository behavior is selected in the self-documenting
 [`.dset/dset_settings.toml`](.dset/dset_settings.toml). The same file owns project
@@ -208,11 +213,13 @@ authorization, and proof details.
 This public repository is the canonical source for DSET Spec Loops and every released framework-owned methodology document, schema, template, validator, utility, skill, fixture, and migration guide. Installed or workspace-local copies are distributions of this repository, not independent editable sources.
 
 Each project that adopts DSET owns its project truth separately under its own
-`dset/` root. In the current schema 1.3 layout, one
+`.dset/` root. In the current schema 1.3 layout, one
 [`.dset/dset_settings.toml`](.dset/dset_settings.toml) owns settings and manifest
 facts, `.dset/project/` owns project-wide truth and records, `.dset/versions/`
-owns Version lifecycle artifacts, and direct `dset/<layer>/` roots own
-layer-specific truth. Older central and `dset/` paths remain read-only
+owns Version lifecycle artifacts, and direct `.dset/<layer>/` roots own
+layer-specific truth. Ignored `.dset_runtime/` owns resumable local runs,
+sessions, readiness, and recovery state without becoming project truth. Older
+central and `dset/` paths remain read-only
 compatibility and migration surfaces. Framework truth never replaces project
 truth, and project artifacts do not become framework rules unless they are
 deliberately contributed here.

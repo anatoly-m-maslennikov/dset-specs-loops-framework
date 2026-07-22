@@ -9,8 +9,8 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 | **Workflow wrapper** | A thin skill or runtime adapter that discovers the repository, invokes one registered workflow, reports the resolved ruleset, and hands off output without owning substantive rules |
 | **Lifecycle orchestrator** | The primary `dset` workflow wrapper that inspects authoritative project/change state, selects a bounded next action, and chains registered workflows without owning their rules |
 | **Entry-criteria closure** | The finite project-governed sequence of prerequisite workflows needed to make a requested outcome admissible, with an authoritative-state reread and observable progress after every transition |
-| **Skill-run record** | Bounded structured machine-local evidence of one invocation, stored under ignored `.dset/runtime/runs/` for investigation and heuristics without becoming project truth |
-| **Session checkpoint** | Bounded replaceable machine-local recovery state for one operator-visible DSET session, stored under ignored `.dset/runtime/sessions/` and reconciled with authoritative state before reuse |
+| **Skill-run record** | Bounded structured machine-local evidence of one invocation, stored under ignored `.dset_runtime/runs/` for investigation and heuristics without becoming project truth |
+| **Session checkpoint** | Bounded replaceable machine-local recovery state for one operator-visible DSET session, stored under ignored `.dset_runtime/sessions/` and reconciled with authoritative state before reuse |
 | **Delegation budget** | Project-owned policy for inherited model/effort, useful subagent fan-out, roles, rounds, context/evidence depth, tool/live-eval allowance, and stopping thresholds |
 | **Expected outcome cost** | Predicted completed-task cost across token price/volume, retries, agent/tool steps, latency, failure probability, review burden, and rework rather than token price alone |
 

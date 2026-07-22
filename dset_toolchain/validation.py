@@ -3646,7 +3646,10 @@ def _project_visible_files(root: Path) -> list[Path]:
                 continue
             relative = Path(item.decode("utf-8"))
             path = root / relative
-            if relative.parts[:2] == (".dset", "runtime"):
+            if relative.parts[:1] == (".dset_runtime",) or relative.parts[:2] == (
+                ".dset",
+                "runtime",
+            ):
                 continue
             if path.is_file() or path.is_symlink():
                 visible.append(path)
@@ -3655,6 +3658,7 @@ def _project_visible_files(root: Path) -> list[Path]:
         path
         for path in root.rglob("*")
         if path.is_file()
+        and path.relative_to(root).parts[:1] != (".dset_runtime",)
         and path.relative_to(root).parts[:2] != (".dset", "runtime")
         and not any(
             part in MARKDOWN_IGNORED_PARTS for part in path.relative_to(root).parts

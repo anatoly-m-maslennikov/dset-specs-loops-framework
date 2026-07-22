@@ -4,7 +4,6 @@ import hashlib
 import json
 import re
 import shutil
-import tempfile
 from collections.abc import Iterator, Sequence
 from contextlib import contextmanager, suppress
 from dataclasses import dataclass
@@ -16,6 +15,7 @@ from typing import Any, cast
 from .governance import materialize_governance
 from .layout import LAYERS, discover_layout, has_manifest
 from .legacy_authority import write_legacy_authority_ledger
+from .temp_paths import temporary_directory
 from .traceability import write_traceability
 from .validation import validate_repository
 from .yaml_subset import dump, load
@@ -80,9 +80,7 @@ def initialize_project(
     )
     with (
         distribution_source(source_root) as (source, source_identity),
-        tempfile.TemporaryDirectory(
-            prefix="dset-init-", ignore_cleanup_errors=True
-        ) as raw,
+        temporary_directory(prefix="dset-init-") as raw,
     ):
         stage = Path(raw) / "project"
         stage.mkdir()
@@ -149,9 +147,7 @@ def distribution_source(source_root: Path | None = None) -> Iterator[tuple[Path,
             raise InitializationError(f"source is not a schema 1.3 DSET root: {source}")
         yield source, f"path:{source.as_posix()}"
         return
-    with tempfile.TemporaryDirectory(
-        prefix="dset-source-", ignore_cleanup_errors=True
-    ) as raw:
+    with temporary_directory(prefix="dset-source-") as raw:
         source = Path(raw)
         bundle = _load_bundle()
         files = cast(dict[str, str], bundle["files"])
@@ -353,14 +349,17 @@ def _stage_project(
         ),
         encoding="utf-8",
     )
-    runtime = dset_root / "runtime"
+    runtime = stage / ".dset_runtime"
     runtime.mkdir()
     (runtime / ".gitignore").write_text("*\n!.gitignore\n", encoding="utf-8")
     (dset_root / "README.md").write_text(
         "# DSET project control\n\n"
         "- [Project truth and records](project/README.md)\n"
         "- [Settings and manifest](dset_settings.toml)\n"
-        "- [Version lifecycle](versions/README.md)\n",
+        "- [Version lifecycle](versions/README.md)\n\n"
+        "Ignored resumable runtime state lives in the repository-root sibling "
+        "`.dset_runtime/`. Disposable process scratch lives under `/tmp` on "
+        "POSIX or the native operating-system temporary root on Windows.\n",
         encoding="utf-8",
     )
     (project_root / "README.md").write_text(

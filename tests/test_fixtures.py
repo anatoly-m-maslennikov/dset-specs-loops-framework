@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 import shutil
-import tempfile
 import unittest
 from pathlib import Path
 from typing import Any, TypedDict, cast
 
 from dset_toolchain.adopter import create_adopter
 from dset_toolchain.layout import discover_layout
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.validation import validate_change
 from dset_toolchain.yaml_subset import dump, load
 
@@ -34,7 +34,7 @@ class FixtureTests(unittest.TestCase):
         )
         cases = cast(list[FixtureCase], matrix["cases"])
         for case in cases:
-            with self.subTest(case=case["id"]), tempfile.TemporaryDirectory() as raw:
+            with self.subTest(case=case["id"]), temporary_directory() as raw:
                 project = (Path(raw) / "legacy-adopter").resolve()
                 create_adopter(ROOT, project)
                 change = self._materialize(case, project / "cases")
@@ -56,7 +56,7 @@ class FixtureTests(unittest.TestCase):
                     self.assertEqual(codes[0], case["expected"])
 
     def test_legacy_adrs_field_is_accepted_only_for_schema_1_0(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             project = (Path(raw) / "legacy-adopter").resolve()
             create_adopter(ROOT, project)
             target = project / "cases"

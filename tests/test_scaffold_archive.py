@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import shutil
-import tempfile
 import unittest
 from datetime import date
 from pathlib import Path
@@ -10,6 +9,7 @@ from dset_toolchain.adopter import create_adopter
 from dset_toolchain.archive import archive_plan, execute_archive
 from dset_toolchain.layout import discover_layout
 from dset_toolchain.scaffold import create_change
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.yaml_subset import dump, load
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -18,7 +18,7 @@ FIXTURES = discover_layout(ROOT).fixtures_root
 
 class ScaffoldArchiveTests(unittest.TestCase):
     def test_new_creates_profile_without_overwrite(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             target = (Path(raw) / "adopter").resolve()
             self._copy_support(target)
             change = create_change(
@@ -40,7 +40,7 @@ class ScaffoldArchiveTests(unittest.TestCase):
                 create_change(target, "add-login", "accounts", "small")
 
     def test_new_uses_only_registered_optional_layers(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             target = (Path(raw) / "adopter").resolve()
             self._copy_support(target)
             change = create_change(
@@ -67,7 +67,7 @@ class ScaffoldArchiveTests(unittest.TestCase):
                 )
 
     def test_new_uses_a_generic_project_prefix(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             target = (Path(raw) / "adopter").resolve()
             self._copy_support(target)
             manifest_path = discover_layout(target).manifest_path
@@ -91,7 +91,7 @@ class ScaffoldArchiveTests(unittest.TestCase):
             self.assertIn("ACME-OUTCOME-GOV-001", specification)
 
     def test_archive_is_dry_run_then_guarded_move(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             target = (Path(raw) / "adopter").resolve()
             self._copy_support(target)
             source = target / "dset" / "changes" / "fixture-standard"

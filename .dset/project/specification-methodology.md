@@ -22,7 +22,7 @@ the implementation scope to its current layer-owned Requirement owners.
 | Independent MECE artifact classification and Analysis Report boundaries | `DSET-REQUIREMENT-GOV-029` |
 | Type-first artifact names and independently selectable subtype-name capability | `DSET-REQUIREMENT-GOV-038` |
 | Medium/high immutable-artifact admission strictness | `DSET-REQUIREMENT-GOV-039` |
-| Hidden control-plane root, one settings/manifest carrier, explicit path bases, isolated runtime state, and direct ownership roots | `DSET-REQUIREMENT-GOV-042` |
+| Hidden control-plane root, one settings/manifest carrier, distinct ignored runtime state, disposable host scratch, explicit path bases, and direct ownership roots | `DSET-REQUIREMENT-GOV-043` |
 | One-level-down project/group/feature/layer architecture views | `DSET-REQUIREMENT-GOV-031` |
 | Narrowest-common-scope ownership for project, group, feature, and layer truth | `DSET-REQUIREMENT-GOV-032` |
 | Parent-to-child artifact inheritance, local implementation/cancellation, and direct fallback | `DSET-REQUIREMENT-GOV-033` |
@@ -50,7 +50,7 @@ Connected accepted IDs are `DSET-REQUIREMENT-META-007`,
 `DSET-REQUIREMENT-GOV-029`,
 `DSET-REQUIREMENT-GOV-031`, `DSET-REQUIREMENT-GOV-038`,
 `DSET-REQUIREMENT-GOV-039`,
-`DSET-REQUIREMENT-GOV-042`,
+`DSET-REQUIREMENT-GOV-043`,
 `DSET-REQUIREMENT-GOV-032`,
 `DSET-REQUIREMENT-GOV-033`,
 `DSET-REQUIREMENT-GOV-034`,

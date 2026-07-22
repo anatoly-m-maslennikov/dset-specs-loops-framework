@@ -8,7 +8,6 @@ import shlex
 import shutil
 import subprocess
 import sys
-import tempfile
 import unittest
 from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path, PureWindowsPath
@@ -32,16 +31,14 @@ from dset_toolchain.skill_distribution import (
     verify_invocation_receipt,
     verify_runtime_installation,
 )
+from dset_toolchain.temp_paths import temporary_directory
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class SkillDistributionTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.temporary = tempfile.TemporaryDirectory(
-            dir=ROOT.parent,
-            ignore_cleanup_errors=True,
-        )
+        self.temporary = temporary_directory()
         self.root = Path(self.temporary.name).resolve()
         self.source = self.root / "source"
         shutil.copytree(ROOT / "skills", self.source / "skills")

@@ -18,6 +18,7 @@ from . import __version__
 from .bootstrap import distribution_source
 from .skill_catalog import PUBLIC_SKILL_WORKFLOWS, SKILL_INVOCATION_MARKERS
 from .skill_context import resolve_skill_context
+from .temp_paths import temporary_directory
 
 SKILL_WORKFLOWS = PUBLIC_SKILL_WORKFLOWS
 HOSTS = {"claude", "codex"}
@@ -149,7 +150,7 @@ def plan_runtime_install(
         if skills_destination is None
         else skills_destination
     )
-    with tempfile.TemporaryDirectory(prefix="dset-runtime-plan-") as raw:
+    with temporary_directory(prefix="dset-runtime-plan-") as raw:
         rendered = Path(raw) / "dset"
         _render_runtime_package(
             source_root,
@@ -833,7 +834,7 @@ def _powershell_literal(value: str) -> str:
 
 
 def _rendered_skill_digest(source: Path, host: str, launcher_command: str) -> str:
-    with tempfile.TemporaryDirectory(prefix="dset-skill-render-") as raw:
+    with temporary_directory(prefix="dset-skill-render-") as raw:
         rendered = Path(raw) / source.name
         _render_skill_package(source, rendered, host, launcher_command)
         return tree_digest(rendered)
@@ -930,7 +931,7 @@ def _render_runtime_package(
 
 
 def _validate_runtime_source(action: RuntimeInstallAction) -> None:
-    with tempfile.TemporaryDirectory(prefix="dset-runtime-validate-") as raw:
+    with temporary_directory(prefix="dset-runtime-validate-") as raw:
         rendered = Path(raw) / "dset"
         _render_runtime_package(
             Path(action.source),
@@ -947,7 +948,7 @@ def _validate_runtime_source(action: RuntimeInstallAction) -> None:
 
 
 def _expected_manifest(action: RuntimeInstallAction) -> dict[str, object]:
-    with tempfile.TemporaryDirectory(prefix="dset-runtime-manifest-") as raw:
+    with temporary_directory(prefix="dset-runtime-manifest-") as raw:
         rendered = Path(raw) / "dset"
         _render_runtime_package(
             Path(action.source),

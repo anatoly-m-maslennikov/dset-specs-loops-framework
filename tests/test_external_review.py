@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import tempfile
 import unittest
 from dataclasses import replace
 from pathlib import Path
@@ -17,13 +16,14 @@ from dset_toolchain.external_review import (
 from dset_toolchain.frontmatter import parse as parse_frontmatter
 from dset_toolchain.frontmatter import render as render_frontmatter
 from dset_toolchain.settings import load_project_settings
+from dset_toolchain.temp_paths import temporary_directory
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class ExternalReviewTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.temporary = tempfile.TemporaryDirectory()
+        self.temporary = temporary_directory()
         self.work = Path(self.temporary.name).resolve()
         self.packet = self.work / "review-packet.md"
         create_review_packet(

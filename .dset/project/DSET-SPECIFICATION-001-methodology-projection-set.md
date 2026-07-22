@@ -14,7 +14,7 @@ type = "projection_of"
 [relations.range]
 semantic_type = "decision"
 layer = "gov"
-through = "DSET-ATOMIC-RECORD-104"
+through = "DSET-ATOMIC-RECORD-107"
 
 [relations.range.scope]
 kind = "project"
@@ -27,7 +27,7 @@ type = "projection_of"
 semantic_type = "qa"
 subtype = "test"
 layer = "gov"
-through = "DSET-ATOMIC-RECORD-105"
+through = "DSET-ATOMIC-RECORD-108"
 
 [relations.range.scope]
 kind = "project"
@@ -40,7 +40,7 @@ type = "projection_of"
 semantic_type = "qa"
 subtype = "evaluation"
 layer = "gov"
-through = "DSET-ATOMIC-RECORD-106"
+through = "DSET-ATOMIC-RECORD-109"
 
 [relations.range.scope]
 kind = "project"

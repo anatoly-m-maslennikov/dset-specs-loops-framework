@@ -202,7 +202,10 @@ def _lifecycle_status(root: Path) -> dict[str, str]:
 
 def _ignored(root: Path, path: Path) -> bool:
     relative = path.relative_to(root)
-    if relative.parts[:2] == (".dset", "runtime"):
+    if relative.parts[:1] == (".dset_runtime",) or relative.parts[:2] == (
+        ".dset",
+        "runtime",
+    ):
         return True
     return any(
         part in IGNORED_PARTS

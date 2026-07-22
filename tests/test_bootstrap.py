@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import tempfile
 import unittest
 from pathlib import Path, PureWindowsPath
 from unittest.mock import patch
@@ -16,6 +15,7 @@ from dset_toolchain.bootstrap import (
 )
 from dset_toolchain.layout import discover_layout
 from dset_toolchain.scaffold import create_change
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.validation import validate_repository
 from dset_toolchain.yaml_subset import load
 from scripts.build_bootstrap_bundle import render_bundle
@@ -33,7 +33,7 @@ class BootstrapTests(unittest.TestCase):
         self.assertEqual(bundle["sha256"], bundled_source_digest())
 
     def test_preview_does_not_touch_existing_repository(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             target = (Path(raw) / "existing").resolve()
             target.mkdir()
             marker = target / "existing.txt"
@@ -52,7 +52,7 @@ class BootstrapTests(unittest.TestCase):
             self.assertFalse((target / "dset").exists())
 
     def test_execute_initializes_and_validates_nonempty_repository(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             target = (Path(raw) / "existing").resolve()
             (target / "src").mkdir(parents=True)
             (target / "README.md").write_text("# Existing\n", encoding="utf-8")
@@ -94,6 +94,11 @@ class BootstrapTests(unittest.TestCase):
             self.assertTrue((target / ".dset/dset_settings.toml").is_file())
             self.assertTrue((target / ".dset/project/README.md").is_file())
             self.assertTrue((target / ".dset/versions/README.md").is_file())
+            self.assertEqual(
+                (target / ".dset_runtime/.gitignore").read_text(encoding="utf-8"),
+                "*\n!.gitignore\n",
+            )
+            self.assertFalse((target / ".dset/runtime").exists())
             self.assertFalse((target / "dset_settings.toml").exists())
             self.assertFalse((target / "dset.toml").exists())
             self.assertEqual(
@@ -137,7 +142,7 @@ class BootstrapTests(unittest.TestCase):
             self.assertEqual(validate_repository(target), [])
 
     def test_execute_detects_hosted_automation_supportability(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             target = (Path(raw) / "automated").resolve()
             workflow = target / ".github/workflows/ci.yml"
             workflow.parent.mkdir(parents=True)
@@ -162,7 +167,7 @@ class BootstrapTests(unittest.TestCase):
             self.assertIn("Active hosted automation", runbook)
 
     def test_execute_ignores_git_ignored_runtime_markdown(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             target = (Path(raw) / "existing").resolve()
             target.mkdir()
             (target / ".gitignore").write_text("tmp/\n", encoding="utf-8")
@@ -184,7 +189,7 @@ class BootstrapTests(unittest.TestCase):
             self.assertEqual(validate_repository(target), [])
 
     def test_existing_destination_stops_without_partial_write(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
+        with temporary_directory() as raw:
             target = (Path(raw) / "existing").resolve()
             manifest = target / ".dset" / "dset_settings.toml"
             manifest.parent.mkdir(parents=True)

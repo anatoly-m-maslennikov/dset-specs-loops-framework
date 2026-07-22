@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import hashlib
 import subprocess
-import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -14,6 +13,7 @@ from dset_toolchain.carrier_transitions import (
     validate_carrier_transition_ledger,
 )
 from dset_toolchain.frontmatter import parse as parse_frontmatter
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.toml_codec import dumps as dump_toml
 from dset_toolchain.toml_codec import loads as load_toml
 from dset_toolchain.toml_migration import (
@@ -26,7 +26,7 @@ from tests.git_fixtures import initialize_exact_git_repository
 
 class CarrierTransitionTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.temporary = tempfile.TemporaryDirectory()
+        self.temporary = temporary_directory()
         self.root = Path(self.temporary.name).resolve()
         self.source = self._write(
             "dset/scopes/gov/intake.yaml",

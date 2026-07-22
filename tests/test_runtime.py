@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 import os
-import tempfile
 import unittest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -17,6 +16,7 @@ from dset_toolchain.runtime import (
     start_run,
     update_checkpoint,
 )
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.yaml_subset import dump
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class RuntimeTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.temporary = tempfile.TemporaryDirectory()
+        self.temporary = temporary_directory()
         self.root = Path(self.temporary.name).resolve()
         manifest = self.root / "dset" / "scopes" / "meta" / "dset.toml"
         manifest.parent.mkdir(parents=True)
@@ -53,11 +53,7 @@ class RuntimeTests(unittest.TestCase):
         assert invocation.running_path is not None
         self.assertTrue(invocation.running_path.is_file())
         checkpoint_path = (
-            self.root
-            / ".dset"
-            / "runtime"
-            / "sessions"
-            / f"{invocation.session_id}.json"
+            self.root / ".dset_runtime" / "sessions" / f"{invocation.session_id}.json"
         )
         first_checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
         self.assertEqual(first_checkpoint["schema_version"], "1.3")
@@ -98,7 +94,7 @@ class RuntimeTests(unittest.TestCase):
         self.assertFalse(invocation.running_path.is_file())
         terminals = [
             path
-            for path in (self.root / ".dset" / "runtime" / "runs").glob("*.json")
+            for path in (self.root / ".dset_runtime" / "runs").glob("*.json")
             if not path.name.startswith(".")
         ]
         self.assertEqual(len(terminals), 1)
@@ -202,7 +198,7 @@ class RuntimeTests(unittest.TestCase):
         self.assertFalse((ordinary / ".dset").exists())
 
     def test_retention_enforces_age_count_and_total_bytes(self) -> None:
-        runs = self.root / ".dset" / "runtime" / "runs"
+        runs = self.root / ".dset_runtime" / "runs"
         seed = start_run(
             self.root,
             public_entrypoint="dset",

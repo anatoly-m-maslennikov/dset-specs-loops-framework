@@ -190,7 +190,7 @@ customization = "unmodified"
 profile = "core-v1"
 version = "0.3"
 template = ".dset/skill/templates/governance/core-v1/skill-runs.md"
-sha256 = "788ce82dd5ad125320d44850abce6a1927223c13895ac25e48fedc4200775482"
+sha256 = "c3eac49aa90601ea79380d98723375046a10def9c86e74a7ec52d8b42401c80d"
 
 [[rules]]
 id = "DSET-RULE-RELEASE"

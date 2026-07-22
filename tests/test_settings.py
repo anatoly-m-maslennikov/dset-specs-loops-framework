@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import tempfile
 import unittest
 from pathlib import Path
 
@@ -13,6 +12,7 @@ from dset_toolchain.settings import (
     SETTINGS_SCHEMA_VERSION,
     load_project_settings,
 )
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.toml_codec import loads as load_toml
 from dset_toolchain.validation import validate_repository
 
@@ -55,7 +55,7 @@ class ProjectSettingsTests(unittest.TestCase):
         self.assertIn("0-1 subagents", root_text)
 
     def test_legacy_1_0_names_remain_read_compatible(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             (root / LEGACY_SETTINGS_FILENAME).write_text(
                 "\n".join(
@@ -85,7 +85,7 @@ class ProjectSettingsTests(unittest.TestCase):
         self.assertEqual(settings.priority_scale, ("urgent", "normal", "later"))
 
     def test_previous_1_1_contract_remains_read_compatible(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             (root / LEGACY_SETTINGS_FILENAME).write_text(
                 "\n".join(
@@ -112,7 +112,7 @@ class ProjectSettingsTests(unittest.TestCase):
         self.assertEqual(settings.delegation_budget_profile, "medium")
 
     def test_competing_settings_filenames_fail_closed(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             (root / ".dset").mkdir()
             (root / ".dset" / SETTINGS_FILENAME).write_text(
@@ -133,7 +133,7 @@ class ProjectSettingsTests(unittest.TestCase):
     def test_repository_validation_reports_competing_names_at_canonical_path(
         self,
     ) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+        with temporary_directory() as raw:
             root = create_adopter(ROOT, Path(raw) / "adopter")
             (root / LEGACY_SETTINGS_FILENAME).write_text(
                 'schema_version = "1.1"\n', encoding="utf-8"
@@ -147,7 +147,7 @@ class ProjectSettingsTests(unittest.TestCase):
     def test_invalid_schema_or_implementation_mode_stops_deterministically(
         self,
     ) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             path = root / SETTINGS_FILENAME
             path.write_text(
@@ -174,7 +174,7 @@ class ProjectSettingsTests(unittest.TestCase):
         )
 
     def test_invalid_new_behavior_values_name_the_owning_keys(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
+        with temporary_directory() as raw:
             root = Path(raw).resolve()
             (root / SETTINGS_FILENAME).write_text(
                 "\n".join(

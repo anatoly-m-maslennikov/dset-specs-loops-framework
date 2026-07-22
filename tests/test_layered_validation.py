@@ -5,7 +5,6 @@ import io
 import json
 import re
 import shutil
-import tempfile
 import unittest
 from pathlib import Path
 from typing import Any
@@ -13,6 +12,7 @@ from typing import Any
 from dset_toolchain.cli import main
 from dset_toolchain.layout import LAYERS, discover_layout
 from dset_toolchain.scaffold import create_change
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.traceability import build_traceability
 from dset_toolchain.validation import validate_change, validate_repository
 from dset_toolchain.yaml_subset import dump, load
@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class LayeredValidationTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.temporary = tempfile.TemporaryDirectory()
+        self.temporary = temporary_directory()
         self.root = Path(self.temporary.name).resolve()
         self.scopes = self.root / "dset" / "scopes"
         for layer in LAYERS:
