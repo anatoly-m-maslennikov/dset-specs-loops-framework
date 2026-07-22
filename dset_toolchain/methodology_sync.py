@@ -37,6 +37,8 @@ SOURCE_ONLY_CARRIERS = frozenset({"000_dset-project-hub.md"})
 
 @dataclass(frozen=True)
 class MethodologyDrift:
+    """Represent methodology drift behavior and state."""
+
     carrier: str
     status: str
 
@@ -111,6 +113,7 @@ def sync_methodology(root: Path, *, execute: bool = False) -> tuple[str, ...]:
 
 
 def _remove_source_less_carriers(root: Path, target: Path) -> None:
+    """Handle source less carriers using the declared repository contract."""
     expected_roots = {name.split("/", 1)[0] for _, name in ALL_SOURCE_TO_INSTALLED}
     for child in sorted(target.iterdir()):
         if child.is_dir() and child.name not in expected_roots:
@@ -147,6 +150,7 @@ def _files(
     *,
     excluded: tuple[Path, ...] = (),
 ) -> dict[Path, Path]:
+    """Handle files using the declared repository contract."""
     files: dict[Path, Path] = {}
     for path in sorted(root.rglob("*")):
         if not path.is_file():

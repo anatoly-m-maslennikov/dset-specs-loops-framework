@@ -41,6 +41,8 @@ IGNORED_PARTS = frozenset(
 
 @dataclass(frozen=True)
 class Coverage:
+    """Represent coverage behavior and state."""
+
     name: str
     numerator: int
     denominator: int
@@ -52,6 +54,7 @@ class Coverage:
 
 
 def build_health_model(root: Path) -> dict[str, Any]:
+    """Build health model using the declared repository contract."""
     root = root.resolve()
     layout = discover_layout(root)
     settings, issues = load_project_settings(root)
@@ -212,6 +215,7 @@ def build_health_model(root: Path) -> dict[str, Any]:
 
 
 def render_health(root: Path) -> str:
+    """Render health using the declared repository contract."""
     root = root.resolve()
     model = build_health_model(root)
     layout = discover_layout(root)
@@ -346,11 +350,13 @@ def render_health(root: Path) -> str:
 
 
 def health_is_fresh(root: Path) -> bool:
+    """Handle is fresh using the declared repository contract."""
     path = health_path(root)
     return path.is_file() and path.read_text(encoding="utf-8") == render_health(root)
 
 
 def write_health(root: Path) -> Path:
+    """Write health using the declared repository contract."""
     path = health_path(root)
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(".md.tmp")
@@ -360,6 +366,7 @@ def write_health(root: Path) -> Path:
 
 
 def health_path(root: Path) -> Path:
+    """Handle path using the declared repository contract."""
     layout = discover_layout(root)
     project = load(layout.manifest_path)["project"]
     key = str(project["key"])
@@ -372,6 +379,7 @@ def health_path(root: Path) -> Path:
 
 
 def _classified_artifacts(root: Path) -> list[dict[str, Any]]:
+    """Handle artifacts using the declared repository contract."""
     registry = project_section(root, "artifact_catalog")
     rules = registry.get("path_rules", []) if isinstance(registry, dict) else []
     artifacts: list[dict[str, Any]] = []
@@ -424,6 +432,7 @@ def _classified_artifacts(root: Path) -> list[dict[str, Any]]:
 def _qa_ids(
     root: Path, atoms: dict[str, Any], lifecycle: list[dict[str, Any]]
 ) -> set[str]:
+    """Handle ids using the declared repository contract."""
     identifiers = {
         atom.semantic_id
         for atom in atoms.values()
@@ -457,6 +466,7 @@ def _qa_ids(
 def _coverage_compiled(
     authorities: set[str], projected_authorities: set[str]
 ) -> Coverage:
+    """Handle compiled using the declared repository contract."""
     covered = authorities & projected_authorities
     gaps = tuple(sorted(authorities - covered))
     return Coverage(
@@ -474,6 +484,7 @@ def _coverage_compiled(
 def _coverage_implemented(
     authorities: set[str], modern_authorities: set[str], commit_edges: set[str]
 ) -> Coverage:
+    """Handle implemented using the declared repository contract."""
     covered = modern_authorities & commit_edges
     gaps = tuple(sorted(modern_authorities - covered))
     excluded = authorities - modern_authorities
@@ -492,6 +503,7 @@ def _coverage_implemented(
 def _coverage_qa(
     authorities: set[str], qa_ids: set[str], relations: list[dict[str, Any]]
 ) -> Coverage:
+    """Handle qa using the declared repository contract."""
     covered = {
         str(item["target"])
         for item in relations
@@ -513,6 +525,7 @@ def _coverage_qa(
 
 
 def _coverage_proof(qa_ids: set[str], relations: list[dict[str, Any]]) -> Coverage:
+    """Handle proof using the declared repository contract."""
     covered = {
         str(item["target"])
         for item in relations
@@ -538,6 +551,7 @@ def _lifecycle_events(root: Path) -> list[dict[str, Any]]:
 def _intake_items(
     root: Path, path: Path, lifecycle: list[dict[str, Any]]
 ) -> list[dict[str, Any]]:
+    """Handle items using the declared repository contract."""
     if path.is_dir():
         atoms, diagnostics = collect_semantic_atoms(root)
         if diagnostics:
@@ -590,6 +604,7 @@ def _current_status(identifier: str, emitted: str, events: list[dict[str, Any]])
 
 
 def _work_area_counts(root: Path, artifacts: list[dict[str, Any]]) -> dict[str, int]:
+    """Handle area counts using the declared repository contract."""
     manifest = load(discover_layout(root).manifest_path)
     raw = manifest.get("work_areas", []) if isinstance(manifest, dict) else []
     counts: dict[str, int] = {}
@@ -605,6 +620,7 @@ def _work_area_counts(root: Path, artifacts: list[dict[str, Any]]) -> dict[str, 
 
 
 def _package_counts(root: Path, artifacts: list[dict[str, Any]]) -> dict[str, int]:
+    """Handle counts using the declared repository contract."""
     manifest = load(discover_layout(root).manifest_path)
     raw = manifest.get("packages", []) if isinstance(manifest, dict) else []
     counts: dict[str, int] = {}
@@ -621,6 +637,7 @@ def _package_counts(root: Path, artifacts: list[dict[str, Any]]) -> dict[str, in
 
 
 def _change_statuses(root: Path) -> list[str]:
+    """Handle statuses using the declared repository contract."""
     statuses: list[str] = []
     for path in root.rglob("change.yaml"):
         relative = path.relative_to(root)
@@ -641,6 +658,7 @@ def _change_statuses(root: Path) -> list[str]:
 
 
 def _canonical_package_manifest(root: Path, path: Path) -> bool:
+    """Handle package manifest using the declared repository contract."""
     relative = path.relative_to(root)
     return (
         not _path_ignored(root, path)
@@ -653,6 +671,7 @@ def _canonical_package_manifest(root: Path, path: Path) -> bool:
 
 
 def _source_digest(root: Path) -> str:
+    """Handle digest using the declared repository contract."""
     digest = hashlib.sha256()
     for relative, path in _ordered_source_entries(root):
         digest.update(relative.encode())
@@ -678,6 +697,7 @@ def _ordered_source_entries(root: Path) -> list[tuple[str, Path]]:
 
 
 def _frontmatter(path: Path) -> dict[str, Any] | None:
+    """Handle frontmatter using the declared repository contract."""
     if path.suffix.lower() != ".md":
         return None
     try:
@@ -688,6 +708,7 @@ def _frontmatter(path: Path) -> dict[str, Any] | None:
 
 
 def _implementation_class(relative: Path) -> tuple[str | None, str | None]:
+    """Handle class using the declared repository contract."""
     if (
         relative.parts
         and relative.parts[0] == "dset_toolchain"
@@ -709,6 +730,7 @@ def _matches(relative: str, pattern: str) -> bool:
 
 
 def _layer(relative: Path) -> str:
+    """Handle layer using the declared repository contract."""
     parts = relative.parts
     if (
         len(parts) >= 2
@@ -733,6 +755,7 @@ def _layer(relative: Path) -> str:
 
 
 def _role(artifact_type: str, artifact_subtype: str | None) -> str:
+    """Handle role using the declared repository contract."""
     if artifact_type == "atomic_record":
         return "atomic"
     if artifact_type in {"specification", "plan", "procedure"}:
@@ -767,6 +790,7 @@ def _path_ignored(root: Path, path: Path) -> bool:
 
 
 def _relative_ignored(relative: Path) -> bool:
+    """Handle ignored using the declared repository contract."""
     if relative.parts[:1] == (".dset_runtime",) or relative.parts[:2] == (
         ".dset",
         "runtime",

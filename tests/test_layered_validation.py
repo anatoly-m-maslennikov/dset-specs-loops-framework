@@ -30,7 +30,10 @@ ROOT = repository_root(Path(__file__))
 
 
 class LayeredValidationTests(unittest.TestCase):
+    """Verify layered validation behavior."""
+
     def setUp(self) -> None:
+        """Handle set up using the declared repository contract."""
         self.temporary = temporary_directory()
         self.root = Path(self.temporary.name).resolve()
         self.scopes = self.root / "dset" / "scopes"
@@ -44,6 +47,7 @@ class LayeredValidationTests(unittest.TestCase):
         self._write_fragment("tool", "DSET-REQUIREMENT-TOOL-001", "DSET-TEST-TOOL-001")
 
     def tearDown(self) -> None:
+        """Handle tear down using the declared repository contract."""
         self.temporary.cleanup()
 
     def test_valid_layered_repository(self) -> None:
@@ -753,6 +757,7 @@ class LayeredValidationTests(unittest.TestCase):
         )
 
     def _write_project(self) -> None:
+        """Write project using the declared repository contract."""
         manifest: dict[str, Any] = {
             "schema_version": "1.2",
             "project": {
@@ -806,6 +811,7 @@ class LayeredValidationTests(unittest.TestCase):
         )
 
     def _write_control_files(self) -> None:
+        """Write control files using the declared repository contract."""
         (self.scopes / "gov" / "intake.yaml").write_text(
             dump({"schema_version": "1.1", "items": []}),
             encoding="utf-8",
@@ -827,6 +833,7 @@ class LayeredValidationTests(unittest.TestCase):
         return self.scopes / layer / "specs/packages/sample/package.yaml"
 
     def _write_fragment(self, layer: str, requirement: str, test: str) -> None:
+        """Write fragment using the declared repository contract."""
         root = self._fragment_path(layer).parent
         root.mkdir(parents=True, exist_ok=True)
         artifacts = {
@@ -869,6 +876,7 @@ class LayeredValidationTests(unittest.TestCase):
         stable_id: str | None = None,
         target: dict[str, object] | None = None,
     ) -> Path:
+        """Write change using the declared repository contract."""
         root = self.scopes / layer / "changes" / change_slug
         (root / "specs").mkdir(parents=True)
         requirement = f"DSET-REQUIREMENT-{id_layer}-099"
@@ -923,6 +931,7 @@ class LayeredValidationTests(unittest.TestCase):
         shutil.copytree(source, target)
 
     def _archive_synthetic(self, change: Path, day: str, pr_number: int) -> None:
+        """Archive synthetic using the declared repository contract."""
         path = self._change_manifest(change)
         data = load(path)
         assert isinstance(data, dict)

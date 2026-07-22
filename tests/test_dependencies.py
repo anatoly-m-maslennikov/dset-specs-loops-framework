@@ -17,6 +17,8 @@ from dset_toolchain.yaml_subset import dump
 
 
 class DependencyPolicyTests(unittest.TestCase):
+    """Verify dependency policy behavior."""
+
     def test_exact_lock_registry_license_and_provenance_pass(self) -> None:
         with temporary_directory() as raw:
             root, policy = self._project(Path(raw))
@@ -76,6 +78,7 @@ class DependencyPolicyTests(unittest.TestCase):
 
     @staticmethod
     def _project(root: Path, *, mutate: object | None = None) -> tuple[Path, Path]:
+        """Handle project using the declared repository contract."""
         (root / "pyproject.toml").write_text(
             '[project]\nname = "app"\nversion = "1.0.0"\n', encoding="utf-8"
         )

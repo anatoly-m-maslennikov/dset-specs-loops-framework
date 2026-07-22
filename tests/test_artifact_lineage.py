@@ -25,6 +25,8 @@ from tests import repository_root
 
 
 class ArtifactRelationTests(unittest.TestCase):
+    """Verify artifact relation behavior."""
+
     def test_all_canonical_forward_relations_are_indexed_without_inverses(
         self,
     ) -> None:
@@ -246,6 +248,7 @@ class ArtifactRelationTests(unittest.TestCase):
 
     @staticmethod
     def _git(root: Path, *args: str) -> str:
+        """Handle git using the declared repository contract."""
         completed = subprocess.run(
             ["git", *args],
             cwd=root,
@@ -263,6 +266,7 @@ class ArtifactRelationTests(unittest.TestCase):
 
     @classmethod
     def _replacement_fixture(cls, root: Path) -> None:
+        """Handle fixture using the declared repository contract."""
         cls._artifact(
             root,
             "OLD-REPLACE",
@@ -284,6 +288,7 @@ class ArtifactRelationTests(unittest.TestCase):
 
     @classmethod
     def _projection(cls, root: Path, *, through: str) -> None:
+        """Handle projection using the declared repository contract."""
         cls._artifact(
             root,
             "SPEC",
@@ -304,6 +309,7 @@ class ArtifactRelationTests(unittest.TestCase):
 
     @classmethod
     def _atom(cls, root: Path, sequence: int, semantic_id: str) -> None:
+        """Handle atom using the declared repository contract."""
         cls._artifact(
             root,
             f"ATOM-{sequence}",
@@ -316,6 +322,7 @@ class ArtifactRelationTests(unittest.TestCase):
 
     @staticmethod
     def _lifecycle(root: Path, old: str, new: str) -> None:
+        """Handle lifecycle using the declared repository contract."""
         path = root / "dset/governance/lifecycle.yaml"
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(
@@ -352,6 +359,7 @@ class ArtifactRelationTests(unittest.TestCase):
         child_of: list[str] | None = None,
         extra: str = "",
     ) -> None:
+        """Handle artifact using the declared repository contract."""
         data: dict[str, Any] = {
             "artifact_type": artifact_type,
             "artifact_id": artifact_id,

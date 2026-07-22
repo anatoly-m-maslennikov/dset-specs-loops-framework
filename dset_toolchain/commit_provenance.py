@@ -38,12 +38,15 @@ CORRECTION_FIELDS = {
 
 @dataclass(frozen=True)
 class CommitRecord:
+    """Represent commit record behavior and state."""
+
     commit: str
     message: str
     message_sha256: str
 
 
 def validate_commit_provenance(root: Path) -> list[Diagnostic]:
+    """Validate commit provenance using the declared repository contract."""
     root = root.resolve()
     if not (root / ".git").exists():
         return []
@@ -93,6 +96,7 @@ def validate_commit_history(
     known: Mapping[str, tuple[str, str]],
     raw_corrections: object,
 ) -> list[str]:
+    """Validate commit history using the declared repository contract."""
     corrections, problems = _parse_corrections(raw_corrections, commits)
     for record in commits:
         original_problems = validate_commit_message(record.message, known)
@@ -120,6 +124,7 @@ def validate_commit_history(
 def validate_commit_message(
     message: str, known: Mapping[str, tuple[str, str]]
 ) -> list[str]:
+    """Validate commit message using the declared repository contract."""
     trailers = _trailers(message)
     sessions = trailers.get("Session", [])
     if len(sessions) != 1 or not SESSION_PATTERN.fullmatch(sessions[0]):
@@ -154,6 +159,7 @@ def validate_commit_message(
 def _parse_corrections(
     raw_corrections: object, commits: list[CommitRecord]
 ) -> tuple[dict[str, Mapping[str, Any]], list[str]]:
+    """Parse corrections using the declared repository contract."""
     if not isinstance(raw_corrections, list):
         return {}, ["commit_provenance.corrections must be a list"]
     records = {record.commit: record for record in commits}
@@ -238,6 +244,7 @@ def _valid_id_list(value: object, *, allow_empty: bool) -> bool:
 
 
 def _corrected_message(correction: Mapping[str, Any]) -> str:
+    """Handle message using the declared repository contract."""
     label = "Implements" if correction["mode"] == "implementation" else "Decision"
     lines = [f"{label}: {', '.join(correction['decision_ids'])}"]
     if correction["verifies"]:
@@ -249,6 +256,7 @@ def _corrected_message(correction: Mapping[str, Any]) -> str:
 
 
 def _resolve_base(root: Path, manifest_path: Path, start: str) -> str | None:
+    """Resolve base using the declared repository contract."""
     if start == "root":
         return None
     if start == "manifest-addition":
@@ -281,6 +289,7 @@ def _resolve_base(root: Path, manifest_path: Path, start: str) -> str | None:
 
 
 def _commits_after(root: Path, base: str | None) -> list[CommitRecord]:
+    """Handle after using the declared repository contract."""
     revision = f"{base}..HEAD" if base else "HEAD"
     completed = subprocess.run(
         ["git", "rev-list", "--no-merges", "--reverse", revision],
@@ -293,6 +302,7 @@ def _commits_after(root: Path, base: str | None) -> list[CommitRecord]:
 
 
 def _read_commit(root: Path, commit: str) -> CommitRecord:
+    """Read commit using the declared repository contract."""
     completed = subprocess.run(
         ["git", "cat-file", "commit", commit],
         cwd=root,
@@ -310,6 +320,7 @@ def _read_commit(root: Path, commit: str) -> CommitRecord:
 
 
 def _has_head(root: Path) -> bool:
+    """Handle head using the declared repository contract."""
     completed = subprocess.run(
         ["git", "rev-parse", "--verify", "HEAD"],
         cwd=root,
@@ -321,6 +332,7 @@ def _has_head(root: Path) -> bool:
 
 
 def _trailers(message: str) -> dict[str, list[str]]:
+    """Handle trailers using the declared repository contract."""
     found: dict[str, list[str]] = {}
     for line in message.splitlines():
         key, separator, value = line.partition(":")
@@ -356,6 +368,7 @@ def _known_reference_problems(
     identifiers: set[str],
     known: Mapping[str, tuple[str, str]],
 ) -> list[str]:
+    """Handle reference problems using the declared repository contract."""
     if not identifiers:
         return [f"{label} requires at least one canonical ID"]
     return [

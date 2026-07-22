@@ -83,6 +83,7 @@ from .verification import verify_repository
 
 
 def build_parser() -> argparse.ArgumentParser:
+    """Build parser using the declared repository contract."""
     parser = argparse.ArgumentParser(prog="dset")
     parser.add_argument("--version", action="version", version=__version__)
     commands = parser.add_subparsers(dest="command", required=True)
@@ -412,6 +413,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Run the command-line interface and return its exit status."""
     args = build_parser().parse_args(argv)
     try:
         if args.command == "init":
@@ -825,6 +827,7 @@ def _root_argument(parser: argparse.ArgumentParser) -> None:
 
 
 def _parse_criteria(values: Sequence[str]) -> dict[str, bool | None]:
+    """Parse criteria using the declared repository contract."""
     parsed: dict[str, bool | None] = {}
     for raw in values:
         name, separator, value = raw.partition("=")
@@ -869,6 +872,7 @@ def _repository_root(raw: Path | None) -> Path:
 
 
 def _print_resolved(data: dict[str, object]) -> None:
+    """Handle resolved using the declared repository contract."""
     print(
         f"workflow={data['workflow_id']} profile={data['profile']}@"
         f"{data['profile_version']} customization={data['customization']}"
@@ -881,6 +885,7 @@ def _print_resolved(data: dict[str, object]) -> None:
 
 
 def _print_release(data: dict[str, object], output_format: str, label: str) -> None:
+    """Handle release using the declared repository contract."""
     if output_format == "json":
         print(json.dumps(data, indent=2, sort_keys=True))
         return
@@ -895,6 +900,7 @@ def _print_release(data: dict[str, object], output_format: str, label: str) -> N
 
 
 def _report(diagnostics: Sequence[Diagnostic], root: Path, output_format: str) -> int:
+    """Handle report using the declared repository contract."""
     if output_format == "json":
         print(
             json.dumps(

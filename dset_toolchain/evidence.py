@@ -115,6 +115,7 @@ def validate_evidence_records(
 
 
 def _validate_native_record(path: Path, data: dict[str, Any]) -> list[Diagnostic]:
+    """Validate native record using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     keys = set(data)
     missing = sorted(REQUIRED_FIELDS - keys)
@@ -153,6 +154,7 @@ def _validate_native_record(path: Path, data: dict[str, Any]) -> list[Diagnostic
 
 
 def _subject(path: Path, value: object, diagnostics: list[Diagnostic]) -> None:
+    """Handle subject using the declared repository contract."""
     if not isinstance(value, dict) or set(value) != {
         "id",
         "revision",
@@ -171,6 +173,7 @@ def _subject(path: Path, value: object, diagnostics: list[Diagnostic]) -> None:
 
 
 def _producer(path: Path, value: object, diagnostics: list[Diagnostic]) -> None:
+    """Handle producer using the declared repository contract."""
     if not isinstance(value, dict) or set(value) != {"identity", "performed_work"}:
         diagnostics.append(
             _diag(path, "producer requires exactly identity and performed_work")
@@ -191,6 +194,7 @@ def _method(path: Path, value: object, diagnostics: list[Diagnostic]) -> None:
 def _observation_time(
     path: Path, data: dict[str, Any], diagnostics: list[Diagnostic]
 ) -> None:
+    """Handle time using the declared repository contract."""
     has_observed = "observed_at" in data
     has_window = "validity_window" in data
     if has_observed == has_window:
@@ -215,6 +219,7 @@ def _observation_time(
 
 
 def _relations(path: Path, value: object, diagnostics: list[Diagnostic]) -> None:
+    """Handle relations using the declared repository contract."""
     if not isinstance(value, list) or not value:
         diagnostics.append(_diag(path, "Evidence Record requires relations"))
         return
@@ -236,6 +241,7 @@ def _relations(path: Path, value: object, diagnostics: list[Diagnostic]) -> None
 def _optional_extensions(
     path: Path, data: dict[str, Any], diagnostics: list[Diagnostic]
 ) -> None:
+    """Handle extensions using the declared repository contract."""
     if "independent_producer" in data and not isinstance(
         data["independent_producer"], bool
     ):
@@ -248,6 +254,7 @@ def _optional_extensions(
 
 
 def _sessions(path: Path, value: object, diagnostics: list[Diagnostic]) -> None:
+    """Handle sessions using the declared repository contract."""
     if not isinstance(value, list):
         diagnostics.append(_diag(path, "llm_session_ids must be a list"))
         return
@@ -275,6 +282,7 @@ def _nonempty(
 def _nonempty_list(
     path: Path, value: object, field: str, diagnostics: list[Diagnostic]
 ) -> None:
+    """Handle list using the declared repository contract."""
     if (
         not isinstance(value, list)
         or not value
@@ -286,6 +294,7 @@ def _nonempty_list(
 def _timestamp(
     path: Path, value: object, field: str, diagnostics: list[Diagnostic]
 ) -> None:
+    """Handle timestamp using the declared repository contract."""
     if not isinstance(value, str):
         diagnostics.append(_diag(path, f"{field} must be an ISO-8601 timestamp"))
         return

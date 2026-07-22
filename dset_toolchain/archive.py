@@ -12,6 +12,7 @@ from .yaml_subset import dump, load
 
 
 def archive_plan(root: Path, change_id: str, archive_date: date) -> tuple[Path, Path]:
+    """Archive plan using the declared repository contract."""
     layout = discover_layout(root)
     source = layout.find_change(change_id)
     layer = layout.change_layer(source)
@@ -44,6 +45,7 @@ def archive_plan(root: Path, change_id: str, archive_date: date) -> tuple[Path, 
 
 
 def execute_archive(root: Path, change_id: str, archive_date: date) -> Path:
+    """Handle archive using the declared repository contract."""
     root = discover_layout(root).root
     source, destination = archive_plan(root, change_id, archive_date)
     manifest_path = discover_layout(root).structured_file(source, "change.yaml")

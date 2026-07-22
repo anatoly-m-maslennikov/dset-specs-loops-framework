@@ -20,6 +20,8 @@ ROOT = repository_root(Path(__file__))
 
 
 class CliTests(unittest.TestCase):
+    """Verify cli behavior."""
+
     def test_trace_prints_without_writing(self) -> None:
         stream = io.StringIO()
         with contextlib.redirect_stdout(stream):

@@ -31,7 +31,10 @@ ROOT = repository_root(Path(__file__))
 
 
 class ExternalReviewTests(unittest.TestCase):
+    """Verify external review behavior."""
+
     def setUp(self) -> None:
+        """Handle set up using the declared repository contract."""
         self.temporary = temporary_directory()
         self.work = Path(self.temporary.name).resolve()
         self.packet = self.work / "review-packet.md"
@@ -45,6 +48,7 @@ class ExternalReviewTests(unittest.TestCase):
         )
 
     def tearDown(self) -> None:
+        """Handle tear down using the declared repository contract."""
         self.temporary.cleanup()
 
     def test_packet_binds_exact_commit_inputs_rules_and_read_only_effect(self) -> None:
@@ -133,6 +137,7 @@ class ExternalReviewTests(unittest.TestCase):
         reviewed_inputs: object | None = None,
         priority: str = "high",
     ) -> Path:
+        """Write report using the declared repository contract."""
         packet = self._metadata(self.packet)
         report = self.work / "review-report.md"
         metadata = {

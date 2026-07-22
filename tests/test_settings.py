@@ -29,6 +29,8 @@ ROOT = repository_root(Path(__file__))
 
 
 class ProjectSettingsTests(unittest.TestCase):
+    """Verify project settings behavior."""
+
     def test_emitted_settings_are_documented_1_3_defaults(self) -> None:
         root_text = (ROOT / ".dset" / SETTINGS_FILENAME).read_text(encoding="utf-8")
         template_text = (

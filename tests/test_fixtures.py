@@ -28,6 +28,8 @@ FIXTURES = LAYOUT.fixtures_root
 
 
 class FixtureCase(TypedDict, total=False):
+    """Represent fixture case behavior and state."""
+
     id: str
     base: str
     expected: str
@@ -39,6 +41,8 @@ class FixtureCase(TypedDict, total=False):
 
 
 class FixtureTests(unittest.TestCase):
+    """Verify fixture behavior."""
+
     def test_fixture_matrix(self) -> None:
         matrix = cast(
             dict[str, Any], load(LAYOUT.structured_file(FIXTURES, "cases.toml"))
@@ -97,6 +101,7 @@ class FixtureTests(unittest.TestCase):
             )
 
     def _materialize(self, case: FixtureCase, target: Path) -> Path:
+        """Handle materialize using the declared repository contract."""
         source = FIXTURES / "bases" / case["base"]
         data = cast(dict[str, Any], load(LAYOUT.structured_file(source, "change.toml")))
         change = target / cast(str, data["id"])

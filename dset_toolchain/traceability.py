@@ -13,6 +13,7 @@ from .yaml_subset import dump, load
 
 
 def build_traceability(root: Path) -> dict[str, Any]:
+    """Build traceability using the declared repository contract."""
     root = root.resolve()
     layout = discover_layout(root)
     history = load(layout.history_path)
@@ -95,11 +96,13 @@ def build_traceability(root: Path) -> dict[str, Any]:
 
 
 def rendered_traceability(root: Path) -> str:
+    """Handle traceability using the declared repository contract."""
     path = discover_layout(root).traceability_path
     return dump(build_traceability(root), path)
 
 
 def trace_is_fresh(root: Path) -> bool:
+    """Handle is fresh using the declared repository contract."""
     path = discover_layout(root).traceability_path
     return path.is_file() and path.read_text(encoding="utf-8") == rendered_traceability(
         root
@@ -107,6 +110,7 @@ def trace_is_fresh(root: Path) -> bool:
 
 
 def write_traceability(root: Path) -> Path:
+    """Write traceability using the declared repository contract."""
     path = discover_layout(root).traceability_path
     content = rendered_traceability(root)
     path.parent.mkdir(parents=True, exist_ok=True)

@@ -24,6 +24,7 @@ SPDX = re.compile(r"^[A-Za-z0-9][A-Za-z0-9.+-]*$")
 
 
 def dependency_policy_path(root: Path) -> Path:
+    """Handle policy path using the declared repository contract."""
     layout = discover_layout(root.resolve())
     owner = layout.layer_root("implementation") if layout.layered else layout.dset_root
     local = layout._numbered_file(owner, "dependency-policy.toml")
@@ -43,6 +44,7 @@ def validate_dependency_policy(
     policy_path: Path | None = None,
     today: date | None = None,
 ) -> list[Diagnostic]:
+    """Validate dependency policy using the declared repository contract."""
     root = root.resolve()
     path = policy_path or dependency_policy_path(root)
     if not path.is_file():
@@ -148,6 +150,7 @@ def validate_dependency_policy(
 
 
 def dependency_summary(root: Path) -> dict[str, Any]:
+    """Handle summary using the declared repository contract."""
     path = dependency_policy_path(root)
     diagnostics = validate_dependency_policy(root, policy_path=path)
     data = load(path) if path.is_file() else {}
@@ -167,6 +170,7 @@ def _ecosystems(
     value: object,
     diagnostics: list[Diagnostic],
 ) -> dict[str, dict[str, str]]:
+    """Handle ecosystems using the declared repository contract."""
     if not isinstance(value, list) or not value:
         diagnostics.append(_diag(path, "ecosystems must be a non-empty list"))
         return {}
@@ -201,6 +205,7 @@ def _records(
     *,
     sparse: bool = False,
 ) -> list[dict[str, str]]:
+    """Handle records using the declared repository contract."""
     if not isinstance(value, list):
         diagnostics.append(_diag(path, f"{label} must be a list"))
         return []
@@ -250,6 +255,7 @@ def _exceptions(
     current_date: date,
     diagnostics: list[Diagnostic],
 ) -> list[dict[str, Any]]:
+    """Handle exceptions using the declared repository contract."""
     if not isinstance(value, list):
         diagnostics.append(_diag(path, "exceptions must be a list"))
         return []
@@ -312,6 +318,7 @@ def _unique_records(
     label: str,
     diagnostics: list[Diagnostic],
 ) -> None:
+    """Handle records using the declared repository contract."""
     keys = [
         (item.get("ecosystem"), item.get("name"), item.get("version"))
         for item in records
@@ -323,6 +330,7 @@ def _unique_records(
 def _uv_packages(
     path: Path, diagnostics: list[Diagnostic]
 ) -> dict[str, dict[str, str]]:
+    """Handle packages using the declared repository contract."""
     if not path.is_file():
         return {}
     text = path.read_text(encoding="utf-8")
@@ -352,6 +360,7 @@ def _project_name(path: Path) -> str:
 
 
 def _repository_role(manifest_path: Path) -> str | None:
+    """Handle role using the declared repository contract."""
     try:
         manifest = load(manifest_path)
     except (OSError, UnicodeError, YamlSubsetError):

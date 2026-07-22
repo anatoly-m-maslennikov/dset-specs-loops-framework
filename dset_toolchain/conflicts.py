@@ -46,6 +46,8 @@ AUTHORITY_ROLES = frozenset({"atomic_authority", "external_authority"})
 
 @dataclass(frozen=True)
 class ConflictParty:
+    """Represent conflict party behavior and state."""
+
     id: str
     role: str
     priority: str
@@ -380,6 +382,7 @@ def emit_conflict_atom(
 
 
 def write_conflict_result(root: Path, path: Path, result: dict[str, Any]) -> Path:
+    """Write conflict result using the declared repository contract."""
     root = root.resolve()
     path = path.resolve()
     try:
@@ -405,6 +408,7 @@ def _party(
     rules: dict[str, dict[str, Any]],
     registry_identity: dict[str, str] | None,
 ) -> ConflictParty:
+    """Handle party using the declared repository contract."""
     if not isinstance(value, dict):
         raise ValueError("each conflict party must be a mapping")
     unknown_fields = sorted(
@@ -542,6 +546,7 @@ def _context(
     left: ConflictParty,
     right: ConflictParty,
 ) -> dict[str, Any]:
+    """Handle context using the declared repository contract."""
     if not isinstance(value, dict):
         raise ValueError("conflict context must be a mapping")
     unknown_fields = sorted(
@@ -593,6 +598,7 @@ def _context(
 def _governance_rules(
     root: Path,
 ) -> tuple[dict[str, dict[str, Any]], dict[str, str] | None]:
+    """Handle rules using the declared repository contract."""
     path = discover_layout(root).governance_path
     if not path.is_file():
         return {}, None
@@ -612,6 +618,7 @@ def _governance_rules(
 
 
 def _read_metadata(path: Path) -> dict[str, Any]:
+    """Read metadata using the declared repository contract."""
     try:
         if path.suffix.lower() == ".md":
             value = frontmatter_metadata(path)
@@ -631,6 +638,7 @@ def _read_metadata(path: Path) -> dict[str, Any]:
 
 
 def _derived_identity(root: Path, path: Path) -> dict[str, str]:
+    """Handle identity using the declared repository contract."""
     resolved = path.resolve()
     try:
         resolved.relative_to(root / ".dset")
@@ -650,6 +658,7 @@ def _derived_identity(root: Path, path: Path) -> dict[str, str]:
 
 
 def _asserted_identity(root: Path, value: object, label: str) -> dict[str, str]:
+    """Handle identity using the declared repository contract."""
     if not isinstance(value, dict) or set(value) != {"carrier", "sha256"}:
         raise ValueError(f"{label} requires exact carrier and sha256")
     carrier = value.get("carrier")
@@ -669,6 +678,7 @@ def _asserted_identity(root: Path, value: object, label: str) -> dict[str, str]:
 
 
 def _atom_evidence(root: Path, path: Path, row: dict[str, Any]) -> list[dict[str, str]]:
+    """Handle evidence using the declared repository contract."""
     evidence = [_derived_identity(root, path)]
     if row.get("lifecycle_events"):
         layout = discover_layout(root)
@@ -681,6 +691,7 @@ def _atom_evidence(root: Path, path: Path, row: dict[str, Any]) -> list[dict[str
 
 
 def _metadata_role(metadata: dict[str, Any]) -> str:
+    """Handle role using the declared repository contract."""
     artifact_type = metadata.get("artifact_type")
     subtype = metadata.get("artifact_subtype")
     mapped = {
@@ -706,6 +717,7 @@ def _metadata_role(metadata: dict[str, Any]) -> str:
 
 
 def _metadata_applicable(metadata: dict[str, Any], status: str) -> bool:
+    """Handle applicable using the declared repository contract."""
     explicit = metadata.get("applicability")
     if isinstance(explicit, bool):
         return explicit
@@ -730,6 +742,7 @@ def _metadata_relations(metadata: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 def _validate_party_assertions(asserted: dict[str, Any], party: ConflictParty) -> None:
+    """Validate party assertions using the declared repository contract."""
     derived: dict[str, Any] = {
         "role": party.role,
         "priority": party.priority,
@@ -758,6 +771,7 @@ def _assert_optional_match(
 def _derived_relation(
     left: ConflictParty, right: ConflictParty
 ) -> tuple[str, str | None]:
+    """Handle relation using the declared repository contract."""
     if right.id in left.absorbed_by:
         return "absorption", right.id
     if left.id in right.absorbed_by:
@@ -770,6 +784,7 @@ def _derived_relation(
 
 
 def _projects(projection: ConflictParty, source: ConflictParty) -> bool:
+    """Handle projects using the declared repository contract."""
     for relation in projection.relations:
         if relation.get("type") != "projection_of":
             continue
@@ -797,6 +812,7 @@ def _projects(projection: ConflictParty, source: ConflictParty) -> bool:
 
 
 def _carrier_at_or_before(carrier_id: str | None, through: object) -> bool:
+    """Handle at or before using the declared repository contract."""
     if not isinstance(carrier_id, str) or not isinstance(through, str):
         return False
     if carrier_id == through:
@@ -815,6 +831,7 @@ def _carrier_at_or_before(carrier_id: str | None, through: object) -> bool:
 def _registered_precedence(
     left_id: str, right_id: str, rules: dict[str, dict[str, Any]]
 ) -> str | None:
+    """Handle precedence using the declared repository contract."""
     left_wins = _precedes(left_id, right_id, rules)
     right_wins = _precedes(right_id, left_id, rules)
     if left_wins and right_wins:
@@ -827,6 +844,7 @@ def _registered_precedence(
 
 
 def _precedes(source: str, target: str, rules: dict[str, dict[str, Any]]) -> bool:
+    """Handle precedes using the declared repository contract."""
     if source not in rules or target not in rules:
         return False
     pending = [source]
@@ -849,6 +867,7 @@ def _precedes(source: str, target: str, rules: dict[str, dict[str, Any]]) -> boo
 def _priority_winner(
     left: ConflictParty, right: ConflictParty, scale: tuple[str, ...]
 ) -> ConflictParty | None:
+    """Handle winner using the declared repository contract."""
     if left.priority == "unknown" or right.priority == "unknown":
         return None
     try:
@@ -872,6 +891,7 @@ def _role_party(
 
 
 def _party_dict(party: ConflictParty) -> dict[str, object]:
+    """Handle dict using the declared repository contract."""
     return {
         "id": party.id,
         "role": party.role,
@@ -918,6 +938,7 @@ def _resolution_basis_digest(
     precedence: object,
     priority_scale: tuple[str, ...],
 ) -> str:
+    """Handle basis digest using the declared repository contract."""
     basis = {
         "left": _party_dict(left),
         "right": _party_dict(right),
@@ -939,6 +960,7 @@ def _required_text(candidate: dict[str, Any], field: str) -> str:
 
 
 def _conflict_body(claim: str, result: dict[str, Any]) -> str:
+    """Handle body using the declared repository contract."""
     return (
         f"# Conflict\n\n{claim}\n\n"
         "## Parties\n\n"

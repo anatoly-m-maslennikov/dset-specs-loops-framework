@@ -38,6 +38,8 @@ WORKFLOW_PROGRESS = {
 
 
 class LifecycleClosureError(ValueError):
+    """Represent lifecycle closure error failures."""
+
     pass
 
 
@@ -47,6 +49,7 @@ def initial_closure(
     *,
     implementation_mode: str = "lazy",
 ) -> dict[str, Any]:
+    """Handle closure using the declared repository contract."""
     if public_entrypoint != "dset-implement":
         return {
             "schema_version": "1.0",
@@ -94,6 +97,7 @@ def advance_closure(
     child_status: str = "succeeded",
     observations: Mapping[str, bool | None] | None = None,
 ) -> dict[str, Any]:
+    """Handle closure using the declared repository contract."""
     closure = _validated_copy(raw)
     if closure["requested_mode"] != "implement":
         raise LifecycleClosureError("direct workflow has no prerequisite closure")
@@ -168,6 +172,7 @@ def advance_closure(
 
 
 def _select_next(closure: dict[str, Any]) -> None:
+    """Select next using the declared repository contract."""
     criteria = closure["criteria"]
     if criteria["decisions_reconciled"] is not True:
         _set_next(closure, "active", "decisions", "DSET-RUNTIME-DECISIONS-FIRST")
@@ -324,6 +329,7 @@ def _advance_strict_closure(
 
 
 def _strict_inputs_insufficient(criteria: Mapping[str, object]) -> bool:
+    """Handle inputs insufficient using the declared repository contract."""
     return any(
         criteria.get(name) is False
         for name in (
@@ -344,6 +350,7 @@ def _set_next(
 
 
 def _validated_copy(raw: Mapping[str, Any]) -> dict[str, Any]:
+    """Handle copy using the declared repository contract."""
     closure = copy.deepcopy(dict(raw))
     if closure.get("schema_version") != "1.0":
         raise LifecycleClosureError("unsupported closure schema")
@@ -361,6 +368,7 @@ def _validated_copy(raw: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def _state_fingerprint(closure: Mapping[str, Any]) -> str:
+    """Handle fingerprint using the declared repository contract."""
     payload = {
         "requested_mode": closure["requested_mode"],
         "implementation_mode": closure.get("implementation_mode", "lazy"),

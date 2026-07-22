@@ -47,12 +47,16 @@ def _framework_schema(name: str) -> Path:
 
 
 class GovernanceTests(unittest.TestCase):
+    """Verify governance behavior."""
+
     def setUp(self) -> None:
+        """Handle set up using the declared repository contract."""
         self.temporary = temporary_directory()
         self.root = (Path(self.temporary.name) / "adopter").resolve()
         create_adopter(ROOT, self.root)
 
     def tearDown(self) -> None:
+        """Handle tear down using the declared repository contract."""
         self.temporary.cleanup()
 
     def test_valid_registry_resolves_stable_order(self) -> None:
@@ -1027,6 +1031,7 @@ class GovernanceTests(unittest.TestCase):
 
     @staticmethod
     def _make_layered_project(root: Path) -> None:
+        """Handle layered project using the declared repository contract."""
         scopes = root / "dset" / "scopes"
         for layer in ("meta", "gov", "tool", "skill", "ops"):
             (scopes / layer).mkdir(parents=True)
@@ -1082,6 +1087,7 @@ class GovernanceTests(unittest.TestCase):
 
     @classmethod
     def _dependency_cycle(cls, root: Path) -> None:
+        """Handle cycle using the declared repository contract."""
         _, data = cls._registry(root)
         first = data["rules"][0]
         second = data["rules"][1]
@@ -1091,6 +1097,7 @@ class GovernanceTests(unittest.TestCase):
 
     @classmethod
     def _precedence_cycle(cls, root: Path) -> None:
+        """Handle cycle using the declared repository contract."""
         _, data = cls._registry(root)
         first = data["rules"][0]
         second = data["rules"][1]

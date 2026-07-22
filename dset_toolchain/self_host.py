@@ -25,6 +25,7 @@ def run_self_host(
     released_ref: str | None = None,
     candidate_command: list[str] | None = None,
 ) -> dict[str, Any]:
+    """Run self host using the declared repository contract."""
     root = root.resolve()
     work_root = work_root.resolve()
     version_path = discover_layout(root).version_path
@@ -158,6 +159,7 @@ def _rule_path(root: Path, rule: dict[str, Any]) -> Path:
 
 
 def _extract_released(root: Path, reference: str, destination: Path) -> None:
+    """Handle released using the declared repository contract."""
     result = subprocess.run(
         ["git", "archive", "--format=tar", reference, "dset_toolchain"],
         cwd=root,
@@ -190,6 +192,7 @@ def _run_validator(
     code: str,
     failure: str,
 ) -> int:
+    """Run validator using the declared repository contract."""
     environment = dict(os.environ)
     environment["PYTHONPATH"] = str(cwd)
     try:

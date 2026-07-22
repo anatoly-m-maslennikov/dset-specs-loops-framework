@@ -30,6 +30,8 @@ def _unique_carrier(name: str) -> Path:
 
 
 class MethodologySyncTests(unittest.TestCase):
+    """Verify methodology sync behavior."""
+
     def test_installed_methodology_matches_all_registered_sources(self) -> None:
         self.assertEqual(methodology_drift(ROOT), ())
 

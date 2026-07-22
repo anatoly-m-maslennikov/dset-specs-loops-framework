@@ -13,6 +13,7 @@ VALID_PROFILES = {"small", "standard", "large", "defect", "adoption"}
 
 
 def required_artifacts(root: Path, profile: str) -> tuple[set[str], set[str]]:
+    """Handle artifacts using the declared repository contract."""
     data = load(discover_layout(root).find_template("profiles.yaml"))
     profiles: dict[str, dict[str, Any]] = data["profiles"]
     documents: set[str] = set()
@@ -21,6 +22,7 @@ def required_artifacts(root: Path, profile: str) -> tuple[set[str], set[str]]:
     seen: set[str] = set()
 
     def collect(name: str) -> None:
+        """Collect collect using the declared repository contract."""
         if name in seen:
             raise ValueError(f"cyclic profile inheritance: {name}")
         seen.add(name)

@@ -27,6 +27,8 @@ SKILLS = ROOT / "skills"
 
 
 class SkillWrapperTests(unittest.TestCase):
+    """Verify skill wrapper behavior."""
+
     def _skill_text(self, name: str) -> str:
         return (SKILLS / name / "SKILL.md").read_text(encoding="utf-8")
 

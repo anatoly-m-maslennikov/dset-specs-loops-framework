@@ -23,6 +23,8 @@ PLANNING = ROOT / "10_versions"
 
 
 class ReleaseArtifactTests(unittest.TestCase):
+    """Verify release artifact behavior."""
+
     def test_release_templates_share_version_classification(self) -> None:
         expected = {
             "version-scope.md": ("version", "version_scope"),

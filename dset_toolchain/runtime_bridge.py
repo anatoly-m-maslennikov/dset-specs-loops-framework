@@ -40,6 +40,7 @@ def start_runtime(
     authority_snapshot: Mapping[str, Any] | None = None,
     implementation_mode: str | None = None,
 ) -> dict[str, object]:
+    """Start runtime using the declared repository contract."""
     expected = PUBLIC_SKILL_WORKFLOWS.get(public_entrypoint)
     if expected is None:
         raise ValueError(f"unknown public skill: {public_entrypoint}")
@@ -110,6 +111,7 @@ def start_runtime(
 
 
 def _ruleset_identity(resolved: Mapping[str, Any]) -> str:
+    """Handle identity using the declared repository contract."""
     import hashlib
     import json
 
@@ -136,6 +138,7 @@ def read_runtime(
     *,
     session_id: str | None = None,
 ) -> dict[str, Any] | None:
+    """Read runtime using the declared repository contract."""
     return resume_checkpoint(root, session_id=session_id)
 
 
@@ -147,6 +150,7 @@ def start_child_runtime(
     objective: str,
     llm_session_ids: Sequence[str] = (),
 ) -> dict[str, object]:
+    """Start child runtime using the declared repository contract."""
     checkpoint = resume_checkpoint(root, session_id=session_id)
     if checkpoint is None or checkpoint.get("status") not in {"active", "paused"}:
         raise ValueError(f"active session is unavailable: {session_id}")
@@ -189,6 +193,7 @@ def advance_runtime_closure(
     child_status: str = "succeeded",
     observations: Mapping[str, bool | None] | None = None,
 ) -> dict[str, Any]:
+    """Handle runtime closure using the declared repository contract."""
     return advance_session_closure(
         root,
         session_id,
@@ -208,6 +213,7 @@ def checkpoint_runtime(
     next_reason_code: str | None = None,
     requires_authorization: str | None = None,
 ) -> dict[str, Any]:
+    """Handle runtime using the declared repository contract."""
     invocation = load_invocation(root, run_id)
     return update_checkpoint(
         invocation,
@@ -269,6 +275,7 @@ def handoff_runtime(
 
 
 def _skill_for_workflow(workflow_id: str) -> str:
+    """Handle for workflow using the declared repository contract."""
     matches = [
         skill_id
         for skill_id, registered in PUBLIC_SKILL_WORKFLOWS.items()

@@ -47,6 +47,7 @@ def reconcile_migrated_tree(root: Path) -> tuple[Path, ...]:
 
 
 def _rebase_governance_sources(root: Path, registry_path: Path) -> None:
+    """Handle governance sources using the declared repository contract."""
     data = load(registry_path)
     rules = data.get("rules") if isinstance(data, dict) else None
     if not isinstance(rules, list):
@@ -96,6 +97,7 @@ def _atomic_structured_write(path: Path, data: Any) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Run the command-line interface and return its exit status."""
     values = sys.argv[1:] if argv is None else argv
     root = Path(values[0] if values else ".")
     reconcile_migrated_tree(root)

@@ -24,6 +24,8 @@ ROOT = repository_root(Path(__file__))
 
 
 class YamlSubsetTests(unittest.TestCase):
+    """Verify yaml subset behavior."""
+
     def test_parses_repository_manifests(self) -> None:
         layout = discover_layout(ROOT)
         provenance = load(layout.provenance_path)

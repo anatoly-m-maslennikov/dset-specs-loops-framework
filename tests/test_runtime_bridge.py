@@ -39,6 +39,8 @@ ROOT = repository_root(Path(__file__))
 
 
 class RuntimeBridgeTests(unittest.TestCase):
+    """Verify runtime bridge behavior."""
+
     def test_host_bridge_spans_process_shaped_calls(self) -> None:
         with temporary_directory() as raw:
             adopter = (Path(raw) / "adopter ünicode").resolve()

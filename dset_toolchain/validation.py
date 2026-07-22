@@ -176,6 +176,7 @@ ARTIFACT_TYPE_SUBTYPES: dict[str, frozenset[str]] = {
 
 
 def validate_repository(root: Path) -> list[Diagnostic]:
+    """Validate repository using the declared repository contract."""
     root = root.resolve()
     diagnostics: list[Diagnostic] = []
     settings, settings_issues = load_project_settings(root)
@@ -264,6 +265,7 @@ def validate_change(
     archived: bool,
     expected_relative: str | None = None,
 ) -> list[Diagnostic]:
+    """Validate change using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     merged = change_dir / "test-eval-plan.md"
     if merged.exists():
@@ -411,6 +413,7 @@ def validate_change(
 def _validate_project_manifest(
     root: Path, path: Path, data: dict[str, Any]
 ) -> list[Diagnostic]:
+    """Validate project manifest using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     project = data.get("project", {})
     project_key = project.get("key") if isinstance(project, dict) else None
@@ -565,6 +568,7 @@ def _validate_project_manifest(
 def _validate_work_areas(
     root: Path, manifest_path: Path, raw_work_areas: object
 ) -> list[Diagnostic]:
+    """Validate work areas using the declared repository contract."""
     valid = isinstance(raw_work_areas, list)
     identifiers: set[str] = set()
     raw_paths: set[str] = set()
@@ -607,6 +611,7 @@ def _validate_work_areas(
 
 
 def _safe_repository_directory(root: Path, relative: str) -> Path | None:
+    """Handle repository directory using the declared repository contract."""
     if (
         not relative
         or "\\" in relative
@@ -624,6 +629,7 @@ def _safe_repository_directory(root: Path, relative: str) -> Path | None:
 
 
 def _validate_intake_registry(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]:
+    """Validate intake registry using the declared repository contract."""
     work_items = manifest.get("work_items", {})
     relative = work_items.get("registry") if isinstance(work_items, dict) else None
     if not isinstance(relative, str):
@@ -823,6 +829,7 @@ def _validate_intake_registry(root: Path, manifest: dict[str, Any]) -> list[Diag
 
 
 def _valid_llm_session_ids(value: object) -> bool:
+    """Handle llm session ids using the declared repository contract."""
     if not isinstance(value, list):
         return False
     if any(
@@ -835,6 +842,7 @@ def _valid_llm_session_ids(value: object) -> bool:
 
 
 def _markdown_has_session_provenance(path: Path) -> bool:
+    """Handle has session provenance using the declared repository contract."""
     try:
         metadata = frontmatter_metadata(path)
     except (OSError, UnicodeError, FrontmatterError):
@@ -865,6 +873,7 @@ def _markdown_has_session_provenance(path: Path) -> bool:
 
 
 def _validate_atomic_markdown_provenance(change_dir: Path) -> list[Diagnostic]:
+    """Validate atomic markdown provenance using the declared repository contract."""
     paths = list(change_dir.glob("decision-*.md"))
     proofs = change_dir / "proofs"
     if proofs.is_dir():
@@ -884,6 +893,7 @@ def _validate_atomic_markdown_provenance(change_dir: Path) -> list[Diagnostic]:
 def _validate_version(
     root: Path, manifest: dict[str, Any], layout: RepositoryLayout
 ) -> list[Diagnostic]:
+    """Validate version using the declared repository contract."""
     project = manifest.get("project", {})
     role = project.get("repository_role") if isinstance(project, dict) else None
     path = layout.version_path
@@ -950,6 +960,7 @@ def _python_release_version(product_version: str) -> str:
 
 
 def _validate_packages(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]:
+    """Validate packages using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     layout = discover_layout(root)
     if layout.layered:
@@ -1058,6 +1069,7 @@ def _validate_packages(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]
 def _validate_layered_packages(
     root: Path, layout: RepositoryLayout, manifest: dict[str, Any]
 ) -> list[Diagnostic]:
+    """Validate layered packages using the declared repository contract."""
     if layout.separated:
         return _validate_catalog_packages(root, layout, manifest)
     diagnostics: list[Diagnostic] = []
@@ -1257,6 +1269,7 @@ def _validate_layered_packages(
 def _validate_catalog_packages(
     root: Path, layout: RepositoryLayout, manifest: dict[str, Any]
 ) -> list[Diagnostic]:
+    """Validate catalog packages using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     declared = {
         (str(item.get("id")), str(layer))
@@ -1334,6 +1347,7 @@ def _validate_artifacts(
     *,
     include_subtype_in_names: bool,
 ) -> list[Diagnostic]:
+    """Validate artifacts using the declared repository contract."""
     profiles = manifest.get("profiles", {})
     if not isinstance(profiles, dict):
         return [_diag("DSET-E120", manifest_path, "profiles must be a mapping")]
@@ -1484,6 +1498,7 @@ def validate_artifact_type_registry(
 def _validate_artifact_classification(
     registry_path: Path, data: dict[str, Any]
 ) -> list[Diagnostic]:
+    """Validate artifact classification using the declared repository contract."""
     expected = {
         "unclassified": "error",
         "multiple_matches": "error",
@@ -1506,6 +1521,7 @@ def _validate_artifact_classification(
 def _artifact_type_catalog(
     registry_path: Path, data: dict[str, Any]
 ) -> tuple[dict[str, frozenset[str]], list[Diagnostic]]:
+    """Handle type catalog using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     raw_types = data.get("artifact_types")
     if not isinstance(raw_types, list) or not raw_types:
@@ -1633,6 +1649,7 @@ def _artifact_type_catalog(
 def _artifact_exclusions(
     registry_path: Path, data: dict[str, Any]
 ) -> tuple[list[tuple[str, str]], list[Diagnostic]]:
+    """Handle exclusions using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     raw_exclusions = data.get("exclusions")
     if not isinstance(raw_exclusions, list) or not raw_exclusions:
@@ -1683,6 +1700,7 @@ def _artifact_exclusions(
 def _legacy_evidence_paths(
     registry_path: Path, data: dict[str, Any]
 ) -> tuple[frozenset[str], list[Diagnostic]]:
+    """Handle evidence paths using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     raw_paths = data.get("legacy_evidence_paths")
     if not isinstance(raw_paths, list):
@@ -1952,6 +1970,7 @@ def _legacy_structured_entries(
 
 
 def _exact_registry_path(raw: object, *, suffixes: set[str]) -> bool:
+    """Handle registry path using the declared repository contract."""
     if not isinstance(raw, str) or not raw or raw.startswith("/") or "\\" in raw:
         return False
     if any(token in raw for token in ("*", "?", "[", "]")):
@@ -1971,6 +1990,7 @@ def _within_root(root: Path, path: Path) -> bool:
 
 
 def _legacy_authority_records(root: Path) -> list[dict[str, Any]]:
+    """Handle authority records using the declared repository contract."""
     layout = discover_layout(root)
     path = layout.structured_file(layout.project_state_root, "legacy-authority.toml")
     if not path.is_file():
@@ -1998,6 +2018,7 @@ def _validate_retention_identities(
     transition_id: object = None,
     markdown_texts: dict[Path, str] | None = None,
 ) -> list[Diagnostic]:
+    """Validate retention identities using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     if markdown_texts is None:
         markdown_texts = _retention_markdown_texts(root.resolve())
@@ -2119,6 +2140,7 @@ def _registered_transition_target(
     current_path: object,
     transition_id: object,
 ) -> Path | None:
+    """Handle transition target using the declared repository contract."""
     if not isinstance(current_path, str) or not isinstance(transition_id, str):
         return None
     try:
@@ -2186,6 +2208,7 @@ def _semantic_retention_carriers(
     snapshot: str,
     markdown_texts: dict[Path, str],
 ) -> set[Path]:
+    """Handle retention carriers using the declared repository contract."""
     carriers: set[Path] = set()
     snapshot_path = (root / snapshot).resolve()
     for record in ledger:
@@ -2219,6 +2242,7 @@ def _semantic_retention_carriers(
 def _carrier_references_path(
     root: Path, carrier: Path, target: Path, text: str | None = None
 ) -> bool:
+    """Handle references path using the declared repository contract."""
     root = root.resolve()
     carrier = carrier.resolve()
     target = target.resolve()
@@ -2424,6 +2448,7 @@ def _validate_artifact_path_rules(
     project_key: str | None,
     include_subtype_in_names: bool,
 ) -> list[Diagnostic]:
+    """Validate artifact path rules using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     raw_rules = data.get("path_rules")
     if not isinstance(raw_rules, list) or not raw_rules:
@@ -2508,6 +2533,7 @@ def _validate_current_artifact_classifications(
     project_key: str | None,
     include_subtype_in_names: bool,
 ) -> list[Diagnostic]:
+    """Validate current artifact classifications using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     for path in _project_visible_files(root):
         relative = path.relative_to(root).as_posix()
@@ -2674,6 +2700,7 @@ def _validate_current_artifact_classifications(
 def _direct_artifact_classification(
     path: Path,
 ) -> tuple[str, str | None, str | None] | None:
+    """Handle artifact classification using the declared repository contract."""
     if path.suffix.lower() != ".md":
         return None
     try:
@@ -2710,6 +2737,7 @@ def _validate_artifact_name(
     *,
     include_subtype_in_names: bool,
 ) -> list[Diagnostic]:
+    """Validate artifact name using the declared repository contract."""
     type_token = artifact_type.replace("_", "-").upper()
     if artifact_type == "atomic_record":
         semantic = re.match(
@@ -2744,6 +2772,7 @@ def _validate_artifact_name(
 
 
 def _path_rule_matches(relative_path: str, pattern: str) -> bool:
+    """Handle rule matches using the declared repository contract."""
     if "/" not in pattern:
         return PurePosixPath(relative_path).match(pattern)
     path = PurePosixPath(relative_path)
@@ -2779,6 +2808,7 @@ def validate_artifact_registry(
 def _validate_artifact_entries(
     root: Path, registry_path: Path, entries: list[dict[str, Any]]
 ) -> list[Diagnostic]:
+    """Validate artifact entries using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     seen_ids: set[str] = set()
     seen_roots: set[Path] = set()
@@ -2868,6 +2898,7 @@ def _validate_artifact_parents(
     root_entry: dict[str, Any],
     areas: list[dict[str, Any]],
 ) -> list[Diagnostic]:
+    """Validate artifact parents using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     root_id = root_entry.get("id")
     if not isinstance(root_id, str):
@@ -2925,6 +2956,7 @@ def _validate_artifact_hubs(
     root_entry: dict[str, Any],
     areas: list[dict[str, Any]],
 ) -> list[Diagnostic]:
+    """Validate artifact hubs using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     root_id = root_entry.get("id")
     atoms, _ = collect_semantic_atoms(root)
@@ -2998,6 +3030,7 @@ def _validate_artifact_hubs(
 
 
 def _artifact_path(root: Path, raw: Any) -> Path | None:
+    """Handle path using the declared repository contract."""
     if not isinstance(raw, str) or not raw or Path(raw).is_absolute():
         return None
     path = (root / unquote(raw)).resolve()
@@ -3009,6 +3042,7 @@ def _artifact_path(root: Path, raw: Any) -> Path | None:
 
 
 def _artifact_carrier(root: Path, raw: Any) -> Path | None:
+    """Handle carrier using the declared repository contract."""
     if not isinstance(raw, str):
         return None
     try:
@@ -3026,6 +3060,7 @@ def _level_two_headings(text: str) -> set[str]:
 
 
 def _local_link_targets(path: Path) -> set[Path]:
+    """Handle link targets using the declared repository contract."""
     text = _without_code(path.read_text(encoding="utf-8"))
     targets: set[Path] = set()
     for raw_target in LINK_PATTERN.findall(text):
@@ -3044,6 +3079,7 @@ def _local_link_targets(path: Path) -> set[Path]:
 def _validate_change_ids(
     root: Path, change_dir: Path, data: dict[str, Any]
 ) -> list[Diagnostic]:
+    """Validate change ids using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     manifest_path = discover_layout(root).structured_file(change_dir, "change.toml")
     layout = discover_layout(root)
@@ -3221,6 +3257,7 @@ def _validate_slim_change_ids(
     data: dict[str, Any],
     layout: RepositoryLayout,
 ) -> list[Diagnostic]:
+    """Validate slim change ids using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     project = _safe_load(layout.manifest_path, diagnostics) or {}
     project_key = _manifest_project_key(project)
@@ -3320,6 +3357,7 @@ def _defined_semantic_ids(root: Path) -> set[str]:
 def _validate_layered_change(
     layout: RepositoryLayout, change_dir: Path, data: dict[str, Any]
 ) -> list[Diagnostic]:
+    """Validate layered change using the declared repository contract."""
     path = layout.structured_file(change_dir, "change.toml")
     diagnostics: list[Diagnostic] = []
     project = _safe_load(layout.manifest_path, diagnostics) or {}
@@ -3439,6 +3477,7 @@ def _validate_layered_change(
 def _validate_change_target(
     path: Path, raw_target: object, project: dict[str, Any]
 ) -> list[Diagnostic]:
+    """Validate change target using the declared repository contract."""
     raw_declared = project.get("work_areas", [])
     declared = {
         item.get("id")
@@ -3478,6 +3517,7 @@ def _validate_change_target(
 
 
 def _validate_change_uniqueness(layout: RepositoryLayout) -> list[Diagnostic]:
+    """Validate change uniqueness using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     if not layout.layered:
         return diagnostics
@@ -3559,6 +3599,7 @@ def _validate_change_uniqueness(layout: RepositoryLayout) -> list[Diagnostic]:
 def _validate_workspace(
     path: Path, data: dict[str, Any], *, archived: bool
 ) -> list[Diagnostic]:
+    """Validate workspace using the declared repository contract."""
     workspace = data.get("workspace")
     if not isinstance(workspace, dict):
         return [_diag("DSET-E152", path, "workspace metadata is required")]
@@ -3599,6 +3640,7 @@ def _validate_workspace(
 def _validate_change_dependencies(
     path: Path, data: dict[str, Any], project_key: str
 ) -> list[Diagnostic]:
+    """Validate change dependencies using the declared repository contract."""
     dependencies = data.get("dependencies")
     if not isinstance(dependencies, list):
         return [_diag("DSET-E153", path, "dependencies must be a list")]
@@ -3673,6 +3715,7 @@ def _validate_change_dependencies(
 
 
 def _valid_pull_request(raw: Any, *, exact: bool) -> bool:
+    """Handle pull request using the declared repository contract."""
     if not isinstance(raw, dict) or set(raw) != {"repository", "number", "url"}:
         return False
     repository = raw.get("repository")
@@ -3703,6 +3746,7 @@ def _is_exact_commit(raw: Any) -> bool:
 
 
 def _is_iso_date(raw: Any) -> bool:
+    """Handle iso date using the declared repository contract."""
     if not isinstance(raw, str):
         return False
     try:
@@ -3712,6 +3756,7 @@ def _is_iso_date(raw: Any) -> bool:
 
 
 def _validate_schemas(schema_paths: tuple[Path, ...]) -> list[Diagnostic]:
+    """Validate schemas using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     for path in schema_paths:
         try:
@@ -3722,6 +3767,7 @@ def _validate_schemas(schema_paths: tuple[Path, ...]) -> list[Diagnostic]:
 
 
 def _validate_provenance(root: Path) -> list[Diagnostic]:
+    """Validate provenance using the declared repository contract."""
     layout = discover_layout(root)
     path = layout.provenance_path
     diagnostics: list[Diagnostic] = []
@@ -3759,6 +3805,7 @@ def _validate_provenance(root: Path) -> list[Diagnostic]:
 
 
 def _validate_markdown(root: Path, layout: RepositoryLayout) -> list[Diagnostic]:
+    """Validate markdown using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     aliases = transition_aliases(root)
     reverse_aliases = {
@@ -3942,6 +3989,7 @@ def _manifest_project_key(manifest: dict[str, Any]) -> str | None:
 def _trace_id_pattern(
     project_key: str, trace_types: tuple[str, ...]
 ) -> re.Pattern[str]:
+    """Handle id pattern using the declared repository contract."""
     invalid = set(trace_types) - set(TRACE_TYPES)
     if invalid:
         raise ValueError(f"unknown trace ID types: {sorted(invalid)}")
@@ -3956,6 +4004,7 @@ def _trace_id_pattern(
 def _missing_semantic_fields(
     paths: list[Path], identifier: str, trace_type: str
 ) -> list[str]:
+    """Handle semantic fields using the declared repository contract."""
     section: str | None = None
     heading_pattern = re.compile(
         rf"^(?P<marks>#{{1,6}})[^\n]*\b{re.escape(identifier)}\b[^\n]*$",
@@ -4025,6 +4074,7 @@ def _is_legacy_change(data: dict[str, Any]) -> bool:
 
 
 def _safe_load(path: Path, diagnostics: list[Diagnostic]) -> dict[str, Any] | None:
+    """Handle load using the declared repository contract."""
     try:
         data = load(path)
     except (OSError, YamlSubsetError) as error:

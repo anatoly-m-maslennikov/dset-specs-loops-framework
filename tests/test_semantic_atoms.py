@@ -36,7 +36,10 @@ ROOT = repository_root(Path(__file__))
 
 
 class SemanticAtomTests(unittest.TestCase):
+    """Verify semantic atom behavior."""
+
     def setUp(self) -> None:
+        """Handle set up using the declared repository contract."""
         self.temporary = temporary_directory()
         self.root = create_adopter(ROOT, Path(self.temporary.name) / "adopter")
         self.atom_path = (
@@ -44,6 +47,7 @@ class SemanticAtomTests(unittest.TestCase):
         )
 
     def tearDown(self) -> None:
+        """Handle tear down using the declared repository contract."""
         self.temporary.cleanup()
 
     def test_repository_ledger_lifecycle_and_schemas_are_valid(self) -> None:
@@ -309,6 +313,7 @@ class SemanticAtomTests(unittest.TestCase):
         self.assertEqual(row["path"], self.atom_path.relative_to(self.root).as_posix())
 
     def _write_atom(self) -> str:
+        """Write atom using the declared repository contract."""
         text = self._atom_text(
             carrier="DSET-ATOMIC-RECORD-001",
             semantic="DSET-DECISION-001",
@@ -318,6 +323,7 @@ class SemanticAtomTests(unittest.TestCase):
 
     @staticmethod
     def _atom_text(*, carrier: str, semantic: str) -> str:
+        """Handle text using the declared repository contract."""
         return f"""---
 artifact_type: atomic_record
 artifact_id: {carrier}
@@ -342,6 +348,7 @@ llm_session_ids:
 
     @staticmethod
     def _event(event_id: str, atom_id: str, successor: str) -> dict[str, object]:
+        """Handle event using the declared repository contract."""
         return {
             "id": event_id,
             "atom_id": atom_id,

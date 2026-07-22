@@ -32,7 +32,10 @@ ROOT = repository_root(Path(__file__))
 
 
 class RuntimeTests(unittest.TestCase):
+    """Verify runtime behavior."""
+
     def setUp(self) -> None:
+        """Handle set up using the declared repository contract."""
         self.temporary = temporary_directory()
         self.root = Path(self.temporary.name).resolve()
         manifest = self.root / "dset" / "scopes" / "meta" / "dset.toml"
@@ -40,6 +43,7 @@ class RuntimeTests(unittest.TestCase):
         manifest.write_text(dump({"schema_version": "1.2"}, manifest), encoding="utf-8")
 
     def tearDown(self) -> None:
+        """Handle tear down using the declared repository contract."""
         self.temporary.cleanup()
 
     def test_run_and_checkpoint_lifecycle_is_atomic_and_schema_shaped(self) -> None:

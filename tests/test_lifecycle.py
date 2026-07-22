@@ -17,6 +17,8 @@ from dset_toolchain.lifecycle import (
 
 
 class LifecycleClosureTests(unittest.TestCase):
+    """Verify lifecycle closure behavior."""
+
     def test_implementation_closure_is_ordered_and_finite(self) -> None:
         closure = initial_closure("dset-implement", "implement")
         self.assertEqual(closure["next_workflow"], "decisions")

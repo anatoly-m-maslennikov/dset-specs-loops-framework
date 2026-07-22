@@ -17,6 +17,8 @@ from dset_toolchain.release import (
 
 
 class ReleasePolicyTests(unittest.TestCase):
+    """Verify release policy behavior."""
+
     def test_transition_matrix(self) -> None:
         cases: tuple[tuple[str, str, bool, str], ...] = (
             ("0.2.4", "small", False, "0.2.5"),

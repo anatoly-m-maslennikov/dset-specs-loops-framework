@@ -25,6 +25,8 @@ ROOT = repository_root(Path(__file__))
 
 
 class EndToEndCliTests(unittest.TestCase):
+    """Verify end to end cli behavior."""
+
     def test_initialize_runtime_and_codex_distribution(self) -> None:
         with temporary_directory() as raw:
             target = (Path(raw) / "project").resolve()

@@ -60,6 +60,7 @@ SLIM_RULE_TARGETS = {
 
 
 def find_repository(start: Path) -> Path:
+    """Find repository using the declared repository contract."""
     current = start.resolve()
     if current.is_file():
         current = current.parent
@@ -72,6 +73,7 @@ def find_repository(start: Path) -> Path:
 def validate_governance(
     root: Path, expected_profile: str | None = None
 ) -> list[Diagnostic]:
+    """Validate governance using the declared repository contract."""
     root = root.resolve()
     layout = discover_layout(root)
     manifest_path = layout.manifest_path
@@ -110,6 +112,7 @@ def validate_governance_registry(
     data: dict[str, Any],
     expected_profile: str,
 ) -> list[Diagnostic]:
+    """Validate governance registry using the declared repository contract."""
     root = root.resolve()
     layout = discover_layout(root)
     diagnostics: list[Diagnostic] = []
@@ -330,6 +333,7 @@ def validate_governance_registry(
 def resolve_workflow(
     root: Path, workflow_id: str
 ) -> tuple[dict[str, Any] | None, list[Diagnostic]]:
+    """Resolve workflow using the declared repository contract."""
     root = root.resolve()
     diagnostics = validate_governance(root)
     if diagnostics:
@@ -409,6 +413,7 @@ def materialize_governance(
     *,
     install_wrappers: bool = False,
 ) -> Path:
+    """Handle governance using the declared repository contract."""
     source_root = source_root.resolve()
     target_root = target_root.resolve()
     source_layout = discover_layout(source_root)
@@ -450,6 +455,7 @@ def materialize_governance(
     profile_relative = Path("governance") / profile_id
 
     def source_template(relative: Path) -> Path:
+        """Handle template using the declared repository contract."""
         try:
             return source_layout.find_template(relative)
         except (FileNotFoundError, ValueError) as error:
@@ -626,6 +632,7 @@ def _write_governance_hub(
     slim: bool = False,
     separated: bool = False,
 ) -> None:
+    """Write governance hub using the declared repository contract."""
     content = source.read_text(encoding="utf-8")
     if layered:
         for layer in ("meta", "tool", "skill", "implementation", "ops"):
@@ -689,6 +696,7 @@ def _write_governance_hub(
 
 
 def refresh_customization(root: Path) -> Path:
+    """Handle customization using the declared repository contract."""
     root = root.resolve()
     path = discover_layout(root).governance_path
     data = project_section(root, "governance_registry")
@@ -710,6 +718,7 @@ def refresh_customization(root: Path) -> Path:
 
 
 def diff_governance(root: Path, source_root: Path) -> str:
+    """Handle governance using the declared repository contract."""
     root = root.resolve()
     source_root = source_root.resolve()
     data = project_section(root, "governance_registry")
@@ -734,6 +743,7 @@ def diff_governance(root: Path, source_root: Path) -> str:
 def _validate_dependencies(
     path: Path, by_id: dict[str, dict[str, Any]]
 ) -> list[Diagnostic]:
+    """Validate dependencies using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     for rule_id, rule in by_id.items():
         dependencies = rule.get("depends_on", [])
@@ -774,6 +784,7 @@ def _validate_dependencies(
     visited: set[str] = set()
 
     def visit(rule_id: str) -> None:
+        """Handle visit using the declared repository contract."""
         if rule_id in visiting:
             diagnostics.append(
                 _diag("DSET-E135", path, f"rule dependency cycle includes: {rule_id}")
@@ -798,6 +809,7 @@ def _validate_dependencies(
 def _validate_precedence(
     path: Path, by_id: dict[str, dict[str, Any]]
 ) -> list[Diagnostic]:
+    """Validate precedence using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     graph: dict[str, list[str]] = {}
     for rule_id, rule in by_id.items():
@@ -855,6 +867,7 @@ def _validate_precedence(
     visited: set[str] = set()
 
     def visit(rule_id: str) -> None:
+        """Handle visit using the declared repository contract."""
         if rule_id in visiting:
             diagnostics.append(
                 _diag(
@@ -883,6 +896,7 @@ def _validate_wrappers(
     raw: Any,
     workflow_ids: set[str],
 ) -> list[Diagnostic]:
+    """Validate wrappers using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     wrappers = raw if isinstance(raw, list) else []
     seen: set[str] = set()
@@ -919,6 +933,7 @@ def _validate_wrappers(
 
 
 def _local_path(root: Path, raw: Any) -> Path | None:
+    """Handle path using the declared repository contract."""
     if not isinstance(raw, str) or not raw or Path(raw).is_absolute():
         return None
     path = (root / raw).resolve()
@@ -930,6 +945,7 @@ def _local_path(root: Path, raw: Any) -> Path | None:
 
 
 def _unique_named_file(control_root: Path, raw: Any) -> Path | None:
+    """Handle named file using the declared repository contract."""
     if not isinstance(raw, str):
         return None
     try:
@@ -940,6 +956,7 @@ def _unique_named_file(control_root: Path, raw: Any) -> Path | None:
 
 
 def _wrapper_carrier(root: Path, wrapper: dict[str, Any]) -> Path | None:
+    """Handle carrier using the declared repository contract."""
     skill = wrapper.get("skill")
     if isinstance(skill, str) and skill and Path(skill).name == skill:
         path = (root / "skills" / skill / "SKILL.md").resolve()

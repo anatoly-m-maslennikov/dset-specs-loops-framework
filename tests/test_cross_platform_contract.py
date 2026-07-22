@@ -22,6 +22,8 @@ ROOT = repository_root(Path(__file__))
 
 
 class CrossPlatformContractTests(unittest.TestCase):
+    """Verify cross platform contract behavior."""
+
     def test_repository_pins_text_worktree_bytes_to_lf(self) -> None:
         paths = (
             "dset_toolchain/validation.py",

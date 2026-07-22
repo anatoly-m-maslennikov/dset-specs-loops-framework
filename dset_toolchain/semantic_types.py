@@ -121,6 +121,8 @@ IGNORED_PARTS = frozenset(
 
 @dataclass
 class _Classification:
+    """Represent classification behavior and state."""
+
     semantic_id: str
     semantic_type: str
     subtype: str | None
@@ -210,6 +212,7 @@ def normalize_semantic_classification(
 
 
 def build_semantic_classification_index(root: Path) -> list[dict[str, Any]]:
+    """Build semantic classification index using the declared repository contract."""
     root = root.resolve()
     records, diagnostics = _collect(root)
     if diagnostics:
@@ -241,6 +244,7 @@ def build_semantic_classification_index(root: Path) -> list[dict[str, Any]]:
 
 
 def validate_semantic_classifications(root: Path) -> list[Diagnostic]:
+    """Validate semantic classifications using the declared repository contract."""
     _, diagnostics = _collect(root.resolve())
     return sorted(set(diagnostics))
 
@@ -248,6 +252,7 @@ def validate_semantic_classifications(root: Path) -> list[Diagnostic]:
 def _collect(
     root: Path,
 ) -> tuple[dict[str, _Classification], list[Diagnostic]]:
+    """Collect collect using the declared repository contract."""
     records: dict[str, _Classification] = {}
     diagnostics: list[Diagnostic] = []
 
@@ -441,6 +446,7 @@ def _register(
     status: str,
     modern: bool,
 ) -> None:
+    """Handle register using the declared repository contract."""
     semantic_type, subtype = classification
     if semantic_type not in SEMANTIC_SUBTYPES or (
         subtype is not None and subtype not in SEMANTIC_SUBTYPES[semantic_type]
@@ -496,6 +502,7 @@ def _frontmatter(path: Path) -> dict[str, Any] | None:
 
 
 def _safe_load(path: Path, diagnostics: list[Diagnostic]) -> Any:
+    """Handle load using the declared repository contract."""
     try:
         return load(path)
     except (OSError, UnicodeError, YamlSubsetError) as error:

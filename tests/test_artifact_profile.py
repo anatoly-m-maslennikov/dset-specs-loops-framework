@@ -18,7 +18,10 @@ from dset_toolchain.validation import validate_artifact_registry
 
 
 class ArtifactProfileTests(unittest.TestCase):
+    """Verify artifact profile behavior."""
+
     def setUp(self) -> None:
+        """Handle set up using the declared repository contract."""
         self.temporary = temporary_directory()
         self.root = Path(self.temporary.name).resolve()
         (self.root / "dset").mkdir()
@@ -32,6 +35,7 @@ class ArtifactProfileTests(unittest.TestCase):
         self.registry = self._registry()
 
     def tearDown(self) -> None:
+        """Handle tear down using the declared repository contract."""
         self.temporary.cleanup()
 
     def test_valid_registry_passes(self) -> None:
@@ -75,6 +79,7 @@ class ArtifactProfileTests(unittest.TestCase):
         return {item.code for item in diagnostics}
 
     def _write_root_hub(self, *, include_methodology: bool) -> None:
+        """Write root hub using the declared repository contract."""
         links = "[Docs](docs/README.md)\n"
         if include_methodology:
             links += "[Methodology](methodology/README.md)\n"
@@ -88,6 +93,7 @@ class ArtifactProfileTests(unittest.TestCase):
 
     @staticmethod
     def _write_area_hub(path: Path) -> None:
+        """Write area hub using the declared repository contract."""
         path.write_text(
             "# Area\n\n"
             "## Purpose\n\nArea purpose.\n\n"
@@ -98,6 +104,7 @@ class ArtifactProfileTests(unittest.TestCase):
 
     @staticmethod
     def _registry() -> dict[str, Any]:
+        """Handle registry using the declared repository contract."""
         return {
             "schema_version": 1.0,
             "profile": "documentation-v1",

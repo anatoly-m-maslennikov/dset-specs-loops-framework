@@ -72,6 +72,7 @@ ALLOWED_PROMOTION_STEPS = frozenset(
 def assess_artifact_candidate(
     root: Path, candidate: Mapping[str, Any]
 ) -> dict[str, Any]:
+    """Assess artifact candidate using the declared repository contract."""
     settings, settings_issues = load_project_settings(root)
     if settings_issues:
         raise ValueError("; ".join(settings_issues))
@@ -168,6 +169,7 @@ def assess_artifact_candidate(
 
 
 def _has_explicit_value(candidate: Mapping[str, Any], field: str) -> bool:
+    """Handle explicit value using the declared repository contract."""
     if field not in candidate:
         return False
     value = candidate[field]
@@ -179,6 +181,7 @@ def _has_explicit_value(candidate: Mapping[str, Any], field: str) -> bool:
 
 
 def _semantic_diagnostics(candidate: Mapping[str, Any]) -> list[dict[str, str]]:
+    """Handle diagnostics using the declared repository contract."""
     semantic_type = candidate.get("type")
     subtype = candidate.get("subtype")
     if semantic_type not in SEMANTIC_SUBTYPES:
@@ -186,9 +189,7 @@ def _semantic_diagnostics(candidate: Mapping[str, Any]) -> list[dict[str, str]]:
             {
                 "code": "DSET-ARTIFACT-TYPE",
                 "field": "type",
-                "message": (
-                    "type must be decision, question, problem, or qa"
-                ),
+                "message": ("type must be decision, question, problem, or qa"),
             }
         ]
     if subtype is not None and subtype not in SEMANTIC_SUBTYPES[str(semantic_type)]:
@@ -211,6 +212,7 @@ def _semantic_diagnostics(candidate: Mapping[str, Any]) -> list[dict[str, str]]:
 
 
 def _shape_diagnostics(candidate: Mapping[str, Any]) -> list[dict[str, str]]:
+    """Handle diagnostics using the declared repository contract."""
     diagnostics: list[dict[str, str]] = []
     for field in ("llm_session_ids", "material_links", "lineage"):
         if field in candidate and not _is_string_sequence(candidate[field]):
@@ -244,6 +246,7 @@ def _shape_diagnostics(candidate: Mapping[str, Any]) -> list[dict[str, str]]:
 def _value_diagnostics(
     root: Path, candidate: Mapping[str, Any], priorities: Sequence[str]
 ) -> list[dict[str, str]]:
+    """Handle diagnostics using the declared repository contract."""
     diagnostics: list[dict[str, str]] = []
     authority = candidate.get("authority")
     if isinstance(authority, str) and not AUTHORITY_PATTERN.fullmatch(authority):
@@ -306,6 +309,7 @@ def _value_diagnostics(
 
 
 def _link_diagnostics(root: Path, candidate: Mapping[str, Any]) -> list[dict[str, str]]:
+    """Handle diagnostics using the declared repository contract."""
     requested: set[str] = set()
     for field in ("material_links", "lineage"):
         value = candidate.get(field)
@@ -340,6 +344,7 @@ def _link_diagnostics(root: Path, candidate: Mapping[str, Any]) -> list[dict[str
 def _unknown_diagnostics(
     candidate: Mapping[str, Any],
 ) -> tuple[list[dict[str, str]], list[str]]:
+    """Handle diagnostics using the declared repository contract."""
     raw_unknowns = candidate.get("unknowns", [])
     if not isinstance(raw_unknowns, Sequence) or isinstance(raw_unknowns, str):
         return (
@@ -382,6 +387,7 @@ def _unknown_diagnostics(
 def _assess_promotion(
     candidate: Mapping[str, Any], scope_model: Mapping[str, Any] | None
 ) -> dict[str, Any]:
+    """Assess promotion using the declared repository contract."""
     raw = candidate.get("promotion")
     if not isinstance(raw, Mapping):
         return {"status": "not-assessed", "eligible": False}
@@ -473,6 +479,7 @@ def _assess_promotion(
 def _repository_scope_model(
     root: Path,
 ) -> tuple[dict[str, Any] | None, list[dict[str, str]]]:
+    """Handle scope model using the declared repository contract."""
     try:
         layout = discover_layout(root)
         manifest = load(layout.manifest_path)
@@ -511,6 +518,7 @@ def _repository_scope_model(
 
 
 def _valid_scope(value: object) -> bool:
+    """Handle scope using the declared repository contract."""
     return (
         isinstance(value, Mapping)
         and isinstance(value.get("kind"), str)

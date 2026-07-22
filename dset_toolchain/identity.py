@@ -26,10 +26,12 @@ def logical_part(name: str) -> str:
 
 
 def has_logical_part(path: Path, names: set[str] | frozenset[str]) -> bool:
+    """Handle logical part using the declared repository contract."""
     return any(logical_part(part) in names for part in path.parts)
 
 
 def control_root(root: Path) -> Path:
+    """Handle root using the declared repository contract."""
     return root.resolve() / ".dset"
 
 
@@ -43,6 +45,7 @@ def iter_control_files(root: Path, pattern: str = "*") -> Iterator[Path]:
 
 
 def find_unique_name(root: Path, name: str) -> Path:
+    """Find unique name using the declared repository contract."""
     if not name or Path(name).name != name:
         raise ValueError(f"DSET carrier name must not contain a path: {name}")
     matches = list(iter_control_files(root, name))
@@ -54,6 +57,7 @@ def find_unique_name(root: Path, name: str) -> Path:
 
 
 def find_unique_identity(root: Path, identity: str) -> Path:
+    """Find unique identity using the declared repository contract."""
     if not identity or "/" in identity or "\\" in identity:
         raise ValueError(f"DSET identity must not contain a path: {identity}")
     escaped = re.escape(identity)

@@ -144,6 +144,8 @@ class RunFinishedError(RuntimeStateError):
 
 @dataclass(frozen=True)
 class _Storage:
+    """Represent storage behavior and state."""
+
     root: Path
     runs: Path
     sessions: Path
@@ -167,10 +169,12 @@ class RuntimeInvocation:
 
     @property
     def session_id(self) -> str:
+        """Handle id using the declared repository contract."""
         return str(self.run["session_id"])
 
     @property
     def run_id(self) -> str:
+        """Run id using the declared repository contract."""
         return str(self.run["run_id"])
 
 
@@ -647,6 +651,7 @@ def load_invocation(root: Path, run_id: str) -> RuntimeInvocation:
 
 
 def _storage_for_root(root: Path | None) -> _Storage | None:
+    """Handle for root using the declared repository contract."""
     if not _is_dset_root(root):
         return None
     assert root is not None
@@ -662,6 +667,7 @@ def _storage_for_root(root: Path | None) -> _Storage | None:
 
 
 def _existing_storage(root: Path | None) -> _Storage | None:
+    """Handle storage using the declared repository contract."""
     if not _is_dset_root(root):
         return None
     assert root is not None
@@ -674,6 +680,7 @@ def _existing_storage(root: Path | None) -> _Storage | None:
 
 
 def _is_dset_root(root: Path | None) -> bool:
+    """Handle dset root using the declared repository contract."""
     if root is None or not root.is_dir():
         return False
     try:
@@ -694,6 +701,7 @@ def _load_explicit_checkpoint(
 def _select_implicit_checkpoint(
     storage: _Storage, scope: Mapping[str, Any]
 ) -> dict[str, Any] | None:
+    """Select implicit checkpoint using the declared repository contract."""
     matches: list[dict[str, Any]] = []
     for path in sorted(storage.sessions.glob("*.json")):
         checkpoint = _read_checkpoint(path)
@@ -711,6 +719,7 @@ def _select_implicit_checkpoint(
 
 
 def _read_checkpoint(path: Path) -> dict[str, Any]:
+    """Read checkpoint using the declared repository contract."""
     try:
         if path.stat().st_size > MAX_RECORD_BYTES:
             raise RuntimeStateError(f"checkpoint exceeds size limit: {path.name}")
@@ -744,6 +753,7 @@ def _read_checkpoint(path: Path) -> dict[str, Any]:
 
 
 def _active_run_ids(checkpoint: Mapping[str, Any] | None) -> list[str]:
+    """Handle run ids using the declared repository contract."""
     if checkpoint is None:
         return []
     raw = checkpoint.get("active_run_ids", [])
@@ -768,6 +778,7 @@ def _checkpoint_mode(checkpoint: Mapping[str, Any]) -> str | None:
 
 
 def _read_running_record(path: Path) -> dict[str, Any]:
+    """Read running record using the declared repository contract."""
     try:
         if path.stat().st_size > MAX_RECORD_BYTES:
             raise RuntimeStateError(f"running record exceeds size limit: {path.name}")
@@ -790,6 +801,7 @@ def _scopes_compatible(candidate: Mapping[str, Any], wanted: Mapping[str, Any]) 
 def _normalize_scope(
     root: Path | None, raw: Mapping[str, Any] | None
 ) -> dict[str, Any]:
+    """Normalize scope using the declared repository contract."""
     provided = dict(raw or {})
     repository = provided.get("repository")
     if repository is None and root is not None and root.is_dir():
@@ -830,6 +842,7 @@ def _normalize_scope(
 
 
 def _repository_identity(root: Path) -> str:
+    """Handle identity using the declared repository contract."""
     try:
         manifest_path = discover_layout(root).manifest_path
         manifest = load(manifest_path)
@@ -849,6 +862,7 @@ def _repository_identity(root: Path) -> str:
 
 
 def _run_scope(scope: Mapping[str, Any]) -> dict[str, Any]:
+    """Run scope using the declared repository contract."""
     return {
         "repository": scope["repository"],
         "workspace": scope["workspace"],
@@ -864,6 +878,7 @@ def _checkpoint_scope(scope: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def _normalize_llm_session_ids(values: Sequence[str]) -> list[str]:
+    """Normalize llm session ids using the declared repository contract."""
     _require(len(values) <= 8, "too many LLM session IDs")
     normalized = list(values)
     _require(len(normalized) == len(set(normalized)), "duplicate LLM session ID")
@@ -885,6 +900,7 @@ def _merge_llm_session_ids(first: Any, second: Sequence[str]) -> list[str]:
 
 
 def _normalize_parameters(values: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
+    """Normalize parameters using the declared repository contract."""
     _require(len(values) <= 32, "too many run parameters")
     result: list[dict[str, Any]] = []
     for value in values:
@@ -917,6 +933,7 @@ def _normalize_parameters(values: Sequence[Mapping[str, Any]]) -> list[dict[str,
 
 
 def _normalize_budget(raw: Mapping[str, Any] | None) -> dict[str, Any]:
+    """Normalize budget using the declared repository contract."""
     budget: dict[str, Any] = {
         "profile": "medium",
         "requested_model": None,
@@ -969,6 +986,7 @@ def _normalize_budget(raw: Mapping[str, Any] | None) -> dict[str, Any]:
 
 
 def _normalize_authority_snapshot(raw: Mapping[str, Any] | None) -> dict[str, Any]:
+    """Normalize authority snapshot using the declared repository contract."""
     snapshot: dict[str, Any] = {
         "git_commit": None,
         "working_tree_digest": None,
@@ -1005,6 +1023,7 @@ def _normalize_authority_snapshot(raw: Mapping[str, Any] | None) -> dict[str, An
 def _normalize_work_pointers(
     values: Sequence[Mapping[str, Any]], limit: int
 ) -> list[dict[str, Any]]:
+    """Normalize work pointers using the declared repository contract."""
     _require(len(values) <= limit, "too many work pointers")
     result: list[dict[str, Any]] = []
     for value in values:
@@ -1025,6 +1044,7 @@ def _normalize_work_pointers(
 
 
 def _normalize_relative_paths(values: Sequence[str], limit: int) -> list[str]:
+    """Normalize relative paths using the declared repository contract."""
     _require(len(values) <= limit, "too many paths")
     result = list(values)
     _require(len(result) == len(set(result)), "duplicate path")
@@ -1050,6 +1070,7 @@ def _normalize_next_signals(values: Sequence[str]) -> list[str]:
 
 
 def _normalize_usage(raw: Mapping[str, Any]) -> dict[str, Any]:
+    """Normalize usage using the declared repository contract."""
     allowed = {"input_tokens", "output_tokens", "currency", "cost"}
     _require(not (set(raw) - allowed), "unknown usage field")
     usage = copy.deepcopy(dict(raw))
@@ -1074,6 +1095,7 @@ def _normalize_usage(raw: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def _normalize_ids(values: Sequence[Any], limit: int) -> list[str]:
+    """Normalize ids using the declared repository contract."""
     _require(len(values) <= limit, "too many identifiers")
     result = [str(value) for value in values]
     _require(len(result) == len(set(result)), "duplicate identifier")
@@ -1083,6 +1105,7 @@ def _normalize_ids(values: Sequence[Any], limit: int) -> list[str]:
 
 
 def _replace_json(path: Path, data: Mapping[str, Any]) -> None:
+    """Handle json using the declared repository contract."""
     encoded = _encoded_json(data)
     temporary = _write_temporary(path.parent, path.name, encoded)
     try:
@@ -1093,6 +1116,7 @@ def _replace_json(path: Path, data: Mapping[str, Any]) -> None:
 
 
 def _publish_new_json(path: Path, data: Mapping[str, Any]) -> None:
+    """Handle new json using the declared repository contract."""
     encoded = _encoded_json(data)
     temporary = _write_temporary(path.parent, path.name, encoded)
     try:
@@ -1104,6 +1128,7 @@ def _publish_new_json(path: Path, data: Mapping[str, Any]) -> None:
 
 
 def _write_temporary(parent: Path, name: str, encoded: bytes) -> Path:
+    """Write temporary using the declared repository contract."""
     parent.mkdir(parents=True, exist_ok=True)
     descriptor, raw = tempfile.mkstemp(prefix=f".{name}.", suffix=".tmp", dir=parent)
     path = Path(raw)
@@ -1119,6 +1144,7 @@ def _write_temporary(parent: Path, name: str, encoded: bytes) -> Path:
 
 
 def _encoded_json(data: Mapping[str, Any]) -> bytes:
+    """Handle json using the declared repository contract."""
     encoded = (json.dumps(data, indent=2, sort_keys=True) + "\n").encode("utf-8")
     if len(encoded) > MAX_RECORD_BYTES:
         raise RuntimeStateError(
@@ -1128,6 +1154,7 @@ def _encoded_json(data: Mapping[str, Any]) -> bytes:
 
 
 def _prune_runs(directory: Path) -> None:
+    """Handle runs using the declared repository contract."""
     now = datetime.now(timezone.utc).timestamp()
     candidates = [
         path
@@ -1185,6 +1212,7 @@ def _require_nullable_id(value: Any) -> None:
 
 
 def _require_stable_code(value: Any) -> None:
+    """Handle stable code using the declared repository contract."""
     _require(
         isinstance(value, str)
         and len(value) <= 64
@@ -1194,6 +1222,7 @@ def _require_stable_code(value: Any) -> None:
 
 
 def _require_relative_path(value: Any) -> None:
+    """Handle relative path using the declared repository contract."""
     _require(isinstance(value, str) and 0 < len(value) <= 512, "invalid relative path")
     path = Path(value)
     _require(

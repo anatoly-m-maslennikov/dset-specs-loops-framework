@@ -55,11 +55,15 @@ _DSET_CODE_COMMAND = re.compile(r"`dset(?=\s)")
 
 
 class SkillDistributionError(ValueError):
+    """Represent skill distribution error failures."""
+
     pass
 
 
 @dataclass(frozen=True)
 class InstallAction:
+    """Represent install action behavior and state."""
+
     host: str
     skill_id: str
     source: str
@@ -73,6 +77,8 @@ class InstallAction:
 
 @dataclass(frozen=True)
 class InstallationProof:
+    """Represent installation proof behavior and state."""
+
     host: str
     skill_id: str
     destination: str
@@ -84,6 +90,8 @@ class InstallationProof:
 
 @dataclass(frozen=True)
 class RuntimeInstallAction:
+    """Represent runtime install action behavior and state."""
+
     host: str
     source: str
     destination: str
@@ -97,6 +105,8 @@ class RuntimeInstallAction:
 
 @dataclass(frozen=True)
 class RuntimeInstallationProof:
+    """Represent runtime installation proof behavior and state."""
+
     host: str
     destination: str
     digest: str
@@ -111,6 +121,7 @@ def default_destination(
     environment: Mapping[str, str] | None = None,
     home: Path | None = None,
 ) -> Path:
+    """Handle destination using the declared repository contract."""
     _require_host(host)
     base = Path.home() if home is None else home
     if host == "codex":
@@ -128,6 +139,7 @@ def default_package_destination(
     environment: Mapping[str, str] | None = None,
     home: Path | None = None,
 ) -> Path:
+    """Handle package destination using the declared repository contract."""
     _require_host(host)
     values = os.environ if environment is None else environment
     variable = "CODEX_HOME" if host == "codex" else "CLAUDE_CONFIG_DIR"
@@ -146,6 +158,7 @@ def plan_runtime_install(
     wrapper_source: Path | None = None,
     skills_destination: Path | None = None,
 ) -> RuntimeInstallAction:
+    """Plan runtime install using the declared repository contract."""
     _require_host(host)
     source_root = _distribution_root(source)
     destination_root = (
@@ -198,6 +211,7 @@ def plan_runtime_install(
 def apply_runtime_install(
     action: RuntimeInstallAction,
 ) -> RuntimeInstallationProof:
+    """Handle runtime install using the declared repository contract."""
     _require_host(action.host)
     source = Path(action.source)
     destination = Path(action.destination)
@@ -248,6 +262,7 @@ def verify_runtime_installation(
     *,
     expected_manifest_digest: str | None = None,
 ) -> RuntimeInstallationProof:
+    """Handle runtime installation using the declared repository contract."""
     _require_host(host)
     if destination.is_symlink() or not destination.is_dir():
         raise SkillDistributionError(f"runtime package is missing: {destination}")
@@ -286,6 +301,7 @@ def plan_install(
     destination: Path | None = None,
     package_destination: Path | None = None,
 ) -> list[InstallAction]:
+    """Plan install using the declared repository contract."""
     _require_host(host)
     skills_root = _skills_root(source)
     _validate_source_surface(skills_root)
@@ -332,6 +348,7 @@ def plan_install(
 
 
 def apply_install(actions: Sequence[InstallAction]) -> list[InstallationProof]:
+    """Handle install using the declared repository contract."""
     if not actions:
         return []
     hosts = {action.host for action in actions}
@@ -429,6 +446,7 @@ def verify_installation(
     *,
     expected_manifest_digest: str | None = None,
 ) -> list[InstallationProof]:
+    """Handle installation using the declared repository contract."""
     _require_host(host)
     runtime_destination = (
         _package_destination_for_skills(host, destination)
@@ -491,6 +509,7 @@ def invocation_receipt_template(
     destination: Path,
     package_destination: Path | None = None,
 ) -> dict[str, object]:
+    """Handle receipt template using the declared repository contract."""
     runtime_destination = (
         _package_destination_for_skills(host, destination)
         if package_destination is None
@@ -527,6 +546,7 @@ def verify_invocation_receipt(
     destination: Path,
     package_destination: Path | None = None,
 ) -> dict[str, object]:
+    """Handle invocation receipt using the declared repository contract."""
     try:
         serialized = json.dumps(receipt, separators=(",", ":")).encode("utf-8")
     except (TypeError, ValueError) as error:
@@ -603,6 +623,7 @@ def verify_invocation_receipt(
 
 
 def tree_digest(root: Path) -> str:
+    """Handle digest using the declared repository contract."""
     if root.is_symlink():
         raise SkillDistributionError(f"symlinks are not portable skill input: {root}")
     if not root.is_dir():
@@ -640,6 +661,7 @@ def _file_digests(
     *,
     excluded: set[str] | None = None,
 ) -> dict[str, str]:
+    """Handle digests using the declared repository contract."""
     if root.is_symlink() or not root.is_dir():
         raise SkillDistributionError(f"installation folder is missing: {root}")
     ignored = excluded or set()
@@ -663,6 +685,7 @@ def _file_digests(
 
 
 def _digest_file_map(files: Mapping[str, str]) -> str:
+    """Handle file map using the declared repository contract."""
     encoded = json.dumps(
         dict(sorted(files.items())),
         sort_keys=True,
@@ -679,6 +702,7 @@ def _load_installation_manifest(
     host: str,
     runtime_destination: Path,
 ) -> tuple[dict[str, object], str]:
+    """Load installation manifest using the declared repository contract."""
     path = runtime_destination / "manifest.json"
     if path.is_symlink() or not path.is_file():
         raise SkillDistributionError(f"runtime manifest is missing: {path}")
@@ -740,6 +764,7 @@ def _manifest_mapping(manifest: Mapping[str, object], key: str) -> dict[str, obj
 
 
 def _manifest_file_digests(runtime: Mapping[str, object]) -> dict[str, str]:
+    """Handle file digests using the declared repository contract."""
     raw = runtime.get("files")
     if not isinstance(raw, dict):
         raise SkillDistributionError("runtime payload file manifest is invalid")
@@ -784,6 +809,7 @@ def _skills_root(source: Path) -> Path:
 
 
 def _distribution_root(source: Path) -> Path:
+    """Handle root using the declared repository contract."""
     candidate = source.resolve()
     if (candidate / "dset_toolchain" / "__init__.py").is_file():
         return candidate
@@ -797,6 +823,7 @@ def _distribution_root(source: Path) -> Path:
 
 
 def _runtime_source_digest(source: Path) -> str:
+    """Handle source digest using the declared repository contract."""
     package = source / "dset_toolchain"
     digest = hashlib.sha256()
     files = sorted(
@@ -826,6 +853,7 @@ def _launcher_command(
     platform_name: str | None = None,
     executable: str | None = None,
 ) -> str:
+    """Handle command using the declared repository contract."""
     launcher = runtime_destination / "dset.py"
     interpreter = sys.executable if executable is None else executable
     platform = os.name if platform_name is None else platform_name
@@ -855,6 +883,7 @@ def _render_skill_package(
     host: str,
     launcher_command: str,
 ) -> None:
+    """Render skill package using the declared repository contract."""
     _validate_skill_shape(source, host)
     shutil.copytree(source, destination, copy_function=shutil.copy2)
     skill_file = destination / "SKILL.md"
@@ -885,6 +914,7 @@ def _render_runtime_package(
     wrapper_source: Path,
     skills_destination: Path,
 ) -> None:
+    """Render runtime package using the declared repository contract."""
     _require_host(host)
     source_root = _distribution_root(source)
     package_source = source_root / "dset_toolchain"
@@ -940,6 +970,7 @@ def _render_runtime_package(
 
 
 def _validate_runtime_source(action: RuntimeInstallAction) -> None:
+    """Validate runtime source using the declared repository contract."""
     with temporary_directory(prefix="dset-runtime-validate-") as raw:
         rendered = Path(raw) / "dset"
         _render_runtime_package(
@@ -957,6 +988,7 @@ def _validate_runtime_source(action: RuntimeInstallAction) -> None:
 
 
 def _expected_manifest(action: RuntimeInstallAction) -> dict[str, object]:
+    """Handle manifest using the declared repository contract."""
     with temporary_directory(prefix="dset-runtime-manifest-") as raw:
         rendered = Path(raw) / "dset"
         _render_runtime_package(
@@ -974,6 +1006,7 @@ def _expected_manifest(action: RuntimeInstallAction) -> dict[str, object]:
 
 
 def _validate_source_surface(skills_root: Path) -> None:
+    """Validate source surface using the declared repository contract."""
     if not skills_root.is_dir():
         raise SkillDistributionError(f"skills source is missing: {skills_root}")
     actual = {
@@ -988,6 +1021,7 @@ def _validate_source_surface(skills_root: Path) -> None:
 
 
 def _validate_skill_shape(skill: Path, host: str) -> None:
+    """Validate skill shape using the declared repository contract."""
     _require_host(host)
     skill_file = skill / "SKILL.md"
     if not skill_file.is_file():
@@ -1021,6 +1055,7 @@ def _require_host(host: str) -> None:
 
 
 def _parser() -> argparse.ArgumentParser:
+    """Handle parser using the declared repository contract."""
     parser = argparse.ArgumentParser(description="Install and verify DSET skills")
     subparsers = parser.add_subparsers(dest="command", required=True)
     for command in ("install", "verify", "receipt-template", "verify-invocation"):
@@ -1051,6 +1086,7 @@ def _parser() -> argparse.ArgumentParser:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
+    """Run the command-line interface and return its exit status."""
     arguments = _parser().parse_args(argv)
     try:
         if arguments.command == "context":
@@ -1173,6 +1209,7 @@ def _execute_install(
     *,
     apply: bool,
 ) -> dict[str, object]:
+    """Handle install using the declared repository contract."""
     expected_manifest = _expected_manifest(runtime_action)
     manifest_wrappers = _manifest_mapping(expected_manifest, "wrappers")
     action_wrappers = {action.skill_id: action.source_digest for action in actions}
@@ -1245,6 +1282,7 @@ def _execute_install(
 def _rollback_created_install(
     created: Mapping[Path, str], created_parents: set[Path]
 ) -> list[str]:
+    """Handle created install using the declared repository contract."""
     failures: list[str] = []
     for destination, expected_digest in reversed(tuple(created.items())):
         if not destination.exists():

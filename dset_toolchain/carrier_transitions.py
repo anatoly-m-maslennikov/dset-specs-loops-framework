@@ -54,6 +54,7 @@ class CarrierTransitionError(ValueError):
 
 
 def ledger_path(root: Path) -> Path:
+    """Handle path using the declared repository contract."""
     current = root / LEDGER_RELATIVE
     if current.is_file():
         return current
@@ -65,11 +66,13 @@ def ledger_path(root: Path) -> Path:
 
 
 def transition_id(original_path: str, original_sha256: str) -> str:
+    """Handle id using the declared repository contract."""
     digest = hashlib.sha256(f"{original_path}\0{original_sha256}".encode()).hexdigest()
     return f"DSET-CARRIER-TRANSITION-{digest[:16].upper()}"
 
 
 def semantic_sha256(value: Any) -> str:
+    """Handle sha256 using the declared repository contract."""
     try:
         payload = json.dumps(
             value,
@@ -86,9 +89,11 @@ def semantic_sha256(value: Any) -> str:
 
 
 def encode_nulls(value: Any) -> tuple[Any, list[str]]:
+    """Handle nulls using the declared repository contract."""
     paths: list[str] = []
 
     def visit(item: Any, path: tuple[str, ...]) -> Any:
+        """Handle visit using the declared repository contract."""
         if item is None:
             paths.append(_render_null_path(path))
             return _NULL_SENTINEL
@@ -111,6 +116,7 @@ def encode_nulls(value: Any) -> tuple[Any, list[str]]:
 
 
 def decode_nulls(value: Any, null_paths: list[str]) -> Any:
+    """Handle nulls using the declared repository contract."""
     decoded = deepcopy(value)
     for rendered in null_paths:
         parts = _parse_null_path(rendered)
@@ -136,6 +142,7 @@ def decode_nulls(value: Any, null_paths: list[str]) -> Any:
 def historical_envelope(
     root: Path, source: Path, target: Path
 ) -> tuple[str, dict[str, Any]]:
+    """Handle envelope using the declared repository contract."""
     value = load_structured(source)
     encoded, null_paths = encode_nulls(value)
     _validate_null_paths(source, null_paths, markdown=False)
@@ -171,6 +178,7 @@ def historical_envelope(
 
 
 def decode_historical_envelope(text: str) -> Any:
+    """Handle historical envelope using the declared repository contract."""
     data = load_toml(text)
     payload = data.get("payload")
     null_paths = data.get("null_paths")
@@ -182,6 +190,7 @@ def decode_historical_envelope(text: str) -> Any:
 
 
 def markdown_transition(root: Path, source: Path) -> tuple[str, dict[str, Any]]:
+    """Handle transition using the declared repository contract."""
     before = source.read_text(encoding="utf-8")
     parsed = parse_frontmatter(before)
     if parsed is None or parsed[2] != "yaml":
@@ -229,6 +238,7 @@ def markdown_link_transition(
     rewrites: list[dict[str, str]] = []
 
     def replace(match: re.Match[str]) -> str:
+        """Handle replace using the declared repository contract."""
         label, raw_target = match.groups()
         wrapped = raw_target.startswith("<") and raw_target.endswith(">")
         target_text = raw_target[1:-1] if wrapped else raw_target
@@ -287,6 +297,7 @@ def transition_record(
     *,
     kind: str,
 ) -> dict[str, Any]:
+    """Handle record using the declared repository contract."""
     original_path = source.relative_to(root).as_posix()
     original_digest = hashlib.sha256(source.read_bytes()).hexdigest()
     target_digest = hashlib.sha256(rendered.encode()).hexdigest()
@@ -377,14 +388,17 @@ def relocation_record(
 
 
 def git_head(root: Path) -> str | None:
+    """Handle head using the declared repository contract."""
     return _git_value(root, ["rev-parse", "HEAD"])
 
 
 def git_blob(root: Path, relative: str) -> str | None:
+    """Handle blob using the declared repository contract."""
     return _git_value(root, ["rev-parse", f"HEAD:{relative}"])
 
 
 def git_commit_time(root: Path) -> str:
+    """Handle commit time using the declared repository contract."""
     value = _git_value(root, ["show", "-s", "--format=%cI", "HEAD"])
     if value is None:
         raise CarrierTransitionError("carrier transition requires a commit timestamp")
@@ -392,6 +406,7 @@ def git_commit_time(root: Path) -> str:
 
 
 def load_ledger(root: Path) -> dict[str, Any]:
+    """Load ledger using the declared repository contract."""
     path = ledger_path(root)
     if not path.is_file():
         return {"schema_version": SCHEMA_VERSION, "transitions": []}
@@ -407,6 +422,7 @@ def load_ledger(root: Path) -> dict[str, Any]:
 
 
 def render_ledger(root: Path, additions: list[dict[str, Any]]) -> str:
+    """Render ledger using the declared repository contract."""
     ledger = deepcopy(load_ledger(root))
     existing = ledger["transitions"]
     assert isinstance(existing, list)
@@ -457,6 +473,7 @@ def transition_aliases(root: Path) -> dict[Path, Path]:
 def _resolve_transition_target(
     root: Path, current: str, aliases: dict[Path, Path]
 ) -> Path:
+    """Resolve transition target using the declared repository contract."""
     target = (root / current).resolve()
     seen: set[Path] = set()
     while target in aliases:
@@ -624,6 +641,7 @@ def validate_carrier_transition_ledger(root: Path) -> list[str]:
 
 
 def _git_value(root: Path, arguments: list[str]) -> str | None:
+    """Handle value using the declared repository contract."""
     completed = subprocess.run(
         ["git", *arguments],
         cwd=root,
@@ -636,6 +654,7 @@ def _git_value(root: Path, arguments: list[str]) -> str | None:
 
 
 def _git_blob_bytes(root: Path, identifier: str) -> bytes | None:
+    """Handle blob bytes using the declared repository contract."""
     completed = subprocess.run(
         ["git", "cat-file", "blob", identifier],
         cwd=root,
@@ -654,6 +673,7 @@ def _within(root: Path, path: Path) -> bool:
 
 
 def _canonical_ids(value: object) -> bool:
+    """Handle ids using the declared repository contract."""
     return (
         isinstance(value, list)
         and len(value) == len(set(value))
@@ -668,6 +688,7 @@ def _canonical_ids(value: object) -> bool:
 def _validate_null_paths(
     source: Path, null_paths: list[str], *, markdown: bool
 ) -> None:
+    """Validate null paths using the declared repository contract."""
     for rendered in null_paths:
         parts = _parse_null_path(rendered)
         allowed = markdown and parts[-2:] == ("promotion", "parent_scope")
@@ -690,6 +711,7 @@ def _validate_null_paths(
 
 
 def _contains_null_sentinel(value: Any) -> bool:
+    """Handle null sentinel using the declared repository contract."""
     if value == _NULL_SENTINEL:
         return True
     if isinstance(value, dict):
@@ -704,6 +726,7 @@ def _render_null_path(path: tuple[str, ...]) -> str:
 
 
 def _parse_null_path(path: str) -> tuple[str, ...]:
+    """Parse null path using the declared repository contract."""
     if not path.startswith("/"):
         raise CarrierTransitionError(f"invalid null reconstruction path: {path}")
     if path == "/":

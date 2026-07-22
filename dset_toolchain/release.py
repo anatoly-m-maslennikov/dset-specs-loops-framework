@@ -41,6 +41,8 @@ class ReleaseError(ValueError):
 
 @dataclass(frozen=True, order=True)
 class ProductVersion:
+    """Represent product version behavior and state."""
+
     major: int
     minor: int
     patch: int
@@ -48,6 +50,7 @@ class ProductVersion:
 
     @classmethod
     def parse(cls, raw: str) -> ProductVersion:
+        """Parse parse using the declared repository contract."""
         match = _SEMVER.fullmatch(raw)
         if match is None:
             raise ValueError(f"invalid DSET product version: {raw}")
@@ -56,11 +59,13 @@ class ProductVersion:
 
     @property
     def semver(self) -> str:
+        """Handle semver using the declared repository contract."""
         base = f"{self.major}.{self.minor}.{self.patch}"
         return f"{base}-rc.{self.rc}" if self.rc is not None else base
 
     @property
     def python(self) -> str:
+        """Handle python using the declared repository contract."""
         base = f"{self.major}.{self.minor}.{self.patch}"
         return f"{base}rc{self.rc}" if self.rc is not None else base
 
@@ -72,6 +77,7 @@ def expected_target(
     bootstrap_target: str | None = None,
     readiness_passed: bool = False,
 ) -> ProductVersion:
+    """Handle target using the declared repository contract."""
     if release_class not in RELEASE_CLASSES:
         raise ValueError(f"unknown release class: {release_class}")
     if release_class == "bootstrap":
@@ -111,6 +117,7 @@ def expected_target(
 
 
 def validate_coordinated_identity(product: str, python_package: str) -> None:
+    """Validate coordinated identity using the declared repository contract."""
     version = ProductVersion.parse(product)
     if python_package != version.python:
         raise ValueError(
@@ -121,6 +128,8 @@ def validate_coordinated_identity(product: str, python_package: str) -> None:
 
 @dataclass(frozen=True)
 class ReleasePlan:
+    """Represent release plan behavior and state."""
+
     owner_change: str
     owner_manifest: str
     release_class: str
@@ -139,6 +148,7 @@ class ReleasePlan:
     changes: tuple[str, ...]
 
     def to_dict(self) -> dict[str, Any]:
+        """Handle dict using the declared repository contract."""
         return {
             "owner_change": self.owner_change,
             "owner_manifest": self.owner_manifest,
@@ -164,11 +174,14 @@ class ReleasePlan:
 
 @dataclass(frozen=True)
 class ReleasePreparation:
+    """Represent release preparation behavior and state."""
+
     plan: ReleasePlan
     executed: bool
     changed: tuple[str, ...]
 
     def to_dict(self) -> dict[str, Any]:
+        """Handle dict using the declared repository contract."""
         data = self.plan.to_dict()
         data.update({"executed": self.executed, "changed": list(self.changed)})
         return data
@@ -353,6 +366,7 @@ def _release_owner(
     archive_roots: tuple[Path, ...],
     prepared_version: str,
 ) -> tuple[Path, dict[str, Any], list[tuple[str, str]]]:
+    """Handle owner using the declared repository contract."""
     declarations: list[tuple[Path, dict[str, Any]]] = []
     references: list[tuple[str, str]] = []
     for root in active_roots:
@@ -406,6 +420,7 @@ def _current_product_version(root: Path) -> str:
 
 
 def _readiness_passed(path: Path, candidate_commit: str) -> bool:
+    """Handle passed using the declared repository contract."""
     try:
         parsed = parse_frontmatter(path.read_text(encoding="utf-8"))
     except (OSError, UnicodeError) as error:
@@ -438,6 +453,7 @@ def _readiness_passed(path: Path, candidate_commit: str) -> bool:
 
 
 def _read_version_surfaces(root: Path) -> dict[str, str]:
+    """Read version surfaces using the declared repository contract."""
     version_data = _mapping(
         project_section(root, "version_registry"), "version contract"
     )
@@ -464,6 +480,7 @@ def _surface_target(name: str, target: ProductVersion) -> str:
 
 
 def _surface_path(root: Path, name: str) -> str:
+    """Handle path using the declared repository contract."""
     if name in {"framework", "python_package"}:
         return discover_layout(root).version_path.relative_to(root).as_posix()
     if name == "pyproject":
@@ -474,6 +491,7 @@ def _surface_path(root: Path, name: str) -> str:
 
 
 def _require_safe_prepare_inputs(plan: ReleasePlan) -> None:
+    """Handle safe prepare inputs using the declared repository contract."""
     target = ProductVersion.parse(plan.target)
     if plan.base_version == "unversioned":
         allowed_products = {target.semver}
@@ -491,6 +509,7 @@ def _require_safe_prepare_inputs(plan: ReleasePlan) -> None:
 
 
 def _contained_file(root: Path, raw: str, kind: str) -> Path:
+    """Handle file using the declared repository contract."""
     path = (root / raw).resolve()
     try:
         path.relative_to(root.resolve())
@@ -515,6 +534,7 @@ def _required_string(data: Mapping[str, Any], key: str) -> str:
 
 
 def _atomic_replace_text(path: Path, text: str) -> None:
+    """Handle replace text using the declared repository contract."""
     descriptor, raw = tempfile.mkstemp(
         prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
     )
@@ -533,4 +553,5 @@ def _atomic_replace_text(path: Path, text: str) -> None:
 
 
 def rendered_plan(plan: ReleasePlan) -> str:
+    """Handle plan using the declared repository contract."""
     return json.dumps(plan.to_dict(), indent=2, sort_keys=True)

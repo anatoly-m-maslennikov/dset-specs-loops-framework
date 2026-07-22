@@ -95,6 +95,7 @@ def lifecycle_events(root: Path) -> list[dict[str, Any]]:
 
 
 def _legacy_path(layout: RepositoryLayout, name: str) -> Path:
+    """Handle path using the declared repository contract."""
     paths = {
         "artifact_catalog": layout.artifact_type_registry_path,
         "artifact_structure": layout.artifact_registry_path,
@@ -109,6 +110,7 @@ def _legacy_path(layout: RepositoryLayout, name: str) -> Path:
 
 
 def _section_bounds(text: str, name: str) -> tuple[int, int]:
+    """Handle bounds using the declared repository contract."""
     header = re.compile(r"(?m)^\[([^\[\]\n]+)\]\s*$")
     matches = list(header.finditer(text))
     start_match = next((match for match in matches if match.group(1) == name), None)

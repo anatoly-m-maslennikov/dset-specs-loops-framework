@@ -32,7 +32,10 @@ from tests.git_fixtures import initialize_exact_git_repository
 
 
 class CarrierTransitionTests(unittest.TestCase):
+    """Verify carrier transition behavior."""
+
     def setUp(self) -> None:
+        """Handle set up using the declared repository contract."""
         self.temporary = temporary_directory()
         self.root = Path(self.temporary.name).resolve()
         self.source = self._write(
@@ -113,6 +116,7 @@ class CarrierTransitionTests(unittest.TestCase):
         )
 
     def tearDown(self) -> None:
+        """Handle tear down using the declared repository contract."""
         self.temporary.cleanup()
 
     def _write(self, relative: str, text: str) -> Path:

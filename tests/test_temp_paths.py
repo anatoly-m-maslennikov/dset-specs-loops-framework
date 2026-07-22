@@ -16,6 +16,8 @@ from dset_toolchain.temp_paths import scratch_root, temporary_directory
 
 
 class TemporaryPathTests(unittest.TestCase):
+    """Verify temporary path behavior."""
+
     def test_posix_scratch_ignores_ambient_temp_configuration(self) -> None:
         with patch.dict("os.environ", {"TMPDIR": "/repository"}):
             self.assertEqual(

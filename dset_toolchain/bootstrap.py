@@ -43,12 +43,16 @@ class InitializationError(ValueError):
 
 @dataclass(frozen=True)
 class WorkArea:
+    """Represent work area behavior and state."""
+
     identifier: str
     path: str
 
 
 @dataclass(frozen=True)
 class InitializationResult:
+    """Represent initialization result behavior and state."""
+
     target: Path
     source: str
     profile: str
@@ -56,6 +60,7 @@ class InitializationResult:
     executed: bool
 
     def as_dict(self) -> dict[str, object]:
+        """Handle dict using the declared repository contract."""
         return {
             "target": self.target.as_posix(),
             "source": self.source,
@@ -139,6 +144,7 @@ def initialize_project(
 
 
 def parse_work_area(raw: str) -> WorkArea:
+    """Parse work area using the declared repository contract."""
     identifier, separator, path = raw.partition("=")
     if not separator or not identifier or not path:
         raise InitializationError("work area must use ID=repository/relative/path")
@@ -146,6 +152,7 @@ def parse_work_area(raw: str) -> WorkArea:
 
 
 def bundled_source_digest() -> str:
+    """Handle source digest using the declared repository contract."""
     data = _load_bundle()
     return str(data["sha256"])
 
@@ -175,6 +182,7 @@ def distribution_source(source_root: Path | None = None) -> Iterator[tuple[Path,
 
 
 def _load_bundle() -> dict[str, Any]:
+    """Load bundle using the declared repository contract."""
     path = resources.files("dset_toolchain").joinpath("bootstrap_bundle.json")
     data = json.loads(path.read_text(encoding="utf-8"))
     if data.get("schema_version") != 1 or not isinstance(data.get("files"), dict):
@@ -197,6 +205,7 @@ def _validate_inputs(
     package_id: str,
     work_areas: Sequence[WorkArea],
 ) -> None:
+    """Validate inputs using the declared repository contract."""
     if _PROJECT_KEY.fullmatch(project_key) is None:
         raise InitializationError("project key must be an uppercase ID segment")
     for label, value in (("project ID", project_id), ("package ID", package_id)):
@@ -236,6 +245,7 @@ def _stage_project(
     profile: str,
     hosted_automation: bool,
 ) -> None:
+    """Handle project using the declared repository contract."""
     source_layout = discover_layout(source)
     dset_root = stage / ".dset"
     dset_root.mkdir()
@@ -413,6 +423,7 @@ def _stage_project(
 
 
 def _copy_governance_wrappers(source: Path, stage: Path) -> None:
+    """Handle governance wrappers using the declared repository contract."""
     registry = project_section(source, "governance_registry")
     copied: set[Path] = set()
     for item in cast(list[dict[str, Any]], registry.get("wrappers", [])):
@@ -434,6 +445,7 @@ def _materialize_package(
     package_id: str,
     project_name: str,
 ) -> None:
+    """Handle package using the declared repository contract."""
     destination = stage / ".dset" / APPLIED_LAYER_DIRECTORIES["meta"]
     replacements = {
         "{{project_key}}": project_key,
@@ -470,6 +482,7 @@ def _materialize_package(
 
 
 def _package_artifact_names(project_key: str) -> dict[str, str]:
+    """Handle artifact names using the declared repository contract."""
     return {
         "hub": f"{project_key}-META-HUB.md",
         "domain": f"{project_key}-META-specification-domain.md",
@@ -483,6 +496,7 @@ def _package_artifact_names(project_key: str) -> dict[str, str]:
 
 
 def _artifact_structure(project_key: str) -> dict[str, Any]:
+    """Handle structure using the declared repository contract."""
     areas = [
         {
             "id": "installed-methodology",
@@ -534,6 +548,7 @@ def _artifact_structure(project_key: str) -> dict[str, Any]:
 def _write_combined_settings(
     template: Path, target: Path, manifest: dict[str, Any]
 ) -> None:
+    """Write combined settings using the declared repository contract."""
     behavior = template.read_text(encoding="utf-8").rstrip()
     project = dict(manifest)
     project.pop("schema_version", None)
@@ -560,6 +575,7 @@ def _copy_structured(source: Path, target: Path) -> None:
 
 
 def _replace_structured_values(value: object, replacements: dict[str, str]) -> object:
+    """Handle structured values using the declared repository contract."""
     if isinstance(value, dict):
         return {
             key: _replace_structured_values(item, replacements)
@@ -574,6 +590,7 @@ def _replace_structured_values(value: object, replacements: dict[str, str]) -> o
 
 
 def _commit_stage(stage: Path, target: Path, paths: Sequence[str]) -> None:
+    """Handle stage using the declared repository contract."""
     created: list[Path] = []
     try:
         target.mkdir(parents=True, exist_ok=True)
@@ -598,6 +615,7 @@ def _rollback_paths(target: Path, paths: Sequence[str]) -> None:
 
 
 def _remove_empty_directories(root: Path) -> None:
+    """Handle empty directories using the declared repository contract."""
     if not root.is_dir():
         return
     for path in sorted(

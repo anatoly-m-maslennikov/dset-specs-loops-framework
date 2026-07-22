@@ -34,12 +34,16 @@ ROOT = repository_root(Path(__file__))
 
 
 class PriorityConflictTests(unittest.TestCase):
+    """Verify priority conflict behavior."""
+
     def setUp(self) -> None:
+        """Handle set up using the declared repository contract."""
         self.temporary = temporary_directory()
         self.root = Path(self.temporary.name).resolve()
         (self.root / "README.md").write_text("# Conflict evidence\n", encoding="utf-8")
 
     def tearDown(self) -> None:
+        """Handle tear down using the declared repository contract."""
         self.temporary.cleanup()
 
     def test_source_projection_relation_is_derived_before_priority(self) -> None:
@@ -306,6 +310,7 @@ class PriorityConflictTests(unittest.TestCase):
         right_applicable: bool = True,
         selectable: bool = False,
     ) -> dict[str, Any]:
+        """Handle candidate using the declared repository contract."""
         left = self._write_fact(
             self.root,
             "APP-LEFT-001",
@@ -339,6 +344,7 @@ class PriorityConflictTests(unittest.TestCase):
         identifier: str,
         **facts: Any,
     ) -> dict[str, str]:
+        """Write fact using the declared repository contract."""
         directory = root / "conflict-facts"
         directory.mkdir(exist_ok=True)
         path = directory / f"{identifier.lower()}.json"
@@ -354,6 +360,7 @@ class PriorityConflictTests(unittest.TestCase):
 
     @staticmethod
     def _context(root: Path) -> dict[str, Any]:
+        """Handle context using the declared repository contract."""
         evidence_path = root / "README.md"
         return {
             "applicable": True,
@@ -372,6 +379,7 @@ class PriorityConflictTests(unittest.TestCase):
 
     @classmethod
     def _atomic_candidate(cls, root: Path) -> dict[str, Any]:
+        """Handle candidate using the declared repository contract."""
         return {
             "left": {"id": "DSET-DECISION-001"},
             "right": {"id": "DSET-CONTRACT-002"},
@@ -381,6 +389,7 @@ class PriorityConflictTests(unittest.TestCase):
 
     @classmethod
     def _emission_candidate(cls, root: Path) -> dict[str, Any]:
+        """Handle candidate using the declared repository contract."""
         candidate = cls._atomic_candidate(root)
         candidate["conflict_atom"] = {
             "artifact_id": "DSET-ATOMIC-RECORD-003",
@@ -400,6 +409,7 @@ class PriorityConflictTests(unittest.TestCase):
 
     @staticmethod
     def _seed_parties(root: Path, *, replacement: bool = False) -> None:
+        """Handle parties using the declared repository contract."""
         for carrier, semantic, subtype, priority in (
             ("001", "DSET-DECISION-001", None, "medium"),
             ("002", "DSET-CONTRACT-002", "contract", "high"),

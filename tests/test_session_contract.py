@@ -20,6 +20,8 @@ SKILL_ROOT = ROOT / ".dset" / "04_layer_skill"
 
 
 class SessionContractTests(unittest.TestCase):
+    """Verify session contract behavior."""
+
     def test_run_records_link_every_invocation_to_one_session(self) -> None:
         schema = json.loads(
             (SKILL_ROOT / "schemas" / "skill-run.schema.json").read_text(

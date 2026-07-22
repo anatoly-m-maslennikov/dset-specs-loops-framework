@@ -23,6 +23,7 @@ def _project_root(start: Path) -> Path:
 
 
 def main() -> int:
+    """Run the command-line interface and return its exit status."""
     sys.dont_write_bytecode = True
     carrier = Path(__file__).resolve()
     project_root = _project_root(carrier)

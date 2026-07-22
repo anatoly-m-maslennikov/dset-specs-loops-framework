@@ -31,12 +31,16 @@ ROOT = repository_root(Path(__file__))
 
 
 class ReleaseIntegrationTests(unittest.TestCase):
+    """Verify release integration behavior."""
+
     def setUp(self) -> None:
+        """Handle set up using the declared repository contract."""
         self.temporary = temporary_directory()
         self.root = Path(self.temporary.name).resolve()
         self.change = self._write_project()
 
     def tearDown(self) -> None:
+        """Handle tear down using the declared repository contract."""
         self.temporary.cleanup()
 
     def test_plan_prepare_check_and_repeat_are_deterministic(self) -> None:
@@ -196,6 +200,7 @@ class ReleaseIntegrationTests(unittest.TestCase):
         self.assertNotIn("--force", workflow)
 
     def _write_project(self) -> Path:
+        """Write project using the declared repository contract."""
         scopes = self.root / "dset" / "scopes"
         for layer in ("meta", "gov", "tool", "skill", "ops"):
             (scopes / layer / "changes").mkdir(parents=True)
@@ -302,6 +307,7 @@ llm_session_ids: []
         return change
 
     def _surface_bytes(self) -> dict[str, bytes]:
+        """Handle bytes using the declared repository contract."""
         version_path = discover_layout(self.root).version_path
         version_relative = version_path.relative_to(self.root).as_posix()
         return {

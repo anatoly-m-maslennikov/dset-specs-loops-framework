@@ -98,6 +98,7 @@ def resolve_skill_context(
 
 
 def _initialization_context(target: Path, skill_id: str) -> dict[str, object]:
+    """Handle context using the declared repository contract."""
     try:
         root = _find_unique_repository(target)
     except FileNotFoundError:
@@ -118,6 +119,7 @@ def _initialization_context(target: Path, skill_id: str) -> dict[str, object]:
 
 
 def _repair_context(target: Path, root: Path, skill_id: str) -> dict[str, object]:
+    """Handle context using the declared repository contract."""
     diagnostics = validate_governance(root)
     if not diagnostics:
         raise ValueError(f"DSET governance is valid at: {root}")
@@ -138,6 +140,7 @@ def _repair_context(target: Path, root: Path, skill_id: str) -> dict[str, object
 
 
 def _find_unique_repository(start: Path) -> Path:
+    """Find unique repository using the declared repository contract."""
     current = start if start.is_dir() else start.parent
     matches = [
         candidate
@@ -154,6 +157,7 @@ def _find_unique_repository(start: Path) -> Path:
 
 
 def _target_scope(root: Path, target: Path) -> tuple[dict[str, Any], str | None]:
+    """Handle scope using the declared repository contract."""
     manifest = load(discover_layout(root).manifest_path)
     project = manifest.get("project") if isinstance(manifest, dict) else None
     project_id = project.get("id") if isinstance(project, dict) else None

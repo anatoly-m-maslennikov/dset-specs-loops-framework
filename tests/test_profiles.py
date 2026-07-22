@@ -18,6 +18,8 @@ ROOT = repository_root(Path(__file__))
 
 
 class ProfileTests(unittest.TestCase):
+    """Verify profile behavior."""
+
     def test_standard_has_eight_documents(self) -> None:
         files, directories = required_artifacts(ROOT, "standard")
         documents = {item for item in files if item.endswith(".md")}

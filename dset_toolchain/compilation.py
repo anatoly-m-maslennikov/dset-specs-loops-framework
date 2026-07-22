@@ -32,6 +32,7 @@ IGNORED_PARTS = frozenset(
 
 
 def build_compilation_index(root: Path) -> dict[str, Any]:
+    """Build compilation index using the declared repository contract."""
     root = root.resolve()
     sources = _authority_sources(root)
     projections = _projection_paths(root)
@@ -74,6 +75,7 @@ def build_compilation_index(root: Path) -> dict[str, Any]:
 
 
 def compilation_path(root: Path) -> Path:
+    """Handle path using the declared repository contract."""
     layout = discover_layout(root.resolve())
     generated = (
         layout.traceability_path.parent
@@ -85,10 +87,12 @@ def compilation_path(root: Path) -> Path:
 
 
 def rendered_compilation(root: Path) -> str:
+    """Handle compilation using the declared repository contract."""
     return dump(build_compilation_index(root), compilation_path(root))
 
 
 def compilation_is_fresh(root: Path) -> bool:
+    """Handle is fresh using the declared repository contract."""
     path = compilation_path(root)
     try:
         rendered = rendered_compilation(root)
@@ -98,6 +102,7 @@ def compilation_is_fresh(root: Path) -> bool:
 
 
 def write_compilation(root: Path) -> Path:
+    """Write compilation using the declared repository contract."""
     path = compilation_path(root)
     content = rendered_compilation(root)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -108,6 +113,7 @@ def write_compilation(root: Path) -> Path:
 
 
 def active_authority_ids(root: Path) -> set[str]:
+    """Handle authority ids using the declared repository contract."""
     return set(_authority_sources(root.resolve()))
 
 
@@ -124,6 +130,7 @@ def projected_authority_ids(root: Path) -> set[str]:
 
 
 def _authority_sources(root: Path) -> dict[str, Path]:
+    """Handle sources using the declared repository contract."""
     lifecycle = _lifecycle_status(root)
     sources: dict[str, Path] = {}
     atoms, diagnostics = collect_semantic_atoms(root)
@@ -174,6 +181,7 @@ def _authority_sources(root: Path) -> dict[str, Path]:
 
 
 def _projection_paths(root: Path) -> list[Path]:
+    """Handle paths using the declared repository contract."""
     layout = discover_layout(root)
     if layout.recursive or layout.separated:
         prefixes = ("specification-", "procedure-", "plan-", "navigation-")
@@ -216,6 +224,7 @@ def _lifecycle_status(root: Path) -> dict[str, str]:
 
 
 def _ignored(root: Path, path: Path) -> bool:
+    """Handle ignored using the declared repository contract."""
     relative = path.relative_to(root)
     if relative.parts[:1] == (".dset_runtime",) or relative.parts[:2] == (
         ".dset",

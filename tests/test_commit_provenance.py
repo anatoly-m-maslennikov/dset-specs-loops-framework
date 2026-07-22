@@ -21,7 +21,10 @@ from tests import repository_root
 
 
 class CommitProvenanceTests(unittest.TestCase):
+    """Verify commit provenance behavior."""
+
     def setUp(self) -> None:
+        """Handle set up using the declared repository contract."""
         self.known = {
             "APP-REQ-001": ("decision", "requirement"),
             "APP-TEST-001": ("qa", "test"),
@@ -104,9 +107,7 @@ class CommitProvenanceTests(unittest.TestCase):
     def test_correction_cannot_exempt_valid_or_invalid_semantics(self) -> None:
         valid = self._record(
             "d" * 40,
-            "feat: valid\n\n"
-            "Implements: APP-REQ-001\n"
-            "Session: codex:test-session\n",
+            "feat: valid\n\nImplements: APP-REQ-001\nSession: codex:test-session\n",
         )
         unnecessary = validate_commit_history(
             [valid], self.known, [self._correction(valid)]
@@ -166,6 +167,7 @@ class CommitProvenanceTests(unittest.TestCase):
 
     @staticmethod
     def _correction(record: CommitRecord) -> dict[str, object]:
+        """Handle correction using the declared repository contract."""
         return {
             "commit": record.commit,
             "original_message_sha256": record.message_sha256,

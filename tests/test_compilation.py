@@ -27,6 +27,8 @@ ROOT = repository_root(Path(__file__))
 
 
 class CompilationTests(unittest.TestCase):
+    """Verify compilation behavior."""
+
     def test_loose_id_mentions_are_not_compiled_claim_fragments(self) -> None:
         with temporary_directory() as raw:
             path = (Path(raw) / "spec.md").resolve()

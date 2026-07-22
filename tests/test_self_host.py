@@ -24,6 +24,8 @@ ROOT = repository_root(Path(__file__))
 
 
 class SelfHostTests(unittest.TestCase):
+    """Verify self host behavior."""
+
     def test_hosted_workflow_fetches_released_validator_history(self) -> None:
         workflow = (ROOT / ".github" / "workflows" / "dset.yml").read_text(
             encoding="utf-8"
@@ -98,6 +100,7 @@ class SelfHostTests(unittest.TestCase):
         command = [sys.executable, "-m", "dset_toolchain", "self-host", str(ROOT)]
 
         def execute() -> subprocess.CompletedProcess[str]:
+            """Handle execute using the declared repository contract."""
             return subprocess.run(
                 command,
                 cwd=ROOT,

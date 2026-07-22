@@ -19,6 +19,8 @@ ROOT = repository_root(Path(__file__))
 
 
 class ArchitectureViewTests(unittest.TestCase):
+    """Verify architecture view behavior."""
+
     def test_project_hub_maps_enabled_layers(self) -> None:
         content = (ROOT / "README.md").read_text(encoding="utf-8")
         self.assertIn("## Project architecture map", content)

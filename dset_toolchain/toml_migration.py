@@ -96,6 +96,8 @@ class TomlMigrationError(ValueError):
 
 @dataclass(frozen=True)
 class MigrationEntry:
+    """Represent migration entry behavior and state."""
+
     kind: str
     source: Path
     target: Path
@@ -105,15 +107,19 @@ class MigrationEntry:
 
     @property
     def source_digest(self) -> str:
+        """Handle digest using the declared repository contract."""
         return _sha256(self.before_text)
 
     @property
     def target_digest(self) -> str:
+        """Handle digest using the declared repository contract."""
         return _sha256(self.after_text)
 
 
 @dataclass(frozen=True)
 class ReferenceRewrite:
+    """Represent reference rewrite behavior and state."""
+
     path: Path
     source: str
     target: str
@@ -132,15 +138,19 @@ class PackageSuccessor:
 
     @property
     def source_digest(self) -> str:
+        """Handle digest using the declared repository contract."""
         return _sha256(self.source_text)
 
     @property
     def target_digest(self) -> str:
+        """Handle digest using the declared repository contract."""
         return _sha256(self.target_text)
 
 
 @dataclass(frozen=True)
 class MigrationPlan:
+    """Represent migration plan behavior and state."""
+
     root: Path
     entries: tuple[MigrationEntry, ...]
     exceptions: tuple[dict[str, object], ...]
@@ -152,16 +162,19 @@ class MigrationPlan:
 
     @property
     def ready(self) -> bool:
+        """Handle ready using the declared repository contract."""
         return not self.blockers
 
     @property
     def digest(self) -> str:
+        """Handle digest using the declared repository contract."""
         payload = json.dumps(
             self.report(), sort_keys=True, separators=(",", ":"), ensure_ascii=False
         )
         return _sha256(payload)
 
     def report(self) -> dict[str, object]:
+        """Handle report using the declared repository contract."""
         changes_by_kind = _count_by(
             (entry.kind for entry in self.entries),
         )
@@ -419,6 +432,7 @@ def apply_toml_migration(
 
 
 def _project_files(root: Path) -> list[Path]:
+    """Handle files using the declared repository contract."""
     paths: list[Path] = []
     for path in root.rglob("*"):
         relative = path.relative_to(root)
@@ -435,6 +449,7 @@ def _project_files(root: Path) -> list[Path]:
 
 
 def _existing_reconciliation_outputs(root: Path) -> set[Path]:
+    """Handle reconciliation outputs using the declared repository contract."""
     layout = discover_layout(root)
     candidates = {
         layout.governance_path,
@@ -451,6 +466,7 @@ def _exception_classification(
     path: Path,
     immutable: dict[Path, dict[str, object]] | None = None,
 ) -> dict[str, object] | None:
+    """Handle classification using the declared repository contract."""
     immutable_classification = (immutable or {}).get(path)
     if immutable_classification is not None:
         return immutable_classification
@@ -700,6 +716,7 @@ def _validate_legacy_fragment(
 def _load_history_ledger(
     root: Path, stems: tuple[str, ...], label: str
 ) -> tuple[dict[str, Any] | None, list[str]]:
+    """Load history ledger using the declared repository contract."""
     candidates = [
         root / f"{stem}{suffix}"
         for stem in stems
@@ -979,6 +996,7 @@ def _carrier_transition_entries(
 
 
 def _transition_identities(root: Path, source: Path) -> tuple[list[str], list[str]]:
+    """Handle identities using the declared repository contract."""
     relative = _relative(root, source)
     carrier_ids: set[str] = set()
     semantic_ids: set[str] = set()
@@ -1076,6 +1094,7 @@ def _reseal_transition_registry(
     data: dict[str, Any],
     by_source: dict[str, tuple[MigrationEntry, dict[str, Any]]],
 ) -> None:
+    """Handle transition registry using the declared repository contract."""
     records = data.get("records")
     if relative.endswith("atoms.toml") and isinstance(records, list):
         for item in records:
@@ -1120,6 +1139,7 @@ def _reseal_transition_registry(
 
 
 def _toml_cutover_complete(root: Path) -> bool:
+    """Handle cutover complete using the declared repository contract."""
     return any(
         path.is_file()
         for path in (
@@ -1142,6 +1162,7 @@ def _register_immutable_path(
     *,
     shared: bool = False,
 ) -> None:
+    """Handle immutable path using the declared repository contract."""
     path = (root / raw_path).resolve()
     if not _is_within_root(root, path):
         blockers.append(
@@ -1336,6 +1357,7 @@ def _package_successors(
 
 
 def _inactive_semantic_ids(root: Path) -> tuple[set[str], list[str]]:
+    """Handle semantic ids using the declared repository contract."""
     ledger, blockers = _load_history_ledger(
         root,
         (
@@ -1368,6 +1390,7 @@ def _reconcile_package_artifact_paths(
     path_mapping: dict[Path, Path],
     blockers: list[str],
 ) -> None:
+    """Handle package artifact paths using the declared repository contract."""
     artifacts = data.get("artifacts")
     if not isinstance(artifacts, dict):
         return
@@ -1390,6 +1413,7 @@ def _reconcile_package_artifact_paths(
 def _package_projection_contains(
     package: dict[str, Any], field: str, identifier: str
 ) -> bool:
+    """Handle projection contains using the declared repository contract."""
     data = package["data"]
     artifacts = data.get("artifacts")
     if not isinstance(artifacts, dict):
@@ -1416,6 +1440,7 @@ def _semantic_id_layer(identifier: str) -> str | None:
 
 
 def _successor_incomplete(current: str, expected: dict[str, Any]) -> bool:
+    """Handle incomplete using the declared repository contract."""
     try:
         actual = load_toml(current)
     except TomlCodecError:
@@ -1447,6 +1472,7 @@ def _copy_structured(value: Any) -> Any:
 
 
 def _exception(root: Path, path: Path, category: str) -> dict[str, object]:
+    """Handle exception using the declared repository contract."""
     return {
         "path": _relative(root, path),
         "category": category,
@@ -1458,6 +1484,7 @@ def _exception(root: Path, path: Path, category: str) -> dict[str, object]:
 def _external_contract_exception(
     root: Path, path: Path, category: str
 ) -> dict[str, object]:
+    """Handle contract exception using the declared repository contract."""
     return {
         "path": _relative(root, path),
         "category": category,
@@ -1468,6 +1495,7 @@ def _external_contract_exception(
 
 
 def _is_owned_structured(root: Path, path: Path) -> bool:
+    """Handle owned structured using the declared repository contract."""
     relative = path.relative_to(root)
     return (
         bool(relative.parts)
@@ -1482,6 +1510,7 @@ def _is_owned_markdown(root: Path, path: Path) -> bool:
 
 
 def _structured_entry(root: Path, source: Path) -> MigrationEntry:
+    """Handle entry using the declared repository contract."""
     before = source.read_text(encoding="utf-8")
     if source.suffix.lower() == ".json":
         value = json.loads(before)
@@ -1525,6 +1554,7 @@ def _reconcile_artifact_type_patterns(value: dict[str, Any]) -> None:
 
 
 def _frontmatter_entry(root: Path, source: Path) -> MigrationEntry | None:
+    """Handle entry using the declared repository contract."""
     before = source.read_text(encoding="utf-8")
     parsed = _yaml_frontmatter(before)
     if parsed is None:
@@ -1548,6 +1578,7 @@ def _frontmatter_entry(root: Path, source: Path) -> MigrationEntry | None:
 
 
 def _yaml_frontmatter(text: str) -> tuple[dict[str, Any], str] | None:
+    """Handle frontmatter using the declared repository contract."""
     lines = text.splitlines(keepends=True)
     if not lines or lines[0].strip() != "---":
         return None
@@ -1570,6 +1601,7 @@ def _normalize_allowed_nulls(value: dict[str, Any], source: str) -> tuple[str, .
     normalized: list[str] = []
 
     def visit(current: object, path: tuple[str, ...]) -> None:
+        """Handle visit using the declared repository contract."""
         if isinstance(current, dict):
             for key in list(current):
                 item = current[key]
@@ -1588,6 +1620,7 @@ def _normalize_allowed_nulls(value: dict[str, Any], source: str) -> tuple[str, .
 
 
 def _null_is_omittable(source: str, path: tuple[str, ...]) -> bool:
+    """Handle is omittable using the declared repository contract."""
     if path[-2:] == ("promotion", "parent_scope"):
         return True
     if source.endswith("/intake.yaml") or source.endswith("/intake.yml"):
@@ -1618,6 +1651,7 @@ def _runtime_readiness(
     successors: list[PackageSuccessor],
     preserved_structured: tuple[Path, ...] = (),
 ) -> tuple[dict[str, object], list[str]]:
+    """Handle readiness using the declared repository contract."""
     pending_successors = [item for item in successors if item.status == "pending"]
     if not entries and not references and not pending_successors:
         return {
@@ -1727,6 +1761,7 @@ def _target_digests(
     references: list[ReferenceRewrite],
     successors: Iterable[PackageSuccessor] = (),
 ) -> dict[str, str]:
+    """Handle digests using the declared repository contract."""
     writes = {entry.target: entry.after_text for entry in entries}
     writes.update({successor.target: successor.target_text for successor in successors})
     grouped: dict[Path, list[ReferenceRewrite]] = {}
@@ -1755,6 +1790,7 @@ def _expected_target_paths(
     references: list[ReferenceRewrite],
     successors: Iterable[PackageSuccessor] = (),
 ) -> set[str]:
+    """Handle target paths using the declared repository contract."""
     paths = set(_target_digests(root, entries, references, successors))
     bundle = root / "dset_toolchain" / "bootstrap_bundle.json"
     builder = root / "scripts" / "build_bootstrap_bundle.py"
@@ -1768,6 +1804,7 @@ def _preserved_input_digests(
     successors: Iterable[PackageSuccessor],
     preserved_structured: Iterable[Path] = (),
 ) -> dict[str, str]:
+    """Handle input digests using the declared repository contract."""
     digests = {
         _relative(root, successor.source): successor.source_digest
         for successor in successors
@@ -1787,6 +1824,7 @@ def _migration_input_digest(
     references: list[ReferenceRewrite],
     exceptions: list[dict[str, object]],
 ) -> str:
+    """Handle input digest using the declared repository contract."""
     reference_paths = sorted({reference.path for reference in references})
     retained_paths = sorted(
         root / str(item["path"])
@@ -1830,6 +1868,7 @@ def _migration_input_digest(
 
 
 def _validate_proven_output(plan: MigrationPlan) -> None:
+    """Validate proven output using the declared repository contract."""
     evidence_path = plan.root / _RUNTIME_READINESS_PATH
     try:
         evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
@@ -1891,6 +1930,7 @@ def _collision_blockers(
     entries: list[MigrationEntry],
     successors: list[PackageSuccessor],
 ) -> list[str]:
+    """Handle blockers using the declared repository contract."""
     blockers: list[str] = []
     sources_by_target: dict[Path, list[Path]] = {}
     for entry in entries:
@@ -1922,6 +1962,7 @@ def _reference_rewrites(
     historical_trace_sources: set[Path] | None = None,
     transition_sources: set[Path] | None = None,
 ) -> tuple[list[ReferenceRewrite], list[str]]:
+    """Handle rewrites using the declared repository contract."""
     mapping = {
         entry.source: entry.target for entry in entries if entry.source != entry.target
     }
@@ -1999,6 +2040,7 @@ def _is_generated_traceability(root: Path, path: Path) -> bool:
 
 
 def _is_runtime_source(root: Path, path: Path) -> bool:
+    """Handle runtime source using the declared repository contract."""
     relative = path.relative_to(root)
     return (
         path.suffix == ".py"
@@ -2010,6 +2052,7 @@ def _is_runtime_source(root: Path, path: Path) -> bool:
 def _reference_spellings(
     root: Path, referrer: Path, mapping: dict[Path, Path]
 ) -> dict[str, set[str]]:
+    """Handle spellings using the declared repository contract."""
     spellings: dict[str, set[str]] = {}
     for source, target in mapping.items():
         root_source = _relative(root, source)
@@ -2027,6 +2070,7 @@ def _reference_spellings(
 
 
 def _is_text_path(path: Path) -> bool:
+    """Handle text path using the declared repository contract."""
     return path.suffix.lower() in {
         ".md",
         ".toml",
@@ -2043,6 +2087,7 @@ def _reference_spelling(target: Path, referrer: Path) -> str:
 
 
 def _planned_writes(plan: MigrationPlan) -> dict[Path, str]:
+    """Handle writes using the declared repository contract."""
     writes = {entry.target: entry.after_text for entry in plan.entries}
     writes.update(
         {
@@ -2069,6 +2114,7 @@ def _planned_writes(plan: MigrationPlan) -> dict[Path, str]:
 
 
 def _preflight_apply(plan: MigrationPlan) -> None:
+    """Handle apply using the declared repository contract."""
     for entry in plan.entries:
         if not entry.source.is_file():
             raise TomlMigrationError(
@@ -2113,6 +2159,7 @@ def _preflight_apply(plan: MigrationPlan) -> None:
 def _write_recovery_manifest(
     plan: MigrationPlan, backup_root: Path, originals: dict[Path, bytes | None]
 ) -> None:
+    """Write recovery manifest using the declared repository contract."""
     if backup_root.exists():
         shutil.rmtree(backup_root)
     backup_root.mkdir(parents=True, exist_ok=True)
@@ -2142,6 +2189,7 @@ def _write_recovery_manifest(
 
 
 def _atomic_write_text(path: Path, content: str) -> None:
+    """Handle write text using the declared repository contract."""
     path.parent.mkdir(parents=True, exist_ok=True)
     descriptor, temporary = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
     temporary_path = Path(temporary)
@@ -2157,6 +2205,7 @@ def _atomic_write_text(path: Path, content: str) -> None:
 
 
 def _validate_staged_tree(plan: MigrationPlan, writes: dict[Path, str]) -> None:
+    """Validate staged tree using the declared repository contract."""
     for entry in plan.entries:
         staged = writes[entry.target]
         if entry.kind in {
@@ -2337,6 +2386,7 @@ def prove_runtime_readiness(root: Path) -> dict[str, object]:
 
 
 def _proof_ignore(_directory: str, names: list[str]) -> set[str]:
+    """Handle ignore using the declared repository contract."""
     return {
         name
         for name in names
@@ -2417,6 +2467,7 @@ def _stage_proof_tree(
 
 
 def _git_top_level(root: Path) -> Path | None:
+    """Handle top level using the declared repository contract."""
     try:
         completed = subprocess.run(
             ["git", "rev-parse", "--show-toplevel"],
@@ -2436,6 +2487,7 @@ def _git_top_level(root: Path) -> Path | None:
 def _run_proof_git(
     root: Path, command: list[str], purpose: str
 ) -> subprocess.CompletedProcess[str]:
+    """Run proof git using the declared repository contract."""
     try:
         completed = subprocess.run(
             command,
@@ -2522,6 +2574,7 @@ def _overlay_proof_working_tree(root: Path, staged: Path) -> None:
 
 
 def _proof_commands(root: Path) -> list[dict[str, object]]:
+    """Handle commands using the declared repository contract."""
     check = [sys.executable, "-m", "dset_toolchain", "check", "."]
     tests = [
         sys.executable,
@@ -2542,6 +2595,7 @@ def _proof_commands(root: Path) -> list[dict[str, object]]:
 
 
 def _run_proof_command(root: Path, command: list[str]) -> dict[str, object]:
+    """Run proof command using the declared repository contract."""
     try:
         completed = subprocess.run(
             command,
@@ -2643,6 +2697,7 @@ def _initialize_synthetic_proof_head(root: Path) -> dict[str, object]:
 
 
 def _proof_output_tail(stdout: object, stderr: object, *, limit: int = 4000) -> str:
+    """Handle output tail using the declared repository contract."""
     sections: list[str] = []
     for label, raw in (("stdout", stdout), ("stderr", stderr)):
         if isinstance(raw, bytes):
@@ -2658,6 +2713,7 @@ def _proof_output_tail(stdout: object, stderr: object, *, limit: int = 4000) -> 
 
 
 def _tool_digest(root: Path) -> str:
+    """Handle digest using the declared repository contract."""
     digest = hashlib.sha256()
     candidates = [
         path
@@ -2675,6 +2731,7 @@ def _tool_digest(root: Path) -> str:
 
 
 def _git_head(root: Path) -> str | None:
+    """Handle head using the declared repository contract."""
     completed = subprocess.run(
         ["git", "rev-parse", "HEAD"],
         cwd=root,
@@ -2687,6 +2744,7 @@ def _git_head(root: Path) -> str | None:
 
 
 def _restore(originals: dict[Path, bytes | None]) -> None:
+    """Handle restore using the declared repository contract."""
     for path, content in originals.items():
         if content is None:
             path.unlink(missing_ok=True)

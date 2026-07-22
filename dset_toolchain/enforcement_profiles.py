@@ -62,6 +62,7 @@ def resolve_profile_path(root: Path, profile_id: str) -> Path:
 
 
 def validate_profile_file(path: Path) -> tuple[dict[str, Any], list[Diagnostic]]:
+    """Validate profile file using the declared repository contract."""
     try:
         data = load(path)
     except (OSError, UnicodeError, YamlSubsetError) as error:
@@ -72,6 +73,7 @@ def validate_profile_file(path: Path) -> tuple[dict[str, Any], list[Diagnostic]]
 
 
 def validate_profile_data(path: Path, data: dict[str, Any]) -> list[Diagnostic]:
+    """Validate profile data using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     profile_id = data.get("id")
     status = data.get("status")
@@ -302,6 +304,7 @@ def inspect_target(
 
 
 def _count_typescript(paths: list[str], roots: list[str]) -> int:
+    """Handle typescript using the declared repository contract."""
     return sum(
         1
         for path in paths
@@ -320,6 +323,7 @@ def _git(root: Path, *args: str) -> str | None:
 
 
 def _git_is_ancestor(root: Path, ancestor: str) -> bool:
+    """Handle is ancestor using the declared repository contract."""
     result = subprocess.run(
         ["git", "merge-base", "--is-ancestor", ancestor, "HEAD"],
         cwd=root,
@@ -331,6 +335,7 @@ def _git_is_ancestor(root: Path, ancestor: str) -> bool:
 
 
 def _repository_role(manifest_path: Path) -> str | None:
+    """Handle role using the declared repository contract."""
     try:
         manifest = load(manifest_path)
     except (OSError, UnicodeError, YamlSubsetError):
@@ -345,6 +350,7 @@ def _repository_role(manifest_path: Path) -> str | None:
 
 
 def _git_files(root: Path) -> list[str]:
+    """Handle files using the declared repository contract."""
     result = subprocess.run(
         ["git", "ls-files", "-z"], cwd=root, check=False, capture_output=True
     )
@@ -354,6 +360,7 @@ def _git_files(root: Path) -> list[str]:
 
 
 def _safe_relative(value: str) -> bool:
+    """Handle relative using the declared repository contract."""
     path = PurePosixPath(value)
     return (
         bool(value)
@@ -369,6 +376,7 @@ def _mapping(value: object) -> dict[str, Any]:
 
 
 def _string_mapping(value: object) -> dict[str, str]:
+    """Handle mapping using the declared repository contract."""
     if not isinstance(value, dict):
         return {}
     return {
@@ -379,6 +387,7 @@ def _string_mapping(value: object) -> dict[str, str]:
 
 
 def _int_mapping(value: object) -> dict[str, int]:
+    """Handle mapping using the declared repository contract."""
     if not isinstance(value, dict):
         return {}
     return {

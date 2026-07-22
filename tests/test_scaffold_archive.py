@@ -27,6 +27,8 @@ FIXTURES = discover_layout(ROOT).fixtures_root
 
 
 class ScaffoldArchiveTests(unittest.TestCase):
+    """Verify scaffold archive behavior."""
+
     def test_new_creates_profile_without_overwrite(self) -> None:
         with temporary_directory() as raw:
             target = (Path(raw) / "adopter").resolve()

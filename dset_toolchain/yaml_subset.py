@@ -37,6 +37,7 @@ def load(path: Path) -> Any:
 
 
 def loads(text: str) -> Any:
+    """Handle loads using the declared repository contract."""
     entries = _entries(text)
     if not entries:
         return {}
@@ -107,6 +108,7 @@ def write(path: Path, data: Any) -> None:
 
 
 def _entries(text: str) -> list[tuple[int, str, int]]:
+    """Handle entries using the declared repository contract."""
     entries: list[tuple[int, str, int]] = []
     for number, raw in enumerate(text.splitlines(), start=1):
         if not raw.strip() or raw.lstrip().startswith("#"):
@@ -129,6 +131,7 @@ def _next_container(
 
 
 def _split_mapping(content: str, line_number: int) -> tuple[str, str]:
+    """Handle mapping using the declared repository contract."""
     if ":" not in content:
         raise _error(line_number, "expected a key/value mapping")
     key, raw = content.split(":", 1)
@@ -146,6 +149,7 @@ def _is_inline_mapping(value: str) -> bool:
 
 
 def _parse_scalar(raw: str) -> Any:
+    """Parse scalar using the declared repository contract."""
     if raw == "[]":
         return []
     if raw == "{}":
@@ -166,6 +170,7 @@ def _parse_scalar(raw: str) -> Any:
 
 
 def _emit(value: Any, indent: int, lines: list[str]) -> None:
+    """Emit emit using the declared repository contract."""
     prefix = " " * indent
     if isinstance(value, dict):
         for key, item in value.items():
@@ -191,6 +196,7 @@ def _emit(value: Any, indent: int, lines: list[str]) -> None:
 
 
 def _format_scalar(value: Any) -> str:
+    """Format scalar using the declared repository contract."""
     if value is None:
         return "null"
     if isinstance(value, bool):

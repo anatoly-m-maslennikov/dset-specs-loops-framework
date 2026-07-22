@@ -46,7 +46,10 @@ ROOT = repository_root(Path(__file__))
 
 
 class SkillDistributionTests(unittest.TestCase):
+    """Verify skill distribution behavior."""
+
     def setUp(self) -> None:
+        """Handle set up using the declared repository contract."""
         self.temporary = temporary_directory()
         self.root = Path(self.temporary.name).resolve()
         self.source = self.root / "source"
@@ -58,6 +61,7 @@ class SkillDistributionTests(unittest.TestCase):
         )
 
     def tearDown(self) -> None:
+        """Handle tear down using the declared repository contract."""
         self.temporary.cleanup()
 
     def install_distribution(
@@ -66,6 +70,7 @@ class SkillDistributionTests(unittest.TestCase):
         destination: Path,
         package: Path | None = None,
     ) -> Path:
+        """Handle distribution using the declared repository contract."""
         runtime = (
             destination.parent / f".{destination.name}-packages" / "dset"
             if package is None

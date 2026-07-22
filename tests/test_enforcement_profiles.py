@@ -35,7 +35,10 @@ PROFILE = (
 
 
 class EnforcementProfileTests(unittest.TestCase):
+    """Verify enforcement profile behavior."""
+
     def setUp(self) -> None:
+        """Handle set up using the declared repository contract."""
         data, diagnostics = validate_profile_file(PROFILE)
         self.assertEqual(diagnostics, [])
         self.profile = data
@@ -242,6 +245,7 @@ class EnforcementProfileTests(unittest.TestCase):
 
     @staticmethod
     def _git(root: Path, *args: str) -> str:
+        """Handle git using the declared repository contract."""
         result = subprocess.run(
             ["git", *args],
             cwd=root,

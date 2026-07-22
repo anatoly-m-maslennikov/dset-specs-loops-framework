@@ -60,6 +60,8 @@ def _workflow_ids(data: dict[str, Any]) -> set[str]:
 
 
 class LifecycleWorkflowTests(unittest.TestCase):
+    """Verify lifecycle workflow behavior."""
+
     def test_every_mode_has_a_registered_or_exception_route(self) -> None:
         registry = cast(dict[str, Any], load(REGISTRY))
         registered = _workflow_ids(registry)

@@ -31,11 +31,15 @@ ROOT = repository_root(Path(__file__))
 
 
 class ProjectHealthTests(unittest.TestCase):
+    """Verify project health behavior."""
+
     def setUp(self) -> None:
+        """Handle set up using the declared repository contract."""
         self.temporary = temporary_directory()
         self.root = create_adopter(ROOT, Path(self.temporary.name) / "adopter")
 
     def tearDown(self) -> None:
+        """Handle tear down using the declared repository contract."""
         self.temporary.cleanup()
 
     def test_markdown_is_stable_and_exposes_every_denominator_field(self) -> None:

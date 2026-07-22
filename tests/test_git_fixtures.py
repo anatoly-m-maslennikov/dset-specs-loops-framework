@@ -16,6 +16,8 @@ from tests.git_fixtures import initialize_exact_git_repository
 
 
 class GitFixtureTests(unittest.TestCase):
+    """Verify git fixture behavior."""
+
     def test_repository_owns_deterministic_newline_policy(self) -> None:
         with temporary_directory() as raw:
             root = Path(raw).resolve()

@@ -27,6 +27,8 @@ ROOT = repository_root(Path(__file__))
 
 
 class TraceabilityTests(unittest.TestCase):
+    """Verify traceability behavior."""
+
     def test_real_history_maps_archives_and_active_change(self) -> None:
         trace = build_traceability(ROOT)
         ids = [item["id"] for item in trace["changes"]]

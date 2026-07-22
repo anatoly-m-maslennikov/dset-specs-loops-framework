@@ -23,6 +23,8 @@ DECISIONS = GOV_PACKAGE / "decision"
 
 
 class ConflictEntityTests(unittest.TestCase):
+    """Verify conflict entity behavior."""
+
     def test_accepted_truth_defines_four_types_and_flat_subtypes(self) -> None:
         domain = (GOV_PACKAGE / "specification-domain.md").read_text(encoding="utf-8")
         spec = (GOV_PACKAGE / "specification-methodology.md").read_text(

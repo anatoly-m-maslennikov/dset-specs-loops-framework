@@ -57,6 +57,7 @@ def build_legacy_authority_ledger(root: Path) -> dict[str, Any]:
 
 
 def write_legacy_authority_ledger(root: Path) -> Path:
+    """Write legacy authority ledger using the declared repository contract."""
     root = root.resolve()
     path = legacy_authority_ledger_path(root)
     content = dump(build_legacy_authority_ledger(root), path)
@@ -68,6 +69,7 @@ def write_legacy_authority_ledger(root: Path) -> Path:
 
 
 def validate_legacy_authority_ledger(root: Path) -> list[Diagnostic]:
+    """Validate legacy authority ledger using the declared repository contract."""
     root = root.resolve()
     path = legacy_authority_ledger_path(root)
     if not path.is_file():
@@ -160,11 +162,13 @@ def legacy_authority_ids(root: Path) -> set[str]:
 
 
 def legacy_authority_ledger_path(root: Path) -> Path:
+    """Handle authority ledger path using the declared repository contract."""
     layout = discover_layout(root.resolve())
     return layout.structured_file(layout.project_state_root, "legacy-authority.toml")
 
 
 def _load_recorded_ledger(root: Path) -> dict[str, Any] | None:
+    """Load recorded ledger using the declared repository contract."""
     path = legacy_authority_ledger_path(root)
     if not path.is_file():
         return None
@@ -176,6 +180,7 @@ def _load_recorded_ledger(root: Path) -> dict[str, Any] | None:
 
 
 def _recorded_fragment_errors(root: Path, ledger: object) -> list[str]:
+    """Handle fragment errors using the declared repository contract."""
     if not isinstance(ledger, dict) or str(ledger.get("schema_version")) != "1.0":
         return ["legacy authority ledger schema_version must be 1.0"]
     records = ledger.get("records")
@@ -207,6 +212,7 @@ def _recorded_fragment_errors(root: Path, ledger: object) -> list[str]:
 def _validate_recorded_fragment(
     root: Path, semantic_id: str, fragment: object
 ) -> str | None:
+    """Validate recorded fragment using the declared repository contract."""
     if not isinstance(fragment, dict):
         return f"legacy authority fragment is malformed: {semantic_id}"
     raw_path = fragment.get("path")
@@ -271,6 +277,7 @@ def _within(root: Path, path: Path) -> bool:
 def _authority_fragment(
     root: Path, path: Path, semantic_id: str, origin: str
 ) -> dict[str, str] | None:
+    """Handle fragment using the declared repository contract."""
     if origin == "legacy_decision":
         if path.suffix != ".md" or not path.is_file():
             return None

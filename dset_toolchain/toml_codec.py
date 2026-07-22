@@ -35,10 +35,12 @@ _FLOAT = re.compile(r"^[+-]?(?:[0-9][0-9_]*\.[0-9_]+|[0-9][0-9_]*[eE][+-]?[0-9_]
 
 
 def load(path: Path) -> dict[str, Any]:
+    """Load load using the declared repository contract."""
     return loads(path.read_text(encoding="utf-8"))
 
 
 def loads(text: str) -> dict[str, Any]:
+    """Handle loads using the declared repository contract."""
     if _tomllib is not None:
         try:
             value = _tomllib.loads(text)
@@ -51,6 +53,7 @@ def loads(text: str) -> dict[str, Any]:
 
 
 def dumps(value: Mapping[str, Any]) -> str:
+    """Handle dumps using the declared repository contract."""
     if not isinstance(value, Mapping):
         raise TomlCodecError("TOML document root must be a mapping")
     lines: list[str] = []
@@ -65,6 +68,7 @@ def _emit_table(
     *,
     header: bool,
 ) -> None:
+    """Emit table using the declared repository contract."""
     _require_string_keys(table, path)
     if header:
         if lines and lines[-1] != "":
@@ -97,6 +101,7 @@ def _emit_table(
 def _emit_table_body(
     table: Mapping[str, Any], path: tuple[str, ...], lines: list[str]
 ) -> None:
+    """Emit table body using the declared repository contract."""
     _require_string_keys(table, path)
     child_tables: list[tuple[str, Mapping[str, Any]]] = []
     array_tables: list[tuple[str, Sequence[Any]]] = []
@@ -121,6 +126,7 @@ def _emit_table_body(
 
 
 def _format_value(value: Any, path: tuple[str, ...]) -> str:
+    """Format value using the declared repository contract."""
     if value is None:
         raise TomlCodecError(f"{_render_path(path)}: null is not representable in TOML")
     if isinstance(value, bool):
@@ -159,6 +165,7 @@ def _format_value(value: Any, path: tuple[str, ...]) -> str:
 
 
 def _is_array_of_tables(value: Any) -> bool:
+    """Handle array of tables using the declared repository contract."""
     return (
         isinstance(value, Sequence)
         and not isinstance(value, (str, bytes, bytearray))
@@ -192,6 +199,7 @@ def _render_path(path: tuple[str, ...]) -> str:
 
 
 def _loads_subset(text: str) -> dict[str, Any]:
+    """Handle subset using the declared repository contract."""
     root: dict[str, Any] = {}
     current: dict[str, Any] = root
     for line_number, raw in enumerate(text.splitlines(), start=1):
@@ -219,6 +227,7 @@ def _loads_subset(text: str) -> dict[str, Any]:
 def _select_table(
     root: dict[str, Any], keys: list[str], array: bool, line_number: int
 ) -> dict[str, Any]:
+    """Select table using the declared repository contract."""
     if not keys or any(not key for key in keys):
         raise TomlCodecError(f"line {line_number}: table name is empty")
     current = root
@@ -249,6 +258,7 @@ def _select_table(
 
 
 def _parse_key(value: str, line_number: int) -> str:
+    """Parse key using the declared repository contract."""
     if _BARE_KEY.fullmatch(value):
         return value
     if value.startswith('"') and value.endswith('"'):
@@ -262,6 +272,7 @@ def _parse_key(value: str, line_number: int) -> str:
 
 
 def _parse_value(value: str, line_number: int) -> Any:
+    """Parse value using the declared repository contract."""
     if value in {"true", "false"}:
         return value == "true"
     if value.startswith('"') and value.endswith('"'):
@@ -286,6 +297,7 @@ def _parse_value(value: str, line_number: int) -> Any:
 
 
 def _split_array(value: str) -> list[str]:
+    """Handle array using the declared repository contract."""
     parts: list[str] = []
     quote = False
     escaped = False
@@ -307,6 +319,7 @@ def _split_array(value: str) -> list[str]:
 
 
 def _strip_comment(value: str) -> str:
+    """Handle comment using the declared repository contract."""
     quote = False
     escaped = False
     for index, character in enumerate(value):

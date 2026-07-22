@@ -14,6 +14,8 @@ from dset_toolchain.verification import _verification_args
 
 
 class VerificationCommandTests(unittest.TestCase):
+    """Verify verification command behavior."""
+
     def test_python_placeholder_preserves_native_windows_path(self) -> None:
         executable = r"C:\Program Files\Python312\python.exe"
 

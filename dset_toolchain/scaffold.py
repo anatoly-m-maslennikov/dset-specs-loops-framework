@@ -30,6 +30,7 @@ def create_change(
     work_areas: Sequence[str] | None = None,
     workspace_mode: str | None = None,
 ) -> Path:
+    """Create change using the declared repository contract."""
     if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", change_id):
         raise ValueError("change ID must be lowercase kebab-case")
     if profile not in VALID_PROFILES:
@@ -110,6 +111,7 @@ def create_change(
 
 
 def _copy_template(source: Path, target: Path, replacements: dict[str, str]) -> None:
+    """Handle template using the declared repository contract."""
     if not source.is_file():
         raise FileNotFoundError(f"template is missing: {source}")
     structured = {".toml", ".yaml", ".yml"}
@@ -126,6 +128,7 @@ def _copy_template(source: Path, target: Path, replacements: dict[str, str]) -> 
 
 
 def _replace_values(value: object, replacements: dict[str, str]) -> object:
+    """Handle values using the declared repository contract."""
     if isinstance(value, dict):
         return {key: _replace_values(item, replacements) for key, item in value.items()}
     if isinstance(value, list):
@@ -137,6 +140,7 @@ def _replace_values(value: object, replacements: dict[str, str]) -> object:
 
 
 def _project_key(root: Path) -> str:
+    """Handle key using the declared repository contract."""
     data = load(discover_layout(root).manifest_path)
     project = data.get("project", {}) if isinstance(data, dict) else {}
     key = project.get("key") if isinstance(project, dict) else None
@@ -146,6 +150,7 @@ def _project_key(root: Path) -> str:
 
 
 def _id_layer(root: Path, layer: str | None) -> str:
+    """Handle layer using the declared repository contract."""
     if layer is None:
         return ""
     normalized = normalize_layer_id_token(layer)
@@ -172,6 +177,7 @@ def _repository(root: Path) -> str:
 def _change_target(
     root: Path, work_areas: Sequence[str] | None
 ) -> dict[str, object] | None:
+    """Handle target using the declared repository contract."""
     layout = discover_layout(root)
     requested = list(work_areas or ())
     if not layout.layered:
@@ -203,6 +209,7 @@ def _change_target(
 
 
 def _next_change_id(root: Path, layer: str) -> str:
+    """Handle change id using the declared repository contract."""
     layout = discover_layout(root)
     normalized = normalize_layer_id_token(layer)
     prefix = f"{_project_key(root)}-CHANGE-{normalized}-"
@@ -232,6 +239,7 @@ def _materialize_layered_manifest(
     target: dict[str, object] | None,
     workspace_mode: str | None,
 ) -> None:
+    """Handle layered manifest using the declared repository contract."""
     path = discover_layout(root).structured_file(destination, "change.toml")
     data = load(path)
     if not isinstance(data, dict):
@@ -262,6 +270,7 @@ def _materialize_layered_manifest(
 def _workspace_for_change(
     root: Path, slug: str, requested_mode: str | None
 ) -> dict[str, str]:
+    """Handle for change using the declared repository contract."""
     manifest = load(discover_layout(root).manifest_path)
     if not isinstance(manifest, dict):
         raise ValueError("project manifest must be a mapping")

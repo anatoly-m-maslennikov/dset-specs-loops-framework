@@ -29,6 +29,8 @@ ROOT = repository_root(Path(__file__))
 
 
 class SemanticTypeCompatibilityTests(unittest.TestCase):
+    """Verify semantic type compatibility behavior."""
+
     def test_exact_four_types_and_flat_direct_subtypes(self) -> None:
         self.assertEqual(
             set(SEMANTIC_SUBTYPES), {"decision", "question", "problem", "qa"}
@@ -48,15 +50,11 @@ class SemanticTypeCompatibilityTests(unittest.TestCase):
 
     def test_naming_mode_selects_one_project_wide_sequence_axis(self) -> None:
         self.assertEqual(
-            semantic_naming_axis(
-                "decision", "requirement", include_subtype=False
-            ),
+            semantic_naming_axis("decision", "requirement", include_subtype=False),
             "DECISION",
         )
         self.assertEqual(
-            semantic_naming_axis(
-                "decision", "requirement", include_subtype=True
-            ),
+            semantic_naming_axis("decision", "requirement", include_subtype=True),
             "REQ",
         )
         self.assertEqual(

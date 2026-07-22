@@ -34,6 +34,8 @@ ROOT = repository_root(Path(__file__))
 
 
 class BootstrapTests(unittest.TestCase):
+    """Verify bootstrap behavior."""
+
     def test_generated_bundle_is_fresh_and_digest_valid(self) -> None:
         bundle_path = ROOT / "dset_toolchain" / "bootstrap_bundle.json"
         committed = bundle_path.read_text(encoding="utf-8")

@@ -51,6 +51,7 @@ def create_review_packet(
     criteria: list[str],
     scope: str,
 ) -> Path:
+    """Create review packet using the declared repository contract."""
     root = root.resolve()
     if not ID_PATTERN.fullmatch(packet_id) or "REVIEW-PACKET" not in packet_id:
         raise ValueError("packet_id must be a canonical REVIEW-PACKET ID")
@@ -93,6 +94,7 @@ def create_review_packet(
 def validate_review_report(
     root: Path, packet_path: Path, report_path: Path
 ) -> dict[str, Any]:
+    """Validate review report using the declared repository contract."""
     root = root.resolve()
     packet, _ = _read_markdown(packet_path)
     report, body = _read_markdown(report_path)
@@ -118,6 +120,7 @@ def reconcile_review(
     report_path: Path,
     candidate_path: Path,
 ) -> dict[str, Any]:
+    """Handle review using the declared repository contract."""
     validated = validate_review_report(root, packet_path, report_path)
     candidate = json.loads(candidate_path.read_text(encoding="utf-8"))
     if not isinstance(candidate, dict):
@@ -168,6 +171,7 @@ def reconcile_review(
 
 
 def write_reconciliation(root: Path, output: Path, result: dict[str, Any]) -> Path:
+    """Write reconciliation using the declared repository contract."""
     root = root.resolve()
     target = output.resolve()
     try:
@@ -180,6 +184,7 @@ def write_reconciliation(root: Path, output: Path, result: dict[str, Any]) -> Pa
 
 
 def _validate_packet(root: Path, packet: dict[str, Any]) -> None:
+    """Validate packet using the declared repository contract."""
     required = {
         "schema_version",
         "artifact_type",
@@ -225,6 +230,7 @@ def _validate_report(
     body: str,
     allowed_priorities: set[str],
 ) -> None:
+    """Validate report using the declared repository contract."""
     required = {
         "schema_version",
         "artifact_type",
@@ -288,6 +294,7 @@ def _validate_report(
 
 
 def _validate_finding(finding: object, allowed_priorities: set[str]) -> None:
+    """Validate finding using the declared repository contract."""
     fields = {
         "id",
         "priority",
@@ -313,6 +320,7 @@ def _validate_finding(finding: object, allowed_priorities: set[str]) -> None:
 
 
 def _validate_disposition(value: object) -> dict[str, Any]:
+    """Validate disposition using the declared repository contract."""
     if not isinstance(value, dict):
         raise ValueError("every reconciliation finding must be an object")
     allowed = {
@@ -355,6 +363,7 @@ def _validate_disposition(value: object) -> dict[str, Any]:
 
 
 def _read_markdown(path: Path) -> tuple[dict[str, Any], str]:
+    """Read markdown using the declared repository contract."""
     try:
         parsed = parse_frontmatter(path.read_text(encoding="utf-8"))
     except FrontmatterError as error:
@@ -373,6 +382,7 @@ def _file_identity(root: Path, raw: str) -> dict[str, str]:
 
 
 def _valid_identity(value: object, *, with_id: bool) -> bool:
+    """Handle identity using the declared repository contract."""
     if not isinstance(value, dict):
         return False
     fields = {"carrier", "sha256"}
@@ -397,6 +407,7 @@ def _valid_identity(value: object, *, with_id: bool) -> bool:
 
 
 def _repository_identity(root: Path) -> str:
+    """Handle identity using the declared repository contract."""
     manifest = load(discover_layout(root).manifest_path)
     project = manifest.get("project", {}) if isinstance(manifest, dict) else {}
     value = project.get("repository_slug") or project.get("id")
@@ -406,6 +417,7 @@ def _repository_identity(root: Path) -> str:
 
 
 def _head(root: Path) -> str:
+    """Handle head using the declared repository contract."""
     completed = subprocess.run(
         ["git", "rev-parse", "HEAD"],
         cwd=root,
@@ -420,6 +432,7 @@ def _head(root: Path) -> str:
 
 
 def _sessions(value: object) -> None:
+    """Handle sessions using the declared repository contract."""
     if not isinstance(value, list) or len(value) != len(set(map(str, value))):
         raise ValueError("llm_session_ids must be a unique list")
     if not all(
@@ -451,6 +464,7 @@ def _packet_body() -> str:
 
 
 def _write_new(path: Path, content: str) -> Path:
+    """Write new using the declared repository contract."""
     path = path.resolve()
     if path.exists():
         raise FileExistsError(f"refusing existing review artifact: {path}")

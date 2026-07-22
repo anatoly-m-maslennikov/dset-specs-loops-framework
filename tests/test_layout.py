@@ -25,6 +25,8 @@ from dset_toolchain.yaml_subset import dump
 
 
 class RepositoryLayoutTest(unittest.TestCase):
+    """Verify repository layout behavior."""
+
     def test_legacy_slim_layout_remains_readable(self) -> None:
         with temporary_directory() as raw:
             root = Path(raw).resolve()

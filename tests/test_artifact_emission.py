@@ -26,14 +26,19 @@ ROOT = repository_root(Path(__file__))
 
 
 class ArtifactEmissionTests(unittest.TestCase):
+    """Verify artifact emission behavior."""
+
     def setUp(self) -> None:
+        """Handle set up using the declared repository contract."""
         self.temporary = temporary_directory()
         self.root = create_adopter(ROOT, Path(self.temporary.name) / "adopter")
 
     def tearDown(self) -> None:
+        """Handle tear down using the declared repository contract."""
         self.temporary.cleanup()
 
     def candidate(self) -> dict[str, Any]:
+        """Handle candidate using the declared repository contract."""
         return {
             "authority": "operator:test-operator",
             "claim": "The tool writes one deterministic result.",
@@ -55,6 +60,7 @@ class ArtifactEmissionTests(unittest.TestCase):
         }
 
     def enable_high_strictness(self) -> None:
+        """Handle high strictness using the declared repository contract."""
         path = self.root / "dset_settings.toml"
         path.write_text(
             path.read_text(encoding="utf-8").replace(

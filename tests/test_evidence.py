@@ -25,6 +25,8 @@ TEMPLATE = ROOT / ".dset/02_layer_gov/templates/evidence-record.md"
 
 
 class EvidenceRecordTests(unittest.TestCase):
+    """Verify evidence record behavior."""
+
     def test_native_toml_record_enforces_the_bounded_core(self) -> None:
         with temporary_directory() as raw:
             root = Path(raw).resolve()
@@ -69,6 +71,7 @@ class EvidenceRecordTests(unittest.TestCase):
 
     @staticmethod
     def _record() -> dict[str, object]:
+        """Handle record using the declared repository contract."""
         return {
             "schema_version": "1.0",
             "artifact_type": "evidence_record",

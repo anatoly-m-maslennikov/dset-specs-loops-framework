@@ -227,6 +227,7 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
 def _validate_known_keys(
     raw: dict[str, Any], schema_version: str, issues: list[str]
 ) -> None:
+    """Validate known keys using the declared repository contract."""
     legacy = schema_version == LEGACY_SETTINGS_SCHEMA_VERSION
     current = schema_version in {
         "1.2",
@@ -313,6 +314,7 @@ def _unknown_keys(
 
 
 def _table(value: object, name: str, issues: list[str]) -> dict[str, Any]:
+    """Handle table using the declared repository contract."""
     if value is None:
         return {}
     if isinstance(value, dict):
@@ -336,6 +338,7 @@ def _boolean(value: object, name: str, issues: list[str]) -> bool:
 
 
 def _priority_scale(value: object, legacy: bool, issues: list[str]) -> tuple[str, ...]:
+    """Handle scale using the declared repository contract."""
     if legacy and isinstance(value, str):
         selected = tuple(item.strip() for item in value.split(",") if item.strip())
     elif isinstance(value, (list, tuple)) and all(

@@ -40,21 +40,27 @@ ROOT = repository_root(Path(__file__))
 
 
 class TomlMigrationTests(unittest.TestCase):
+    """Verify toml migration behavior."""
+
     def setUp(self) -> None:
+        """Handle set up using the declared repository contract."""
         self.temporary = temporary_directory()
         self.root = (Path(self.temporary.name) / "fixture").resolve()
         self.root.mkdir()
 
     def tearDown(self) -> None:
+        """Handle tear down using the declared repository contract."""
         self.temporary.cleanup()
 
     def write(self, relative: str, content: str) -> Path:
+        """Write write using the declared repository contract."""
         path = self.root / relative
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8", newline="\n")
         return path
 
     def initialize_git_fixture(self) -> None:
+        """Initialize git fixture using the declared repository contract."""
         self.write(
             ".gitignore",
             ".dset_runtime/toml-migration-runtime-readiness.json\n"
@@ -64,6 +70,7 @@ class TomlMigrationTests(unittest.TestCase):
         self.commit_git_fixture("fixture")
 
     def commit_git_fixture(self, message: str) -> None:
+        """Handle git fixture using the declared repository contract."""
         subprocess.run(
             ["git", "add", "-A"],
             cwd=self.root,
@@ -91,6 +98,7 @@ class TomlMigrationTests(unittest.TestCase):
         )
 
     def add_minimal_runtime_gate(self) -> None:
+        """Handle minimal runtime gate using the declared repository contract."""
         self.write("dset_toolchain/__init__.py", "")
         self.write(
             "dset_toolchain/__main__.py",
@@ -99,6 +107,7 @@ class TomlMigrationTests(unittest.TestCase):
         self.write("dset_toolchain/bootstrap_bundle.json", "{}\n")
 
     def write_current_runtime_readiness(self) -> MigrationPlan:
+        """Write current runtime readiness using the declared repository contract."""
         preview = plan_toml_migration(self.root, bypass_runtime_readiness=True)
         targets = toml_migration._target_digests(
             self.root,
@@ -132,6 +141,7 @@ class TomlMigrationTests(unittest.TestCase):
         return preview
 
     def standard_fixture(self) -> None:
+        """Handle fixture using the declared repository contract."""
         self.write(
             "dset/scopes/gov/items.yaml",
             "schema_version: 1.0\nitems:\n  -\n    id: DSET-ITEM-001\n",
@@ -147,6 +157,7 @@ class TomlMigrationTests(unittest.TestCase):
         )
 
     def selector_sealed_package_fixture(self) -> Path:
+        """Handle sealed package fixture using the declared repository contract."""
         for layer in ("meta", "gov", "tool", "skill", "ops"):
             (self.root / f"dset/scopes/{layer}").mkdir(parents=True, exist_ok=True)
         self.write(
@@ -1091,6 +1102,7 @@ class TomlMigrationTests(unittest.TestCase):
         staged_roots: list[Path] = []
 
         def inspect_staged(staged: Path) -> list[dict[str, object]]:
+            """Handle staged using the declared repository contract."""
             staged_roots.append(staged)
             self.assertEqual(toml_migration._git_head(staged), source_head)
             self.assertEqual(

@@ -22,6 +22,7 @@ def _verification_args(command: object) -> list[str]:
 
 
 def verify_repository(root: Path) -> list[Diagnostic]:
+    """Handle repository using the declared repository contract."""
     diagnostics = validate_repository(root)
     if diagnostics:
         return diagnostics

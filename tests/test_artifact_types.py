@@ -39,7 +39,10 @@ SCHEMA_PATH = ROOT / ".dset/02_layer_gov/schemas/artifact-types.schema.json"
 
 
 class ArtifactTypeRegistryTests(unittest.TestCase):
+    """Verify artifact type registry behavior."""
+
     def setUp(self) -> None:
+        """Handle set up using the declared repository contract."""
         self.registry = load(REGISTRY_PATH)
         assert isinstance(self.registry, dict)
 
@@ -379,7 +382,9 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
                 [],
             )
 
-    def test_project_enables_subtype_names_but_template_defaults_to_type_only(self) -> None:
+    def test_project_enables_subtype_names_but_template_defaults_to_type_only(
+        self,
+    ) -> None:
         settings = LAYOUT.settings_path.read_text(encoding="utf-8")
         template = (
             ROOT / ".dset/01_layer_meta/templates/dset_settings.toml"
@@ -405,6 +410,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
             self.assertIn(phrase, rule)
 
     def assert_error(self, data: dict[str, Any], fragment: str) -> None:
+        """Handle error using the declared repository contract."""
         diagnostics = validate_artifact_type_registry(ROOT, REGISTRY_PATH, data)
         self.assertTrue(
             any(
@@ -419,6 +425,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
 
     @staticmethod
     def _write_classified(path: Path, artifact_id: str) -> None:
+        """Write classified using the declared repository contract."""
         path.write_text(
             render_frontmatter(
                 {
@@ -441,6 +448,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
 
     @staticmethod
     def _direct_classification(path: Path) -> tuple[str, str | None] | None:
+        """Handle classification using the declared repository contract."""
         if path.suffix.lower() != ".md":
             return None
         metadata = frontmatter_metadata(path)
