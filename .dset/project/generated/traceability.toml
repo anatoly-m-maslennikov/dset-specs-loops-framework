@@ -8537,6 +8537,16 @@ target = "DSET-TEST-OPS-021"
 llm_session_ids = []
 
 [[relations]]
+source = "DSET-EVIDENCE-RECORD-045"
+source_kind = "artifact"
+source_artifact_id = "DSET-EVIDENCE-RECORD-045"
+source_path = ".dset/gov/evidence/DSET-EVIDENCE-RECORD-045-hidden-project-control-root.md"
+type = "evidence_for"
+origin = "authored"
+target = "DSET-TEST-GOV-047"
+llm_session_ids = []
+
+[[relations]]
 source = "DSET-INVARIANT-GOV-027"
 source_kind = "artifact"
 source_artifact_id = "DSET-ATOMIC-RECORD-074"
@@ -9921,6 +9931,14 @@ source = "f9bff423cbb4cc0a58518bfd174ed0cf892d7911"
 source_kind = "commit"
 type = "implementation_of"
 target = "DSET-TEST-GOV-040"
+origin = "commit_trailer"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+
+[[relations]]
+source = "fa07cd2ecef6b93474a9b7f0909a9e74f8adc56a"
+source_kind = "commit"
+type = "implementation_of"
+target = "DSET-REQUIREMENT-GOV-042"
 origin = "commit_trailer"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 
