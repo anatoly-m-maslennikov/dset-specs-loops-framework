@@ -20,6 +20,10 @@ compile that archive.
 Repository and third-party legal files are distribution inputs under the root
 `LICENSE` and `LICENSES` surfaces. They are not DSET control-plane artifacts.
 
+Installed TOOL methodology includes the project-local Python executor,
+deterministic Test implementations, and qualitative Evaluation prompts.
+Applied QA definitions and proof records remain under applied owners.
+
 ## Start here
 
 - `dset_settings.toml` — settings and identity registries.

@@ -34,6 +34,7 @@ presentation.
 | `DSET-DECISION-GOV-027` | Atomize carrier representation transitions and exclude physical paths from current identity |
 | `DSET-DECISION-GOV-028` | Keep `.dset` current and exclude inert historical aggregates and completed migrations from skill discovery and compilation |
 | `DSET-DECISION-GOV-029` | Keep repository legal files outside `.dset` and resolve their unique names only within the root legal distribution surface |
+| `DSET-DECISION-GOV-030` | Install executable Python tools, deterministic Test implementations, and qualitative Evaluation prompts under methodology TOOL |
 
 Absorbed predecessors remain immutable history and are excluded from the active
 compilation set by append-only lifecycle events.
@@ -119,6 +120,21 @@ Source provenance stores each legal carrier's globally unique filename. Legal
 validation resolves that name only within `LICENSES`; this bounded legal check
 does not widen skill discovery, artifact identity lookup, or semantic
 compilation beyond `.dset`.
+
+## DSET-DECISION-GOV-030 — Install executable methodology
+
+Installed methodology includes its reusable executable implementation under
+TOOL: the synchronized Python package and portable launcher under
+`120_python`, deterministic Test implementations and runner under `130_tests`,
+and independent-review/reconciliation Evaluation prompts under
+`140_evaluations`.
+
+Applied QA atoms and plans continue to own what must be checked. Evidence and
+Verification continue to own what happened and what the results support. The
+methodology owns only reusable execution mechanisms. Repository Python/Test
+sources materialize byte-for-byte without symlinks; generated caches are
+excluded. Ecosystem-required package and module names may remain unnumbered
+inside their numbered TOOL owners.
 
 ## DSET-REQUIREMENT-GOV-005 — Package structure is proportional
 
