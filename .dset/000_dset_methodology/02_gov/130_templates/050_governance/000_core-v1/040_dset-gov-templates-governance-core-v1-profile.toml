@@ -1,0 +1,281 @@
+schema_version = 1.1
+id = "core-v1"
+version = "0.3"
+
+[[rules]]
+id = "DSET-RULE-ARCHITECTURE"
+layer = "GOV"
+template = "architecture.md"
+target = "architecture.md"
+applicability = "applicable"
+reason = "Every governed workflow requires explicit authority and bootstrap boundaries"
+depends_on = []
+precedence_over = []
+
+[[rules]]
+id = "DSET-RULE-BUILD"
+layer = "TOOL"
+template = "build-rules.md"
+target = "build-rules.md"
+applicability = "applicable"
+reason = "Implementation work requires selected gates and safe change behavior"
+depends_on = ["DSET-RULE-ARCHITECTURE"]
+precedence_over = []
+
+[[rules]]
+id = "DSET-RULE-DOMAIN-SPEC"
+layer = "META"
+template = "domain-spec-authoring.md"
+target = "domain-spec-authoring.md"
+applicability = "applicable"
+reason = "Domain decisions must precede implementation planning"
+depends_on = []
+precedence_over = []
+
+[[rules]]
+id = "DSET-RULE-TEST-PLAN"
+layer = "META"
+template = "test-planning.md"
+target = "test-planning.md"
+applicability = "applicable"
+reason = "Exact proof must be designed with requirements"
+depends_on = ["DSET-RULE-DOMAIN-SPEC"]
+precedence_over = []
+
+[[rules]]
+id = "DSET-RULE-EVAL-PLAN"
+layer = "META"
+template = "eval-planning.md"
+target = "eval-planning.md"
+applicability = "applicable"
+reason = "Variable and qualitative proof requires an explicit owner"
+depends_on = ["DSET-RULE-DOMAIN-SPEC"]
+precedence_over = []
+
+[[rules]]
+id = "DSET-RULE-SUPPORTABILITY"
+layer = "OPS"
+template = "supportability.md"
+target = "supportability.md"
+applicability = "applicable"
+reason = "Production investigation and recovery must be profile-scaled"
+depends_on = ["DSET-RULE-ARCHITECTURE"]
+precedence_over = []
+
+[[rules]]
+id = "DSET-RULE-ARTIFACT-MAINTENANCE"
+layer = "GOV"
+template = "artifact-maintenance.md"
+target = "artifact-maintenance.md"
+applicability = "applicable"
+reason = "Durable conclusions require one writable owner and verified cutover"
+depends_on = ["DSET-RULE-ARCHITECTURE"]
+precedence_over = []
+
+[[rules]]
+id = "DSET-RULE-WORK-ITEMS"
+layer = "GOV"
+template = "work-items.md"
+target = "work-items.md"
+applicability = "applicable"
+reason = "Semantic routing must apply the four canonical Types and their subtypes independently of workflow"
+depends_on = ["DSET-RULE-ARCHITECTURE"]
+precedence_over = []
+
+[[rules]]
+id = "DSET-RULE-ARTIFACT-CLASSIFICATION"
+layer = "GOV"
+template = "artifact-classification.md"
+target = "artifact-classification.md"
+applicability = "applicable"
+reason = "Every governed carrier requires one MECE artifact classification independent from semantic Type"
+depends_on = ["DSET-RULE-ARCHITECTURE"]
+precedence_over = []
+
+[[rules]]
+id = "DSET-RULE-DELEGATION-BUDGET"
+layer = "SKILL"
+template = "delegation-budget.md"
+target = "delegation-budget.md"
+applicability = "applicable"
+reason = "Delegation requires inherited model/effort, bounded tree budgets, and a fixed quality floor"
+depends_on = ["DSET-RULE-ARCHITECTURE"]
+precedence_over = []
+
+[[rules]]
+id = "DSET-RULE-SKILL-RUNS"
+layer = "SKILL"
+template = "skill-runs.md"
+target = "skill-runs.md"
+applicability = "applicable"
+reason = "Skill invocations require bounded redacted supportability evidence"
+depends_on = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-DELEGATION-BUDGET"]
+precedence_over = []
+
+[[rules]]
+id = "DSET-RULE-RELEASE"
+layer = "OPS"
+template = "release.md"
+target = "release.md"
+applicability = "applicable"
+reason = "Release preparation and protected publication require one deterministic transaction"
+depends_on = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-BUILD", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION"]
+precedence_over = []
+
+[[rules]]
+id = "DSET-RULE-LIFECYCLE"
+layer = "SKILL"
+template = "lifecycle-orchestration.md"
+target = "lifecycle-orchestration.md"
+applicability = "applicable"
+reason = "The primary DSET entrypoint requires deterministic modes, precedence, authority, and stops"
+depends_on = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-SKILL-RUNS"]
+precedence_over = []
+
+[[rules]]
+id = "DSET-RULE-DIAGNOSIS"
+layer = "SKILL"
+template = "diagnosis.md"
+target = "diagnosis.md"
+applicability = "applicable"
+reason = "Defect investigation requires evidence and authorization boundaries"
+depends_on = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION"]
+precedence_over = []
+
+[[rules]]
+id = "DSET-RULE-PROTOTYPING"
+layer = "SKILL"
+template = "prototyping.md"
+target = "prototyping.md"
+applicability = "applicable"
+reason = "Solution experiments require comparable disposable evidence"
+depends_on = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION"]
+precedence_over = []
+
+[[workflows]]
+id = "lifecycle-orchestration"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-BUILD", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-WORK-ITEMS", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-RELEASE", "DSET-RULE-LIFECYCLE"]
+
+[[workflows]]
+id = "domain-clarification"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-LIFECYCLE"]
+
+[[workflows]]
+id = "diagnosis"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-LIFECYCLE", "DSET-RULE-DIAGNOSIS"]
+
+[[workflows]]
+id = "prototyping"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-LIFECYCLE", "DSET-RULE-PROTOTYPING"]
+
+[[workflows]]
+id = "release"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-BUILD", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-RELEASE", "DSET-RULE-LIFECYCLE"]
+
+[[workflows]]
+id = "work-triage"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-WORK-ITEMS", "DSET-RULE-LIFECYCLE"]
+
+[[workflows]]
+id = "decompose"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-WORK-ITEMS", "DSET-RULE-LIFECYCLE"]
+
+[[workflows]]
+id = "landscape"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-LIFECYCLE"]
+
+[[workflows]]
+id = "decisions"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-WORK-ITEMS", "DSET-RULE-LIFECYCLE"]
+
+[[workflows]]
+id = "compile"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-LIFECYCLE"]
+
+[[workflows]]
+id = "plan-proof"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-LIFECYCLE"]
+
+[[workflows]]
+id = "plan-implementation"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-BUILD", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-LIFECYCLE"]
+
+[[workflows]]
+id = "implement"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-BUILD", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-WORK-ITEMS", "DSET-RULE-LIFECYCLE"]
+
+[[workflows]]
+id = "verify"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-BUILD", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-LIFECYCLE"]
+
+[[workflows]]
+id = "complete"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-WORK-ITEMS", "DSET-RULE-LIFECYCLE"]
+
+[[workflows]]
+id = "overview"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-WORK-ITEMS", "DSET-RULE-LIFECYCLE"]
+
+[[wrappers]]
+workflow = "lifecycle-orchestration"
+skill = "dset"
+
+[[wrappers]]
+workflow = "domain-clarification"
+skill = "dset-clarify"
+
+[[wrappers]]
+workflow = "diagnosis"
+skill = "dset-diagnose"
+
+[[wrappers]]
+workflow = "prototyping"
+skill = "dset-prototype"
+
+[[wrappers]]
+workflow = "release"
+skill = "dset-release"
+
+[[wrappers]]
+workflow = "work-triage"
+skill = "dset-triage"
+
+[[wrappers]]
+workflow = "decompose"
+skill = "dset-decompose"
+
+[[wrappers]]
+workflow = "landscape"
+skill = "dset-landscape"
+
+[[wrappers]]
+workflow = "decisions"
+skill = "dset-decisions"
+
+[[wrappers]]
+workflow = "compile"
+skill = "dset-compile"
+
+[[wrappers]]
+workflow = "plan-proof"
+skill = "dset-plan-proof"
+
+[[wrappers]]
+workflow = "plan-implementation"
+skill = "dset-plan-implementation"
+
+[[wrappers]]
+workflow = "implement"
+skill = "dset-implement"
+
+[[wrappers]]
+workflow = "verify"
+skill = "dset-verify"
+
+[[wrappers]]
+workflow = "complete"
+skill = "dset-complete"
+
+[[wrappers]]
+workflow = "overview"
+skill = "dset-overview"

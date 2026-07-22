@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import hashlib
-import os
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
@@ -12,6 +11,7 @@ from .frontmatter import FrontmatterError
 from .frontmatter import format_for_path as frontmatter_format_for_path
 from .frontmatter import metadata as frontmatter_metadata
 from .frontmatter import render as render_frontmatter
+from .identity import logical_part
 from .layout import discover_layout
 from .lineage import build_relation_index
 from .project_data import lifecycle_events, project_section
@@ -119,7 +119,7 @@ def build_health_model(root: Path) -> dict[str, Any]:
                 ),
                 "priority": priority,
                 "priority_source": source,
-                "path": atom.path,
+                "carrier": Path(atom.path).name,
             }
         )
     priority_counts[settings.default_priority] += max(0, len(artifacts) - len(atoms))
@@ -141,6 +141,9 @@ def build_health_model(root: Path) -> dict[str, Any]:
         and row["status"]
         not in {"answered", "resolved", "rejected", "retired", "withdrawn"}
     ]
+    manifest = load(layout.manifest_path)
+    project = manifest.get("project", {}) if isinstance(manifest, dict) else {}
+    project_key = str(project.get("key", "PROJECT"))
     return {
         "schema_version": "1.0",
         "source_digest": _source_digest(root),
@@ -196,10 +199,10 @@ def build_health_model(root: Path) -> dict[str, Any]:
         "packages": packages,
         "work_areas": work_areas,
         "canonical_returns": {
-            "manifest": layout.manifest_path.relative_to(root).as_posix(),
-            "governance": layout.governance_path.relative_to(root).as_posix(),
-            "intake": layout.intake_path.relative_to(root).as_posix(),
-            "traceability": layout.traceability_path.relative_to(root).as_posix(),
+            "settings": layout.manifest_path.name,
+            "governance": layout.governance_path.name,
+            "intake": f"{project_key}-PROJECT-HUB.md",
+            "traceability": layout.traceability_path.name,
         },
     }
 
@@ -208,7 +211,6 @@ def render_health(root: Path) -> str:
     root = root.resolve()
     model = build_health_model(root)
     layout = discover_layout(root)
-    output_dir = health_path(root).parent
     project = load(layout.manifest_path)["project"]
     project_key = str(project["key"])
     frontmatter = {
@@ -223,8 +225,9 @@ def render_health(root: Path) -> str:
         f"# {project_key} project health",
         "",
         "> [!NOTE]",
-        "> This generated view is not authority. Follow each link to its canonical",
-        "> owner and refresh explicitly after source changes.",
+        "> This generated view is not authority. Resolve each identity or carrier",
+        "> name inside the selected project control plane and refresh explicitly",
+        "> after source changes.",
         "",
         f"- **Source digest:** `{model['source_digest']}`",
         "- **Renderer:** `dset health` schema 1.0",
@@ -287,20 +290,19 @@ def render_health(root: Path) -> str:
     unresolved = model["unresolved"]
     if unresolved:
         for item in unresolved:
-            link = _link(root, output_dir, str(item["path"]))
             subtype = f"/{item['subtype']}" if item["subtype"] else ""
             lines.append(
-                f"- [`{item['id']}`]({link}) — {item['type']}{subtype}: {item['title']}"
+                f"- `{item['id']}` — {item['type']}{subtype}: {item['title']} "
+                f"(`{item['carrier']}`)"
             )
     else:
         lines.append("- None")
     lines.extend(["", "## Open Conflicts", ""])
     if model["open_conflicts"]:
         for item in model["open_conflicts"]:
-            link = _link(root, output_dir, str(item["path"]))
             lines.append(
-                f"- [`{item['id']}`]({link}) — {item['status']}; priority "
-                f"`{item['priority']}` from `{item['priority_source']}`"
+                f"- `{item['id']}` (`{item['carrier']}`) — {item['status']}; "
+                f"priority `{item['priority']}` from `{item['priority_source']}`"
             )
     else:
         lines.append("- None")
@@ -317,10 +319,9 @@ def render_health(root: Path) -> str:
     lines.extend(["", "## Drill-downs", ""])
     lines.append(f"- **Packages:** {_counter_text(model['packages'])}")
     lines.append(f"- **Work Areas:** {_counter_text(model['work_areas'])}")
-    lines.extend(["", "## Canonical return paths", ""])
-    for name, path in model["canonical_returns"].items():
-        link = _link(root, output_dir, path)
-        lines.append(f"- [{name}]({link})")
+    lines.extend(["", "## Canonical return carriers", ""])
+    for name, carrier in model["canonical_returns"].items():
+        lines.append(f"- **{name}:** `{carrier}`")
     lines.extend(
         [
             "",
@@ -367,7 +368,6 @@ def health_path(root: Path) -> Path:
 
 
 def _classified_artifacts(root: Path) -> list[dict[str, Any]]:
-    layout = discover_layout(root)
     registry = project_section(root, "artifact_catalog")
     rules = registry.get("path_rules", []) if isinstance(registry, dict) else []
     artifacts: list[dict[str, Any]] = []
@@ -547,7 +547,7 @@ def _intake_items(
                 "effective_status": _current_status(
                     atom.semantic_id, atom.emission_status, lifecycle
                 ),
-                "path": atom.path,
+                "carrier": Path(atom.path).name,
             }
             for atom in atoms.values()
             if atom.semantic_type in {"problem", "question"}
@@ -571,7 +571,7 @@ def _intake_items(
                 "subtype": subtype,
                 "title": str(item.get("title", "untitled")),
                 "effective_status": status,
-                "path": path.relative_to(root).as_posix(),
+                "carrier": path.name,
             }
         )
     return items
@@ -758,10 +758,6 @@ def _counter_text(value: dict[str, int]) -> str:
     return ", ".join(f"{key}={count}" for key, count in sorted(value.items()))
 
 
-def _link(root: Path, from_dir: Path, target: str) -> str:
-    return Path(os.path.relpath(root / target, from_dir)).as_posix()
-
-
 def _path_ignored(root: Path, path: Path) -> bool:
     return _relative_ignored(path.relative_to(root))
 
@@ -773,7 +769,7 @@ def _relative_ignored(relative: Path) -> bool:
     ):
         return True
     return any(
-        part in IGNORED_PARTS
+        logical_part(part) in IGNORED_PARTS
         or (part.startswith(".") and part not in {".github", ".dset"})
         for part in relative.parts
     )

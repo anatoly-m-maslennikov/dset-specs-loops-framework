@@ -9,10 +9,11 @@ from typing import Any
 from .diagnostics import Diagnostic
 from .frontmatter import FrontmatterError
 from .frontmatter import metadata as frontmatter_metadata
+from .identity import iter_control_files, logical_part
 from .layout import discover_layout
 from .legacy_authority import legacy_authority_ids
-from .project_data import lifecycle_events
-from .semantic_types import SEMANTIC_SUBTYPES
+from .project_data import lifecycle_events, project_section
+from .semantic_types import SEMANTIC_SUBTYPES, build_semantic_classification_index
 from .yaml_subset import YamlSubsetError, load
 
 ID_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
@@ -191,7 +192,7 @@ def build_relation_index(root: Path) -> list[dict[str, Any]]:
                 "source": node.id,
                 "source_kind": "artifact",
                 "source_artifact_id": node.artifact_id,
-                "source_path": node.path,
+                "source_carrier": Path(node.path).name,
                 **relation.as_dict(),
                 "llm_session_ids": [],
             }
@@ -243,9 +244,15 @@ def _collect_raw_nodes(
     aliases: dict[str, str] = {}
     alias_paths: dict[str, Path] = {}
     diagnostics: list[Diagnostic] = []
-    for path in sorted(root.rglob("*.md")):
+    layout = discover_layout(root)
+    paths = (
+        iter_control_files(root, "*.md")
+        if layout.separated
+        else sorted(root.rglob("*.md"))
+    )
+    for path in paths:
         relative = path.relative_to(root)
-        if any(part in IGNORED_PARTS for part in relative.parts):
+        if any(logical_part(part) in IGNORED_PARTS for part in relative.parts):
             continue
         metadata = _frontmatter(path)
         if metadata is None:
@@ -718,9 +725,27 @@ def _reject_reverse_fields(
 
 
 def _known_relation_ids(root: Path) -> set[str]:
-    identifiers = set() if discover_layout(root).recursive else legacy_authority_ids(root)
     layout = discover_layout(root)
-    if not layout.recursive and layout.intake_path.is_file():
+    current = layout.recursive or layout.separated
+    identifiers = set() if current else legacy_authority_ids(root)
+    if current:
+        identifiers.update(
+            str(item["id"])
+            for item in build_semantic_classification_index(root)
+            if isinstance(item, dict) and isinstance(item.get("id"), str)
+        )
+        for event in lifecycle_events(root):
+            atom_id = event.get("atom_id")
+            if isinstance(atom_id, str):
+                identifiers.add(atom_id)
+            related = event.get("related", [])
+            if isinstance(related, list):
+                identifiers.update(
+                    str(item)
+                    for item in related
+                    if isinstance(item, str) and ID_PATTERN.fullmatch(item)
+                )
+    if not current and layout.intake_path.is_file():
         data = load(layout.intake_path)
         items = data.get("items", []) if isinstance(data, dict) else []
         identifiers.update(
@@ -728,8 +753,22 @@ def _known_relation_ids(root: Path) -> set[str]:
             for item in items
             if isinstance(item, dict) and isinstance(item.get("id"), str)
         )
-    for path in discover_layout(root).structured_named_files(root, "package"):
-        identifiers.update(_package_ids(path))
+    if layout.separated:
+        catalog = project_section(root, "package_catalog")
+        packages = catalog.get("packages", []) if isinstance(catalog, dict) else []
+        for package in packages if isinstance(packages, list) else []:
+            if not isinstance(package, dict):
+                continue
+            for value in package.values():
+                if isinstance(value, list):
+                    identifiers.update(
+                        str(item)
+                        for item in value
+                        if isinstance(item, str) and ID_PATTERN.fullmatch(item)
+                    )
+    else:
+        for path in layout.structured_named_files(root, "package"):
+            identifiers.update(_package_ids(path))
     return identifiers
 
 

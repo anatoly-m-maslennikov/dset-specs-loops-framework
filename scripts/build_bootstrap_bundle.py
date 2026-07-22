@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from dset_toolchain.layout import LAYER_DIRECTORIES  # noqa: E402
+from dset_toolchain.layout import METHODOLOGY_ROOT  # noqa: E402
 from dset_toolchain.skill_catalog import PUBLIC_SKILL_WORKFLOWS  # noqa: E402
 
 OUTPUT = ROOT / "dset_toolchain" / "bootstrap_bundle.json"
@@ -16,29 +16,14 @@ OUTPUT = ROOT / "dset_toolchain" / "bootstrap_bundle.json"
 
 def selected_files(root: Path = ROOT) -> list[Path]:
     root = root.resolve()
-    selected = [root / ".dset" / "dset_settings.toml", root / ".dset" / "README.md"]
-    for directory in ("00_project", *LAYER_DIRECTORIES.values(), "10_versions"):
-        for candidate in (
-            root / directory / "README.md",
-            root / ".dset" / directory / "README.md",
-        ):
-            if candidate.is_file():
-                selected.append(candidate)
-    licenses = root / ".dset" / "00_project" / "licenses"
-    if licenses.is_dir():
-        selected.extend(path for path in licenses.iterdir() if path.is_file())
-    for layer in ("meta", "gov", "tool", "skill", "ops"):
-        layer_root = root / ".dset" / LAYER_DIRECTORIES[layer]
-        for folder in ("schemas", "templates"):
-            source_root = layer_root / folder
-            selected.extend(
-                path
-                for path in source_root.rglob("*")
-                if path.is_file()
-                and not any(
-                    part.startswith(".") for part in path.relative_to(source_root).parts
-                )
-            )
+    selected = [root / ".dset" / "dset_settings.toml"]
+    methodology = root / ".dset" / METHODOLOGY_ROOT
+    selected.extend(
+        path
+        for path in methodology.rglob("*")
+        if path.is_file()
+        and not any(part.startswith(".") for part in path.relative_to(root).parts)
+    )
     for skill_id in sorted(PUBLIC_SKILL_WORKFLOWS):
         selected.extend(
             path

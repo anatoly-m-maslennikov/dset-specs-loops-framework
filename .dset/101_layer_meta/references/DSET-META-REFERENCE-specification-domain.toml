@@ -1,0 +1,6 @@
+schema_version = "1.0"
+artifact_type = "reference"
+target = "030_dset-meta-specification-domain.md"
+expected_role = "specification"
+scope = "meta"
+reason = "Applied project truth currently equals the installed methodology edition."

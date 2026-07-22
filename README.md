@@ -24,15 +24,16 @@ The two roles are deliberately separated:
 
 | Surface | Role |
 |---|---|
-| [`.dset/`](.dset/README.md) | Portable framework material and the repository-local settings catalog |
-| [`00_project/`](00_project/README.md) | Project-wide evergreen truth, atoms, plans, analysis, and history |
-| [`01_layer_meta/`](01_layer_meta/README.md) through [`05_layer_ops/`](05_layer_ops/README.md) | This project's layer-owned artifacts |
-| [`10_versions/`](10_versions/README.md) | Project-wide Version artifacts and Changes |
+| `10_project` and `11_layer_meta` through `15_layer_ops` | Reusable framework source organized by project and ordered layers |
+| `50_versions` | Public framework edition and release projections |
+| `000_dset-methodology-hub.md` | Installed project-local methodology resolved by thin skills |
+| `DSET-PROJECT-HUB.md` and `DSET-META-HUB.md` through `DSET-OPS-HUB.md` | This repository's applied project and layer artifacts |
+| `DSET-VERSIONS-HUB.md` | This repository's applied Version artifacts and Changes |
 | `.dset_runtime/` | Local resumable sessions and generated views; never project authority |
 
-An adopter gets the same separation. Its `.dset` copy is the local framework
-and governance surface; its project truth lives in the repository-root project,
-layer, and version directories.
+An adopter gets the same project-local separation under `.dset/`. The root
+`10`–`50` source tree exists in this repository because DSET itself is the
+product being developed; it is not copied into ordinary adopter repositories.
 
 ## Architecture
 
@@ -72,16 +73,16 @@ DSET keeps three active carrier roles separate:
    migrations, test implementations, evaluation implementations, and other
    material that realizes accepted truth.
 
-Settings and registries share one documented catalog at
-[`.dset/dset_settings.toml`](.dset/dset_settings.toml). Aggregate artifact,
-intake, atom, lifecycle, provenance, and version registries are not parallel
-active authorities. Historical aggregate carriers live only under the
-project-owned legacy archive.
+Settings and registries share the unique `dset_settings.toml` carrier inside
+the selected project control plane. Aggregate artifact, intake, atom,
+lifecycle, provenance, and version registries are not parallel active
+authorities. Historical aggregate carriers live only under the project-owned
+legacy archive.
 
 Semantic compilation is **on demand**. A new atom does not force every
-evergreen document to be rewritten. [`dset-compile`](skills/dset-compile/SKILL.md)
-updates only affected owners when the operator requests compilation or a
-downstream entry gate requires current evergreen truth.
+evergreen document to be rewritten. `dset-compile` updates only affected owners
+when the operator requests compilation or a downstream entry gate requires
+current evergreen truth.
 
 ## Core development loop
 
@@ -138,13 +139,14 @@ never mutated to list children.
 
 | Area | Hub |
 |---|---|
-| Reusable development method | [Methodology](methodology/README.md) |
-| Artifact architecture and authoring rules | [Documentation](documentation/README.md) |
-| Portable/local DSET framework | [`.dset`](.dset/README.md) |
-| Recursive self-hosting project | [`00_project`](00_project/README.md) |
+| Reusable framework overview | `000_dset-project-hub.md` |
+| Reusable META method | `000_dset-meta-hub.md` |
+| Reusable artifact governance | `000_dset-gov-hub.md` |
+| Installed project-local methodology | `000_dset-methodology-hub.md` |
+| Self-hosting project artifacts | `DSET-PROJECT-HUB.md` |
 | Toolchain implementation | [`dset_toolchain/`](dset_toolchain/) |
 | Agent workflows | [Skills](skills/README.md) |
-| Version lifecycle | [`10_versions`](10_versions/README.md) |
+| Applied Version lifecycle | `DSET-VERSIONS-HUB.md` |
 | Delivery boundary | [GitHub delivery policy](.github/DELIVERY.md) |
 
 ## Commands
@@ -177,7 +179,16 @@ dset skills install --host claude
 dset skills install --host claude --apply
 ```
 
-The main operator surface is [`dset`](skills/dset/SKILL.md). Direct entries
+Framework maintainers can preview and then synchronize the reusable source into
+the installed project-local methodology:
+
+```bash
+python -m dset_toolchain methodology check .
+python -m dset_toolchain methodology sync .
+python -m dset_toolchain methodology sync . --execute
+```
+
+The main operator surface is `dset`. Direct entries
 include decisions, semantic compilation, proof planning, implementation
 planning, implementation, verification, overview, diagnosis, clarification,
 landscape analysis, prototyping, triage, release, and completion.
@@ -185,7 +196,7 @@ landscape analysis, prototyping, triage, release, and completion.
 ## Current status
 
 The coordinated public baseline is `0.3.1`. This working repository now uses
-schema `1.4` and the recursive framework/project separation intended for the
-next version. Historical migrations and proofs remain project history; they are
-not current framework inputs. Release-readiness claims continue to require the
+schema `1.5` and the separated-methodology layout intended for the next
+version. Historical migrations and proofs remain project history; they are not
+current framework inputs. Release-readiness claims continue to require the
 separate configured verification and hosted-delivery gates.

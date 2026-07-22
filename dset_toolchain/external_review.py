@@ -11,6 +11,7 @@ from typing import Any
 from .frontmatter import FrontmatterError
 from .frontmatter import parse as parse_frontmatter
 from .frontmatter import render as render_frontmatter
+from .identity import find_unique_name
 from .layout import discover_layout
 from .project_data import project_section
 from .settings import load_project_settings
@@ -59,7 +60,7 @@ def create_review_packet(
     for item in raw_rules:
         if not isinstance(item, dict) or item.get("applicability") != "applicable":
             continue
-        rule_path = item.get("path")
+        rule_path = item.get("document")
         rule_id = item.get("id")
         if not isinstance(rule_path, str) or not isinstance(rule_id, str):
             continue
@@ -360,32 +361,25 @@ def _read_markdown(path: Path) -> tuple[dict[str, Any], str]:
 
 
 def _file_identity(root: Path, raw: str) -> dict[str, str]:
-    candidate = (root / raw).resolve()
-    try:
-        relative = candidate.relative_to(root)
-    except ValueError as error:
-        raise ValueError(f"reviewed input escapes the repository: {raw}") from error
-    if not candidate.is_file():
-        raise FileNotFoundError(f"reviewed input does not exist: {raw}")
-    return {"path": relative.as_posix(), "sha256": _sha256(candidate)}
+    candidate = find_unique_name(root, raw)
+    return {"carrier": candidate.name, "sha256": _sha256(candidate)}
 
 
 def _valid_identity(value: object, *, with_id: bool) -> bool:
     if not isinstance(value, dict):
         return False
-    fields = {"path", "sha256"}
+    fields = {"carrier", "sha256"}
     if with_id:
         fields.add("id")
     if set(value) != fields:
         return False
-    path = value.get("path")
+    carrier = value.get("carrier")
     digest = value.get("sha256")
     identifier = value.get("id")
     return (
-        isinstance(path, str)
-        and bool(path)
-        and not Path(path).is_absolute()
-        and ".." not in Path(path).parts
+        isinstance(carrier, str)
+        and bool(carrier)
+        and Path(carrier).name == carrier
         and isinstance(digest, str)
         and bool(re.fullmatch(r"[0-9a-f]{64}", digest))
         and (

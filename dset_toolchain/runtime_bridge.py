@@ -119,7 +119,7 @@ def _ruleset_identity(resolved: Mapping[str, Any]) -> str:
         "rules": [
             {
                 "id": rule["id"],
-                "path": rule["path"],
+                "document": rule["document"],
                 "sha256": rule["sha256"],
             }
             for rule in resolved["rules"]

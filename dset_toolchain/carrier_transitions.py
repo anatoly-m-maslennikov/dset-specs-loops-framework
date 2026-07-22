@@ -1,4 +1,4 @@
-"""Lossless, append-only carrier transitions authorized by GOV-018."""
+"""Read and validate the legacy aggregate transitions authorized by GOV-018."""
 
 from __future__ import annotations
 
@@ -22,11 +22,17 @@ SCHEMA_VERSION = "1.0"
 AUTHORITY_DECISION = "DSET-DECISION-GOV-018"
 LAYOUT_AUTHORITY = "DSET-REQUIREMENT-GOV-041"
 AUTHORITY_DECISIONS = frozenset(
-    {AUTHORITY_DECISION, LAYOUT_AUTHORITY, "DSET-REQUIREMENT-GOV-044"}
+    {
+        AUTHORITY_DECISION,
+        LAYOUT_AUTHORITY,
+        "DSET-REQUIREMENT-GOV-044",
+        "DSET-DECISION-GOV-022",
+    }
 )
 SESSION_ID = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
-LEDGER_RELATIVE = Path("00_project/migrations/carrier-transitions.toml")
+LEDGER_RELATIVE = Path(".dset/100_project/legacy/migrations/carrier-transitions.toml")
 LEGACY_LEDGER_RELATIVES = (
+    Path("00_project/migrations/carrier-transitions.toml"),
     Path("dset/scopes/gov/migrations/carrier-transitions.toml"),
     Path("dset/migrations/carrier-transitions.toml"),
 )

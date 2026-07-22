@@ -5,8 +5,8 @@ from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
 
-from .layout import LAYERS, discover_layout
-from .toml_codec import dump as dump_toml
+from .layout import LAYERS, RepositoryLayout, discover_layout
+from .toml_codec import dumps as dump_toml
 from .yaml_subset import dump as dump_structured
 from .yaml_subset import load
 
@@ -15,11 +15,12 @@ def project_section(root: Path, name: str) -> dict[str, Any]:
     """Read a project registry from settings or its pre-1.4 carrier."""
 
     layout = discover_layout(root)
-    path = layout.settings_path if layout.recursive else _legacy_path(layout, name)
+    current = layout.recursive or layout.separated
+    path = layout.settings_path if current else _legacy_path(layout, name)
     data = load(path)
     if not isinstance(data, dict):
         raise ValueError(f"project carrier must be a mapping: {path}")
-    if layout.recursive:
+    if current:
         value = data.get(name)
         if not isinstance(value, dict):
             raise ValueError(f"settings section is missing or invalid: {name}")
@@ -31,14 +32,14 @@ def write_project_section(root: Path, name: str, value: dict[str, Any]) -> Path:
     """Replace one registry without discarding documented settings comments."""
 
     layout = discover_layout(root)
-    if not layout.recursive:
+    if not (layout.recursive or layout.separated):
         path = _legacy_path(layout, name)
         path.write_text(dump_structured(value, path), encoding="utf-8")
         return path
 
     path = layout.settings_path
     text = path.read_text(encoding="utf-8")
-    rendered = dump_toml({name: value}, path).strip()
+    rendered = dump_toml({name: value}).strip()
     start, end = _section_bounds(text, name)
     separator = "\n\n" if start > 0 else ""
     replacement = f"{separator}{rendered}\n"
@@ -51,7 +52,7 @@ def lifecycle_event_files(root: Path) -> Iterator[Path]:
     """Yield atomized lifecycle carriers, or the historical aggregate carrier."""
 
     layout = discover_layout(root)
-    if not layout.recursive:
+    if not (layout.recursive or layout.separated):
         path = layout.structured_file(layout.project_state_root, "lifecycle.toml")
         if path.is_file():
             yield path
@@ -72,7 +73,7 @@ def lifecycle_events(root: Path) -> list[dict[str, Any]]:
         data = load(path)
         if not isinstance(data, dict):
             raise ValueError(f"lifecycle carrier must be a mapping: {path}")
-        if layout.recursive:
+        if layout.recursive or layout.separated:
             if isinstance(data.get("event"), dict):
                 event = dict(data["event"])
             else:
@@ -91,7 +92,7 @@ def lifecycle_events(root: Path) -> list[dict[str, Any]]:
     return sorted(events, key=lambda item: str(item.get("id", "")))
 
 
-def _legacy_path(layout: Any, name: str) -> Path:
+def _legacy_path(layout: RepositoryLayout, name: str) -> Path:
     paths = {
         "artifact_catalog": layout.artifact_type_registry_path,
         "artifact_structure": layout.artifact_registry_path,

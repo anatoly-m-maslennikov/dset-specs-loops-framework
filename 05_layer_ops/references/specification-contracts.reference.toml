@@ -1,6 +1,0 @@
-schema_version = "1.0"
-artifact_type = "reference"
-target = ".dset/05_layer_ops/specification-contracts.md"
-expected_role = "specification"
-scope = "ops"
-reason = "Recursive project truth currently equals distributable framework truth."

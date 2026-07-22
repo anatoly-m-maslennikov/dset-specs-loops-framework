@@ -11,13 +11,12 @@
 # reviewer does not need to know parser fallbacks. Unknown settings fail
 # validation, which catches misspellings instead of silently ignoring them.
 #
-# New DSET writers use only this path: .dset/dset_settings.toml.
-# Retired root settings and split manifest paths are read-only migration
-# inputs. Competing configuration carriers fail closed.
+# New DSET writers use only the unique `dset_settings.toml` carrier inside
+# `.dset`. Competing settings carriers or nested project roots fail closed.
 #
 # Settings schema implemented by this file.
-# Accepted for new writers: "1.4".
-schema_version = "1.4"
+# Accepted for new writers: "1.5".
+schema_version = "1.5"
 canonical_command = "python -m dset_toolchain verify ."
 
 [artifacts]
@@ -109,7 +108,8 @@ default_workspace = "integration-branch"
 # exploration/review breadth, never the accepted scope, safety boundary, or
 # required Tests/Evaluations. Operator instructions override the profile.
 #
-# Accepted profiles are defined in .dset/04_layer_skill/budget.toml:
+# Accepted profiles are defined by
+# `010_dset-skill-budget.toml`:
 # - "low": 0-1 subagents, depth 1, one round.
 # - "medium" (default): target 2 and maximum 3 subagents, depth 1, two rounds.
 # - "high": 4-6 subagents, depth 2, three rounds.
@@ -149,7 +149,7 @@ repository_role = "framework-source-and-adopter"
 status = "applicable"
 reason = "GitHub Actions and repository rules operate the production delivery path from dev to main"
 authority = "github"
-runbook = ".dset/05_layer_ops/supportability/delivery-runbook.md"
+runbook = "000_dset-ops-supportability-delivery-runbook.md"
 
 [release]
 status = "applicable"
@@ -159,10 +159,10 @@ publisher = "github"
 tag_pattern = "v{product_version}"
 
 [work_items]
-atomic_roots = ["00_project", "01_layer_meta", "02_layer_gov", "03_layer_tool", "04_layer_skill", "05_layer_ops"]
+atomic_scopes = ["project-control", "dset-meta", "dset-gov", "dset-tool", "dset-skill", "dset-ops"]
 
 [structure]
-layout = "recursive-framework-v1"
+layout = "separated-methodology-v1"
 
 [profiles]
 runtime_risk = "low-risk-hosted-automation"
@@ -245,44 +245,32 @@ rationale = "Preserve the immutable generated-view commit while removing its acc
 commands = ["uv run ruff format --check dset_toolchain tests", "uv run ruff check dset_toolchain tests", "uv run mypy dset_toolchain tests", "{python} -m unittest discover -s tests -v", "git diff --check"]
 
 [[work_areas]]
-id = "methodology"
-path = "methodology"
+id = "framework-source-global"
+path = "10_project"
 
 [[work_areas]]
-id = "documentation"
-path = "documentation"
+id = "framework-source-meta"
+path = "11_layer_meta"
 
 [[work_areas]]
-id = "framework-control"
-path = ".dset"
+id = "framework-source-gov"
+path = "12_layer_gov"
 
 [[work_areas]]
-id = "project-global"
-path = "00_project"
+id = "framework-source-tool"
+path = "13_layer_tool"
 
 [[work_areas]]
-id = "project-meta"
-path = "01_layer_meta"
+id = "framework-source-skill"
+path = "14_layer_skill"
 
 [[work_areas]]
-id = "project-gov"
-path = "02_layer_gov"
+id = "framework-source-ops"
+path = "15_layer_ops"
 
 [[work_areas]]
-id = "project-tool"
-path = "03_layer_tool"
-
-[[work_areas]]
-id = "project-skill"
-path = "04_layer_skill"
-
-[[work_areas]]
-id = "project-ops"
-path = "05_layer_ops"
-
-[[work_areas]]
-id = "project-versions"
-path = "10_versions"
+id = "framework-source-versions"
+path = "50_versions"
 
 [[work_areas]]
 id = "toolchain"
@@ -331,7 +319,7 @@ pattern = "THIRD_PARTY_NOTICES.md"
 rationale = "Third-party notices mirror external legal attribution."
 
 [[artifact_catalog.exclusions]]
-pattern = ".dset/00_project/licenses/*.txt"
+pattern = "*_dset-project-licenses-*.txt"
 rationale = "Vendored third-party license texts remain external legal sources."
 
 [[artifact_catalog.exclusions]]
@@ -410,91 +398,66 @@ schema_version = 1.0
 profile = "documentation-v1"
 
 [artifact_structure.root]
-id = "repository"
-root = "."
-hub = "README.md"
+id = "framework-control"
+hub = "DSET-CONTROL-HUB.md"
 owner = "framework"
-purpose = "Public framework and repository navigation"
+purpose = "Project-local DSET settings, installed methodology, and applied artifacts"
 
 [[artifact_structure.areas]]
-id = "methodology"
-root = "methodology"
-hub = "methodology/README.md"
-parent = "repository"
+id = "installed-methodology"
+hub = "000_dset-methodology-hub.md"
+parent = "framework-control"
 owner = "methodology"
-purpose = "Reusable DSET delivery method"
-
-[[artifact_structure.areas]]
-id = "documentation"
-root = "documentation"
-hub = "documentation/README.md"
-parent = "repository"
-owner = "methodology"
-purpose = "Artifact architecture and authoring rules"
+purpose = "Installed project-local DSET methodology used by governed workflows"
 
 [[artifact_structure.areas]]
 id = "project-control"
-root = "00_project"
-hub = "00_project/README.md"
-parent = "repository"
+hub = "DSET-PROJECT-HUB.md"
+parent = "framework-control"
 owner = "methodology"
-purpose = "Project-wide recursive truth owned by this repository"
-
-[[artifact_structure.areas]]
-id = "framework-control"
-root = ".dset"
-hub = ".dset/README.md"
-parent = "repository"
-owner = "framework"
-purpose = "Portable DSET framework installed into an adopter repository"
-
-[[artifact_structure.areas]]
-id = "skills"
-root = "skills"
-hub = "skills/README.md"
-parent = "repository"
-owner = "methodology"
-purpose = "Focused agent workflow sources"
+purpose = "Applied project-wide truth owned by this repository"
 
 [[artifact_structure.areas]]
 id = "dset-meta"
-root = "01_layer_meta"
-hub = "01_layer_meta/README.md"
+hub = "DSET-META-HUB.md"
 parent = "project-control"
 owner = "meta"
 purpose = "Project identity and accepted behavioral truth"
 
 [[artifact_structure.areas]]
 id = "dset-gov"
-root = "02_layer_gov"
-hub = "02_layer_gov/README.md"
+hub = "DSET-GOV-HUB.md"
 parent = "project-control"
 owner = "gov"
 purpose = "Project governance decisions, questions, problems, and lifecycle events"
 
 [[artifact_structure.areas]]
 id = "dset-tool"
-root = "03_layer_tool"
-hub = "03_layer_tool/README.md"
+hub = "DSET-TOOL-HUB.md"
 parent = "project-control"
 owner = "tool"
 purpose = "Executable tooling, fixtures, and traceability contracts"
 
 [[artifact_structure.areas]]
 id = "dset-skill"
-root = "04_layer_skill"
-hub = "04_layer_skill/README.md"
+hub = "DSET-SKILL-HUB.md"
 parent = "project-control"
 owner = "skill"
 purpose = "Agent workflow, delegation, and run-evidence contracts"
 
 [[artifact_structure.areas]]
 id = "dset-ops"
-root = "05_layer_ops"
-hub = "05_layer_ops/README.md"
+hub = "DSET-OPS-HUB.md"
 parent = "project-control"
 owner = "ops"
 purpose = "Delivery, release, supportability, and hosted evidence"
+
+[[artifact_structure.areas]]
+id = "dset-versions"
+hub = "DSET-VERSIONS-HUB.md"
+parent = "project-control"
+owner = "ops"
+purpose = "Applied Version artifacts and release lifecycle records"
 
 # Migrated canonical settings; this section is not an artifact ledger.
 [governance_registry]
@@ -508,7 +471,7 @@ customization = "custom"
 [[governance_registry.rules]]
 id = "DSET-RULE-ARCHITECTURE"
 layer = "GOV"
-path = ".dset/02_layer_gov/specification-architecture.md"
+document = "030_dset-gov-specification-architecture.md"
 owner = "project"
 applicability = "applicable"
 reason = "Every governed workflow requires explicit authority and bootstrap boundaries"
@@ -519,13 +482,13 @@ customization = "unmodified"
 [governance_registry.rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/02_layer_gov/templates/governance/core-v1/architecture.md"
-sha256 = "fd009f2ac9cd72e5b4f1e40222dddd3b8daf981985ef73db63f792680d2cd8d8"
+template = "010_dset-gov-templates-governance-core-v1-architecture.md"
+sha256 = "e0fe984e3dc3163be4f12f342d970c143d3c1a89b50b7d610b3f30f894b1e38f"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-BUILD"
 layer = "TOOL"
-path = ".dset/03_layer_tool/specification-build-rules.md"
+document = "020_dset-tool-specification-build-rules.md"
 owner = "project"
 applicability = "applicable"
 reason = "Implementation work requires selected gates and safe change behavior"
@@ -536,13 +499,13 @@ customization = "unmodified"
 [governance_registry.rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/03_layer_tool/templates/governance/core-v1/build-rules.md"
+template = "000_dset-tool-templates-governance-core-v1-build-rules.md"
 sha256 = "1faf0275461d4c95c54f517cb75759292c8a42fd4134e44139b3e2c255b990cb"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-DOMAIN-SPEC"
 layer = "META"
-path = ".dset/01_layer_meta/procedure-domain-spec-authoring.md"
+document = "070_dset-meta-procedure-domain-spec-authoring.md"
 owner = "project"
 applicability = "applicable"
 reason = "Domain decisions must precede implementation planning"
@@ -553,13 +516,13 @@ customization = "unmodified"
 [governance_registry.rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/01_layer_meta/templates/governance/core-v1/domain-spec-authoring.md"
+template = "000_dset-meta-templates-governance-core-v1-domain-spec-authoring.md"
 sha256 = "320c808a833574582c57910be599a37533785419c0560399066dfe11d3e09007"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-TEST-PLAN"
 layer = "META"
-path = ".dset/01_layer_meta/procedure-test-planning.md"
+document = "090_dset-meta-procedure-test-planning.md"
 owner = "project"
 applicability = "applicable"
 reason = "Exact proof must be designed with requirements"
@@ -570,13 +533,13 @@ customization = "unmodified"
 [governance_registry.rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/01_layer_meta/templates/governance/core-v1/test-planning.md"
+template = "020_dset-meta-templates-governance-core-v1-test-planning.md"
 sha256 = "d35e335fffe73396cc29e7f3d5b268c8a44f249bb8a8426126b8ca15322884b4"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-EVAL-PLAN"
 layer = "META"
-path = ".dset/01_layer_meta/procedure-evaluation-planning.md"
+document = "080_dset-meta-procedure-evaluation-planning.md"
 owner = "project"
 applicability = "applicable"
 reason = "Variable and qualitative proof requires an explicit owner"
@@ -587,13 +550,13 @@ customization = "unmodified"
 [governance_registry.rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/01_layer_meta/templates/governance/core-v1/eval-planning.md"
+template = "010_dset-meta-templates-governance-core-v1-eval-planning.md"
 sha256 = "569a38f5974e39dc3bd8092c108b3c14213e646c31041a84fe56d1af25956b5a"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-SUPPORTABILITY"
 layer = "OPS"
-path = ".dset/05_layer_ops/specification-supportability.md"
+document = "060_dset-ops-specification-supportability.md"
 owner = "project"
 applicability = "applicable"
 reason = "Production investigation and recovery must be profile-scaled"
@@ -604,13 +567,13 @@ customization = "unmodified"
 [governance_registry.rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/05_layer_ops/templates/governance/core-v1/supportability.md"
+template = "010_dset-ops-templates-governance-core-v1-supportability.md"
 sha256 = "cf1e5c0dea9f1a1690cd962ffd6511fa7e2af6242e3d2340fe7daa603bd1c35f"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-ARTIFACT-MAINTENANCE"
 layer = "GOV"
-path = ".dset/02_layer_gov/specification-artifact-maintenance.md"
+document = "050_dset-gov-specification-artifact-maintenance.md"
 owner = "project"
 applicability = "applicable"
 reason = "Durable conclusions require one writable owner and verified cutover"
@@ -621,13 +584,13 @@ customization = "custom"
 [governance_registry.rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/02_layer_gov/templates/governance/core-v1/artifact-maintenance.md"
-sha256 = "65a4b6d056577519eaa59fe16d994f04c7385e7367418ecb28762f1b3374652d"
+template = "030_dset-gov-templates-governance-core-v1-artifact-maintenance.md"
+sha256 = "42724342b00bb0067c62ed4a6161d20f9bef505f9c791bc372c40a9648d0828d"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-WORK-ITEMS"
 layer = "GOV"
-path = ".dset/02_layer_gov/specification-work-items.md"
+document = "110_dset-gov-specification-work-items.md"
 owner = "project"
 applicability = "applicable"
 reason = "Semantic routing must apply the four canonical Types and their subtypes independently of workflow"
@@ -638,13 +601,13 @@ customization = "unmodified"
 [governance_registry.rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/02_layer_gov/templates/governance/core-v1/work-items.md"
+template = "050_dset-gov-templates-governance-core-v1-work-items.md"
 sha256 = "61447c22741684e20014f41a1072cdbabba0701779021f11bd6a4dd78731544a"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-ARTIFACT-CLASSIFICATION"
 layer = "GOV"
-path = ".dset/02_layer_gov/specification-artifact-classification.md"
+document = "040_dset-gov-specification-artifact-classification.md"
 owner = "project"
 applicability = "applicable"
 reason = "Every governed carrier requires one MECE artifact classification independent from semantic Type"
@@ -655,13 +618,13 @@ customization = "custom"
 [governance_registry.rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/02_layer_gov/templates/governance/core-v1/artifact-classification.md"
-sha256 = "f4375e2ff617cb7781362c0873f9fd06e76a04e8192ce10fde874217ce5f0665"
+template = "020_dset-gov-templates-governance-core-v1-artifact-classification.md"
+sha256 = "1d9acb71e913c550c1676dc0d2232f487db9d7c7d4c1a765f10db9c25eee8074"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-DELEGATION-BUDGET"
 layer = "SKILL"
-path = ".dset/04_layer_skill/procedure-delegation-budget.md"
+document = "070_dset-skill-procedure-delegation-budget.md"
 owner = "project"
 applicability = "applicable"
 reason = "Delegation requires inherited model/effort, bounded tree budgets, and a fixed quality floor"
@@ -672,13 +635,13 @@ customization = "unmodified"
 [governance_registry.rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/04_layer_skill/templates/governance/core-v1/delegation-budget.md"
-sha256 = "07c27d752519b57766cc89bff23eb476f6b11d4d378be357c00bc498bbef3b29"
+template = "000_dset-skill-templates-governance-core-v1-delegation-budget.md"
+sha256 = "82d2fa5d2a6e37edcfe731caf9c7f9256c5aadc5f2a16c72c9981197dd76e54a"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-SKILL-RUNS"
 layer = "SKILL"
-path = ".dset/04_layer_skill/procedure-skill-runs.md"
+document = "110_dset-skill-procedure-skill-runs.md"
 owner = "project"
 applicability = "applicable"
 reason = "Skill invocations require bounded redacted supportability evidence"
@@ -689,13 +652,13 @@ customization = "unmodified"
 [governance_registry.rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/04_layer_skill/templates/governance/core-v1/skill-runs.md"
+template = "040_dset-skill-templates-governance-core-v1-skill-runs.md"
 sha256 = "c3eac49aa90601ea79380d98723375046a10def9c86e74a7ec52d8b42401c80d"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-RELEASE"
 layer = "OPS"
-path = ".dset/05_layer_ops/procedure-release.md"
+document = "080_dset-ops-procedure-release.md"
 owner = "project"
 applicability = "applicable"
 reason = "Release preparation and protected publication require one deterministic transaction"
@@ -706,13 +669,13 @@ customization = "custom"
 [governance_registry.rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/05_layer_ops/templates/governance/core-v1/release.md"
-sha256 = "3bd2beffd371e09a22eb4b9d2c47dd6eb1df08bf0547fccda0d09a025e9152ef"
+template = "000_dset-ops-templates-governance-core-v1-release.md"
+sha256 = "079ab799a5713e66a7c14ef1003ae848eb87d917259b496b0634e7e3a045322a"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-LIFECYCLE"
 layer = "SKILL"
-path = ".dset/04_layer_skill/procedure-lifecycle-orchestration.md"
+document = "090_dset-skill-procedure-lifecycle-orchestration.md"
 owner = "project"
 applicability = "applicable"
 reason = "The primary DSET entrypoint requires deterministic modes, precedence, authority, and stops"
@@ -723,13 +686,13 @@ customization = "unmodified"
 [governance_registry.rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/04_layer_skill/templates/governance/core-v1/lifecycle-orchestration.md"
+template = "020_dset-skill-templates-governance-core-v1-lifecycle-orchestration.md"
 sha256 = "16e5a0eb2b8ec184531321ae242c521f6e85909ce4755b6687d6c067d132f1ac"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-DIAGNOSIS"
 layer = "SKILL"
-path = ".dset/04_layer_skill/procedure-diagnosis.md"
+document = "080_dset-skill-procedure-diagnosis.md"
 owner = "project"
 applicability = "applicable"
 reason = "Defect investigation requires evidence and authorization boundaries"
@@ -740,13 +703,13 @@ customization = "unmodified"
 [governance_registry.rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/04_layer_skill/templates/governance/core-v1/diagnosis.md"
+template = "010_dset-skill-templates-governance-core-v1-diagnosis.md"
 sha256 = "8f5e78a193298fb0e92b2a67891f005464a50760d84cf814dc3901ea30d122e2"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-PROTOTYPING"
 layer = "SKILL"
-path = ".dset/04_layer_skill/procedure-prototyping.md"
+document = "100_dset-skill-procedure-prototyping.md"
 owner = "project"
 applicability = "applicable"
 reason = "Solution experiments require comparable disposable evidence"
@@ -757,7 +720,7 @@ customization = "unmodified"
 [governance_registry.rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/04_layer_skill/templates/governance/core-v1/prototyping.md"
+template = "030_dset-skill-templates-governance-core-v1-prototyping.md"
 sha256 = "c3cb7059d131acb077a6fa82b0b3a51d84c4d59c4ae5b4eb3c4c4ba00e05c8aa"
 
 [[governance_registry.workflows]]
@@ -826,82 +789,82 @@ rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFA
 
 [[governance_registry.wrappers]]
 workflow = "lifecycle-orchestration"
-path = "skills/dset/SKILL.md"
+skill = "dset"
 sha256 = "c368338f46adcd5686da5ac0ab0a0aba7db10fbc615957c063948b97b060085f"
 
 [[governance_registry.wrappers]]
 workflow = "domain-clarification"
-path = "skills/dset-clarify/SKILL.md"
+skill = "dset-clarify"
 sha256 = "90eb9032c2f8949e0bbbace9b0421e4ce98d9de828a651ca28c2d9b58710df93"
 
 [[governance_registry.wrappers]]
 workflow = "diagnosis"
-path = "skills/dset-diagnose/SKILL.md"
+skill = "dset-diagnose"
 sha256 = "4559ed0086a06c8fe9011f80c32a4ba4373fd9798c4f6a7cd4e5d5240bbcb066"
 
 [[governance_registry.wrappers]]
 workflow = "prototyping"
-path = "skills/dset-prototype/SKILL.md"
+skill = "dset-prototype"
 sha256 = "631b1558abdf14c83419d79edcff04536cc7680b93198529dc39cf63ec0f036c"
 
 [[governance_registry.wrappers]]
 workflow = "release"
-path = "skills/dset-release/SKILL.md"
+skill = "dset-release"
 sha256 = "0bbe31a129bf31acf77b3e90e83888020af5e021bf2b993a2ab9391c51cbf655"
 
 [[governance_registry.wrappers]]
 workflow = "work-triage"
-path = "skills/dset-triage/SKILL.md"
+skill = "dset-triage"
 sha256 = "fb945f0bc5d8dadb07b66b9747a2d2e29aae91f92af83b6533b1f8580051dc1a"
 
 [[governance_registry.wrappers]]
 workflow = "decompose"
-path = "skills/dset-decompose/SKILL.md"
+skill = "dset-decompose"
 sha256 = "1b78897b9ba7cf4f03efe7f871caed65a019710189515370c6fb7af720ac192b"
 
 [[governance_registry.wrappers]]
 workflow = "landscape"
-path = "skills/dset-landscape/SKILL.md"
+skill = "dset-landscape"
 sha256 = "218655d145691ce0300d85fa83fe152d004b589e265686684a788b07d53731ae"
 
 [[governance_registry.wrappers]]
 workflow = "decisions"
-path = "skills/dset-decisions/SKILL.md"
+skill = "dset-decisions"
 sha256 = "965a5b887badae8559f37396724cad1ea4ee6ee8694800f57811073928c8fbf2"
 
 [[governance_registry.wrappers]]
 workflow = "compile"
-path = "skills/dset-compile/SKILL.md"
+skill = "dset-compile"
 sha256 = "02890fa6d0d6bb980d9a185a009a36262c5ff5710572ad06775c0a177b157aaf"
 
 [[governance_registry.wrappers]]
 workflow = "plan-proof"
-path = "skills/dset-plan-proof/SKILL.md"
+skill = "dset-plan-proof"
 sha256 = "278317696120827d375c1359ebad28d7a67bca02d1387cc4b85546491f67f0dd"
 
 [[governance_registry.wrappers]]
 workflow = "plan-implementation"
-path = "skills/dset-plan-implementation/SKILL.md"
+skill = "dset-plan-implementation"
 sha256 = "3694ec6daa93473e544ac17b3bfe2b4a8a060c61545fcfd99ced6298be8846ab"
 
 [[governance_registry.wrappers]]
 workflow = "implement"
-path = "skills/dset-implement/SKILL.md"
+skill = "dset-implement"
 sha256 = "6f451352db5d2d804c82862c8379bf64081326e658e6fb0293cffc82f82c4455"
 
 [[governance_registry.wrappers]]
 workflow = "verify"
-path = "skills/dset-verify/SKILL.md"
+skill = "dset-verify"
 sha256 = "ec3c9643325090b24411016b4fc175f2c01f9ac7dfb24ea7bc444c35850fc117"
 
 [[governance_registry.wrappers]]
 workflow = "complete"
-path = "skills/dset-complete/SKILL.md"
+skill = "dset-complete"
 sha256 = "bee23f861776c3da06a3f72db8074b951b9b8494fc51c3c8ed6f63e4e07c3992"
 
 [[governance_registry.wrappers]]
 workflow = "overview"
-path = "skills/dset-overview/SKILL.md"
+skill = "dset-overview"
 sha256 = "ad3f814c61d51d5aaf3c7eda9b546f25333ddb498a9559d89848f4784a97ca1f"
 
 # Migrated canonical settings; this section is not an artifact ledger.
@@ -914,7 +877,7 @@ id = "openspec"
 repository = "https://github.com/Fission-AI/OpenSpec"
 revision = "0a99f410457271aa773d8b106f03f637f7c6b3c0"
 license = "MIT"
-license_file = ".dset/00_project/licenses/openspec-MIT.txt"
+license_file = "020_dset-project-licenses-openspec-mit.txt"
 use = "independently-reexpressed-concepts"
 
 [[source_provenance.sources]]
@@ -922,7 +885,7 @@ id = "mattpocock-skills"
 repository = "https://github.com/mattpocock/skills"
 revision = "66898f60e8c744e269f8ce06c2b2b99ce7660d5f"
 license = "MIT"
-license_file = ".dset/00_project/licenses/mattpocock-skills-MIT.txt"
+license_file = "010_dset-project-licenses-mattpocock-skills-mit.txt"
 use = "independently-reexpressed-workflow-categories"
 
 [[source_provenance.sources]]
@@ -930,14 +893,14 @@ id = "fpf"
 repository = "https://github.com/ailev/FPF"
 revision = "afa4936541774021c92adb97c3cbf787bf126062"
 license = "no-license-declared-at-reviewed-revision"
-license_file = ".dset/00_project/licenses/fpf-NO-LICENSE.txt"
+license_file = "000_dset-project-licenses-fpf-no-license.txt"
 use = "independently-reexpressed-concepts-only"
 
 [[source_provenance.sources.mappings]]
 pattern = "FPF-A.07"
 source = "FPF-Spec/A_Kernel Architecture Cluster/07_Strict Distinction (Clarity Lattice)/00_A.07 - Strict Distinction (Clarity Lattice).md"
 source_lines = "25-41,47-51,66-73"
-dset_surface = "documentation/artifact-types.md"
+dset_surface = "020_dset-gov-guides-artifact-types.md"
 disposition = "adapted"
 adaptation_scope = "Separation of governed subject, directive description, carrier, performed work, and evidence"
 exclusions = ["FPF EntityOfConcern, Episteme, Method, Capability, and Work ontology", "FPF canonical terminology, identifiers, and publication relations"]
@@ -946,7 +909,7 @@ exclusions = ["FPF EntityOfConcern, Episteme, Method, Capability, and Work ontol
 pattern = "FPF-A.11"
 source = "FPF-Spec/A_Kernel Architecture Cluster/11_Ontological Parsimony/00_A.11 - Ontological Parsimony.md"
 source_lines = "61-88,122-128"
-dset_surface = "documentation/artifact-types.md"
+dset_surface = "020_dset-gov-guides-artifact-types.md"
 disposition = "adapted"
 adaptation_scope = "Four-Type parsimony, action-facing contribution, sharp recognition boundaries, and reopen-on-overlap discipline"
 exclusions = ["FPF U-kind admission ontology and records", "FPF conformance claims and canonical admission process"]
@@ -955,7 +918,7 @@ exclusions = ["FPF U-kind admission ontology and records", "FPF conformance clai
 pattern = "FPF-A.02.09"
 source = "FPF-Spec/A_Kernel Architecture Cluster/02_Role Taxonomy/09_A.02.09 - U.SpeechAct (Communicative Work Object).md"
 source_lines = "30-53,103-121"
-dset_surface = "documentation/artifact-types.md"
+dset_surface = "020_dset-gov-guides-artifact-types.md"
 disposition = "adapted"
 adaptation_scope = "Operator acceptance or authorization act separated from directive content, carrier, and evidence"
 exclusions = ["FPF SpeechAct and Work ontology", "FPF communicative-act schema and institutional semantics"]
@@ -964,7 +927,7 @@ exclusions = ["FPF SpeechAct and Work ontology", "FPF communicative-act schema a
 pattern = "FPF-C.32.PAD"
 source = "FPF-Spec/C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/08_C.32.PAD - Project Architecture Decision After Candidate Synthesis.md"
 source_lines = "64-96"
-dset_surface = "documentation/artifact-types.md"
+dset_surface = "020_dset-gov-guides-artifact-types.md"
 disposition = "adapted"
 adaptation_scope = "Decision directive or relation separated from its publication record and downstream work"
 exclusions = ["Architecture-specific decision slots and candidate-synthesis workflow", "FPF project-relation ontology and identifiers"]
@@ -973,7 +936,7 @@ exclusions = ["Architecture-specific decision slots and candidate-synthesis work
 pattern = "FPF-E.17.AUD"
 source = "FPF-Spec/E_The FPF Constitution and Authoring Guides/16_17_Multi-View Publication Kit/06_AUD_PublicationUnit Stability Discipline - keep one publication unit stable enough to read honestly/00_E.17.AUD - PublicationUnit Stability Discipline - keep one publication unit stable enough to read honestly.md"
 source_lines = "47-60,71-85"
-dset_surface = "documentation/authoring-rules.md"
+dset_surface = "030_dset-gov-guides-authoring-rules.md"
 disposition = "adapted"
 adaptation_scope = "One primary claim per atom, honest split of mixed publication moves, and explicit outside work boundary"
 exclusions = ["FPF publication-unit ontology and repair dispositions", "FPF canonical publication forms, identifiers, and process"]
@@ -982,7 +945,7 @@ exclusions = ["FPF publication-unit ontology and repair dispositions", "FPF cano
 pattern = "FPF-A.10"
 source = "FPF-Spec/A_Kernel Architecture Cluster/10_Evidence Graph Referring- Claim-Bound Evidence and Provenance Graph/00_A.10 - Evidence Graph Referring- Claim-Bound Evidence and Provenance Graph.md"
 source_lines = "32-44,77-101,117-138"
-dset_surface = ".dset/02_layer_gov/specification-artifact-maintenance.md"
+dset_surface = "050_dset-gov-specification-artifact-maintenance.md"
 disposition = "adapted"
 adaptation_scope = "Claim-bound proof fields, currentness, defeaters, and risk-triggered reliance extensions"
 exclusions = ["FPF evidence ontology and graph types", "FPF canonical identifiers and publication formats"]
@@ -991,7 +954,7 @@ exclusions = ["FPF evidence ontology and graph types", "FPF canonical identifier
 pattern = "FPF-A.16.02"
 source = "FPF-Spec/A_Kernel Architecture Cluster/16_Language-State Move Coordination/03_A.16.02 - Reopen - SketchBackoff - Respecify.md"
 source_lines = "42-80,163-183"
-dset_surface = ".dset/02_layer_gov/templates/change/decision.md"
+dset_surface = "020_dset-gov-templates-change-decision.md"
 disposition = "adapted"
 adaptation_scope = "Reopen, supersession, retained evidence, withdrawn authority, and successor or retirement lifecycle shape"
 exclusions = ["FPF move and state ontology", "FPF canonical identifiers and notation"]
@@ -1000,7 +963,7 @@ exclusions = ["FPF move and state ontology", "FPF canonical identifiers and nota
 pattern = "FPF-A.19.CPM"
 source = "FPF-Spec/A_Kernel Architecture Cluster/19_CharacteristicSpace & Dynamics Hook (A.CHR-SPACE)/11_A.19.CPM - Unified Comparison Mechanism (CPM).md"
 source_lines = "43-57,71-96,109-121"
-dset_surface = ".dset/02_layer_gov/templates/change/solution-landscape.md"
+dset_surface = "130_dset-gov-templates-change-solution-landscape.md"
 disposition = "adapted"
 adaptation_scope = "Explicit comparison frame, evidence eligibility, partial results, and selection separation"
 exclusions = ["FPF characteristic-space ontology", "FPF comparison algorithms and canonical result types"]
@@ -1009,7 +972,7 @@ exclusions = ["FPF characteristic-space ontology", "FPF comparison algorithms an
 pattern = "FPF-C.32.ADR"
 source = "FPF-Spec/C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/09_C.32.ADR - Architecture Decision Record Projection.md"
 source_lines = "47-104,145-169"
-dset_surface = ".dset/02_layer_gov/templates/change/decision.md"
+dset_surface = "020_dset-gov-templates-change-decision.md"
 disposition = "adapted"
 adaptation_scope = "General Decision publication, rationale discharge, lifecycle, and successor-link shape"
 exclusions = ["Architecture-only ADR semantics", "FPF Decision ontology and ADR terminology"]
@@ -1018,7 +981,7 @@ exclusions = ["Architecture-only ADR semantics", "FPF Decision ontology and ADR 
 pattern = "FPF-E.3"
 source = "FPF-Spec/E_The FPF Constitution and Authoring Guides/02_03_Principle Taxonomy & Precedence Model/00_E.03 - Principle Taxonomy & Precedence Model.md"
 source_lines = "40-76,162-170"
-dset_surface = ".dset/02_layer_gov/specification-architecture.md"
+dset_surface = "030_dset-gov-specification-architecture.md"
 disposition = "adapted"
 adaptation_scope = "Separate dependency and conflict precedence relations, acyclic precedence, and deterministic fail-closed conflict handling"
 exclusions = ["FPF Pillar and principle class taxonomy", "FPF default class precedence stack", "FPF governance ontology and canonical identifiers"]
@@ -1027,7 +990,7 @@ exclusions = ["FPF Pillar and principle class taxonomy", "FPF default class prec
 pattern = "FPF-E.5.3"
 source = "FPF-Spec/E_The FPF Constitution and Authoring Guides/04_05_Four Guard-Rails of FPF/03_E.05.03 - Unidirectional Dependency.md"
 source_lines = "22-77"
-dset_surface = ".dset/02_layer_gov/specification-architecture.md"
+dset_surface = "030_dset-gov-specification-architecture.md"
 disposition = "adapted"
 adaptation_scope = "Acyclic dependency closure and explicit separation of dependency from other rule relations"
 exclusions = ["FPF Core, Tooling Reference, and Pedagogical Companion family order", "FPF imports relation and ecosystem-family semantics"]
@@ -1036,7 +999,7 @@ exclusions = ["FPF Core, Tooling Reference, and Pedagogical Companion family ord
 pattern = "FPF-E.9"
 source = "FPF-Spec/E_The FPF Constitution and Authoring Guides/08_09_Design-Rationale Record (DRR) Method/00_E.09 - Design-Rationale Record (DRR) Method.md"
 source_lines = "61-109,318-331"
-dset_surface = ".dset/02_layer_gov/specification-artifact-maintenance.md"
+dset_surface = "050_dset-gov-specification-artifact-maintenance.md"
 disposition = "adapted"
 adaptation_scope = "Decision as temporary convergence record, evergreen discharge, and shadow-specification prevention"
 exclusions = ["FPF DRR publication format and content-block inventory", "FPF Core, Pillar, and pattern ontology"]
@@ -1045,7 +1008,7 @@ exclusions = ["FPF DRR publication format and content-block inventory", "FPF Cor
 pattern = "FPF-E.17"
 source = "FPF-Spec/E_The FPF Constitution and Authoring Guides/16_17_Multi-View Publication Kit/03_E.17 - Multi-View Publication Kit.md"
 source_lines = "29-39"
-dset_surface = ".dset/02_layer_gov/specification-artifact-maintenance.md"
+dset_surface = "050_dset-gov-specification-artifact-maintenance.md"
 disposition = "adapted"
 adaptation_scope = "Transparent non-authoritative derived views with canonical return paths and currentness"
 exclusions = ["FPF publication-kit views and formats", "FPF ontology and canonical identifiers"]
@@ -1054,7 +1017,7 @@ exclusions = ["FPF publication-kit views and formats", "FPF ontology and canonic
 pattern = "FPF-E.19"
 source = "FPF-Spec/E_The FPF Constitution and Authoring Guides/18_19_Pattern Quality Gates- Review and Refresh Profiles/00_E.19 - Pattern Quality Gates- Review and Refresh Profiles.md"
 source_lines = "84-90,120-124,174-201"
-dset_surface = ".dset/03_layer_tool/specification-build-rules.md"
+dset_surface = "020_dset-tool-specification-build-rules.md"
 disposition = "adapted"
 adaptation_scope = "Baseline gates with risk-triggered review depth generalized to DSET Changes"
 exclusions = ["FPF Pattern quality-result semantics", "Certification or semantic-equivalence claims"]
@@ -1086,8 +1049,8 @@ assurance = "bootstrap-transition"
 command = "python -m dset_toolchain check"
 
 [version_registry.bootstrap]
-manifest = ".dset/dset_settings.toml"
-governance_registry = ".dset/dset_settings.toml"
+manifest = "dset_settings.toml"
+governance_registry = "dset_settings.toml"
 precedence = "project-local-rule-then-selected-local-profile-then-failure"
 
 # Migrated canonical settings; this section is not an artifact ledger.
@@ -1105,14 +1068,14 @@ stories = []
 outcomes = []
 
 [package_catalog.packages.artifacts]
-hub = "navigation-methodology.md"
-domain = "specification-domain.md"
-spec = "specification-methodology.md"
-contracts = "specification-contracts.md"
-stories = "specification-user-stories.md"
-outcomes = "specification-outcomes.md"
-test_plan = "plan-tests.md"
-eval_plan = "plan-evaluations.md"
+hub = "DSET-META-HUB.md"
+domain = "DSET-META-REFERENCE-specification-domain.toml"
+spec = "DSET-META-REFERENCE-specification-methodology.toml"
+contracts = "DSET-META-REFERENCE-specification-contracts.toml"
+stories = "DSET-META-REFERENCE-specification-user-stories.toml"
+outcomes = "DSET-META-REFERENCE-specification-outcomes.toml"
+test_plan = "DSET-META-plan-tests.md"
+eval_plan = "DSET-META-plan-evaluations.md"
 
 [[package_catalog.packages]]
 schema_version = "1.2"
@@ -1126,14 +1089,14 @@ stories = []
 outcomes = []
 
 [package_catalog.packages.artifacts]
-hub = "navigation-methodology.md"
-domain = "specification-domain.md"
-spec = "specification-methodology.md"
-contracts = "specification-contracts.md"
-stories = "specification-user-stories.md"
-outcomes = "specification-outcomes.md"
-test_plan = "plan-tests.md"
-eval_plan = "plan-evaluations.md"
+hub = "DSET-GOV-HUB.md"
+domain = "DSET-GOV-REFERENCE-specification-domain.toml"
+spec = "DSET-GOV-REFERENCE-specification-methodology.toml"
+contracts = "DSET-GOV-REFERENCE-specification-contracts.toml"
+stories = "DSET-GOV-REFERENCE-specification-user-stories.toml"
+outcomes = "DSET-GOV-REFERENCE-specification-outcomes.toml"
+test_plan = "DSET-GOV-plan-tests.md"
+eval_plan = "DSET-GOV-plan-evaluations.md"
 
 [[package_catalog.packages]]
 schema_version = "1.2"
@@ -1147,14 +1110,14 @@ stories = []
 outcomes = []
 
 [package_catalog.packages.artifacts]
-hub = "navigation-methodology.md"
-domain = "specification-domain.md"
-spec = "specification-methodology.md"
-contracts = "specification-contracts.md"
-stories = "specification-user-stories.md"
-outcomes = "specification-outcomes.md"
-test_plan = "plan-tests.md"
-eval_plan = "plan-evaluations.md"
+hub = "DSET-TOOL-HUB.md"
+domain = "DSET-TOOL-REFERENCE-specification-domain.toml"
+spec = "DSET-TOOL-REFERENCE-specification-methodology.toml"
+contracts = "DSET-TOOL-REFERENCE-specification-contracts.toml"
+stories = "DSET-TOOL-REFERENCE-specification-user-stories.toml"
+outcomes = "DSET-TOOL-REFERENCE-specification-outcomes.toml"
+test_plan = "DSET-TOOL-plan-tests.md"
+eval_plan = "DSET-TOOL-plan-evaluations.md"
 
 [[package_catalog.packages]]
 schema_version = "1.2"
@@ -1168,14 +1131,14 @@ stories = []
 outcomes = []
 
 [package_catalog.packages.artifacts]
-hub = "navigation-methodology.md"
-domain = "specification-domain.md"
-spec = "specification-methodology.md"
-contracts = "specification-contracts.md"
-stories = "specification-user-stories.md"
-outcomes = "specification-outcomes.md"
-test_plan = "plan-tests.md"
-eval_plan = "plan-evaluations.md"
+hub = "DSET-SKILL-HUB.md"
+domain = "DSET-SKILL-REFERENCE-specification-domain.toml"
+spec = "DSET-SKILL-REFERENCE-specification-methodology.toml"
+contracts = "DSET-SKILL-REFERENCE-specification-contracts.toml"
+stories = "DSET-SKILL-REFERENCE-specification-user-stories.toml"
+outcomes = "DSET-SKILL-REFERENCE-specification-outcomes.toml"
+test_plan = "DSET-SKILL-plan-tests.md"
+eval_plan = "DSET-SKILL-plan-evaluations.md"
 
 [[package_catalog.packages]]
 schema_version = "1.2"
@@ -1189,31 +1152,11 @@ stories = []
 outcomes = []
 
 [package_catalog.packages.artifacts]
-hub = "navigation-methodology.md"
-domain = "specification-domain.md"
-spec = "specification-methodology.md"
-contracts = "specification-contracts.md"
-stories = "specification-user-stories.md"
-outcomes = "specification-outcomes.md"
-test_plan = "plan-tests.md"
-eval_plan = "plan-evaluations.md"
-
-# Migrated canonical settings; this section is not an artifact ledger.
-[structure_roots]
-project = "00_project"
-meta = "01_layer_meta"
-gov = "02_layer_gov"
-tool = "03_layer_tool"
-skill = "04_layer_skill"
-ops = "05_layer_ops"
-versions = "10_versions"
-
-# Migrated canonical settings; this section is not an artifact ledger.
-[framework_roots]
-project = ".dset/00_project"
-meta = ".dset/01_layer_meta"
-gov = ".dset/02_layer_gov"
-tool = ".dset/03_layer_tool"
-skill = ".dset/04_layer_skill"
-ops = ".dset/05_layer_ops"
-versions = ".dset/10_versions"
+hub = "DSET-OPS-HUB.md"
+domain = "DSET-OPS-REFERENCE-specification-domain.toml"
+spec = "DSET-OPS-REFERENCE-specification-methodology.toml"
+contracts = "DSET-OPS-REFERENCE-specification-contracts.toml"
+stories = "DSET-OPS-REFERENCE-specification-user-stories.toml"
+outcomes = "DSET-OPS-REFERENCE-specification-outcomes.toml"
+test_plan = "DSET-OPS-plan-tests.md"
+eval_plan = "DSET-OPS-plan-evaluations.md"

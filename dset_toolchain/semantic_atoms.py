@@ -11,10 +11,12 @@ from typing import Any
 from .diagnostics import Diagnostic
 from .frontmatter import FrontmatterError
 from .frontmatter import metadata as frontmatter_metadata
-from .layout import discover_layout
+from .identity import has_logical_part, iter_control_files
+from .layout import LAYERS, discover_layout
 from .legacy_authority import legacy_authority_ids, validate_legacy_authority_ledger
 from .lineage import ArtifactRelation, parse_authored_relations
 from .project_data import lifecycle_events as load_lifecycle_events
+from .project_data import project_section
 from .semantic_types import SEMANTIC_ID_KINDS, SEMANTIC_SUBTYPES
 from .settings import load_project_settings
 from .yaml_subset import YamlSubsetError, dump, load
@@ -70,9 +72,15 @@ def collect_semantic_atoms(
     diagnostics: list[Diagnostic] = []
     settings, _ = load_project_settings(root)
     allowed_priorities = {*settings.priority_scale, "unknown"}
-    for path in sorted(root.rglob("*.md")):
+    layout = discover_layout(root)
+    paths = (
+        iter_control_files(root, "*.md")
+        if layout.separated
+        else sorted(root.rglob("*.md"))
+    )
+    for path in paths:
         relative = path.relative_to(root)
-        if _ignored(relative) or "templates" in relative.parts:
+        if _ignored(relative) or has_logical_part(relative, {"templates"}):
             continue
         metadata = _frontmatter(path)
         if metadata is None or metadata.get("artifact_type") != "atomic_record":
@@ -104,7 +112,8 @@ def validate_semantic_atoms(root: Path) -> list[Diagnostic]:
             {identifier: atom.emission_status for identifier, atom in atoms.items()},
         )
     )
-    if not discover_layout(root).recursive:
+    layout = discover_layout(root)
+    if not (layout.recursive or layout.separated):
         diagnostics.extend(_validate_ledger(root, atoms))
         diagnostics.extend(validate_legacy_authority_ledger(root))
     return sorted(set(diagnostics))
@@ -160,7 +169,8 @@ def seal_atom(root: Path, path: Path) -> Path:
     if assessment["emission_allowed"] is not True:
         first = assessment["diagnostics"][0]
         raise ValueError(f"artifact emission is blocked: {first['message']}")
-    if discover_layout(root).recursive:
+    layout = discover_layout(root)
+    if layout.recursive or layout.separated:
         return path
     ledger_path = _ledger_path(root)
     data = _load_or_empty(ledger_path, "records")
@@ -185,7 +195,7 @@ def append_lifecycle_event(root: Path, event: dict[str, Any]) -> Path:
     known_ids = _known_semantic_ids(root, atoms)
     normalized = _validate_event(root, event, known_ids)
     layout = discover_layout(root)
-    if layout.recursive:
+    if layout.recursive or layout.separated:
         events = _lifecycle_events(root)
         event_id = str(normalized["id"])
         if any(item.get("id") == event_id for item in events):
@@ -195,11 +205,21 @@ def append_lifecycle_event(root: Path, event: dict[str, Any]) -> Path:
             {identifier: atom.emission_status for identifier, atom in atoms.items()},
         )
         atom = atoms.get(str(normalized["atom_id"]))
-        owner = (
-            layout.project_root
-            if atom is None
-            else root / Path(atom.path).parts[0]
-        )
+        owner = layout.project_root
+        if atom is not None:
+            atom_path = root / atom.path
+            candidates = (
+                layout.project_root,
+                *(layout.layer_root(layer) for layer in LAYERS),
+            )
+            owner = next(
+                (
+                    candidate
+                    for candidate in candidates
+                    if atom_path.is_relative_to(candidate)
+                ),
+                layout.project_root,
+            )
         destination = owner / "lifecycle" / _event_filename(normalized)
         carrier = {
             "schema_version": "1.0",
@@ -263,7 +283,7 @@ def build_semantic_atom_index(root: Path) -> list[dict[str, Any]]:
             {
                 "id": atom.semantic_id,
                 "carrier_id": atom.carrier_id,
-                "path": atom.path,
+                "carrier": Path(atom.path).name,
                 "sha256": atom.sha256,
                 "type": atom.semantic_type,
                 "subtype": atom.subtype or "none",
@@ -333,7 +353,8 @@ def _parse_atom(
 ) -> tuple[SemanticAtom | None, list[Diagnostic]]:
     diagnostics: list[Diagnostic] = []
     semantic_type = data.get("type")
-    subtype = data.get("subtype")
+    raw_subtype = data.get("subtype")
+    subtype = None if raw_subtype is None or raw_subtype == "none" else raw_subtype
     semantic_id = data.get("semantic_id")
     carrier_id = data.get("artifact_id")
     status = data.get("status")
@@ -584,13 +605,13 @@ def _validate_event_graph(
 def _known_semantic_ids(root: Path, atoms: dict[str, SemanticAtom]) -> set[str]:
     layout = discover_layout(root)
     identifiers = set(atoms)
-    if not layout.recursive:
+    if not (layout.recursive or layout.separated):
         identifiers.update(legacy_authority_ids(root))
     else:
         for event in _lifecycle_events(root):
             identifiers.add(str(event.get("atom_id", "")))
             identifiers.update(str(item) for item in event.get("related", []))
-    if not layout.recursive and layout.intake_path.is_file():
+    if not (layout.recursive or layout.separated) and layout.intake_path.is_file():
         data = load(layout.intake_path)
         items = data.get("items", []) if isinstance(data, dict) else []
         identifiers.update(
@@ -598,12 +619,37 @@ def _known_semantic_ids(root: Path, atoms: dict[str, SemanticAtom]) -> set[str]:
             for item in items
             if isinstance(item, dict) and isinstance(item.get("id"), str)
         )
-    for path in sorted(root.rglob("decision-*.md")):
+    decision_paths = (
+        iter_control_files(root, "decision-*.md")
+        if layout.separated
+        else sorted(root.rglob("decision-*.md"))
+    )
+    for path in decision_paths:
         text = path.read_text(encoding="utf-8")
         match = re.search(r"-\s*\*\*Decision ID:\*\*\s*`([^`]+)`", text)
         if match:
             identifiers.add(match.group(1))
-    for path in discover_layout(root).structured_named_files(root, "package"):
+    if layout.separated:
+        catalog = project_section(root, "package_catalog")
+        packages = catalog.get("packages", [])
+        for package in packages if isinstance(packages, list) else []:
+            if not isinstance(package, dict):
+                continue
+            for field in (
+                "requirements",
+                "tests",
+                "evals",
+                "contracts",
+                "stories",
+                "outcomes",
+            ):
+                values = package.get(field, [])
+                if isinstance(values, list):
+                    identifiers.update(
+                        str(item) for item in values if isinstance(item, str)
+                    )
+        return identifiers
+    for path in layout.structured_named_files(root, "package"):
         try:
             data = load(path)
         except (OSError, UnicodeError, YamlSubsetError):
@@ -787,7 +833,7 @@ def _ledger_path(root: Path) -> Path:
 
 def _lifecycle_path(root: Path) -> Path:
     layout = discover_layout(root)
-    if layout.recursive:
+    if layout.recursive or layout.separated:
         return layout.project_root / "lifecycle"
     return layout.structured_file(layout.project_state_root, "lifecycle.toml")
 

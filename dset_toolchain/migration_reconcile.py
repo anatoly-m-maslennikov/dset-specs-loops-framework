@@ -15,6 +15,7 @@ from typing import Any
 
 from .compilation import compilation_path, write_compilation
 from .health import health_path, write_health
+from .identity import find_unique_name
 from .layout import discover_layout
 from .traceability import write_traceability
 from .yaml_subset import dump, load
@@ -53,19 +54,19 @@ def _rebase_governance_sources(root: Path, registry_path: Path) -> None:
     for rule in rules:
         if not isinstance(rule, dict) or rule.get("customization") != "unmodified":
             continue
+        document = rule.get("document")
         raw_path = rule.get("path")
         source = rule.get("source")
-        if not isinstance(raw_path, str) or not isinstance(source, dict):
-            raise ValueError("unmodified governance rule requires path and source")
-        local = (root / raw_path).resolve()
-        try:
-            local.relative_to(root)
-        except ValueError as error:
-            raise ValueError(
-                f"governance rule path escapes root: {raw_path}"
-            ) from error
+        if not isinstance(source, dict):
+            raise ValueError("unmodified governance rule requires a source")
+        if isinstance(document, str):
+            local = find_unique_name(root, document)
+        elif isinstance(raw_path, str):
+            local = (root / raw_path).resolve()
+        else:
+            raise ValueError("unmodified governance rule requires a document")
         if not local.is_file():
-            raise ValueError(f"governance rule is missing: {raw_path}")
+            raise ValueError(f"governance rule is missing: {document or raw_path}")
         source["sha256"] = hashlib.sha256(local.read_bytes()).hexdigest()
 
     wrappers = data.get("wrappers")
@@ -74,18 +75,16 @@ def _rebase_governance_sources(root: Path, registry_path: Path) -> None:
     for wrapper in wrappers:
         if not isinstance(wrapper, dict):
             raise ValueError("governance wrapper must be a mapping")
+        skill = wrapper.get("skill")
         raw_path = wrapper.get("path")
-        if not isinstance(raw_path, str):
-            raise ValueError("governance wrapper requires path")
-        local = (root / raw_path).resolve()
-        try:
-            local.relative_to(root)
-        except ValueError as error:
-            raise ValueError(
-                f"governance wrapper path escapes root: {raw_path}"
-            ) from error
+        if isinstance(skill, str):
+            local = (root / "skills" / skill / "SKILL.md").resolve()
+        elif isinstance(raw_path, str):
+            local = (root / raw_path).resolve()
+        else:
+            raise ValueError("governance wrapper requires a skill identity")
         if not local.is_file():
-            raise ValueError(f"governance wrapper is missing: {raw_path}")
+            raise ValueError(f"governance wrapper is missing: {skill or raw_path}")
         wrapper["sha256"] = hashlib.sha256(local.read_bytes()).hexdigest()
     _atomic_structured_write(registry_path, data)
 

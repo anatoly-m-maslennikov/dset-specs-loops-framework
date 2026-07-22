@@ -35,7 +35,7 @@ def build_traceability(root: Path) -> dict[str, Any]:
         evidence = []
         if evidence_root.is_dir():
             evidence = [
-                item.relative_to(root).as_posix()
+                item.name
                 for item in sorted(evidence_root.rglob("*"))
                 if item.is_file() and item.name != "README.md"
             ]
@@ -43,7 +43,6 @@ def build_traceability(root: Path) -> dict[str, Any]:
         entry = {
             "id": data["id"],
             "status": data["status"],
-            "path": path.relative_to(root).as_posix(),
             "packages": sorted(data.get("packages", [])),
             "requirements": sorted(data.get("requirements", [])),
             "tests": sorted(data.get("tests", [])),

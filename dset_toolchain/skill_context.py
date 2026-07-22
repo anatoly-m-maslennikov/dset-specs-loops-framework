@@ -5,7 +5,8 @@ from pathlib import Path
 from typing import Any
 
 from .governance import validate_governance
-from .layout import discover_layout, has_manifest
+from .identity import find_unique_name
+from .layout import discover_layout
 from .runtime_bridge import start_runtime
 from .semantic_types import build_semantic_classification_index
 from .settings import load_project_settings
@@ -69,10 +70,8 @@ def resolve_skill_context(
         "skill_id": skill_id,
         "workflow_id": PUBLIC_SKILL_WORKFLOWS[skill_id],
         "mode_id": PUBLIC_SKILL_MODES[skill_id],
-        "manifest": discover_layout(root).manifest_path.relative_to(root).as_posix(),
-        "governance": discover_layout(root)
-        .governance_path.relative_to(root)
-        .as_posix(),
+        "manifest": discover_layout(root).manifest_path.name,
+        "governance": discover_layout(root).governance_path.name,
         "ruleset_identity": _run_ruleset_identity(started["run"]),
         "artifact_creation_strictness": settings.artifact_creation_strictness,
         "implementation_preparation_mode": settings.implementation_mode,
@@ -84,11 +83,9 @@ def resolve_skill_context(
             "compatibility_count": sum(
                 1 for item in semantic_index if item["compatibility"]
             ),
-            "source": discover_layout(root)
-            .governance_root.joinpath("work-items.md")
-            .with_name("specification-work-items.md")
-            .relative_to(root)
-            .as_posix(),
+            "source": find_unique_name(
+                root, "110_dset-gov-specification-work-items.md"
+            ).name,
         },
         "resolved": resolved,
         "run": started["run"],
@@ -142,7 +139,7 @@ def _find_unique_repository(start: Path) -> Path:
     matches = [
         candidate
         for candidate in (current, *current.parents)
-        if has_manifest(candidate)
+        if (candidate / ".dset" / "dset_settings.toml").is_file()
     ]
     if not matches:
         raise FileNotFoundError(f"DSET project root not found from: {start}")

@@ -1,0 +1,272 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/.dset/000_dset_methodology/03_tool/schemas/traceability.schema.json",
+  "title": "DSET traceability index",
+  "type": "object",
+  "required": ["schema_version", "repository", "changes", "semantic_classifications", "semantic_atoms", "relations"],
+  "properties": {
+    "schema_version": {"enum": [1.1, "1.2", "1.3"]},
+    "repository": {"type": "string"},
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "status", "packages", "requirements", "tests", "evals", "intake", "decisions", "contracts", "stories", "outcomes", "pull_request", "evidence"],
+        "properties": {
+          "id": {"type": "string"},
+          "slug": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+          "status": {"type": "string"},
+          "primary_layer": {"enum": ["meta", "gov", "tool", "skill", "ops"]},
+          "affected_layers": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["meta", "gov", "tool", "skill", "ops"]}},
+          "workspace": {"$ref": "#/$defs/workspace"},
+          "dependencies": {"type": "array", "items": {"$ref": "#/$defs/dependency"}},
+          "target": {"$ref": "#/$defs/target"},
+          "packages": {"type": "array", "items": {"type": "string"}},
+          "requirements": {"type": "array", "items": {"type": "string"}},
+          "tests": {"type": "array", "items": {"type": "string"}},
+          "evals": {"type": "array", "items": {"type": "string"}},
+          "intake": {"type": "array", "items": {"type": "string"}},
+          "decisions": {"type": "array", "items": {"type": "string"}},
+          "contracts": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-CONTRACT(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}},
+          "stories": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-STORY(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}},
+          "outcomes": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-OUTCOME(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}},
+          "pull_request": {"type": "string", "format": "uri"},
+          "evidence": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "relations": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/relation"}
+    },
+    "semantic_atoms": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/semantic_atom"}
+    },
+    "semantic_classifications": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/semantic_classification"}
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"schema_version": {"enum": ["1.2", "1.3"]}}, "required": ["schema_version"]},
+      "then": {
+        "properties": {
+          "changes": {
+            "items": {
+              "required": ["slug", "primary_layer", "affected_layers", "workspace", "dependencies", "target"],
+              "properties": {"id": {"$ref": "#/$defs/change_id"}}
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "changes": {
+            "items": {"not": {"anyOf": [{"required": ["slug"]}, {"required": ["primary_layer"]}, {"required": ["affected_layers"]}, {"required": ["workspace"]}, {"required": ["dependencies"]}, {"required": ["target"]}]}}
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "relation_id": {"type": "string", "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)+$"},
+    "semantic_atom": {
+      "type": "object",
+      "required": ["id", "carrier_id", "carrier", "sha256", "type", "subtype", "emission_status", "current_status", "priority", "priority_source", "relations", "lifecycle_events", "absorbed_by", "archived"],
+      "properties": {
+        "id": {"$ref": "#/$defs/relation_id"},
+        "carrier_id": {"$ref": "#/$defs/relation_id"},
+        "carrier": {"type": "string", "pattern": "^[^/\\\\]+$"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "type": {"enum": ["decision", "question", "problem", "qa"]},
+        "subtype": {"enum": ["none", "requirement", "constraint", "contract", "user_story", "outcome", "scenario", "invariant", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
+        "emission_status": {"enum": ["proposed", "accepted"]},
+        "current_status": {"enum": ["proposed", "accepted", "answered", "absorbed", "confirmed", "reopened", "rejected", "resolved", "retired", "withdrawn"]},
+        "priority": {"type": "string", "minLength": 1},
+        "priority_source": {"type": "string", "minLength": 1},
+        "relations": {"type": "array", "items": {"$ref": "#/$defs/atom_relation"}},
+        "lifecycle_events": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-LIFECYCLE-EVENT-[0-9]{3,}$"}},
+        "absorbed_by": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/relation_id"}},
+        "archived": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "semantic_classification": {
+      "type": "object",
+      "required": ["id", "type", "subtype", "compatibility", "origins", "carriers", "carrier_statuses", "lifecycle_events"],
+      "properties": {
+        "id": {"$ref": "#/$defs/relation_id"},
+        "type": {"enum": ["decision", "question", "problem", "qa"]},
+        "subtype": {"enum": ["none", "requirement", "constraint", "contract", "user_story", "outcome", "scenario", "invariant", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
+        "compatibility": {"type": "boolean"},
+        "origins": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "carriers": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "carrier_statuses": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "lifecycle_events": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-LIFECYCLE-EVENT-[0-9]{3,}$"}}
+      },
+      "additionalProperties": false
+    },
+    "relation_type": {"enum": ["child_of", "analysis_of", "projection_of", "implementation_of", "check_of", "evidence_for", "resolution_of", "override_of", "replacement_of", "relates_to"]},
+    "projection_range": {
+      "type": "object",
+      "required": ["semantic_type", "scope", "through"],
+      "properties": {
+        "semantic_type": {"enum": ["decision", "question", "problem", "qa"]},
+        "subtype": {"enum": ["none", "requirement", "constraint", "contract", "user_story", "outcome", "scenario", "invariant", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
+        "layer": {"enum": ["meta", "gov", "tool", "skill", "ops"]},
+        "scope": {
+          "type": "object",
+          "required": ["kind", "id"],
+          "properties": {
+            "kind": {"enum": ["project", "layer", "feature_group", "feature"]},
+            "id": {"type": "string", "minLength": 1}
+          },
+          "additionalProperties": false
+        },
+        "through": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-ATOMIC-RECORD-[0-9]{3,}$"}
+      },
+      "additionalProperties": false
+    },
+    "atom_relation": {
+      "type": "object",
+      "required": ["type", "origin"],
+      "properties": {
+        "type": {"$ref": "#/$defs/relation_type"},
+        "target": {"$ref": "#/$defs/relation_id"},
+        "range": {"$ref": "#/$defs/projection_range"},
+        "origin": {"enum": ["authored", "legacy_child_of"]}
+      },
+      "oneOf": [
+        {"required": ["target"], "not": {"required": ["range"]}},
+        {"required": ["range"], "not": {"required": ["target"]}}
+      ],
+      "additionalProperties": false
+    },
+    "relation": {
+      "type": "object",
+      "required": ["source", "source_kind", "type", "origin", "llm_session_ids"],
+      "properties": {
+        "source": {
+          "oneOf": [
+            {"$ref": "#/$defs/relation_id"},
+            {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+          ]
+        },
+        "source_kind": {"enum": ["artifact", "commit"]},
+        "source_artifact_id": {"$ref": "#/$defs/relation_id"},
+        "source_carrier": {"type": "string", "pattern": "^[^/\\\\]+$"},
+        "type": {"$ref": "#/$defs/relation_type"},
+        "target": {"$ref": "#/$defs/relation_id"},
+        "range": {"$ref": "#/$defs/projection_range"},
+        "origin": {"enum": ["authored", "legacy_child_of", "commit_trailer"]},
+        "llm_session_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$"}}
+      },
+      "oneOf": [
+        {"required": ["target"], "not": {"required": ["range"]}},
+        {"required": ["range"], "not": {"required": ["target"]}}
+      ],
+      "allOf": [
+        {
+          "if": {"properties": {"source_kind": {"const": "artifact"}}},
+          "then": {"required": ["source_artifact_id", "source_carrier"]}
+        },
+        {
+          "if": {"properties": {"source_kind": {"const": "commit"}}},
+          "then": {
+            "properties": {
+              "type": {"const": "implementation_of"},
+              "origin": {"const": "commit_trailer"}
+            },
+            "required": ["target"]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "change_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-CHANGE-(?:META|GOV|TOOL|SKILL|OPS)-[0-9]{3,}$"},
+    "trace_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-(?:DECISION|REQUIREMENT|CONSTRAINT|CONTRACT|STORY|OUTCOME|SCENARIO|INVARIANT|QUESTION|CONFLICT|RISK|OPPORTUNITY|PROBLEM|DEFECT|GAP|DEBT|TEST|EVAL|EVALUATION|TASK|CHANGE)(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"},
+    "sha_or_pending": {"oneOf": [{"type": "string", "pattern": "^[0-9a-f]{40}$"}, {"const": "pending"}]},
+    "pull_request": {
+      "type": "object",
+      "required": ["repository", "number", "url"],
+      "properties": {
+        "repository": {"type": "string", "pattern": "^[^/]+/[^/]+$"},
+        "number": {"oneOf": [{"type": "integer", "minimum": 1}, {"const": "pending"}]},
+        "url": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "workspace": {
+      "type": "object",
+      "required": ["isolation", "branch", "base_ref", "base_commit", "head_commit"],
+      "properties": {
+        "isolation": {"enum": ["integration-branch", "branch-worktree"]},
+        "branch": {"type": "string", "minLength": 1},
+        "base_ref": {"type": "string", "minLength": 1},
+        "base_commit": {"$ref": "#/$defs/sha_or_pending"},
+        "head_commit": {"$ref": "#/$defs/sha_or_pending"}
+      },
+      "additionalProperties": false
+    },
+    "target": {
+      "type": "object",
+      "required": ["repository", "work_areas"],
+      "properties": {
+        "repository": {"type": "boolean"},
+        "work_areas": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}}
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "repository": {"const": true},
+            "work_areas": {"maxItems": 0}
+          }
+        },
+        {
+          "properties": {
+            "repository": {"const": false},
+            "work_areas": {"minItems": 1}
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "dependency": {
+      "type": "object",
+      "required": ["change_id", "pull_request", "required_commit", "consumes", "claim", "use", "evidence", "checked_at", "reopen_when", "status"],
+      "properties": {
+        "change_id": {"$ref": "#/$defs/change_id"},
+        "pull_request": {"$ref": "#/$defs/pull_request"},
+        "required_commit": {"$ref": "#/$defs/sha_or_pending"},
+        "consumes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/trace_id"}},
+        "claim": {"type": "string", "minLength": 1},
+        "use": {"type": "string", "minLength": 1},
+        "evidence": {"type": "string", "minLength": 1},
+        "checked_at": {"type": "string", "format": "date"},
+        "reopen_when": {"type": "string", "minLength": 1},
+        "status": {"enum": ["planned", "available", "integrated", "blocked", "stale"]}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"enum": ["available", "integrated"]}}, "required": ["status"]},
+          "then": {
+            "properties": {
+              "pull_request": {
+                "properties": {
+                  "number": {"type": "integer", "minimum": 1},
+                  "url": {"type": "string", "format": "uri", "pattern": "^https://"}
+                }
+              },
+              "required_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

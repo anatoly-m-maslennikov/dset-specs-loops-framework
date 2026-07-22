@@ -7,13 +7,22 @@ import shutil
 from collections.abc import Iterator, Sequence
 from contextlib import contextmanager, suppress
 from dataclasses import dataclass
-from datetime import date
 from importlib import resources
 from pathlib import Path, PurePosixPath
 from typing import Any, cast
 
-from .governance import materialize_governance
-from .layout import LAYER_DIRECTORIES, LAYERS, discover_layout, has_manifest
+from .layout import (
+    APPLIED_LAYER_DIRECTORIES,
+    APPLIED_PROJECT_ROOT,
+    APPLIED_VERSIONS_ROOT,
+    LAYERS,
+    METHODOLOGY_LAYER_DIRECTORIES,
+    METHODOLOGY_ROOT,
+    SEPARATED_METHODOLOGY_LAYOUT,
+    SEPARATED_SCHEMA_VERSION,
+    discover_layout,
+    has_manifest,
+)
 from .project_data import project_section
 from .temp_paths import temporary_directory
 from .validation import validate_repository
@@ -142,8 +151,11 @@ def distribution_source(source_root: Path | None = None) -> Iterator[tuple[Path,
 
     if source_root is not None:
         source = source_root.resolve()
-        if not has_manifest(source) or not discover_layout(source).recursive:
-            raise InitializationError(f"source is not a schema 1.4 DSET root: {source}")
+        layout = discover_layout(source)
+        if not has_manifest(source) or not (layout.recursive or layout.separated):
+            raise InitializationError(
+                f"source is not a schema 1.4 or 1.5 DSET root: {source}"
+            )
         yield source, f"path:{source.as_posix()}"
         return
     with temporary_directory(prefix="dset-source-") as raw:
@@ -222,25 +234,29 @@ def _stage_project(
     source_layout = discover_layout(source)
     dset_root = stage / ".dset"
     dset_root.mkdir()
-    for directory in ("00_project", *LAYER_DIRECTORIES.values(), "10_versions"):
-        (stage / directory).mkdir()
+    methodology_root = dset_root / METHODOLOGY_ROOT
+    methodology_root.mkdir()
+    for directory in ("00_project", *METHODOLOGY_LAYER_DIRECTORIES.values()):
+        (methodology_root / directory).mkdir()
+    for directory in (
+        APPLIED_PROJECT_ROOT,
+        *APPLIED_LAYER_DIRECTORIES.values(),
+        APPLIED_VERSIONS_ROOT,
+    ):
         (dset_root / directory).mkdir()
-    framework_licenses = source_layout.dset_root / "00_project" / "licenses"
-    if framework_licenses.is_dir():
+    if source_layout.separated:
         shutil.copytree(
-            framework_licenses,
-            dset_root / "00_project" / "licenses",
+            source_layout.dset_root / METHODOLOGY_ROOT,
+            methodology_root,
             dirs_exist_ok=True,
         )
-    for layer in LAYERS:
-        layer_root = dset_root / LAYER_DIRECTORIES[layer]
-        for folder in ("schemas", "templates"):
-            origin = source_layout.framework_layer_root(layer) / folder
-            if origin.is_dir():
-                shutil.copytree(origin, layer_root / folder)
+    else:
+        raise InitializationError(
+            "schema 1.5 separated methodology is required for initialization"
+        )
 
     manifest = {
-        "schema_version": "1.4",
+        "schema_version": SEPARATED_SCHEMA_VERSION,
         "project": {
             "key": project_key,
             "id": project_id,
@@ -260,7 +276,7 @@ def _stage_project(
                 )
             ),
             "authority": "local-repository",
-            "runbook": ".dset/05_layer_ops/supportability/README.md",
+            "runbook": "000_dset-ops-supportability-delivery-runbook.md",
         },
         "release": {
             "status": "not-applicable",
@@ -271,12 +287,12 @@ def _stage_project(
             "protected_branch": "main",
         },
         "work_items": {
-            "atomic_roots": [
-                "00_project",
-                *LAYER_DIRECTORIES.values(),
+            "atomic_scopes": [
+                "project-control",
+                *(f"project-{layer}" for layer in LAYERS),
             ]
         },
-        "structure": {"layout": "recursive-framework-v1"},
+        "structure": {"layout": SEPARATED_METHODOLOGY_LAYOUT},
         "work_areas": [
             {"id": item.identifier, "path": item.path} for item in work_areas
         ],
@@ -298,7 +314,8 @@ def _stage_project(
         "verification": {"commands": ["{python} -m dset_toolchain check ."]},
         "canonical_command": "python -m dset_toolchain verify .",
         "artifact_catalog": project_section(source, "artifact_catalog"),
-        "artifact_structure": _artifact_structure(),
+        "artifact_structure": _artifact_structure(project_key),
+        "governance_registry": project_section(source, "governance_registry"),
         "source_provenance": {
             "schema_version": 1.0,
             "project_license": project_license,
@@ -308,7 +325,7 @@ def _stage_project(
         "package_catalog": {
             "packages": [
                 {
-                    "schema_version": "1.4",
+                    "schema_version": SEPARATED_SCHEMA_VERSION,
                     "package_id": package_id,
                     "layer": "meta",
                     "requirements": [],
@@ -317,31 +334,9 @@ def _stage_project(
                     "contracts": [],
                     "stories": [],
                     "outcomes": [],
-                    "artifacts": {
-                        "hub": "navigation-methodology.md",
-                        "domain": "specification-domain.md",
-                        "spec": "specification-methodology.md",
-                        "contracts": "specification-contracts.md",
-                        "stories": "specification-user-stories.md",
-                        "outcomes": "specification-outcomes.md",
-                        "test_plan": "plan-tests.md",
-                        "eval_plan": "plan-evaluations.md",
-                    },
+                    "artifacts": _package_artifact_names(project_key),
                 }
             ]
-        },
-        "structure_roots": {
-            "project": "00_project",
-            **{layer: LAYER_DIRECTORIES[layer] for layer in LAYERS},
-            "versions": "10_versions",
-        },
-        "framework_roots": {
-            "project": ".dset/00_project",
-            **{
-                layer: f".dset/{LAYER_DIRECTORIES[layer]}"
-                for layer in LAYERS
-            },
-            "versions": ".dset/10_versions",
         },
     }
     manifest_path = dset_root / "dset_settings.toml"
@@ -355,12 +350,7 @@ def _stage_project(
         package_id,
         project_name,
     )
-    skill = dset_root / LAYER_DIRECTORIES["skill"]
-    _copy_structured(
-        source_layout.find_template("budget.yaml"),
-        skill / "budget.toml",
-    )
-    ops = dset_root / LAYER_DIRECTORIES["ops"]
+    ops = dset_root / APPLIED_LAYER_DIRECTORIES["ops"]
     supportability = ops / "supportability"
     supportability.mkdir()
     supportability_state = (
@@ -369,39 +359,66 @@ def _stage_project(
         if hosted_automation
         else "Bootstrap default: not applicable. Reclassify before release."
     )
-    (supportability / "README.md").write_text(
+    (supportability / f"{project_key}-OPS-SUPPORTABILITY.md").write_text(
         f"# Supportability\n\n{supportability_state}\n",
         encoding="utf-8",
     )
-    (dset_root / "README.md").write_text(
-        "# Local DSET framework\n\n"
-        "Portable framework rules, templates, schemas, and settings.\n\n"
-        "- [Settings and manifest](dset_settings.toml)\n"
-        "- [Project truth](../00_project/README.md)\n",
+    (dset_root / "DSET-CONTROL-HUB.md").write_text(
+        "# Project-local DSET control plane\n\n"
+        "## Purpose\n\nOwn settings, installed methodology, and applied artifacts.\n\n"
+        "## Boundaries\n\nSkills resolve DSET identities only inside this "
+        "control root.\n\n"
+        "## Start here\n\n"
+        "- `dset_settings.toml`\n"
+        "- `000_dset-methodology-hub.md`\n"
+        f"- `{project_key}-PROJECT-HUB.md`\n",
         encoding="utf-8",
     )
-    (stage / "00_project" / "README.md").write_text(
-        "# Project truth and records\n\n"
-        "Project-wide evergreen artifacts and atomic records.\n",
+    (dset_root / APPLIED_PROJECT_ROOT / f"{project_key}-PROJECT-HUB.md").write_text(
+        "# Applied project-wide DSET artifacts\n\n"
+        "## Purpose\n\nOwn project-wide evergreen artifacts and atomic records.\n\n"
+        "## Boundaries\n\nLayer-specific truth belongs to its applied layer.\n\n"
+        "## Start here\n\nUse the unique applied layer hub names.\n",
         encoding="utf-8",
     )
-    (stage / "10_versions" / "README.md").write_text(
-        "# Version lifecycle\n\nProject-wide Changes and release records.\n",
+    (dset_root / APPLIED_VERSIONS_ROOT / f"{project_key}-VERSIONS-HUB.md").write_text(
+        "# Version lifecycle\n\n"
+        "## Purpose\n\nOwn project-wide Changes and release records.\n\n"
+        "## Boundaries\n\nVersion records do not replace Decision authority.\n\n"
+        "## Start here\n\nSearch by unique Version identity.\n",
         encoding="utf-8",
     )
     for layer in LAYERS:
-        framework_readme = source_layout.framework_layer_root(layer) / "README.md"
-        if framework_readme.is_file():
-            shutil.copyfile(
-                framework_readme,
-                dset_root / LAYER_DIRECTORIES[layer] / "README.md",
-            )
-        (stage / LAYER_DIRECTORIES[layer] / "README.md").write_text(
-            f"# {layer.upper()} project layer\n\n"
-            "Project-owned atoms and evergreen artifacts live here.\n",
+        hub = (
+            dset_root
+            / APPLIED_LAYER_DIRECTORIES[layer]
+            / f"{project_key}-{layer.upper()}-HUB.md"
+        )
+        if hub.exists():
+            continue
+        hub.write_text(
+            f"# Applied {layer.upper()} artifacts\n\n"
+            "## Purpose\n\nOwn project atoms and evergreen artifacts.\n\n"
+            "## Boundaries\n\nInstalled methodology remains separate.\n\n"
+            "## Start here\n\nSearch by unique artifact or document identity.\n",
             encoding="utf-8",
         )
-    materialize_governance(source, stage, profile, install_wrappers=True)
+    _copy_governance_wrappers(source, stage)
+
+
+def _copy_governance_wrappers(source: Path, stage: Path) -> None:
+    registry = project_section(source, "governance_registry")
+    copied: set[Path] = set()
+    for item in cast(list[dict[str, Any]], registry.get("wrappers", [])):
+        skill = item.get("skill")
+        if not isinstance(skill, str) or not skill or Path(skill).name != skill:
+            continue
+        origin = source / "skills" / skill / "SKILL.md"
+        destination = stage / "skills" / skill / "SKILL.md"
+        if origin.parent in copied:
+            continue
+        shutil.copytree(origin.parent, destination.parent)
+        copied.add(origin.parent)
 
 
 def _materialize_package(
@@ -411,7 +428,7 @@ def _materialize_package(
     package_id: str,
     project_name: str,
 ) -> None:
-    destination = stage / LAYER_DIRECTORIES["meta"]
+    destination = stage / ".dset" / APPLIED_LAYER_DIRECTORIES["meta"]
     replacements = {
         "{{project_key}}": project_key,
         "{{package_id}}": package_id,
@@ -420,14 +437,14 @@ def _materialize_package(
         "{{layer}}": "meta",
     }
     names = {
-        "README.md": "navigation-methodology.md",
-        "domain.md": "specification-domain.md",
-        "spec.md": "specification-methodology.md",
-        "contracts.md": "specification-contracts.md",
-        "stories.md": "specification-user-stories.md",
-        "outcomes.md": "specification-outcomes.md",
-        "test-plan.md": "plan-tests.md",
-        "eval-plan.md": "plan-evaluations.md",
+        "README.md": f"{project_key}-META-HUB.md",
+        "domain.md": f"{project_key}-META-specification-domain.md",
+        "spec.md": f"{project_key}-META-specification-methodology.md",
+        "contracts.md": f"{project_key}-META-specification-contracts.md",
+        "stories.md": f"{project_key}-META-specification-user-stories.md",
+        "outcomes.md": f"{project_key}-META-specification-outcomes.md",
+        "test-plan.md": f"{project_key}-META-plan-tests.md",
+        "eval-plan.md": f"{project_key}-META-plan-evaluations.md",
     }
     for source_name, target_name in names.items():
         content = source_layout.find_template(Path("package") / source_name).read_text(
@@ -441,46 +458,46 @@ def _materialize_package(
     source = source_layout.find_template("package/layered/package.yaml")
     manifest = _replace_structured_values(load(source), replacements)
     assert isinstance(manifest, dict)
-    manifest["artifacts"] = {
-        "hub": "navigation-methodology.md",
-        "domain": "specification-domain.md",
-        "spec": "specification-methodology.md",
-        "contracts": "specification-contracts.md",
-        "stories": "specification-user-stories.md",
-        "outcomes": "specification-outcomes.md",
-        "test_plan": "plan-tests.md",
-        "eval_plan": "plan-evaluations.md",
-    }
+    manifest["artifacts"] = _package_artifact_names(project_key)
     target = destination / "package.toml"
     target.write_text(dump(manifest, target), encoding="utf-8")
 
 
-def _artifact_structure() -> dict[str, Any]:
+def _package_artifact_names(project_key: str) -> dict[str, str]:
+    return {
+        "hub": f"{project_key}-META-HUB.md",
+        "domain": f"{project_key}-META-specification-domain.md",
+        "spec": f"{project_key}-META-specification-methodology.md",
+        "contracts": f"{project_key}-META-specification-contracts.md",
+        "stories": f"{project_key}-META-specification-user-stories.md",
+        "outcomes": f"{project_key}-META-specification-outcomes.md",
+        "test_plan": f"{project_key}-META-plan-tests.md",
+        "eval_plan": f"{project_key}-META-plan-evaluations.md",
+    }
+
+
+def _artifact_structure(project_key: str) -> dict[str, Any]:
     areas = [
         {
-            "id": "framework-control",
-            "root": ".dset",
-            "hub": ".dset/README.md",
-            "parent": "repository",
-            "owner": "framework",
-            "purpose": "Portable repository-local DSET framework",
+            "id": "installed-methodology",
+            "hub": "000_dset-methodology-hub.md",
+            "parent": "framework-control",
+            "owner": "methodology",
+            "purpose": "Installed project-local DSET methodology",
         },
         {
             "id": "project-control",
-            "root": "00_project",
-            "hub": "00_project/README.md",
-            "parent": "repository",
+            "hub": f"{project_key}-PROJECT-HUB.md",
+            "parent": "framework-control",
             "owner": "project",
             "purpose": "Project-wide evergreen truth and atomic records",
         },
     ]
     for layer in LAYERS:
-        directory = LAYER_DIRECTORIES[layer]
         areas.append(
             {
                 "id": f"project-{layer}",
-                "root": directory,
-                "hub": f"{directory}/README.md",
+                "hub": f"{project_key}-{layer.upper()}-HUB.md",
                 "parent": "project-control",
                 "owner": layer,
                 "purpose": f"Project-owned {layer.upper()} truth",
@@ -489,8 +506,7 @@ def _artifact_structure() -> dict[str, Any]:
     areas.append(
         {
             "id": "project-versions",
-            "root": "10_versions",
-            "hub": "10_versions/README.md",
+            "hub": f"{project_key}-VERSIONS-HUB.md",
             "parent": "project-control",
             "owner": "ops",
             "purpose": "Version scopes, roadmaps, changes, and release records",
@@ -500,11 +516,10 @@ def _artifact_structure() -> dict[str, Any]:
         "schema_version": 1.0,
         "profile": "documentation-v1",
         "root": {
-            "id": "repository",
-            "root": ".",
-            "hub": "README.md",
-            "owner": "project",
-            "purpose": "Project navigation",
+            "id": "framework-control",
+            "hub": "DSET-CONTROL-HUB.md",
+            "owner": "framework",
+            "purpose": "Repository-local DSET control plane",
         },
         "areas": areas,
     }

@@ -10,6 +10,7 @@ from .artifact_emission import assess_artifact_candidate
 from .frontmatter import FrontmatterError
 from .frontmatter import metadata as frontmatter_metadata
 from .frontmatter import render as render_frontmatter
+from .identity import find_unique_name
 from .layout import discover_layout
 from .project_data import project_section
 from .semantic_atoms import (
@@ -458,7 +459,12 @@ def _party(
         )
     elif identifier in rules:
         rule = rules[identifier]
-        rule_path = root / str(rule.get("path", ""))
+        document = rule.get("document")
+        rule_path = (
+            find_unique_name(root, document)
+            if isinstance(document, str)
+            else root / ".dset" / "missing-rule-document"
+        )
         evidence = [registry_identity] if registry_identity is not None else []
         if rule_path.is_file():
             evidence.append(_derived_identity(root, rule_path))
@@ -482,14 +488,14 @@ def _party(
         )
     else:
         source_identity = _asserted_identity(root, value.get("source"), "party source")
-        metadata = _read_metadata(root / source_identity["path"])
+        metadata = _read_metadata(find_unique_name(root, source_identity["carrier"]))
         resolved_id = metadata.get("artifact_id", metadata.get("id"))
         if resolved_id != identifier:
             raise ValueError("conflict party source does not resolve the party ID")
         role = _metadata_role(metadata)
         priority = metadata.get("priority", default_priority)
         priority_source = (
-            f"artifact:{source_identity['path']}"
+            f"artifact:{source_identity['carrier']}"
             if "priority" in metadata
             else "project:default"
         )
@@ -622,35 +628,36 @@ def _read_metadata(path: Path) -> dict[str, Any]:
 def _derived_identity(root: Path, path: Path) -> dict[str, str]:
     resolved = path.resolve()
     try:
-        relative = resolved.relative_to(root)
+        resolved.relative_to(root / ".dset")
     except ValueError as error:
         raise ValueError(
-            "conflict evidence must remain inside the repository"
+            "conflict evidence must remain inside the project .dset"
         ) from error
     if not resolved.is_file():
-        raise ValueError(f"conflict evidence does not exist: {relative.as_posix()}")
+        raise ValueError(f"conflict evidence does not exist: {resolved.name}")
+    canonical = find_unique_name(root, resolved.name)
+    if canonical != resolved:
+        raise ValueError(f"conflict evidence carrier is ambiguous: {resolved.name}")
     return {
-        "path": relative.as_posix(),
+        "carrier": resolved.name,
         "sha256": hashlib.sha256(resolved.read_bytes()).hexdigest(),
     }
 
 
 def _asserted_identity(root: Path, value: object, label: str) -> dict[str, str]:
-    if not isinstance(value, dict) or set(value) != {"path", "sha256"}:
-        raise ValueError(f"{label} requires exact path and sha256")
-    raw_path = value.get("path")
+    if not isinstance(value, dict) or set(value) != {"carrier", "sha256"}:
+        raise ValueError(f"{label} requires exact carrier and sha256")
+    carrier = value.get("carrier")
     raw_digest = value.get("sha256")
-    if not isinstance(raw_path, str) or not raw_path or Path(raw_path).is_absolute():
-        raise ValueError(f"{label} path must be repository-relative")
-    if ".." in Path(raw_path).parts:
-        raise ValueError(f"{label} path must not escape the repository")
+    if not isinstance(carrier, str) or not carrier or Path(carrier).name != carrier:
+        raise ValueError(f"{label} carrier must be one unique file name")
     if (
         not isinstance(raw_digest, str)
         or len(raw_digest) != 64
         or any(character not in "0123456789abcdef" for character in raw_digest)
     ):
         raise ValueError(f"{label} sha256 is invalid")
-    current = _derived_identity(root, root / raw_path)
+    current = _derived_identity(root, find_unique_name(root, carrier))
     if current["sha256"] != raw_digest:
         raise ValueError(f"{label} is stale")
     return current

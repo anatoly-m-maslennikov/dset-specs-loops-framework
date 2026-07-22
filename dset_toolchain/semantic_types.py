@@ -8,9 +8,10 @@ from typing import Any
 from .diagnostics import Diagnostic
 from .frontmatter import FrontmatterError
 from .frontmatter import metadata as frontmatter_metadata
+from .identity import iter_control_files, logical_part
 from .layout import discover_layout
 from .legacy_authority import legacy_shared_package_paths
-from .project_data import lifecycle_events
+from .project_data import lifecycle_events, project_section
 from .yaml_subset import YamlSubsetError, load
 
 SEMANTIC_SUBTYPES: dict[str, frozenset[str]] = {
@@ -163,7 +164,13 @@ def _collect(
     records: dict[str, _Classification] = {}
     diagnostics: list[Diagnostic] = []
 
-    for path in sorted(root.rglob("*.md")):
+    layout = discover_layout(root)
+    paths = (
+        iter_control_files(root, "*.md")
+        if layout.separated
+        else sorted(root.rglob("*.md"))
+    )
+    for path in paths:
         relative = path.relative_to(root)
         if (
             relative.parts[:1] == (".dset_runtime",)
@@ -172,7 +179,7 @@ def _collect(
                 ".dset",
                 "runtime",
             )
-            or any(part in IGNORED_PARTS for part in relative.parts)
+            or any(logical_part(part) in IGNORED_PARTS for part in relative.parts)
         ):
             continue
         metadata = _frontmatter(path)
@@ -186,7 +193,7 @@ def _collect(
                     diagnostics,
                     path,
                     identifier,
-                    (semantic_type, str(subtype) if subtype is not None else None),
+                    (semantic_type, _normalized_subtype(subtype)),
                     origin="modern_atom",
                     status=str(metadata.get("status", "unknown")),
                     modern=True,
@@ -212,7 +219,22 @@ def _collect(
                     modern=False,
                 )
 
-    for path in discover_layout(root).structured_named_files(root, "package"):
+    package_sources: list[tuple[Path, dict[str, Any]]] = []
+    if layout.separated:
+        catalog = project_section(root, "package_catalog")
+        packages = catalog.get("packages", [])
+        if isinstance(packages, list):
+            package_sources = [
+                (layout.settings_path, package)
+                for package in packages
+                if isinstance(package, dict)
+            ]
+    else:
+        for path in layout.structured_named_files(root, "package"):
+            data = _safe_load(path, diagnostics)
+            if isinstance(data, dict):
+                package_sources.append((path, data))
+    for path, data in package_sources:
         relative = path.relative_to(root)
         if (
             relative.parts[:1] == (".dset_runtime",)
@@ -221,11 +243,8 @@ def _collect(
                 ".dset",
                 "runtime",
             )
-            or any(part in IGNORED_PARTS for part in relative.parts)
+            or any(logical_part(part) in IGNORED_PARTS for part in relative.parts)
         ):
-            continue
-        data = _safe_load(path, diagnostics)
-        if not isinstance(data, dict):
             continue
         for field, package_classification in FIELD_CLASSIFICATION.items():
             values = data.get(field, [])
@@ -271,7 +290,7 @@ def _collect(
         intake_path = root / "dset/intake.yaml"
     data = (
         _safe_load(intake_path, diagnostics)
-        if intake_path.is_file() and not discover_layout(root).recursive
+        if intake_path.is_file() and not (layout.recursive or layout.separated)
         else None
     )
     items = data.get("items", []) if isinstance(data, dict) else []
@@ -285,7 +304,7 @@ def _collect(
             if raw_type in SEMANTIC_SUBTYPES:
                 intake_classification = (
                     str(raw_type),
-                    str(raw_subtype) if raw_subtype is not None else None,
+                    _normalized_subtype(raw_subtype),
                 )
             else:
                 intake_classification = LEGACY_INTAKE_CLASSIFICATION.get(str(raw_type))
@@ -309,6 +328,12 @@ def _collect(
                 modern=False,
             )
     return records, diagnostics
+
+
+def _normalized_subtype(value: object) -> str | None:
+    if value is None or value == "none":
+        return None
+    return str(value)
 
 
 def _register(

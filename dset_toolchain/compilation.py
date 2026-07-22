@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 from typing import Any
 
+from .identity import iter_control_files, logical_part
 from .layout import discover_layout
 from .project_data import lifecycle_events
 from .semantic_atoms import collect_semantic_atoms
@@ -43,12 +44,12 @@ def build_compilation_index(root: Path) -> dict[str, Any]:
             {
                 "id": identifier,
                 "source": {
-                    "path": source.relative_to(root).as_posix(),
+                    "carrier": source.name,
                     "sha256": _digest(source),
                 },
                 "projections": [
                     {
-                        "path": path.relative_to(root).as_posix(),
+                        "carrier": path.name,
                         "sha256": _digest(path),
                         "fragments": fragments,
                     }
@@ -130,7 +131,9 @@ def _authority_sources(root: Path) -> dict[str, Path]:
             and lifecycle.get(atom.semantic_id) not in INACTIVE_EVENTS
         ):
             sources[atom.semantic_id] = root / atom.path
-    for path in root.rglob("*.md"):
+    layout = discover_layout(root)
+    paths = iter_control_files(root, "*.md") if layout.separated else root.rglob("*.md")
+    for path in paths:
         if _ignored(root, path) or (
             path.parent.name != "decision"
             and not path.name.lower().startswith("decision-")
@@ -167,11 +170,14 @@ def _authority_sources(root: Path) -> dict[str, Path]:
 
 def _projection_paths(root: Path) -> list[Path]:
     layout = discover_layout(root)
-    if layout.recursive:
+    if layout.recursive or layout.separated:
         prefixes = ("specification-", "procedure-", "plan-", "navigation-")
         owners = (
             layout.project_root,
-            *(layout.layer_root(layer) for layer in ("meta", "gov", "tool", "skill", "ops")),
+            *(
+                layout.layer_root(layer)
+                for layer in ("meta", "gov", "tool", "skill", "ops")
+            ),
             layout.dset_root,
         )
         return [
@@ -215,7 +221,7 @@ def _ignored(root: Path, path: Path) -> bool:
     ):
         return True
     return any(
-        part in IGNORED_PARTS
+        logical_part(part) in IGNORED_PARTS
         or (part.startswith(".") and part not in {".github", ".dset"})
         for part in relative.parts
     )

@@ -10,14 +10,16 @@ from .toml_codec import load as load_toml
 SETTINGS_FILENAME = "dset_settings.toml"
 SETTINGS_DIRECTORY = ".dset"
 LEGACY_SETTINGS_FILENAME = "dset.toml"
-SETTINGS_SCHEMA_VERSION = "1.4"
-PREVIOUS_SETTINGS_SCHEMA_VERSION = "1.3"
+SETTINGS_SCHEMA_VERSION = "1.5"
+PREVIOUS_SETTINGS_SCHEMA_VERSION = "1.4"
+HIDDEN_SETTINGS_SCHEMA_VERSION = "1.3"
 LEGACY_SETTINGS_SCHEMA_VERSION = "1.0"
 SUPPORTED_SETTINGS_SCHEMA_VERSIONS = frozenset(
     {
         LEGACY_SETTINGS_SCHEMA_VERSION,
         "1.1",
         "1.2",
+        HIDDEN_SETTINGS_SCHEMA_VERSION,
         PREVIOUS_SETTINGS_SCHEMA_VERSION,
         SETTINGS_SCHEMA_VERSION,
     }
@@ -66,9 +68,9 @@ def selected_settings_path(root: Path) -> Path:
 def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]:
     """Read canonical settings with explicit legacy-name compatibility.
 
-    New writers use ``.dset/dset_settings.toml`` and schema 1.3. This reader
-    accepts the earlier schema-1.3 hidden layout plus retired root filenames
-    and 1.0-1.2 field contracts only so an adopter can plan a deliberate
+    New writers use ``.dset/dset_settings.toml`` and schema 1.5. This reader
+    accepts the earlier hidden layouts plus retired root filenames and
+    1.0-1.2 field contracts only so an adopter can plan a deliberate
     migration; it never emits them. Competing names fail closed instead of
     selecting by precedence.
     """
@@ -77,11 +79,13 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
     interim_path = root / "dset" / SETTINGS_FILENAME
     previous_path = root / SETTINGS_FILENAME
     legacy_path = root / LEGACY_SETTINGS_FILENAME
-    existing = [
-        path
-        for path in (canonical, interim_path, previous_path, legacy_path)
-        if path.is_file()
-    ]
+    existing = [canonical]
+    if not canonical.is_file():
+        existing = [
+            path
+            for path in (interim_path, previous_path, legacy_path)
+            if path.is_file()
+        ]
     if len(existing) > 1:
         return (
             ProjectSettings(),
@@ -101,7 +105,7 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
     issues: list[str] = []
     schema_version = _string(raw.get("schema_version"), "schema_version", issues)
     if schema_version not in SUPPORTED_SETTINGS_SCHEMA_VERSIONS:
-        issues.append("settings schema_version must be 1.0, 1.1, 1.2, 1.3, or 1.4")
+        issues.append("settings schema_version must be 1.0, 1.1, 1.2, 1.3, 1.4, or 1.5")
 
     legacy = schema_version == LEGACY_SETTINGS_SCHEMA_VERSION
     _validate_known_keys(raw, schema_version, issues)
@@ -145,7 +149,12 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
 
     change_workspace_mode = "integration-branch"
     delegation_budget_profile = "medium"
-    if schema_version in {"1.2", PREVIOUS_SETTINGS_SCHEMA_VERSION, SETTINGS_SCHEMA_VERSION}:
+    if schema_version in {
+        "1.2",
+        HIDDEN_SETTINGS_SCHEMA_VERSION,
+        PREVIOUS_SETTINGS_SCHEMA_VERSION,
+        SETTINGS_SCHEMA_VERSION,
+    }:
         changes = _table(raw.get("changes"), "changes", issues)
         change_workspace_mode = _string(
             changes.get("default_workspace", "integration-branch"),
@@ -205,6 +214,7 @@ def _validate_known_keys(
     legacy = schema_version == LEGACY_SETTINGS_SCHEMA_VERSION
     current = schema_version in {
         "1.2",
+        HIDDEN_SETTINGS_SCHEMA_VERSION,
         PREVIOUS_SETTINGS_SCHEMA_VERSION,
         SETTINGS_SCHEMA_VERSION,
     }
@@ -217,7 +227,7 @@ def _validate_known_keys(
         allowed_top.update({"workflows", "compilation"})
     if current:
         allowed_top.update({"changes", "delegation"})
-    if schema_version == SETTINGS_SCHEMA_VERSION:
+    if schema_version in {PREVIOUS_SETTINGS_SCHEMA_VERSION, SETTINGS_SCHEMA_VERSION}:
         allowed_top.update(
             {
                 "canonical_command",
@@ -238,8 +248,6 @@ def _validate_known_keys(
                 "source_provenance",
                 "version_registry",
                 "package_catalog",
-                "structure_roots",
-                "framework_roots",
             }
         )
     _unknown_keys(raw, allowed_top, "settings", issues)

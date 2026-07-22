@@ -30,11 +30,12 @@ from .frontmatter import metadata as frontmatter_metadata
 from .frontmatter import parse as parse_frontmatter
 from .governance import validate_governance
 from .health import health_is_fresh, health_path
+from .identity import find_unique_name, has_logical_part, logical_part
 from .layout import LAYER_DIRECTORIES, RepositoryLayout, discover_layout
-from .project_data import project_section
 from .legacy_authority import legacy_authority_ids
 from .lineage import validate_artifact_lineage
 from .profiles import VALID_PROFILES, required_artifacts
+from .project_data import project_section
 from .semantic_atoms import collect_semantic_atoms, validate_semantic_atoms
 from .semantic_types import classify_semantic_id, validate_semantic_classifications
 from .settings import load_project_settings, selected_settings_path
@@ -207,12 +208,13 @@ def validate_repository(root: Path) -> list[Diagnostic]:
         for path in sorted(archive.iterdir()):
             if path.is_dir() and re.match(r"^\d{4}-\d{2}-\d{2}-", path.name):
                 diagnostics.extend(validate_change(root, path, archived=True))
-    diagnostics.extend(_validate_markdown(root))
-    transition_ledger = root / "00_project/migrations/carrier-transitions.toml"
-    diagnostics.extend(
-        _diag("DSET-E168", transition_ledger, issue)
-        for issue in validate_carrier_transition_ledger(root)
-    )
+    diagnostics.extend(_validate_markdown(root, layout))
+    if not layout.separated:
+        transition_ledger = layout.migrations_root / "carrier-transitions.toml"
+        diagnostics.extend(
+            _diag("DSET-E168", transition_ledger, issue)
+            for issue in validate_carrier_transition_ledger(root)
+        )
     diagnostics.extend(validate_semantic_atoms(root))
     diagnostics.extend(validate_semantic_classifications(root))
     diagnostics.extend(validate_artifact_lineage(root))
@@ -411,13 +413,15 @@ def _validate_project_manifest(
         diagnostics.append(
             _diag("DSET-E115", path, "package IDs must be non-empty and unique")
         )
-    if str(data.get("schema_version")) in {"1.2", "1.3"}:
+    manifest_schema = str(data.get("schema_version"))
+    if manifest_schema in {"1.2", "1.3", "1.4", "1.5"}:
         structure = data.get("structure")
-        expected_layouts = (
-            {"slim-v1", "numbered-layers-v1"}
-            if str(data.get("schema_version")) == "1.3"
-            else {"layered-v1"}
-        )
+        expected_layouts = {
+            "1.2": {"layered-v1"},
+            "1.3": {"slim-v1", "numbered-layers-v1"},
+            "1.4": {"recursive-framework-v1"},
+            "1.5": {"separated-methodology-v1"},
+        }[manifest_schema]
         valid_structure = (
             isinstance(structure, dict)
             and set(structure) == {"layout"}
@@ -489,7 +493,7 @@ def _validate_project_manifest(
         diagnostics.append(
             _diag("DSET-E115", root / registry, "work-item registry is missing")
         )
-    if str(data.get("schema_version")) in {"1.2", "1.3"}:
+    if manifest_schema in {"1.2", "1.3"}:
         expected_registries = (
             {"00_project/intake.toml"}
             if str(data.get("schema_version")) == "1.3"
@@ -506,6 +510,8 @@ def _validate_project_manifest(
                     "project schema requires its canonical intake path",
                 )
             )
+        return diagnostics
+    if manifest_schema in {"1.4", "1.5"}:
         return diagnostics
     contracts = data.get("contracts")
     if not isinstance(project_key, str):
@@ -861,7 +867,14 @@ def _validate_version(
     if role != "framework-source-and-adopter" and not path.exists():
         return []
     diagnostics: list[Diagnostic] = []
-    data = _safe_load(path, diagnostics)
+    if layout.recursive or layout.separated:
+        try:
+            data = project_section(root, "version_registry")
+        except (OSError, ValueError, YamlSubsetError) as error:
+            diagnostics.append(_diag("DSET-E124", path, str(error)))
+            data = None
+    else:
+        data = _safe_load(path, diagnostics)
     if not data:
         return diagnostics or [_diag("DSET-E124", path, "version contract is missing")]
     framework = data.get("framework", {})
@@ -1022,6 +1035,8 @@ def _validate_packages(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]
 def _validate_layered_packages(
     root: Path, layout: RepositoryLayout, manifest: dict[str, Any]
 ) -> list[Diagnostic]:
+    if layout.separated:
+        return _validate_catalog_packages(root, layout, manifest)
     diagnostics: list[Diagnostic] = []
     project_key = _manifest_project_key(manifest)
     if project_key is None:
@@ -1216,6 +1231,79 @@ def _validate_layered_packages(
     return diagnostics
 
 
+def _validate_catalog_packages(
+    root: Path, layout: RepositoryLayout, manifest: dict[str, Any]
+) -> list[Diagnostic]:
+    diagnostics: list[Diagnostic] = []
+    declared = {
+        (str(item.get("id")), str(layer))
+        for item in manifest.get("packages", [])
+        if isinstance(item, dict) and isinstance(item.get("layers"), list)
+        for layer in item["layers"]
+        if isinstance(layer, str)
+    }
+    catalog = project_section(root, "package_catalog")
+    packages = catalog.get("packages", [])
+    if not isinstance(packages, list):
+        return [_diag("DSET-E144", layout.settings_path, "packages must be a list")]
+    found: set[tuple[str, str]] = set()
+    for package in packages:
+        if not isinstance(package, dict):
+            diagnostics.append(
+                _diag("DSET-E144", layout.settings_path, "package must be a table")
+            )
+            continue
+        identity = (str(package.get("package_id")), str(package.get("layer")))
+        if identity not in declared or identity in found:
+            diagnostics.append(
+                _diag(
+                    "DSET-E145",
+                    layout.settings_path,
+                    f"package identity is undeclared or duplicated: {identity}",
+                )
+            )
+        found.add(identity)
+        artifacts = package.get("artifacts")
+        if not isinstance(artifacts, dict):
+            diagnostics.append(
+                _diag(
+                    "DSET-E144",
+                    layout.settings_path,
+                    f"package artifacts are missing: {identity}",
+                )
+            )
+            continue
+        for role, carrier in artifacts.items():
+            if not isinstance(carrier, str):
+                diagnostics.append(
+                    _diag(
+                        "DSET-E144",
+                        layout.settings_path,
+                        f"package carrier name is invalid: {identity}/{role}",
+                    )
+                )
+                continue
+            try:
+                find_unique_name(root, carrier)
+            except (FileNotFoundError, ValueError):
+                diagnostics.append(
+                    _diag(
+                        "DSET-E144",
+                        layout.settings_path,
+                        f"package carrier is missing or ambiguous: {carrier}",
+                    )
+                )
+    for identity in sorted(declared - found):
+        diagnostics.append(
+            _diag(
+                "DSET-E144",
+                layout.settings_path,
+                f"declared package layer is missing: {identity}",
+            )
+        )
+    return diagnostics
+
+
 def _validate_artifacts(
     root: Path,
     manifest_path: Path,
@@ -1290,6 +1378,7 @@ def _validate_artifacts(
                 type_registry,
                 project_key=str(project_key) if project_key else None,
                 include_subtype_in_names=include_subtype_in_names,
+                separated=layout.separated,
             )
         )
     return diagnostics
@@ -1302,6 +1391,7 @@ def validate_artifact_type_registry(
     *,
     project_key: str | None = None,
     include_subtype_in_names: bool = False,
+    separated: bool = False,
 ) -> list[Diagnostic]:
     """Validate the documentation-v1 artifact-role vocabulary and path rules."""
     diagnostics: list[Diagnostic] = []
@@ -1318,6 +1408,16 @@ def validate_artifact_type_registry(
     diagnostics.extend(type_diagnostics)
     exclusions, exclusion_diagnostics = _artifact_exclusions(registry_path, data)
     diagnostics.extend(exclusion_diagnostics)
+    if separated:
+        diagnostics.extend(
+            validate_evidence_records(
+                root.resolve(),
+                _active_applied_files(root.resolve()),
+                frozenset(),
+                allow_unversioned_legacy=True,
+            )
+        )
+        return diagnostics
     legacy_evidence, compatibility_diagnostics = _legacy_evidence_paths(
         registry_path, data
     )
@@ -2617,7 +2717,7 @@ def _validate_artifact_name(
 
 def _path_rule_matches(relative_path: str, pattern: str) -> bool:
     if "/" not in pattern:
-        return relative_path == pattern
+        return PurePosixPath(relative_path).match(pattern)
     path = PurePosixPath(relative_path)
     return path.match(pattern) or (
         pattern.startswith("**/") and path.match(pattern.removeprefix("**/"))
@@ -2656,7 +2756,7 @@ def _validate_artifact_entries(
     seen_roots: set[Path] = set()
     seen_hubs: set[Path] = set()
     for entry in entries:
-        for field in ("id", "root", "hub", "owner", "purpose"):
+        for field in ("id", "hub", "owner", "purpose"):
             value = entry.get(field)
             if not isinstance(value, str) or not value.strip():
                 diagnostics.append(
@@ -2679,14 +2779,14 @@ def _validate_artifact_entries(
             )
         else:
             seen_ids.add(identifier)
-        area_root = _artifact_path(root, entry.get("root"))
-        hub = _artifact_path(root, entry.get("hub"))
+        hub = _artifact_carrier(root, entry.get("hub"))
+        area_root = hub.parent if hub is not None else None
         if area_root is None:
             diagnostics.append(
                 _diag(
                     "DSET-E121",
                     registry_path,
-                    f"invalid artifact root: {entry.get('root')}",
+                    f"artifact hub is missing or ambiguous: {entry.get('hub')}",
                 )
             )
         elif area_root in seen_roots:
@@ -2694,7 +2794,7 @@ def _validate_artifact_entries(
                 _diag(
                     "DSET-E121",
                     registry_path,
-                    f"duplicate artifact root: {entry.get('root')}",
+                    f"duplicate artifact area: {entry.get('hub')}",
                 )
             )
         else:
@@ -2800,7 +2900,7 @@ def _validate_artifact_hubs(
     diagnostics: list[Diagnostic] = []
     root_id = root_entry.get("id")
     for entry in [root_entry, *areas]:
-        hub = _artifact_path(root, entry.get("hub"))
+        hub = _artifact_carrier(root, entry.get("hub"))
         if hub is None or not hub.is_file():
             continue
         headings = _level_two_headings(hub.read_text(encoding="utf-8"))
@@ -2816,15 +2916,15 @@ def _validate_artifact_hubs(
             diagnostics.append(
                 _diag("DSET-E123", hub, "hub requires a navigation section")
             )
-    root_hub = _artifact_path(root, root_entry.get("hub"))
+    root_hub = _artifact_carrier(root, root_entry.get("hub"))
     if root_hub is None or not root_hub.is_file() or not isinstance(root_id, str):
         return diagnostics
-    targets = _local_link_targets(root_hub)
+    root_text = root_hub.read_text(encoding="utf-8")
     for area in areas:
         if area.get("parent") != root_id:
             continue
-        hub = _artifact_path(root, area.get("hub"))
-        if hub is not None and hub not in targets:
+        hub_name = area.get("hub")
+        if isinstance(hub_name, str) and hub_name not in root_text:
             diagnostics.append(
                 _diag(
                     "DSET-E123",
@@ -2844,6 +2944,15 @@ def _artifact_path(root: Path, raw: Any) -> Path | None:
     except ValueError:
         return None
     return path
+
+
+def _artifact_carrier(root: Path, raw: Any) -> Path | None:
+    if not isinstance(raw, str):
+        return None
+    try:
+        return find_unique_name(root, raw)
+    except (FileNotFoundError, ValueError):
+        return None
 
 
 def _level_two_headings(text: str) -> set[str]:
@@ -3214,7 +3323,7 @@ def _validate_layered_change(
         policy = release.get("policy")
         owner = release.get("owner_change")
         expected_policy = (
-            ".dset/05_layer_ops/procedure-release.md"
+            ".dset/000_dset_methodology/05_ops/procedure-release.md"
             if layout.slim
             else "dset/scopes/ops/governance/release.md"
         )
@@ -3564,7 +3673,11 @@ def _validate_provenance(root: Path) -> list[Diagnostic]:
         if not isinstance(source, dict):
             continue
         revision = str(source.get("revision", ""))
-        license_path = root / str(source.get("license_file", ""))
+        license_name = str(source.get("license_file", ""))
+        try:
+            license_path = find_unique_name(root, license_name)
+        except (FileNotFoundError, ValueError):
+            license_path = root / ".dset" / license_name
         if not re.fullmatch(r"[0-9a-f]{40}", revision):
             diagnostics.append(
                 _diag("DSET-E112", path, "source revision must be a full commit SHA")
@@ -3576,7 +3689,7 @@ def _validate_provenance(root: Path) -> list[Diagnostic]:
     return diagnostics
 
 
-def _validate_markdown(root: Path) -> list[Diagnostic]:
+def _validate_markdown(root: Path, layout: RepositoryLayout) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     aliases = transition_aliases(root)
     reverse_aliases = {
@@ -3584,7 +3697,13 @@ def _validate_markdown(root: Path) -> list[Diagnostic]:
     }
     relocated_carriers = {path.resolve() for path in aliases.values()}
     for path in _markdown_paths(root):
-        if any(part in MARKDOWN_IGNORED_PARTS for part in path.relative_to(root).parts):
+        relative_parts = path.relative_to(root).parts
+        if any(
+            logical_part(part) in MARKDOWN_IGNORED_PARTS for part in relative_parts
+        ) or (
+            layout.separated
+            and has_logical_part(Path(*relative_parts), {"legacy", "archive"})
+        ):
             continue
         text = path.read_text(encoding="utf-8")
         try:
@@ -3592,6 +3711,23 @@ def _validate_markdown(root: Path) -> list[Diagnostic]:
         except FrontmatterError:
             parsed = None
         rendered = _without_code(parsed[1] if parsed is not None else text)
+        legacy_atom = layout.separated and (
+            (
+                parsed is not None
+                and isinstance(parsed[0].get("artifact_id"), str)
+                and "schema_version" not in parsed[0]
+            )
+            or (
+                parsed is None
+                and re.search(
+                    r"^\s*-\s+\*\*(?:Decision|Requirement|Question|Problem|"
+                    r"Test|Eval(?:uation)?) ID:\*\*",
+                    rendered,
+                    flags=re.MULTILINE,
+                )
+                is not None
+            )
+        )
         if "[[" in rendered or "![[" in rendered:
             diagnostics.append(
                 _diag("DSET-E114", path, "Obsidian wiki links are not portable")
@@ -3616,6 +3752,8 @@ def _validate_markdown(root: Path) -> list[Diagnostic]:
             if not target or target.startswith(("http://", "https://", "mailto:")):
                 continue
             if "{{" in target:
+                continue
+            if legacy_atom:
                 continue
             resolved = (path.parent / unquote(target)).resolve()
             original_carrier = reverse_aliases.get(path.resolve())
@@ -3688,11 +3826,38 @@ def _project_visible_files(root: Path) -> list[Path]:
         and path.relative_to(root).parts[:1] != (".dset_runtime",)
         and path.relative_to(root).parts[:2] != (".dset", "runtime")
         and not any(
-            part in MARKDOWN_IGNORED_PARTS for part in path.relative_to(root).parts
+            logical_part(part) in MARKDOWN_IGNORED_PARTS
+            for part in path.relative_to(root).parts
         )
         and not any(part.endswith(".egg-info") for part in path.relative_to(root).parts)
         and path.name != ".DS_Store"
     )
+
+
+def _active_applied_files(root: Path) -> list[Path]:
+    """Return only current project-owned carriers for schema 1.5 checks."""
+
+    layout = discover_layout(root)
+    owners = (
+        layout.project_root,
+        *(
+            layout.layer_root(layer)
+            for layer in ("meta", "gov", "tool", "skill", "ops")
+        ),
+        layout.versions_root,
+    )
+    visible: list[Path] = []
+    for owner in owners:
+        if not owner.is_dir():
+            continue
+        for path in owner.rglob("*"):
+            if not path.is_file():
+                continue
+            relative = path.relative_to(owner)
+            if has_logical_part(relative, {"legacy", "archive", "templates"}):
+                continue
+            visible.append(path)
+    return sorted(visible)
 
 
 def _without_code(text: str) -> str:

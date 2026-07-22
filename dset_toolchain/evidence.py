@@ -9,6 +9,7 @@ from typing import Any
 from .diagnostics import Diagnostic
 from .frontmatter import FrontmatterError
 from .frontmatter import load as load_frontmatter
+from .identity import has_logical_part
 
 ID_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
 SESSION_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
@@ -52,6 +53,8 @@ def validate_evidence_records(
     root: Path,
     paths: Iterable[Path],
     legacy_paths: frozenset[str],
+    *,
+    allow_unversioned_legacy: bool = False,
 ) -> list[Diagnostic]:
     """Validate native Evidence Records while preserving a finite legacy set."""
 
@@ -59,7 +62,9 @@ def validate_evidence_records(
     diagnostics: list[Diagnostic] = []
     for candidate in paths:
         path = candidate.resolve()
-        if path.suffix.lower() != ".md" or "templates" in path.relative_to(root).parts:
+        if path.suffix.lower() != ".md" or has_logical_part(
+            path.relative_to(root), {"templates"}
+        ):
             continue
         relative = path.relative_to(root).as_posix()
         try:
@@ -80,6 +85,13 @@ def validate_evidence_records(
                         "artifact type",
                     )
                 )
+            continue
+        if (
+            allow_unversioned_legacy
+            and artifact_type == "evidence_record"
+            and metadata is not None
+            and "schema_version" not in metadata
+        ):
             continue
         if artifact_type != "evidence_record":
             continue

@@ -14,7 +14,6 @@ from .errors import DsetCommandError
 from .governance import refresh_customization, resolve_workflow, validate_governance
 from .layout import discover_layout
 from .project_data import project_section
-from .yaml_subset import load
 
 
 def run_self_host(
@@ -88,13 +87,13 @@ def run_self_host(
                 f"temporary adopter workflow did not resolve: {workflow_id}",
             )
         resolved_workflows[workflow_id] = resolved
-        wrapper_path = adopter / str(resolved["wrapper"]["path"])
+        wrapper_path = _wrapper_path(adopter, resolved["wrapper"])
         wrapper_before[workflow_id] = _sha256(wrapper_path)
     resolved = resolved_workflows["domain-clarification"]
     rule = next(
         item for item in resolved["rules"] if item["id"] == "DSET-RULE-DOMAIN-SPEC"
     )
-    rule_path = adopter / str(rule["path"])
+    rule_path = _rule_path(adopter, rule)
     rule_path.write_text(
         rule_path.read_text(encoding="utf-8")
         + "\n<!-- bounded self-host customization -->\n",
@@ -122,7 +121,7 @@ def run_self_host(
                 f"customized workflow did not resolve: {workflow_id}",
             )
         customized_workflows[workflow_id] = customized
-        wrapper_path = adopter / str(customized["wrapper"]["path"])
+        wrapper_path = _wrapper_path(adopter, customized["wrapper"])
         wrappers_unchanged = (
             wrappers_unchanged and _sha256(wrapper_path) == wrapper_before[workflow_id]
         )
@@ -139,6 +138,21 @@ def run_self_host(
         "released_ref": reference,
         "adopter": adopter.as_posix(),
     }
+
+
+def _wrapper_path(root: Path, wrapper: Any) -> Path:
+    if not isinstance(wrapper, dict) or not isinstance(wrapper.get("skill"), str):
+        raise ValueError("resolved workflow has no skill identity")
+    return root / "skills" / str(wrapper["skill"]) / "SKILL.md"
+
+
+def _rule_path(root: Path, rule: dict[str, Any]) -> Path:
+    document = rule.get("document")
+    if not isinstance(document, str):
+        raise ValueError("resolved rule has no document identity")
+    from .identity import find_unique_name
+
+    return find_unique_name(root, document)
 
 
 def _extract_released(root: Path, reference: str, destination: Path) -> None:

@@ -47,6 +47,7 @@ from .governance import (
 )
 from .health import health_is_fresh, health_path, render_health, write_health
 from .layout import discover_layout
+from .methodology_sync import methodology_drift, sync_methodology
 from .project_data import project_section
 from .release import check_release, plan_release, prepare_release
 from .runtime_bridge import (
@@ -77,7 +78,6 @@ from .traceability import (
 )
 from .validation import validate_repository
 from .verification import verify_repository
-from .yaml_subset import load
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -177,6 +177,24 @@ def build_parser() -> argparse.ArgumentParser:
     )
     _root_argument(compare)
     compare.add_argument("--source", type=Path, required=True)
+
+    methodology = commands.add_parser(
+        "methodology", help="manage the installed project-local methodology"
+    )
+    methodology_commands = methodology.add_subparsers(
+        dest="methodology_command", required=True
+    )
+    methodology_check = methodology_commands.add_parser(
+        "check", help="compare reusable source with the installed methodology"
+    )
+    _root_argument(methodology_check)
+    methodology_check.add_argument("--format", choices=["text", "json"], default="text")
+    methodology_sync = methodology_commands.add_parser(
+        "sync", help="materialize reusable source into the installed methodology"
+    )
+    _root_argument(methodology_sync)
+    methodology_sync.add_argument("--execute", action="store_true")
+    methodology_sync.add_argument("--format", choices=["text", "json"], default="text")
 
     self_host = commands.add_parser(
         "self-host", help="run the bounded DSET release fixed point"
@@ -514,6 +532,37 @@ def main(argv: list[str] | None = None) -> int:
             if args.rules_command == "diff":
                 sys.stdout.write(diff_governance(root, args.source))
                 return 0
+        if args.command == "methodology":
+            root = _repository_root(args.root)
+            if args.methodology_command == "check":
+                drift = methodology_drift(root)
+                methodology_report = {
+                    "status": "current" if not drift else "stale",
+                    "carriers": [
+                        {"name": item.carrier, "status": item.status} for item in drift
+                    ],
+                }
+                if args.format == "json":
+                    print(json.dumps(methodology_report, indent=2, sort_keys=True))
+                elif drift:
+                    for item in drift:
+                        print(f"{item.status.upper()} {item.carrier}")
+                else:
+                    print("Installed methodology is current")
+                return 1 if drift else 0
+            changed = sync_methodology(root, execute=args.execute)
+            sync_report = {
+                "status": "synchronized" if args.execute else "preview",
+                "carriers": list(changed),
+            }
+            if args.format == "json":
+                print(json.dumps(sync_report, indent=2, sort_keys=True))
+            else:
+                label = "SYNCHRONIZED" if args.execute else "DRY RUN"
+                print(f"{label} carriers={len(changed)}")
+                for carrier in changed:
+                    print(carrier)
+            return 0
         if args.command == "self-host":
             root = _repository_root(args.root)
             if args.work_dir:
@@ -822,7 +871,7 @@ def _print_resolved(data: dict[str, object]) -> None:
     if isinstance(rules, list):
         for rule in rules:
             if isinstance(rule, dict):
-                print(f"{rule['id']} {rule['path']}")
+                print(f"{rule['id']} {rule['document']}")
 
 
 def _print_release(data: dict[str, object], output_format: str, label: str) -> None:

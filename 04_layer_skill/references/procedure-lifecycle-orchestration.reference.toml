@@ -1,6 +1,0 @@
-schema_version = "1.0"
-artifact_type = "reference"
-target = ".dset/04_layer_skill/procedure-lifecycle-orchestration.md"
-expected_role = "specification"
-scope = "skill"
-reason = "Recursive project truth currently equals distributable framework truth."

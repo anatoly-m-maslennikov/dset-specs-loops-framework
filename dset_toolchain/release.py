@@ -310,7 +310,7 @@ def prepare_release(root: Path, *, execute: bool = False) -> ReleasePreparation:
         package = _mapping(version_data.get("python_package"), "package version")
         framework["version"] = plan.target
         package["version"] = plan.python_target
-        if layout.recursive:
+        if layout.recursive or layout.separated:
             write_project_section(root, "version_registry", version_data)
         else:
             _atomic_replace_text(version_path, dump(version_data, version_path))

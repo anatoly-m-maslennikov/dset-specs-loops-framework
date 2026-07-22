@@ -9,6 +9,7 @@ from typing import Any, cast
 
 from .diagnostics import Diagnostic
 from .errors import DsetCommandError
+from .identity import find_unique_name
 from .layout import LAYER_DIRECTORIES, LAYERS, discover_layout, has_manifest
 from .project_data import project_section, write_project_section
 from .yaml_subset import YamlSubsetError, dump, load
@@ -176,11 +177,13 @@ def validate_governance_registry(
                     f"not-applicable rule requires a reason: {rule_id}",
                 )
             )
-        local = _local_path(root, rule.get("path"))
+        local = _rule_carrier(root, rule)
         if local is None:
             diagnostics.append(
                 _diag(
-                    "DSET-E134", registry_path, f"rule path is outside root: {rule_id}"
+                    "DSET-E134",
+                    registry_path,
+                    f"rule document identity is missing or ambiguous: {rule_id}",
                 )
             )
             continue
@@ -192,14 +195,12 @@ def validate_governance_registry(
         if layout.layered and layer in RULE_LAYERS:
             expected_root = (
                 layout.framework_layer_root(str(layer).lower())
-                if layout.recursive
+                if layout.recursive or layout.separated
                 else layout.layer_root(str(layer).lower())
             )
             if not layout.slim:
                 expected_root /= "governance"
-            try:
-                local.relative_to(expected_root)
-            except ValueError:
+            if not _is_within(local, expected_root):
                 diagnostics.append(
                     _diag(
                         "DSET-E134",
@@ -340,12 +341,20 @@ def resolve_workflow(
     for rule_id in workflow["rules"]:
         rule = by_id[rule_id]
         source = rule["source"]
-        local = root / rule["path"]
+        local = _rule_carrier(root, rule)
+        if local is None:
+            return None, [
+                _diag(
+                    "DSET-E134",
+                    path,
+                    f"rule document identity is missing or ambiguous: {rule_id}",
+                )
+            ]
         rules.append(
             {
                 "id": rule_id,
                 "layer": rule["layer"],
-                "path": rule["path"],
+                "document": rule.get("document", local.name),
                 "owner": rule["owner"],
                 "applicability": rule["applicability"],
                 "precedence_over": list(rule["precedence_over"]),
@@ -389,6 +398,12 @@ def materialize_governance(
     manifest = target_layout.manifest_path
     if not manifest.is_file():
         raise DsetCommandError("DSET-E001", manifest, "project manifest is missing")
+    if target_layout.separated:
+        raise DsetCommandError(
+            "DSET-E140",
+            manifest,
+            "schema 1.5 installs methodology as one edition; use methodology sync",
+        )
     try:
         profile_path = source_layout.find_template(
             Path("governance") / profile_id / "profile.yaml"
@@ -440,7 +455,7 @@ def materialize_governance(
         if target_layout.layered:
             destination = (
                 target_layout.framework_layer_root(str(layer).lower())
-                if target_layout.recursive
+                if target_layout.recursive or target_layout.separated
                 else target_layout.layer_root(str(layer).lower())
             )
             if not target_layout.slim:
@@ -459,9 +474,7 @@ def materialize_governance(
     registry_exists = False
     if registry_path.is_file():
         try:
-            registry_exists = bool(
-                project_section(target_root, "governance_registry")
-            )
+            registry_exists = bool(project_section(target_root, "governance_registry"))
         except ValueError:
             registry_exists = False
     if registry_exists or existing:
@@ -476,6 +489,7 @@ def materialize_governance(
             hub_path,
             layered=target_layout.layered,
             slim=target_layout.slim,
+            separated=target_layout.separated,
         )
         rendered_rules: list[dict[str, Any]] = []
         for item in rules:
@@ -500,7 +514,7 @@ def materialize_governance(
                 {
                     "id": rule_id,
                     "layer": item["layer"],
-                    "path": target.relative_to(target_root).as_posix(),
+                    "document": target.name,
                     "owner": "project",
                     "applicability": applicability,
                     "reason": reason,
@@ -510,7 +524,7 @@ def materialize_governance(
                     "source": {
                         "profile": profile_id,
                         "version": str(profile["version"]),
-                        "template": template.relative_to(source_root).as_posix(),
+                        "template": template.name,
                         "sha256": _sha256(template),
                     },
                 }
@@ -519,19 +533,24 @@ def materialize_governance(
         for item in cast(list[dict[str, Any]], profile.get("wrappers", [])):
             if release_not_applicable and item.get("workflow") == "release":
                 continue
-            source = source_root / str(item["path"])
-            target = target_root / str(item["path"])
+            skill = str(item["skill"])
+            source = _wrapper_carrier(source_root, item)
+            wrapper_target = _wrapper_carrier(target_root, item)
+            if source is None:
+                raise FileNotFoundError(f"source skill wrapper is missing: {skill}")
+            if wrapper_target is None:
+                wrapper_target = target_root / "skills" / skill / "SKILL.md"
             if source_root != target_root and install_wrappers:
-                folder = target.parent
+                folder = wrapper_target.parent
                 if folder.exists():
                     raise FileExistsError(f"wrapper destination exists: {folder}")
                 shutil.copytree(source.parent, folder)
                 copied_wrappers.append(folder)
-            if target.is_file():
+            if wrapper_target.is_file():
                 wrappers.append(
                     {
                         "workflow": item["workflow"],
-                        "path": target.relative_to(target_root).as_posix(),
+                        "skill": skill,
                         "sha256": _sha256(source),
                     }
                 )
@@ -558,12 +577,14 @@ def materialize_governance(
             "workflows": rendered_workflows,
             "wrappers": wrappers,
         }
-        if target_layout.recursive:
+        if target_layout.recursive or target_layout.separated:
             write_project_section(target_root, "governance_registry", registry)
         else:
             registry_path.write_text(dump(registry, registry_path), encoding="utf-8")
     except Exception:
-        if registry_path.exists() and not target_layout.recursive:
+        if registry_path.exists() and not (
+            target_layout.recursive or target_layout.separated
+        ):
             registry_path.unlink()
         hub_path.unlink(missing_ok=True)
         for target in targets.values():
@@ -580,7 +601,12 @@ def materialize_governance(
 
 
 def _write_governance_hub(
-    source: Path, target: Path, *, layered: bool, slim: bool = False
+    source: Path,
+    target: Path,
+    *,
+    layered: bool,
+    slim: bool = False,
+    separated: bool = False,
 ) -> None:
     content = source.read_text(encoding="utf-8")
     if layered:
@@ -591,41 +617,49 @@ def _write_governance_hub(
                     f"../../{layer}/governance/",
                 )
     if slim:
+        layer_names = {
+            "meta": "01_meta" if separated else "01_layer_meta",
+            "tool": "03_tool" if separated else "03_layer_tool",
+            "skill": "04_skill" if separated else "04_layer_skill",
+            "ops": "05_ops" if separated else "05_layer_ops",
+        }
         replacements = {
             "architecture.md": "specification-architecture.md",
             (
                 "../../tool/governance/build-rules.md"
-            ): "../03_layer_tool/specification-build-rules.md",
+            ): f"../{layer_names['tool']}/specification-build-rules.md",
             (
                 "../../meta/governance/domain-spec-authoring.md"
-            ): "../01_layer_meta/procedure-domain-spec-authoring.md",
+            ): f"../{layer_names['meta']}/procedure-domain-spec-authoring.md",
             (
                 "../../meta/governance/test-planning.md"
-            ): "../01_layer_meta/procedure-test-planning.md",
+            ): f"../{layer_names['meta']}/procedure-test-planning.md",
             (
                 "../../meta/governance/eval-planning.md"
-            ): "../01_layer_meta/procedure-evaluation-planning.md",
+            ): f"../{layer_names['meta']}/procedure-evaluation-planning.md",
             (
                 "../../skill/governance/diagnosis.md"
-            ): "../04_layer_skill/procedure-diagnosis.md",
+            ): f"../{layer_names['skill']}/procedure-diagnosis.md",
             (
                 "../../skill/governance/prototyping.md"
-            ): "../04_layer_skill/procedure-prototyping.md",
+            ): f"../{layer_names['skill']}/procedure-prototyping.md",
             (
                 "../../ops/governance/supportability.md"
-            ): "../05_layer_ops/specification-supportability.md",
+            ): f"../{layer_names['ops']}/specification-supportability.md",
             "artifact-maintenance.md": "specification-artifact-maintenance.md",
             "artifact-classification.md": "specification-artifact-classification.md",
             (
                 "../../skill/governance/lifecycle-orchestration.md"
-            ): "../04_layer_skill/procedure-lifecycle-orchestration.md",
+            ): f"../{layer_names['skill']}/procedure-lifecycle-orchestration.md",
             (
                 "../../skill/governance/skill-runs.md"
-            ): "../04_layer_skill/procedure-skill-runs.md",
+            ): f"../{layer_names['skill']}/procedure-skill-runs.md",
             (
                 "../../skill/governance/delegation-budget.md"
-            ): "../04_layer_skill/procedure-delegation-budget.md",
-            ("../../ops/governance/release.md"): "../05_layer_ops/procedure-release.md",
+            ): f"../{layer_names['skill']}/procedure-delegation-budget.md",
+            (
+                "../../ops/governance/release.md"
+            ): f"../{layer_names['ops']}/procedure-release.md",
             "work-items.md": "specification-work-items.md",
         }
         for old, new in replacements.items():
@@ -639,7 +673,7 @@ def refresh_customization(root: Path) -> Path:
     data = project_section(root, "governance_registry")
     custom = False
     for rule in cast(list[dict[str, Any]], data.get("rules", [])):
-        local = _local_path(root, rule.get("path"))
+        local = _rule_carrier(root, rule)
         source = rule.get("source")
         source_sha = source.get("sha256") if isinstance(source, dict) else None
         if local is None or not local.is_file() or not isinstance(source_sha, str):
@@ -661,16 +695,16 @@ def diff_governance(root: Path, source_root: Path) -> str:
     output: list[str] = []
     for rule in cast(list[dict[str, Any]], data.get("rules", [])):
         source = cast(dict[str, Any], rule["source"])
-        template = source_root / str(source["template"])
-        local = root / str(rule["path"])
-        if not template.is_file() or not local.is_file():
+        template = _unique_named_file(source_root / ".dset", source.get("template"))
+        local = _rule_carrier(root, rule)
+        if template is None or local is None:
             continue
         output.extend(
             difflib.unified_diff(
                 template.read_text(encoding="utf-8").splitlines(keepends=True),
                 local.read_text(encoding="utf-8").splitlines(keepends=True),
-                fromfile=template.relative_to(source_root).as_posix(),
-                tofile=local.relative_to(root).as_posix(),
+                fromfile=template.name,
+                tofile=local.name,
             )
         )
     return "".join(output) or "No local governance differences.\n"
@@ -850,7 +884,7 @@ def _validate_wrappers(
                 _diag("DSET-E138", registry_path, f"duplicate wrapper: {workflow}")
             )
         seen.add(workflow)
-        path = _local_path(root, wrapper.get("path"))
+        path = _wrapper_carrier(root, wrapper)
         expected = wrapper.get("sha256")
         if path is None or not path.is_file():
             diagnostics.append(
@@ -872,6 +906,43 @@ def _local_path(root: Path, raw: Any) -> Path | None:
     except ValueError:
         return None
     return path
+
+
+def _unique_named_file(control_root: Path, raw: Any) -> Path | None:
+    if not isinstance(raw, str):
+        return None
+    try:
+        root = control_root.parent if control_root.name == ".dset" else control_root
+        return find_unique_name(root, raw)
+    except (FileNotFoundError, ValueError):
+        return None
+
+
+def _wrapper_carrier(root: Path, wrapper: dict[str, Any]) -> Path | None:
+    skill = wrapper.get("skill")
+    if isinstance(skill, str) and skill and Path(skill).name == skill:
+        path = (root / "skills" / skill / "SKILL.md").resolve()
+        try:
+            path.relative_to(root.resolve())
+        except ValueError:
+            return None
+        return path
+    return _local_path(root, wrapper.get("path"))
+
+
+def _rule_carrier(root: Path, rule: dict[str, Any]) -> Path | None:
+    document = rule.get("document")
+    if document is not None:
+        return _unique_named_file(root / ".dset", document)
+    return _local_path(root, rule.get("path"))
+
+
+def _is_within(path: Path, parent: Path) -> bool:
+    try:
+        path.resolve().relative_to(parent.resolve())
+    except ValueError:
+        return False
+    return True
 
 
 def _sha256(path: Path) -> str:
