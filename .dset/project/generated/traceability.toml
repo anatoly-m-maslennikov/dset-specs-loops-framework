@@ -6827,6 +6827,14 @@ origin = "commit_trailer"
 llm_session_ids = []
 
 [[relations]]
+source = "57dd0a1a17f0c85118e10e628180c2222834df22"
+source_kind = "commit"
+type = "implementation_of"
+target = "DSET-REQUIREMENT-GOV-043"
+origin = "commit_trailer"
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+
+[[relations]]
 source = "581714cc52ab4bb5aeba9c95273d3c611e056724"
 source_kind = "commit"
 type = "implementation_of"
@@ -8664,6 +8672,16 @@ source_path = ".dset/gov/evidence/DSET-EVIDENCE-RECORD-045-hidden-project-contro
 type = "evidence_for"
 origin = "authored"
 target = "DSET-TEST-GOV-047"
+llm_session_ids = []
+
+[[relations]]
+source = "DSET-EVIDENCE-RECORD-046"
+source_kind = "artifact"
+source_artifact_id = "DSET-EVIDENCE-RECORD-046"
+source_path = ".dset/gov/evidence/DSET-EVIDENCE-RECORD-046-runtime-and-scratch-boundaries.md"
+type = "evidence_for"
+origin = "authored"
+target = "DSET-TEST-GOV-048"
 llm_session_ids = []
 
 [[relations]]
