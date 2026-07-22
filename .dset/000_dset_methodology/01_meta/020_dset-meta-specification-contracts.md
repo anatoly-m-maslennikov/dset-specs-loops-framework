@@ -10,14 +10,14 @@
 ## Outputs
 
 - GitHub-portable reusable framework source under `10_project/` and the ordered
-  `11_layer_meta/` through `15_layer_ops/` product layers.
+  `11_layer_meta/` through `16_layer_ops/` product layers.
 - One project-local installed methodology under
   `.dset/000_dset_methodology/`, distinct from applied artifacts.
 - Independently selected implementation-language and artifact-governance
   profiles, including the `documentation-v1` catalog in
   `.dset/dset_settings.toml`.
 - Applied project-wide truth under `.dset/100_project/`, applied layer truth
-  under `.dset/101_layer_meta/` through `.dset/105_layer_ops/`, and Version
+  under `.dset/101_layer_meta/` through `.dset/106_layer_ops/`, and Version
   lifecycle artifacts under `.dset/150_versions/`.
 - Versioned schemas, templates, fixtures, migration guidance, provenance, and
   generated traceability in their configured methodology, applied, or runtime
@@ -31,26 +31,15 @@
 
 ## Specification boundary surface
 
-A User Story is a direct Decision subtype. When present, its stable `STORY`
-compatibility ID records an actor or stakeholder, desired capability or
-outcome, and value or purpose. It may link sibling Requirements, Outcomes,
-Scenarios, Invariants, Contracts, and QA atoms, but is never nested beneath a
-Requirement. Absence remains valid where no meaningful actor perspective
-exists.
+Decision is the only authority Type. Its direct subtypes are Requirement,
+Constraint, Contract, and Implementation Decision. Requirement owns required
+observable results; Constraint narrows acceptable solutions; Contract owns
+boundary obligations; Implementation Decision owns material selected
+architecture, design, algorithm, data, tooling, or operating approaches.
 
-Requirement, Constraint, Contract, User Story, Outcome, Scenario, and Invariant
-are sibling Decision subtypes. Requirement owns observable required results;
-Constraint narrows solutions; Contract owns boundary obligations; User Story
-owns actor/value intent; Outcome owns measurable state change; Scenario owns a
-concrete behavior; and Invariant owns an always-true condition. Design and
-implementation plan remain document roles rather than semantic Types.
-
-Outcome is a direct Decision subtype for measurable user, business,
-operational, or system state change, not a delivered output. Its stable
-`OUTCOME` ID links baseline, target, observation method/source, evaluation
-window, originating Problem or Question/Opportunity, sibling User Stories, and
-QA/Evaluations. QA/Test evidence proves Requirement delivery; Outcome evidence
-shows whether delivery had the intended effect.
+User Stories, Outcomes, Scenarios, and Invariants may structure Requirement
+prose, analysis, or compatibility history. They do not create more semantic
+subtypes. Independently enforceable claims are separate Requirement atoms.
 
 ## Non-contractual surfaces
 

@@ -33,14 +33,19 @@ emitted content.
 
 ## Naming
 
-The base naming convention uses the primary artifact type token in a new
-artifact ID and filename. Optional artifact subtypes live in direct metadata
-and do not enter the structural name. For example, a Version Scope is
+The base naming convention uses the primary artifact Type token and one
+project-wide sequence per Type. Optional artifact subtypes live in direct
+metadata and do not enter the structural name. For example, a Version Scope is
 `APP-VERSION-001-0-4-core.md` with `artifact_subtype: version_scope`; a
 Roadmap uses the same `VERSION` sequence with `artifact_subtype: roadmap`.
 
 Projects may opt into subtype tokens for newly emitted artifacts with
 `artifacts.subtype_in_names = true` in `.dset/dset_settings.toml`.
+Each subtype then owns one project-wide sequence. Atomic records use their
+semantic subtype kind directly (`REQ`, `CONSTR`, `CONTR`, `IMPDEC`, and the
+other registered subtype kinds); an empty-subtype atom uses its Type kind and
+that Type's empty-subtype sequence. Layers, features, feature groups, folders,
+and lifecycle state never restart numbering.
 This is an independent optional capability, not a bundled “advanced mode.” A
 setting change never renames an immutable atom or an already stable artifact
 identity.
@@ -71,8 +76,10 @@ External Audit Analysis is the project's interpretation and triage of it.
 
 Release lifecycle artifacts remain flat peers under one primary `version`
 type. Its direct subtypes are `roadmap`, `version_scope`, `change`,
-`release_plan`, `readiness_record`, and `release_record`. They share one
-project-wide `VERSION` identity sequence. Milestones are Roadmap entries.
+`release_plan`, `readiness_record`, and `release_record`. In type-only naming
+they share one project-wide `VERSION` identity sequence. In subtype-bearing
+naming each Version subtype owns its own project-wide sequence. Milestones are
+Roadmap entries.
 Release Notes and changelogs are rendered or derived from immutable Release
 Records.
 

@@ -1,5 +1,17 @@
 # Methodology TOOL specification
 
+## DSET-DECISION-TOOL-001 — Portable text-byte policy
+
+The repository pins Git-controlled text worktree content to LF with the root
+policy `* text=auto eol=lf`. The checkout boundary therefore preserves the
+byte identity of immutable carriers on Linux, macOS, native Windows, and WSL
+without weakening carrier-digest validation. Content detected as binary is not
+line-ending normalized.
+
+This Decision replaces `DSET-DECISION-OPS-008`. Repository byte normalization
+is TOOL configuration; concrete byte-sensitive Test implementation belongs to
+IMPL, and hosted cross-platform execution evidence belongs to OPS.
+
 ## DSET-REQUIREMENT-TOOL-001 — The canonical workflow is executable
 
 The framework must provide one cross-platform CLI with `new`, `check`, `verify`, `trace`, and guarded `archive` commands. `check` is dependency-light and read-only; every write is explicit and refuses an existing destination.

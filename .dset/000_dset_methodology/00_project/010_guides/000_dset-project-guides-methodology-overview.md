@@ -8,7 +8,7 @@ This is the helicopter-view entry point for the DSET Spec Loops methodology. It 
 
 This area owns the reusable DSET delivery method. Reusable framework source
 lives in `10_project/` and the ordered `11_layer_meta/` through
-`15_layer_ops/` source layers. An adopter installs the accepted methodology
+`16_layer_ops/` source layers. An adopter installs the accepted methodology
 under `.dset/000_dset_methodology/` and keeps applied artifacts under the
 distinct `.dset/100_project/` through `.dset/150_versions/` project
 namespaces. Earlier layouts remain compatibility or migration inputs only.

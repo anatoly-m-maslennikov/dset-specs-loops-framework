@@ -8,6 +8,9 @@ Every normative rule ID has one editable governing document. Hubs navigate, wrap
 
 ## Writes and cutover
 
+- Treat every operator input in a governed project as intake. Classify and emit
+  one or more immutable semantic atoms before implementing its consequences;
+  split independent claims and never derive Type from the workflow.
 - Use TOML for DSET-owned structured artifacts and TOML frontmatter for DSET
   Markdown. Keep host/ecosystem/wire/runtime formats and generated compatibility
   adapters explicit and non-authoritative. Never keep editable YAML/JSON and
@@ -22,6 +25,10 @@ Every normative rule ID has one editable governing document. Hubs navigate, wrap
   compiled projection, transactional context/evidence, or implementation.
   Status and applicability determine whether an atomic source is active.
 - Materialized rules become project-owned immediately. Later framework releases provide an explicit comparison and proposed delta, never an invisible overwrite.
+- Author reusable methodology only in the repository-root source. Refresh the
+  installed `.dset/000_dset_methodology/` snapshot only through an explicit
+  one-way operator synchronization command; never mirror ordinary edits or
+  copy installed files back into the source.
 - Record intentional local customization with `dset rules refresh`, retaining the source profile, version, unique template carrier name, and digest as provenance.
 - During migration, map every old rule/spec/plan/decision/runbook/evidence surface and make the old writer a concise pointer, read-only history, verified archive, or remove it only after cutover proof.
 - Refuse an existing destination and keep the previous owner writable when validation fails.
@@ -186,16 +193,16 @@ assessment and refuses the immutable write when it is not allowed.
 ## Commit and session provenance
 
 Every commit that changes evergreen truth or implementation artifacts must name
-the Decision or Decisions it implements in the commit body, for example
-`Implements: DSET-DECISION-GOV-001`. A linked Problem may explain why a
-correction is needed, but only an active Decision or direct Decision subtype
-authorizes the resulting behavior.
+the Decision IDs it implements in the commit body, for example
+`Implements: DSET-REQUIREMENT-IMPL-004`. A linked Problem may explain why a
+correction is needed, but only an active Decision authorizes the
+resulting behavior.
 
 The repository manifest activates deterministic commit validation from an
 explicit commit or from the commit that first added the manifest. Every later
 non-merge commit uses exactly one provenance mode: implementation has one or
-more Decision-family `Implements:` IDs; evidence has both Decision-family
-`Decision:` IDs and known `Verifies:` IDs. Both modes require exactly one valid
+more authority `Implements:` IDs; evidence has both authority `Decision:` IDs
+and known `Verifies:` IDs. Both modes require exactly one valid
 `Session:` trailer. Optional `Resolves:` IDs must identify Problems. Unknown
 IDs, non-Decision implementation authority, mixed modes, and missing provenance
 fail the repository check.

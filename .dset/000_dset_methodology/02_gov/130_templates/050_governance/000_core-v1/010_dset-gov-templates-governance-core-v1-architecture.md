@@ -38,7 +38,7 @@ every rule declares both fields even when the lists are empty. Registry order
 is not precedence. If selected rules conflict and no declared precedence path
 resolves the conflict, governed work stops rather than choosing implicitly.
 
-Active Decisions, including every direct Decision subtype, authorize and
+Active Decisions authorize and
 explain change. Provenance identifies origin but does not
 authorize. QA/Test and QA/Evaluation results, reviews, and other evidence
 assess reliance claims. None becomes rule authority merely by existing or
@@ -100,8 +100,8 @@ Question when the ambiguity affects work.
 DSET separates four artifact roles from the four semantic Types—Decision,
 Question, Problem, and QA:
 
-- **Atomic authority sources** are accepted, active, applicable Decisions,
-  including every direct Decision subtype. Atoms are
+- **Atomic authority sources** are accepted, active, applicable Decisions.
+  Atoms are
   immutable. Later state is an append-only lifecycle event; replacement is a
   successor atom with an explicit acyclic `absorbs` relation.
 - **Evergreen compiled projections** are updatable current views such as specs,
@@ -150,11 +150,12 @@ feature-group hub shows its features. Every feature or layer hub shows the main
 functions, capabilities, or components it immediately owns. A project does not
 create empty diagrams for structural levels it has not enabled.
 
-Each view stays one level deep, links its owning hubs or artifacts, and remains
-consistent with current accepted truth. It is Navigation or compiled
-Specification/Architecture, never independent authority. Cross-level details
-belong in the child view rather than expanding one whole-project diagram until
-it becomes unreadable.
+Each view stays one level deep, links its owning hubs, atomic-artifact folders,
+or long-lived non-atomic owners, and remains consistent with current accepted
+truth. It never links individual atoms or `.dset_runtime` descendants. It is
+Navigation or compiled Specification/Architecture, never independent
+authority. Cross-level details belong in the child view rather than expanding
+one whole-project diagram until it becomes unreadable.
 
 ## Features versus layers
 
@@ -163,7 +164,8 @@ governed by explicit Contracts at their narrowest common structural owner.
 Neither feature becomes an architectural authority over the other merely
 because it calls, supplies data to, or is delivered before the other.
 
-Layers are an ordered refinement chain: `META → GOV → TOOL → SKILL → OPS`.
+Layers are an ordered refinement chain:
+`META → GOV → TOOL → SKILL → IMPL → OPS`.
 Layer authority may affect the same layer or move only forward to later layers;
 it never governs, overrides, or takes precedence over an earlier layer. Direct
 influence on the immediately following layer is preferred because it keeps

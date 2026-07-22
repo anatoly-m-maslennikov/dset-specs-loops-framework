@@ -1,5 +1,5 @@
 # TOOL templates
 
-Executable build-rule templates owned by TOOL.
+Executable framework-tool templates owned by TOOL.
 
-- `dependency-policy.toml`
+- `000_dset-tool-templates-governance-core-v1-build-rules.md`

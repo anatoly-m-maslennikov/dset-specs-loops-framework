@@ -19,20 +19,24 @@ schema_version = "1.5"
 canonical_command = "python -m dset_toolchain verify ."
 
 [artifacts]
-# Include the optional direct artifact subtype after the primary artifact type
-# in IDs and filenames for newly emitted artifacts only.
+# Select the visible classification and project-wide numbering axis for newly
+# emitted artifacts.
 #
 # Accepted:
-# - false (default): type-only structural name.
+# - false (default): type-only structural name and one sequence per Type.
 #   Example: DSET-VERSION-001-0-4-core.md
 #   Inside the artifact: artifact_type = "version" and
 #   artifact_subtype = "version_scope".
-# - true: add the direct subtype token.
+# - true: expose the direct subtype and use one sequence per subtype.
 #   Example: DSET-VERSION-VERSION-SCOPE-001-0-4-core.md
+#   Atomic records use the semantic subtype kind directly, such as
+#   APP-REQ-GOV-001-readable-summary.md. Empty-subtype atoms continue to use
+#   their Type kind, such as APP-DECISION-GOV-001-readable-summary.md.
 #
 # Existing IDs and filenames are immutable and are never renamed when this
-# value changes. The setting affects the carrier name only; it does not change
-# an atomic record's separate semantic Type/subtype.
+# value changes. Layers, features, feature groups, folders, and lifecycle state
+# never restart a sequence. The setting changes identity presentation and
+# allocation, not semantic or artifact classification.
 #
 # Registered artifact subtype examples:
 # - analysis_report: solution_landscape, root_cause_analysis, proposal,
@@ -133,3 +137,20 @@ scale = ["critical", "high", "medium", "low", "deferred"]
 #
 # Accepted: one value present in priority.scale. Default: "medium".
 default = "medium"
+
+# Implementation Profiles are peer features in the IMPL layer. A project may
+# select more than one and assign each to explicit work-area IDs. Selection is
+# authoritative; conformance lives in Test/Evaluation evidence and Verification.
+#
+# Example for a small Python repository:
+#
+# [[profiles.implementation]]
+# id = "local-python-tools-v1"
+# version = "1.0"
+# work_areas = ["cli", "tests", "scripts"]
+#
+# Other possible peer profiles include:
+# - long-running-python-tools-v1
+# - containerized-python-applications-v1
+# - electron-typescript-applications-v1
+# - obsidian-plugin-v1, extending the Electron/TypeScript baseline

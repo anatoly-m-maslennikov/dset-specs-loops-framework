@@ -99,6 +99,25 @@ A checkpoint contains only a bounded objective, scope and artifact/run pointers,
 
 **Scenario DSET-SCENARIO-SKILL-009:** An operator invokes `dset`, which chains clarification and planning before the host compacts context. The next invocation reloads the same checkpoint, detects a newer Git change, invalidates the stale next-action hint, and recommends fresh verification without asking the operator to reconstruct the session or invoke a sixth skill.
 
+## DSET-REQUIREMENT-SKILL-015 — Every operator input becomes atomic intake
+
+Every operator input to a DSET-governed project must pass through `decisions`
+before its requested consequences are implemented. The workflow classifies the
+input by semantic meaning and emits one or more immutable Decision, Question,
+Problem, or QA atoms. It splits independent primary claims into linked sibling
+atoms and never derives Type from the invoked skill, workflow, or next action.
+
+Artifact-creation strictness remains authoritative. If any claim cannot yet be
+emitted safely, the workflow asks focused questions and stops downstream work.
+Initialization and invalid-governance repair remain pre-resolution exceptions;
+after successful initialization or repair, the next governed invocation
+atomizes the still-applicable operator input before continuing.
+
+**Scenario DSET-SCENARIO-SKILL-013:** An operator supplies one requirement and
+one observed defect in the same message. DSET emits linked Requirement and
+Problem atoms before changing implementation. A vague consequential directive
+produces focused clarification instead of an invented immutable claim.
+
 ## DSET-REQUIREMENT-SKILL-013 — Implementation preparation is project-selectable
 
 A public DSET skill accepts the desired outcome. `.dset/dset_settings.toml`

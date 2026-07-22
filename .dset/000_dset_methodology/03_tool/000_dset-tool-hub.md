@@ -2,15 +2,16 @@
 
 ## Purpose
 
-Own executable CLI, validation, fixture, traceability, and self-hosting contracts.
+Own executable CLI, validation, repository configuration, fixture,
+traceability, and self-hosting contracts.
 
 ## Boundaries
 
-TOOL governs executable behavior, deterministic diagnostics, and reusable
-proof execution. Python/Test development sources remain in conventional
-repository package roots and materialize into installed methodology without
-symlinks. Applied QA definitions, evidence, and Verification remain with their
-project or layer owners.
+TOOL governs executable behavior, deterministic diagnostics, repository
+configuration, and reusable execution contracts. Concrete development
+environments, production code, Test code, Evaluation implementations, and
+code-focused gates belong to IMPL. Applied QA definitions, evidence, and
+Verification remain with their project or layer owners.
 
 ## Layer map
 
@@ -21,17 +22,11 @@ flowchart TB
     VALIDATE["Validation and diagnostics"]
     LIFE["Change and release mechanics"]
     TRACE["Traceability and self-hosting"]
-    PYTHON["Python runtime"]
-    TESTS["Deterministic Tests"]
-    EVALS["Qualitative Evaluations"]
 
     TOOL --> CLI
     TOOL --> VALIDATE
     TOOL --> LIFE
     TOOL --> TRACE
-    TOOL --> PYTHON
-    TOOL --> TESTS
-    TOOL --> EVALS
 ```
 
 ## Start here
@@ -42,7 +37,4 @@ flowchart TB
 - Schemas
 - Templates
 - Applied TOOL artifacts
-- `000_dset-tool-python-hub.md`
-- `000_dset-tool-tests-hub.md`
-- `000_dset-tool-evaluations-hub.md`
 - `changes`

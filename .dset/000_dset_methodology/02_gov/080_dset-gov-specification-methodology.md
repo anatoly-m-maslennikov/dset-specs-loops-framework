@@ -20,7 +20,7 @@ presentation.
 | `DSET-DECISION-GOV-001` | Separate atomic authority, evergreen projections, transactional context/evidence, implementation, commit provenance, and session provenance |
 | `DSET-DECISION-GOV-002` | Use one constitutional governance root; separate dependency from precedence and authority from assurance |
 | `DSET-DECISION-GOV-003` | Keep semantic atoms immutable and resolve conflicts by role and lifecycle before priority |
-| `DSET-DECISION-GOV-008` | Use four application-level Types with at most one direct subtype and explicit act/content/carrier/work/evidence boundaries |
+| `DSET-DECISION-GOV-032` | Use peer Requirement and Decision Types: required obligations are Requirements; material selected approaches are Decisions |
 | `DSET-DECISION-GOV-010` | Use the bounded `critical`, `high`, `medium`, `low`, `deferred` priority profile with `medium` as default |
 | `DSET-DECISION-GOV-019` | Use Version as the shared primary artifact type for six flat release-lifecycle roles |
 | `DSET-DECISION-GOV-013` | Use ten typed forward artifact relations, derived inverses, and range-based evergreen projection frontiers |
@@ -34,7 +34,7 @@ presentation.
 | `DSET-DECISION-GOV-027` | Atomize carrier representation transitions and exclude physical paths from current identity |
 | `DSET-DECISION-GOV-028` | Keep `.dset` current and exclude inert historical aggregates and completed migrations from skill discovery and compilation |
 | `DSET-DECISION-GOV-029` | Keep repository legal files outside `.dset` and resolve their unique names only within the root legal distribution surface |
-| `DSET-DECISION-GOV-030` | Install executable Python tools, deterministic Test implementations, and qualitative Evaluation prompts under methodology TOOL |
+| `DSET-DECISION-GOV-031` | Keep executable product contracts in TOOL, development realization and executable QA under IMPL, and post-implementation delivery and operation under OPS |
 
 Absorbed predecessors remain immutable history and are excluded from the active
 compilation set by append-only lifecycle events.
@@ -64,12 +64,12 @@ Public methodology must use ordinary Markdown links and GitHub-native alerts or 
 The project-local control plane owns installed methodology only under
 `.dset/000_dset_methodology/`, applied project-wide artifacts under
 `.dset/100_project/`, applied layer artifacts under
-`.dset/101_layer_meta/` through `.dset/105_layer_ops/`, and applied Version
+`.dset/101_layer_meta/` through `.dset/106_layer_ops/`, and applied Version
 artifacts under `.dset/150_versions/`. Installed methodology never owns applied
 atoms, specifications, plans, evidence, or Version records.
 
 The DSET framework repository separately owns reusable product source under
-root `10_project/`, `11_layer_meta/` through `15_layer_ops/`, and
+root `10_project/`, `11_layer_meta/` through `16_layer_ops/`, and
 `50_versions/`. Ordinary adopters do not receive this product-source tree.
 
 **Scenario DSET-SCENARIO-GOV-005:** A thin skill resolves its rule from
@@ -121,20 +121,23 @@ validation resolves that name only within `LICENSES`; this bounded legal check
 does not widen skill discovery, artifact identity lookup, or semantic
 compilation beyond `.dset`.
 
-## DSET-DECISION-GOV-030 — Install executable methodology
+## DSET-DECISION-GOV-031 — Place executable methodology by semantic role
 
-Installed methodology includes its reusable executable implementation under
-TOOL: the synchronized Python package and portable launcher under
-`120_python`, deterministic Test implementations and runner under `130_tests`,
-and independent-review/reconciliation Evaluation prompts under
-`140_evaluations`.
+Installed methodology keeps the DSET executable contract, schemas, templates,
+fixtures, and algorithms under TOOL. It places development realization under
+IMPL: the synchronized Python package and portable launcher under `100_python`,
+deterministic Test implementations and runner under `110_tests`, and
+independent-review/reconciliation Evaluation implementations under
+`120_evaluations`. OPS owns delivery, release, publication, runtime operation,
+investigation, containment, recovery, and hosted evidence after implementation.
 
 Applied QA atoms and plans continue to own what must be checked. Evidence and
 Verification continue to own what happened and what the results support. The
 methodology owns only reusable execution mechanisms. Repository Python/Test
 sources materialize byte-for-byte without symlinks; generated caches are
 excluded. Ecosystem-required package and module names may remain unnumbered
-inside their numbered TOOL owners.
+inside their numbered IMPL owners. This Decision replaces
+`DSET-DECISION-GOV-030`.
 
 ## DSET-REQUIREMENT-GOV-005 — Package structure is proportional
 
@@ -169,18 +172,19 @@ Every governed public artifact area must declare one purpose, owner, root, hub, 
 ## DSET-REQUIREMENT-GOV-010 — Semantic Types and document roles stay separate
 
 DSET must define exactly four semantic Types—Decision, Question, Problem, and
-QA—and at most one allowed direct subtype per emitted atom. Navigation,
+QA—and at most one allowed direct subtype per emitted atom. Decision permits
+Requirement, Constraint, Contract, and Implementation Decision. Navigation,
 specification, architecture, rationale, procedure, plan, evidence/history,
 implementation, derived view, agent workflow, Change, and Release are document,
 lifecycle, implementation, or optional-container roles rather than additional
 semantic Types. Workflow, queue, skill, tool, host, filename, path, and next
 action never determine Type or subtype.
 
-**Scenario DSET-SCENARIO-GOV-011:** A User Story and Requirement are sibling
-Decision subtypes linked from one specification; the specification is their
-evergreen document role rather than a fifth Type. A design explanation moves to
-rationale and a repeatable sequence to a playbook without retyping either as an
-atom.
+**Scenario DSET-SCENARIO-GOV-011:** A required user-facing behavior is a
+Decision/Requirement atom linked from one specification; the specification is
+its evergreen document role rather than another Type. A design explanation
+moves to rationale and a repeatable sequence to a playbook without retyping
+either as an atom.
 
 ## DSET-REQUIREMENT-GOV-011 — Authoring rules are type-specific
 
@@ -190,7 +194,12 @@ Universal rules must require answer-first writing, one primary question, explici
 
 ## DSET-REQUIREMENT-GOV-012 — Documentation v1 is executable
 
-The `documentation-v1` profile must provide a machine-readable governed-area registry and deterministic checks for profile identity, required hubs, unique area IDs/roots, valid owner/purpose/parent fields, reachable parent hierarchy, required hub sections, root-to-area navigation, and existing portable links. Qualitative authoring judgments remain evals rather than brittle keyword gates.
+The `documentation-v1` profile must provide a machine-readable governed-area
+registry and deterministic checks for profile identity, required hubs, unique
+area IDs/roots, valid owner/purpose/parent fields, reachable parent hierarchy,
+required hub sections, root-to-area navigation, folder-level atomic
+navigation, `.dset_runtime` descendant exclusion, and existing portable links.
+Qualitative authoring judgments remain evals rather than brittle keyword gates.
 
 **Scenario DSET-SCENARIO-GOV-013:** Removing an area hub or pointing an area at a missing parent produces a stable diagnostic through `dset check`; debating whether rationale is sufficiently separated remains a rubric-based eval.
 
@@ -233,27 +242,28 @@ qualitative, probabilistic, statistical, or model-judged Evaluation definitions
 to QA. Every named subtype is direct; no subtype may contain another subtype.
 
 Problems and Questions do not authorize implementation. A Problem may return
-directly to implementation only when an active Decision already defines the
-correction; otherwise it raises a Question whose consequential answer becomes a
-Decision. GitHub Issues, Jira/support tickets, tasks, Changes, and releases are
+directly to implementation only when an active Decision already
+defines the correction; otherwise it raises a Question whose consequential
+answer becomes a Decision. GitHub Issues, Jira/support tickets,
+tasks, Changes, and releases are
 representations, steps, or optional containers rather than semantic Types.
 
 **Scenario DSET-SCENARIO-GOV-019:** A production failure is a Problem/Defect, a
 missing required platform is a Problem/Gap, future delivery harm is a
 Question/Risk, optional release-note automation is a Question/Opportunity, and
 incompatible active API obligations form a Question/Conflict. An operator
-answer becomes a Decision or direct Decision subtype before implementation.
+answer becomes a Decision before implementation.
 
 ## DSET-REQUIREMENT-GOV-019 — IDs expose the concrete Type or subtype
 
 The project prefix is `DSET`. Project-wide IDs use
 `DSET-<FULL-KIND>-<NNN>`; layer-owned compatibility IDs use
 `DSET-<FULL-KIND>-<LAYER>-<NNN>`, where `<LAYER>` is `META`, `GOV`, `TOOL`,
-`SKILL`, or `OPS`. `<FULL-KIND>` is the subtype when present and the Type when
+`SKILL`, `IMPL`, or `OPS`. `<FULL-KIND>` is the subtype when present and the Type when
 subtype is empty. No ID encodes a subtype path.
 
-Decision kinds are `DECISION`, `REQUIREMENT`, `CONSTRAINT`, `CONTRACT`,
-`STORY`, `OUTCOME`, `SCENARIO`, and `INVARIANT`; Question kinds are `QUESTION`,
+Requirement kinds are `REQUIREMENT`, `CONSTRAINT`, `CONTRACT`, `STORY`,
+`OUTCOME`, `SCENARIO`, and `INVARIANT`; Decision uses `DECISION`; Question kinds are `QUESTION`,
 `CONFLICT`, `RISK`, and `OPPORTUNITY`; Problem kinds are `PROBLEM`, `DEFECT`,
 `GAP`, and `DEBT`; QA kinds are `TEST` and `EVALUATION`. Existing stable
 `EVAL` and other legacy IDs remain resolvable compatibility history and are not
@@ -366,7 +376,7 @@ checkpoints without making provenance authoritative.
 
 The project manifest declares the commit at which enforcement begins. Every
 later non-merge commit must use exactly one validated mode: `Implements:` with
-one or more known Decision-family IDs, or the evidence pair `Decision:` and
+one or more known Requirement/Decision authority IDs, or the evidence pair `Decision:` and
 `Verifies:`. Both require exactly one valid `Session:` trailer; `Resolves:` may
 name only known Problems. Unknown IDs, QA/Problem IDs used as implementation
 authority, mixed modes, and missing trailers fail validation.
@@ -391,7 +401,7 @@ the source, marks the document stale, and blocks reliance until recompilation.
 Both graphs must be acyclic; registry order must not imply precedence; missing
 precedence targets or unresolved conflicts must fail closed.
 
-Active Decisions and their direct subtypes authorize and explain rule changes;
+Active Decisions authorize and explain rule changes;
 provenance identifies origin but does not authorize. QA/Test and
 QA/Evaluation results, reviews, and evidence assess
 reliance claims. None becomes rule
@@ -411,15 +421,15 @@ DSET must expose a generated project-health projection without making it a new
 authority. It reports artifact counts by role, Type, subtype, layer, status,
 priority, and applicable Work Area; unresolved and automatically resolved
 Question/Conflict subtypes; unresolved Problems and Questions with their
-subtypes; proof freshness; and traceability coverage for Decision atoms
+subtypes; proof freshness; and traceability coverage for Requirement and Decision atoms
 compiled into evergreen owners, applicable authority connected to
 implementation and QA/Test or QA/Evaluation, implementation commits connected
 to their authorizing Decision, and proof plans connected to current evidence.
 
 Every coverage result states its numerator, denominator, exclusions,
 not-applicable, unknown, and stale counts and links back to canonical owners.
-The view must not require a second empty-subtype Decision for every direct
-Decision subtype, code for a documentation-only Requirement, or an Evaluation
+The view must not require a Decision for every Requirement, code for a
+documentation-only Requirement, or an Evaluation
 where the Evaluation plan declares one not applicable. A portable Markdown renderer is the baseline public surface;
 interactive renderers may consume the same derived model later.
 
@@ -442,7 +452,7 @@ priority; the findings body may be free-form.
 Every finding records evidence, confidence, impact, and proposed disposition.
 Import or reconciliation must explicitly reject it with rationale, defer it,
 or route it to an existing or new Problem or Question and direct subtype,
-Decision and direct subtype, optional Change, evergreen owner, or proof
+Requirement, Decision, optional Change, evergreen owner, or proof
 obligation. Accepted consequences compile
 into current truth and reopen the smallest affected proof closure. Neither the
 report nor the reviewer may silently edit or authorize implementation.
@@ -523,83 +533,38 @@ outcome is inferred from document order.
 DSET must represent each semantic atom with exactly one of four Types and at
 most one direct allowed subtype:
 
-- Decision: Requirement, Constraint, Contract, User Story, Outcome, Scenario,
-  or Invariant;
+- Decision: Requirement, Constraint, Contract, or Implementation Decision;
 - Question: Conflict, Risk, or Opportunity;
 - Problem: Defect, Gap, or Debt; and
 - QA: Test or Evaluation, with subtype required.
 
 A general Decision, Question, or Problem omits subtype. A subtype never repeats
-its Type and never contains another subtype. User Story and Requirement are
-sibling Decision subtypes; links between them do not create
-Decision/Requirement/User Story nesting.
+its Type and never contains another subtype. Classification depends on semantic
+content, never workflow, queue, skill, tool, host, filename, path, or next
+action. Changed semantics require a new linked atom. All emitted atoms are
+immutable.
 
-Classification depends on semantic content, never workflow, queue, skill,
-tool, host, filename, path, or next action. Changed semantics require a new
-linked atom. All emitted atoms are immutable.
-
-Types are application-level routing classifications for durable project claims
-and directives, not universal classifications of people, systems, real-world
-conditions, performed work, or files. Classify the smallest independently
-reviewable primary claim. Split multi-head statements into linked sibling
-atoms. When an irreducible claim remains plausible under several subtypes, use
-the empty subtype of its Type and raise a Question when ambiguity affects work;
-never guess or assign several subtypes.
-
-The operator's acceptance is an act or lifecycle event distinct from Decision
-directive content and its carrier. QA atoms define checks; Test/Evaluation
+The operator's acceptance is an act or lifecycle event distinct from accepted
+Decision content and its carrier. QA atoms define checks; Test/Evaluation
 execution is work; results and logs are evidence; gate decisions and
-Verification are derived. Storage may colocate linked roles without collapsing
-their semantics or identities.
+Verification are derived.
 
-Direct Decision subtypes are recognized by the acceptance condition that owns
-the claim. Contract owns named boundary obligations. Constraint narrows
-otherwise acceptable solutions when no boundary participant relies on it as a
-Contract. User Story owns actor/want/value framing but not acceptance criteria.
-Outcome owns intended measurable state change, not observed evidence. Scenario
-owns one accepted example, not its run. Invariant owns an always-hold
-condition, not evidence that it currently holds. Requirement owns the remaining
-observable obligation that no more precise Decision subtype owns.
+Requirement owns required observable results. Constraint narrows otherwise
+acceptable solutions. Contract owns named boundary obligations. Implementation
+Decision owns material selected architecture, design, algorithm, data, tooling,
+or operating approaches. User Story, Outcome, Scenario, and Invariant may
+structure Requirement prose or compatibility history but are not current
+semantic subtypes.
 
 Problem means presently true insufficiency. Wrong now is Defect; missing now is
 Gap; a working known compromise with continuing cost is Debt. Question means
 uncertainty. Possible future harm is Risk; optional possible value is
 Opportunity; verified incompatible active applicable authority is Conflict.
-Different wording, stale compilation, failed QA, implementation nonconformance,
-and contradictory evidence alone are not Conflicts.
-
-Debt cannot hide a Defect or Gap. If a compromise also violates active
-authority or leaves an obligation absent, record linked Defect or Gap atoms or
-emit a Decision that changes the applicable authority.
 
 QA/Test is an exact reproducible predicate under declared conditions.
 QA/Evaluation is qualitative, probabilistic, statistical, or model-judged and
-declares its
-method, criterion, threshold, and uncertainty handling where applicable. QA
-remains Evaluation when deterministic code executes the method but the
-conclusion depends on judgment, sampling, calibration, probability, statistics,
-or a model. QA results affect assurance and never override Decision authority.
-
-New atoms use this explicit envelope and direct-subtype ID kind. Existing
-stable IDs and carriers are never rewritten merely to adopt it. A deterministic
-compatibility classifier maps each legacy ID-kind/carrier pair to the same four
-Types, including legacy `EVAL` to QA/Evaluation and standalone Opportunity to
-Question/Opportunity, and fails closed when the pair disagrees. Traceability,
-project health, validation, lifecycle lookup, and skill context consume that
-single mapping so compatibility does not become a second taxonomy.
-
-A Question/Conflict records exact incompatible authority and resolves through
-an append-only lifecycle event linked to the answering or absorbing Decision,
-precedence, exception, boundary change, or external-authority update. A
-Problem returns directly to implementation only when an active Decision already
-defines the correction; otherwise it raises a Question.
-
-**Scenario DSET-SCENARIO-GOV-028:** A failing QA/Test against an active
-Requirement creates assurance failure and a Problem/Defect when current
-behavior is wrong, not a Conflict. Two active Contract subtypes demanding
-mutually exclusive values create one Question/Conflict. An operator-accepted
-absorbing Contract resolves it through an append-only event without editing the
-original atoms.
+declares its method, criterion, threshold, and uncertainty handling where
+applicable.
 
 ## DSET-REQUIREMENT-GOV-028 — Atomic rationale is recommended and optional
 
@@ -955,7 +920,7 @@ atomic records, analysis, evidence, and verification live under
 under `.dset/150_versions/`; and layer-owned applied
 truth lives under `.dset/101_layer_meta/`, `.dset/102_layer_gov/`,
 `.dset/103_layer_tool/`, `.dset/104_layer_skill/`, and
-`.dset/105_layer_ops/`. Generated views remain runtime state under
+`.dset/105_layer_implementation/`, and `.dset/106_layer_ops/`. Generated views remain runtime state under
 `.dset_runtime/generated/` unless a separate artifact explicitly promotes an
 observation into the applied evidence owner.
 Historical aggregates, completed migrations, compatibility snapshots,
@@ -990,7 +955,7 @@ Features are peer capabilities connected horizontally through Contracts at
 their narrowest common owner. Call direction, data flow, and delivery order do
 not make one feature authoritative over another.
 
-Layers are ordered `META → GOV → TOOL → SKILL → OPS`. A layer may govern itself
+Layers are ordered `META → GOV → TOOL → SKILL → IMPL → OPS`. A layer may govern itself
 or any later layer but never an earlier layer. Direct influence on the next
 layer is preferred; a longer forward jump is valid only when explicit and when
 an intermediate layer has no meaningful ownership to add. A downstream
@@ -1004,3 +969,26 @@ deterministic validation.
 If a backward dependency cannot be removed or re-homed without falsifying the
 architecture, DSET proposes reclassifying the coupled owners as features with
 horizontal Contracts and waits for operator acceptance.
+
+## DSET-REQUIREMENT-GOV-052 — Synchronize installed methodology explicitly
+
+Reusable methodology is authored only in the repository-root source. Ordinary
+source edits never rewrite `.dset/000_dset_methodology/`, and installed files
+are never copied back into the source. Only an explicit operator
+synchronization command may validate and copy the root source unidirectionally
+into the installed methodology snapshot.
+
+The installed snapshot may therefore remain behind the working source between
+explicit synchronizations. Consumers must report that version boundary rather
+than silently mixing source and installed files.
+
+## DSET-REQUIREMENT-GOV-053 — Navigate atoms at folder level
+
+Hubs directly list only stable child areas, atomic-artifact folders, evergreen
+specifications and plans, settings, and other long-lived non-atomic owners. A
+hub never enumerates or links individual atomic carriers. Adding an atom does
+not require a hub edit.
+
+Hubs never list or link files or directories below `.dset_runtime/`. They may
+name the runtime root only to state that transient runtime state is outside
+durable navigation.

@@ -113,14 +113,15 @@ When two entities are mutually related, define each independently first using sh
 ## Rationale and Decisions
 
 - Rationale explains forces and trade-offs behind active normative truth; it links back without restating the full rule.
-- A Decision records operator-accepted authority. An empty subtype represents a
-  general choice; Requirement, Constraint, and Contract add precise authority
-  semantics. Rationale is strongly recommended but remains optional in
-  validation.
+- A Requirement records a required result or obligation and may use a direct
+  subtype for Constraint, Contract, User Story, Outcome, Scenario, or Invariant.
+- A Decision records a material selected implementation, architecture,
+  governance, or operating approach and has no subtype. Rationale is strongly
+  recommended but remains optional in validation.
 - Never edit an emitted Decision atom. Record later state in an append-only
   lifecycle event or emit an explicit absorbing successor while preserving the
   predecessor and both directions.
-- Every active applicable Decision, including its subtypes, is an atomic
+- Every active applicable Decision is an atomic
   authority source. Compile its consequences into the owning evergreen spec or
   plan; when they differ, the Decision wins and the projection is stale until
   recompiled.
@@ -128,7 +129,9 @@ When two entities are mutually related, define each independently first using sh
 ## Hubs
 
 - Keep purpose, boundaries, and start routes concise.
-- Link stable child areas and owning documents, not every file generated below them.
+- Link stable child areas, atomic-artifact folders, evergreen files, settings,
+  and other long-lived non-atomic owners.
+- Never list individual atomic artifacts or anything below `.dset_runtime/`.
 - Do not hide normative rules or long explanations in a navigation page.
 
 ## Playbooks and runbooks
