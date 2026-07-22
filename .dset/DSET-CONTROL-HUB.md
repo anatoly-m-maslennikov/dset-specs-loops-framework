@@ -17,6 +17,9 @@ Historical aggregates, completed migrations, and compatibility snapshots live
 in the inert repository archive outside `.dset`. Skills do not discover or
 compile that archive.
 
+Repository and third-party legal files are distribution inputs under the root
+`LICENSE` and `LICENSES` surfaces. They are not DSET control-plane artifacts.
+
 ## Start here
 
 - `dset_settings.toml` — settings and identity registries.

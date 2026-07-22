@@ -54,6 +54,7 @@ SLIM_SCHEMA_VERSION: Final[str] = "1.3"
 RECURSIVE_SCHEMA_VERSION: Final[str] = "1.4"
 SEPARATED_SCHEMA_VERSION: Final[str] = "1.5"
 CURRENT_DSET_ROOT: Final[str] = ".dset"
+LEGAL_FILES_ROOT: Final[str] = "LICENSES"
 METHODOLOGY_ROOT: Final[str] = "000_dset_methodology"
 APPLIED_PROJECT_ROOT: Final[str] = "100_project"
 APPLIED_VERSIONS_ROOT: Final[str] = "150_versions"
@@ -130,6 +131,12 @@ class RepositoryLayout:
         if self.slim:
             return self.dset_root / "dset_settings.toml"
         return self.root / "dset_settings.toml"
+
+    @property
+    def legal_files_root(self) -> Path:
+        """Return the external repository distribution surface for legal files."""
+
+        return self.root / LEGAL_FILES_ROOT
 
     @property
     def project_root(self) -> Path:

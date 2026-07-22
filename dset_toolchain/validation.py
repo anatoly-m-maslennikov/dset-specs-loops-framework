@@ -3660,7 +3660,8 @@ def _validate_schemas(schema_paths: tuple[Path, ...]) -> list[Diagnostic]:
 
 
 def _validate_provenance(root: Path) -> list[Diagnostic]:
-    path = discover_layout(root).provenance_path
+    layout = discover_layout(root)
+    path = layout.provenance_path
     diagnostics: list[Diagnostic] = []
     try:
         data = project_section(root, "source_provenance")
@@ -3674,10 +3675,16 @@ def _validate_provenance(root: Path) -> list[Diagnostic]:
             continue
         revision = str(source.get("revision", ""))
         license_name = str(source.get("license_file", ""))
-        try:
-            license_path = find_unique_name(root, license_name)
-        except (FileNotFoundError, ValueError):
-            license_path = root / ".dset" / license_name
+        if not license_name or Path(license_name).name != license_name:
+            diagnostics.append(
+                _diag(
+                    "DSET-E112",
+                    layout.legal_files_root,
+                    "license_file must be a globally unique carrier name",
+                )
+            )
+            continue
+        license_path = layout.legal_files_root / license_name
         if not re.fullmatch(r"[0-9a-f]{40}", revision):
             diagnostics.append(
                 _diag("DSET-E112", path, "source revision must be a full commit SHA")

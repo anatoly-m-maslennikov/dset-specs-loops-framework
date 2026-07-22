@@ -303,7 +303,7 @@ def _atomize_lifecycle(path: Path) -> None:
 
 def _move_licenses(additions: dict[str, Any]) -> None:
     source = ROOT / "third_party" / "licenses"
-    target = DSET / "00_project" / "licenses"
+    target = ROOT / "LICENSES"
     if source.is_dir():
         _merge_tree(source, target)
     third_party = ROOT / "third_party"
@@ -314,9 +314,7 @@ def _move_licenses(additions: dict[str, Any]) -> None:
         for item in provenance.get("sources", []):
             value = item.get("license_file")
             if isinstance(value, str):
-                item["license_file"] = value.replace(
-                    "third_party/licenses/", ".dset/00_project/licenses/"
-                )
+                item["license_file"] = Path(value).name
 
 
 def _rewrite_settings(additions: dict[str, Any]) -> None:

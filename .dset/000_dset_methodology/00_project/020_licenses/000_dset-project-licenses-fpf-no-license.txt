@@ -1,8 +1,0 @@
-No license file or license declaration was present in the reviewed
-ailev/FPF repository tree at commit
-afa4936541774021c92adb97c3cbf787bf126062.
-
-DSET therefore copies and distributes no substantial expressive FPF passage,
-template, code, ontology, index, or other repository artifact. The source is
-recorded as provenance for independently re-expressed public concepts and short
-attributed technical terms.

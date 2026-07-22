@@ -33,6 +33,7 @@ presentation.
 | `DSET-DECISION-GOV-026` | Number installed methodology for reading order without creating a durable path registry |
 | `DSET-DECISION-GOV-027` | Atomize carrier representation transitions and exclude physical paths from current identity |
 | `DSET-DECISION-GOV-028` | Keep `.dset` current and exclude inert historical aggregates and completed migrations from skill discovery and compilation |
+| `DSET-DECISION-GOV-029` | Keep repository legal files outside `.dset` and resolve their unique names only within the root legal distribution surface |
 
 Absorbed predecessors remain immutable history and are excluded from the active
 compilation set by append-only lifecycle events.
@@ -106,6 +107,18 @@ snapshots, pre-current change folders, and retained pre-current documentation
 live in an inert repository archive outside `.dset`. Skills and current
 semantic compilation search only `.dset`; they never consult the archive as a
 fallback authority or coverage source.
+
+## DSET-DECISION-GOV-029 — Keep legal files outside the control plane
+
+The repository's own legal instrument remains the root `LICENSE` carrier.
+Retained third-party license texts and no-license notices live under the root
+`LICENSES` distribution surface. They are not methodology, applied artifacts,
+settings, runtime state, or historical DSET data and never live in `.dset`.
+
+Source provenance stores each legal carrier's globally unique filename. Legal
+validation resolves that name only within `LICENSES`; this bounded legal check
+does not widen skill discovery, artifact identity lookup, or semantic
+compilation beyond `.dset`.
 
 ## DSET-REQUIREMENT-GOV-005 — Package structure is proportional
 
