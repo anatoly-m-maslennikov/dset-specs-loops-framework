@@ -34,18 +34,17 @@ def resolve_profile_path(root: Path, profile_id: str) -> Path:
 
     layout = discover_layout(root.resolve())
     local = layout.structured_file(
-        layout.layer_root("tool") / "profiles", f"{profile_id}.toml"
+        layout.layer_root("implementation") / "profiles", f"{profile_id}.toml"
     )
     if local.is_file():
         return local
-    candidate = layout.structured_file(
-        layout.layer_root("tool") / "templates" / "enforcement-profiles",
-        f"{profile_id}.toml",
-    )
-    if candidate.is_file() and _repository_role(layout.manifest_path) == (
-        "framework-source-and-adopter"
-    ):
-        return candidate
+    if _repository_role(layout.manifest_path) == "framework-source-and-adopter":
+        try:
+            return layout.find_template(
+                Path("enforcement-profiles") / f"{profile_id}.toml"
+            )
+        except FileNotFoundError:
+            pass
     raise FileNotFoundError(
         f"applied enforcement profile is missing: {profile_id}; "
         "framework references are not project-owned instances"

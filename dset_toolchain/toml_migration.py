@@ -34,7 +34,7 @@ from .carrier_transitions import render_ledger as render_transition_ledger
 from .compilation import compilation_path
 from .frontmatter import parse as parse_frontmatter
 from .health import health_path
-from .layout import discover_layout
+from .layout import LAYER_ID_TOKENS, discover_layout
 from .semantic_atoms import TERMINAL_STATES, collect_semantic_atoms
 from .temp_paths import temporary_directory
 from .toml_codec import TomlCodecError
@@ -1404,11 +1404,7 @@ def _package_projection_contains(
 
 def _semantic_id_layer(identifier: str) -> str | None:
     parts = identifier.split("-")
-    matches = [
-        layer
-        for layer in ("meta", "gov", "tool", "skill", "ops")
-        if layer.upper() in parts
-    ]
+    matches = [layer for layer, token in LAYER_ID_TOKENS.items() if token in parts]
     return matches[0] if len(matches) == 1 else None
 
 

@@ -31,7 +31,14 @@ from .frontmatter import parse as parse_frontmatter
 from .governance import validate_governance
 from .health import health_is_fresh, health_path
 from .identity import find_unique_name, has_logical_part, logical_part
-from .layout import LAYER_DIRECTORIES, RepositoryLayout, discover_layout
+from .layout import (
+    ID_TOKEN_LAYERS,
+    LAYER_DIRECTORIES,
+    LAYER_ID_TOKENS,
+    LAYERS,
+    RepositoryLayout,
+    discover_layout,
+)
 from .legacy_authority import legacy_authority_ids
 from .lineage import validate_artifact_lineage
 from .profiles import VALID_PROFILES, required_artifacts
@@ -44,7 +51,7 @@ from .yaml_subset import YamlSubsetError, load
 ID_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
 CHANGE_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 PROJECT_KEY_PATTERN = re.compile(r"^[A-Z][A-Z0-9]*$")
-TRACE_LAYERS = ("META", "GOV", "TOOL", "SKILL", "OPS")
+TRACE_LAYERS = tuple(LAYER_ID_TOKENS.values())
 TRACE_TYPES = (
     "DECISION",
     "REQUIREMENT",
@@ -441,7 +448,7 @@ def _validate_project_manifest(
                     and isinstance(layers, list)
                     and bool(layers)
                     and len(layers) == len(set(layers))
-                    and set(layers).issubset({item.lower() for item in TRACE_LAYERS})
+                    and set(layers).issubset(set(LAYERS))
                 )
                 if not valid_packages:
                     break
@@ -619,7 +626,7 @@ def _validate_intake_registry(root: Path, manifest: dict[str, Any]) -> list[Diag
     layered = str(manifest.get("schema_version")) in {"1.2", "1.3"}
     scopes: dict[str, str]
     if layered:
-        scopes = {segment.lower(): segment for segment in TRACE_LAYERS}
+        scopes = dict(LAYER_ID_TOKENS)
         intake_schema = str(data.get("schema_version"))
         if intake_schema not in {"1.1", "1.2"} or any(
             key in data for key in ("scope_mode", "scopes")
@@ -655,7 +662,7 @@ def _validate_intake_registry(root: Path, manifest: dict[str, Any]) -> list[Diag
                 or not isinstance(segment, str)
                 or segment not in TRACE_LAYERS
                 or raw_scope.get("kind") != "layer"
-                or scope_id != segment.lower()
+                or scope_id != ID_TOKEN_LAYERS[segment]
                 or scope_id in scopes
                 or segment in seen_segments
             ):
@@ -670,7 +677,8 @@ def _validate_intake_registry(root: Path, manifest: dict[str, Any]) -> list[Diag
                 _diag(
                     "DSET-E142",
                     path,
-                    "intake must register META, GOV, TOOL, SKILL, and OPS exactly once",
+                    "intake must register META, GOV, TOOL, SKILL, IMPL, and OPS "
+                    "exactly once",
                 )
             )
     raw_items = data.get("items")
@@ -1181,7 +1189,7 @@ def _validate_layered_packages(
                 identifier_layer = match.group("layer")
                 owns_id = (
                     physical_layer == "meta" and identifier_layer in {None, "META"}
-                ) or identifier_layer == physical_layer.upper()
+                ) or identifier_layer == LAYER_ID_TOKENS[physical_layer]
                 if not owns_id:
                     diagnostics.append(
                         _diag(
@@ -3268,7 +3276,7 @@ def _validate_layered_change(
         physical = layout.change_layer(change_dir)
     except ValueError:
         physical = None
-    layer_names = {layer.lower() for layer in TRACE_LAYERS}
+    layer_names = set(LAYERS)
     if (
         data.get("schema_version") != "1.2"
         or not isinstance(primary, str)
@@ -3307,7 +3315,7 @@ def _validate_layered_change(
     if (
         change_match is None
         or change_match.group("layer") is None
-        or change_match.group("layer").lower() != primary
+        or ID_TOKEN_LAYERS.get(str(change_match.group("layer"))) != primary
     ):
         diagnostics.append(
             _diag(
@@ -3323,7 +3331,7 @@ def _validate_layered_change(
         policy = release.get("policy")
         owner = release.get("owner_change")
         expected_policy = (
-            ".dset/000_dset_methodology/05_ops/procedure-release.md"
+            ".dset/000_dset_methodology/06_ops/procedure-release.md"
             if layout.slim
             else "dset/scopes/ops/governance/release.md"
         )
@@ -3847,10 +3855,7 @@ def _active_applied_files(root: Path) -> list[Path]:
     layout = discover_layout(root)
     owners = (
         layout.project_root,
-        *(
-            layout.layer_root(layer)
-            for layer in ("meta", "gov", "tool", "skill", "ops")
-        ),
+        *(layout.layer_root(layer) for layer in LAYERS),
         layout.versions_root,
     )
     visible: list[Path] = []

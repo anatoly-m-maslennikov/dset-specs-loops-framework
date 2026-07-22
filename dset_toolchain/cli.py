@@ -131,7 +131,10 @@ def build_parser() -> argparse.ArgumentParser:
         default="standard",
     )
     new.add_argument("--title")
-    new.add_argument("--layer", choices=["META", "GOV", "TOOL", "SKILL", "OPS"])
+    new.add_argument(
+        "--layer",
+        choices=["META", "GOV", "TOOL", "SKILL", "IMPL", "OPS"],
+    )
     new.add_argument("--work-area", action="append", dest="work_areas", default=[])
     new.add_argument(
         "--workspace",

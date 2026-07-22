@@ -10,7 +10,7 @@ from .diagnostics import Diagnostic
 from .frontmatter import FrontmatterError
 from .frontmatter import metadata as frontmatter_metadata
 from .identity import iter_control_files, logical_part
-from .layout import discover_layout
+from .layout import ID_TOKEN_LAYERS, LAYERS, discover_layout
 from .legacy_authority import legacy_authority_ids
 from .project_data import lifecycle_events, project_section
 from .semantic_types import SEMANTIC_SUBTYPES, build_semantic_classification_index
@@ -39,7 +39,6 @@ PROJECTION_SOURCE_TYPES = frozenset(
     {"specification", "procedure", "plan", "derived_view", "navigation"}
 )
 SEMANTIC_TYPES = frozenset(SEMANTIC_SUBTYPES)
-LAYERS = frozenset({"meta", "gov", "tool", "skill", "ops"})
 SCOPE_KINDS = frozenset({"project", "layer", "feature_group", "feature"})
 REVERSE_FIELDS = frozenset(
     {
@@ -834,6 +833,9 @@ def _lifecycle_events(root: Path) -> list[dict[str, Any]]:
 
 def _layer_from_id(identifier: str) -> str | None:
     for segment in identifier.split("-"):
+        mapped = ID_TOKEN_LAYERS.get(segment.upper())
+        if mapped is not None:
+            return mapped
         lowered = segment.lower()
         if lowered in LAYERS:
             return lowered

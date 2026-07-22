@@ -46,7 +46,7 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 | **QA** | An immutable definition of how accepted authority is checked, distinct from execution, result, evidence, and Verification; every emitted QA atom has a Test or Evaluation subtype |
 | **Test** | A direct QA subtype for deterministic proof with declared conditions and an exact reproducible pass/fail result |
 | **Evaluation** | A direct QA subtype for an assessment whose conclusion depends on judgment, sampling, calibration, probability, statistics, or a model, even when deterministic code executes the method |
-| **Layer** | An optional stable semantic owner for accepted IDs: `META`, `GOV`, `TOOL`, `SKILL`, or `OPS`; it is independent of directory layout |
+| **Layer** | An optional stable semantic owner for accepted IDs: `META`, `GOV`, `TOOL`, `SKILL`, `IMPL`, or `OPS`; it is independent of directory layout |
 | **Ruleset identity** | Stable declaration of selected profile/version provenance and whether the materialized local rules remain equivalent or have become a valid custom project profile |
 
 ## Invariants
@@ -61,7 +61,7 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 - **DSET-INVARIANT-GOV-008:** A locally changed ruleset remains valid project truth only under an explicit custom identity that retains its source profile/version provenance.
 - **DSET-INVARIANT-GOV-009:** Every normative rule ID has exactly one editable governing document; skills, agent guidance, templates, generated installations, indexes, summaries, and caches never become parallel writable rule stores.
 - **DSET-INVARIANT-GOV-010:** DSET has exactly four semantic Types—Decision, Question, Problem, and QA. Decision permits Requirement, Constraint, Contract, User Story, Outcome, Scenario, and Invariant; Question permits Conflict, Risk, and Opportunity; Problem permits Defect, Gap, and Debt; QA requires Test or Evaluation. No subtype contains another subtype. Workflows, tasks, tickets, document roles, Changes, and releases are not semantic Types.
-- **DSET-INVARIANT-GOV-011:** All accepted IDs use the `DSET` project prefix and a full type; project-wide IDs omit the layer, layer-owned IDs include `META`, `GOV`, `TOOL`, `SKILL`, or `OPS`, and numbering is independent per type within each project-wide or layer sequence.
+- **DSET-INVARIANT-GOV-011:** All accepted IDs use the `DSET` project prefix and a full type; project-wide IDs omit the layer, layer-owned IDs include `META`, `GOV`, `TOOL`, `SKILL`, `IMPL`, or `OPS`, and numbering is independent per type within each project-wide or layer sequence.
 - **DSET-INVARIANT-GOV-012:** Rule authority and assurance remain distinct. Dependency and precedence are separate acyclic relations; invalid authority or unresolved conflict fails closed, while missing or stale assurance affects only the relying claim or gate.
 - **DSET-INVARIANT-GOV-013:** A health percentage is valid only with an explicit numerator, denominator, excluded/not-applicable/unknown/stale counts, and canonical return links; it never creates authority or rewards unnecessary artifacts.
 - **DSET-INVARIANT-GOV-014:** External review findings remain transactional evidence until each finding is explicitly rejected, deferred, or routed to a Problem, Opportunity, Question, Decision, Change, or evergreen owner; review never silently authorizes a fix.

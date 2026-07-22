@@ -1,0 +1,9 @@
+schema_version = "1.0"
+artifact_type = "lifecycle_event"
+artifact_id = "DSET-LIFECYCLE-EVENT-090"
+atom_id = "DSET-DECISION-OPS-010"
+event = "absorbed"
+occurred_at = "2026-07-23T02:23:51+04:00"
+related = ["DSET-DECISION-IMPL-003"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "Platform-native placeholder expansion is now owned by the implementation layer rather than post-implementation operations."

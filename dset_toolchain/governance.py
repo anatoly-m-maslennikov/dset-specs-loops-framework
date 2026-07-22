@@ -10,7 +10,14 @@ from typing import Any, cast
 from .diagnostics import Diagnostic
 from .errors import DsetCommandError
 from .identity import find_unique_name
-from .layout import LAYER_DIRECTORIES, LAYERS, discover_layout, has_manifest
+from .layout import (
+    LAYER_DIRECTORIES,
+    LAYER_ID_TOKENS,
+    LAYERS,
+    discover_layout,
+    has_manifest,
+    layer_key_from_id_token,
+)
 from .project_data import project_section, write_project_section
 from .yaml_subset import YamlSubsetError, dump, load
 
@@ -19,8 +26,8 @@ WORKFLOW_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 CUSTOMIZATION = {"unmodified", "custom"}
 APPLICABILITY = {"applicable", "not-applicable"}
-RULE_LAYERS = {layer.upper() for layer in LAYERS}
-RULE_LAYER_RANK = {layer.upper(): index for index, layer in enumerate(LAYERS)}
+RULE_LAYERS = set(LAYER_ID_TOKENS.values())
+RULE_LAYER_RANK = {LAYER_ID_TOKENS[layer]: index for index, layer in enumerate(LAYERS)}
 GOVERNANCE_SCHEMA_VERSION = 1.1
 SLIM_RULE_TARGETS = {
     "architecture.md": "specification-architecture.md",
@@ -194,9 +201,9 @@ def validate_governance_registry(
             continue
         if layout.layered and layer in RULE_LAYERS:
             expected_root = (
-                layout.framework_layer_root(str(layer).lower())
+                layout.framework_layer_root(layer_key_from_id_token(str(layer)))
                 if layout.recursive or layout.separated
-                else layout.layer_root(str(layer).lower())
+                else layout.layer_root(layer_key_from_id_token(str(layer)))
             )
             if not layout.slim:
                 expected_root /= "governance"
@@ -454,9 +461,9 @@ def materialize_governance(
         destination = target_layout.governance_root
         if target_layout.layered:
             destination = (
-                target_layout.framework_layer_root(str(layer).lower())
+                target_layout.framework_layer_root(layer_key_from_id_token(str(layer)))
                 if target_layout.recursive or target_layout.separated
-                else target_layout.layer_root(str(layer).lower())
+                else target_layout.layer_root(layer_key_from_id_token(str(layer)))
             )
             if not target_layout.slim:
                 destination /= "governance"
@@ -610,7 +617,7 @@ def _write_governance_hub(
 ) -> None:
     content = source.read_text(encoding="utf-8")
     if layered:
-        for layer in ("meta", "tool", "skill", "ops"):
+        for layer in ("meta", "tool", "skill", "implementation", "ops"):
             for source_directory in (layer, LAYER_DIRECTORIES[layer]):
                 content = content.replace(
                     f"../../../../{source_directory}/templates/governance/core-v1/",
@@ -621,7 +628,10 @@ def _write_governance_hub(
             "meta": "01_meta" if separated else "01_layer_meta",
             "tool": "03_tool" if separated else "03_layer_tool",
             "skill": "04_skill" if separated else "04_layer_skill",
-            "ops": "05_ops" if separated else "05_layer_ops",
+            "implementation": (
+                "05_implementation" if separated else "05_layer_implementation"
+            ),
+            "ops": "06_ops" if separated else "06_layer_ops",
         }
         replacements = {
             "architecture.md": "specification-architecture.md",

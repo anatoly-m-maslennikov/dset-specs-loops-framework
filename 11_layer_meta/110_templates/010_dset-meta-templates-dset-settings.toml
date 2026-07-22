@@ -133,3 +133,20 @@ scale = ["critical", "high", "medium", "low", "deferred"]
 #
 # Accepted: one value present in priority.scale. Default: "medium".
 default = "medium"
+
+# Implementation Profiles are peer features in the IMPL layer. A project may
+# select more than one and assign each to explicit work-area IDs. Selection is
+# authoritative; conformance lives in Test/Evaluation evidence and Verification.
+#
+# Example for a small Python repository:
+#
+# [[profiles.implementation]]
+# id = "local-python-tools-v1"
+# version = "1.0"
+# work_areas = ["cli", "tests", "scripts"]
+#
+# Other possible peer profiles include:
+# - long-running-python-tools-v1
+# - containerized-python-applications-v1
+# - electron-typescript-applications-v1
+# - obsidian-plugin-v1, extending the Electron/TypeScript baseline

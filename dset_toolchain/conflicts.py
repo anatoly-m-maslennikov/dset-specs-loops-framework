@@ -11,7 +11,7 @@ from .frontmatter import FrontmatterError
 from .frontmatter import metadata as frontmatter_metadata
 from .frontmatter import render as render_frontmatter
 from .identity import find_unique_name
-from .layout import discover_layout
+from .layout import discover_layout, normalize_layer_id_token
 from .project_data import project_section
 from .semantic_atoms import (
     build_semantic_atom_index,
@@ -781,7 +781,9 @@ def _projects(projection: ConflictParty, source: ConflictParty) -> bool:
         if frontier_scope is not None and frontier_scope != source.scope:
             continue
         layer = frontier.get("layer")
-        if isinstance(layer, str) and layer.upper() not in source.id.split("-"):
+        if isinstance(layer, str) and normalize_layer_id_token(
+            layer
+        ) not in source.id.split("-"):
             continue
         through = frontier.get("through")
         if _carrier_at_or_before(source.carrier_id, through):

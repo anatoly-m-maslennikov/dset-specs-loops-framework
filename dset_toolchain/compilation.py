@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from .identity import iter_control_files, logical_part
-from .layout import discover_layout
+from .layout import LAYERS, discover_layout
 from .project_data import lifecycle_events
 from .semantic_atoms import collect_semantic_atoms
 from .yaml_subset import YamlSubsetError, dump, load
@@ -174,10 +174,7 @@ def _projection_paths(root: Path) -> list[Path]:
         prefixes = ("specification-", "procedure-", "plan-", "navigation-")
         owners = (
             layout.project_root,
-            *(
-                layout.layer_root(layer)
-                for layer in ("meta", "gov", "tool", "skill", "ops")
-            ),
+            *(layout.layer_root(layer) for layer in LAYERS),
             layout.dset_root,
         )
         return [

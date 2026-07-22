@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/.dset/000_dset_methodology/06_ops/schemas/pull-request-history.schema.json",
+  "title": "DSET GitHub PR history snapshot",
+  "type": "object",
+  "required": ["schema_version", "repository", "authoritative_source", "observed_on", "pull_requests"],
+  "properties": {
+    "schema_version": {"const": 1.0},
+    "repository": {"type": "string"},
+    "authoritative_source": {"const": "github"},
+    "observed_on": {"type": "string", "format": "date"},
+    "pull_requests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["number", "title", "state", "base", "head", "url"],
+        "properties": {
+          "number": {"type": "integer", "minimum": 1},
+          "title": {"type": "string"},
+          "state": {"enum": ["open", "merged", "closed"]},
+          "draft": {"type": "boolean"},
+          "base": {"type": "string"},
+          "head": {"type": "string"},
+          "merge_commit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+          "url": {"type": "string", "format": "uri"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

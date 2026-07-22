@@ -4,12 +4,16 @@ import re
 from collections.abc import Sequence
 from pathlib import Path
 
-from .layout import discover_layout
+from .layout import (
+    LAYER_ID_TOKENS,
+    discover_layout,
+    normalize_layer_id_token,
+)
 from .profiles import VALID_PROFILES, required_artifacts
 from .settings import load_project_settings
 from .yaml_subset import dump, load
 
-TRACE_LAYERS = ("META", "GOV", "TOOL", "SKILL", "OPS")
+TRACE_LAYERS = tuple(LAYER_ID_TOKENS.values())
 
 
 def create_change(
@@ -141,9 +145,7 @@ def _project_key(root: Path) -> str:
 def _id_layer(root: Path, layer: str | None) -> str:
     if layer is None:
         return ""
-    normalized = layer.upper()
-    if normalized not in TRACE_LAYERS:
-        raise ValueError(f"unknown ID layer: {layer}")
+    normalized = normalize_layer_id_token(layer)
     layout = discover_layout(root)
     if layout.layered:
         return f"-{normalized}"
@@ -199,9 +201,7 @@ def _change_target(
 
 def _next_change_id(root: Path, layer: str) -> str:
     layout = discover_layout(root)
-    normalized = layer.upper()
-    if normalized not in TRACE_LAYERS:
-        raise ValueError(f"unknown ID layer: {layer}")
+    normalized = normalize_layer_id_token(layer)
     prefix = f"{_project_key(root)}-CHANGE-{normalized}-"
     highest = 0
     for change_root in (*layout.active_change_roots, *layout.archive_change_roots):
@@ -250,7 +250,7 @@ def _materialize_layered_manifest(
     release = data.get("release")
     if isinstance(release, dict):
         if "policy" in release:
-            release["policy"] = ".dset/000_dset_methodology/05_ops/procedure-release.md"
+            release["policy"] = ".dset/000_dset_methodology/06_ops/procedure-release.md"
         if "owner_change" in release:
             release["owner_change"] = stable_id
     path.write_text(dump(data, path), encoding="utf-8")

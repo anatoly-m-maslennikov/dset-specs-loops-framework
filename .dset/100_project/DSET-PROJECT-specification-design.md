@@ -40,7 +40,7 @@ that boundary. This active Change uses the default integration-branch mode for
 PR #9. Neither mode creates permanent layer branches or combines unrelated
 Change proof.
 
-This Change crosses META, GOV, TOOL, SKILL, and OPS atomically because its
+This Change crosses META, GOV, TOOL, SKILL, IMPL, and OPS atomically because its
 authority, trace, wrapper, and delivery invariants would be invalid if merged as
 independent partial states. Later work should split only when each part is
 independently reviewable, verifiable, and mergeable. Cross-Change handoffs must

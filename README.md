@@ -24,10 +24,10 @@ The two roles are deliberately separated:
 
 | Surface | Role |
 |---|---|
-| `10_project` and `11_layer_meta` through `15_layer_ops` | Reusable framework source organized by project and ordered layers |
+| `10_project` and `11_layer_meta` through `16_layer_ops` | Reusable framework source organized by project and ordered layers |
 | `50_versions` | Public framework edition and release projections |
 | `000_dset-methodology-hub.md` | Installed project-local methodology resolved by thin skills |
-| `DSET-PROJECT-HUB.md` and `DSET-META-HUB.md` through `DSET-OPS-HUB.md` | This repository's applied project and layer artifacts |
+| `DSET-PROJECT-HUB.md` and `DSET-META-HUB.md` through `DSET-OPS-HUB.md` | This repository's applied project and six layer artifacts, including Implementation Profiles |
 | `DSET-VERSIONS-HUB.md` | This repository's applied Version artifacts and Changes |
 | `.dset_runtime/` | Local resumable sessions and generated views; never project authority |
 
@@ -48,9 +48,10 @@ flowchart LR
     GOV["02 GOV<br/>Governance and artifact contracts"]
     TOOL["03 TOOL<br/>Executable toolchain"]
     SKILL["04 SKILL<br/>Agent-facing orchestration"]
-    OPS["05 OPS<br/>Delivery and supportability"]
+    IMPL["05 IMPL<br/>Development realization profiles"]
+    OPS["06 OPS<br/>Post-implementation delivery and operations"]
 
-    META --> GOV --> TOOL --> SKILL --> OPS
+    META --> GOV --> TOOL --> SKILL --> IMPL --> OPS
 ```
 
 Features are different: features are peers joined by horizontal contracts.

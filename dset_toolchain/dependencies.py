@@ -18,8 +18,16 @@ SPDX = re.compile(r"^[A-Za-z0-9][A-Za-z0-9.+-]*$")
 
 def dependency_policy_path(root: Path) -> Path:
     layout = discover_layout(root.resolve())
-    owner = layout.layer_root("tool") if layout.layered else layout.dset_root
-    return layout.structured_file(owner, "dependency-policy.toml")
+    owner = layout.layer_root("implementation") if layout.layered else layout.dset_root
+    local = layout._numbered_file(owner, "dependency-policy.toml")
+    if local.is_file():
+        return local
+    if _repository_role(layout.manifest_path) == "framework-source-and-adopter":
+        return layout._numbered_file(
+            layout.framework_layer_root("implementation"),
+            "dependency-policy.toml",
+        )
+    return local
 
 
 def validate_dependency_policy(
@@ -334,6 +342,20 @@ def _project_name(path: Path) -> str:
     text = path.read_text(encoding="utf-8")
     project = re.search(r'(?ms)^\[project\]\n.*?^name = "([^"]+)"$', text)
     return project.group(1) if project else ""
+
+
+def _repository_role(manifest_path: Path) -> str | None:
+    try:
+        manifest = load(manifest_path)
+    except (OSError, UnicodeError, YamlSubsetError):
+        return None
+    if not isinstance(manifest, dict):
+        return None
+    project = manifest.get("project")
+    if not isinstance(project, dict):
+        return None
+    role = project.get("repository_role")
+    return role if isinstance(role, str) else None
 
 
 def _diag(path: Path, message: str) -> Diagnostic:

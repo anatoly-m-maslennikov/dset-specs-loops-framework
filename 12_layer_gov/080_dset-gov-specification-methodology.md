@@ -34,7 +34,7 @@ presentation.
 | `DSET-DECISION-GOV-027` | Atomize carrier representation transitions and exclude physical paths from current identity |
 | `DSET-DECISION-GOV-028` | Keep `.dset` current and exclude inert historical aggregates and completed migrations from skill discovery and compilation |
 | `DSET-DECISION-GOV-029` | Keep repository legal files outside `.dset` and resolve their unique names only within the root legal distribution surface |
-| `DSET-DECISION-GOV-030` | Install executable Python tools, deterministic Test implementations, and qualitative Evaluation prompts under methodology TOOL |
+| `DSET-DECISION-GOV-031` | Keep executable product contracts in TOOL, development realization and executable QA under IMPL, and post-implementation delivery and operation under OPS |
 
 Absorbed predecessors remain immutable history and are excluded from the active
 compilation set by append-only lifecycle events.
@@ -64,12 +64,12 @@ Public methodology must use ordinary Markdown links and GitHub-native alerts or 
 The project-local control plane owns installed methodology only under
 `.dset/000_dset_methodology/`, applied project-wide artifacts under
 `.dset/100_project/`, applied layer artifacts under
-`.dset/101_layer_meta/` through `.dset/105_layer_ops/`, and applied Version
+`.dset/101_layer_meta/` through `.dset/106_layer_ops/`, and applied Version
 artifacts under `.dset/150_versions/`. Installed methodology never owns applied
 atoms, specifications, plans, evidence, or Version records.
 
 The DSET framework repository separately owns reusable product source under
-root `10_project/`, `11_layer_meta/` through `15_layer_ops/`, and
+root `10_project/`, `11_layer_meta/` through `16_layer_ops/`, and
 `50_versions/`. Ordinary adopters do not receive this product-source tree.
 
 **Scenario DSET-SCENARIO-GOV-005:** A thin skill resolves its rule from
@@ -121,20 +121,23 @@ validation resolves that name only within `LICENSES`; this bounded legal check
 does not widen skill discovery, artifact identity lookup, or semantic
 compilation beyond `.dset`.
 
-## DSET-DECISION-GOV-030 — Install executable methodology
+## DSET-DECISION-GOV-031 — Place executable methodology by semantic role
 
-Installed methodology includes its reusable executable implementation under
-TOOL: the synchronized Python package and portable launcher under
-`120_python`, deterministic Test implementations and runner under `130_tests`,
-and independent-review/reconciliation Evaluation prompts under
-`140_evaluations`.
+Installed methodology keeps the DSET executable contract, schemas, templates,
+fixtures, and algorithms under TOOL. It places development realization under
+IMPL: the synchronized Python package and portable launcher under `100_python`,
+deterministic Test implementations and runner under `110_tests`, and
+independent-review/reconciliation Evaluation implementations under
+`120_evaluations`. OPS owns delivery, release, publication, runtime operation,
+investigation, containment, recovery, and hosted evidence after implementation.
 
 Applied QA atoms and plans continue to own what must be checked. Evidence and
 Verification continue to own what happened and what the results support. The
 methodology owns only reusable execution mechanisms. Repository Python/Test
 sources materialize byte-for-byte without symlinks; generated caches are
 excluded. Ecosystem-required package and module names may remain unnumbered
-inside their numbered TOOL owners.
+inside their numbered IMPL owners. This Decision replaces
+`DSET-DECISION-GOV-030`.
 
 ## DSET-REQUIREMENT-GOV-005 — Package structure is proportional
 
@@ -249,7 +252,7 @@ answer becomes a Decision or direct Decision subtype before implementation.
 The project prefix is `DSET`. Project-wide IDs use
 `DSET-<FULL-KIND>-<NNN>`; layer-owned compatibility IDs use
 `DSET-<FULL-KIND>-<LAYER>-<NNN>`, where `<LAYER>` is `META`, `GOV`, `TOOL`,
-`SKILL`, or `OPS`. `<FULL-KIND>` is the subtype when present and the Type when
+`SKILL`, `IMPL`, or `OPS`. `<FULL-KIND>` is the subtype when present and the Type when
 subtype is empty. No ID encodes a subtype path.
 
 Decision kinds are `DECISION`, `REQUIREMENT`, `CONSTRAINT`, `CONTRACT`,
@@ -955,7 +958,7 @@ atomic records, analysis, evidence, and verification live under
 under `.dset/150_versions/`; and layer-owned applied
 truth lives under `.dset/101_layer_meta/`, `.dset/102_layer_gov/`,
 `.dset/103_layer_tool/`, `.dset/104_layer_skill/`, and
-`.dset/105_layer_ops/`. Generated views remain runtime state under
+`.dset/105_layer_implementation/`, and `.dset/106_layer_ops/`. Generated views remain runtime state under
 `.dset_runtime/generated/` unless a separate artifact explicitly promotes an
 observation into the applied evidence owner.
 Historical aggregates, completed migrations, compatibility snapshots,
@@ -990,7 +993,7 @@ Features are peer capabilities connected horizontally through Contracts at
 their narrowest common owner. Call direction, data flow, and delivery order do
 not make one feature authoritative over another.
 
-Layers are ordered `META → GOV → TOOL → SKILL → OPS`. A layer may govern itself
+Layers are ordered `META → GOV → TOOL → SKILL → IMPL → OPS`. A layer may govern itself
 or any later layer but never an earlier layer. Direct influence on the next
 layer is preferred; a longer forward jump is valid only when explicit and when
 an intermediate layer has no meaningful ownership to add. A downstream

@@ -25,7 +25,9 @@ the implementation scope to its current layer-owned Requirement owners.
 | Hidden control-plane root, one settings/manifest carrier, distinct ignored runtime state, disposable host scratch, explicit path bases, and direct ownership roots | `DSET-REQUIREMENT-GOV-043` |
 | Current-only project control plane with inert historical aggregates and completed migrations outside skill discovery | `DSET-DECISION-GOV-028` |
 | Repository legal files outside `.dset`, with deterministic legal-only provenance resolution | `DSET-DECISION-GOV-029` |
-| Installed Python tools, deterministic Test implementations, and qualitative Evaluation prompts under methodology TOOL | `DSET-DECISION-GOV-030` |
+| Executable product contracts in TOOL, development realization in IMPL, and post-implementation operation in OPS | `DSET-DECISION-GOV-031`, `DSET-DECISION-IMPL-001`, `DSET-DECISION-OPS-013` |
+| Selected Local Python Tools environment, coding, QA-implementation, portability, dry-run, diagnostics, and visible documented-constant rules | `DSET-REQUIREMENT-IMPL-001..003` |
+| Repository text-byte configuration and portable code/path/Test realization | `DSET-DECISION-TOOL-001`, `DSET-DECISION-IMPL-002..005` |
 | Visibly ordered layer directories with stable logical layer IDs | `DSET-REQUIREMENT-GOV-044` |
 | Horizontal feature Contracts and forward-only layer authority | `DSET-REQUIREMENT-GOV-045` |
 | One-level-down project/group/feature/layer architecture views | `DSET-REQUIREMENT-GOV-031` |
@@ -37,8 +39,9 @@ the implementation scope to its current layer-owned Requirement owners.
 | Evidence-derived TypeScript candidate profile and promotion boundary | `DSET-REQUIREMENT-TOOL-021` |
 | Framework-reference versus project-applied TypeScript profile authority | `DSET-REQUIREMENT-TOOL-022` |
 
-The canonical text lives in the accepted META, GOV, TOOL, SKILL, and OPS
-evergreen package fragments directly under `.dset/layer_<n>_<layer>/`. This Change
+The canonical text lives in the accepted META, GOV, TOOL, SKILL, IMPL, and OPS
+evergreen package fragments under `.dset/101_layer_meta/` through
+`.dset/106_layer_ops/`. This Change
 owns implementation and proof for those accepted requirements, not duplicate
 normative prose.
 
@@ -57,7 +60,7 @@ Connected accepted IDs are `DSET-REQUIREMENT-META-007`,
 `DSET-REQUIREMENT-GOV-039`,
 `DSET-DECISION-GOV-028`,
 `DSET-DECISION-GOV-029`,
-`DSET-DECISION-GOV-030`,
+`DSET-DECISION-GOV-031`,
 `DSET-REQUIREMENT-GOV-043`, `DSET-REQUIREMENT-GOV-044`,
 `DSET-REQUIREMENT-GOV-045`,
 `DSET-REQUIREMENT-GOV-032`,
@@ -72,6 +75,12 @@ Connected accepted IDs are `DSET-REQUIREMENT-META-007`,
 `DSET-REQUIREMENT-SKILL-006`, `DSET-REQUIREMENT-SKILL-007`,
 `DSET-REQUIREMENT-SKILL-008`, `DSET-REQUIREMENT-SKILL-009`,
 `DSET-REQUIREMENT-SKILL-011`, `DSET-REQUIREMENT-SKILL-013`,
+`DSET-DECISION-TOOL-001`,
+`DSET-DECISION-IMPL-001`, `DSET-DECISION-IMPL-002`,
+`DSET-DECISION-IMPL-003`, `DSET-DECISION-IMPL-004`,
+`DSET-DECISION-IMPL-005`, `DSET-REQUIREMENT-IMPL-001`,
+`DSET-REQUIREMENT-IMPL-002`, `DSET-REQUIREMENT-IMPL-003`,
+`DSET-DECISION-OPS-013`,
 `DSET-REQUIREMENT-OPS-003`, `DSET-REQUIREMENT-OPS-004`,
 `DSET-REQUIREMENT-OPS-005`, `DSET-REQUIREMENT-OPS-006`,
 `DSET-REQUIREMENT-OPS-007`, and `DSET-REQUIREMENT-OPS-013`.

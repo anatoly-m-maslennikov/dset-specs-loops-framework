@@ -163,7 +163,8 @@ governed by explicit Contracts at their narrowest common structural owner.
 Neither feature becomes an architectural authority over the other merely
 because it calls, supplies data to, or is delivered before the other.
 
-Layers are an ordered refinement chain: `META → GOV → TOOL → SKILL → OPS`.
+Layers are an ordered refinement chain:
+`META → GOV → TOOL → SKILL → IMPL → OPS`.
 Layer authority may affect the same layer or move only forward to later layers;
 it never governs, overrides, or takes precedence over an earlier layer. Direct
 influence on the immediately following layer is preferred because it keeps

@@ -13,19 +13,17 @@ SOURCE_TO_INSTALLED = (
     ("12_layer_gov", "02_gov"),
     ("13_layer_tool", "03_tool"),
     ("14_layer_skill", "04_skill"),
-    ("15_layer_ops", "05_ops"),
+    ("15_layer_implementation", "05_implementation"),
+    ("16_layer_ops", "06_ops"),
 )
 EXECUTABLE_SOURCE_TO_INSTALLED = (
-    ("dset_toolchain", "03_tool/120_python/dset_toolchain"),
-    ("tests", "03_tool/130_tests/tests"),
-)
-EXECUTABLE_SOURCE_NAMES = frozenset(
-    source for source, _installed in EXECUTABLE_SOURCE_TO_INSTALLED
+    ("dset_toolchain", "05_implementation/100_python/dset_toolchain"),
+    ("tests", "05_implementation/110_tests/tests"),
 )
 ALL_SOURCE_TO_INSTALLED = SOURCE_TO_INSTALLED + EXECUTABLE_SOURCE_TO_INSTALLED
-TOOL_EXECUTABLE_SUBTREES = (
-    Path("120_python/dset_toolchain"),
-    Path("130_tests/tests"),
+IMPLEMENTATION_EXECUTABLE_SUBTREES = (
+    Path("100_python/dset_toolchain"),
+    Path("110_tests/tests"),
 )
 SOURCE_ONLY_CARRIERS = frozenset({"000_dset-project-hub.md"})
 
@@ -46,15 +44,12 @@ def methodology_drift(root: Path) -> tuple[MethodologyDrift, ...]:
         source_root = root / source_name
         installed_root = target / installed_name
         _require_directory(source_root, source_name)
-        executable_source = source_name in EXECUTABLE_SOURCE_NAMES
-        if not installed_root.is_dir() and not executable_source:
-            _require_directory(installed_root, installed_name)
         source_files = _files(source_root)
         installed_files = (
             _files(
                 installed_root,
-                excluded=TOOL_EXECUTABLE_SUBTREES
-                if source_name == "13_layer_tool"
+                excluded=IMPLEMENTATION_EXECUTABLE_SUBTREES
+                if source_name == "15_layer_implementation"
                 else (),
             )
             if installed_root.is_dir()

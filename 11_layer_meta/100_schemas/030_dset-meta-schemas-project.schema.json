@@ -93,7 +93,8 @@
         "durability_topology": {"type": "string", "minLength": 1},
         "enforcement": {"type": "string", "minLength": 1},
         "artifact": {"type": ["string", "null"], "minLength": 1},
-        "repository_governance": {"type": ["string", "null"], "minLength": 1}
+        "repository_governance": {"type": ["string", "null"], "minLength": 1},
+        "implementation": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/implementation_profile_selection"}}
       },
       "additionalProperties": false
     },
@@ -172,7 +173,17 @@
   ],
   "$defs": {
     "kebab": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
-    "layer": {"enum": ["meta", "gov", "tool", "skill", "ops"]},
+    "layer": {"enum": ["meta", "gov", "tool", "skill", "implementation", "ops"]},
+    "implementation_profile_selection": {
+      "type": "object",
+      "required": ["id", "version", "work_areas"],
+      "properties": {
+        "id": {"$ref": "#/$defs/kebab"},
+        "version": {"type": "string", "minLength": 1},
+        "work_areas": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/kebab"}}
+      },
+      "additionalProperties": false
+    },
     "legacy_structure": {
       "type": "object",
       "required": ["mode", "accepted_truth_root", "active_changes_root", "archive_root", "global_truth_root"],
@@ -276,9 +287,9 @@
       ],
       "additionalProperties": false
     },
-    "contract_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-CONTRACT(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}},
-    "story_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-STORY(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}},
-    "outcome_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-OUTCOME(?:-(?:META|GOV|TOOL|SKILL|OPS))?-[0-9]{3,}$"}}
+    "contract_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-CONTRACT(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"}},
+    "story_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-STORY(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"}},
+    "outcome_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-OUTCOME(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"}}
   },
   "additionalProperties": false
 }

@@ -37,7 +37,7 @@
       "required": ["id", "layer", "document", "owner", "applicability", "reason", "depends_on", "precedence_over", "customization", "source"],
       "properties": {
         "id": {"type": "string", "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)+$"},
-        "layer": {"enum": ["META", "GOV", "TOOL", "SKILL", "OPS"]},
+        "layer": {"enum": ["META", "GOV", "TOOL", "SKILL", "IMPL", "OPS"]},
         "document": {"type": "string", "pattern": "^[^/\\\\]+$"},
         "owner": {"type": "string", "minLength": 1},
         "applicability": {"enum": ["applicable", "not-applicable"]},

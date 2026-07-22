@@ -1,12 +1,13 @@
 # DSET framework source
 
 This is the project-wide source surface for the reusable DSET framework. The
-five source layers are:
+six source layers are:
 
 - META
 - GOV
 - TOOL
 - SKILL
+- IMPL
 - OPS
 
 The installed methodology used to govern this repository is headed by

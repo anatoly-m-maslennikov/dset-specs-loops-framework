@@ -15,6 +15,7 @@ from .layout import (
     APPLIED_LAYER_DIRECTORIES,
     APPLIED_PROJECT_ROOT,
     APPLIED_VERSIONS_ROOT,
+    LAYER_ID_TOKENS,
     LAYERS,
     METHODOLOGY_LAYER_DIRECTORIES,
     METHODOLOGY_ROOT,
@@ -302,6 +303,7 @@ def _stage_project(
             "durability_topology": "files",
             "enforcement": "none",
             "repository_governance": profile,
+            "implementation": [],
         },
         "change_contract": {
             "change_id_format": "project-type-layer-sequence",
@@ -392,12 +394,12 @@ def _stage_project(
         hub = (
             dset_root
             / APPLIED_LAYER_DIRECTORIES[layer]
-            / f"{project_key}-{layer.upper()}-HUB.md"
+            / f"{project_key}-{LAYER_ID_TOKENS[layer]}-HUB.md"
         )
         if hub.exists():
             continue
         hub.write_text(
-            f"# Applied {layer.upper()} artifacts\n\n"
+            f"# Applied {LAYER_ID_TOKENS[layer]} artifacts\n\n"
             "## Purpose\n\nOwn project atoms and evergreen artifacts.\n\n"
             "## Boundaries\n\nInstalled methodology remains separate.\n\n"
             "## Start here\n\nSearch by unique artifact or document identity.\n",
@@ -497,10 +499,10 @@ def _artifact_structure(project_key: str) -> dict[str, Any]:
         areas.append(
             {
                 "id": f"project-{layer}",
-                "hub": f"{project_key}-{layer.upper()}-HUB.md",
+                "hub": f"{project_key}-{LAYER_ID_TOKENS[layer]}-HUB.md",
                 "parent": "project-control",
                 "owner": layer,
-                "purpose": f"Project-owned {layer.upper()} truth",
+                "purpose": f"Project-owned {LAYER_ID_TOKENS[layer]} truth",
             }
         )
     areas.append(

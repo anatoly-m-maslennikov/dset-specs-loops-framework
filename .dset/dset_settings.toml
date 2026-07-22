@@ -159,7 +159,7 @@ publisher = "github"
 tag_pattern = "v{product_version}"
 
 [work_items]
-atomic_scopes = ["project-control", "dset-meta", "dset-gov", "dset-tool", "dset-skill", "dset-ops"]
+atomic_scopes = ["project-control", "dset-meta", "dset-gov", "dset-tool", "dset-skill", "dset-implementation", "dset-ops"]
 
 [structure]
 layout = "separated-methodology-v1"
@@ -170,6 +170,15 @@ durability_topology = "external-platform"
 enforcement = "python-v1"
 artifact = "documentation-v1"
 repository_governance = "core-v1"
+
+# Select any number of compatible IMPL profile features. Each selection names
+# the work areas whose environment, source, Test, and Evaluation implementations
+# must follow that profile. Selection is authority; conformance is reported by
+# Tests, Evaluations, evidence, and Verification rather than a status flag here.
+[[profiles.implementation]]
+id = "local-python-tools-v1"
+version = "1.0"
+work_areas = ["toolchain", "tests", "scripts"]
 
 [change_contract]
 change_id_format = "project-type-layer-sequence"
@@ -265,8 +274,12 @@ id = "framework-source-skill"
 path = "14_layer_skill"
 
 [[work_areas]]
+id = "framework-source-implementation"
+path = "15_layer_implementation"
+
+[[work_areas]]
 id = "framework-source-ops"
-path = "15_layer_ops"
+path = "16_layer_ops"
 
 [[work_areas]]
 id = "framework-source-versions"
@@ -285,13 +298,17 @@ id = "tests"
 path = "tests"
 
 [[work_areas]]
+id = "scripts"
+path = "scripts"
+
+[[work_areas]]
 id = "delivery"
 path = ".github"
 
 [[packages]]
 id = "methodology"
 status = "active"
-layers = ["meta", "gov", "tool", "skill", "ops"]
+layers = ["meta", "gov", "tool", "skill", "implementation", "ops"]
 
 # Migrated canonical settings; this section is not an artifact ledger.
 [artifact_catalog]
@@ -446,6 +463,13 @@ owner = "skill"
 purpose = "Agent workflow, delegation, and run-evidence contracts"
 
 [[artifact_structure.areas]]
+id = "dset-implementation"
+hub = "DSET-IMPL-HUB.md"
+parent = "project-control"
+owner = "implementation"
+purpose = "Selected development environments, code profiles, Tests, and Evaluations"
+
+[[artifact_structure.areas]]
 id = "dset-ops"
 hub = "DSET-OPS-HUB.md"
 parent = "project-control"
@@ -483,7 +507,7 @@ customization = "unmodified"
 profile = "core-v1"
 version = "0.3"
 template = "010_dset-gov-templates-governance-core-v1-architecture.md"
-sha256 = "e0fe984e3dc3163be4f12f342d970c143d3c1a89b50b7d610b3f30f894b1e38f"
+sha256 = "d407212cea4bcdf492b631667c6a6becfe02753b60c6918032cc0919caaf617b"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-BUILD"
@@ -568,7 +592,7 @@ customization = "unmodified"
 profile = "core-v1"
 version = "0.3"
 template = "010_dset-ops-templates-governance-core-v1-supportability.md"
-sha256 = "cf1e5c0dea9f1a1690cd962ffd6511fa7e2af6242e3d2340fe7daa603bd1c35f"
+sha256 = "1f9c4f3822d1bab0aa255b3e9593e83485c4056c91e3befd04e575f219b35068"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-ARTIFACT-MAINTENANCE"
@@ -1139,6 +1163,21 @@ stories = "DSET-SKILL-REFERENCE-specification-user-stories.toml"
 outcomes = "DSET-SKILL-REFERENCE-specification-outcomes.toml"
 test_plan = "DSET-SKILL-plan-tests.md"
 eval_plan = "DSET-SKILL-plan-evaluations.md"
+
+[[package_catalog.packages]]
+schema_version = "1.2"
+package_id = "methodology"
+layer = "implementation"
+requirements = ["DSET-REQUIREMENT-IMPL-001", "DSET-REQUIREMENT-IMPL-002", "DSET-REQUIREMENT-IMPL-003"]
+tests = []
+evals = []
+contracts = []
+stories = []
+outcomes = []
+
+[package_catalog.packages.artifacts]
+hub = "DSET-IMPL-HUB.md"
+spec = "DSET-IMPL-REFERENCE-profile-local-python-tools.toml"
 
 [[package_catalog.packages]]
 schema_version = "1.2"

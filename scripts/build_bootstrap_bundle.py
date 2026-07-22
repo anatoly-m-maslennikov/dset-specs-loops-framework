@@ -22,7 +22,10 @@ def selected_files(root: Path = ROOT) -> list[Path]:
         path
         for path in methodology.rglob("*")
         if path.is_file()
-        and not any(part.startswith(".") for part in path.relative_to(root).parts)
+        and path.name != "bootstrap_bundle.json"
+        and not any(
+            part.startswith(".") for part in path.relative_to(methodology).parts
+        )
     )
     for skill_id in sorted(PUBLIC_SKILL_WORKFLOWS):
         selected.extend(

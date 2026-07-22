@@ -20,10 +20,11 @@ flowchart LR
     GOV["102 GOV"]
     TOOL["103 TOOL"]
     SKILL["104 SKILL"]
-    OPS["105 OPS"]
+    IMPL["105 IMPL"]
+    OPS["106 OPS"]
     VERSION["150 Versions"]
 
-    PROJECT --> META --> GOV --> TOOL --> SKILL --> OPS
+    PROJECT --> META --> GOV --> TOOL --> SKILL --> IMPL --> OPS
     PROJECT --> VERSION
 ```
 
@@ -33,6 +34,7 @@ flowchart LR
 - `DSET-GOV-HUB.md`
 - `DSET-TOOL-HUB.md`
 - `DSET-SKILL-HUB.md`
+- `DSET-IMPL-HUB.md`
 - `DSET-OPS-HUB.md`
 - `DSET-VERSIONS-HUB.md`
 - `000_dset-methodology-hub.md`

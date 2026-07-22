@@ -14,7 +14,7 @@ type = "projection_of"
 [relations.range]
 semantic_type = "decision"
 layer = "gov"
-through = "DSET-ATOMIC-RECORD-165"
+through = "DSET-ATOMIC-RECORD-167"
 
 [relations.range.scope]
 kind = "project"
@@ -83,16 +83,55 @@ through = "DSET-ATOMIC-RECORD-080"
 [relations.range.scope]
 kind = "layer"
 id = "gov"
+
+[[relations]]
+type = "projection_of"
+
+[relations.range]
+semantic_type = "decision"
+layer = "tool"
+through = "DSET-ATOMIC-RECORD-170"
+
+[relations.range.scope]
+kind = "layer"
+id = "tool"
+
+[[relations]]
+type = "projection_of"
+
+[relations.range]
+semantic_type = "decision"
+layer = "implementation"
+through = "DSET-ATOMIC-RECORD-177"
+
+[relations.range.scope]
+kind = "layer"
+id = "implementation"
+
+[[relations]]
+type = "projection_of"
+
+[relations.range]
+semantic_type = "decision"
+layer = "ops"
+through = "DSET-ATOMIC-RECORD-175"
+
+[relations.range.scope]
+kind = "layer"
+id = "ops"
 +++
 
 # Methodology projection set
 
-This evergreen carrier binds the current GOV semantic frontiers to the package
-fragments that compile them:
+This evergreen carrier binds the current project and layer semantic frontiers
+to the package fragments that compile them:
 
 - Behavior specification: `080_dset-gov-specification-methodology.md`
 - Deterministic Test plan: `DSET-GOV-plan-tests.md`
 - Qualitative Evaluation plan: `DSET-GOV-plan-evaluations.md`
+- TOOL executable specification: `DSET-TOOL-REFERENCE-specification-methodology.toml`
+- IMPL profile and methodology specifications: `DSET-IMPL-REFERENCE-profile-local-python-tools.toml`
+- OPS operational specification: `DSET-OPS-REFERENCE-specification-methodology.toml`
 
 It owns projection metadata only. The linked fragments own their respective
 compiled content, and the immutable atoms own authority and QA definitions.

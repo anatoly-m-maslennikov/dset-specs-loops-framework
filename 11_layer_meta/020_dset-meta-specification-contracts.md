@@ -10,14 +10,14 @@
 ## Outputs
 
 - GitHub-portable reusable framework source under `10_project/` and the ordered
-  `11_layer_meta/` through `15_layer_ops/` product layers.
+  `11_layer_meta/` through `16_layer_ops/` product layers.
 - One project-local installed methodology under
   `.dset/000_dset_methodology/`, distinct from applied artifacts.
 - Independently selected implementation-language and artifact-governance
   profiles, including the `documentation-v1` catalog in
   `.dset/dset_settings.toml`.
 - Applied project-wide truth under `.dset/100_project/`, applied layer truth
-  under `.dset/101_layer_meta/` through `.dset/105_layer_ops/`, and Version
+  under `.dset/101_layer_meta/` through `.dset/106_layer_ops/`, and Version
   lifecycle artifacts under `.dset/150_versions/`.
 - Versioned schemas, templates, fixtures, migration guidance, provenance, and
   generated traceability in their configured methodology, applied, or runtime

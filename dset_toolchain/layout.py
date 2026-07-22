@@ -8,41 +8,64 @@ from typing import Final
 
 from .yaml_subset import YamlSubsetError, load
 
-LAYERS: Final[tuple[str, ...]] = ("meta", "gov", "tool", "skill", "ops")
+LAYERS: Final[tuple[str, ...]] = (
+    "meta",
+    "gov",
+    "tool",
+    "skill",
+    "implementation",
+    "ops",
+)
+LAYER_ID_TOKENS: Final[dict[str, str]] = {
+    "meta": "META",
+    "gov": "GOV",
+    "tool": "TOOL",
+    "skill": "SKILL",
+    "implementation": "IMPL",
+    "ops": "OPS",
+}
+ID_TOKEN_LAYERS: Final[dict[str, str]] = {
+    token: layer for layer, token in LAYER_ID_TOKENS.items()
+}
 LAYER_DIRECTORIES: Final[dict[str, str]] = {
     "meta": "01_layer_meta",
     "gov": "02_layer_gov",
     "tool": "03_layer_tool",
     "skill": "04_layer_skill",
-    "ops": "05_layer_ops",
+    "implementation": "05_layer_implementation",
+    "ops": "06_layer_ops",
 }
 RECURSIVE_LAYER_DIRECTORIES: Final[dict[str, str]] = {
     "meta": "01_layer_meta",
     "gov": "02_layer_gov",
     "tool": "03_layer_tool",
     "skill": "04_layer_skill",
-    "ops": "05_layer_ops",
+    "implementation": "05_layer_implementation",
+    "ops": "06_layer_ops",
 }
 METHODOLOGY_LAYER_DIRECTORIES: Final[dict[str, str]] = {
     "meta": "01_meta",
     "gov": "02_gov",
     "tool": "03_tool",
     "skill": "04_skill",
-    "ops": "05_ops",
+    "implementation": "05_implementation",
+    "ops": "06_ops",
 }
 APPLIED_LAYER_DIRECTORIES: Final[dict[str, str]] = {
     "meta": "101_layer_meta",
     "gov": "102_layer_gov",
     "tool": "103_layer_tool",
     "skill": "104_layer_skill",
-    "ops": "105_layer_ops",
+    "implementation": "105_layer_implementation",
+    "ops": "106_layer_ops",
 }
 PRODUCT_LAYER_DIRECTORIES: Final[dict[str, str]] = {
     "meta": "11_layer_meta",
     "gov": "12_layer_gov",
     "tool": "13_layer_tool",
     "skill": "14_layer_skill",
-    "ops": "15_layer_ops",
+    "implementation": "15_layer_implementation",
+    "ops": "16_layer_ops",
 }
 LEGACY_SLIM_LAYOUT: Final[str] = "slim-v1"
 NUMBERED_LAYER_LAYOUT: Final[str] = "numbered-layers-v1"
@@ -86,6 +109,35 @@ LEGACY_AUTHORITY_PATHS: Final[tuple[str, ...]] = (
     "version.toml",
     "version.yaml",
 )
+
+
+def layer_id_token(layer: str) -> str:
+    """Return the compact ID segment for a canonical layer key."""
+
+    normalized = layer.lower()
+    try:
+        return LAYER_ID_TOKENS[normalized]
+    except KeyError as error:
+        raise ValueError(f"unknown DSET layer: {layer}") from error
+
+
+def layer_key_from_id_token(token: str) -> str:
+    """Return the canonical layer key for a compact ID segment."""
+
+    normalized = token.upper()
+    try:
+        return ID_TOKEN_LAYERS[normalized]
+    except KeyError as error:
+        raise ValueError(f"unknown DSET layer token: {token}") from error
+
+
+def normalize_layer_id_token(layer: str) -> str:
+    """Normalize either a canonical layer key or an ID segment to its token."""
+
+    token = layer.upper()
+    if token in ID_TOKEN_LAYERS:
+        return token
+    return layer_id_token(layer)
 
 
 @dataclass(frozen=True)
