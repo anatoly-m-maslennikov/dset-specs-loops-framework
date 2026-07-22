@@ -25,9 +25,9 @@ This area owns artifact types, authoring boundaries, hub/navigation rules, and t
 - [Maintenance playbook](maintenance-playbook.md) — how to add, split, move, or revise governed artifacts.
 - [Rationale](rationale.md) — why the architecture separates profiles, authority, navigation, procedures, and history.
 - [Methodology hub](../methodology/README.md) — the DSET stage and cross-cutting methodology map.
-- [Project-control hub](../dset/README.md) — this repository's accepted truth, changes, schemas, templates, and evidence.
+- [Project-control hub](../.dset/project/README.md) — this repository's accepted truth, changes, schemas, templates, and evidence.
 
 This hub lists stable owning documents, not every Markdown file. Governed areas
 and parent relationships are declared in
-`dset/scopes/gov/artifacts.toml`; the canonical DSET command validates their
+`.dset/project/artifacts.toml`; the canonical DSET command validates their
 structure and links.

@@ -1,0 +1,665 @@
+schema_version = 1.0
+profile = "documentation-v1"
+legacy_evidence_paths = [".dset/versions/archive/2026-07-14-add-artifact-governance-profile/proofs/archive-readiness-2026-07-14.md", ".dset/versions/archive/2026-07-14-add-artifact-governance-profile/proofs/deterministic-verification-2026-07-14.md", ".dset/versions/archive/2026-07-14-add-artifact-governance-profile/proofs/github-delivery-evidence-2026-07-14.md", ".dset/versions/archive/2026-07-14-add-artifact-governance-profile/proofs/qualitative-evals-2026-07-14.md", ".dset/versions/archive/2026-07-14-bootstrap-dset-project-structure/proofs/boot-evals-2026-07-14.md", ".dset/versions/archive/2026-07-14-bootstrap-dset-project-structure/proofs/boot-evals-pushed-head-2026-07-14.md", ".dset/versions/archive/2026-07-14-make-supportability-first-class/proofs/archive-readiness-audit-2026-07-14.md", ".dset/versions/archive/2026-07-14-make-supportability-first-class/proofs/deterministic-checks-2026-07-14.md", ".dset/versions/archive/2026-07-14-make-supportability-first-class/proofs/supportability-evals-2026-07-14.md", ".dset/versions/archive/2026-07-14-make-supportability-first-class/proofs/synthetic-incidents.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-001-artifact-role-lifecycle.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-002-project-scope-ownership.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-003-artifact-lineage.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-004-entry-criteria-skill-chains.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-005-shared-skill-runtime.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-006-artifact-emission-gate.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-007-executable-entry-criteria-closure.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-008-governed-conflict-runtime.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-009-semantic-type-migration.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-010-release-runtime-reconciliation.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-011-typescript-candidate-profile.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-012-oyoha-local-adoption.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-013-oyoha-local-rule-cutover.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-014-oyoha-independent-evaluation.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-015-claudian-clean-room.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-016-oyoha-supportability-slice.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-017-typescript-profile-instantiation.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-018-codex-host-install-attempt.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-019-independent-review-remediation.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-020-codex-host-install-attempt.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-021-claude-review-attempt.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-022-codex-host-invocation-attempt.md", ".dset/gov/evidence/DSET-EVIDENCE-RECORD-023-typed-artifact-relations.md", ".dset/gov/evidence/DSET-EVIDENCE-RECORD-024-legacy-relation-sealing.md", ".dset/gov/evidence/DSET-EVIDENCE-RECORD-025-verbose-project-settings.md", ".dset/project/evidence/archive/clarify-rename-verification-2026-07-14.md", ".dset/project/evidence/archive/end-to-end-toolchain-verification-2026-07-16.md", ".dset/project/evidence/archive/expanded-skill-surface-verification-2026-07-16.md", ".dset/project/evidence/archive/five-skill-source-verification-2026-07-16.md", ".dset/project/evidence/archive/fpf-flat-type-model-review-2026-07-20.md", ".dset/project/evidence/archive/fpf-governance-constitution-review-2026-07-16.md", ".dset/project/evidence/archive/fpf-principles-audit-2026-07-15.md", ".dset/project/evidence/archive/fpf-principles-reaudit-2026-07-15.md", ".dset/project/evidence/archive/hosted-fixed-point-2026-07-14.md", ".dset/project/evidence/archive/invariant-contract-verification-2026-07-14.md", ".dset/project/evidence/archive/layered-work-area-verification-2026-07-15.md", ".dset/project/evidence/archive/local-fixed-point-2026-07-14.md", ".dset/project/evidence/archive/local-gate-2026-07-15.md", ".dset/project/evidence/archive/recursive-session-provenance-2026-07-16.md", ".dset/project/evidence/archive/schema-self-application-audit-2026-07-15.md", ".dset/project/evidence/archive/schema-self-application-reaudit-2026-07-15.md", ".dset/project/evidence/archive/skill-runtime-consistency-2026-07-16.md", ".dset/project/evidence/archive/wrapper-rule-inventory-2026-07-14.md", ".dset/versions/archive/2026-07-14-operationalize-dset-v1/proofs/archive-readiness-2026-07-14.md", ".dset/versions/archive/2026-07-14-operationalize-dset-v1/proofs/deterministic-verification-2026-07-14.md", ".dset/versions/archive/2026-07-14-operationalize-dset-v1/proofs/github-delivery-evidence-2026-07-14.md", ".dset/versions/archive/2026-07-14-operationalize-dset-v1/proofs/qualitative-evals-2026-07-14.md"]
+legacy_structured = []
+
+[classification]
+unclassified = "error"
+multiple_matches = "error"
+
+[classification.direct_metadata_fields]
+type = "artifact_type"
+subtype = "artifact_subtype"
+
+[[exclusions]]
+pattern = ".gitignore"
+rationale = "Git transport metadata is not a development artifact."
+
+[[exclusions]]
+pattern = "LICENSE"
+rationale = "The repository license is an external legal instrument."
+
+[[exclusions]]
+pattern = "THIRD_PARTY_NOTICES.md"
+rationale = "Third-party notices mirror external legal attribution."
+
+[[exclusions]]
+pattern = "third_party/licenses/*.txt"
+rationale = "Vendored third-party license texts remain external legal sources."
+
+[[exclusions]]
+pattern = "uv.lock"
+rationale = "The generated dependency lock is classified through its owning package configuration."
+
+[[artifact_types]]
+id = "atomic_record"
+primary_question = "What atomic project claim or directive does this carrier preserve?"
+allow_empty_subtype = true
+subtypes = []
+
+[[artifact_types]]
+id = "analysis_report"
+primary_question = "What interpreted understanding should inform, but not authorize, a decision?"
+allow_empty_subtype = true
+subtypes = ["solution_landscape", "root_cause_analysis", "proposal", "technical_investigation", "external_audit_analysis"]
+
+[[artifact_types]]
+id = "specification"
+primary_question = "What current or required truth does this document compile?"
+allow_empty_subtype = true
+subtypes = ["domain_model", "behavior", "architecture", "design", "governance"]
+
+[[artifact_types]]
+id = "procedure"
+primary_question = "What reusable way of working should an operator enact?"
+allow_empty_subtype = true
+subtypes = ["playbook", "runbook"]
+
+[[artifact_types]]
+id = "plan"
+primary_question = "What intended work or proof should occur for this bounded objective?"
+allow_empty_subtype = true
+subtypes = ["implementation_plan", "test_plan", "evaluation_plan"]
+
+[[artifact_types]]
+id = "version"
+primary_question = "What bounded version intent, transaction, gate, or publication record does this artifact own?"
+allow_empty_subtype = true
+subtypes = ["roadmap", "version_scope", "change", "release_plan", "readiness_record", "release_record"]
+
+[[artifact_types]]
+id = "implementation"
+primary_question = "What realizes accepted truth or QA definitions?"
+allow_empty_subtype = true
+subtypes = ["source_code", "documentation", "configuration", "migration", "test_implementation", "evaluation_implementation"]
+
+[[artifact_types]]
+id = "evidence_record"
+primary_question = "What was observed for an identified subject, revision, method, and time?"
+allow_empty_subtype = true
+subtypes = ["test_result", "evaluation_result", "review_report", "run_record"]
+
+[[artifact_types]]
+id = "verification"
+primary_question = "What do the applicable evidence records support at this revision?"
+allow_empty_subtype = true
+subtypes = []
+
+[[artifact_types]]
+id = "derived_view"
+primary_question = "What does current canonical project data imply for this declared use?"
+allow_empty_subtype = true
+subtypes = ["project_overview", "health_dashboard", "traceability_index", "changelog"]
+
+[[artifact_types]]
+id = "navigation"
+primary_question = "Where should a reader start or continue?"
+allow_empty_subtype = true
+subtypes = ["readme", "hub", "index"]
+
+[[path_rules]]
+pattern = "**/templates/change/adoption-decision.md"
+artifact_type = "atomic_record"
+
+[[path_rules]]
+pattern = "**/templates/change/decision.md"
+artifact_type = "atomic_record"
+
+[[path_rules]]
+pattern = "**/templates/change/tasks.md"
+artifact_type = "atomic_record"
+
+[[path_rules]]
+pattern = "**/templates/change/dependency-map.toml"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "**/templates/change/global-impact.md"
+artifact_type = "analysis_report"
+artifact_subtype = "proposal"
+
+[[path_rules]]
+pattern = "**/templates/change/specs/package.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "**/templates/package/contracts.md"
+artifact_type = "specification"
+artifact_subtype = "behavior"
+
+[[path_rules]]
+pattern = "**/templates/package/stories.md"
+artifact_type = "specification"
+artifact_subtype = "behavior"
+
+[[path_rules]]
+pattern = "**/templates/package/outcomes.md"
+artifact_type = "specification"
+artifact_subtype = "behavior"
+
+[[path_rules]]
+pattern = "**/templates/package/*/package.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = "**/templates/artifact-types.toml"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "**/templates/governance/*/profile.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = "**/templates/profiles.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = "**/templates/enforcement-profiles/*.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = "**/templates/intake.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = "**/templates/budget.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = "**/templates/dset_settings.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = "**/templates/dependency-policy.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = "**/templates/governance/*/architecture.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "**/templates/governance/*/artifact-classification.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "**/templates/governance/*/artifact-maintenance.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "**/templates/governance/*/work-items.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "**/templates/governance/*/domain-spec-authoring.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "**/templates/governance/*/eval-planning.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "**/templates/governance/*/test-planning.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "**/templates/governance/*/release.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "**/templates/governance/*/supportability.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "**/templates/governance/*/delegation-budget.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "**/templates/governance/*/diagnosis.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "**/templates/governance/*/lifecycle-orchestration.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "**/templates/governance/*/prototyping.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "**/templates/governance/*/skill-runs.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "**/templates/governance/*/build-rules.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "**/analysis-report.md"
+artifact_type = "analysis_report"
+
+[[path_rules]]
+pattern = "**/solution-landscape.md"
+artifact_type = "analysis_report"
+artifact_subtype = "solution_landscape"
+
+[[path_rules]]
+pattern = "**/root-cause.md"
+artifact_type = "analysis_report"
+artifact_subtype = "root_cause_analysis"
+
+[[path_rules]]
+pattern = "**/technical-investigation.md"
+artifact_type = "analysis_report"
+artifact_subtype = "technical_investigation"
+
+[[path_rules]]
+pattern = "**/external-audit-analysis.md"
+artifact_type = "analysis_report"
+artifact_subtype = "external_audit_analysis"
+
+[[path_rules]]
+pattern = "**/proposal.md"
+artifact_type = "analysis_report"
+artifact_subtype = "proposal"
+
+[[path_rules]]
+pattern = "**/domain.md"
+artifact_type = "specification"
+artifact_subtype = "domain_model"
+
+[[path_rules]]
+pattern = "**/spec.md"
+artifact_type = "specification"
+artifact_subtype = "behavior"
+
+[[path_rules]]
+pattern = "**/design.md"
+artifact_type = "specification"
+artifact_subtype = "design"
+
+[[path_rules]]
+pattern = "**/implementation-plan.md"
+artifact_type = "plan"
+artifact_subtype = "implementation_plan"
+
+[[path_rules]]
+pattern = "**/test-plan.md"
+artifact_type = "plan"
+artifact_subtype = "test_plan"
+
+[[path_rules]]
+pattern = "**/eval-plan.md"
+artifact_type = "plan"
+artifact_subtype = "evaluation_plan"
+
+[[path_rules]]
+pattern = "**/version-scope.md"
+artifact_type = "version"
+artifact_subtype = "version_scope"
+
+[[path_rules]]
+pattern = "**/roadmap.md"
+artifact_type = "version"
+artifact_subtype = "roadmap"
+
+[[path_rules]]
+pattern = "**/release-plan.md"
+artifact_type = "version"
+artifact_subtype = "release_plan"
+
+[[path_rules]]
+pattern = "**/readiness-record.md"
+artifact_type = "version"
+artifact_subtype = "readiness_record"
+
+[[path_rules]]
+pattern = "**/release-record.md"
+artifact_type = "version"
+artifact_subtype = "release_record"
+
+[[path_rules]]
+pattern = "**/change.toml"
+artifact_type = "version"
+artifact_subtype = "change"
+
+[[path_rules]]
+pattern = "**/verification.md"
+artifact_type = "verification"
+
+[[path_rules]]
+pattern = "**/README.md"
+artifact_type = "navigation"
+artifact_subtype = "hub"
+
+[[path_rules]]
+pattern = ".dset/dset_settings.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = ".dset/project/artifact-types.toml"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = ".dset/project/artifacts.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = ".dset/project/governance.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = ".dset/project/intake.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = ".dset/project/provenance.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = ".dset/project/atoms.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = ".dset/project/legacy-authority.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = ".dset/project/lifecycle.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = ".dset/project/migrations/*.toml"
+artifact_type = "implementation"
+artifact_subtype = "migration"
+
+[[path_rules]]
+pattern = ".dset/project/generated/*.toml"
+artifact_type = "derived_view"
+artifact_subtype = "traceability_index"
+
+[[path_rules]]
+pattern = ".dset/project/generated/*.md"
+artifact_type = "derived_view"
+artifact_subtype = "health_dashboard"
+
+[[path_rules]]
+pattern = ".dset/project/plan-implementation.md"
+artifact_type = "plan"
+artifact_subtype = "implementation_plan"
+
+[[path_rules]]
+pattern = ".dset/project/plan-work.md"
+artifact_type = "plan"
+artifact_subtype = "implementation_plan"
+
+[[path_rules]]
+pattern = ".dset/project/analysis-*.md"
+artifact_type = "analysis_report"
+
+[[path_rules]]
+pattern = ".dset/*/decision/*.md"
+artifact_type = "atomic_record"
+
+[[path_rules]]
+pattern = ".dset/*/question/*.md"
+artifact_type = "atomic_record"
+
+[[path_rules]]
+pattern = ".dset/*/problem/*.md"
+artifact_type = "atomic_record"
+
+[[path_rules]]
+pattern = ".dset/*/qa/*.md"
+artifact_type = "atomic_record"
+
+[[path_rules]]
+pattern = ".dset/*/navigation-*.md"
+artifact_type = "navigation"
+artifact_subtype = "hub"
+
+[[path_rules]]
+pattern = ".dset/*/specification-*.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = ".dset/*/procedure-*.md"
+artifact_type = "procedure"
+artifact_subtype = "playbook"
+
+[[path_rules]]
+pattern = ".dset/*/plan-tests.md"
+artifact_type = "plan"
+artifact_subtype = "test_plan"
+
+[[path_rules]]
+pattern = ".dset/*/plan-evaluations.md"
+artifact_type = "plan"
+artifact_subtype = "evaluation_plan"
+
+[[path_rules]]
+pattern = ".dset/*/package.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = ".dset/*/schemas/*.json"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = ".dset/*/dependency-policy.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = ".dset/*/budget.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = ".dset/*/fixtures/*.toml"
+artifact_type = "implementation"
+artifact_subtype = "test_implementation"
+
+[[path_rules]]
+pattern = ".dset/versions/version.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = ".dset/versions/history/*.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = ".dset/versions/archive/*/specs/*.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = ".dset/versions/archive/*/tasks.md"
+artifact_type = "atomic_record"
+
+[[path_rules]]
+pattern = ".dset/tool/fixtures/bases/*/specs/example.md"
+artifact_type = "specification"
+artifact_subtype = "behavior"
+
+[[path_rules]]
+pattern = ".dset/tool/fixtures/bases/*/tasks.md"
+artifact_type = "atomic_record"
+
+[[path_rules]]
+pattern = "dset_toolchain/*.py"
+artifact_type = "implementation"
+artifact_subtype = "source_code"
+
+[[path_rules]]
+pattern = "scripts/*.py"
+artifact_type = "implementation"
+artifact_subtype = "source_code"
+
+[[path_rules]]
+pattern = "tests/*.py"
+artifact_type = "implementation"
+artifact_subtype = "test_implementation"
+
+[[path_rules]]
+pattern = ".gitattributes"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = ".github/workflows/*.yml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = "dset_toolchain/bootstrap_bundle.json"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = "pyproject.toml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = "skills/*/agents/*.yaml"
+artifact_type = "implementation"
+artifact_subtype = "configuration"
+
+[[path_rules]]
+pattern = "skills/*/SKILL.md"
+artifact_type = "procedure"
+artifact_subtype = "playbook"
+
+[[path_rules]]
+pattern = ".github/DELIVERY.md"
+artifact_type = "procedure"
+artifact_subtype = "runbook"
+
+[[path_rules]]
+pattern = "documentation/maintenance-playbook.md"
+artifact_type = "procedure"
+artifact_subtype = "playbook"
+
+[[path_rules]]
+pattern = ".dset/ops/supportability/delivery-runbook.md"
+artifact_type = "procedure"
+artifact_subtype = "runbook"
+
+[[path_rules]]
+pattern = "skills/host-distribution.md"
+artifact_type = "procedure"
+artifact_subtype = "runbook"
+
+[[path_rules]]
+pattern = "documentation/artifact-architecture.md"
+artifact_type = "specification"
+artifact_subtype = "architecture"
+
+[[path_rules]]
+pattern = "documentation/artifact-types.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "documentation/authoring-rules.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "documentation/documentation-v1.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "documentation/hub-rules.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "documentation/rationale.md"
+artifact_type = "analysis_report"
+
+[[path_rules]]
+pattern = "methodology/00_Tool Development Playbook.md"
+artifact_type = "procedure"
+artifact_subtype = "playbook"
+
+[[path_rules]]
+pattern = "methodology/01_Spec Authoring Patterns — Service Spec Conventions.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "methodology/02_Test and Eval Plan Patterns — Proof Artifact Conventions.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "methodology/03_Implementation Plan Patterns — Service Build Conventions.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "methodology/04_General Build Rules — Tool Code Conventions.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "methodology/05_Layered Build Standard — DDD, TDD, Small Functions, Typed Gates.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "methodology/06_External Grounding — LLM Power-User Practice.md"
+artifact_type = "specification"
+artifact_subtype = "governance"
+
+[[path_rules]]
+pattern = "methodology/TODO — DSET 0.3 Self-Hosting and Repository-Governed Skills.md"
+artifact_type = "plan"
+artifact_subtype = "implementation_plan"
+
+[[path_rules]]
+pattern = "methodology/TODO — Operationalize OpenSpec and Composable Engineering Skills.md"
+artifact_type = "plan"
+artifact_subtype = "implementation_plan"

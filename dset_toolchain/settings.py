@@ -8,13 +8,15 @@ from .toml_codec import TomlCodecError
 from .toml_codec import load as load_toml
 
 SETTINGS_FILENAME = "dset_settings.toml"
+SETTINGS_DIRECTORY = ".dset"
 LEGACY_SETTINGS_FILENAME = "dset.toml"
-SETTINGS_SCHEMA_VERSION = "1.2"
-PREVIOUS_SETTINGS_SCHEMA_VERSION = "1.1"
+SETTINGS_SCHEMA_VERSION = "1.3"
+PREVIOUS_SETTINGS_SCHEMA_VERSION = "1.2"
 LEGACY_SETTINGS_SCHEMA_VERSION = "1.0"
 SUPPORTED_SETTINGS_SCHEMA_VERSIONS = frozenset(
     {
         LEGACY_SETTINGS_SCHEMA_VERSION,
+        "1.1",
         PREVIOUS_SETTINGS_SCHEMA_VERSION,
         SETTINGS_SCHEMA_VERSION,
     }
@@ -43,10 +45,16 @@ class ProjectSettings:
 def selected_settings_path(root: Path) -> Path:
     """Return the selected settings carrier or the canonical missing path."""
 
-    canonical = root / SETTINGS_FILENAME
+    canonical = root / SETTINGS_DIRECTORY / SETTINGS_FILENAME
+    interim = root / "dset" / SETTINGS_FILENAME
+    previous = root / SETTINGS_FILENAME
     legacy = root / LEGACY_SETTINGS_FILENAME
     if canonical.is_file():
         return canonical
+    if interim.is_file():
+        return interim
+    if previous.is_file():
+        return previous
     if legacy.is_file():
         return legacy
     return canonical
@@ -55,20 +63,28 @@ def selected_settings_path(root: Path) -> Path:
 def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]:
     """Read canonical settings with explicit legacy-name compatibility.
 
-    New writers use ``dset_settings.toml`` and schema 1.2. This reader accepts
-    the retired root filename and 1.0/1.1 field contracts only so an adopter
-    can plan a deliberate migration; it never emits them. Competing root names
-    fail closed instead of selecting by precedence.
+    New writers use ``.dset/dset_settings.toml`` and schema 1.3. This reader
+    accepts the uncommitted schema-1.3 preview path plus retired root filenames
+    and 1.0-1.2 field contracts only so an adopter can plan a deliberate
+    migration; it never emits them. Competing names fail closed instead of
+    selecting by precedence.
     """
 
-    canonical = root / SETTINGS_FILENAME
+    canonical = root / SETTINGS_DIRECTORY / SETTINGS_FILENAME
+    interim_path = root / "dset" / SETTINGS_FILENAME
+    previous_path = root / SETTINGS_FILENAME
     legacy_path = root / LEGACY_SETTINGS_FILENAME
-    if canonical.is_file() and legacy_path.is_file():
+    existing = [
+        path
+        for path in (canonical, interim_path, previous_path, legacy_path)
+        if path.is_file()
+    ]
+    if len(existing) > 1:
         return (
             ProjectSettings(),
             (
-                f"{SETTINGS_FILENAME} and legacy {LEGACY_SETTINGS_FILENAME} "
-                "cannot coexist",
+                "DSET settings carriers cannot coexist: "
+                + ", ".join(path.relative_to(root).as_posix() for path in existing),
             ),
         )
     path = selected_settings_path(root)
@@ -82,7 +98,7 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
     issues: list[str] = []
     schema_version = _string(raw.get("schema_version"), "schema_version", issues)
     if schema_version not in SUPPORTED_SETTINGS_SCHEMA_VERSIONS:
-        issues.append("settings schema_version must be 1.0, 1.1, or 1.2")
+        issues.append("settings schema_version must be 1.0, 1.1, 1.2, or 1.3")
 
     legacy = schema_version == LEGACY_SETTINGS_SCHEMA_VERSION
     _validate_known_keys(raw, schema_version, issues)
@@ -118,7 +134,7 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
 
     change_workspace_mode = "integration-branch"
     delegation_budget_profile = "medium"
-    if schema_version == SETTINGS_SCHEMA_VERSION:
+    if schema_version in {PREVIOUS_SETTINGS_SCHEMA_VERSION, SETTINGS_SCHEMA_VERSION}:
         changes = _table(raw.get("changes"), "changes", issues)
         change_workspace_mode = _string(
             changes.get("default_workspace", "integration-branch"),
@@ -175,7 +191,10 @@ def _validate_known_keys(
     raw: dict[str, Any], schema_version: str, issues: list[str]
 ) -> None:
     legacy = schema_version == LEGACY_SETTINGS_SCHEMA_VERSION
-    current = schema_version == SETTINGS_SCHEMA_VERSION
+    current = schema_version in {
+        PREVIOUS_SETTINGS_SCHEMA_VERSION,
+        SETTINGS_SCHEMA_VERSION,
+    }
     allowed_top = {
         "schema_version",
         "optional_capabilities" if legacy else "artifacts",
@@ -185,6 +204,23 @@ def _validate_known_keys(
         allowed_top.add("workflows")
     if current:
         allowed_top.update({"changes", "delegation"})
+    if schema_version == SETTINGS_SCHEMA_VERSION:
+        allowed_top.update(
+            {
+                "canonical_command",
+                "project",
+                "supportability",
+                "release",
+                "work_items",
+                "structure",
+                "profiles",
+                "change_contract",
+                "commit_provenance",
+                "verification",
+                "work_areas",
+                "packages",
+            }
+        )
     _unknown_keys(raw, allowed_top, "settings", issues)
 
     artifacts_name = "optional_capabilities" if legacy else "artifacts"

@@ -24,7 +24,6 @@ IGNORED_PARTS = frozenset(
     {
         ".git",
         ".cache",
-        ".dset",
         ".venv",
         ".mypy_cache",
         ".pytest_cache",
@@ -529,7 +528,7 @@ def _coverage_proof(qa_ids: set[str], relations: list[dict[str, Any]]) -> Covera
 
 def _lifecycle_events(root: Path) -> list[dict[str, Any]]:
     layout = discover_layout(root)
-    path = layout.structured_file(layout.governance_root, "lifecycle.toml")
+    path = layout.structured_file(layout.project_state_root, "lifecycle.toml")
     if not path.is_file():
         return []
     data = load(path)
@@ -655,7 +654,7 @@ def _ordered_source_entries(root: Path) -> list[tuple[str, Path]]:
         relative = path.relative_to(root)
         if _relative_ignored(relative) or not _in_project_scope(root, relative):
             continue
-        if "generated" in relative.parts or relative.parts[0] == ".dset":
+        if "generated" in relative.parts:
             continue
         entries.append((relative.as_posix(), path))
     return sorted(entries, key=lambda entry: entry[0])
@@ -694,6 +693,19 @@ def _matches(relative: str, pattern: str) -> bool:
 
 def _layer(relative: Path) -> str:
     parts = relative.parts
+    if (
+        len(parts) >= 2
+        and parts[0] == ".dset"
+        and parts[1]
+        in {
+            "meta",
+            "gov",
+            "tool",
+            "skill",
+            "ops",
+        }
+    ):
+        return parts[1]
     if len(parts) >= 3 and parts[:2] == ("dset", "scopes"):
         return parts[2]
     if parts and parts[0] in {"dset_toolchain", "tests"}:
@@ -742,8 +754,11 @@ def _path_ignored(root: Path, path: Path) -> bool:
 
 
 def _relative_ignored(relative: Path) -> bool:
+    if relative.parts[:2] == (".dset", "runtime"):
+        return True
     return any(
-        part in IGNORED_PARTS or (part.startswith(".") and part != ".github")
+        part in IGNORED_PARTS
+        or (part.startswith(".") and part not in {".github", ".dset"})
         for part in relative.parts
     )
 

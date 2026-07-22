@@ -53,7 +53,11 @@ class RuntimeTests(unittest.TestCase):
         assert invocation.running_path is not None
         self.assertTrue(invocation.running_path.is_file())
         checkpoint_path = (
-            self.root / ".dset" / "sessions" / f"{invocation.session_id}.json"
+            self.root
+            / ".dset"
+            / "runtime"
+            / "sessions"
+            / f"{invocation.session_id}.json"
         )
         first_checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
         self.assertEqual(first_checkpoint["schema_version"], "1.3")
@@ -94,14 +98,14 @@ class RuntimeTests(unittest.TestCase):
         self.assertFalse(invocation.running_path.is_file())
         terminals = [
             path
-            for path in (self.root / ".dset" / "runs").glob("*.json")
+            for path in (self.root / ".dset" / "runtime" / "runs").glob("*.json")
             if not path.name.startswith(".")
         ]
         self.assertEqual(len(terminals), 1)
         persisted = json.loads(terminals[0].read_text(encoding="utf-8"))
         self.assertEqual(persisted, terminal)
         run_schema = json.loads(
-            (ROOT / "dset/scopes/skill/schemas/skill-run.schema.json").read_text(
+            (ROOT / ".dset/skill/schemas/skill-run.schema.json").read_text(
                 encoding="utf-8"
             )
         )
@@ -109,9 +113,9 @@ class RuntimeTests(unittest.TestCase):
         self.assertLessEqual(terminals[0].stat().st_size, MAX_RECORD_BYTES)
         final_checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
         checkpoint_schema = json.loads(
-            (
-                ROOT / "dset/scopes/skill/schemas/session-checkpoint.schema.json"
-            ).read_text(encoding="utf-8")
+            (ROOT / ".dset/skill/schemas/session-checkpoint.schema.json").read_text(
+                encoding="utf-8"
+            )
         )
         self.assertEqual(set(final_checkpoint), set(checkpoint_schema["required"]))
         self.assertEqual(final_checkpoint["status"], "completed")
@@ -198,7 +202,7 @@ class RuntimeTests(unittest.TestCase):
         self.assertFalse((ordinary / ".dset").exists())
 
     def test_retention_enforces_age_count_and_total_bytes(self) -> None:
-        runs = self.root / ".dset" / "runs"
+        runs = self.root / ".dset" / "runtime" / "runs"
         seed = start_run(
             self.root,
             public_entrypoint="dset",

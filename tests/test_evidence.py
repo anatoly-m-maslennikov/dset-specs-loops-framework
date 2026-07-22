@@ -9,8 +9,8 @@ from dset_toolchain.evidence import validate_evidence_records
 from dset_toolchain.frontmatter import render
 
 ROOT = Path(__file__).resolve().parents[1]
-SCHEMA = ROOT / "dset/scopes/gov/schemas/evidence-record.schema.json"
-TEMPLATE = ROOT / "dset/scopes/gov/templates/evidence-record.md"
+SCHEMA = ROOT / ".dset/gov/schemas/evidence-record.schema.json"
+TEMPLATE = ROOT / ".dset/gov/templates/evidence-record.md"
 
 
 class EvidenceRecordTests(unittest.TestCase):

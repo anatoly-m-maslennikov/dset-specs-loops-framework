@@ -16,9 +16,9 @@ class CrossPlatformContractTests(unittest.TestCase):
     def test_repository_pins_text_worktree_bytes_to_lf(self) -> None:
         paths = (
             "dset_toolchain/validation.py",
-            "dset/scopes/ops/governance/release.md",
-            "dset/scopes/gov/migrations/carrier-transitions.toml",
-            "dset/scopes/gov/generated/traceability.toml",
+            ".dset/ops/procedure-release.md",
+            ".dset/project/migrations/carrier-transitions.toml",
+            ".dset/project/generated/traceability.toml",
         )
         for path in paths:
             result = subprocess.run(

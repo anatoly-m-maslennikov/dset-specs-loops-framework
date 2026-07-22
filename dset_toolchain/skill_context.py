@@ -86,6 +86,7 @@ def resolve_skill_context(
             ),
             "source": discover_layout(root)
             .governance_root.joinpath("work-items.md")
+            .with_name("specification-work-items.md")
             .relative_to(root)
             .as_posix(),
         },

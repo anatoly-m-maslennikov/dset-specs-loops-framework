@@ -13,18 +13,11 @@ from dset_toolchain.skill_catalog import PUBLIC_SKILL_WORKFLOWS  # noqa: E402
 OUTPUT = ROOT / "dset_toolchain" / "bootstrap_bundle.json"
 
 
-def _structured(root: Path, relative: Path) -> Path:
-    """Prefer migrated TOML while preserving the legacy source tree."""
-
-    toml = root / relative.with_suffix(".toml")
-    return toml if toml.is_file() else root / relative
-
-
 def selected_files(root: Path = ROOT) -> list[Path]:
     root = root.resolve()
-    selected = [_structured(root, Path("dset/scopes/meta/dset.yaml"))]
+    selected = [root / ".dset" / "dset_settings.toml"]
     for layer in ("meta", "gov", "tool", "skill", "ops"):
-        layer_root = root / "dset" / "scopes" / layer
+        layer_root = root / ".dset" / layer
         for folder in ("schemas", "templates"):
             selected.extend(
                 path for path in (layer_root / folder).rglob("*") if path.is_file()

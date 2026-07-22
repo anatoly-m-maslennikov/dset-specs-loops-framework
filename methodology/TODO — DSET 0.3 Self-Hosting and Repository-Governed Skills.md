@@ -2,8 +2,8 @@
 
 **Status:** Historical predecessor roadmap for the published `0.3.1` baseline.
 Unchecked items are not current DSET `0.4` obligations. Active work is owned by
-the [0.4 Version Scope](../dset/scopes/ops/planning/DSET-VERSION-002-0-4-self-hosted-core.md)
-and [Roadmap](../dset/scopes/ops/planning/DSET-VERSION-005-0-4-core-vertical-cut.md).
+the [0.4 Version Scope](../.dset/versions/DSET-VERSION-002-0-4-self-hosted-core.md)
+and [Roadmap](../.dset/versions/DSET-VERSION-005-0-4-core-vertical-cut.md).
 
 **Historical outcome:** Make DSET self-hosting before external adoption, make
 skills thin wrappers over repository-local governing documents, prove that
@@ -26,7 +26,7 @@ the active DSET `0.4` scope explicitly excludes it.
 - **DSET-INVARIANT-GOV-004 — One owner per rule:** Every normative rule ID has exactly one editable governing document. Agent guidance, skills, templates, generated installations, and summaries link to that owner and never become parallel writable rule stores.
 - **DSET-INVARIANT-SKILL-003 — Small skill surface:** Core users see `dset`, `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release`; helper lifecycle operations remain modes or chained workflows.
 - **DSET-INVARIANT-SKILL-004 — Primary orchestration:** `dset` selects bounded next actions from authoritative local state and registered local rules without embedding the lifecycle or authorizing effects silently.
-- **DSET-INVARIANT-SKILL-005 — Investigable runs:** Every skill emits a bounded redacted local run record under ignored `.dset/runs/`; records support heuristics but never replace repository, Git, hosted, or promoted-proof authorities.
+- **DSET-INVARIANT-SKILL-005 — Investigable runs:** Every skill emits a bounded redacted local run record under ignored `.dset/runtime/runs/`; records support heuristics but never replace repository, Git, hosted, or promoted-proof authorities.
 - **DSET-INVARIANT-OPS-001 — One version transition per main PR:** After the explicit first pre-1.0 bootstrap target is published, every accepted `dev` to `main` PR declares exactly one normal, small, RC, or final product/package transition using integer components.
 - **DSET-INVARIANT-OPS-002 — Protected release transaction:** Release artifacts are prepared before merge; tags and GitHub Releases derive from the protected merge commit without post-merge content changes.
 - **DSET-INVARIANT-OPS-003 — Fully working 1.0 gate:** `1.0.0-rc.N` and `1.0.0` require complete scope, supportability, proof, pilots, distribution, and no known release blockers; arithmetic and schedules cannot promote them.
@@ -47,9 +47,9 @@ The local runtime, skill distribution, budget, release-transaction, migration,
 project-health, and external-review mechanics are implemented and must not
 remain mislabeled as roadmap-only work.
 
-**Measured outcome:** [`DSET-OUTCOME-META-001`](../dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/specs/outcomes.md) defines adoption readiness as a baseline-to-target state change proven by test, eval, hosted, pilot, and blocker evidence. Completing features or roadmap tasks alone does not satisfy it.
+**Measured outcome:** [`DSET-OUTCOME-META-001`](../.dset/project/specification-outcomes.md) defines adoption readiness as a baseline-to-target state change proven by test, eval, hosted, pilot, and blocker evidence. Completing features or roadmap tasks alone does not satisfy it.
 
-**Deferred product-practice questions:** `DSET-QUESTION-META-001..003`, `DSET-QUESTION-GOV-002..003`, and `DSET-QUESTION-OPS-001` in [`dset/scopes/gov/intake.toml`](../dset/scopes/gov/intake.toml) defer Journey, Actor/Persona, Hypothesis/Experiment, prioritization, feedback/analytics, and generated roadmap/release views. DSET 0.3 creates no corresponding artifact type or intake queue.
+**Deferred product-practice questions:** `DSET-QUESTION-META-001..003`, `DSET-QUESTION-GOV-002..003`, and `DSET-QUESTION-OPS-001` in [`.dset/project/intake.toml`](../.dset/project/intake.toml) defer Journey, Actor/Persona, Hypothesis/Experiment, prioritization, feedback/analytics, and generated roadmap/release views. DSET 0.3 creates no corresponding artifact type or intake queue.
 
 ## Scope
 
@@ -75,12 +75,12 @@ remain mislabeled as roadmap-only work.
 
 - [x] **DSET-TASK-OPS-016:** Establish corrected coordinated DSET product/CLI-package `0.3.1`, keep schema/profile/template versions independent, supersede the unpublished `0.3.0` draft, incomplete `0.2.0` target, and unreleased package `1.0.0` candidate before merge, and preserve archived evidence unchanged.
 - [x] **DSET-TASK-TOOL-011:** Define the last-released-validator versus candidate-validator contract so a candidate is never its own only judge.
-- [x] **DSET-TASK-SKILL-004:** Define the minimum non-project bootstrap protocol that wrappers may contain: locate the repository root, locate schema 1.2 `dset/scopes/meta/dset.toml` or a legacy central manifest, resolve the layout-owned governance registry, and fail closed on duplicate authority.
+- [x] **DSET-TASK-SKILL-004:** Define the minimum non-project bootstrap protocol that wrappers may contain: locate the repository root, locate schema 1.3 `.dset/dset_settings.toml`, schema 1.2 `dset/scopes/meta/dset.toml`, or a legacy central manifest, resolve the layout-owned governance registry, and fail closed on duplicate authority.
 - [x] **DSET-TASK-GOV-014:** Open one standard DSET change, `make-dset-self-hosting-and-skills-thin`, with separate requirements, test plan, eval plan, design, implementation batches, evidence, and PR identity.
 
 ## §1 | Add the repository-local governance registry
 
-- [x] **DSET-TASK-GOV-015:** Define schema 1.2 `dset/scopes/gov/governance.toml` as the machine-readable resolver surface while retaining legacy `dset/governance.toml` compatibility; it points to governing documents but does not restate their rules.
+- [x] **DSET-TASK-GOV-015:** Define schema 1.2 `.dset/project/governance.toml` as the machine-readable resolver surface while retaining legacy `dset/governance.toml` compatibility; it points to governing documents but does not restate their rules.
 - [x] **DSET-TASK-TOOL-012:** Publish a JSON Schema covering registry version, workflow IDs, rule IDs, one owner per rule, ordered dependencies, applicability, local path, source profile/version, and customization status.
 - [x] **DSET-TASK-GOV-016:** Require every normative path to remain inside the repository. External sources may supply provenance or rationale but cannot be a live writable project-rule owner.
 - [x] **DSET-TASK-GOV-017:** Define deterministic precedence without implicit fallback: project-local accepted rule → explicitly selected local profile → failure. A wrapper must not silently fall back to embedded prose or a remote framework checkout.
@@ -159,7 +159,7 @@ paths; schema 1.2 assigns each governing document to its semantic layer.
 - [x] **DSET-TASK-GOV-026:** Use the owned `anatoly-m-maslennikov/obsidian-your-harness` repository as the first external pilot; record its exact starting revision, branch, upstream Claudian revision, MIT license, and adaptation boundary.
 - [x] **DSET-TASK-GOV-027:** Inventory `your_harness_specs/`, root and scoped `CLAUDE.md` files, README/architecture surfaces, tests, package scripts, generated assets, local context, and active feature work before creating a second authority.
 - [x] **DSET-TASK-GOV-028:** Classify every existing spec/plan as accepted truth, active change, failed/incomplete work, or history before migration.
-- [x] **DSET-TASK-GOV-029:** Create the visible schema 1.2 `dset/scopes/` control plane with META manifest, GOV governance/artifact/intake/provenance registries, one layer-fragmented `harness` package, layer-owned changes/archive roots, OPS supportability, distributed templates/migration record, and GOV-generated traceability.
+- [x] **DSET-TASK-GOV-029:** Create the visible schema 1.2 `dset/` control plane with META manifest, GOV governance/artifact/intake/provenance registries, one layer-fragmented `harness` package, layer-owned changes/archive roots, OPS supportability, distributed templates/migration record, and GOV-generated traceability.
 - [ ] **DSET-TASK-META-012:** Move accepted feature behavior into stable-ID domain/spec/contracts and separate deterministic test and qualitative/probabilistic eval plans.
 - [ ] **DSET-TASK-META-013:** Move the current autotest plan out of the legacy implementation-plan area and into the deterministic test-plan owner; retain implementation phases only as active or historical implementation artifacts.
 - [x] **DSET-TASK-GOV-030:** Convert root `CLAUDE.md` and `AGENTS.md` into concise agent-facing hubs/wrappers; move their substantive build, architecture, supportability, and workflow rules to registered governing documents.
@@ -183,10 +183,10 @@ paths; schema 1.2 assigns each governing document to its semantic layer.
 ## §8 | Deterministic test plan
 
 Accepted deterministic claims and their current automation are owned by the
-layer plans under `dset/scopes/*/specs/packages/methodology/test-plan.md`. This
+layer plans under `dset/*/specs/packages/methodology/test-plan.md`. This
 roadmap does not redeclare their IDs or assertions. The active Change selects
 and executes its applicable set in its separate
-[test plan](../dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/test-plan.md).
+[test plan](../.dset/project/plan-tests.md).
 
 The implemented DSET-only subset has current local proof. Remaining platform,
 release, hosted, and distribution tests stay open through
@@ -199,9 +199,9 @@ becomes a competing Test definition.
 ## §9 | Qualitative eval plan
 
 Accepted qualitative criteria are owned by the layer plans under
-`dset/scopes/*/specs/packages/methodology/eval-plan.md`. The active Change owns
+`dset/*/specs/packages/methodology/eval-plan.md`. The active Change owns
 only execution and evidence for its selected set in its separate
-[eval plan](../dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/eval-plan.md).
+[eval plan](../.dset/project/plan-evaluations.md).
 
 Independent rule-following, navigation, diagnostic, platform, release, and
 supportability reviews remain pending where the active verification matrix says
@@ -213,7 +213,7 @@ entities and not deterministic test substitutes.
 
 - [x] **DSET-TASK-SKILL-014:** Implement the thin primary `dset` orchestration wrapper and registered local orchestration rules; keep initialization, decomposition, landscape/Decision/spec/proof/implementation planning, implementation, verification, tickets, and next-step guidance as modes or chained workflows.
 - [x] **DSET-TASK-SKILL-015:** Implement the thin `dset-release` wrapper and registered release rules; preserve `dset`, `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release` as the primary operator surface while exposing the additional governed lifecycle wrappers accepted by `DSET-DECISION-SKILL-002` as direct shortcuts.
-- [x] **DSET-TASK-SKILL-016:** Add bounded redacted append-only `.dset/runs/` records, ignored by Git, with schema/retention rules and authoritative-state reconciliation for next-step heuristics.
+- [x] **DSET-TASK-SKILL-016:** Add bounded redacted append-only `.dset/runtime/runs/` records, ignored by Git, with schema/retention rules and authoritative-state reconciliation for next-step heuristics.
 - [x] **DSET-TASK-OPS-019:** Add the normal/small/RC/final transition matrix, exactly-one-class main-PR validation, coordinated product/package version surfaces, and independent schema/profile/template compatibility versions.
 - [x] **DSET-TASK-OPS-020:** Add pre-merge release preparation and post-merge tag/GitHub Release publication from the protected merge commit without a post-merge content write.
 - [x] **DSET-TASK-OPS-021:** Gate `1.0.0-rc.N` and `1.0.0` on fully working declared scope, self-hosting, documentation, supportability, migrations, deterministic tests, applicable evals, required pilots, distribution, and absence of known release blockers.
@@ -233,7 +233,7 @@ gate. `DSET-VERSION-002` owns the current DSET-only `0.4` exit criteria;
 external-adopter rows below are preserved only as historical routing context.
 
 - [ ] The released validator checks the candidate change, and the candidate checks both this repository and one generated adopter.
-- [x] `dset/scopes/gov/governance.toml`, its GOV-owned schema, resolver commands, stable diagnostics, distributed templates, and migrations are public and versioned; legacy central paths remain validated compatibility surfaces.
+- [x] `.dset/project/governance.toml`, its GOV-owned schema, resolver commands, stable diagnostics, distributed templates, and migrations are public and versioned; legacy central paths remain validated compatibility surfaces.
 - [x] All first-wave skills are thin wrappers; no substantive governing rule exists only or independently inside a skill.
 - [x] The primary operator surface is `dset`, `dset-clarify`, `dset-diagnose`, `dset-prototype`, and `dset-release`; the complete distribution exposes the exact 16 accepted thin lifecycle wrappers, with non-primary wrappers acting only as direct shortcuts to the same governed modes.
 - [x] Bounded redacted local run records support investigation and next-step heuristics without becoming project truth.

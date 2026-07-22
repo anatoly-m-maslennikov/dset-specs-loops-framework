@@ -1,0 +1,271 @@
+# DSET project settings and manifest.
+#
+# This is the sole canonical DSET project configuration. It combines
+# project identity and topology with operator-controlled behavior so
+# discovery never has to reconcile two competing configuration owners.
+# Repository-local governing documents still define the policies and
+# values that these settings are allowed to select.
+#
+# All settings below are optional at read time and show their executable
+# defaults explicitly. Keep the explicit values when copying this file so a
+# reviewer does not need to know parser fallbacks. Unknown settings fail
+# validation, which catches misspellings instead of silently ignoring them.
+#
+# New DSET writers use only this path: .dset/dset_settings.toml.
+# Retired root settings and split manifest paths are read-only migration
+# inputs. Competing configuration carriers fail closed.
+#
+# Settings schema implemented by this file.
+# Accepted for new writers: "1.3".
+schema_version = "1.3"
+canonical_command = "python -m dset_toolchain verify ."
+
+[artifacts]
+# Include the optional direct artifact subtype after the primary artifact type
+# in IDs and filenames for newly emitted artifacts only.
+#
+# Accepted:
+# - false (default): type-only structural name.
+#   Example: DSET-VERSION-001-0-4-core.md
+#   Inside the artifact: artifact_type = "version" and
+#   artifact_subtype = "version_scope".
+# - true: add the direct subtype token.
+#   Example: DSET-VERSION-VERSION-SCOPE-001-0-4-core.md
+#
+# Existing IDs and filenames are immutable and are never renamed when this
+# value changes. The setting affects the carrier name only; it does not change
+# an atomic record's separate semantic Type/subtype.
+#
+# Registered artifact subtype examples:
+# - analysis_report: solution_landscape, root_cause_analysis, proposal,
+#   technical_investigation, external_audit_analysis
+# - specification: domain_model, behavior, architecture, design, governance
+# - procedure: playbook, runbook
+# - plan: implementation_plan, test_plan, evaluation_plan
+# - version: roadmap, version_scope, change, release_plan, readiness_record,
+#   release_record
+# - implementation: source_code, documentation, configuration, migration,
+#   test_implementation, evaluation_implementation
+# - evidence_record: test_result, evaluation_result, review_report, run_record
+# - derived_view: project_overview, health_dashboard, traceability_index,
+#   changelog
+# - navigation: readme, hub, index
+# atomic_record and verification currently have no artifact subtypes.
+subtype_in_names = false
+
+# Set the gate used before a new immutable atomic artifact is emitted.
+#
+# Accepted:
+# - "medium" (default): require clear authority, one primary claim, semantic
+#   Type, owning scope, provenance, material links, priority, and acceptance.
+#   Optional non-authoritative context may remain explicitly unknown.
+# - "high": also require every material boundary, lineage, conflict, and proof
+#   question to be precise. DSET asks focused questions or stops without writing
+#   until the atom can safely remain immutable.
+#
+# Both values check whether the claim may belong one enabled scope higher and
+# propose eligible promotion. Promotion always requires operator acceptance.
+creation_strictness = "medium"
+
+[workflows.implement]
+# Choose what dset-implement may do before implementation begins.
+#
+# Accepted:
+# - "lazy" (default): reconcile missing session Decisions, then create or update
+#   separate Test/Evaluation plans and the implementation plan as needed before
+#   implementing. Completed prerequisites are skipped.
+# - "strict": perform implementation only from already sufficient accepted
+#   artifacts. Missing or ambiguous inputs stop; DSET does not create or repair
+#   Decisions or plans and never falls back to lazy mode.
+#
+# Example lazy chain:
+# decisions -> plan-proof -> plan-implementation -> implement
+mode = "lazy"
+
+[changes]
+# Select the default Git workspace for a newly created Change when the caller
+# does not request a mode explicitly.
+#
+# Accepted:
+# - "integration-branch" (default): place the Change on the project's configured
+#   integration branch, normally dev. The protected branch, normally main,
+#   remains the base for delivery.
+# - "branch-worktree": create an isolated dset/<change-slug> branch/worktree
+#   based on the integration branch. This is useful for concurrent Changes.
+#
+# An explicit per-Change request overrides this default. The project manifest
+# still owns the actual integration and protected branch names.
+default_workspace = "integration-branch"
+
+[delegation]
+# Select the registered multi-agent breadth budget. The selected profile changes
+# exploration/review breadth, never the accepted scope, safety boundary, or
+# required Tests/Evaluations. Operator instructions override the profile.
+#
+# Accepted profiles are defined in .dset/skill/budget.toml:
+# - "low": 0-1 subagents, depth 1, one round.
+# - "medium" (default): target 2 and maximum 3 subagents, depth 1, two rounds.
+# - "high": 4-6 subagents, depth 2, three rounds.
+#
+# Subagents inherit the main session's model and reasoning effort by default.
+# A cheaper token price alone is not evidence of lower total task cost.
+budget_profile = "medium"
+
+[priority]
+# Define the project-wide priority vocabulary from highest to lowest.
+#
+# Accepted: a TOML array containing at least two unique strings.
+# Default: the five values below. Array position is precedence: critical
+# outranks high, and deferred ranks last.
+#
+# Priority is available to every governed artifact. It orders current attention
+# but does not override external authority, lifecycle state, proof quality,
+# dependencies, or authorization gates.
+scale = ["critical", "high", "medium", "low", "deferred"]
+
+# Priority assigned when a governed artifact has neither a direct value nor an
+# inherited value from its canonical owner.
+#
+# Accepted: one value present in priority.scale. Default: "medium".
+default = "medium"
+
+# Project identity, topology, and executable repository boundaries.
+
+[project]
+key = "DSET"
+id = "dset-specs-loops-framework"
+name = "DSET Spec Loops"
+repository_slug = "dset-specs-loops-framework"
+repository_role = "framework-source-and-adopter"
+
+[supportability]
+status = "applicable"
+reason = "GitHub Actions and repository rules operate the production delivery path from dev to main"
+authority = "github"
+runbook = ".dset/ops/supportability/delivery-runbook.md"
+
+[release]
+status = "applicable"
+integration_branch = "dev"
+protected_branch = "main"
+publisher = "github"
+tag_pattern = "v{product_version}"
+
+[work_items]
+registry = ".dset/project/intake.toml"
+
+[structure]
+layout = "slim-v1"
+
+[profiles]
+runtime_risk = "low-risk-hosted-automation"
+durability_topology = "external-platform"
+enforcement = "python-v1"
+artifact = "documentation-v1"
+repository_governance = "core-v1"
+
+[change_contract]
+change_id_format = "project-type-layer-sequence"
+change_slug_format = "kebab-case"
+pull_request_required_before_archive = true
+archive_requires_fresh_verification = true
+keep_pull_request_draft_until_archive_ready = true
+
+[commit_provenance]
+start_commit = "96800941678c9b665abac9d3838a8a4b36db02e2"
+
+[[commit_provenance.corrections]]
+commit = "00fb9c666efd9a40efd013a815c6eca7be2b6c90"
+original_message_sha256 = "e48025512aceb574b1145dda3d1d9e5986ac8680cb42a273427e239f66ff1aca"
+mode = "implementation"
+decision_ids = ["DSET-DECISION-GOV-015", "DSET-DECISION-GOV-017"]
+verifies = []
+resolves = ["DSET-DEFECT-TOOL-004"]
+session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+rationale = "Preserve the immutable commit while replacing its legacy Decision trailer with implementation provenance."
+
+[[commit_provenance.corrections]]
+commit = "4096ce125aed225b1a4d27fda2db8fa899b6a749"
+original_message_sha256 = "37f52517c358b1fb0c33083c79b1147731ad981f7bcacd3ba15ed39b48ee71d6"
+mode = "implementation"
+decision_ids = ["DSET-DECISION-GOV-017"]
+verifies = []
+resolves = []
+session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+rationale = "Preserve the immutable commit while removing a Test ID from implementation authority."
+
+[[commit_provenance.corrections]]
+commit = "f9bff423cbb4cc0a58518bfd174ed0cf892d7911"
+original_message_sha256 = "e99f33e601546052035242b0c97414440a98a0b02e4cb97f5873e3d5c69ce42c"
+mode = "implementation"
+decision_ids = ["DSET-DECISION-GOV-016"]
+verifies = []
+resolves = []
+session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+rationale = "Preserve the immutable commit while removing a Test ID from implementation authority."
+
+[[commit_provenance.corrections]]
+commit = "cee6f4322bbfe3f408f0f644d1abb99ded4c86a7"
+original_message_sha256 = "d9cee712ef5ad37bf6427df1a753103c794e83d15dd7f77bbc8d6b6a5eebea8d"
+mode = "implementation"
+decision_ids = ["DSET-REQUIREMENT-META-011", "DSET-REQUIREMENT-OPS-005"]
+verifies = []
+resolves = []
+session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+rationale = "Preserve the immutable commit while replacing its unaccepted Change-delta Requirement with active Work Area and release-configuration authority."
+
+[[commit_provenance.corrections]]
+commit = "6b60f0ce767c700e5e4221a5da8858c137ef4b92"
+original_message_sha256 = "fa73afb3e4f34731f3e1936188d3ea31b0a1b2ca6cae82d1982eea2e95729af0"
+mode = "implementation"
+decision_ids = ["DSET-REQUIREMENT-GOV-025"]
+verifies = []
+resolves = []
+session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+rationale = "Preserve the immutable packet commit while removing its accidental mixture of implementation and evidence provenance trailers."
+
+[[commit_provenance.corrections]]
+commit = "422ca999caef80ffb703ce7c1ffa0bb9d1bde15b"
+original_message_sha256 = "290abb36e62784fbeb42854cf3aaeaf5daae7a6a5d0b6cd684b13585d85726e3"
+mode = "implementation"
+decision_ids = ["DSET-DECISION-GOV-020"]
+verifies = []
+resolves = []
+session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+rationale = "Preserve the immutable generated-view commit while removing its accidental Test-evidence trailer from implementation provenance."
+
+[verification]
+commands = ["uv run ruff format --check dset_toolchain tests", "uv run ruff check dset_toolchain tests", "uv run mypy dset_toolchain tests", "{python} -m unittest discover -s tests -v", "git diff --check"]
+
+[[work_areas]]
+id = "methodology"
+path = "methodology"
+
+[[work_areas]]
+id = "documentation"
+path = "documentation"
+
+[[work_areas]]
+id = "project-control"
+path = ".dset"
+
+[[work_areas]]
+id = "toolchain"
+path = "dset_toolchain"
+
+[[work_areas]]
+id = "skills"
+path = "skills"
+
+[[work_areas]]
+id = "tests"
+path = "tests"
+
+[[work_areas]]
+id = "delivery"
+path = ".github"
+
+[[packages]]
+id = "methodology"
+status = "active"
+layers = ["meta", "gov", "tool", "skill", "ops"]

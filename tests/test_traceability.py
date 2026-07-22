@@ -103,9 +103,9 @@ class TraceabilityTests(unittest.TestCase):
         self.assertEqual(
             {item["through"] for item in projection_ranges},
             {
-                "DSET-ATOMIC-RECORD-087",
-                "DSET-ATOMIC-RECORD-088",
-                "DSET-ATOMIC-RECORD-050",
+                "DSET-ATOMIC-RECORD-104",
+                "DSET-ATOMIC-RECORD-105",
+                "DSET-ATOMIC-RECORD-106",
                 "DSET-ATOMIC-RECORD-078",
                 "DSET-ATOMIC-RECORD-079",
                 "DSET-ATOMIC-RECORD-080",
@@ -143,7 +143,11 @@ class TraceabilityTests(unittest.TestCase):
     def test_write_is_stable_and_checkable(self) -> None:
         with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as raw:
             target = Path(raw).resolve()
-            shutil.copytree(ROOT / "dset", target / "dset")
+            shutil.copytree(
+                ROOT / ".dset",
+                target / ".dset",
+                ignore=shutil.ignore_patterns("runtime"),
+            )
             write_traceability(target)
             trace_path = discover_layout(target).traceability_path
             first = trace_path.read_text(encoding="utf-8")

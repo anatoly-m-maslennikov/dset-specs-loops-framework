@@ -337,33 +337,36 @@ class LayeredValidationTests(unittest.TestCase):
 
     def test_schema_1_2_shapes_are_explicit(self) -> None:
         project = json.loads(
-            (ROOT / "dset/scopes/meta/schemas/project.schema.json").read_text(
+            (ROOT / ".dset/meta/schemas/project.schema.json").read_text(
                 encoding="utf-8"
             )
         )
         fragment = json.loads(
-            (ROOT / "dset/scopes/meta/schemas/package-fragment.schema.json").read_text(
+            (ROOT / ".dset/meta/schemas/package-fragment.schema.json").read_text(
                 encoding="utf-8"
             )
         )
-        self.assertEqual(
-            project["$defs"]["layered_structure"]["properties"]["layout"]["const"],
+        self.assertIn(
             "layered-v1",
+            project["$defs"]["layered_structure"]["properties"]["layout"]["enum"],
         )
         change = json.loads(
-            (ROOT / "dset/scopes/gov/schemas/change.schema.json").read_text(
-                encoding="utf-8"
-            )
+            (ROOT / ".dset/gov/schemas/change.schema.json").read_text(encoding="utf-8")
         )
         self.assertEqual(
             change["$defs"]["workspace"]["properties"]["isolation"]["enum"],
             ["integration-branch", "branch-worktree"],
         )
         self.assertEqual(
-            change["$defs"]["layered_release_declaration"]["properties"]["policy"][
-                "const"
-            ],
-            "dset/scopes/ops/governance/release.md",
+            set(
+                change["$defs"]["layered_release_declaration"]["properties"]["policy"][
+                    "enum"
+                ]
+            ),
+            {
+                "dset/scopes/ops/governance/release.md",
+                ".dset/ops/procedure-release.md",
+            },
         )
         forbidden = project["allOf"][0]["then"]["not"]["anyOf"]
         self.assertEqual(
@@ -391,7 +394,7 @@ class LayeredValidationTests(unittest.TestCase):
             "https://raw.githubusercontent.com/anatoly-m-maslennikov/"
             "dset-specs-loops-framework/main/"
         )
-        for path in sorted((ROOT / "dset/scopes").glob("*/schemas/*.json")):
+        for path in sorted((ROOT / ".dset").glob("*/schemas/*.json")):
             with self.subTest(schema=path.name):
                 schema = json.loads(path.read_text(encoding="utf-8"))
                 self.assertEqual(
@@ -400,17 +403,15 @@ class LayeredValidationTests(unittest.TestCase):
 
     def test_schema_1_2_work_area_contract_has_two_target_modes(self) -> None:
         project = json.loads(
-            (ROOT / "dset/scopes/meta/schemas/project.schema.json").read_text(
+            (ROOT / ".dset/meta/schemas/project.schema.json").read_text(
                 encoding="utf-8"
             )
         )
         change = json.loads(
-            (ROOT / "dset/scopes/gov/schemas/change.schema.json").read_text(
-                encoding="utf-8"
-            )
+            (ROOT / ".dset/gov/schemas/change.schema.json").read_text(encoding="utf-8")
         )
         traceability = json.loads(
-            (ROOT / "dset/scopes/tool/schemas/traceability.schema.json").read_text(
+            (ROOT / ".dset/tool/schemas/traceability.schema.json").read_text(
                 encoding="utf-8"
             )
         )

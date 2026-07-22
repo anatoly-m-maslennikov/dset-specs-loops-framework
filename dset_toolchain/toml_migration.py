@@ -54,7 +54,7 @@ _IGNORED_TOP_LEVEL = {
     "dist",
     "__pycache__",
 }
-_RUNTIME_READINESS_PATH = ".dset/toml-migration-runtime-readiness.json"
+_RUNTIME_READINESS_PATH = ".dset/runtime/toml-migration-runtime-readiness.json"
 _NON_REWRITABLE_EXCEPTIONS = {
     "cli-wire-json",
     "external-json-schema",
@@ -376,7 +376,9 @@ def apply_toml_migration(
         )
     }
     _preflight_apply(plan)
-    backup_root = plan.root / ".dset" / "toml-migration-backups" / plan.digest
+    backup_root = (
+        plan.root / ".dset" / "runtime" / "toml-migration-backups" / plan.digest
+    )
     bundle_path = plan.root / "dset_toolchain" / "bootstrap_bundle.json"
     regenerates_bundle = (
         bundle_path.is_file()
@@ -416,7 +418,7 @@ def _project_files(root: Path) -> list[Path]:
         relative = path.relative_to(root)
         if any(part in _IGNORED_TOP_LEVEL for part in relative.parts):
             continue
-        if relative.parts[:2] == (".dset", "toml-migration-backups"):
+        if relative.parts[:3] == (".dset", "runtime", "toml-migration-backups"):
             continue
         if path.is_symlink():
             paths.append(path)
@@ -456,7 +458,7 @@ def _exception_classification(
     relative = path.relative_to(root)
     parts = relative.parts
     suffix = path.suffix.lower()
-    if parts and parts[0] == ".dset":
+    if parts[:2] == (".dset", "runtime"):
         if suffix == ".json":
             return _exception(root, path, "machine-local-runtime-journal")
         return None
@@ -504,6 +506,7 @@ def _immutable_classifications(
     atom_ledger, atom_errors = _load_history_ledger(
         root,
         (
+            ".dset/project/atoms",
             "dset/scopes/gov/governance/atoms",
             "dset/governance/atoms",
         ),
@@ -536,6 +539,7 @@ def _immutable_classifications(
     legacy_ledger, legacy_errors = _load_history_ledger(
         root,
         (
+            ".dset/project/legacy-authority",
             "dset/scopes/gov/governance/legacy-authority",
             "dset/governance/legacy-authority",
         ),
@@ -717,6 +721,7 @@ def _legacy_structured_registry(
     """Load exact historical structured snapshots without accepting wildcards."""
 
     candidates = (
+        root / ".dset/project/artifact-types.toml",
         root / "dset/scopes/gov/artifact-types.toml",
         root / "dset/scopes/gov/artifact-types.yaml",
         root / "dset/artifact-types.toml",
@@ -767,10 +772,10 @@ def _legacy_structured_registry(
         if owner in owners:
             blockers.append(f"legacy-structured: duplicate current owner: {raw_owner}")
             continue
-        valid_owner = owner == source.with_suffix(".toml")
+        valid_owner = owner.suffix.lower() == ".toml"
         if source.suffix.lower() not in {".yaml", ".yml"} or not valid_owner:
             blockers.append(
-                "legacy-structured: current_owner must be the TOML sibling of "
+                "legacy-structured: current_owner must be a TOML carrier for "
                 f"{raw_path}"
             )
             continue
@@ -917,9 +922,15 @@ def _carrier_transition_entries(
         return entries, transition_sources, blockers
 
     for relative in (
+        ".dset/project/atoms.toml",
+        ".dset/project/legacy-authority.toml",
+        ".dset/project/artifact-types.toml",
         "dset/scopes/gov/governance/atoms.toml",
         "dset/scopes/gov/governance/legacy-authority.toml",
         "dset/scopes/gov/artifact-types.toml",
+        "dset/governance/atoms.toml",
+        "dset/governance/legacy-authority.toml",
+        "dset/artifact-types.toml",
     ):
         path = root / relative
         if not path.is_file():
@@ -966,8 +977,22 @@ def _transition_identities(root: Path, source: Path) -> tuple[list[str], list[st
     carrier_ids: set[str] = set()
     semantic_ids: set[str] = set()
     for stems, record_field in (
-        (("dset/scopes/gov/governance/atoms",), "records"),
-        (("dset/scopes/gov/governance/legacy-authority",), "records"),
+        (
+            (
+                ".dset/project/atoms",
+                "dset/scopes/gov/governance/atoms",
+                "dset/governance/atoms",
+            ),
+            "records",
+        ),
+        (
+            (
+                ".dset/project/legacy-authority",
+                "dset/scopes/gov/governance/legacy-authority",
+                "dset/governance/legacy-authority",
+            ),
+            "records",
+        ),
     ):
         data, _errors = _load_history_ledger(root, stems, "carrier transition")
         values = data.get(record_field) if isinstance(data, dict) else None
@@ -991,8 +1016,19 @@ def _transition_identities(root: Path, source: Path) -> tuple[list[str], list[st
                 value = item.get("semantic_id")
                 if isinstance(value, str):
                     semantic_ids.add(value)
-    type_registry = root / "dset/scopes/gov/artifact-types.toml"
-    if type_registry.is_file():
+    type_registry = next(
+        (
+            path
+            for path in (
+                root / ".dset/project/artifact-types.toml",
+                root / "dset/scopes/gov/artifact-types.toml",
+                root / "dset/artifact-types.toml",
+            )
+            if path.is_file()
+        ),
+        None,
+    )
+    if type_registry is not None:
         try:
             registry_data = load_structured(type_registry)
         except (OSError, UnicodeError, YamlSubsetError):
@@ -1081,6 +1117,8 @@ def _toml_cutover_complete(root: Path) -> bool:
     return any(
         path.is_file()
         for path in (
+            root / ".dset/dset_settings.toml",
+            root / "dset/dset_settings.toml",
             root / "dset/scopes/meta/dset.toml",
             root / "dset/dset.toml",
         )
@@ -1295,6 +1333,7 @@ def _inactive_semantic_ids(root: Path) -> tuple[set[str], list[str]]:
     ledger, blockers = _load_history_ledger(
         root,
         (
+            ".dset/project/lifecycle",
             "dset/scopes/gov/governance/lifecycle",
             "dset/governance/lifecycle",
         ),
@@ -2308,7 +2347,6 @@ def _proof_ignore(_directory: str, names: list[str]) -> set[str]:
             ".git",
             ".venv",
             ".cache",
-            ".dset",
             ".uv-cache",
             "build",
             "dist",
@@ -2470,9 +2508,9 @@ def _overlay_proof_working_tree(root: Path, staged: Path) -> None:
         if not raw_path:
             continue
         relative = Path(os.fsdecode(raw_path))
-        if any(
-            part in _IGNORED_TOP_LEVEL or part == ".dset" for part in relative.parts
-        ):
+        if any(part in _IGNORED_TOP_LEVEL for part in relative.parts) or relative.parts[
+            :2
+        ] == (".dset", "runtime"):
             continue
         source = root / relative
         target = staged / relative

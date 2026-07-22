@@ -787,7 +787,7 @@ def _absorption_edges(root: Path) -> dict[str, str]:
 
 def _lifecycle_events(root: Path) -> list[dict[str, Any]]:
     layout = discover_layout(root)
-    path = layout.structured_file(layout.governance_root, "lifecycle.toml")
+    path = layout.structured_file(layout.project_state_root, "lifecycle.toml")
     if not path.is_file():
         return []
     try:

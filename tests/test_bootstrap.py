@@ -73,7 +73,7 @@ class BootstrapTests(unittest.TestCase):
             self.assertEqual(validate_repository(target), [])
             self.assertTrue((target / "skills" / "dset" / "SKILL.md").is_file())
             layout = discover_layout(target)
-            self.assertEqual(layout.schema_version, "1.2")
+            self.assertEqual(layout.schema_version, "1.3")
             self.assertEqual(
                 layout.manifest_path.suffix,
                 discover_layout(ROOT).manifest_path.suffix,
@@ -90,8 +90,11 @@ class BootstrapTests(unittest.TestCase):
             )
             self.assertNotIn("delegation_budget", manifest["profiles"])
             self.assertNotIn("workspace_default", manifest["change_contract"])
-            self.assertTrue(layout.artifact_type_registry_path.is_file())
-            self.assertTrue((target / "dset_settings.toml").is_file())
+            self.assertTrue(layout.governance_path.is_file())
+            self.assertTrue((target / ".dset/dset_settings.toml").is_file())
+            self.assertTrue((target / ".dset/project/README.md").is_file())
+            self.assertTrue((target / ".dset/versions/README.md").is_file())
+            self.assertFalse((target / "dset_settings.toml").exists())
             self.assertFalse((target / "dset.toml").exists())
             self.assertEqual(
                 (target / "README.md").read_text(encoding="utf-8"), "# Existing\n"
@@ -153,7 +156,7 @@ class BootstrapTests(unittest.TestCase):
             self.assertEqual(validate_repository(target), [])
             manifest = load(discover_layout(target).manifest_path)
             self.assertEqual(manifest["supportability"]["status"], "applicable")
-            runbook = (target / "dset/scopes/ops/supportability/README.md").read_text(
+            runbook = (target / ".dset/ops/supportability/README.md").read_text(
                 encoding="utf-8"
             )
             self.assertIn("Active hosted automation", runbook)
@@ -183,8 +186,7 @@ class BootstrapTests(unittest.TestCase):
     def test_existing_destination_stops_without_partial_write(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             target = (Path(raw) / "existing").resolve()
-            suffix = discover_layout(ROOT).manifest_path.suffix
-            manifest = target / "dset" / "scopes" / "meta" / f"dset{suffix}"
+            manifest = target / ".dset" / "dset_settings.toml"
             manifest.parent.mkdir(parents=True)
             manifest.write_text("existing\n", encoding="utf-8")
             with self.assertRaises(FileExistsError):

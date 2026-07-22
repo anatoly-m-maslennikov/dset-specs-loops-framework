@@ -10,6 +10,9 @@ from .yaml_subset import YamlSubsetError, load
 LAYERS: Final[tuple[str, ...]] = ("meta", "gov", "tool", "skill", "ops")
 LEGACY_SCHEMA_VERSIONS: Final[frozenset[str]] = frozenset({"1.0", "1.1"})
 LAYERED_SCHEMA_VERSION: Final[str] = "1.2"
+SLIM_SCHEMA_VERSION: Final[str] = "1.3"
+CURRENT_DSET_ROOT: Final[str] = ".dset"
+LEGACY_DSET_ROOT: Final[str] = "dset"
 LEGACY_AUTHORITY_PATHS: Final[tuple[str, ...]] = (
     "artifact-types.toml",
     "artifact-types.yaml",
@@ -44,8 +47,10 @@ class RepositoryLayout:
     """Canonical path authority for one DSET repository.
 
     Schema 1.0 and 1.1 use the central ``dset/`` layout. Schema 1.2 uses
-    layer-owned roots below ``dset/scopes/``. Detection is based on the
-    manifest location and, when readable, its declared schema version.
+    layer-owned roots below ``dset/``. Schema 1.3 uses the hidden, distinctive
+    ``.dset/`` control root, removes the redundant ``scopes`` segment, moves
+    project-wide control artifacts below ``.dset/project/``, and uses one
+    combined settings and project manifest at ``.dset/dset_settings.toml``.
     """
 
     root: Path
@@ -53,16 +58,31 @@ class RepositoryLayout:
     layered: bool
 
     @property
+    def slim(self) -> bool:
+        return self.schema_version == SLIM_SCHEMA_VERSION
+
+    @property
     def dset_root(self) -> Path:
-        return self.root / "dset"
+        directory = CURRENT_DSET_ROOT if self.slim else LEGACY_DSET_ROOT
+        return self.root / directory
 
     @property
     def settings_path(self) -> Path:
+        if self.slim:
+            return self.dset_root / "dset_settings.toml"
         return self.root / "dset_settings.toml"
 
     @property
+    def project_root(self) -> Path:
+        return self.dset_root / "project"
+
+    @property
+    def versions_root(self) -> Path:
+        return self.dset_root / "versions"
+
+    @property
     def scopes_root(self) -> Path:
-        return self.dset_root / "scopes"
+        return self.dset_root if self.slim else self.dset_root / "scopes"
 
     def layer_root(self, layer: str) -> Path:
         normalized = layer.lower()
@@ -76,36 +96,61 @@ class RepositoryLayout:
 
     @property
     def manifest_path(self) -> Path:
+        if self.slim:
+            return self.settings_path
         if self.layered:
             return self.structured_file(self.layer_root("meta"), "dset.toml")
         return self.structured_file(self.dset_root, "dset.toml")
 
     @property
     def governance_path(self) -> Path:
+        if self.slim:
+            return self.structured_file(self.project_root, "governance.toml")
         return self._owned_file("gov", self._preferred_name("governance"))
 
     @property
     def governance_root(self) -> Path:
+        if self.slim:
+            return self.layer_root("gov")
         return self._owned_directory("gov", "governance")
 
     @property
+    def project_state_root(self) -> Path:
+        """Own project-wide ledgers independently from compiled GOV rules."""
+
+        return self.project_root if self.slim else self.governance_root
+
+    @property
     def artifact_registry_path(self) -> Path:
+        if self.slim:
+            return self.structured_file(self.project_root, "artifacts.toml")
         return self._owned_file("gov", self._preferred_name("artifacts"))
 
     @property
     def artifact_type_registry_path(self) -> Path:
+        if self.slim:
+            return self.structured_file(self.project_root, "artifact-types.toml")
         return self._owned_file("gov", self._preferred_name("artifact-types"))
 
     @property
     def intake_path(self) -> Path:
+        if self.slim:
+            return self.structured_file(self.project_root, "intake.toml")
         return self._owned_file("gov", self._preferred_name("intake"))
 
     @property
     def provenance_path(self) -> Path:
+        if self.slim:
+            return self.structured_file(self.project_root, "provenance.toml")
         return self._owned_file("gov", self._preferred_name("provenance"))
 
     @property
     def traceability_path(self) -> Path:
+        if self.slim:
+            return self.structured_file(
+                self.project_root / "generated",
+                self._preferred_name("traceability"),
+            )
         if self.layered:
             return self.structured_file(
                 self.layer_root("gov") / "generated",
@@ -117,10 +162,14 @@ class RepositoryLayout:
 
     @property
     def migrations_root(self) -> Path:
+        if self.slim:
+            return self.project_root / "migrations"
         return self._owned_directory("gov", "migrations")
 
     @property
     def version_path(self) -> Path:
+        if self.slim:
+            return self.structured_file(self.versions_root, "version.toml")
         return self._owned_file("meta", self._preferred_name("version"))
 
     @property
@@ -129,6 +178,8 @@ class RepositoryLayout:
 
     @property
     def history_root(self) -> Path:
+        if self.slim:
+            return self.versions_root / "history"
         return self._owned_directory("ops", "history")
 
     @property
@@ -159,16 +210,22 @@ class RepositoryLayout:
 
     @property
     def active_change_roots(self) -> tuple[Path, ...]:
+        if self.slim:
+            return (self.versions_root / "changes",)
         if self.layered:
             return tuple(self.layer_root(layer) / "changes" for layer in LAYERS)
         return (self.dset_root / "changes",)
 
     @property
     def archive_change_roots(self) -> tuple[Path, ...]:
+        if self.slim:
+            return (self.versions_root / "archive",)
         return tuple(path / "archive" for path in self.active_change_roots)
 
     @property
     def package_roots(self) -> tuple[Path, ...]:
+        if self.slim:
+            return tuple(self.layer_root(layer) for layer in LAYERS)
         if self.layered:
             return tuple(
                 self.layer_root(layer) / "specs" / "packages" for layer in LAYERS
@@ -193,6 +250,15 @@ class RepositoryLayout:
         return self._find_unique(self.template_roots, relative, "template")
 
     def package_fragments(self) -> tuple[Path, ...]:
+        if self.slim:
+            return tuple(
+                path
+                for path in (
+                    self.structured_file(self.layer_root(layer), "package.toml")
+                    for layer in LAYERS
+                )
+                if path.is_file()
+            )
         fragments: list[Path] = []
         for root in self.package_roots:
             if root.is_dir():
@@ -235,6 +301,8 @@ class RepositoryLayout:
         return tuple(selected)
 
     def active_change_root(self, layer: str | None = None) -> Path:
+        if self.slim:
+            return self.active_change_roots[0]
         if not self.layered:
             return self.active_change_roots[0]
         if layer is None:
@@ -242,6 +310,8 @@ class RepositoryLayout:
         return self.layer_root(layer) / "changes"
 
     def archive_change_root(self, layer: str | None = None) -> Path:
+        if self.slim:
+            return self.archive_change_roots[0]
         return self.active_change_root(layer) / "archive"
 
     def find_change(self, change_id: str, *, archived: bool = False) -> Path:
@@ -277,6 +347,18 @@ class RepositoryLayout:
 
     def change_layer(self, change: Path) -> str | None:
         resolved = change.resolve()
+        if self.slim:
+            manifest = self.structured_file(resolved, "change.toml")
+            try:
+                data = load(manifest)
+            except (OSError, ValueError, YamlSubsetError) as error:
+                raise ValueError(
+                    f"cannot read Change layer: {manifest}: {error}"
+                ) from error
+            raw = data.get("primary_layer") if isinstance(data, dict) else None
+            if not isinstance(raw, str) or raw.lower() not in LAYERS:
+                raise ValueError(f"Change has no registered layer: {manifest}")
+            return raw.lower()
         if not self.layered:
             return None
         for layer, root in self.layer_roots.items():
@@ -327,24 +409,57 @@ def discover_layout(root: Path) -> RepositoryLayout:
     """Discover a DSET layout, defaulting missing repositories to legacy paths."""
 
     root = root.resolve()
-    legacy = _manifest_candidate(root / "dset" / "dset.yaml")
-    layered = _manifest_candidate(root / "dset" / "scopes" / "meta" / "dset.yaml")
-    if legacy.is_file() and layered.is_file():
+    legacy_root = root / LEGACY_DSET_ROOT
+    current_root = root / CURRENT_DSET_ROOT
+    legacy = _manifest_candidate(legacy_root / "dset.yaml")
+    layered = _manifest_candidate(legacy_root / "scopes" / "meta" / "dset.yaml")
+    slim = current_root / "dset_settings.toml"
+    manifests = [path for path in (legacy, layered, slim) if path.is_file()]
+    if len(manifests) > 1:
         raise ValueError(
-            "DSET project has both legacy and schema 1.2 manifests: "
-            f"{legacy}, {layered}"
+            "DSET project has competing manifests: "
+            + ", ".join(path.as_posix() for path in manifests)
         )
-    manifest = layered if layered.is_file() else legacy
-    is_layered = layered.is_file()
+    manifest = slim if slim.is_file() else layered if layered.is_file() else legacy
+    is_slim = slim.is_file()
+    is_layered = is_slim or layered.is_file()
     version = _schema_version(manifest) if manifest.is_file() else None
-    if is_layered and version != LAYERED_SCHEMA_VERSION:
+    if is_slim and version != SLIM_SCHEMA_VERSION:
+        raise ValueError(f"slim DSET manifest must declare schema 1.3: {slim}")
+    if not is_slim and is_layered and version != LAYERED_SCHEMA_VERSION:
         raise ValueError(f"layered DSET manifest must declare schema 1.2: {layered}")
     if not is_layered and version is not None and version not in LEGACY_SCHEMA_VERSIONS:
         raise ValueError(
             f"central DSET manifest must declare schema 1.0 or 1.1: {legacy}"
         )
-    scopes = root / "dset" / "scopes"
-    if is_layered:
+    scopes = legacy_root / "scopes"
+    if is_slim:
+        missing_layers = [
+            current_root / layer
+            for layer in LAYERS
+            if not (current_root / layer).is_dir()
+        ]
+        if missing_layers:
+            raise ValueError(
+                "slim DSET project is missing fixed layer roots: "
+                + ", ".join(path.as_posix() for path in missing_layers)
+            )
+        if scopes.exists():
+            raise ValueError(
+                f"layout conflict: schema 1.3 and legacy dset/scopes coexist: {scopes}"
+            )
+        if legacy_root.exists():
+            raise ValueError(
+                "layout conflict: schema 1.3 .dset root and legacy dset root "
+                f"coexist: {legacy_root}"
+            )
+        old_settings = root / "dset_settings.toml"
+        if old_settings.exists():
+            raise ValueError(
+                "layout conflict: schema 1.3 combined settings and retired root "
+                f"settings coexist: {old_settings}"
+            )
+    elif is_layered:
         actual_layers = {path.name for path in scopes.iterdir() if path.is_dir()}
         if actual_layers != set(LAYERS):
             raise ValueError(
@@ -352,9 +467,9 @@ def discover_layout(root: Path) -> RepositoryLayout:
                 f"{', '.join(LAYERS)}"
             )
         conflicts = [
-            root / "dset" / relative
+            legacy_root / relative
             for relative in LEGACY_AUTHORITY_PATHS
-            if (root / "dset" / relative).exists()
+            if (legacy_root / relative).exists()
         ]
         if conflicts:
             rendered = ", ".join(path.as_posix() for path in conflicts)
@@ -372,9 +487,12 @@ def discover_layout(root: Path) -> RepositoryLayout:
 def has_manifest(root: Path) -> bool:
     root = root.resolve()
     return (
-        _manifest_candidate(root / "dset" / "dset.yaml").is_file()
+        (root / CURRENT_DSET_ROOT / "dset_settings.toml").is_file()
+        or _manifest_candidate(root / LEGACY_DSET_ROOT / "dset.yaml").is_file()
         or (
-            _manifest_candidate(root / "dset" / "scopes" / "meta" / "dset.yaml")
+            _manifest_candidate(
+                root / LEGACY_DSET_ROOT / "scopes" / "meta" / "dset.yaml"
+            )
         ).is_file()
     )
 
@@ -417,6 +535,7 @@ def _registered_snapshot_after_cutover(snapshot: Path) -> bool:
     resolved = snapshot.resolve()
     for root in (resolved.parent, *resolved.parents):
         registry_candidates = (
+            root / ".dset/project/artifact-types.toml",
             root / "dset/scopes/gov/artifact-types.toml",
             root / "dset/scopes/gov/artifact-types.yaml",
             root / "dset/artifact-types.toml",
@@ -428,9 +547,12 @@ def _registered_snapshot_after_cutover(snapshot: Path) -> bool:
         )
         if registry is None:
             continue
-        cutover = (root / "dset/scopes/meta/dset.toml").is_file() or (
-            root / "dset/dset.toml"
-        ).is_file()
+        cutover = (
+            (root / ".dset/dset_settings.toml").is_file()
+            or (root / "dset/dset_settings.toml").is_file()
+            or (root / "dset/scopes/meta/dset.toml").is_file()
+            or (root / "dset/dset.toml").is_file()
+        )
         if not cutover:
             return False
         try:

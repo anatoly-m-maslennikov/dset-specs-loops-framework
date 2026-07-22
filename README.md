@@ -17,9 +17,9 @@ This repository is the public source for the DSET framework, executable toolchai
 Framework rules and release assets live here. Each adopting repository owns its own behavioral truth and changes under its local `dset/` root. Installed skills, cached tooling, private working notes, and external project artifacts are not independent framework authorities.
 
 Repository behavior is selected in the self-documenting
-[`dset_settings.toml`](dset_settings.toml). Project identity, topology,
-contracts, release targets, verification commands, and provenance boundaries
-remain separate in the [META-owned project manifest](dset/scopes/meta/dset.toml).
+[`.dset/dset_settings.toml`](.dset/dset_settings.toml). The same file owns project
+identity, topology, contracts, release targets, verification commands, and
+provenance boundaries, so configuration has one canonical owner.
 
 ## Project architecture map
 
@@ -122,7 +122,7 @@ real failures using suitable logs, traces, provenance, state, and runbooks.
 |---|---|---|
 | Methodology | [Methodology hub](methodology/README.md) | Delivery stages, runtime/build rules, proof conventions, and external grounding |
 | Artifact governance | [Documentation architecture hub](documentation/README.md) | Artifact types, authoring rules, hubs, maintenance, and `documentation-v1` |
-| Project control plane | [DSET project hub](dset/README.md) | Accepted project truth, active/archive changes, schemas, templates, fixtures, [project health](dset/scopes/gov/generated/DSET-DERIVED-VIEW-001-project-health.md), traceability, migrations, and supportability |
+| Project control plane | [DSET project hub](.dset/project/README.md) | Accepted project truth, active/archive changes, schemas, templates, fixtures, [project health](.dset/project/generated/DSET-DERIVED-VIEW-001-project-health.md), traceability, migrations, and supportability |
 | Executable CLI | [`dset_toolchain/`](dset_toolchain/) | Dependency-light lifecycle, governance resolution/materialization, immutable-atom sealing, conflict disposition, health rendering, validation, traceability, archive, and bounded self-hosting |
 | Agent workflows | [Skills hub](skills/README.md) | Sixteen thin lifecycle, planning, implementation, review, support, and release wrappers backed by one shared runtime |
 | Delivery and provenance | [Delivery policy](.github/DELIVERY.md) and [third-party notices](THIRD_PARTY_NOTICES.md) | Protected publication path and external-source/license boundaries |
@@ -137,7 +137,7 @@ self-hosting work include:
   Supportability, Evals, Tests, specs, Decisions, contracts, stories, outcomes,
   and risk-scaled proof;
 - a repository-local DSET control plane split into the META, GOV, TOOL, SKILL,
-  and OPS scopes under [`dset/scopes/`](dset/scopes/);
+  and OPS scopes under [`dset/`](dset/);
 - schema `1.2` layered project metadata, Work Areas for monorepos and mixed
   repositories, scoped Changes, and stable project-prefixed artifact IDs;
 - a dependency-light Python toolchain with packaged `init`, repository checks,
@@ -199,7 +199,7 @@ dset skills install --host claude --apply
 The CLI also provides `runtime start|resume|checkpoint|finish`,
 `release plan|check|prepare`, `rules check|resolve|materialize|refresh|diff`,
 `self-host`, `version`, `new`, `trace`, and guarded `archive` workflows. See
-the [project-root guide](dset/README.md) and
+the [project-root guide](.dset/project/README.md) and
 [host distribution guide](skills/host-distribution.md) for lifecycle,
 authorization, and proof details.
 
@@ -208,15 +208,16 @@ authorization, and proof details.
 This public repository is the canonical source for DSET Spec Loops and every released framework-owned methodology document, schema, template, validator, utility, skill, fixture, and migration guide. Installed or workspace-local copies are distributions of this repository, not independent editable sources.
 
 Each project that adopts DSET owns its project truth separately under its own
-`dset/` root. In the current schema 1.2 layout,
-`dset/scopes/<layer>/specs/` contains accepted layer-owned truth and
-`dset/scopes/<primary-layer>/changes/` contains bounded work in progress. The
-central `dset/specs/` and `dset/changes/` paths remain compatibility surfaces for
-legacy schema 1.0/1.1 projects only. Framework truth never replaces project
+`dset/` root. In the current schema 1.3 layout, one
+[`.dset/dset_settings.toml`](.dset/dset_settings.toml) owns settings and manifest
+facts, `.dset/project/` owns project-wide truth and records, `.dset/versions/`
+owns Version lifecycle artifacts, and direct `dset/<layer>/` roots own
+layer-specific truth. Older central and `dset/` paths remain read-only
+compatibility and migration surfaces. Framework truth never replaces project
 truth, and project artifacts do not become framework rules unless they are
 deliberately contributed here.
 
-Schema 1.2 supports simple repositories and monorepos through neutral Work
+Schema 1.3 supports simple repositories and monorepos through neutral Work
 Areas: declared repository-relative folders containing any code, deployable,
 local, documentation, methodology, data, test, automation, or mixed content.
 Every Change and workflow may target the whole repository or one or more Work

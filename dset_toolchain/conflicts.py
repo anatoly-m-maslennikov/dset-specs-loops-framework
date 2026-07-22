@@ -660,7 +660,7 @@ def _atom_evidence(root: Path, path: Path, row: dict[str, Any]) -> list[dict[str
     if row.get("lifecycle_events"):
         layout = discover_layout(root)
         lifecycle_path = layout.structured_file(
-            layout.governance_root, "lifecycle.toml"
+            layout.project_state_root, "lifecycle.toml"
         )
         if lifecycle_path.is_file():
             evidence.append(_derived_identity(root, lifecycle_path))

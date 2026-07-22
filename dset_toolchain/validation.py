@@ -11,6 +11,9 @@ from urllib.parse import unquote
 
 from . import __version__
 from .carrier_transitions import (
+    ledger_path as carrier_transition_ledger_path,
+)
+from .carrier_transitions import (
     load_ledger as load_transition_ledger,
 )
 from .carrier_transitions import (
@@ -28,9 +31,10 @@ from .frontmatter import parse as parse_frontmatter
 from .governance import validate_governance
 from .health import health_is_fresh, health_path
 from .layout import RepositoryLayout, discover_layout
+from .legacy_authority import legacy_authority_ids
 from .lineage import validate_artifact_lineage
 from .profiles import VALID_PROFILES, required_artifacts
-from .semantic_atoms import validate_semantic_atoms
+from .semantic_atoms import collect_semantic_atoms, validate_semantic_atoms
 from .semantic_types import classify_semantic_id, validate_semantic_classifications
 from .settings import load_project_settings, selected_settings_path
 from .yaml_subset import YamlSubsetError, load
@@ -68,7 +72,6 @@ GITHUB_CALLOUTS = {"NOTE", "TIP", "IMPORTANT", "WARNING", "CAUTION"}
 MARKDOWN_IGNORED_PARTS = frozenset(
     {
         ".cache",
-        ".dset",
         ".git",
         ".mypy_cache",
         ".pytest_cache",
@@ -160,18 +163,10 @@ def validate_repository(root: Path) -> list[Diagnostic]:
     try:
         layout = discover_layout(root)
     except ValueError as error:
-        return [_diag("DSET-E001", root / "dset", str(error))]
+        return [_diag("DSET-E001", root / ".dset", str(error))]
     manifest_path = layout.manifest_path
     if not manifest_path.is_file():
         return [_diag("DSET-E001", manifest_path, "project manifest is missing")]
-    if (root / ".dset" / "specs").exists() or (root / ".dset" / "changes").exists():
-        diagnostics.append(
-            _diag(
-                "DSET-E110",
-                root / ".dset",
-                "hidden state cannot own committed project truth",
-            )
-        )
     manifest = _safe_load(manifest_path, diagnostics)
     if manifest:
         diagnostics.extend(_validate_project_manifest(root, manifest_path, manifest))
@@ -212,7 +207,7 @@ def validate_repository(root: Path) -> list[Diagnostic]:
             if path.is_dir() and re.match(r"^\d{4}-\d{2}-\d{2}-", path.name):
                 diagnostics.extend(validate_change(root, path, archived=True))
     diagnostics.extend(_validate_markdown(root))
-    transition_ledger = root / "dset/scopes/gov/migrations/carrier-transitions.toml"
+    transition_ledger = root / ".dset/project/migrations/carrier-transitions.toml"
     diagnostics.extend(
         _diag("DSET-E168", transition_ledger, issue)
         for issue in validate_carrier_transition_ledger(root)
@@ -282,26 +277,29 @@ def validate_change(
             _diag("DSET-E103", manifest_path, f"unknown change profile: {profile}")
         )
         return diagnostics
-    try:
-        files, directories = required_artifacts(root, profile)
-    except (KeyError, ValueError, YamlSubsetError) as error:
-        diagnostics.append(_diag("DSET-E103", manifest_path, str(error)))
-        return diagnostics
-    for relative in sorted(files):
-        requested = change_dir / relative
-        path = (
-            layout.structured_file(change_dir, relative)
-            if requested.suffix.lower() in {".toml", ".yaml", ".yml"}
-            else requested
-        )
-        if not path.is_file():
-            diagnostics.append(_diag("DSET-E104", path, "required artifact is missing"))
-    for relative in sorted(directories):
-        path = change_dir / relative
-        if not path.is_dir():
-            diagnostics.append(
-                _diag("DSET-E104", path, "required artifact directory is missing")
+    if not layout.slim:
+        try:
+            files, directories = required_artifacts(root, profile)
+        except (KeyError, ValueError, YamlSubsetError) as error:
+            diagnostics.append(_diag("DSET-E103", manifest_path, str(error)))
+            return diagnostics
+        for relative in sorted(files):
+            requested = change_dir / relative
+            path = (
+                layout.structured_file(change_dir, relative)
+                if requested.suffix.lower() in {".toml", ".yaml", ".yml"}
+                else requested
             )
+            if not path.is_file():
+                diagnostics.append(
+                    _diag("DSET-E104", path, "required artifact is missing")
+                )
+        for relative in sorted(directories):
+            path = change_dir / relative
+            if not path.is_dir():
+                diagnostics.append(
+                    _diag("DSET-E104", path, "required artifact directory is missing")
+                )
     if not _is_legacy_change(data) and not _valid_llm_session_ids(
         data.get("llm_session_ids")
     ):
@@ -343,13 +341,25 @@ def validate_change(
                 _diag("DSET-E108", manifest_path, "archive metadata is missing")
             )
         else:
-            expected = expected_relative
+            expected = None if layout.slim else expected_relative
             if expected is None:
                 try:
                     expected = change_dir.relative_to(root).as_posix()
                 except ValueError:
                     expected = None
-            if expected and archive.get("path") != expected:
+            recorded_archive = archive.get("path")
+            relocated_archive = None
+            if layout.slim and isinstance(recorded_archive, str):
+                relocated_manifest = _transition_current_path(
+                    root, f"{recorded_archive}/change.toml"
+                )
+                if relocated_manifest is not None:
+                    relocated_archive = PurePosixPath(
+                        relocated_manifest
+                    ).parent.as_posix()
+            if expected and not (
+                recorded_archive == expected or relocated_archive == expected
+            ):
                 diagnostics.append(
                     _diag(
                         "DSET-E150" if layered else "DSET-E108",
@@ -400,9 +410,12 @@ def _validate_project_manifest(
         diagnostics.append(
             _diag("DSET-E115", path, "package IDs must be non-empty and unique")
         )
-    if str(data.get("schema_version")) == "1.2":
+    if str(data.get("schema_version")) in {"1.2", "1.3"}:
         structure = data.get("structure")
-        valid_structure = structure == {"layout": "layered-v1"}
+        expected_layout = (
+            "slim-v1" if str(data.get("schema_version")) == "1.3" else "layered-v1"
+        )
+        valid_structure = structure == {"layout": expected_layout}
         diagnostics.extend(_validate_work_areas(root, path, data.get("work_areas")))
         valid_packages = isinstance(packages, list) and bool(packages)
         if valid_packages:
@@ -437,7 +450,8 @@ def _validate_project_manifest(
                 _diag(
                     "DSET-E143",
                     path,
-                    "schema 1.2 requires layered-v1 and package id/status/layers",
+                    "current schema requires its registered layout and "
+                    "package id/status/layers",
                 )
             )
     support = data.get("supportability", {})
@@ -468,13 +482,22 @@ def _validate_project_manifest(
         diagnostics.append(
             _diag("DSET-E115", root / registry, "work-item registry is missing")
         )
-    if str(data.get("schema_version")) == "1.2":
-        if registry not in {
-            "dset/scopes/gov/intake.toml",
-            "dset/scopes/gov/intake.yaml",
-        }:
+    if str(data.get("schema_version")) in {"1.2", "1.3"}:
+        expected_registries = (
+            {".dset/project/intake.toml"}
+            if str(data.get("schema_version")) == "1.3"
+            else {
+                "dset/scopes/gov/intake.toml",
+                "dset/scopes/gov/intake.yaml",
+            }
+        )
+        if registry not in expected_registries:
             diagnostics.append(
-                _diag("DSET-E143", path, "schema 1.2 requires the layered intake path")
+                _diag(
+                    "DSET-E143",
+                    path,
+                    "project schema requires its canonical intake path",
+                )
             )
         return diagnostics
     contracts = data.get("contracts")
@@ -580,7 +603,7 @@ def _validate_intake_registry(root: Path, manifest: dict[str, Any]) -> list[Diag
     project_key = _manifest_project_key(manifest)
     if project_key is None:
         return diagnostics
-    layered = str(manifest.get("schema_version")) == "1.2"
+    layered = str(manifest.get("schema_version")) in {"1.2", "1.3"}
     scopes: dict[str, str]
     if layered:
         scopes = {segment.lower(): segment for segment in TRACE_LAYERS}
@@ -1019,16 +1042,29 @@ def _validate_layered_packages(
         "stories": "STORY",
         "outcomes": "OUTCOME",
     }
-    artifact_names = {
-        "hub": "README.md",
-        "domain": "domain.md",
-        "spec": "spec.md",
-        "contracts": "contracts.md",
-        "stories": "stories.md",
-        "outcomes": "outcomes.md",
-        "test_plan": "test-plan.md",
-        "eval_plan": "eval-plan.md",
-    }
+    artifact_names = (
+        {
+            "hub": "navigation-methodology.md",
+            "domain": "specification-domain.md",
+            "spec": "specification-methodology.md",
+            "contracts": "specification-contracts.md",
+            "stories": "specification-user-stories.md",
+            "outcomes": "specification-outcomes.md",
+            "test_plan": "plan-tests.md",
+            "eval_plan": "plan-evaluations.md",
+        }
+        if layout.slim
+        else {
+            "hub": "README.md",
+            "domain": "domain.md",
+            "spec": "spec.md",
+            "contracts": "contracts.md",
+            "stories": "stories.md",
+            "outcomes": "outcomes.md",
+            "test_plan": "test-plan.md",
+            "eval_plan": "eval-plan.md",
+        }
+    )
     owner_artifact = {
         "requirements": "spec",
         "tests": "test_plan",
@@ -1049,7 +1085,9 @@ def _validate_layered_packages(
             )
             continue
         physical_layer = relative.parts[0]
-        physical_package = path.parent.name
+        physical_package = (
+            str(data.get("package_id")) if layout.slim else path.parent.name
+        )
         package_id = data.get("package_id")
         layer = data.get("layer")
         identity = (str(package_id), str(layer))
@@ -1261,8 +1299,9 @@ def validate_artifact_type_registry(
         registry_path, data
     )
     diagnostics.extend(compatibility_diagnostics)
+    markdown_texts = _retention_markdown_texts(root.resolve())
     legacy_structured, structured_diagnostics = _legacy_structured_entries(
-        root, registry_path, data, types
+        root, registry_path, data, types, markdown_texts
     )
     diagnostics.extend(structured_diagnostics)
     diagnostics.extend(
@@ -1286,7 +1325,11 @@ def validate_artifact_type_registry(
     if _within_root(root.resolve(), registry_path.resolve()):
         diagnostics.extend(
             _validate_legacy_structured_links(
-                root.resolve(), registry_path, legacy_structured, legacy_evidence
+                root.resolve(),
+                registry_path,
+                legacy_structured,
+                legacy_evidence,
+                markdown_texts,
             )
         )
     return diagnostics
@@ -1509,7 +1552,7 @@ def _legacy_evidence_paths(
         if (
             not isinstance(item, str)
             or not item.endswith(".md")
-            or "/proofs/" not in item
+            or not any(segment in item for segment in ("/proofs/", "/evidence/"))
             or item.startswith("/")
             or any(token in item for token in ("*", "?", "[", "]"))
         ):
@@ -1538,6 +1581,7 @@ def _legacy_structured_entries(
     registry_path: Path,
     data: dict[str, Any],
     catalog: dict[str, frozenset[str]],
+    markdown_texts: dict[Path, str],
 ) -> tuple[dict[str, dict[str, Any]], list[Diagnostic]]:
     """Validate the exact registry of byte-stable structured snapshots."""
 
@@ -1612,14 +1656,6 @@ def _legacy_structured_entries(
             )
             continue
         assert isinstance(raw_path, str) and isinstance(raw_owner, str)
-        if PurePosixPath(raw_owner) != PurePosixPath(raw_path).with_suffix(".toml"):
-            diagnostics.append(
-                _diag(
-                    "DSET-E156",
-                    registry_path,
-                    f"current_owner must be the TOML sibling of {raw_path}",
-                )
-            )
         if raw_path in entries:
             diagnostics.append(
                 _diag(
@@ -1748,6 +1784,7 @@ def _legacy_structured_entries(
                 ledger,
                 current_path=item.get("current_path"),
                 transition_id=item.get("transition_id"),
+                markdown_texts=markdown_texts,
             )
         )
 
@@ -1789,7 +1826,7 @@ def _within_root(root: Path, path: Path) -> bool:
 
 def _legacy_authority_records(root: Path) -> list[dict[str, Any]]:
     layout = discover_layout(root)
-    path = layout.structured_file(layout.governance_root, "legacy-authority.toml")
+    path = layout.structured_file(layout.project_state_root, "legacy-authority.toml")
     if not path.is_file():
         return []
     try:
@@ -1813,8 +1850,11 @@ def _validate_retention_identities(
     *,
     current_path: object = None,
     transition_id: object = None,
+    markdown_texts: dict[Path, str] | None = None,
 ) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
+    if markdown_texts is None:
+        markdown_texts = _retention_markdown_texts(root.resolve())
     if not isinstance(raw_identities, list) or not raw_identities:
         return [
             _diag(
@@ -1828,6 +1868,16 @@ def _validate_retention_identities(
     transition_target = _registered_transition_target(
         root, snapshot, current_path, transition_id
     )
+    if (
+        current_path is not None or transition_id is not None
+    ) and transition_target is None:
+        diagnostics.append(
+            _diag(
+                "DSET-E156",
+                registry_path,
+                f"legacy_structured {snapshot} transition is not registered",
+            )
+        )
     for identity in raw_identities:
         if not isinstance(identity, dict):
             diagnostics.append(
@@ -1863,7 +1913,9 @@ def _validate_retention_identities(
             )
         seen.add(marker)
         if key == "semantic_id":
-            carriers = _semantic_retention_carriers(root, ledger, value, snapshot)
+            carriers = _semantic_retention_carriers(
+                root, ledger, value, snapshot, markdown_texts
+            )
             if not carriers:
                 diagnostics.append(
                     _diag(
@@ -1887,11 +1939,22 @@ def _validate_retention_identities(
             if (
                 not _within_root(root, carrier)
                 or not carrier.is_file()
-                or "/proofs/" not in f"/{value}"
                 or not (
-                    _carrier_references_path(root, carrier, snapshot_path)
+                    "/proofs/" in f"/{value}"
+                    or discover_layout(root).slim
+                    and "/evidence/" in f"/{value}"
+                )
+                or not (
+                    _carrier_references_path(
+                        root, carrier, snapshot_path, markdown_texts.get(carrier)
+                    )
                     or transition_target is not None
-                    and _carrier_references_path(root, carrier, transition_target)
+                    and _carrier_references_path(
+                        root,
+                        carrier,
+                        transition_target,
+                        markdown_texts.get(carrier),
+                    )
                 )
             ):
                 diagnostics.append(
@@ -1925,16 +1988,57 @@ def _registered_transition_target(
         if isinstance(item, dict)
         and item.get("id") == transition_id
         and item.get("original_path") == original_path
-        and item.get("current_path") == current_path
     ]
     if len(matches) != 1:
         return None
+    initial_path = matches[0].get("current_path")
+    if not isinstance(initial_path, str):
+        return None
+    resolved_path = initial_path
+    visited = {original_path}
+    while resolved_path != current_path:
+        if resolved_path in visited:
+            return None
+        visited.add(resolved_path)
+        relocation_targets = {
+            str(item["current_path"])
+            for item in transitions
+            if isinstance(item, dict)
+            and item.get("kind") == "carrier_relocation"
+            and item.get("original_path") == resolved_path
+            and isinstance(item.get("current_path"), str)
+        }
+        if len(relocation_targets) != 1:
+            return None
+        resolved_path = next(iter(relocation_targets))
     target = (root / current_path).resolve()
     return target if _within_root(root, target) and target.is_file() else None
 
 
+def _transition_current_path(root: Path, original_path: str) -> str | None:
+    """Return one registered relocation target for an original carrier path."""
+
+    try:
+        data = load_transition_ledger(root)
+    except (OSError, UnicodeError, ValueError):
+        return None
+    matches = {
+        str(item["current_path"])
+        for item in data.get("transitions", [])
+        if isinstance(item, dict)
+        and item.get("kind") == "carrier_relocation"
+        and item.get("original_path") == original_path
+        and isinstance(item.get("current_path"), str)
+    }
+    return next(iter(matches)) if len(matches) == 1 else None
+
+
 def _semantic_retention_carriers(
-    root: Path, ledger: list[dict[str, Any]], semantic_id: str, snapshot: str
+    root: Path,
+    ledger: list[dict[str, Any]],
+    semantic_id: str,
+    snapshot: str,
+    markdown_texts: dict[Path, str],
 ) -> set[Path]:
     carriers: set[Path] = set()
     snapshot_path = (root / snapshot).resolve()
@@ -1952,26 +2056,92 @@ def _semantic_retention_carriers(
             links_snapshot = (
                 carrier.is_file()
                 and carrier.suffix == ".md"
-                and _carrier_references_path(root, carrier, snapshot_path)
+                and _carrier_references_path(
+                    root, carrier, snapshot_path, markdown_texts.get(carrier)
+                )
             )
             if raw == snapshot or links_snapshot:
                 carriers.add(carrier)
+    for carrier, text in markdown_texts.items():
+        if semantic_id not in text:
+            continue
+        if _carrier_references_path(root, carrier, snapshot_path, text):
+            carriers.add(carrier.resolve())
     return carriers
 
 
-def _carrier_references_path(root: Path, carrier: Path, target: Path) -> bool:
+def _carrier_references_path(
+    root: Path, carrier: Path, target: Path, text: str | None = None
+) -> bool:
     root = root.resolve()
     carrier = carrier.resolve()
     target = target.resolve()
-    if target in _local_link_targets(carrier):
+    local_targets = _local_link_targets(carrier)
+    if target in local_targets:
         return True
-    text = carrier.read_text(encoding="utf-8")
+    if text is None:
+        text = carrier.read_text(encoding="utf-8")
     for raw_target in LINK_PATTERN.findall(text):
         link = raw_target.strip().strip("<>").split("#", 1)[0]
         if link and (carrier.parent / unquote(link)).resolve() == target:
             return True
     relative = target.relative_to(root).as_posix()
-    return relative in text
+    if relative in text:
+        return True
+    aliases, reverse = _transition_indexes(root)
+    canonical_target = aliases.get(target, target)
+    if any(
+        aliases.get(candidate, candidate) == canonical_target
+        for candidate in local_targets
+    ):
+        return True
+    carrier_locations = {carrier, *reverse.get(carrier, frozenset())}
+    for carrier_location in carrier_locations:
+        for raw_target in LINK_PATTERN.findall(text):
+            link = raw_target.strip().strip("<>").split("#", 1)[0]
+            if (
+                link
+                and aliases.get(
+                    (carrier_location.parent / unquote(link)).resolve(),
+                    (carrier_location.parent / unquote(link)).resolve(),
+                )
+                == canonical_target
+            ):
+                return True
+    return False
+
+
+_TRANSITION_INDEX_CACHE: dict[
+    tuple[str, int, int], tuple[dict[Path, Path], dict[Path, frozenset[Path]]]
+] = {}
+
+
+def _transition_indexes(
+    root: Path,
+) -> tuple[dict[Path, Path], dict[Path, frozenset[Path]]]:
+    """Index relocation aliases once per ledger revision."""
+
+    root = root.resolve()
+    ledger = carrier_transition_ledger_path(root)
+    try:
+        stat = ledger.stat()
+        revision = (str(root), stat.st_mtime_ns, stat.st_size)
+    except OSError:
+        revision = (str(root), -1, -1)
+    cached = _TRANSITION_INDEX_CACHE.get(revision)
+    if cached is not None:
+        return cached
+    aliases = transition_aliases(root)
+    reverse_mutable: dict[Path, set[Path]] = {}
+    for original, current in aliases.items():
+        reverse_mutable.setdefault(current, set()).add(original)
+    reverse = {
+        current: frozenset(originals) for current, originals in reverse_mutable.items()
+    }
+    cached = (aliases, reverse)
+    _TRANSITION_INDEX_CACHE.clear()
+    _TRANSITION_INDEX_CACHE[revision] = cached
+    return cached
 
 
 def _validate_legacy_structured_links(
@@ -1979,6 +2149,7 @@ def _validate_legacy_structured_links(
     registry_path: Path,
     entries: dict[str, dict[str, Any]],
     legacy_evidence: frozenset[str],
+    markdown_texts: dict[Path, str],
 ) -> list[Diagnostic]:
     """Keep mutable references current and immutable references explicitly bound."""
 
@@ -1986,9 +2157,9 @@ def _validate_legacy_structured_links(
     registered = {(root / relative).resolve(): relative for relative in entries}
     ledger = _legacy_authority_records(root)
     immutable: set[Path] = {(root / relative).resolve() for relative in legacy_evidence}
-    for path in _project_visible_files(root):
+    for path in markdown_texts:
         relative = path.relative_to(root).as_posix()
-        if path.suffix == ".md" and "/proofs/" in f"/{relative}":
+        if "/proofs/" in f"/{relative}":
             immutable.add(path.resolve())
     for record in ledger:
         fragments = record.get("fragments")
@@ -2004,7 +2175,7 @@ def _validate_legacy_structured_links(
             if isinstance(raw, str):
                 immutable.add((root / raw).resolve())
     atoms = discover_layout(root).structured_file(
-        discover_layout(root).governance_root, "atoms.toml"
+        discover_layout(root).project_state_root, "atoms.toml"
     )
     if atoms.is_file():
         try:
@@ -2033,12 +2204,12 @@ def _validate_legacy_structured_links(
             semantic_id = identity.get("semantic_id")
             if isinstance(semantic_id, str):
                 allowed[snapshot].update(
-                    _semantic_retention_carriers(root, ledger, semantic_id, relative)
+                    _semantic_retention_carriers(
+                        root, ledger, semantic_id, relative, markdown_texts
+                    )
                 )
 
-    for carrier in _project_visible_files(root):
-        if carrier.suffix != ".md":
-            continue
+    for carrier, _text in markdown_texts.items():
         targets = _local_link_targets(carrier)
         is_immutable = carrier.resolve() in immutable
         for target in targets:
@@ -2066,7 +2237,10 @@ def _validate_legacy_structured_links(
             if (
                 is_immutable
                 and target.suffix.lower() in {".yaml", ".yml"}
-                and _within_root(root / "dset", target)
+                and (
+                    _within_root(root / ".dset", target)
+                    or _within_root(root / "dset", target)
+                )
             ):
                 diagnostics.append(
                     _diag(
@@ -2077,6 +2251,18 @@ def _validate_legacy_structured_links(
                     )
                 )
     return diagnostics
+
+
+def _retention_markdown_texts(root: Path) -> dict[Path, str]:
+    """Read each project-visible Markdown carrier once per registry check."""
+
+    texts: dict[Path, str] = {}
+    for path in _markdown_paths(root):
+        try:
+            texts[path.resolve()] = path.read_text(encoding="utf-8")
+        except (OSError, UnicodeError):
+            continue
+    return texts
 
 
 def _validate_artifact_path_rules(
@@ -2252,9 +2438,9 @@ def _validate_current_artifact_classifications(
                 historical.get("artifact_type"),
                 historical.get("artifact_subtype"),
             )
-            if historical_classification != (
-                rule_type,
-                rule_subtype,
+            if historical_classification[0] != rule_type or (
+                rule_subtype is not None
+                and historical_classification[1] != rule_subtype
             ):
                 diagnostics.append(
                     _diag(
@@ -2271,9 +2457,12 @@ def _validate_current_artifact_classifications(
         if owner_entries and len(matched_rules) == 1:
             _, rule_type, rule_subtype = matched_rules[0]
             owner = owner_entries[0]
-            if (owner.get("artifact_type"), owner.get("artifact_subtype")) != (
-                rule_type,
-                rule_subtype,
+            owner_classification = (
+                owner.get("artifact_type"),
+                owner.get("artifact_subtype"),
+            )
+            if owner_classification[0] != rule_type or (
+                rule_subtype is not None and owner_classification[1] != rule_subtype
             ):
                 diagnostics.append(
                     _diag(
@@ -2307,7 +2496,9 @@ def _validate_current_artifact_classifications(
             )
         if len(matched_rules) == 1:
             _, rule_type, rule_subtype = matched_rules[0]
-            if (artifact_type, artifact_subtype) != (rule_type, rule_subtype):
+            if artifact_type != rule_type or (
+                rule_subtype is not None and artifact_subtype != rule_subtype
+            ):
                 diagnostics.append(
                     _diag(
                         "DSET-E156",
@@ -2347,12 +2538,19 @@ def _direct_artifact_classification(
     artifact_type = metadata.get("artifact_type")
     artifact_subtype = metadata.get("artifact_subtype")
     artifact_id = metadata.get("artifact_id")
+    semantic_id = metadata.get("semantic_id")
     if artifact_type is None and artifact_subtype is None:
         return None
     return (
         str(artifact_type),
         str(artifact_subtype) if artifact_subtype is not None else None,
-        str(artifact_id) if artifact_id is not None else None,
+        (
+            str(semantic_id)
+            if artifact_type == "atomic_record" and isinstance(semantic_id, str)
+            else str(artifact_id)
+            if artifact_id is not None
+            else None
+        ),
     )
 
 
@@ -2366,17 +2564,23 @@ def _validate_artifact_name(
     include_subtype_in_names: bool,
 ) -> list[Diagnostic]:
     type_token = artifact_type.replace("_", "-").upper()
+    if artifact_type == "atomic_record":
+        semantic = re.match(
+            rf"^{re.escape(project_key)}-([A-Z][A-Z0-9-]*?)-(?:[A-Z]+-)?\d+$",
+            artifact_id,
+        )
+        if semantic is not None:
+            type_token = semantic.group(1).split("-")[0]
     tokens = [project_key, type_token]
     if include_subtype_in_names and artifact_subtype is not None:
         tokens.append(artifact_subtype.replace("_", "-").upper())
     prefix = "-".join(tokens) + "-"
-    identifier_suffix = artifact_id.removeprefix(prefix)
-    filename_suffix = path.stem.removeprefix(prefix)
-    if (
-        artifact_id.startswith(prefix)
-        and path.stem.startswith(prefix)
-        and re.match(r"^\d+(?:-|$)", identifier_suffix)
-        and re.match(r"^\d+(?:-|$)", filename_suffix)
+    layered_prefix = re.compile(
+        rf"^{re.escape(prefix)}(?:(?:{'|'.join(TRACE_LAYERS)})-)?"
+        rf"(?P<number>\d+)$"
+    )
+    if layered_prefix.fullmatch(artifact_id) is not None and path.stem.startswith(
+        f"{artifact_id}-"
     ):
         return []
     return [
@@ -2648,6 +2852,9 @@ def _validate_change_ids(
 ) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     manifest_path = discover_layout(root).structured_file(change_dir, "change.toml")
+    layout = discover_layout(root)
+    if layout.slim:
+        return _validate_slim_change_ids(root, manifest_path, data, layout)
     legacy = _is_legacy_change(data)
     manifest = _safe_load(discover_layout(root).manifest_path, diagnostics) or {}
     project_key = _manifest_project_key(manifest)
@@ -2814,6 +3021,108 @@ def _validate_change_ids(
     return diagnostics
 
 
+def _validate_slim_change_ids(
+    root: Path,
+    manifest_path: Path,
+    data: dict[str, Any],
+    layout: RepositoryLayout,
+) -> list[Diagnostic]:
+    diagnostics: list[Diagnostic] = []
+    project = _safe_load(layout.manifest_path, diagnostics) or {}
+    project_key = _manifest_project_key(project)
+    if project_key is None:
+        return [_diag("DSET-E106", manifest_path, "project.key is unavailable")]
+    atoms, _ = collect_semantic_atoms(root)
+    known = set(atoms) | legacy_authority_ids(root) | _defined_semantic_ids(root)
+    for package in layout.package_fragments():
+        payload = _safe_load(package, diagnostics) or {}
+        for group in (
+            "requirements",
+            "tests",
+            "evals",
+            "contracts",
+            "stories",
+            "outcomes",
+        ):
+            values = payload.get(group)
+            if isinstance(values, list):
+                known.update(item for item in values if isinstance(item, str))
+    groups = {
+        "requirements": ("REQUIREMENT",),
+        "tests": ("TEST",),
+        "evals": ("EVAL", "EVALUATION"),
+        "decisions": ("DECISION",),
+        "contracts": ("CONTRACT",),
+        "stories": ("STORY",),
+        "outcomes": ("OUTCOME",),
+    }
+    for group, kinds in groups.items():
+        values = data.get(group)
+        if not isinstance(values, list):
+            diagnostics.append(
+                _diag("DSET-E106", manifest_path, f"{group} must be a list")
+            )
+            continue
+        pattern = _trace_id_pattern(project_key, kinds)
+        for identifier in values:
+            if not isinstance(identifier, str) or pattern.fullmatch(identifier) is None:
+                diagnostics.append(
+                    _diag("DSET-E106", manifest_path, f"invalid ID: {identifier}")
+                )
+            elif identifier not in known:
+                diagnostics.append(
+                    _diag(
+                        "DSET-E106", manifest_path, f"unknown governed ID: {identifier}"
+                    )
+                )
+    if not data.get("requirements") or not data.get("tests"):
+        diagnostics.append(
+            _diag("DSET-E106", manifest_path, "requirements and tests cannot be empty")
+        )
+    intake = data.get("intake")
+    if not isinstance(intake, list):
+        diagnostics.append(_diag("DSET-E106", manifest_path, "intake must be a list"))
+    else:
+        registry = _safe_load(layout.intake_path, diagnostics) or {}
+        registered = {
+            item.get("id")
+            for item in registry.get("items", [])
+            if isinstance(item, dict)
+        }
+        for identifier in intake:
+            if identifier not in registered:
+                diagnostics.append(
+                    _diag(
+                        "DSET-E106",
+                        manifest_path,
+                        f"unregistered intake ID: {identifier}",
+                    )
+                )
+    return diagnostics
+
+
+def _defined_semantic_ids(root: Path) -> set[str]:
+    """Collect IDs from definition headings and first-column plan rows."""
+
+    identifiers: set[str] = set()
+    id_pattern = re.compile(
+        r"[A-Z][A-Z0-9]*-(?:" + "|".join(TRACE_TYPES) + r")"
+        r"(?:-(?:" + "|".join(TRACE_LAYERS) + r"))?-\d{3,}"
+    )
+    for path in _markdown_paths(root):
+        try:
+            lines = path.read_text(encoding="utf-8").splitlines()
+        except (OSError, UnicodeError):
+            continue
+        for line in lines:
+            stripped = line.lstrip()
+            if stripped.startswith("#") or re.match(
+                r"^\|\s*(?:`|\*\*)?[A-Z][A-Z0-9]*-", stripped
+            ):
+                identifiers.update(id_pattern.findall(line))
+    return identifiers
+
+
 def _validate_layered_change(
     layout: RepositoryLayout, change_dir: Path, data: dict[str, Any]
 ) -> list[Diagnostic]:
@@ -2881,7 +3190,12 @@ def _validate_layered_change(
     if isinstance(release, dict):
         policy = release.get("policy")
         owner = release.get("owner_change")
-        if policy is not None and policy != "dset/scopes/ops/governance/release.md":
+        expected_policy = (
+            ".dset/ops/procedure-release.md"
+            if layout.slim
+            else "dset/scopes/ops/governance/release.md"
+        )
+        if policy is not None and policy != expected_policy:
             diagnostics.append(
                 _diag("DSET-E153", path, "schema 1.2 release policy path is invalid")
             )
@@ -3238,6 +3552,10 @@ def _validate_provenance(root: Path) -> list[Diagnostic]:
 def _validate_markdown(root: Path) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     aliases = transition_aliases(root)
+    reverse_aliases = {
+        current.resolve(): original.resolve() for original, current in aliases.items()
+    }
+    relocated_carriers = {path.resolve() for path in aliases.values()}
     for path in _markdown_paths(root):
         if any(part in MARKDOWN_IGNORED_PARTS for part in path.relative_to(root).parts):
             continue
@@ -3273,7 +3591,19 @@ def _validate_markdown(root: Path) -> list[Diagnostic]:
             if "{{" in target:
                 continue
             resolved = (path.parent / unquote(target)).resolve()
-            if not resolved.exists() and not aliases.get(resolved, resolved).exists():
+            original_carrier = reverse_aliases.get(path.resolve())
+            historical = (
+                (original_carrier.parent / unquote(target)).resolve()
+                if original_carrier is not None
+                else None
+            )
+            relocated = aliases.get(historical, historical) if historical else None
+            if (
+                not resolved.exists()
+                and not aliases.get(resolved, resolved).exists()
+                and (relocated is None or not relocated.exists())
+                and path.resolve() not in relocated_carriers
+            ):
                 diagnostics.append(
                     _diag(
                         "DSET-E113",
@@ -3316,7 +3646,7 @@ def _project_visible_files(root: Path) -> list[Path]:
                 continue
             relative = Path(item.decode("utf-8"))
             path = root / relative
-            if relative.parts[:2] == (".dset", "toml-migration-backups"):
+            if relative.parts[:2] == (".dset", "runtime"):
                 continue
             if path.is_file() or path.is_symlink():
                 visible.append(path)
@@ -3325,6 +3655,7 @@ def _project_visible_files(root: Path) -> list[Path]:
         path
         for path in root.rglob("*")
         if path.is_file()
+        and path.relative_to(root).parts[:2] != (".dset", "runtime")
         and not any(
             part in MARKDOWN_IGNORED_PARTS for part in path.relative_to(root).parts
         )

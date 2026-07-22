@@ -15,7 +15,6 @@ IGNORED_PARTS = frozenset(
     {
         ".git",
         ".cache",
-        ".dset",
         ".venv",
         "__pycache__",
         "dist",
@@ -130,8 +129,11 @@ def _authority_sources(root: Path) -> dict[str, Path]:
             and lifecycle.get(atom.semantic_id) not in INACTIVE_EVENTS
         ):
             sources[atom.semantic_id] = root / atom.path
-    for path in root.rglob("decision-*.md"):
-        if _ignored(root, path):
+    for path in root.rglob("*.md"):
+        if _ignored(root, path) or (
+            path.parent.name != "decision"
+            and not path.name.lower().startswith("decision-")
+        ):
             continue
         text = _read(path)
         match = re.search(r"\*\*Decision ID:\*\*\s*`([^`]+)`", text)
@@ -163,6 +165,19 @@ def _authority_sources(root: Path) -> dict[str, Path]:
 
 
 def _projection_paths(root: Path) -> list[Path]:
+    layout = discover_layout(root)
+    if layout.slim:
+        prefixes = (
+            "specification-",
+            "procedure-",
+            "plan-",
+            "dset-specification-",
+        )
+        return [
+            path
+            for path in sorted(layout.dset_root.rglob("*.md"))
+            if not _ignored(root, path) and path.name.lower().startswith(prefixes)
+        ]
     return [
         path
         for path in sorted(root.rglob("*.md"))
@@ -173,7 +188,7 @@ def _projection_paths(root: Path) -> list[Path]:
 
 def _lifecycle_status(root: Path) -> dict[str, str]:
     layout = discover_layout(root)
-    path = layout.structured_file(layout.governance_root, "lifecycle.toml")
+    path = layout.structured_file(layout.project_state_root, "lifecycle.toml")
     if not path.is_file():
         return {}
     data = load(path)
@@ -187,8 +202,11 @@ def _lifecycle_status(root: Path) -> dict[str, str]:
 
 def _ignored(root: Path, path: Path) -> bool:
     relative = path.relative_to(root)
+    if relative.parts[:2] == (".dset", "runtime"):
+        return True
     return any(
-        part in IGNORED_PARTS or (part.startswith(".") and part != ".github")
+        part in IGNORED_PARTS
+        or (part.startswith(".") and part not in {".github", ".dset"})
         for part in relative.parts
     )
 

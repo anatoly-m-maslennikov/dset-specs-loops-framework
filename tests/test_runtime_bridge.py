@@ -184,7 +184,11 @@ class RuntimeBridgeTests(unittest.TestCase):
             dir=ROOT.parent, ignore_cleanup_errors=True
         ) as raw:
             adopter = (Path(raw) / "adopter").resolve()
-            shutil.copytree(ROOT / "dset", adopter / "dset")
+            shutil.copytree(
+                ROOT / ".dset",
+                adopter / ".dset",
+                ignore=shutil.ignore_patterns("runtime"),
+            )
             shutil.copytree(ROOT / "skills", adopter / "skills")
             for skill_id, workflow_id in PUBLIC_SKILL_WORKFLOWS.items():
                 if skill_id in {"dset-init", "dset-repair-governance"}:
@@ -210,7 +214,11 @@ class RuntimeBridgeTests(unittest.TestCase):
     def test_context_resolves_explicit_nested_work_area_target(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
             adopter = (Path(raw) / "adopter").resolve()
-            shutil.copytree(ROOT / "dset", adopter / "dset")
+            shutil.copytree(
+                ROOT / ".dset",
+                adopter / ".dset",
+                ignore=shutil.ignore_patterns("runtime"),
+            )
             shutil.copytree(ROOT / "skills", adopter / "skills")
             context = resolve_skill_context(
                 adopter / "skills" / "dset-implement" / "SKILL.md",
@@ -233,7 +241,7 @@ class RuntimeBridgeTests(unittest.TestCase):
             self.assertGreater(semantic_routing["classification_count"], 0)
             self.assertEqual(
                 semantic_routing["source"],
-                "dset/scopes/gov/governance/work-items.md",
+                ".dset/gov/specification-work-items.md",
             )
             self.assertTrue(str(context["ruleset_identity"]).startswith("ruleset:"))
             closure = cast(dict[str, Any], context["closure"])
@@ -324,7 +332,11 @@ class RuntimeBridgeTests(unittest.TestCase):
     def test_context_rejects_competing_project_roots(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
             outer = (Path(raw) / "outer").resolve()
-            shutil.copytree(ROOT / "dset", outer / "dset")
+            shutil.copytree(
+                ROOT / ".dset",
+                outer / ".dset",
+                ignore=shutil.ignore_patterns("runtime"),
+            )
             nested = outer / "nested"
             manifest = nested / "dset" / "scopes" / "meta" / "dset.toml"
             manifest.parent.mkdir(parents=True)

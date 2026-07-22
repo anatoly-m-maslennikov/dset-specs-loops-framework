@@ -145,8 +145,8 @@ def distribution_source(source_root: Path | None = None) -> Iterator[tuple[Path,
 
     if source_root is not None:
         source = source_root.resolve()
-        if not has_manifest(source) or not discover_layout(source).layered:
-            raise InitializationError(f"source is not a schema 1.2 DSET root: {source}")
+        if not has_manifest(source) or not discover_layout(source).slim:
+            raise InitializationError(f"source is not a schema 1.3 DSET root: {source}")
         yield source, f"path:{source.as_posix()}"
         return
     with tempfile.TemporaryDirectory(
@@ -225,18 +225,21 @@ def _stage_project(
     hosted_automation: bool,
 ) -> None:
     source_layout = discover_layout(source)
-    structured_suffix = source_layout.manifest_path.suffix
+    dset_root = stage / ".dset"
+    project_root = dset_root / "project"
+    versions_root = dset_root / "versions"
+    project_root.mkdir(parents=True)
+    versions_root.mkdir()
     for layer in LAYERS:
-        layer_root = stage / "dset" / "scopes" / layer
-        layer_root.mkdir(parents=True)
-        (layer_root / "changes" / "archive").mkdir(parents=True)
+        layer_root = dset_root / layer
+        layer_root.mkdir()
         for folder in ("schemas", "templates"):
-            origin = source / "dset" / "scopes" / layer / folder
+            origin = source_layout.layer_root(layer) / folder
             if origin.is_dir():
                 shutil.copytree(origin, layer_root / folder)
 
     manifest = {
-        "schema_version": "1.2",
+        "schema_version": "1.3",
         "project": {
             "key": project_key,
             "id": project_id,
@@ -256,7 +259,7 @@ def _stage_project(
                 )
             ),
             "authority": "local-repository",
-            "runbook": "dset/scopes/ops/supportability/README.md",
+            "runbook": ".dset/ops/supportability/README.md",
         },
         "release": {
             "status": "not-applicable",
@@ -266,8 +269,8 @@ def _stage_project(
             "integration_branch": "dev",
             "protected_branch": "main",
         },
-        "work_items": {"registry": f"dset/scopes/gov/intake{structured_suffix}"},
-        "structure": {"layout": "layered-v1"},
+        "work_items": {"registry": ".dset/project/intake.toml"},
+        "structure": {"layout": "slim-v1"},
         "work_areas": [
             {"id": item.identifier, "path": item.path} for item in work_areas
         ],
@@ -289,11 +292,9 @@ def _stage_project(
         "verification": {"commands": ["{python} -m dset_toolchain check ."]},
         "canonical_command": "python -m dset_toolchain verify .",
     }
-    manifest_path = stage / "dset" / "scopes" / "meta" / f"dset{structured_suffix}"
-    manifest_path.write_text(dump(manifest, manifest_path), encoding="utf-8")
-    shutil.copyfile(
-        source_layout.find_template("dset_settings.toml"),
-        stage / "dset_settings.toml",
+    manifest_path = dset_root / "dset_settings.toml"
+    _write_combined_settings(
+        source_layout.find_template("dset_settings.toml"), manifest_path, manifest
     )
     _materialize_package(
         source_layout,
@@ -302,16 +303,11 @@ def _stage_project(
         package_id,
         project_name,
     )
-    gov = stage / "dset" / "scopes" / "gov"
-    _copy_structured(
-        source_layout.find_template("artifact-types.yaml"),
-        gov / f"artifact-types{structured_suffix}",
-    )
     _copy_structured(
         source_layout.find_template("intake.yaml"),
-        gov / f"intake{structured_suffix}",
+        project_root / "intake.toml",
     )
-    provenance_path = gov / f"provenance{structured_suffix}"
+    provenance_path = project_root / "provenance.toml"
     provenance_path.write_text(
         dump(
             {
@@ -323,12 +319,12 @@ def _stage_project(
         ),
         encoding="utf-8",
     )
-    skill = stage / "dset" / "scopes" / "skill"
+    skill = dset_root / "skill"
     _copy_structured(
         source_layout.find_template("budget.yaml"),
-        skill / f"budget{structured_suffix}",
+        skill / "budget.toml",
     )
-    ops = stage / "dset" / "scopes" / "ops"
+    ops = dset_root / "ops"
     supportability = ops / "supportability"
     supportability.mkdir()
     supportability_state = (
@@ -341,9 +337,9 @@ def _stage_project(
         f"# Supportability\n\n{supportability_state}\n",
         encoding="utf-8",
     )
-    history = ops / "history"
+    history = versions_root / "history"
     history.mkdir()
-    history_path = history / f"pull-requests{structured_suffix}"
+    history_path = history / "pull-requests.toml"
     history_path.write_text(
         dump(
             {
@@ -357,16 +353,30 @@ def _stage_project(
         ),
         encoding="utf-8",
     )
-    (stage / ".dset").mkdir()
-    (stage / ".dset" / ".gitignore").write_text(
-        "runs/\nsessions/\n",
-        encoding="utf-8",
-    )
-    (stage / "dset" / "README.md").write_text(
+    runtime = dset_root / "runtime"
+    runtime.mkdir()
+    (runtime / ".gitignore").write_text("*\n!.gitignore\n", encoding="utf-8")
+    (dset_root / "README.md").write_text(
         "# DSET project control\n\n"
-        "Repository-local governance, accepted truth, Changes, and proof.\n",
+        "- [Project truth and records](project/README.md)\n"
+        "- [Settings and manifest](dset_settings.toml)\n"
+        "- [Version lifecycle](versions/README.md)\n",
         encoding="utf-8",
     )
+    (project_root / "README.md").write_text(
+        "# Project truth and records\n\n"
+        "Project-wide evergreen artifacts, registries, and generated views.\n",
+        encoding="utf-8",
+    )
+    (versions_root / "README.md").write_text(
+        "# Version lifecycle\n\nProject-wide Changes and release records.\n",
+        encoding="utf-8",
+    )
+    for layer in LAYERS:
+        (dset_root / layer / "README.md").write_text(
+            f"# {layer.upper()} layer\n\nLayer-owned DSET control artifacts.\n",
+            encoding="utf-8",
+        )
     materialize_governance(source, stage, profile, install_wrappers=True)
     write_legacy_authority_ledger(stage)
     write_traceability(stage)
@@ -379,8 +389,7 @@ def _materialize_package(
     package_id: str,
     project_name: str,
 ) -> None:
-    destination = stage / "dset" / "scopes" / "meta" / "specs" / "packages" / package_id
-    destination.mkdir(parents=True)
+    destination = stage / ".dset" / "meta"
     replacements = {
         "{{project_key}}": project_key,
         "{{package_id}}": package_id,
@@ -388,27 +397,62 @@ def _materialize_package(
         "{{id_layer}}": "-META",
         "{{layer}}": "meta",
     }
-    names = (
-        "README.md",
-        "domain.md",
-        "spec.md",
-        "contracts.md",
-        "stories.md",
-        "outcomes.md",
-        "test-plan.md",
-        "eval-plan.md",
-    )
-    for name in names:
-        content = source_layout.find_template(Path("package") / name).read_text(
+    names = {
+        "README.md": "navigation-methodology.md",
+        "domain.md": "specification-domain.md",
+        "spec.md": "specification-methodology.md",
+        "contracts.md": "specification-contracts.md",
+        "stories.md": "specification-user-stories.md",
+        "outcomes.md": "specification-outcomes.md",
+        "test-plan.md": "plan-tests.md",
+        "eval-plan.md": "plan-evaluations.md",
+    }
+    for source_name, target_name in names.items():
+        content = source_layout.find_template(Path("package") / source_name).read_text(
             encoding="utf-8"
         )
         for old, new in replacements.items():
             content = content.replace(old, new)
-        (destination / name).write_text(content, encoding="utf-8")
+        for old, new in names.items():
+            content = content.replace(f"]({old})", f"]({new})")
+        (destination / target_name).write_text(content, encoding="utf-8")
     source = source_layout.find_template("package/layered/package.yaml")
     manifest = _replace_structured_values(load(source), replacements)
-    target = destination / f"package{source_layout.manifest_path.suffix}"
+    assert isinstance(manifest, dict)
+    manifest["artifacts"] = {
+        "hub": "navigation-methodology.md",
+        "domain": "specification-domain.md",
+        "spec": "specification-methodology.md",
+        "contracts": "specification-contracts.md",
+        "stories": "specification-user-stories.md",
+        "outcomes": "specification-outcomes.md",
+        "test_plan": "plan-tests.md",
+        "eval_plan": "plan-evaluations.md",
+    }
+    target = destination / "package.toml"
     target.write_text(dump(manifest, target), encoding="utf-8")
+
+
+def _write_combined_settings(
+    template: Path, target: Path, manifest: dict[str, Any]
+) -> None:
+    behavior = template.read_text(encoding="utf-8").rstrip()
+    project = dict(manifest)
+    project.pop("schema_version", None)
+    project.pop("canonical_command", None)
+    if not project.get("work_areas"):
+        project.pop("work_areas", None)
+        behavior = behavior.replace(
+            'canonical_command = "python -m dset_toolchain verify ."',
+            'canonical_command = "python -m dset_toolchain verify ."\nwork_areas = []',
+            1,
+        )
+    rendered = (
+        behavior
+        + "\n\n# Project identity, topology, and executable boundaries.\n\n"
+        + dump(project, target)
+    )
+    target.write_text(rendered, encoding="utf-8")
 
 
 def _copy_structured(source: Path, target: Path) -> None:

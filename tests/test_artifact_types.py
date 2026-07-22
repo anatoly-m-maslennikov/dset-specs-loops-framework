@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 LAYOUT = discover_layout(ROOT)
 REGISTRY_PATH = LAYOUT.artifact_type_registry_path
 TEMPLATE_PATH = LAYOUT.find_template("artifact-types.toml")
-SCHEMA_PATH = ROOT / "dset/scopes/gov/schemas/artifact-types.schema.json"
+SCHEMA_PATH = ROOT / ".dset/gov/schemas/artifact-types.schema.json"
 
 
 class ArtifactTypeRegistryTests(unittest.TestCase):
@@ -60,8 +60,8 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
     ) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw).resolve()
-            registry_path = root / "dset/scopes/gov/artifact-types.yaml"
-            snapshot = root / "dset/scopes/gov/items.yaml"
+            registry_path = root / "dset/gov/artifact-types.yaml"
+            snapshot = root / "dset/gov/items.yaml"
             snapshot.parent.mkdir(parents=True)
             snapshot.write_text("id: historical\n", encoding="utf-8")
             snapshot.with_suffix(".toml").write_text(
@@ -80,14 +80,14 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
             snapshot.with_suffix(".toml").unlink()
             data["legacy_structured"] = [
                 {
-                    "path": "dset/scopes/gov/items.yaml",
+                    "path": "dset/gov/items.yaml",
                     "sha256": hashlib.sha256(snapshot.read_bytes()).hexdigest(),
-                    "current_owner": "dset/scopes/gov/items.toml",
+                    "current_owner": "dset/gov/items.toml",
                     "artifact_type": "implementation",
                     "artifact_subtype": "configuration",
                     "retained_for": [
                         {
-                            "carrier_path": "dset/scopes/gov/changes/x/proofs/p.md",
+                            "carrier_path": "dset/gov/changes/x/proofs/p.md",
                             "reason": "Historical proof link.",
                         }
                     ],
@@ -129,7 +129,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
         self.assertTrue({"roadmap", "release_plan"}.isdisjoint(catalog["plan"]))
 
     def test_analysis_report_templates_cover_every_direct_subtype(self) -> None:
-        template_root = ROOT / "dset/scopes/gov/templates/change"
+        template_root = ROOT / ".dset/gov/templates/change"
         expected = {
             "solution-landscape.md": "solution_landscape",
             "root-cause.md": "root_cause_analysis",
@@ -147,8 +147,8 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
     def test_every_distributed_template_has_one_effective_classification(self) -> None:
         template_files = sorted(
             path
-            for scope in (ROOT / "dset/scopes").iterdir()
-            for path in (scope / "templates").rglob("*")
+            for template_root in LAYOUT.template_roots
+            for path in template_root.rglob("*")
             if path.is_file()
         )
         self.assertTrue(template_files)
@@ -299,7 +299,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
         expected = {
             "skills/*/SKILL.md": ("procedure", "playbook"),
             "documentation/maintenance-playbook.md": ("procedure", "playbook"),
-            "dset/scopes/ops/supportability/delivery-runbook.md": (
+            ".dset/ops/supportability/delivery-runbook.md": (
                 "procedure",
                 "runbook",
             ),
@@ -318,7 +318,9 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
         paths = self.registry["legacy_evidence_paths"]
         self.assertTrue(paths)
         self.assertEqual(len(paths), len(set(paths)))
-        self.assertTrue(all("/proofs/" in path for path in paths))
+        self.assertTrue(
+            all("/proofs/" in path or "/evidence/" in path for path in paths)
+        )
         self.assertTrue(all(not any(char in path for char in "*?[]") for path in paths))
 
     def test_type_only_names_are_default_and_subtype_names_are_opt_in(self) -> None:
@@ -362,18 +364,18 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
             )
 
     def test_project_settings_default_to_type_only_names(self) -> None:
-        settings = (ROOT / "dset_settings.toml").read_text(encoding="utf-8")
-        template = (ROOT / "dset/scopes/meta/templates/dset_settings.toml").read_text(
+        settings = LAYOUT.settings_path.read_text(encoding="utf-8")
+        template = (ROOT / ".dset/meta/templates/dset_settings.toml").read_text(
             encoding="utf-8"
         )
-        self.assertEqual(settings, template)
-        self.assertIn("subtype_in_names = false", settings)
-        self.assertIn('creation_strictness = "medium"', settings)
+        for carrier in (settings, template):
+            self.assertIn("subtype_in_names = false", carrier)
+            self.assertIn('creation_strictness = "medium"', carrier)
 
     def test_release_lifecycle_projection_is_compiled(self) -> None:
-        rule = (
-            ROOT / "dset/scopes/gov/governance/artifact-classification.md"
-        ).read_text(encoding="utf-8")
+        rule = (ROOT / ".dset/gov/specification-artifact-classification.md").read_text(
+            encoding="utf-8"
+        )
         for phrase in (
             "`version`",
             "`roadmap`",

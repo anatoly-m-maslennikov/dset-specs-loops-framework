@@ -1,0 +1,19 @@
+schema_version = "1.2"
+package_id = "methodology"
+layer = "meta"
+requirements = ["DSET-REQUIREMENT-META-001", "DSET-REQUIREMENT-META-002", "DSET-REQUIREMENT-META-003", "DSET-REQUIREMENT-META-004", "DSET-REQUIREMENT-META-005", "DSET-REQUIREMENT-META-006", "DSET-REQUIREMENT-META-007", "DSET-REQUIREMENT-META-008", "DSET-REQUIREMENT-META-009", "DSET-REQUIREMENT-META-010", "DSET-REQUIREMENT-META-011"]
+tests = ["DSET-TEST-META-001", "DSET-TEST-META-002", "DSET-TEST-META-003", "DSET-TEST-META-004", "DSET-TEST-META-005", "DSET-TEST-META-006", "DSET-TEST-META-007", "DSET-TEST-META-008", "DSET-TEST-META-009", "DSET-TEST-META-010", "DSET-TEST-META-011"]
+evals = ["DSET-EVAL-META-001", "DSET-EVAL-META-002", "DSET-EVAL-META-003", "DSET-EVAL-META-004", "DSET-EVAL-META-005", "DSET-EVAL-META-006", "DSET-EVAL-META-007", "DSET-EVAL-META-008", "DSET-EVAL-META-009"]
+contracts = ["DSET-CONTRACT-META-001"]
+stories = []
+outcomes = []
+
+[artifacts]
+hub = "navigation-methodology.md"
+domain = "specification-domain.md"
+spec = "specification-methodology.md"
+contracts = "specification-contracts.md"
+stories = "specification-user-stories.md"
+outcomes = "specification-outcomes.md"
+test_plan = "plan-tests.md"
+eval_plan = "plan-evaluations.md"

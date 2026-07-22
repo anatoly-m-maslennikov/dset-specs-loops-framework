@@ -11,6 +11,37 @@ from dset_toolchain.yaml_subset import dump
 
 
 class RepositoryLayoutTest(unittest.TestCase):
+    def test_slim_layout_uses_one_config_and_direct_owners(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw).resolve()
+            dset = root / ".dset"
+            for layer in LAYERS:
+                (dset / layer).mkdir(parents=True)
+            (dset / "project").mkdir()
+            (dset / "versions").mkdir()
+            (dset / "dset_settings.toml").write_text(
+                'schema_version = "1.3"\n', encoding="utf-8"
+            )
+
+            layout = discover_layout(root)
+
+            self.assertTrue(layout.slim)
+            self.assertTrue(layout.layered)
+            self.assertEqual(layout.settings_path, dset / "dset_settings.toml")
+            self.assertEqual(layout.manifest_path, layout.settings_path)
+            self.assertEqual(layout.project_root, dset / "project")
+            self.assertEqual(layout.versions_root, dset / "versions")
+            self.assertEqual(
+                layout.layer_roots,
+                {layer: dset / layer for layer in LAYERS},
+            )
+            self.assertEqual(layout.active_change_roots, (dset / "versions/changes",))
+            self.assertEqual(layout.archive_change_roots, (dset / "versions/archive",))
+
+            (root / "dset_settings.toml").write_text("", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "retired root settings coexist"):
+                discover_layout(root)
+
     def test_legacy_layout_preserves_central_paths(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw).resolve()

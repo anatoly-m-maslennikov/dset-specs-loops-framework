@@ -119,7 +119,7 @@ def legacy_shared_package_paths(root: Path) -> tuple[Path, ...]:
                 _within(root, candidate)
                 and (
                     candidate.name in {"package.yaml", "package.yml"}
-                    or candidate.name == "package.legacy.toml"
+                    or candidate.name.endswith("package.legacy.toml")
                 )
                 and candidate.is_file()
             ):
@@ -158,7 +158,7 @@ def legacy_authority_ids(root: Path) -> set[str]:
 
 def legacy_authority_ledger_path(root: Path) -> Path:
     layout = discover_layout(root.resolve())
-    return layout.structured_file(layout.governance_root, "legacy-authority.toml")
+    return layout.structured_file(layout.project_state_root, "legacy-authority.toml")
 
 
 def _load_recorded_ledger(root: Path) -> dict[str, Any] | None:

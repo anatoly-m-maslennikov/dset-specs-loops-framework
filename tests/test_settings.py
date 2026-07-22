@@ -20,12 +20,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class ProjectSettingsTests(unittest.TestCase):
-    def test_emitted_settings_are_documented_1_2_defaults(self) -> None:
-        root_text = (ROOT / SETTINGS_FILENAME).read_text(encoding="utf-8")
-        template_text = (
-            ROOT / f"dset/scopes/meta/templates/{SETTINGS_FILENAME}"
-        ).read_text(encoding="utf-8")
-        self.assertEqual(root_text, template_text)
+    def test_emitted_settings_are_documented_1_3_defaults(self) -> None:
+        root_text = (ROOT / ".dset" / SETTINGS_FILENAME).read_text(encoding="utf-8")
+        template_text = (ROOT / f".dset/meta/templates/{SETTINGS_FILENAME}").read_text(
+            encoding="utf-8"
+        )
+        self.assertEqual(
+            load_toml(template_text)["artifacts"],
+            load_toml(root_text)["artifacts"],
+        )
         for setting in (
             "schema_version",
             "subtype_in_names",
@@ -111,12 +114,20 @@ class ProjectSettingsTests(unittest.TestCase):
     def test_competing_settings_filenames_fail_closed(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT.parent) as raw:
             root = Path(raw).resolve()
-            for name in (SETTINGS_FILENAME, LEGACY_SETTINGS_FILENAME):
-                (root / name).write_text('schema_version = "1.2"\n', encoding="utf-8")
+            (root / ".dset").mkdir()
+            (root / ".dset" / SETTINGS_FILENAME).write_text(
+                'schema_version = "1.3"\n', encoding="utf-8"
+            )
+            (root / LEGACY_SETTINGS_FILENAME).write_text(
+                'schema_version = "1.2"\n', encoding="utf-8"
+            )
             _settings, issues = load_project_settings(root)
         self.assertEqual(
             issues,
-            ("dset_settings.toml and legacy dset.toml cannot coexist",),
+            (
+                "DSET settings carriers cannot coexist: "
+                ".dset/dset_settings.toml, dset.toml",
+            ),
         )
 
     def test_repository_validation_reports_competing_names_at_canonical_path(
@@ -156,7 +167,7 @@ class ProjectSettingsTests(unittest.TestCase):
         self.assertEqual(
             issues,
             (
-                "settings schema_version must be 1.0, 1.1, or 1.2",
+                "settings schema_version must be 1.0, 1.1, 1.2, or 1.3",
                 "settings has unknown setting: unexpected",
                 "workflows.implement.mode must be lazy or strict",
             ),
@@ -190,16 +201,12 @@ class ProjectSettingsTests(unittest.TestCase):
 
     def test_published_priority_schemas_defer_vocabulary_to_settings(self) -> None:
         paths = {
-            "atom": ROOT / "dset/scopes/gov/schemas/atom.schema.json",
-            "change": ROOT / "dset/scopes/gov/schemas/change.schema.json",
-            "review": ROOT / "dset/scopes/gov/schemas/review-report.schema.json",
-            "conflict": (
-                ROOT / "dset/scopes/gov/schemas/conflict-candidate.schema.json"
-            ),
-            "lifecycle": ROOT / "dset/scopes/gov/schemas/lifecycle.schema.json",
-            "traceability": (
-                ROOT / "dset/scopes/tool/schemas/traceability.schema.json"
-            ),
+            "atom": ROOT / ".dset/gov/schemas/atom.schema.json",
+            "change": ROOT / ".dset/gov/schemas/change.schema.json",
+            "review": ROOT / ".dset/gov/schemas/review-report.schema.json",
+            "conflict": (ROOT / ".dset/gov/schemas/conflict-candidate.schema.json"),
+            "lifecycle": ROOT / ".dset/gov/schemas/lifecycle.schema.json",
+            "traceability": (ROOT / ".dset/tool/schemas/traceability.schema.json"),
         }
         schemas = {
             name: json.loads(path.read_text(encoding="utf-8"))

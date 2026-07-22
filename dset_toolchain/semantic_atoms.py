@@ -739,9 +739,11 @@ def _valid_sessions(value: object) -> bool:
 
 
 def _ignored(relative: Path) -> bool:
-    ignored = {".git", ".cache", ".venv", "__pycache__", "dist", ".dset"}
+    if relative.parts[:2] == (".dset", "runtime"):
+        return True
+    ignored = {".git", ".cache", ".venv", "__pycache__", "dist"}
     return any(
-        part in ignored or (part.startswith(".") and part != ".github")
+        part in ignored or (part.startswith(".") and part not in {".github", ".dset"})
         for part in relative.parts
     )
 
@@ -752,12 +754,12 @@ def _digest(path: Path) -> str:
 
 def _ledger_path(root: Path) -> Path:
     layout = discover_layout(root)
-    return layout.structured_file(layout.governance_root, "atoms.toml")
+    return layout.structured_file(layout.project_state_root, "atoms.toml")
 
 
 def _lifecycle_path(root: Path) -> Path:
     layout = discover_layout(root)
-    return layout.structured_file(layout.governance_root, "lifecycle.toml")
+    return layout.structured_file(layout.project_state_root, "lifecycle.toml")
 
 
 def _atom_diag(path: Path, message: str) -> Diagnostic:

@@ -7,21 +7,16 @@ from dset_toolchain.layout import discover_layout
 from dset_toolchain.yaml_subset import load
 
 ROOT = Path(__file__).resolve().parents[1]
-GOV_PACKAGE = ROOT / "dset" / "scopes" / "gov" / "specs" / "packages" / "methodology"
-CHANGE = (
-    ROOT
-    / "dset"
-    / "scopes"
-    / "skill"
-    / "changes"
-    / "make-dset-self-hosting-and-skills-thin"
-)
+GOV_PACKAGE = ROOT / ".dset" / "gov"
+DECISIONS = GOV_PACKAGE / "decision"
 
 
 class ConflictEntityTests(unittest.TestCase):
     def test_accepted_truth_defines_four_types_and_flat_subtypes(self) -> None:
-        domain = (GOV_PACKAGE / "domain.md").read_text(encoding="utf-8")
-        spec = (GOV_PACKAGE / "spec.md").read_text(encoding="utf-8")
+        domain = (GOV_PACKAGE / "specification-domain.md").read_text(encoding="utf-8")
+        spec = (GOV_PACKAGE / "specification-methodology.md").read_text(
+            encoding="utf-8"
+        )
         self.assertIn("**Decision**", domain)
         self.assertIn("**Problem**", domain)
         self.assertIn("**Question**", domain)
@@ -44,9 +39,9 @@ class ConflictEntityTests(unittest.TestCase):
         authoring = (ROOT / "documentation" / "authoring-rules.md").read_text(
             encoding="utf-8"
         )
-        rules = (
-            ROOT / "dset" / "scopes" / "gov" / "governance" / "work-items.md"
-        ).read_text(encoding="utf-8")
+        rules = (ROOT / ".dset" / "gov" / "specification-work-items.md").read_text(
+            encoding="utf-8"
+        )
         self.assertIn("never workflow", artifacts)
         self.assertIn("not from a workflow", authoring)
         self.assertIn("Type is determined by meaning", rules)
@@ -63,26 +58,33 @@ class ConflictEntityTests(unittest.TestCase):
         self.assertIn("DSET-EVAL-GOV-017", package["evals"])
 
     def test_absorbing_decision_preserves_immutable_predecessor(self) -> None:
-        predecessor = CHANGE / "decision-DSET-DECISION-GOV-004.md"
-        successor = CHANGE / "decision-DSET-DECISION-GOV-005.md"
+        predecessor = DECISIONS / (
+            "DSET-DECISION-GOV-004-problems-questions-and-conflicts-are-distinct.md"
+        )
+        successor = DECISIONS / (
+            "DSET-DECISION-GOV-005-semantic-artifact-types-and-open-conflicts.md"
+        )
         self.assertTrue(predecessor.is_file())
         text = successor.read_text(encoding="utf-8")
         self.assertIn("**Absorbs:** `DSET-DECISION-GOV-004` in full", text)
         self.assertIn("workflow never defines artifact type", text)
 
-        fpf_predecessor = CHANGE / "decision-DSET-DECISION-GOV-007.md"
-        fpf_successor = CHANGE / "decision-DSET-DECISION-GOV-008.md"
+        fpf_predecessor = DECISIONS / (
+            "DSET-DECISION-GOV-007-flat-canonical-type-and-subtype-model.md"
+        )
+        fpf_successor = DECISIONS / (
+            "DSET-DECISION-GOV-008-fpf-aligned-boundaries-for-the-flat-type-model.md"
+        )
         self.assertTrue(fpf_predecessor.is_file())
         fpf_text = fpf_successor.read_text(encoding="utf-8")
         self.assertIn("**Absorbs:** `DSET-DECISION-GOV-007` in full", fpf_text)
         self.assertIn("One atom, one primary governed claim", fpf_text)
 
     def test_live_and_template_work_item_rules_match(self) -> None:
-        live = ROOT / "dset" / "scopes" / "gov" / "governance" / "work-items.md"
+        live = ROOT / ".dset" / "gov" / "specification-work-items.md"
         template = (
             ROOT
-            / "dset"
-            / "scopes"
+            / ".dset"
             / "gov"
             / "templates"
             / "governance"

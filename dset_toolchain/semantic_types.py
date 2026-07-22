@@ -86,7 +86,6 @@ IGNORED_PARTS = frozenset(
     {
         ".git",
         ".cache",
-        ".dset",
         ".venv",
         ".mypy_cache",
         ".pytest_cache",
@@ -165,7 +164,9 @@ def _collect(
 
     for path in sorted(root.rglob("*.md")):
         relative = path.relative_to(root)
-        if any(part in IGNORED_PARTS for part in relative.parts):
+        if relative.parts[:2] == (".dset", "runtime") or any(
+            part in IGNORED_PARTS for part in relative.parts
+        ):
             continue
         metadata = _frontmatter(path)
         if metadata and metadata.get("artifact_type") == "atomic_record":
@@ -184,7 +185,9 @@ def _collect(
                     modern=True,
                 )
             continue
-        if path.name.startswith("decision-"):
+        if path.name.startswith("decision-") or (
+            path.parent.name == "decision" and path.name.startswith("DSET-DECISION-")
+        ):
             text = path.read_text(encoding="utf-8")
             match = DECISION_ID_RE.search(text)
             if match:
@@ -204,7 +207,9 @@ def _collect(
 
     for path in discover_layout(root).structured_named_files(root, "package"):
         relative = path.relative_to(root)
-        if any(part in IGNORED_PARTS for part in relative.parts):
+        if relative.parts[:2] == (".dset", "runtime") or any(
+            part in IGNORED_PARTS for part in relative.parts
+        ):
             continue
         data = _safe_load(path, diagnostics)
         if not isinstance(data, dict):
@@ -367,7 +372,7 @@ def _safe_load(path: Path, diagnostics: list[Diagnostic]) -> Any:
 def _lifecycle_events(root: Path) -> list[dict[str, Any]]:
     try:
         layout = discover_layout(root)
-        path = layout.structured_file(layout.governance_root, "lifecycle.toml")
+        path = layout.structured_file(layout.project_state_root, "lifecycle.toml")
     except ValueError:
         return []
     try:

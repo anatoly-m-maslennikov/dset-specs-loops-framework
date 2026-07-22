@@ -4,8 +4,8 @@
 
 This document is the public framework definition of DSET semantic Types and
 subtypes. The DSET repository applies it through
-[`DSET-RULE-WORK-ITEMS`](../dset/scopes/gov/governance/work-items.md), compiled
-from [`DSET-DECISION-GOV-008`](../dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/decision-DSET-DECISION-GOV-008.md).
+[`DSET-RULE-WORK-ITEMS`](../.dset/gov/specification-work-items.md), compiled
+from [`DSET-DECISION-GOV-008`](../.dset/gov/decision/DSET-DECISION-GOV-008-fpf-aligned-boundaries-for-the-flat-type-model.md).
 
 ## Type rule
 
@@ -188,7 +188,7 @@ than another semantic Type.
 independent from the semantic `type` and `subtype` of an Atomic Record.
 
 The machine-readable catalog is
-[`dset/scopes/gov/artifact-types.toml`](../dset/scopes/gov/artifact-types.toml).
+[`.dset/project/artifact-types.toml`](../.dset/project/artifact-types.toml).
 It defines eleven artifact types:
 
 | Artifact type | Direct artifact subtypes |
@@ -216,7 +216,7 @@ the optional subtype remains metadata. For example, Version Scope may use
 `APP-VERSION-001-0-4-core.md`, and Roadmap uses the same `VERSION` sequence.
 Projects may opt newly emitted artifacts into
 subtype tokens with
-`artifacts.subtype_in_names = true` in root `dset_settings.toml`.
+`artifacts.subtype_in_names = true` in `.dset/dset_settings.toml`.
 This independent optional capability never renames existing stable identities.
 
 An Analysis Report interprets information without authorizing its conclusion.

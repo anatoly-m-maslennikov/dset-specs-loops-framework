@@ -7,9 +7,8 @@ from typing import Any
 from dset_toolchain.frontmatter import metadata as frontmatter_metadata
 
 ROOT = Path(__file__).resolve().parents[1]
-TEMPLATES = ROOT / "dset/scopes/ops/templates/release"
-PLANNING = ROOT / "dset/scopes/ops/planning"
-CHANGE = ROOT / "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin"
+TEMPLATES = ROOT / ".dset/ops/templates/release"
+PLANNING = ROOT / ".dset/versions"
 
 
 class ReleaseArtifactTests(unittest.TestCase):
@@ -56,9 +55,7 @@ class ReleaseArtifactTests(unittest.TestCase):
                 "roadmap",
             ),
         }
-        actual = {
-            path.name for path in PLANNING.glob("*.md") if path.name != "README.md"
-        }
+        actual = {path.name for path in PLANNING.glob("DSET-VERSION-00[1-5]-*.md")}
         self.assertEqual(actual, set(expected))
         for name, (artifact_id, subtype) in expected.items():
             with self.subTest(name=name):
@@ -68,11 +65,11 @@ class ReleaseArtifactTests(unittest.TestCase):
 
     def test_dset_version_sequence_covers_current_release_carriers(self) -> None:
         expected = {
-            CHANGE / "DSET-VERSION-006-0-3-1-release.md": (
+            PLANNING / "DSET-VERSION-006-0-3-1-release.md": (
                 "DSET-VERSION-006",
                 "release_plan",
             ),
-            CHANGE / "DSET-VERSION-007-0-3-1-readiness.md": (
+            PLANNING / "DSET-VERSION-007-0-3-1-readiness.md": (
                 "DSET-VERSION-007",
                 "readiness_record",
             ),
@@ -87,7 +84,7 @@ class ReleaseArtifactTests(unittest.TestCase):
         all_version_ids = [
             self._frontmatter(path)["artifact_id"]
             for path in sorted(PLANNING.glob("DSET-VERSION-*.md"))
-        ] + [artifact_id for artifact_id, _ in expected.values()]
+        ]
         self.assertEqual(
             all_version_ids,
             [f"DSET-VERSION-{sequence:03d}" for sequence in range(1, 8)],
@@ -117,8 +114,8 @@ class ReleaseArtifactTests(unittest.TestCase):
         self.assertEqual(list(PLANNING.glob("*MILESTONE*.md")), [])
 
     def test_live_release_rule_matches_distributed_template(self) -> None:
-        live = ROOT / "dset/scopes/ops/governance/release.md"
-        template = ROOT / "dset/scopes/ops/templates/governance/core-v1/release.md"
+        live = ROOT / ".dset/ops/procedure-release.md"
+        template = ROOT / ".dset/ops/templates/governance/core-v1/release.md"
         self.assertEqual(
             live.read_text(encoding="utf-8"),
             template.read_text(encoding="utf-8"),

@@ -48,8 +48,8 @@ class TomlMigrationTests(unittest.TestCase):
     def initialize_git_fixture(self) -> None:
         self.write(
             ".gitignore",
-            ".dset/toml-migration-runtime-readiness.json\n"
-            ".dset/toml-migration-backups/\n",
+            ".dset/runtime/toml-migration-runtime-readiness.json\n"
+            ".dset/runtime/toml-migration-backups/\n",
         )
         initialize_exact_git_repository(self.root)
         self.commit_git_fixture("fixture")
@@ -98,7 +98,7 @@ class TomlMigrationTests(unittest.TestCase):
             preview.package_successors,
         )
         self.write(
-            ".dset/toml-migration-runtime-readiness.json",
+            ".dset/runtime/toml-migration-runtime-readiness.json",
             json.dumps(
                 {
                     "targets": targets,
@@ -277,7 +277,7 @@ class TomlMigrationTests(unittest.TestCase):
         applied = apply_toml_migration(self.root)
 
         self.assertTrue(preview.ready)
-        recovery = self.root / ".dset/toml-migration-backups" / applied.digest
+        recovery = self.root / ".dset/runtime/toml-migration-backups" / applied.digest
         self.assertTrue((recovery / "manifest.json").is_file())
         visible = {
             path.relative_to(self.root).as_posix()
@@ -286,7 +286,10 @@ class TomlMigrationTests(unittest.TestCase):
         self.assertIn("dset/scopes/gov/items.toml", visible)
         self.assertNotIn("dset/scopes/gov/items.yaml", visible)
         self.assertFalse(
-            any(path.startswith(".dset/toml-migration-backups/") for path in visible)
+            any(
+                path.startswith(".dset/runtime/toml-migration-backups/")
+                for path in visible
+            )
         )
         git_status = subprocess.run(
             ["git", "status", "--porcelain"],
@@ -310,7 +313,7 @@ class TomlMigrationTests(unittest.TestCase):
         self.add_minimal_runtime_gate()
         self.initialize_git_fixture()
         self.write_current_runtime_readiness()
-        recovery_root = self.root / ".dset/toml-migration-backups"
+        recovery_root = self.root / ".dset/runtime/toml-migration-backups"
 
         with (
             patch(
@@ -539,7 +542,9 @@ class TomlMigrationTests(unittest.TestCase):
             "scripts/build_bootstrap_bundle.py",
             "def render_bundle(root):\n    return '{}\\n'\n",
         )
-        evidence_path = self.root / ".dset/toml-migration-runtime-readiness.json"
+        evidence_path = (
+            self.root / ".dset/runtime/toml-migration-runtime-readiness.json"
+        )
 
         for evidence in (None, {"targets": {"stale": "digest"}}):
             with self.subTest(evidence=evidence):
@@ -547,7 +552,7 @@ class TomlMigrationTests(unittest.TestCase):
                     evidence_path.unlink(missing_ok=True)
                 else:
                     self.write(
-                        ".dset/toml-migration-runtime-readiness.json",
+                        ".dset/runtime/toml-migration-runtime-readiness.json",
                         json.dumps(evidence),
                     )
                 before = subprocess.run(
@@ -727,7 +732,7 @@ class TomlMigrationTests(unittest.TestCase):
             ),
         }
         evidence_path = self.write(
-            ".dset/toml-migration-runtime-readiness.json",
+            ".dset/runtime/toml-migration-runtime-readiness.json",
             json.dumps(evidence),
         )
 
@@ -947,7 +952,7 @@ class TomlMigrationTests(unittest.TestCase):
             self.root, list(refreshed.entries), list(refreshed.references)
         )
         self.write(
-            ".dset/toml-migration-runtime-readiness.json",
+            ".dset/runtime/toml-migration-runtime-readiness.json",
             json.dumps(
                 {
                     "targets": targets,
@@ -1031,9 +1036,9 @@ class TomlMigrationTests(unittest.TestCase):
         self.assertTrue(source.is_file())
         self.assertFalse(source.with_suffix(".toml").exists())
         stored = json.loads(
-            (self.root / ".dset/toml-migration-runtime-readiness.json").read_text(
-                encoding="utf-8"
-            )
+            (
+                self.root / ".dset/runtime/toml-migration-runtime-readiness.json"
+            ).read_text(encoding="utf-8")
         )
         self.assertEqual(stored["targets"], evidence["targets"])
         self.assertEqual(stored["planned_targets"], evidence["planned_targets"])
@@ -1188,7 +1193,7 @@ class TomlMigrationTests(unittest.TestCase):
         excluded = {
             ".git",
             ".venv",
-            ".dset",
+            "runtime",
             ".cache",
             "__pycache__",
             ".mypy_cache",
@@ -1203,8 +1208,7 @@ class TomlMigrationTests(unittest.TestCase):
             ignore=lambda _directory, names: set(names) & excluded,
         )
         atom = staged / (
-            "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/"
-            "DSET-ATOMIC-RECORD-001-artifact-type-name-policy.md"
+            ".dset/gov/decision/DSET-REQUIREMENT-GOV-030-artifact-type-name-policy.md"
         )
         before = atom.read_bytes()
         plan = plan_toml_migration(staged, bypass_runtime_readiness=True)

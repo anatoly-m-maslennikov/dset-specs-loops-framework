@@ -33,7 +33,7 @@
 12. Name new artifact IDs and files with their primary artifact type by
     default. Keep the optional artifact subtype in metadata. Enable subtype
     tokens only through the independent
-    `artifacts.subtype_in_names` setting in root `dset_settings.toml`; never
+    `artifacts.subtype_in_names` setting in `.dset/dset_settings.toml`; never
     rename an immutable or already stable identity merely
     because the setting changes.
 

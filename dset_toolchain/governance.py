@@ -19,6 +19,23 @@ CUSTOMIZATION = {"unmodified", "custom"}
 APPLICABILITY = {"applicable", "not-applicable"}
 RULE_LAYERS = {layer.upper() for layer in LAYERS}
 GOVERNANCE_SCHEMA_VERSION = 1.1
+SLIM_RULE_TARGETS = {
+    "architecture.md": "specification-architecture.md",
+    "build-rules.md": "specification-build-rules.md",
+    "domain-spec-authoring.md": "procedure-domain-spec-authoring.md",
+    "test-planning.md": "procedure-test-planning.md",
+    "eval-planning.md": "procedure-evaluation-planning.md",
+    "supportability.md": "specification-supportability.md",
+    "artifact-maintenance.md": "specification-artifact-maintenance.md",
+    "work-items.md": "specification-work-items.md",
+    "artifact-classification.md": "specification-artifact-classification.md",
+    "delegation-budget.md": "procedure-delegation-budget.md",
+    "skill-runs.md": "procedure-skill-runs.md",
+    "release.md": "procedure-release.md",
+    "lifecycle-orchestration.md": "procedure-lifecycle-orchestration.md",
+    "diagnosis.md": "procedure-diagnosis.md",
+    "prototyping.md": "procedure-prototyping.md",
+}
 
 
 def find_repository(start: Path) -> Path:
@@ -171,7 +188,9 @@ def validate_governance_registry(
             )
             continue
         if layout.layered and layer in RULE_LAYERS:
-            expected_root = layout.layer_root(str(layer).lower()) / "governance"
+            expected_root = layout.layer_root(str(layer).lower())
+            if not layout.slim:
+                expected_root /= "governance"
             try:
                 local.relative_to(expected_root)
             except ValueError:
@@ -413,21 +432,32 @@ def materialize_governance(
         templates[rule_id] = source_template(profile_relative / str(item["template"]))
         destination = target_layout.governance_root
         if target_layout.layered:
-            destination = target_layout.layer_root(str(layer).lower()) / "governance"
+            destination = target_layout.layer_root(str(layer).lower())
+            if not target_layout.slim:
+                destination /= "governance"
             governance_roots.add(destination)
-        targets[rule_id] = destination / str(item["target"])
-    existing = [path for path in governance_roots if path.exists()]
+        target_name = str(item["target"])
+        if target_layout.slim:
+            target_name = SLIM_RULE_TARGETS.get(target_name, target_name)
+        targets[rule_id] = destination / target_name
+    hub_path = target_layout.governance_root / (
+        "navigation-governance.md" if target_layout.slim else "README.md"
+    )
+    existing = [path for path in targets.values() if path.exists()]
+    if hub_path.exists():
+        existing.append(hub_path)
     if registry_path.exists() or existing:
         occupied = registry_path if registry_path.exists() else sorted(existing)[0]
         raise FileExistsError(f"governance destination already exists: {occupied}")
     copied_wrappers: list[Path] = []
     for destination in sorted(governance_roots):
-        destination.mkdir(parents=True)
+        destination.mkdir(parents=True, exist_ok=target_layout.slim)
     try:
         _write_governance_hub(
             readme_template,
-            target_layout.governance_root / "README.md",
+            hub_path,
             layered=target_layout.layered,
+            slim=target_layout.slim,
         )
         rendered_rules: list[dict[str, Any]] = []
         for item in rules:
@@ -514,9 +544,13 @@ def materialize_governance(
     except Exception:
         if registry_path.exists():
             registry_path.unlink()
-        for destination in sorted(governance_roots, reverse=True):
-            if destination.exists():
-                shutil.rmtree(destination)
+        hub_path.unlink(missing_ok=True)
+        for target in targets.values():
+            target.unlink(missing_ok=True)
+        if not target_layout.slim:
+            for destination in sorted(governance_roots, reverse=True):
+                if destination.exists():
+                    shutil.rmtree(destination)
         for wrapper in copied_wrappers:
             if wrapper.exists():
                 shutil.rmtree(wrapper)
@@ -524,7 +558,9 @@ def materialize_governance(
     return registry_path
 
 
-def _write_governance_hub(source: Path, target: Path, *, layered: bool) -> None:
+def _write_governance_hub(
+    source: Path, target: Path, *, layered: bool, slim: bool = False
+) -> None:
     content = source.read_text(encoding="utf-8")
     if layered:
         for layer in ("meta", "tool", "skill", "ops"):
@@ -532,6 +568,42 @@ def _write_governance_hub(source: Path, target: Path, *, layered: bool) -> None:
                 f"../../../../{layer}/templates/governance/core-v1/",
                 f"../../{layer}/governance/",
             )
+    if slim:
+        replacements = {
+            "architecture.md": "specification-architecture.md",
+            (
+                "../../tool/governance/build-rules.md"
+            ): "../tool/specification-build-rules.md",
+            (
+                "../../meta/governance/domain-spec-authoring.md"
+            ): "../meta/procedure-domain-spec-authoring.md",
+            (
+                "../../meta/governance/test-planning.md"
+            ): "../meta/procedure-test-planning.md",
+            (
+                "../../meta/governance/eval-planning.md"
+            ): "../meta/procedure-evaluation-planning.md",
+            "../../skill/governance/diagnosis.md": "../skill/procedure-diagnosis.md",
+            (
+                "../../skill/governance/prototyping.md"
+            ): "../skill/procedure-prototyping.md",
+            (
+                "../../ops/governance/supportability.md"
+            ): "../ops/specification-supportability.md",
+            "artifact-maintenance.md": "specification-artifact-maintenance.md",
+            "artifact-classification.md": "specification-artifact-classification.md",
+            (
+                "../../skill/governance/lifecycle-orchestration.md"
+            ): "../skill/procedure-lifecycle-orchestration.md",
+            "../../skill/governance/skill-runs.md": "../skill/procedure-skill-runs.md",
+            (
+                "../../skill/governance/delegation-budget.md"
+            ): "../skill/procedure-delegation-budget.md",
+            "../../ops/governance/release.md": "../ops/procedure-release.md",
+            "work-items.md": "specification-work-items.md",
+        }
+        for old, new in replacements.items():
+            content = content.replace(old, new)
     target.write_text(content, encoding="utf-8")
 
 

@@ -49,10 +49,10 @@ class CompilationTests(unittest.TestCase):
     def test_projection_change_makes_explicit_compilation_stale(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw).resolve()
-            shutil.copytree(ROOT / "dset", root / "dset")
+            shutil.copytree(ROOT / ".dset", root / ".dset")
             write_compilation(root)
             self.assertTrue(compilation_is_fresh(root))
-            spec = root / "dset/scopes/gov/specs/packages/methodology/spec.md"
+            spec = root / ".dset/gov/specification-methodology.md"
             spec.write_text(spec.read_text(encoding="utf-8") + "\n", encoding="utf-8")
             self.assertFalse(compilation_is_fresh(root))
             write_compilation(root)

@@ -39,7 +39,7 @@ class SemanticAtomTests(unittest.TestCase):
 
     def test_repository_ledger_lifecycle_and_schemas_are_valid(self) -> None:
         self.assertEqual(validate_semantic_atoms(ROOT), [])
-        schema_root = ROOT / "dset/scopes/gov/schemas"
+        schema_root = ROOT / ".dset/gov/schemas"
         schemas = (
             "atom.schema.json",
             "atom-ledger.schema.json",

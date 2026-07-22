@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL_ROOT = ROOT / "dset" / "scopes" / "skill"
+SKILL_ROOT = ROOT / ".dset" / "skill"
 
 
 class SessionContractTests(unittest.TestCase):
@@ -68,16 +68,14 @@ class SessionContractTests(unittest.TestCase):
     def test_live_and_template_continuity_rules_match(self) -> None:
         for name in ("skill-runs.md", "lifecycle-orchestration.md"):
             with self.subTest(rule=name):
-                live = SKILL_ROOT / "governance" / name
+                live = SKILL_ROOT / f"procedure-{name}"
                 template = SKILL_ROOT / "templates" / "governance" / "core-v1" / name
                 self.assertEqual(live.read_bytes(), template.read_bytes())
 
     def test_session_state_is_ignored_machine_local_evidence(self) -> None:
         ignored = (ROOT / ".gitignore").read_text(encoding="utf-8").splitlines()
-        self.assertIn(".dset/runs/", ignored)
-        self.assertIn(".dset/sessions/", ignored)
-        self.assertIn(".dset/toml-migration-runtime-readiness.json", ignored)
-        self.assertIn(".dset/toml-migration-backups/", ignored)
+        self.assertIn(".dset/runtime/*", ignored)
+        self.assertIn("!.dset/runtime/.gitignore", ignored)
 
 
 if __name__ == "__main__":

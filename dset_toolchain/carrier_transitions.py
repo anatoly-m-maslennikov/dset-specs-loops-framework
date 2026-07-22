@@ -20,8 +20,14 @@ from .yaml_subset import load as load_structured
 
 SCHEMA_VERSION = "1.0"
 AUTHORITY_DECISION = "DSET-DECISION-GOV-018"
+LAYOUT_AUTHORITY = "DSET-REQUIREMENT-GOV-041"
+AUTHORITY_DECISIONS = frozenset({AUTHORITY_DECISION, LAYOUT_AUTHORITY})
 SESSION_ID = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
-LEDGER_RELATIVE = Path("dset/scopes/gov/migrations/carrier-transitions.toml")
+LEDGER_RELATIVE = Path(".dset/project/migrations/carrier-transitions.toml")
+LEGACY_LEDGER_RELATIVES = (
+    Path("dset/scopes/gov/migrations/carrier-transitions.toml"),
+    Path("dset/migrations/carrier-transitions.toml"),
+)
 _NULL_SENTINEL = "__DSET_EXPLICIT_NULL__"
 _MARKDOWN_LINK = re.compile(r"(?<!!)\[([^\]]+)\]\(([^)]+)\)")
 
@@ -31,7 +37,14 @@ class CarrierTransitionError(ValueError):
 
 
 def ledger_path(root: Path) -> Path:
-    return root / LEDGER_RELATIVE
+    current = root / LEDGER_RELATIVE
+    if current.is_file():
+        return current
+    for relative in LEGACY_LEDGER_RELATIVES:
+        legacy = root / relative
+        if legacy.is_file():
+            return legacy
+    return current
 
 
 def transition_id(original_path: str, original_sha256: str) -> str:
@@ -301,6 +314,51 @@ def transition_record(
     }
 
 
+def relocation_record(
+    root: Path,
+    source: Path,
+    target: Path,
+    *,
+    carrier_ids: list[str] | None = None,
+    semantic_ids: list[str] | None = None,
+    authority: str = LAYOUT_AUTHORITY,
+    session_id: str = SESSION_ID,
+) -> dict[str, Any]:
+    """Describe a byte-exact carrier move without changing its semantics."""
+
+    if authority not in AUTHORITY_DECISIONS:
+        raise CarrierTransitionError(f"unsupported relocation authority: {authority}")
+    original_path = source.relative_to(root).as_posix()
+    original_digest = hashlib.sha256(source.read_bytes()).hexdigest()
+    blob = git_blob(root, original_path)
+    if blob is None:
+        raise CarrierTransitionError(
+            f"carrier relocation requires a source Git blob: {original_path}"
+        )
+    semantic_digest = semantic_sha256({"carrier_sha256": original_digest})
+    return {
+        "id": transition_id(original_path, original_digest),
+        "kind": "carrier_relocation",
+        "authority_decision": authority,
+        "original_path": original_path,
+        "original_format": source.suffix.lstrip("."),
+        "original_sha256": original_digest,
+        "source_git_blob": blob,
+        "current_path": target.relative_to(root).as_posix(),
+        "current_format": target.suffix.lstrip("."),
+        "current_sha256": original_digest,
+        "source_semantic_sha256": semantic_digest,
+        "current_semantic_sha256": semantic_digest,
+        "null_paths": [],
+        "declared_loss": [],
+        "source_commit": git_head(root),
+        "transitioned_at": git_commit_time(root),
+        "llm_session_ids": [session_id],
+        "carrier_ids": sorted(set(carrier_ids or [])),
+        "semantic_ids": sorted(set(semantic_ids or [])),
+    }
+
+
 def git_head(root: Path) -> str | None:
     return _git_value(root, ["rev-parse", "HEAD"])
 
@@ -367,9 +425,29 @@ def transition_aliases(root: Path) -> dict[Path, Path]:
             continue
         original = item.get("original_path")
         current = item.get("current_path")
-        if isinstance(original, str) and isinstance(current, str):
+        if (
+            isinstance(original, str)
+            and isinstance(current, str)
+            and original != current
+        ):
             aliases[(root / original).resolve()] = (root / current).resolve()
-    return aliases
+    return {
+        original: _resolve_transition_target(root, target.as_posix(), aliases)
+        for original, target in aliases.items()
+    }
+
+
+def _resolve_transition_target(
+    root: Path, current: str, aliases: dict[Path, Path]
+) -> Path:
+    target = (root / current).resolve()
+    seen: set[Path] = set()
+    while target in aliases:
+        if target in seen:
+            raise CarrierTransitionError(f"carrier relocation cycle: {current}")
+        seen.add(target)
+        target = aliases[target]
+    return target
 
 
 def validate_carrier_transition_ledger(root: Path) -> list[str]:
@@ -386,6 +464,7 @@ def validate_carrier_transition_ledger(root: Path) -> list[str]:
     assert isinstance(transitions, list)
     errors: list[str] = []
     seen: set[str] = set()
+    aliases = transition_aliases(root)
     required = {
         "id",
         "kind",
@@ -443,7 +522,7 @@ def validate_carrier_transition_ledger(root: Path) -> list[str]:
         seen.add(identifier)
         if identifier != transition_id(original, original_digest):
             errors.append(f"transition identity changed: {identifier}")
-        if item.get("authority_decision") != AUTHORITY_DECISION:
+        if item.get("authority_decision") not in AUTHORITY_DECISIONS:
             errors.append(f"transition authority changed: {identifier}")
         if item.get("declared_loss") != []:
             errors.append(f"transition declares semantic loss: {identifier}")
@@ -464,7 +543,11 @@ def validate_carrier_transition_ledger(root: Path) -> list[str]:
             errors.append(f"transition session provenance is invalid: {identifier}")
         if item.get("source_semantic_sha256") != item.get("current_semantic_sha256"):
             errors.append(f"transition semantic digests differ: {identifier}")
-        target = (root / current).resolve()
+        try:
+            target = _resolve_transition_target(root, current, aliases)
+        except CarrierTransitionError as error:
+            errors.append(str(error))
+            continue
         if not _within(root, target) or not target.is_file():
             errors.append(f"transition current carrier is missing: {current}")
             continue
@@ -472,7 +555,9 @@ def validate_carrier_transition_ledger(root: Path) -> list[str]:
             errors.append(f"transition current carrier digest changed: {current}")
             continue
         try:
-            if item.get("kind") == "structured_yaml":
+            if item.get("kind") == "carrier_relocation":
+                semantics = {"carrier_sha256": current_digest}
+            elif item.get("kind") == "structured_yaml":
                 semantics = decode_historical_envelope(
                     target.read_text(encoding="utf-8")
                 )

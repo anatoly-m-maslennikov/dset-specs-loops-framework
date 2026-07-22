@@ -250,7 +250,7 @@ def _materialize_layered_manifest(
     release = data.get("release")
     if isinstance(release, dict):
         if "policy" in release:
-            release["policy"] = "dset/scopes/ops/governance/release.md"
+            release["policy"] = ".dset/ops/procedure-release.md"
         if "owner_change" in release:
             release["owner_change"] = stable_id
     path.write_text(dump(data, path), encoding="utf-8")
