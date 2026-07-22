@@ -16,7 +16,7 @@ from tests import repository_root
 class CommitProvenanceTests(unittest.TestCase):
     def setUp(self) -> None:
         self.known = {
-            "APP-REQUIREMENT-001": ("decision", "requirement"),
+            "APP-REQUIREMENT-001": ("requirement", None),
             "APP-TEST-001": ("qa", "test"),
             "APP-DEFECT-001": ("problem", "defect"),
         }
@@ -49,7 +49,10 @@ class CommitProvenanceTests(unittest.TestCase):
             "Session: codex:test-session\n",
             self.known,
         )
-        self.assertIn("Implements must reference a Decision: APP-TEST-001", problems)
+        self.assertIn(
+            "Implements must reference a Requirement or Decision: APP-TEST-001",
+            problems,
+        )
         self.assertIn("Implements references unknown ID: APP-UNKNOWN-001", problems)
 
     def test_exact_correction_revalidates_with_ordinary_rules(self) -> None:
@@ -113,7 +116,7 @@ class CommitProvenanceTests(unittest.TestCase):
         semantic_problems = validate_commit_history([invalid], self.known, [correction])
         self.assertIn(
             f"correction for commit {invalid.commit}: Implements must reference "
-            "a Decision: APP-TEST-001",
+            "a Requirement or Decision: APP-TEST-001",
             semantic_problems,
         )
 

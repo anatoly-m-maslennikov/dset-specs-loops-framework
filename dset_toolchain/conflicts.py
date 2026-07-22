@@ -430,7 +430,7 @@ def _party(
         metadata = _read_metadata(path)
         authority = metadata.get("authority")
         external = isinstance(authority, str) and authority.startswith("external:")
-        if atom.semantic_type == "decision":
+        if atom.semantic_type in {"requirement", "decision"}:
             role = "external_authority" if external else "atomic_authority"
         elif atom.semantic_type == "qa":
             role = "qa"

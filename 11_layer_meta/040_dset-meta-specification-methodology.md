@@ -70,14 +70,14 @@ Markdown or local scripts alone cannot satisfy them. An unclear host format is
 a Question, incompatible active formats are a Question/Conflict, and a failing
 platform or disallowed dependency is a Problem with the applicable subtype.
 
-## DSET-REQUIREMENT-META-009 — User Story is a direct Decision subtype
+## DSET-REQUIREMENT-META-009 — User Story is a direct Requirement subtype
 
 When meaningful, accepted project truth records a User Story with
 `type: decision`, `subtype: user_story`, and a stable `STORY` compatibility ID.
 It captures the actor or stakeholder, desired capability or outcome, and value
 or purpose without absorbing acceptance criteria. User Story, Requirement,
 Constraint, Contract, Outcome, Scenario,
-and Invariant are sibling Decision subtypes. Links among them never create
+and Invariant are sibling Requirement subtypes. Links among them never create
 subtype nesting, and a User Story is never represented as
 Decision/Requirement/User Story.
 
@@ -106,7 +106,7 @@ Problem or Question/Opportunity links, relevant sibling User Story links, and
 applicable QA/Evaluation links. A model-only methodology change does not invent
 a concrete Outcome atom.
 
-Requirement and Outcome are sibling Decision subtypes with different proof. A
+Requirement and Outcome are sibling Requirement forms with different proof. A
 Requirement defines observable behavior or result the implementation must
 deliver. Deterministic QA/Test evidence proves delivery. Outcome observations
 are evidence and use

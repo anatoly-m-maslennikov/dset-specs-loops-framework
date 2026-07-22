@@ -20,8 +20,9 @@ A project selects each applicable axis explicitly. Selecting `documentation-v1` 
 Every governed carrier has one primary artifact type from the project-local
 MECE registry. Atomic Record, Analysis Report, Specification, Procedure, Plan,
 Version, Implementation, Evidence Record, Verification, Derived View, and
-Navigation cover the development lifecycle without changing the four semantic
-Types—Decision, Question, Problem, and QA. Version's direct subtypes are
+Navigation cover the development lifecycle without changing the five semantic
+Types—Requirement, Decision, Question, Problem, and QA. Version's direct
+subtypes are
 Roadmap, Version Scope, Change, Release Plan, Readiness Record, and Release
 Record.
 

@@ -233,7 +233,7 @@ class RuntimeBridgeTests(unittest.TestCase):
             semantic_routing = cast(dict[str, Any], context["semantic_routing"])
             self.assertEqual(
                 semantic_routing["types"],
-                ["decision", "question", "problem", "qa"],
+                ["requirement", "decision", "question", "problem", "qa"],
             )
             self.assertGreater(semantic_routing["classification_count"], 0)
             self.assertEqual(

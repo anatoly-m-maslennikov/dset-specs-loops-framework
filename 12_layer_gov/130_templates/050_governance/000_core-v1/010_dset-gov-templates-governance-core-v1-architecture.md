@@ -38,7 +38,7 @@ every rule declares both fields even when the lists are empty. Registry order
 is not precedence. If selected rules conflict and no declared precedence path
 resolves the conflict, governed work stops rather than choosing implicitly.
 
-Active Decisions, including every direct Decision subtype, authorize and
+Active Requirements and Decisions authorize and
 explain change. Provenance identifies origin but does not
 authorize. QA/Test and QA/Evaluation results, reviews, and other evidence
 assess reliance claims. None becomes rule authority merely by existing or
@@ -97,11 +97,11 @@ Question when the ambiguity affects work.
 
 ## Artifact roles
 
-DSET separates four artifact roles from the four semantic Types—Decision,
-Question, Problem, and QA:
+DSET separates four artifact roles from the five semantic Types—Requirement,
+Decision, Question, Problem, and QA:
 
-- **Atomic authority sources** are accepted, active, applicable Decisions,
-  including every direct Decision subtype. Atoms are
+- **Atomic authority sources** are accepted, active, applicable Requirements
+  and Decisions. Atoms are
   immutable. Later state is an append-only lifecycle event; replacement is a
   successor atom with an explicit acyclic `absorbs` relation.
 - **Evergreen compiled projections** are updatable current views such as specs,

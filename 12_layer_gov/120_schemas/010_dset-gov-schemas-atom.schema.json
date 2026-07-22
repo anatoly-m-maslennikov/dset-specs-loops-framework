@@ -7,8 +7,8 @@
   "properties": {
     "artifact_type": {"const": "atomic_record"},
     "artifact_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-ATOMIC-RECORD-[0-9]{3,}$"},
-    "type": {"enum": ["decision", "question", "problem", "qa"]},
-    "subtype": {"enum": ["requirement", "constraint", "contract", "user_story", "outcome", "scenario", "invariant", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
+    "type": {"enum": ["requirement", "decision", "question", "problem", "qa"]},
+    "subtype": {"enum": ["constraint", "contract", "user_story", "outcome", "scenario", "invariant", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
     "semantic_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"},
     "status": {"enum": ["proposed", "accepted"]},
     "priority": {"type": "string", "minLength": 1},
@@ -64,8 +64,12 @@
       "then": {"required": ["subtype"], "properties": {"subtype": {"enum": ["test", "evaluation"]}}}
     },
     {
-      "if": {"properties": {"type": {"const": "decision"}}, "required": ["type", "subtype"]},
-      "then": {"properties": {"subtype": {"enum": ["requirement", "constraint", "contract", "user_story", "outcome", "scenario", "invariant"]}}}
+      "if": {"properties": {"type": {"const": "requirement"}}, "required": ["type", "subtype"]},
+      "then": {"properties": {"subtype": {"enum": ["constraint", "contract", "user_story", "outcome", "scenario", "invariant"]}}}
+    },
+    {
+      "if": {"properties": {"type": {"const": "decision"}}, "required": ["type"]},
+      "then": {"not": {"required": ["subtype"]}}
     },
     {
       "if": {"properties": {"type": {"const": "question"}}, "required": ["type", "subtype"]},
@@ -108,9 +112,9 @@
       "type": "object",
       "required": ["semantic_type", "scope", "through"],
       "properties": {
-        "semantic_type": {"enum": ["decision", "question", "problem", "qa"]},
-        "subtype": {"enum": ["none", "requirement", "constraint", "contract", "user_story", "outcome", "scenario", "invariant", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
-        "layer": {"enum": ["meta", "gov", "tool", "skill", "ops"]},
+        "semantic_type": {"enum": ["requirement", "decision", "question", "problem", "qa"]},
+        "subtype": {"enum": ["none", "constraint", "contract", "user_story", "outcome", "scenario", "invariant", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
+        "layer": {"enum": ["meta", "gov", "tool", "skill", "implementation", "ops"]},
         "scope": {
           "type": "object",
           "required": ["kind", "id"],

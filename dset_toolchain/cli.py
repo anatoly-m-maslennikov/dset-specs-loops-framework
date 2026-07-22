@@ -292,7 +292,8 @@ def build_parser() -> argparse.ArgumentParser:
     health_mode.add_argument("--check", action="store_true")
 
     compilation = commands.add_parser(
-        "compile", help="seal active Decision authority into evergreen projections"
+        "compile",
+        help="seal active Requirement and Decision authority into evergreen projections",
     )
     _root_argument(compilation)
     compilation_mode = compilation.add_mutually_exclusive_group()

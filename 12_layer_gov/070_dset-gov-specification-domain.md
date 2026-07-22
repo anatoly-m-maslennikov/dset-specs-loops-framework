@@ -12,7 +12,7 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 | **Language profile** | Versioned mapping from the six neutral gate categories to language-native tools, scopes, thresholds, and exclusions |
 | **Artifact governance profile** | Versioned mapping from artifact architecture and authoring rules to machine-checkable ownership, hierarchy, hub, navigation, and portability gates; it is selected independently from an implementation-language profile |
 | **Governed artifact area** | A stable public knowledge boundary with one purpose, owner, root, hub, and structural parent |
-| **Semantic Type** | Exactly one of Decision, Question, Problem, or QA; it is determined by an atom's meaning rather than workflow, document role, queue, skill, tool, host, path, or next action |
+| **Semantic Type** | Exactly one of Requirement, Decision, Question, Problem, or QA; it is determined by an atom's meaning rather than workflow, document role, queue, skill, tool, host, path, or next action |
 | **Artifact type** | Exactly one registered primary carrier role, independent from semantic Type, that states which development question an artifact owns and permits at most one direct registered artifact subtype |
 | **Analysis Report** | A non-authoritative interpretation of named inputs and assumptions that owns one analysis question and routes any accepted conclusion to a separate Decision, Question, Problem, or QA atom |
 | **Subtype** | At most one direct specialization of a semantic Type; subtype nesting and a subtype that repeats its Type are invalid |
@@ -20,21 +20,21 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 | **Project health view** | A generated non-authoritative projection of artifact inventory, traceability coverage, proof freshness, and unresolved work that returns every result to its canonical owner |
 | **External review report** | Transactional evidence from an independent human or agent review, bound to exact inputs and provenance, whose findings require explicit triage and never authorize repair by themselves |
 | **Atomic artifact** | An emitted record whose semantic identity, payload, provenance, and relations are immutable; directory placement is discovered from its identity or globally unique carrier name, and any representation migration is a separate immutable transition record rather than a path registry or semantic edit |
-| **Atomic authority source** | An accepted, active, applicable Decision atom, including any direct Decision subtype, that is compiled into evergreen projections and wins if that projection is stale |
+| **Atomic authority source** | An accepted, active, applicable Requirement or Decision atom that is compiled into evergreen projections and wins if that projection is stale |
 | **Absorption** | An explicit acyclic new-atom-to-old-atom relation that replaces the older atom in the active authority set without deleting history or inferring precedence from age |
 | **Artifact relation graph** | A typed forward graph over canonical artifact IDs using structure, analysis, projection, implementation, QA, evidence, resolution, scoped override, complete replacement, or non-semantic fallback edges; reverse views are derived without editing sources or targets |
 | **Fully retired atom** | An atom with no active claim, open reliance, or lifecycle work that may move to its type's `archive/` subfolder through a registered carrier transition while retaining its semantic ID, transition chain, and lookup |
 | **Priority** | The single project-wide ordered rank for a governed artifact; it orders handling across all conflict classes, selects a claim only in declared resolvable policy conflicts, and is one execution-order input for actionable work |
 | **Governance registry** | Repository-local machine-readable mapping from workflow and normative rule IDs to their editable governing documents, dependencies, applicability, and profile/customization identity; it points to rules without restating them |
 | **Governing document** | The single editable repository-local owner of one or more normative rule IDs selected by the governance registry |
-| **Decision** | Immutable directive content explicitly accepted as project authority through a distinct operator act or lifecycle event; an empty subtype represents general authority |
-| **Requirement** | A direct Decision subtype for a residual observable result, behavior, capability, quality, or prevention condition that no more precise Decision subtype owns |
-| **Constraint** | A direct Decision subtype restricting acceptable technologies, dependencies, environments, resources, formats, or operating limits when no boundary participant relies on the restriction as a Contract |
-| **Contract** | A direct Decision subtype defining provider/consumer, interface, compatibility, and failure obligations across a project boundary |
-| **User Story** | A direct Decision subtype stating which actor or stakeholder wants which capability or outcome and why it has value |
-| **Outcome** | A direct Decision subtype stating an intended measurable change in user, business, operational, or system state; an observed result is evidence |
-| **Scenario** | A direct Decision subtype stating a concrete accepted behavior through preconditions, interaction or event, and expected observable result; its execution is work/evidence |
-| **Invariant** | A direct Decision subtype stating a condition that must always hold in its declared scope |
+| **Requirement** | An immutable required result or obligation accepted as project authority; an empty subtype represents a residual observable obligation |
+| **Constraint** | A direct Requirement subtype restricting acceptable technologies, dependencies, environments, resources, formats, or operating limits when no boundary participant relies on the restriction as a Contract |
+| **Contract** | A direct Requirement subtype defining provider/consumer, interface, compatibility, and failure obligations across a project boundary |
+| **User Story** | A direct Requirement subtype stating which actor or stakeholder wants which capability or outcome and why it has value |
+| **Outcome** | A direct Requirement subtype stating an intended measurable change in user, business, operational, or system state; an observed result is evidence |
+| **Scenario** | A direct Requirement subtype stating a concrete accepted behavior through preconditions, interaction or event, and expected observable result; its execution is work/evidence |
+| **Invariant** | A direct Requirement subtype stating a condition that must always hold in its declared scope |
+| **Decision** | An immutable material selected implementation, architecture, governance, or operating approach accepted as project authority; it has no subtype |
 | **Question** | Missing knowledge, interpretation, or choice; an empty subtype represents general uncertainty |
 | **Conflict** | A direct Question subtype for verified incompatible active applicable authority over the same scope, concern, and effective time |
 | **Risk** | A direct Question subtype for an uncertain future harmful condition |
@@ -60,7 +60,7 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 - **DSET-INVARIANT-GOV-007:** Invalid or incompatible selected rule ownership fails closed with a stable diagnostic, while explicitly justified non-applicability remains valid.
 - **DSET-INVARIANT-GOV-008:** A locally changed ruleset remains valid project truth only under an explicit custom identity that retains its source profile/version provenance.
 - **DSET-INVARIANT-GOV-009:** Every normative rule ID has exactly one editable governing document; skills, agent guidance, templates, generated installations, indexes, summaries, and caches never become parallel writable rule stores.
-- **DSET-INVARIANT-GOV-010:** DSET has exactly four semantic Types—Decision, Question, Problem, and QA. Decision permits Requirement, Constraint, Contract, User Story, Outcome, Scenario, and Invariant; Question permits Conflict, Risk, and Opportunity; Problem permits Defect, Gap, and Debt; QA requires Test or Evaluation. No subtype contains another subtype. Workflows, tasks, tickets, document roles, Changes, and releases are not semantic Types.
+- **DSET-INVARIANT-GOV-010:** DSET has exactly five semantic Types—Requirement, Decision, Question, Problem, and QA. Requirement permits Constraint, Contract, User Story, Outcome, Scenario, and Invariant; Decision has no subtype; Question permits Conflict, Risk, and Opportunity; Problem permits Defect, Gap, and Debt; QA requires Test or Evaluation. No subtype contains another subtype. Workflows, tasks, tickets, document roles, Changes, and releases are not semantic Types.
 - **DSET-INVARIANT-GOV-011:** All accepted IDs use the `DSET` project prefix and a full type; project-wide IDs omit the layer, layer-owned IDs include `META`, `GOV`, `TOOL`, `SKILL`, `IMPL`, or `OPS`, and numbering is independent per type within each project-wide or layer sequence.
 - **DSET-INVARIANT-GOV-012:** Rule authority and assurance remain distinct. Dependency and precedence are separate acyclic relations; invalid authority or unresolved conflict fails closed, while missing or stale assurance affects only the relying claim or gate.
 - **DSET-INVARIANT-GOV-013:** A health percentage is valid only with an explicit numerator, denominator, excluded/not-applicable/unknown/stale counts, and canonical return links; it never creates authority or rewards unnecessary artifacts.

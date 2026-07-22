@@ -19,12 +19,17 @@ ROOT = repository_root(Path(__file__))
 
 
 class SemanticTypeCompatibilityTests(unittest.TestCase):
-    def test_exact_four_types_and_flat_direct_subtypes(self) -> None:
+    def test_exact_five_types_and_flat_direct_subtypes(self) -> None:
         self.assertEqual(
-            set(SEMANTIC_SUBTYPES), {"decision", "question", "problem", "qa"}
+            set(SEMANTIC_SUBTYPES),
+            {"requirement", "decision", "question", "problem", "qa"},
         )
         self.assertEqual(
-            classify_semantic_id("APP-REQUIREMENT-001"), ("decision", "requirement")
+            classify_semantic_id("APP-REQUIREMENT-001"), ("requirement", None)
+        )
+        self.assertEqual(
+            classify_semantic_id("APP-CONTRACT-002"),
+            ("requirement", "contract"),
         )
         self.assertEqual(
             classify_semantic_id("APP-OPPORTUNITY-002"), ("question", "opportunity")
@@ -39,14 +44,18 @@ class SemanticTypeCompatibilityTests(unittest.TestCase):
         self.assertEqual(
             (opportunity["type"], opportunity["subtype"]), ("question", "opportunity")
         )
-        self.assertTrue(opportunity["compatibility"])
+        self.assertFalse(opportunity["compatibility"])
         evaluation = rows["DSET-EVAL-OPS-001"]
         self.assertEqual(
             (evaluation["type"], evaluation["subtype"]), ("qa", "evaluation")
         )
         self.assertTrue(evaluation["compatibility"])
-        native = rows["DSET-REQUIREMENT-GOV-035"]
-        self.assertFalse(native["compatibility"])
+        compatibility = rows["DSET-REQUIREMENT-GOV-035"]
+        self.assertEqual(
+            (compatibility["type"], compatibility["subtype"]),
+            ("requirement", "none"),
+        )
+        self.assertTrue(compatibility["compatibility"])
         self.assertEqual(validate_semantic_classifications(ROOT), [])
 
     def test_carrier_and_id_kind_mismatch_fails_closed(self) -> None:

@@ -17,7 +17,11 @@ from .legacy_authority import legacy_authority_ids, validate_legacy_authority_le
 from .lineage import ArtifactRelation, parse_authored_relations
 from .project_data import lifecycle_events as load_lifecycle_events
 from .project_data import project_section
-from .semantic_types import SEMANTIC_ID_KINDS, SEMANTIC_SUBTYPES
+from .semantic_types import (
+    SEMANTIC_ID_KINDS,
+    SEMANTIC_SUBTYPES,
+    normalize_semantic_classification,
+)
 from .settings import load_project_settings
 from .yaml_subset import YamlSubsetError, dump, load
 
@@ -352,16 +356,22 @@ def _parse_atom(
     allowed_priorities: set[str],
 ) -> tuple[SemanticAtom | None, list[Diagnostic]]:
     diagnostics: list[Diagnostic] = []
-    semantic_type = data.get("type")
+    raw_semantic_type = data.get("type")
     raw_subtype = data.get("subtype")
     subtype = None if raw_subtype is None or raw_subtype == "none" else raw_subtype
+    semantic_type = raw_semantic_type
+    if isinstance(raw_semantic_type, str):
+        semantic_type, subtype = normalize_semantic_classification(
+            raw_semantic_type,
+            str(subtype) if subtype is not None else None,
+        )
     semantic_id = data.get("semantic_id")
     carrier_id = data.get("artifact_id")
     status = data.get("status")
     priority = data.get("priority")
     sessions = data.get("llm_session_ids")
     if semantic_type not in SEMANTIC_SUBTYPES:
-        diagnostics.append(_atom_diag(path, "atom requires one of the four Types"))
+        diagnostics.append(_atom_diag(path, "atom requires one of the five Types"))
     elif subtype is not None and subtype not in SEMANTIC_SUBTYPES[semantic_type]:
         diagnostics.append(_atom_diag(path, "atom has an invalid direct subtype"))
     elif semantic_type == "qa" and subtype not in {"test", "evaluation"}:

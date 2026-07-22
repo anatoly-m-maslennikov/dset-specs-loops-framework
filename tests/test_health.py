@@ -75,7 +75,9 @@ class ProjectHealthTests(unittest.TestCase):
         self.assertEqual(len(model["coverage"]), 4)
         semantic_types = set(model["semantic_counts"]["by_type"])
         self.assertTrue(
-            semantic_types.issubset({"decision", "problem", "qa", "question"})
+            semantic_types.issubset(
+                {"requirement", "decision", "problem", "qa", "question"}
+            )
         )
         self.assertIn("decision", semantic_types)
         self.assertIn("qa", semantic_types)
@@ -133,7 +135,9 @@ class ProjectHealthTests(unittest.TestCase):
             item.name: item for item in build_health_model(self.root)["coverage"]
         }
 
-        compiled = coverage["Decision authority compiled into evergreen truth"]
+        compiled = coverage[
+            "Requirement and Decision authority compiled into evergreen truth"
+        ]
         checked = coverage["Applicable authority connected to Test or Evaluation"]
         evidenced = coverage["QA definitions connected to current evidence"]
         self.assertIn("DSET-REQUIREMENT-999", compiled.gaps)

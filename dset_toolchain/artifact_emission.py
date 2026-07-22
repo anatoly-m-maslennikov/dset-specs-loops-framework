@@ -148,7 +148,9 @@ def _semantic_diagnostics(candidate: Mapping[str, Any]) -> list[dict[str, str]]:
             {
                 "code": "DSET-ARTIFACT-TYPE",
                 "field": "type",
-                "message": "type must be decision, question, problem, or qa",
+                "message": (
+                    "type must be requirement, decision, question, problem, or qa"
+                ),
             }
         ]
     if subtype is not None and subtype not in SEMANTIC_SUBTYPES[str(semantic_type)]:

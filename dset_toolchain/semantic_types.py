@@ -15,9 +15,8 @@ from .project_data import lifecycle_events, project_section
 from .yaml_subset import YamlSubsetError, load
 
 SEMANTIC_SUBTYPES: dict[str, frozenset[str]] = {
-    "decision": frozenset(
+    "requirement": frozenset(
         {
-            "requirement",
             "constraint",
             "contract",
             "user_story",
@@ -26,19 +25,20 @@ SEMANTIC_SUBTYPES: dict[str, frozenset[str]] = {
             "invariant",
         }
     ),
+    "decision": frozenset(),
     "question": frozenset({"conflict", "risk", "opportunity"}),
     "problem": frozenset({"defect", "gap", "debt"}),
     "qa": frozenset({"test", "evaluation"}),
 }
 SEMANTIC_ID_KINDS: dict[tuple[str, str | None], str] = {
+    ("requirement", None): "REQUIREMENT",
+    ("requirement", "constraint"): "CONSTRAINT",
+    ("requirement", "contract"): "CONTRACT",
+    ("requirement", "user_story"): "STORY",
+    ("requirement", "outcome"): "OUTCOME",
+    ("requirement", "scenario"): "SCENARIO",
+    ("requirement", "invariant"): "INVARIANT",
     ("decision", None): "DECISION",
-    ("decision", "requirement"): "REQUIREMENT",
-    ("decision", "constraint"): "CONSTRAINT",
-    ("decision", "contract"): "CONTRACT",
-    ("decision", "user_story"): "STORY",
-    ("decision", "outcome"): "OUTCOME",
-    ("decision", "scenario"): "SCENARIO",
-    ("decision", "invariant"): "INVARIANT",
     ("question", None): "QUESTION",
     ("question", "conflict"): "CONFLICT",
     ("question", "risk"): "RISK",
@@ -55,22 +55,22 @@ KIND_CLASSIFICATION = {
 }
 KIND_CLASSIFICATION["EVAL"] = ("qa", "evaluation")
 FIELD_CLASSIFICATION: dict[str, tuple[str, str | None]] = {
-    "requirements": ("decision", "requirement"),
-    "contracts": ("decision", "contract"),
-    "stories": ("decision", "user_story"),
-    "outcomes": ("decision", "outcome"),
+    "requirements": ("requirement", None),
+    "contracts": ("requirement", "contract"),
+    "stories": ("requirement", "user_story"),
+    "outcomes": ("requirement", "outcome"),
     "tests": ("qa", "test"),
     "evals": ("qa", "evaluation"),
 }
 LEGACY_INTAKE_CLASSIFICATION: dict[str, tuple[str, str | None]] = {
     "decision": ("decision", None),
-    "requirement": ("decision", "requirement"),
-    "constraint": ("decision", "constraint"),
-    "contract": ("decision", "contract"),
-    "user_story": ("decision", "user_story"),
-    "outcome": ("decision", "outcome"),
-    "scenario": ("decision", "scenario"),
-    "invariant": ("decision", "invariant"),
+    "requirement": ("requirement", None),
+    "constraint": ("requirement", "constraint"),
+    "contract": ("requirement", "contract"),
+    "user_story": ("requirement", "user_story"),
+    "outcome": ("requirement", "outcome"),
+    "scenario": ("requirement", "scenario"),
+    "invariant": ("requirement", "invariant"),
     "question": ("question", None),
     "conflict": ("question", "conflict"),
     "risk": ("question", "risk"),
@@ -120,6 +120,24 @@ def classify_semantic_id(identifier: str) -> tuple[str, str | None] | None:
     if len(matches) != 1:
         return None
     return next(iter(matches))
+
+
+def normalize_semantic_classification(
+    semantic_type: str, subtype: str | None
+) -> tuple[str, str | None]:
+    """Return the canonical five-Type classification for a carrier.
+
+    Emitted atoms are immutable. Carriers authored under the former model used
+    Decision as a parent for required claims, so those spellings remain valid
+    compatibility input while their semantic index uses the current Type.
+    """
+    if semantic_type != "decision" or subtype is None:
+        return semantic_type, subtype
+    if subtype == "requirement":
+        return "requirement", None
+    if subtype in SEMANTIC_SUBTYPES["requirement"]:
+        return "requirement", subtype
+    return semantic_type, subtype
 
 
 def build_semantic_classification_index(root: Path) -> list[dict[str, Any]]:
@@ -188,15 +206,19 @@ def _collect(
             semantic_type = metadata.get("type")
             subtype = metadata.get("subtype")
             if isinstance(identifier, str) and isinstance(semantic_type, str):
+                classification = normalize_semantic_classification(
+                    semantic_type, _normalized_subtype(subtype)
+                )
+                authored = (semantic_type, _normalized_subtype(subtype))
                 _register(
                     records,
                     diagnostics,
                     path,
                     identifier,
-                    (semantic_type, _normalized_subtype(subtype)),
+                    classification,
                     origin="modern_atom",
                     status=str(metadata.get("status", "unknown")),
-                    modern=True,
+                    modern=classification == authored,
                 )
             continue
         if path.name.startswith("decision-") or (
@@ -302,9 +324,8 @@ def _collect(
             raw_subtype = item.get("subtype")
             intake_classification: tuple[str, str | None] | None
             if raw_type in SEMANTIC_SUBTYPES:
-                intake_classification = (
-                    str(raw_type),
-                    _normalized_subtype(raw_subtype),
+                intake_classification = normalize_semantic_classification(
+                    str(raw_type), _normalized_subtype(raw_subtype)
                 )
             else:
                 intake_classification = LEGACY_INTAKE_CLASSIFICATION.get(str(raw_type))

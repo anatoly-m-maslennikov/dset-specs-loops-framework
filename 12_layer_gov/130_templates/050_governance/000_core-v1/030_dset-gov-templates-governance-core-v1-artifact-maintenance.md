@@ -193,16 +193,16 @@ assessment and refuses the immutable write when it is not allowed.
 ## Commit and session provenance
 
 Every commit that changes evergreen truth or implementation artifacts must name
-the Decision or Decisions it implements in the commit body, for example
-`Implements: DSET-DECISION-GOV-001`. A linked Problem may explain why a
-correction is needed, but only an active Decision or direct Decision subtype
-authorizes the resulting behavior.
+the Requirement or Decision IDs it implements in the commit body, for example
+`Implements: DSET-REQUIREMENT-IMPL-004`. A linked Problem may explain why a
+correction is needed, but only an active Requirement or Decision authorizes the
+resulting behavior.
 
 The repository manifest activates deterministic commit validation from an
 explicit commit or from the commit that first added the manifest. Every later
 non-merge commit uses exactly one provenance mode: implementation has one or
-more Decision-family `Implements:` IDs; evidence has both Decision-family
-`Decision:` IDs and known `Verifies:` IDs. Both modes require exactly one valid
+more authority `Implements:` IDs; evidence has both authority `Decision:` IDs
+and known `Verifies:` IDs. Both modes require exactly one valid
 `Session:` trailer. Optional `Resolves:` IDs must identify Problems. Unknown
 IDs, non-Decision implementation authority, mixed modes, and missing provenance
 fail the repository check.

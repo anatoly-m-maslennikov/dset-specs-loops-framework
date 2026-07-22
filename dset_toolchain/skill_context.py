@@ -78,7 +78,7 @@ def resolve_skill_context(
         "change_workspace_default": settings.change_workspace_mode,
         "delegation_budget_profile": settings.delegation_budget_profile,
         "semantic_routing": {
-            "types": ["decision", "question", "problem", "qa"],
+            "types": ["requirement", "decision", "question", "problem", "qa"],
             "classification_count": len(semantic_index),
             "compatibility_count": sum(
                 1 for item in semantic_index if item["compatibility"]

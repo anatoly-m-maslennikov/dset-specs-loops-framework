@@ -31,7 +31,7 @@
 
 ## Specification boundary surface
 
-A User Story is a direct Decision subtype. When present, its stable `STORY`
+A User Story is a direct Requirement subtype. When present, its stable `STORY`
 compatibility ID records an actor or stakeholder, desired capability or
 outcome, and value or purpose. It may link sibling Requirements, Outcomes,
 Scenarios, Invariants, Contracts, and QA atoms, but is never nested beneath a
@@ -39,13 +39,13 @@ Requirement. Absence remains valid where no meaningful actor perspective
 exists.
 
 Requirement, Constraint, Contract, User Story, Outcome, Scenario, and Invariant
-are sibling Decision subtypes. Requirement owns observable required results;
+are sibling Requirement subtypes. Requirement owns observable required results;
 Constraint narrows solutions; Contract owns boundary obligations; User Story
 owns actor/value intent; Outcome owns measurable state change; Scenario owns a
 concrete behavior; and Invariant owns an always-true condition. Design and
 implementation plan remain document roles rather than semantic Types.
 
-Outcome is a direct Decision subtype for measurable user, business,
+Outcome is a direct Requirement subtype for measurable user, business,
 operational, or system state change, not a delivered output. Its stable
 `OUTCOME` ID links baseline, target, observation method/source, evaluation
 window, originating Problem or Question/Opportunity, sibling User Stories, and
@@ -58,7 +58,7 @@ Examples, diagrams, and cited candidates may evolve without compatibility guaran
 
 ## Authoritative boundary contracts
 
-A Contract is a direct Decision subtype, not implementation advice. Every
+A Contract is a direct Requirement subtype, not implementation advice. Every
 immutable Contract atom names its operator-accepted source, version or digest,
 direction, provider, consumer, conformance, compatibility, priority, creation
 state, and absorbed predecessors. Implementation cannot rewrite it. Ambiguity

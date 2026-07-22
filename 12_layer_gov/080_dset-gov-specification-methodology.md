@@ -20,7 +20,7 @@ presentation.
 | `DSET-DECISION-GOV-001` | Separate atomic authority, evergreen projections, transactional context/evidence, implementation, commit provenance, and session provenance |
 | `DSET-DECISION-GOV-002` | Use one constitutional governance root; separate dependency from precedence and authority from assurance |
 | `DSET-DECISION-GOV-003` | Keep semantic atoms immutable and resolve conflicts by role and lifecycle before priority |
-| `DSET-DECISION-GOV-008` | Use four application-level Types with at most one direct subtype and explicit act/content/carrier/work/evidence boundaries |
+| `DSET-DECISION-GOV-032` | Use peer Requirement and Decision Types: required obligations are Requirements; material selected approaches are Decisions |
 | `DSET-DECISION-GOV-010` | Use the bounded `critical`, `high`, `medium`, `low`, `deferred` priority profile with `medium` as default |
 | `DSET-DECISION-GOV-019` | Use Version as the shared primary artifact type for six flat release-lifecycle roles |
 | `DSET-DECISION-GOV-013` | Use ten typed forward artifact relations, derived inverses, and range-based evergreen projection frontiers |
@@ -171,17 +171,18 @@ Every governed public artifact area must declare one purpose, owner, root, hub, 
 
 ## DSET-REQUIREMENT-GOV-010 — Semantic Types and document roles stay separate
 
-DSET must define exactly four semantic Types—Decision, Question, Problem, and
-QA—and at most one allowed direct subtype per emitted atom. Navigation,
+DSET must define exactly five semantic Types—Requirement, Decision, Question,
+Problem, and QA—and at most one allowed direct subtype per emitted atom.
+Navigation,
 specification, architecture, rationale, procedure, plan, evidence/history,
 implementation, derived view, agent workflow, Change, and Release are document,
 lifecycle, implementation, or optional-container roles rather than additional
 semantic Types. Workflow, queue, skill, tool, host, filename, path, and next
 action never determine Type or subtype.
 
-**Scenario DSET-SCENARIO-GOV-011:** A User Story and Requirement are sibling
-Decision subtypes linked from one specification; the specification is their
-evergreen document role rather than a fifth Type. A design explanation moves to
+**Scenario DSET-SCENARIO-GOV-011:** A User Story is a direct Requirement subtype
+linked from one specification; the specification is its evergreen document
+role rather than another Type. A design explanation moves to
 rationale and a repeatable sequence to a playbook without retyping either as an
 atom.
 
@@ -241,16 +242,17 @@ qualitative, probabilistic, statistical, or model-judged Evaluation definitions
 to QA. Every named subtype is direct; no subtype may contain another subtype.
 
 Problems and Questions do not authorize implementation. A Problem may return
-directly to implementation only when an active Decision already defines the
-correction; otherwise it raises a Question whose consequential answer becomes a
-Decision. GitHub Issues, Jira/support tickets, tasks, Changes, and releases are
+directly to implementation only when an active Requirement or Decision already
+defines the correction; otherwise it raises a Question whose consequential
+answer becomes a Requirement or Decision. GitHub Issues, Jira/support tickets,
+tasks, Changes, and releases are
 representations, steps, or optional containers rather than semantic Types.
 
 **Scenario DSET-SCENARIO-GOV-019:** A production failure is a Problem/Defect, a
 missing required platform is a Problem/Gap, future delivery harm is a
 Question/Risk, optional release-note automation is a Question/Opportunity, and
 incompatible active API obligations form a Question/Conflict. An operator
-answer becomes a Decision or direct Decision subtype before implementation.
+answer becomes a Requirement or Decision before implementation.
 
 ## DSET-REQUIREMENT-GOV-019 — IDs expose the concrete Type or subtype
 
@@ -260,8 +262,8 @@ The project prefix is `DSET`. Project-wide IDs use
 `SKILL`, `IMPL`, or `OPS`. `<FULL-KIND>` is the subtype when present and the Type when
 subtype is empty. No ID encodes a subtype path.
 
-Decision kinds are `DECISION`, `REQUIREMENT`, `CONSTRAINT`, `CONTRACT`,
-`STORY`, `OUTCOME`, `SCENARIO`, and `INVARIANT`; Question kinds are `QUESTION`,
+Requirement kinds are `REQUIREMENT`, `CONSTRAINT`, `CONTRACT`, `STORY`,
+`OUTCOME`, `SCENARIO`, and `INVARIANT`; Decision uses `DECISION`; Question kinds are `QUESTION`,
 `CONFLICT`, `RISK`, and `OPPORTUNITY`; Problem kinds are `PROBLEM`, `DEFECT`,
 `GAP`, and `DEBT`; QA kinds are `TEST` and `EVALUATION`. Existing stable
 `EVAL` and other legacy IDs remain resolvable compatibility history and are not
@@ -374,7 +376,7 @@ checkpoints without making provenance authoritative.
 
 The project manifest declares the commit at which enforcement begins. Every
 later non-merge commit must use exactly one validated mode: `Implements:` with
-one or more known Decision-family IDs, or the evidence pair `Decision:` and
+one or more known Requirement/Decision authority IDs, or the evidence pair `Decision:` and
 `Verifies:`. Both require exactly one valid `Session:` trailer; `Resolves:` may
 name only known Problems. Unknown IDs, QA/Problem IDs used as implementation
 authority, mixed modes, and missing trailers fail validation.
@@ -399,7 +401,7 @@ the source, marks the document stale, and blocks reliance until recompilation.
 Both graphs must be acyclic; registry order must not imply precedence; missing
 precedence targets or unresolved conflicts must fail closed.
 
-Active Decisions and their direct subtypes authorize and explain rule changes;
+Active Requirements and Decisions authorize and explain rule changes;
 provenance identifies origin but does not authorize. QA/Test and
 QA/Evaluation results, reviews, and evidence assess
 reliance claims. None becomes rule
@@ -419,15 +421,15 @@ DSET must expose a generated project-health projection without making it a new
 authority. It reports artifact counts by role, Type, subtype, layer, status,
 priority, and applicable Work Area; unresolved and automatically resolved
 Question/Conflict subtypes; unresolved Problems and Questions with their
-subtypes; proof freshness; and traceability coverage for Decision atoms
+subtypes; proof freshness; and traceability coverage for Requirement and Decision atoms
 compiled into evergreen owners, applicable authority connected to
 implementation and QA/Test or QA/Evaluation, implementation commits connected
-to their authorizing Decision, and proof plans connected to current evidence.
+to their authorizing Requirement or Decision, and proof plans connected to current evidence.
 
 Every coverage result states its numerator, denominator, exclusions,
 not-applicable, unknown, and stale counts and links back to canonical owners.
-The view must not require a second empty-subtype Decision for every direct
-Decision subtype, code for a documentation-only Requirement, or an Evaluation
+The view must not require a Decision for every Requirement, code for a
+documentation-only Requirement, or an Evaluation
 where the Evaluation plan declares one not applicable. A portable Markdown renderer is the baseline public surface;
 interactive renderers may consume the same derived model later.
 
@@ -450,7 +452,7 @@ priority; the findings body may be free-form.
 Every finding records evidence, confidence, impact, and proposed disposition.
 Import or reconciliation must explicitly reject it with rationale, defer it,
 or route it to an existing or new Problem or Question and direct subtype,
-Decision and direct subtype, optional Change, evergreen owner, or proof
+Requirement, Decision, optional Change, evergreen owner, or proof
 obligation. Accepted consequences compile
 into current truth and reopen the smallest affected proof closure. Neither the
 report nor the reviewer may silently edit or authorize implementation.
@@ -526,21 +528,21 @@ Decision wins over its absorbed predecessor by explicit lifecycle relation,
 not because it is newer. Equal selectable priorities stop for a Decision; no
 outcome is inferred from document order.
 
-## DSET-REQUIREMENT-GOV-027 — Four Types use one flat subtype level
+## DSET-REQUIREMENT-GOV-027 — Five Types use one flat subtype level
 
-DSET must represent each semantic atom with exactly one of four Types and at
+DSET must represent each semantic atom with exactly one of five Types and at
 most one direct allowed subtype:
 
-- Decision: Requirement, Constraint, Contract, User Story, Outcome, Scenario,
-  or Invariant;
+- Requirement: Constraint, Contract, User Story, Outcome, Scenario, or
+  Invariant;
+- Decision: no subtype;
 - Question: Conflict, Risk, or Opportunity;
 - Problem: Defect, Gap, or Debt; and
 - QA: Test or Evaluation, with subtype required.
 
-A general Decision, Question, or Problem omits subtype. A subtype never repeats
-its Type and never contains another subtype. User Story and Requirement are
-sibling Decision subtypes; links between them do not create
-Decision/Requirement/User Story nesting.
+A general Requirement, Decision, Question, or Problem omits subtype. A subtype
+never repeats its Type and never contains another subtype. Requirement
+subtypes are siblings; links between them do not create subtype nesting.
 
 Classification depends on semantic content, never workflow, queue, skill,
 tool, host, filename, path, or next action. Changed semantics require a new
@@ -554,20 +556,22 @@ atoms. When an irreducible claim remains plausible under several subtypes, use
 the empty subtype of its Type and raise a Question when ambiguity affects work;
 never guess or assign several subtypes.
 
-The operator's acceptance is an act or lifecycle event distinct from Decision
-directive content and its carrier. QA atoms define checks; Test/Evaluation
+The operator's acceptance is an act or lifecycle event distinct from accepted
+Requirement or Decision content and its carrier. QA atoms define checks; Test/Evaluation
 execution is work; results and logs are evidence; gate decisions and
 Verification are derived. Storage may colocate linked roles without collapsing
 their semantics or identities.
 
-Direct Decision subtypes are recognized by the acceptance condition that owns
+Direct Requirement subtypes are recognized by the acceptance condition that owns
 the claim. Contract owns named boundary obligations. Constraint narrows
 otherwise acceptable solutions when no boundary participant relies on it as a
 Contract. User Story owns actor/want/value framing but not acceptance criteria.
 Outcome owns intended measurable state change, not observed evidence. Scenario
 owns one accepted example, not its run. Invariant owns an always-hold
 condition, not evidence that it currently holds. Requirement owns the remaining
-observable obligation that no more precise Decision subtype owns.
+observable obligation that no more precise Requirement subtype owns. Decision
+owns a material selected implementation, architecture, governance, or operating
+approach and has no subtype.
 
 Problem means presently true insufficiency. Wrong now is Defect; missing now is
 Gap; a working known compromise with continuing cost is Debt. Question means

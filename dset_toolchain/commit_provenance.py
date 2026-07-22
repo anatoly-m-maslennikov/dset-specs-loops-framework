@@ -126,9 +126,9 @@ def validate_commit_message(
     if implements and (decisions or verifies):
         problems.append("cannot mix implementation and evidence provenance modes")
     elif implements:
-        problems.extend(_decision_reference_problems("Implements", implements, known))
+        problems.extend(_authority_reference_problems("Implements", implements, known))
     elif decisions and verifies:
-        problems.extend(_decision_reference_problems("Decision", decisions, known))
+        problems.extend(_authority_reference_problems("Decision", decisions, known))
         problems.extend(_known_reference_problems("Verifies", verifies, known))
     else:
         problems.append(
@@ -332,15 +332,20 @@ def _ids(values: list[str]) -> set[str]:
     return {identifier for value in values for identifier in ID_PATTERN.findall(value)}
 
 
-def _decision_reference_problems(
+def _authority_reference_problems(
     label: str,
     identifiers: set[str],
     known: Mapping[str, tuple[str, str]],
 ) -> list[str]:
     problems = _known_reference_problems(label, identifiers, known)
     for identifier in identifiers:
-        if identifier in known and known[identifier][0] != "decision":
-            problems.append(f"{label} must reference a Decision: {identifier}")
+        if identifier in known and known[identifier][0] not in {
+            "requirement",
+            "decision",
+        }:
+            problems.append(
+                f"{label} must reference a Requirement or Decision: {identifier}"
+            )
     return problems
 
 

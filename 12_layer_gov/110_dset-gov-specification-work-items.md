@@ -4,12 +4,13 @@
 
 ## Canonical Types
 
-DSET has exactly four core semantic Types. Type is determined by meaning, not
+DSET has exactly five core semantic Types. Type is determined by meaning, not
 workflow, queue, skill, host, tool, status, filename, path, or next action.
 
 | Type | Empty subtype | Allowed subtypes |
 |---|---|---|
-| `decision` | General operator-accepted authority | `requirement`, `constraint`, `contract`, `user_story`, `outcome`, `scenario`, `invariant` |
+| `requirement` | General required result or obligation | `constraint`, `contract`, `user_story`, `outcome`, `scenario`, `invariant` |
+| `decision` | General material selected approach | None |
 | `question` | General missing knowledge, interpretation, or choice | `conflict`, `risk`, `opportunity` |
 | `problem` | General current insufficiency | `defect`, `gap`, `debt` |
 | `qa` | Invalid for an emitted QA atom | `test`, `evaluation` |
@@ -20,12 +21,13 @@ subtypes. Subtypes never contain subtypes. Type and subtype are immutable after
 emission.
 
 When a subtype exists, its full name is the external artifact and ID kind. A
-Requirement uses `type: decision`, `subtype: requirement`, and a `REQUIREMENT`
-ID. A general Decision omits subtype and uses a `DECISION` ID.
+general Requirement uses `type: requirement` with no subtype and a
+`REQUIREMENT` ID. A Contract uses `type: requirement`, `subtype: contract`, and
+a `CONTRACT` ID. A Decision always omits subtype and uses a `DECISION` ID.
 
 ## Compatibility without retyping
 
-New atoms use the explicit four-Type envelope. Existing stable semantic IDs and
+New atoms use the explicit five-Type envelope. Existing stable semantic IDs and
 normalized payloads remain unchanged and are interpreted through a
 deterministic compatibility classification even when a governed carrier
 transition changes their encoding or path. Their one recognized ID-kind token
@@ -33,15 +35,17 @@ and canonical carrier role must agree on one Type and at most one direct
 subtype. Legacy `EVAL` IDs map to
 `qa/evaluation`; legacy standalone Opportunity, Conflict, and Risk carriers map
 to direct Question subtypes; Requirement, Contract, Story, Outcome, Scenario,
-Invariant, and Constraint map to direct Decision subtypes. The mapping is a
-derived view, not an edit, alias, new atom, or lifecycle event.
+Invariant, and Constraint map to Requirement or its direct subtypes. Historical
+atoms authored under the former Decision-parent model normalize into the
+current Requirement Type without rewriting immutable carriers. The mapping is
+a derived view, not an edit, alias, new atom, or lifecycle event.
 
 `dset check` fails with `DSET-E166` when an ID kind and carrier classification
 disagree or a carrier cannot resolve to the flat model. Traceability publishes
 the preserved ID, normalized Type/subtype, carrier paths, compatibility flag,
 and lifecycle event IDs. Project health reports the same population by Type
 and subtype and keeps native immutable atoms separate from compatibility-
-classified history. Skill context exposes the four-Type routing identity and
+classified history. Skill context exposes the five-Type routing identity and
 counts from the current repository; wrappers never infer a Type from the skill
 that happened to run.
 
@@ -56,23 +60,24 @@ subtype of its Type and raise a Question when the ambiguity matters. Never
 guess from a carrier, path, workflow, or intended next action.
 
 The operator's acceptance is a lifecycle act that grants authority to a
-Decision directive; the act and directive are distinct even when one record
-stores both. Markdown, YAML, database, and hosted records are carriers.
+Requirement or Decision; the act and accepted content are distinct even when
+one record stores both. Markdown, TOML, database, and hosted records are
+carriers.
 Implementation, investigation, acceptance, and QA execution are work. Results
 and logs are evidence. Gate dispositions and Verification are derived. None
 inherits a Type merely because it is stored beside a typed atom.
 
-## Decision routing
+## Requirement routing
 
-A Decision is immutable directive content explicitly accepted as project
-authority by the operator. External material is provenance until the operator
-accepts its directive content through an explicit lifecycle act.
-Active Decisions compile into evergreen specifications, plans, runbooks, or
+A Requirement is an immutable required result or obligation explicitly
+accepted as project authority by the operator. External material is provenance
+until the operator accepts its content through an explicit lifecycle act.
+Active Requirements compile into evergreen specifications, plans, runbooks, or
 governing rules and win when a projection is stale.
 
-- A **Requirement** states the remaining observable result, behavior,
-  capability, quality, or prevention condition that no more precise Decision
-  subtype owns.
+- An empty-subtype **Requirement** states the remaining observable result,
+  behavior, capability, quality, or prevention condition that no more precise
+  Requirement subtype owns.
 - A **Constraint** restricts acceptable solutions, including required or
   forbidden technologies, dependencies, environments, resources, formats, or
   limits when no boundary participant relies on the restriction as a Contract.
@@ -89,13 +94,17 @@ governing rules and win when a projection is stale.
   executed run is work and evidence.
 - An **Invariant** states a condition that must always hold within its declared
   scope; an observation that it currently holds is evidence.
-- An empty-subtype **Decision** owns any other accepted authoritative choice.
-
 Requirements own what must result, Constraints narrow the solution space, and
 Contracts own boundary obligations. User Stories, Outcomes, Scenarios, and
-Invariants are sibling Decision subtypes, not children of Requirement or each
-other. They may link but never create a subtype path. A general Decision may
-own material governance, logic, design, implementation, or edge-case choices.
+Invariants are sibling Requirement subtypes, not children of each other. They
+may link but never create a subtype path.
+
+## Decision routing
+
+A Decision records a material selected implementation, architecture,
+governance, or operating approach. It has no subtype. Routine code-level detail
+is implementation rather than a Decision; emit one only when the choice must
+remain durable authority or its rationale matters to future work.
 
 ## Question routing
 
@@ -116,10 +125,9 @@ nonconformance, and contradictory evidence are not automatically Conflicts.
 Identify the exact incompatible authority claims before using that subtype.
 
 Evidence may answer a factual Question. A consequential choice resolves
-through a Decision. Resolution emits an append-only lifecycle event linking
-the answer or Decision; it never edits the Question atom. An accepted
-Opportunity becomes authority only through a new Requirement or other
-Decision.
+through a Requirement or Decision. Resolution emits an append-only lifecycle
+event linking the answer; it never edits the Question atom. An accepted
+Opportunity becomes authority only through a new Requirement or Decision.
 
 ## Problem routing
 
@@ -143,9 +151,9 @@ Debt must not conceal a Defect or Gap. When a compromise also violates active
 authority or leaves a required item absent, link separate Defect or Gap atoms
 or emit a Decision that changes the applicable authority.
 
-A Problem returns directly to implementation when existing Decisions already
-define the correction. If knowledge or a new choice is missing, create a linked
-Question first.
+A Problem returns directly to implementation when existing Requirements or
+Decisions already define the correction. If knowledge or a new choice is
+missing, create a linked Question first.
 
 ## QA routing
 
@@ -162,22 +170,25 @@ authority.
 
 QA atoms define checks. Test code, Evaluation prompts, datasets, fixtures, and
 harnesses are implementation artifacts. Execution results are evidence for
-derived Verification and never rewrite Decisions.
+derived Verification and never rewrite Requirements or Decisions.
 
 ## Lifecycle and authority
 
-All emitted Decision, Question, Problem, and QA atoms are immutable. Editable
-drafts are not atoms. Later acceptance, answer, correction, replacement,
+All emitted Requirement, Decision, Question, Problem, and QA atoms are
+immutable. Editable drafts are not atoms. Later acceptance, answer, correction,
+replacement,
 absorption, or retirement is a new linked atom or append-only lifecycle event.
 
 Problems and Questions route work but do not authorize implementation. Active
-Decisions own authority. QA owns assurance definitions. Evergreen specs and
+Requirements and Decisions own authority. QA owns assurance definitions.
+Evergreen specs and
 plans are mutable compiled projections; implementation realizes them;
 Verification and project-health views are derived.
 
 Commits changing evergreen truth or implementation cite their governing
-Decision or Decisions. A correction under existing authority may additionally
-link its Problem. A workflow, GitHub Issue, Jira/support ticket, task, Change,
+Requirement or Decision IDs. A correction under existing authority may
+additionally link its Problem. A workflow, GitHub Issue, Jira/support ticket,
+task, Change,
 or Release is a route, representation, step, or optional container rather than
 another semantic Type.
 

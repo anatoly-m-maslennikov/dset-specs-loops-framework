@@ -604,8 +604,11 @@ def _source_error(node: RelationNode, relation_type: str) -> str | None:
         return "check_of must originate from a Test or Evaluation atom"
     if relation_type == "evidence_for" and node.artifact_type != "evidence_record":
         return "evidence_for must originate from an Evidence Record"
-    if relation_type == "override_of" and node.semantic_type != "decision":
-        return "override_of must originate from Decision authority"
+    if relation_type == "override_of" and node.semantic_type not in {
+        "requirement",
+        "decision",
+    }:
+        return "override_of must originate from Requirement or Decision authority"
     if relation_type == "replacement_of" and node.artifact_type != "atomic_record":
         return "replacement_of must originate from an atomic artifact"
     if relation_type == "implementation_of" and node.artifact_type != "implementation":

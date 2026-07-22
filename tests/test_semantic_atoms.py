@@ -123,14 +123,14 @@ class SemanticAtomTests(unittest.TestCase):
                 messages,
             )
 
-    def test_four_type_atom_is_sealed_and_later_mutation_fails(self) -> None:
+    def test_five_type_atom_is_sealed_and_later_mutation_fails(self) -> None:
         self._write_atom()
 
         seal_atom(self.root, self.atom_path)
 
         atoms, diagnostics = collect_semantic_atoms(self.root)
         self.assertEqual(diagnostics, [])
-        self.assertEqual(atoms["DSET-CONTRACT-001"].semantic_type, "decision")
+        self.assertEqual(atoms["DSET-CONTRACT-001"].semantic_type, "requirement")
         self.assertEqual(atoms["DSET-CONTRACT-001"].subtype, "contract")
         self.assertEqual(validate_semantic_atoms(self.root), [])
 
@@ -167,7 +167,7 @@ class SemanticAtomTests(unittest.TestCase):
         self._write_atom()
         self.atom_path.write_text(
             self.atom_path.read_text(encoding="utf-8").replace(
-                "type: decision\nsubtype: contract",
+                "type: requirement\nsubtype: contract",
                 "type: qa\nsubtype: requirement/test",
             ),
             encoding="utf-8",
@@ -313,7 +313,7 @@ class SemanticAtomTests(unittest.TestCase):
         return f"""---
 artifact_type: atomic_record
 artifact_id: {carrier}
-type: decision
+type: requirement
 subtype: contract
 semantic_id: {semantic}
 status: accepted
