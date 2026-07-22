@@ -8,7 +8,7 @@ customization = "custom"
 [[rules]]
 id = "DSET-RULE-ARCHITECTURE"
 layer = "GOV"
-path = ".dset/gov/specification-architecture.md"
+path = ".dset/layer_2_gov/specification-architecture.md"
 owner = "project"
 applicability = "applicable"
 reason = "Every governed workflow requires explicit authority and bootstrap boundaries"
@@ -19,13 +19,13 @@ customization = "unmodified"
 [rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/gov/templates/governance/core-v1/architecture.md"
-sha256 = "98000205543a0e2bb3d99a67a106cbb4b412a68efbe72816651d229a6f126eb2"
+template = ".dset/layer_2_gov/templates/governance/core-v1/architecture.md"
+sha256 = "fd009f2ac9cd72e5b4f1e40222dddd3b8daf981985ef73db63f792680d2cd8d8"
 
 [[rules]]
 id = "DSET-RULE-BUILD"
 layer = "TOOL"
-path = ".dset/tool/specification-build-rules.md"
+path = ".dset/layer_3_tool/specification-build-rules.md"
 owner = "project"
 applicability = "applicable"
 reason = "Implementation work requires selected gates and safe change behavior"
@@ -36,30 +36,30 @@ customization = "unmodified"
 [rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/tool/templates/governance/core-v1/build-rules.md"
+template = ".dset/layer_3_tool/templates/governance/core-v1/build-rules.md"
 sha256 = "1faf0275461d4c95c54f517cb75759292c8a42fd4134e44139b3e2c255b990cb"
 
 [[rules]]
 id = "DSET-RULE-DOMAIN-SPEC"
 layer = "META"
-path = ".dset/meta/procedure-domain-spec-authoring.md"
+path = ".dset/layer_1_meta/procedure-domain-spec-authoring.md"
 owner = "project"
 applicability = "applicable"
 reason = "Domain decisions must precede implementation planning"
-depends_on = ["DSET-RULE-ARCHITECTURE"]
+depends_on = []
 precedence_over = []
 customization = "unmodified"
 
 [rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/meta/templates/governance/core-v1/domain-spec-authoring.md"
+template = ".dset/layer_1_meta/templates/governance/core-v1/domain-spec-authoring.md"
 sha256 = "320c808a833574582c57910be599a37533785419c0560399066dfe11d3e09007"
 
 [[rules]]
 id = "DSET-RULE-TEST-PLAN"
 layer = "META"
-path = ".dset/meta/procedure-test-planning.md"
+path = ".dset/layer_1_meta/procedure-test-planning.md"
 owner = "project"
 applicability = "applicable"
 reason = "Exact proof must be designed with requirements"
@@ -70,13 +70,13 @@ customization = "unmodified"
 [rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/meta/templates/governance/core-v1/test-planning.md"
+template = ".dset/layer_1_meta/templates/governance/core-v1/test-planning.md"
 sha256 = "d35e335fffe73396cc29e7f3d5b268c8a44f249bb8a8426126b8ca15322884b4"
 
 [[rules]]
 id = "DSET-RULE-EVAL-PLAN"
 layer = "META"
-path = ".dset/meta/procedure-evaluation-planning.md"
+path = ".dset/layer_1_meta/procedure-evaluation-planning.md"
 owner = "project"
 applicability = "applicable"
 reason = "Variable and qualitative proof requires an explicit owner"
@@ -87,13 +87,13 @@ customization = "unmodified"
 [rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/meta/templates/governance/core-v1/eval-planning.md"
+template = ".dset/layer_1_meta/templates/governance/core-v1/eval-planning.md"
 sha256 = "569a38f5974e39dc3bd8092c108b3c14213e646c31041a84fe56d1af25956b5a"
 
 [[rules]]
 id = "DSET-RULE-SUPPORTABILITY"
 layer = "OPS"
-path = ".dset/ops/specification-supportability.md"
+path = ".dset/layer_5_ops/specification-supportability.md"
 owner = "project"
 applicability = "applicable"
 reason = "Production investigation and recovery must be profile-scaled"
@@ -104,13 +104,13 @@ customization = "unmodified"
 [rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/ops/templates/governance/core-v1/supportability.md"
+template = ".dset/layer_5_ops/templates/governance/core-v1/supportability.md"
 sha256 = "cf1e5c0dea9f1a1690cd962ffd6511fa7e2af6242e3d2340fe7daa603bd1c35f"
 
 [[rules]]
 id = "DSET-RULE-ARTIFACT-MAINTENANCE"
 layer = "GOV"
-path = ".dset/gov/specification-artifact-maintenance.md"
+path = ".dset/layer_2_gov/specification-artifact-maintenance.md"
 owner = "project"
 applicability = "applicable"
 reason = "Durable conclusions require one writable owner and verified cutover"
@@ -121,13 +121,13 @@ customization = "custom"
 [rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/gov/templates/governance/core-v1/artifact-maintenance.md"
+template = ".dset/layer_2_gov/templates/governance/core-v1/artifact-maintenance.md"
 sha256 = "65a4b6d056577519eaa59fe16d994f04c7385e7367418ecb28762f1b3374652d"
 
 [[rules]]
 id = "DSET-RULE-WORK-ITEMS"
 layer = "GOV"
-path = ".dset/gov/specification-work-items.md"
+path = ".dset/layer_2_gov/specification-work-items.md"
 owner = "project"
 applicability = "applicable"
 reason = "Semantic routing must apply the four canonical Types and their subtypes independently of workflow"
@@ -138,13 +138,13 @@ customization = "unmodified"
 [rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/gov/templates/governance/core-v1/work-items.md"
+template = ".dset/layer_2_gov/templates/governance/core-v1/work-items.md"
 sha256 = "61447c22741684e20014f41a1072cdbabba0701779021f11bd6a4dd78731544a"
 
 [[rules]]
 id = "DSET-RULE-ARTIFACT-CLASSIFICATION"
 layer = "GOV"
-path = ".dset/gov/specification-artifact-classification.md"
+path = ".dset/layer_2_gov/specification-artifact-classification.md"
 owner = "project"
 applicability = "applicable"
 reason = "Every governed carrier requires one MECE artifact classification independent from semantic Type"
@@ -155,13 +155,13 @@ customization = "custom"
 [rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/gov/templates/governance/core-v1/artifact-classification.md"
+template = ".dset/layer_2_gov/templates/governance/core-v1/artifact-classification.md"
 sha256 = "f4375e2ff617cb7781362c0873f9fd06e76a04e8192ce10fde874217ce5f0665"
 
 [[rules]]
 id = "DSET-RULE-DELEGATION-BUDGET"
 layer = "SKILL"
-path = ".dset/skill/procedure-delegation-budget.md"
+path = ".dset/layer_4_skill/procedure-delegation-budget.md"
 owner = "project"
 applicability = "applicable"
 reason = "Delegation requires inherited model/effort, bounded tree budgets, and a fixed quality floor"
@@ -172,30 +172,30 @@ customization = "unmodified"
 [rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/skill/templates/governance/core-v1/delegation-budget.md"
-sha256 = "eca4271c1d6bae6a4e0c60f18873719076056a1fcb57f8eefd39ced63a4fe646"
+template = ".dset/layer_4_skill/templates/governance/core-v1/delegation-budget.md"
+sha256 = "07c27d752519b57766cc89bff23eb476f6b11d4d378be357c00bc498bbef3b29"
 
 [[rules]]
 id = "DSET-RULE-SKILL-RUNS"
 layer = "SKILL"
-path = ".dset/skill/procedure-skill-runs.md"
+path = ".dset/layer_4_skill/procedure-skill-runs.md"
 owner = "project"
 applicability = "applicable"
 reason = "Skill invocations require bounded redacted supportability evidence"
-depends_on = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-DELEGATION-BUDGET"]
+depends_on = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-DELEGATION-BUDGET"]
 precedence_over = []
 customization = "unmodified"
 
 [rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/skill/templates/governance/core-v1/skill-runs.md"
+template = ".dset/layer_4_skill/templates/governance/core-v1/skill-runs.md"
 sha256 = "c3eac49aa90601ea79380d98723375046a10def9c86e74a7ec52d8b42401c80d"
 
 [[rules]]
 id = "DSET-RULE-RELEASE"
 layer = "OPS"
-path = ".dset/ops/procedure-release.md"
+path = ".dset/layer_5_ops/procedure-release.md"
 owner = "project"
 applicability = "applicable"
 reason = "Release preparation and protected publication require one deterministic transaction"
@@ -206,13 +206,13 @@ customization = "custom"
 [rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/ops/templates/governance/core-v1/release.md"
+template = ".dset/layer_5_ops/templates/governance/core-v1/release.md"
 sha256 = "3bd2beffd371e09a22eb4b9d2c47dd6eb1df08bf0547fccda0d09a025e9152ef"
 
 [[rules]]
 id = "DSET-RULE-LIFECYCLE"
 layer = "SKILL"
-path = ".dset/skill/procedure-lifecycle-orchestration.md"
+path = ".dset/layer_4_skill/procedure-lifecycle-orchestration.md"
 owner = "project"
 applicability = "applicable"
 reason = "The primary DSET entrypoint requires deterministic modes, precedence, authority, and stops"
@@ -223,41 +223,41 @@ customization = "unmodified"
 [rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/skill/templates/governance/core-v1/lifecycle-orchestration.md"
+template = ".dset/layer_4_skill/templates/governance/core-v1/lifecycle-orchestration.md"
 sha256 = "168fbfa5b41ea03074543421c87ba1a587108c0336b9059d21ea49af4f173835"
 
 [[rules]]
 id = "DSET-RULE-DIAGNOSIS"
 layer = "SKILL"
-path = ".dset/skill/procedure-diagnosis.md"
+path = ".dset/layer_4_skill/procedure-diagnosis.md"
 owner = "project"
 applicability = "applicable"
 reason = "Defect investigation requires evidence and authorization boundaries"
-depends_on = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION"]
+depends_on = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION"]
 precedence_over = []
 customization = "unmodified"
 
 [rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/skill/templates/governance/core-v1/diagnosis.md"
+template = ".dset/layer_4_skill/templates/governance/core-v1/diagnosis.md"
 sha256 = "8f5e78a193298fb0e92b2a67891f005464a50760d84cf814dc3901ea30d122e2"
 
 [[rules]]
 id = "DSET-RULE-PROTOTYPING"
 layer = "SKILL"
-path = ".dset/skill/procedure-prototyping.md"
+path = ".dset/layer_4_skill/procedure-prototyping.md"
 owner = "project"
 applicability = "applicable"
 reason = "Solution experiments require comparable disposable evidence"
-depends_on = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION"]
+depends_on = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION"]
 precedence_over = []
 customization = "unmodified"
 
 [rules.source]
 profile = "core-v1"
 version = "0.3"
-template = ".dset/skill/templates/governance/core-v1/prototyping.md"
+template = ".dset/layer_4_skill/templates/governance/core-v1/prototyping.md"
 sha256 = "c3cb7059d131acb077a6fa82b0b3a51d84c4d59c4ae5b4eb3c4c4ba00e05c8aa"
 
 [[workflows]]

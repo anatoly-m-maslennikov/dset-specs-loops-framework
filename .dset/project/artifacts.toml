@@ -42,40 +42,40 @@ purpose = "Focused agent workflow sources"
 
 [[areas]]
 id = "dset-meta"
-root = ".dset/meta"
-hub = ".dset/meta/README.md"
+root = ".dset/layer_1_meta"
+hub = ".dset/layer_1_meta/README.md"
 parent = "project-control"
 owner = "meta"
 purpose = "Project identity and accepted behavioral truth"
 
 [[areas]]
 id = "dset-gov"
-root = ".dset/gov"
-hub = ".dset/gov/README.md"
+root = ".dset/layer_2_gov"
+hub = ".dset/layer_2_gov/README.md"
 parent = "project-control"
 owner = "gov"
 purpose = "Governance registries, intake, provenance, and derived views"
 
 [[areas]]
 id = "dset-tool"
-root = ".dset/tool"
-hub = ".dset/tool/README.md"
+root = ".dset/layer_3_tool"
+hub = ".dset/layer_3_tool/README.md"
 parent = "project-control"
 owner = "tool"
 purpose = "Executable tooling, fixtures, and traceability contracts"
 
 [[areas]]
 id = "dset-skill"
-root = ".dset/skill"
-hub = ".dset/skill/README.md"
+root = ".dset/layer_4_skill"
+hub = ".dset/layer_4_skill/README.md"
 parent = "project-control"
 owner = "skill"
 purpose = "Agent workflow, delegation, and run-evidence contracts"
 
 [[areas]]
 id = "dset-ops"
-root = ".dset/ops"
-hub = ".dset/ops/README.md"
+root = ".dset/layer_5_ops"
+hub = ".dset/layer_5_ops/README.md"
 parent = "project-control"
 owner = "ops"
 purpose = "Delivery, release, supportability, and hosted evidence"

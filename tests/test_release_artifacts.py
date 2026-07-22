@@ -7,7 +7,7 @@ from typing import Any
 from dset_toolchain.frontmatter import metadata as frontmatter_metadata
 
 ROOT = Path(__file__).resolve().parents[1]
-TEMPLATES = ROOT / ".dset/ops/templates/release"
+TEMPLATES = ROOT / ".dset/layer_5_ops/templates/release"
 PLANNING = ROOT / ".dset/versions"
 
 
@@ -114,8 +114,8 @@ class ReleaseArtifactTests(unittest.TestCase):
         self.assertEqual(list(PLANNING.glob("*MILESTONE*.md")), [])
 
     def test_live_release_rule_matches_distributed_template(self) -> None:
-        live = ROOT / ".dset/ops/procedure-release.md"
-        template = ROOT / ".dset/ops/templates/governance/core-v1/release.md"
+        live = ROOT / ".dset/layer_5_ops/procedure-release.md"
+        template = ROOT / ".dset/layer_5_ops/templates/governance/core-v1/release.md"
         self.assertEqual(
             live.read_text(encoding="utf-8"),
             template.read_text(encoding="utf-8"),

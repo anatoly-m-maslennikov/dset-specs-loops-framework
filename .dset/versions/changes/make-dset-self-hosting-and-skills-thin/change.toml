@@ -34,7 +34,7 @@ number = "pending"
 url = "pending"
 
 [release]
-policy = ".dset/ops/procedure-release.md"
+policy = ".dset/layer_5_ops/procedure-release.md"
 class = "normal"
 target = "0.4.0"
 readiness = "pending"

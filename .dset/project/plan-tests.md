@@ -5,11 +5,11 @@ Change executes and records their applicable proof; it does not redefine them.
 
 | Owning plan | Applicable Test IDs |
 |---|---|
-| [META](../meta/plan-tests.md) | `DSET-TEST-META-007`, `DSET-TEST-META-010..011` |
-| [GOV](../gov/plan-tests.md) | `DSET-TEST-GOV-014..032`, `DSET-TEST-GOV-035..036`, `DSET-TEST-GOV-039`, `DSET-TEST-GOV-042..043` |
-| [TOOL](../tool/plan-tests.md) | `DSET-TEST-TOOL-005`, `DSET-TEST-TOOL-018..019`, `DSET-TEST-TOOL-021..022` |
-| [SKILL](../skill/plan-tests.md) | `DSET-TEST-SKILL-001..010`, `DSET-TEST-SKILL-012..013` |
-| [OPS](../ops/plan-tests.md) | `DSET-TEST-OPS-003..007`, `DSET-TEST-OPS-016` |
+| [META](../layer_1_meta/plan-tests.md) | `DSET-TEST-META-007`, `DSET-TEST-META-010..011` |
+| [GOV](../layer_2_gov/plan-tests.md) | `DSET-TEST-GOV-014..032`, `DSET-TEST-GOV-035..036`, `DSET-TEST-GOV-039`, `DSET-TEST-GOV-042..044`, `DSET-TEST-GOV-048..050` |
+| [TOOL](../layer_3_tool/plan-tests.md) | `DSET-TEST-TOOL-005`, `DSET-TEST-TOOL-018..019`, `DSET-TEST-TOOL-021..022` |
+| [SKILL](../layer_4_skill/plan-tests.md) | `DSET-TEST-SKILL-001..010`, `DSET-TEST-SKILL-012..013` |
+| [OPS](../layer_5_ops/plan-tests.md) | `DSET-TEST-OPS-003..007`, `DSET-TEST-OPS-016` |
 
 Connected accepted IDs are `DSET-TEST-META-007`, `DSET-TEST-META-010`,
 `DSET-TEST-META-011`, `DSET-TEST-GOV-014`, `DSET-TEST-GOV-015`,

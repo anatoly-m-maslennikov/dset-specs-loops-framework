@@ -5,13 +5,20 @@ import os
 import unittest
 from pathlib import Path, PureWindowsPath
 
-from dset_toolchain.layout import LAYERS, _canonical_relative, discover_layout
+from dset_toolchain.layout import (
+    LAYER_DIRECTORIES,
+    LAYERS,
+    LEGACY_SLIM_LAYOUT,
+    NUMBERED_LAYER_LAYOUT,
+    _canonical_relative,
+    discover_layout,
+)
 from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.yaml_subset import dump
 
 
 class RepositoryLayoutTest(unittest.TestCase):
-    def test_slim_layout_uses_one_config_and_direct_owners(self) -> None:
+    def test_legacy_slim_layout_remains_readable(self) -> None:
         with temporary_directory() as raw:
             root = Path(raw).resolve()
             dset = root / ".dset"
@@ -20,13 +27,15 @@ class RepositoryLayoutTest(unittest.TestCase):
             (dset / "project").mkdir()
             (dset / "versions").mkdir()
             (dset / "dset_settings.toml").write_text(
-                'schema_version = "1.3"\n', encoding="utf-8"
+                'schema_version = "1.3"\n\n[structure]\nlayout = "slim-v1"\n',
+                encoding="utf-8",
             )
 
             layout = discover_layout(root)
 
             self.assertTrue(layout.slim)
             self.assertTrue(layout.layered)
+            self.assertEqual(layout.structure_layout, LEGACY_SLIM_LAYOUT)
             self.assertEqual(layout.settings_path, dset / "dset_settings.toml")
             self.assertEqual(layout.manifest_path, layout.settings_path)
             self.assertEqual(layout.project_root, dset / "project")
@@ -40,6 +49,36 @@ class RepositoryLayoutTest(unittest.TestCase):
 
             (root / "dset_settings.toml").write_text("", encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "retired root settings coexist"):
+                discover_layout(root)
+
+    def test_numbered_layout_maps_stable_logical_layers(self) -> None:
+        with temporary_directory() as raw:
+            root = Path(raw).resolve()
+            dset = root / ".dset"
+            for directory in LAYER_DIRECTORIES.values():
+                (dset / directory).mkdir(parents=True)
+            (dset / "project").mkdir()
+            (dset / "versions").mkdir()
+            (dset / "dset_settings.toml").write_text(
+                'schema_version = "1.3"\n\n'
+                '[structure]\nlayout = "numbered-layers-v1"\n',
+                encoding="utf-8",
+            )
+
+            layout = discover_layout(root)
+
+            self.assertEqual(layout.structure_layout, NUMBERED_LAYER_LAYOUT)
+            self.assertEqual(
+                layout.layer_roots,
+                {
+                    layer: dset / directory
+                    for layer, directory in LAYER_DIRECTORIES.items()
+                },
+            )
+            self.assertEqual(layout.layer_root("GOV"), dset / "layer_2_gov")
+
+            (dset / "gov").mkdir()
+            with self.assertRaisesRegex(ValueError, "competing layer roots"):
                 discover_layout(root)
 
     def test_legacy_layout_preserves_central_paths(self) -> None:

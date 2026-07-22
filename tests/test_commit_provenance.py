@@ -119,7 +119,8 @@ class CommitProvenanceTests(unittest.TestCase):
     def test_project_schema_owns_exact_correction_shape(self) -> None:
         schema = json.loads(
             (
-                Path(__file__).parents[1] / ".dset/meta/schemas/project.schema.json"
+                Path(__file__).parents[1]
+                / ".dset/layer_1_meta/schemas/project.schema.json"
             ).read_text(encoding="utf-8")
         )
 

@@ -289,7 +289,9 @@ def _copy_templates(source: RepositoryLayout, destination: Path) -> None:
             if not path.is_file():
                 continue
             relative = path.relative_to(template_root)
-            if relative == Path("README.md"):
+            if relative == Path("README.md") or any(
+                part.startswith(".") for part in relative.parts
+            ):
                 continue
             previous = copied.get(relative)
             if previous is not None:

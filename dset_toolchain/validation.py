@@ -30,7 +30,7 @@ from .frontmatter import metadata as frontmatter_metadata
 from .frontmatter import parse as parse_frontmatter
 from .governance import validate_governance
 from .health import health_is_fresh, health_path
-from .layout import RepositoryLayout, discover_layout
+from .layout import LAYER_DIRECTORIES, RepositoryLayout, discover_layout
 from .legacy_authority import legacy_authority_ids
 from .lineage import validate_artifact_lineage
 from .profiles import VALID_PROFILES, required_artifacts
@@ -412,10 +412,16 @@ def _validate_project_manifest(
         )
     if str(data.get("schema_version")) in {"1.2", "1.3"}:
         structure = data.get("structure")
-        expected_layout = (
-            "slim-v1" if str(data.get("schema_version")) == "1.3" else "layered-v1"
+        expected_layouts = (
+            {"slim-v1", "numbered-layers-v1"}
+            if str(data.get("schema_version")) == "1.3"
+            else {"layered-v1"}
         )
-        valid_structure = structure == {"layout": expected_layout}
+        valid_structure = (
+            isinstance(structure, dict)
+            and set(structure) == {"layout"}
+            and structure.get("layout") in expected_layouts
+        )
         diagnostics.extend(_validate_work_areas(root, path, data.get("work_areas")))
         valid_packages = isinstance(packages, list) and bool(packages)
         if valid_packages:
@@ -1084,7 +1090,15 @@ def _validate_layered_packages(
                 _diag("DSET-E145", path, "package fragment is outside layer roots")
             )
             continue
-        physical_layer = relative.parts[0]
+        directory_layer = relative.parts[0]
+        physical_layer = next(
+            (
+                layer
+                for layer, directory in LAYER_DIRECTORIES.items()
+                if directory == directory_layer
+            ),
+            directory_layer,
+        )
         physical_package = (
             str(data.get("package_id")) if layout.slim else path.parent.name
         )
@@ -3191,7 +3205,7 @@ def _validate_layered_change(
         policy = release.get("policy")
         owner = release.get("owner_change")
         expected_policy = (
-            ".dset/ops/procedure-release.md"
+            ".dset/layer_5_ops/procedure-release.md"
             if layout.slim
             else "dset/scopes/ops/governance/release.md"
         )

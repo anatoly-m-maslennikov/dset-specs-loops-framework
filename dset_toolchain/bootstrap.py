@@ -13,7 +13,7 @@ from pathlib import Path, PurePosixPath
 from typing import Any, cast
 
 from .governance import materialize_governance
-from .layout import LAYERS, discover_layout, has_manifest
+from .layout import LAYER_DIRECTORIES, LAYERS, discover_layout, has_manifest
 from .legacy_authority import write_legacy_authority_ledger
 from .temp_paths import temporary_directory
 from .traceability import write_traceability
@@ -227,7 +227,7 @@ def _stage_project(
     project_root.mkdir(parents=True)
     versions_root.mkdir()
     for layer in LAYERS:
-        layer_root = dset_root / layer
+        layer_root = dset_root / LAYER_DIRECTORIES[layer]
         layer_root.mkdir()
         for folder in ("schemas", "templates"):
             origin = source_layout.layer_root(layer) / folder
@@ -255,7 +255,7 @@ def _stage_project(
                 )
             ),
             "authority": "local-repository",
-            "runbook": ".dset/ops/supportability/README.md",
+            "runbook": ".dset/layer_5_ops/supportability/README.md",
         },
         "release": {
             "status": "not-applicable",
@@ -266,7 +266,7 @@ def _stage_project(
             "protected_branch": "main",
         },
         "work_items": {"registry": ".dset/project/intake.toml"},
-        "structure": {"layout": "slim-v1"},
+        "structure": {"layout": "numbered-layers-v1"},
         "work_areas": [
             {"id": item.identifier, "path": item.path} for item in work_areas
         ],
@@ -315,12 +315,12 @@ def _stage_project(
         ),
         encoding="utf-8",
     )
-    skill = dset_root / "skill"
+    skill = dset_root / LAYER_DIRECTORIES["skill"]
     _copy_structured(
         source_layout.find_template("budget.yaml"),
         skill / "budget.toml",
     )
-    ops = dset_root / "ops"
+    ops = dset_root / LAYER_DIRECTORIES["ops"]
     supportability = ops / "supportability"
     supportability.mkdir()
     supportability_state = (
@@ -372,7 +372,7 @@ def _stage_project(
         encoding="utf-8",
     )
     for layer in LAYERS:
-        (dset_root / layer / "README.md").write_text(
+        (dset_root / LAYER_DIRECTORIES[layer] / "README.md").write_text(
             f"# {layer.upper()} layer\n\nLayer-owned DSET control artifacts.\n",
             encoding="utf-8",
         )
@@ -388,7 +388,7 @@ def _materialize_package(
     package_id: str,
     project_name: str,
 ) -> None:
-    destination = stage / ".dset" / "meta"
+    destination = stage / ".dset" / LAYER_DIRECTORIES["meta"]
     replacements = {
         "{{project_key}}": project_key,
         "{{package_id}}": package_id,

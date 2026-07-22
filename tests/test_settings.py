@@ -22,9 +22,9 @@ ROOT = Path(__file__).resolve().parents[1]
 class ProjectSettingsTests(unittest.TestCase):
     def test_emitted_settings_are_documented_1_3_defaults(self) -> None:
         root_text = (ROOT / ".dset" / SETTINGS_FILENAME).read_text(encoding="utf-8")
-        template_text = (ROOT / f".dset/meta/templates/{SETTINGS_FILENAME}").read_text(
-            encoding="utf-8"
-        )
+        template_text = (
+            ROOT / f".dset/layer_1_meta/templates/{SETTINGS_FILENAME}"
+        ).read_text(encoding="utf-8")
         self.assertEqual(
             load_toml(template_text)["artifacts"],
             load_toml(root_text)["artifacts"],
@@ -201,12 +201,16 @@ class ProjectSettingsTests(unittest.TestCase):
 
     def test_published_priority_schemas_defer_vocabulary_to_settings(self) -> None:
         paths = {
-            "atom": ROOT / ".dset/gov/schemas/atom.schema.json",
-            "change": ROOT / ".dset/gov/schemas/change.schema.json",
-            "review": ROOT / ".dset/gov/schemas/review-report.schema.json",
-            "conflict": (ROOT / ".dset/gov/schemas/conflict-candidate.schema.json"),
-            "lifecycle": ROOT / ".dset/gov/schemas/lifecycle.schema.json",
-            "traceability": (ROOT / ".dset/tool/schemas/traceability.schema.json"),
+            "atom": ROOT / ".dset/layer_2_gov/schemas/atom.schema.json",
+            "change": ROOT / ".dset/layer_2_gov/schemas/change.schema.json",
+            "review": ROOT / ".dset/layer_2_gov/schemas/review-report.schema.json",
+            "conflict": (
+                ROOT / ".dset/layer_2_gov/schemas/conflict-candidate.schema.json"
+            ),
+            "lifecycle": ROOT / ".dset/layer_2_gov/schemas/lifecycle.schema.json",
+            "traceability": (
+                ROOT / ".dset/layer_3_tool/schemas/traceability.schema.json"
+            ),
         }
         schemas = {
             name: json.loads(path.read_text(encoding="utf-8"))

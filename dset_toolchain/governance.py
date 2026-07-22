@@ -9,7 +9,7 @@ from typing import Any, cast
 
 from .diagnostics import Diagnostic
 from .errors import DsetCommandError
-from .layout import LAYERS, discover_layout, has_manifest
+from .layout import LAYER_DIRECTORIES, LAYERS, discover_layout, has_manifest
 from .yaml_subset import YamlSubsetError, dump, load
 
 RULE_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
@@ -18,6 +18,7 @@ SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 CUSTOMIZATION = {"unmodified", "custom"}
 APPLICABILITY = {"applicable", "not-applicable"}
 RULE_LAYERS = {layer.upper() for layer in LAYERS}
+RULE_LAYER_RANK = {layer.upper(): index for index, layer in enumerate(LAYERS)}
 GOVERNANCE_SCHEMA_VERSION = 1.1
 SLIM_RULE_TARGETS = {
     "architecture.md": "specification-architecture.md",
@@ -564,42 +565,47 @@ def _write_governance_hub(
     content = source.read_text(encoding="utf-8")
     if layered:
         for layer in ("meta", "tool", "skill", "ops"):
-            content = content.replace(
-                f"../../../../{layer}/templates/governance/core-v1/",
-                f"../../{layer}/governance/",
-            )
+            for source_directory in (layer, LAYER_DIRECTORIES[layer]):
+                content = content.replace(
+                    f"../../../../{source_directory}/templates/governance/core-v1/",
+                    f"../../{layer}/governance/",
+                )
     if slim:
         replacements = {
             "architecture.md": "specification-architecture.md",
             (
                 "../../tool/governance/build-rules.md"
-            ): "../tool/specification-build-rules.md",
+            ): "../layer_3_tool/specification-build-rules.md",
             (
                 "../../meta/governance/domain-spec-authoring.md"
-            ): "../meta/procedure-domain-spec-authoring.md",
+            ): "../layer_1_meta/procedure-domain-spec-authoring.md",
             (
                 "../../meta/governance/test-planning.md"
-            ): "../meta/procedure-test-planning.md",
+            ): "../layer_1_meta/procedure-test-planning.md",
             (
                 "../../meta/governance/eval-planning.md"
-            ): "../meta/procedure-evaluation-planning.md",
-            "../../skill/governance/diagnosis.md": "../skill/procedure-diagnosis.md",
+            ): "../layer_1_meta/procedure-evaluation-planning.md",
+            (
+                "../../skill/governance/diagnosis.md"
+            ): "../layer_4_skill/procedure-diagnosis.md",
             (
                 "../../skill/governance/prototyping.md"
-            ): "../skill/procedure-prototyping.md",
+            ): "../layer_4_skill/procedure-prototyping.md",
             (
                 "../../ops/governance/supportability.md"
-            ): "../ops/specification-supportability.md",
+            ): "../layer_5_ops/specification-supportability.md",
             "artifact-maintenance.md": "specification-artifact-maintenance.md",
             "artifact-classification.md": "specification-artifact-classification.md",
             (
                 "../../skill/governance/lifecycle-orchestration.md"
-            ): "../skill/procedure-lifecycle-orchestration.md",
-            "../../skill/governance/skill-runs.md": "../skill/procedure-skill-runs.md",
+            ): "../layer_4_skill/procedure-lifecycle-orchestration.md",
+            (
+                "../../skill/governance/skill-runs.md"
+            ): "../layer_4_skill/procedure-skill-runs.md",
             (
                 "../../skill/governance/delegation-budget.md"
-            ): "../skill/procedure-delegation-budget.md",
-            "../../ops/governance/release.md": "../ops/procedure-release.md",
+            ): "../layer_4_skill/procedure-delegation-budget.md",
+            ("../../ops/governance/release.md"): "../layer_5_ops/procedure-release.md",
             "work-items.md": "specification-work-items.md",
         }
         for old, new in replacements.items():
@@ -670,6 +676,25 @@ def _validate_dependencies(
                         f"dependency has no rule owner: {rule_id}/{dependency}",
                     )
                 )
+                continue
+            source_layer = rule.get("layer")
+            dependency_layer = by_id[dependency].get("layer")
+            if (
+                source_layer in RULE_LAYER_RANK
+                and dependency_layer in RULE_LAYER_RANK
+                and RULE_LAYER_RANK[str(dependency_layer)]
+                > RULE_LAYER_RANK[str(source_layer)]
+            ):
+                diagnostics.append(
+                    _diag(
+                        "DSET-E151",
+                        path,
+                        "rule dependency creates backward layer authority: "
+                        f"{rule_id}/{dependency}; resolve or re-home it, or "
+                        "propose converting irreducible peer layers to features "
+                        "with horizontal Contracts",
+                    )
+                )
     visiting: set[str] = set()
     visited: set[str] = set()
 
@@ -731,6 +756,24 @@ def _validate_precedence(
                     )
                 )
                 continue
+            source_layer = rule.get("layer")
+            target_layer = by_id[target].get("layer")
+            if (
+                source_layer in RULE_LAYER_RANK
+                and target_layer in RULE_LAYER_RANK
+                and RULE_LAYER_RANK[str(source_layer)]
+                > RULE_LAYER_RANK[str(target_layer)]
+            ):
+                diagnostics.append(
+                    _diag(
+                        "DSET-E151",
+                        path,
+                        "rule precedence creates backward layer authority: "
+                        f"{rule_id}/{target}; resolve or re-home it, or propose "
+                        "converting irreducible peer layers to features with "
+                        "horizontal Contracts",
+                    )
+                )
             graph[rule_id].append(target)
 
     visiting: set[str] = set()

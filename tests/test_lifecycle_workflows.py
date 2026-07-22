@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 LAYOUT = discover_layout(ROOT)
 REGISTRY = LAYOUT.governance_path
 PROFILE = LAYOUT.find_template("governance/core-v1/profile.toml")
-LIFECYCLE = ROOT / ".dset/skill/procedure-lifecycle-orchestration.md"
+LIFECYCLE = ROOT / ".dset/layer_4_skill/procedure-lifecycle-orchestration.md"
 
 EXCEPTION_MODES = {"initialize", "repair-governance"}
 MODE_WORKFLOWS = {

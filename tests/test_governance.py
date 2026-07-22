@@ -135,6 +135,8 @@ class GovernanceTests(unittest.TestCase):
                 "DSET-E150",
                 self._missing_precedence_owner,
             ),
+            "backward-dependency": ("DSET-E151", self._backward_dependency),
+            "backward-precedence": ("DSET-E151", self._backward_precedence),
             "incompatible-profile": ("DSET-E137", self._incompatible_profile),
             "wrapper-mismatch": ("DSET-E138", self._wrapper_mismatch),
         }
@@ -150,6 +152,16 @@ class GovernanceTests(unittest.TestCase):
         resolved, diagnostics = resolve_workflow(self.root, "unknown-workflow")
         self.assertIsNone(resolved)
         self.assertEqual([item.code for item in diagnostics], ["DSET-E136"])
+
+    def test_irreducible_backward_authority_proposes_features(self) -> None:
+        self._backward_dependency(self.root)
+        diagnostic = next(
+            item for item in validate_governance(self.root) if item.code == "DSET-E151"
+        )
+        self.assertIn(
+            "converting irreducible peer layers to features", diagnostic.message
+        )
+        self.assertIn("horizontal Contracts", diagnostic.message)
 
     def test_deprecated_grill_workflow_is_not_registered(self) -> None:
         resolved, diagnostics = resolve_workflow(self.root, "domain-grilling")
@@ -435,7 +447,9 @@ class GovernanceTests(unittest.TestCase):
     def test_bootstrap_release_target_is_explicit_not_framework_hard_coded(
         self,
     ) -> None:
-        release = (ROOT / ".dset/ops/procedure-release.md").read_text(encoding="utf-8")
+        release = (ROOT / ".dset/layer_5_ops/procedure-release.md").read_text(
+            encoding="utf-8"
+        )
         self.assertIn("explicit first `0.Y.Z` target", release)
         self.assertNotIn(
             "| no activated product version | `bootstrap` | `0.3.0` |", release
@@ -527,8 +541,8 @@ class GovernanceTests(unittest.TestCase):
         self.assertEqual(intake_schema["$defs"]["rationale"]["minLength"], 1)
 
         for schema_path in (
-            ROOT / ".dset/skill/schemas/skill-run.schema.json",
-            ROOT / ".dset/skill/schemas/session-checkpoint.schema.json",
+            ROOT / ".dset/layer_4_skill/schemas/skill-run.schema.json",
+            ROOT / ".dset/layer_4_skill/schemas/session-checkpoint.schema.json",
         ):
             schema = json.loads(schema_path.read_text(encoding="utf-8"))
             self.assertIn("rationale", schema["properties"])
@@ -536,16 +550,16 @@ class GovernanceTests(unittest.TestCase):
             self.assertEqual(schema["$defs"]["rationale"]["minLength"], 1)
 
         for name in ("decision.md", "adoption-decision.md"):
-            decision_template = (ROOT / ".dset/gov/templates/change" / name).read_text(
-                encoding="utf-8"
-            )
+            decision_template = (
+                ROOT / ".dset/layer_2_gov/templates/change" / name
+            ).read_text(encoding="utf-8")
             self.assertIn("Rationale (recommended, optional)", decision_template)
             self.assertIn("Omission alone does", decision_template)
             self.assertIn("not invalidate the Decision", decision_template)
 
-        rule = (ROOT / ".dset/gov/specification-artifact-maintenance.md").read_text(
-            encoding="utf-8"
-        )
+        rule = (
+            ROOT / ".dset/layer_2_gov/specification-artifact-maintenance.md"
+        ).read_text(encoding="utf-8")
         self.assertIn("absence alone never invalidates", rule)
         self.assertIn("not hidden authority", rule)
 
@@ -907,11 +921,12 @@ class GovernanceTests(unittest.TestCase):
         )
 
     def test_health_review_and_ranking_rules_are_compiled(self) -> None:
-        live = (ROOT / ".dset/gov/specification-artifact-maintenance.md").read_text(
-            encoding="utf-8"
-        )
+        live = (
+            ROOT / ".dset/layer_2_gov/specification-artifact-maintenance.md"
+        ).read_text(encoding="utf-8")
         template = (
-            ROOT / ".dset/gov/templates/governance/core-v1/artifact-maintenance.md"
+            ROOT
+            / ".dset/layer_2_gov/templates/governance/core-v1/artifact-maintenance.md"
         ).read_text(encoding="utf-8")
         self.assertEqual(live, template)
         for phrase in (
@@ -929,11 +944,11 @@ class GovernanceTests(unittest.TestCase):
         ):
             self.assertIn(phrase, live)
 
-        architecture = (ROOT / ".dset/gov/specification-architecture.md").read_text(
-            encoding="utf-8"
-        )
+        architecture = (
+            ROOT / ".dset/layer_2_gov/specification-architecture.md"
+        ).read_text(encoding="utf-8")
         architecture_template = (
-            ROOT / ".dset/gov/templates/governance/core-v1/architecture.md"
+            ROOT / ".dset/layer_2_gov/templates/governance/core-v1/architecture.md"
         ).read_text(encoding="utf-8")
         self.assertEqual(architecture, architecture_template)
         for phrase in (
@@ -947,11 +962,11 @@ class GovernanceTests(unittest.TestCase):
         ):
             self.assertIn(phrase, architecture)
 
-        work_items = (ROOT / ".dset/gov/specification-work-items.md").read_text(
+        work_items = (ROOT / ".dset/layer_2_gov/specification-work-items.md").read_text(
             encoding="utf-8"
         )
         work_items_template = (
-            ROOT / ".dset/gov/templates/governance/core-v1/work-items.md"
+            ROOT / ".dset/layer_2_gov/templates/governance/core-v1/work-items.md"
         ).read_text(encoding="utf-8")
         self.assertEqual(work_items, work_items_template)
         self.assertIn("one Type and at most one direct subtype", work_items)
@@ -961,17 +976,17 @@ class GovernanceTests(unittest.TestCase):
         self.assertIn("append-only", work_items)
 
         for name in ("decision.md", "adoption-decision.md"):
-            decision_template = (ROOT / ".dset/gov/templates/change" / name).read_text(
-                encoding="utf-8"
-            )
+            decision_template = (
+                ROOT / ".dset/layer_2_gov/templates/change" / name
+            ).read_text(encoding="utf-8")
             self.assertIn("**Absorbs:**", decision_template)
             self.assertNotIn("**Superseded by:**", decision_template)
             self.assertIn("emitted Decision", decision_template)
 
-        gov = (ROOT / ".dset/gov/specification-methodology.md").read_text(
+        gov = (ROOT / ".dset/layer_2_gov/specification-methodology.md").read_text(
             encoding="utf-8"
         )
-        tool = (ROOT / ".dset/tool/specification-methodology.md").read_text(
+        tool = (ROOT / ".dset/layer_3_tool/specification-methodology.md").read_text(
             encoding="utf-8"
         )
         self.assertIn("DSET-REQUIREMENT-GOV-024", gov)
@@ -1084,6 +1099,22 @@ class GovernanceTests(unittest.TestCase):
     def _missing_precedence_owner(cls, root: Path) -> None:
         _, data = cls._registry(root)
         data["rules"][0]["precedence_over"] = ["DSET-RULE-MISSING"]
+        cls._write_registry(root, data)
+
+    @classmethod
+    def _backward_dependency(cls, root: Path) -> None:
+        _, data = cls._registry(root)
+        meta = next(rule for rule in data["rules"] if rule["layer"] == "META")
+        ops = next(rule for rule in data["rules"] if rule["layer"] == "OPS")
+        meta["depends_on"] = [ops["id"]]
+        cls._write_registry(root, data)
+
+    @classmethod
+    def _backward_precedence(cls, root: Path) -> None:
+        _, data = cls._registry(root)
+        meta = next(rule for rule in data["rules"] if rule["layer"] == "META")
+        ops = next(rule for rule in data["rules"] if rule["layer"] == "OPS")
+        ops["precedence_over"] = [meta["id"]]
         cls._write_registry(root, data)
 
     @classmethod

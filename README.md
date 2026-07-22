@@ -42,10 +42,10 @@ flowchart LR
     OPS["OPS<br/>Delivery and supportability"]
 
     P --> META
-    P --> GOV
-    P --> TOOL
-    P --> SKILL
-    P --> OPS
+    META --> GOV
+    GOV --> TOOL
+    TOOL --> SKILL
+    SKILL --> OPS
 ```
 
 Project-level truth owns only concerns that cross these immediate owners or
@@ -55,6 +55,11 @@ Invariants and Constraints, integration architecture, release/readiness, and
 cross-owner Questions or Problems. Every claim otherwise stays with the
 narrowest common structural owner; the root links child detail without copying
 it.
+
+Features are peers connected by horizontal Contracts. Layers are ordered:
+authority flows only `META → GOV → TOOL → SKILL → OPS`, preferably one adjacent
+step at a time. A downstream layer may consume or prove upstream authority, but
+it cannot govern, override, or take precedence over an earlier layer.
 
 Artifacts trace through ten forward relation types: structure, analysis,
 projection, implementation, QA checks, evidence, resolution, scoped override,
@@ -142,7 +147,7 @@ self-hosting work include:
   Supportability, Evals, Tests, specs, Decisions, contracts, stories, outcomes,
   and risk-scaled proof;
 - a repository-local DSET control plane split into the META, GOV, TOOL, SKILL,
-  and OPS scopes under [`dset/`](dset/);
+  and OPS layers under [`.dset/`](.dset/);
 - schema `1.2` layered project metadata, Work Areas for monorepos and mixed
   repositories, scoped Changes, and stable project-prefixed artifact IDs;
 - a dependency-light Python toolchain with packaged `init`, repository checks,
@@ -216,8 +221,10 @@ Each project that adopts DSET owns its project truth separately under its own
 `.dset/` root. In the current schema 1.3 layout, one
 [`.dset/dset_settings.toml`](.dset/dset_settings.toml) owns settings and manifest
 facts, `.dset/project/` owns project-wide truth and records, `.dset/versions/`
-owns Version lifecycle artifacts, and direct `.dset/<layer>/` roots own
-layer-specific truth. Ignored `.dset_runtime/` owns resumable local runs,
+owns Version lifecycle artifacts, and `.dset/layer_1_meta/` through
+`.dset/layer_5_ops/` own layer-specific truth in architectural order. Logical
+layer IDs remain `meta`, `gov`, `tool`, `skill`, and `ops`. Ignored
+`.dset_runtime/` owns resumable local runs,
 sessions, readiness, and recovery state without becoming project truth. Older
 central and `dset/` paths remain read-only
 compatibility and migration surfaces. Framework truth never replaces project

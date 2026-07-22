@@ -7,7 +7,7 @@ from dset_toolchain.layout import discover_layout
 from dset_toolchain.yaml_subset import load
 
 ROOT = Path(__file__).resolve().parents[1]
-GOV_PACKAGE = ROOT / ".dset" / "gov"
+GOV_PACKAGE = ROOT / ".dset" / "layer_2_gov"
 DECISIONS = GOV_PACKAGE / "decision"
 
 
@@ -39,9 +39,9 @@ class ConflictEntityTests(unittest.TestCase):
         authoring = (ROOT / "documentation" / "authoring-rules.md").read_text(
             encoding="utf-8"
         )
-        rules = (ROOT / ".dset" / "gov" / "specification-work-items.md").read_text(
-            encoding="utf-8"
-        )
+        rules = (
+            ROOT / ".dset" / "layer_2_gov" / "specification-work-items.md"
+        ).read_text(encoding="utf-8")
         self.assertIn("never workflow", artifacts)
         self.assertIn("not from a workflow", authoring)
         self.assertIn("Type is determined by meaning", rules)
@@ -81,11 +81,11 @@ class ConflictEntityTests(unittest.TestCase):
         self.assertIn("One atom, one primary governed claim", fpf_text)
 
     def test_live_and_template_work_item_rules_match(self) -> None:
-        live = ROOT / ".dset" / "gov" / "specification-work-items.md"
+        live = ROOT / ".dset" / "layer_2_gov" / "specification-work-items.md"
         template = (
             ROOT
             / ".dset"
-            / "gov"
+            / "layer_2_gov"
             / "templates"
             / "governance"
             / "core-v1"

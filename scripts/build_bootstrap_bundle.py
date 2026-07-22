@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from dset_toolchain.layout import LAYER_DIRECTORIES  # noqa: E402
 from dset_toolchain.skill_catalog import PUBLIC_SKILL_WORKFLOWS  # noqa: E402
 
 OUTPUT = ROOT / "dset_toolchain" / "bootstrap_bundle.json"
@@ -17,7 +18,7 @@ def selected_files(root: Path = ROOT) -> list[Path]:
     root = root.resolve()
     selected = [root / ".dset" / "dset_settings.toml"]
     for layer in ("meta", "gov", "tool", "skill", "ops"):
-        layer_root = root / ".dset" / layer
+        layer_root = root / ".dset" / LAYER_DIRECTORIES[layer]
         for folder in ("schemas", "templates"):
             source_root = layer_root / folder
             selected.extend(

@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL_ROOT = ROOT / ".dset" / "skill"
+SKILL_ROOT = ROOT / ".dset" / "layer_4_skill"
 
 
 class SessionContractTests(unittest.TestCase):

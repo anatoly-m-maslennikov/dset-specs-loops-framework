@@ -1,6 +1,6 @@
 schema_version = 1.0
 profile = "documentation-v1"
-legacy_evidence_paths = [".dset/versions/archive/2026-07-14-add-artifact-governance-profile/proofs/archive-readiness-2026-07-14.md", ".dset/versions/archive/2026-07-14-add-artifact-governance-profile/proofs/deterministic-verification-2026-07-14.md", ".dset/versions/archive/2026-07-14-add-artifact-governance-profile/proofs/github-delivery-evidence-2026-07-14.md", ".dset/versions/archive/2026-07-14-add-artifact-governance-profile/proofs/qualitative-evals-2026-07-14.md", ".dset/versions/archive/2026-07-14-bootstrap-dset-project-structure/proofs/boot-evals-2026-07-14.md", ".dset/versions/archive/2026-07-14-bootstrap-dset-project-structure/proofs/boot-evals-pushed-head-2026-07-14.md", ".dset/versions/archive/2026-07-14-make-supportability-first-class/proofs/archive-readiness-audit-2026-07-14.md", ".dset/versions/archive/2026-07-14-make-supportability-first-class/proofs/deterministic-checks-2026-07-14.md", ".dset/versions/archive/2026-07-14-make-supportability-first-class/proofs/supportability-evals-2026-07-14.md", ".dset/versions/archive/2026-07-14-make-supportability-first-class/proofs/synthetic-incidents.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-001-artifact-role-lifecycle.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-002-project-scope-ownership.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-003-artifact-lineage.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-004-entry-criteria-skill-chains.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-005-shared-skill-runtime.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-006-artifact-emission-gate.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-007-executable-entry-criteria-closure.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-008-governed-conflict-runtime.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-009-semantic-type-migration.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-010-release-runtime-reconciliation.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-011-typescript-candidate-profile.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-012-oyoha-local-adoption.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-013-oyoha-local-rule-cutover.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-014-oyoha-independent-evaluation.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-015-claudian-clean-room.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-016-oyoha-supportability-slice.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-017-typescript-profile-instantiation.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-018-codex-host-install-attempt.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-019-independent-review-remediation.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-020-codex-host-install-attempt.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-021-claude-review-attempt.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-022-codex-host-invocation-attempt.md", ".dset/gov/evidence/DSET-EVIDENCE-RECORD-023-typed-artifact-relations.md", ".dset/gov/evidence/DSET-EVIDENCE-RECORD-024-legacy-relation-sealing.md", ".dset/gov/evidence/DSET-EVIDENCE-RECORD-025-verbose-project-settings.md", ".dset/project/evidence/archive/clarify-rename-verification-2026-07-14.md", ".dset/project/evidence/archive/end-to-end-toolchain-verification-2026-07-16.md", ".dset/project/evidence/archive/expanded-skill-surface-verification-2026-07-16.md", ".dset/project/evidence/archive/five-skill-source-verification-2026-07-16.md", ".dset/project/evidence/archive/fpf-flat-type-model-review-2026-07-20.md", ".dset/project/evidence/archive/fpf-governance-constitution-review-2026-07-16.md", ".dset/project/evidence/archive/fpf-principles-audit-2026-07-15.md", ".dset/project/evidence/archive/fpf-principles-reaudit-2026-07-15.md", ".dset/project/evidence/archive/hosted-fixed-point-2026-07-14.md", ".dset/project/evidence/archive/invariant-contract-verification-2026-07-14.md", ".dset/project/evidence/archive/layered-work-area-verification-2026-07-15.md", ".dset/project/evidence/archive/local-fixed-point-2026-07-14.md", ".dset/project/evidence/archive/local-gate-2026-07-15.md", ".dset/project/evidence/archive/recursive-session-provenance-2026-07-16.md", ".dset/project/evidence/archive/schema-self-application-audit-2026-07-15.md", ".dset/project/evidence/archive/schema-self-application-reaudit-2026-07-15.md", ".dset/project/evidence/archive/skill-runtime-consistency-2026-07-16.md", ".dset/project/evidence/archive/wrapper-rule-inventory-2026-07-14.md", ".dset/versions/archive/2026-07-14-operationalize-dset-v1/proofs/archive-readiness-2026-07-14.md", ".dset/versions/archive/2026-07-14-operationalize-dset-v1/proofs/deterministic-verification-2026-07-14.md", ".dset/versions/archive/2026-07-14-operationalize-dset-v1/proofs/github-delivery-evidence-2026-07-14.md", ".dset/versions/archive/2026-07-14-operationalize-dset-v1/proofs/qualitative-evals-2026-07-14.md"]
+legacy_evidence_paths = [".dset/versions/archive/2026-07-14-add-artifact-governance-profile/proofs/archive-readiness-2026-07-14.md", ".dset/versions/archive/2026-07-14-add-artifact-governance-profile/proofs/deterministic-verification-2026-07-14.md", ".dset/versions/archive/2026-07-14-add-artifact-governance-profile/proofs/github-delivery-evidence-2026-07-14.md", ".dset/versions/archive/2026-07-14-add-artifact-governance-profile/proofs/qualitative-evals-2026-07-14.md", ".dset/versions/archive/2026-07-14-bootstrap-dset-project-structure/proofs/boot-evals-2026-07-14.md", ".dset/versions/archive/2026-07-14-bootstrap-dset-project-structure/proofs/boot-evals-pushed-head-2026-07-14.md", ".dset/versions/archive/2026-07-14-make-supportability-first-class/proofs/archive-readiness-audit-2026-07-14.md", ".dset/versions/archive/2026-07-14-make-supportability-first-class/proofs/deterministic-checks-2026-07-14.md", ".dset/versions/archive/2026-07-14-make-supportability-first-class/proofs/supportability-evals-2026-07-14.md", ".dset/versions/archive/2026-07-14-make-supportability-first-class/proofs/synthetic-incidents.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-001-artifact-role-lifecycle.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-002-project-scope-ownership.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-003-artifact-lineage.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-004-entry-criteria-skill-chains.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-005-shared-skill-runtime.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-006-artifact-emission-gate.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-007-executable-entry-criteria-closure.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-008-governed-conflict-runtime.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-009-semantic-type-migration.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-010-release-runtime-reconciliation.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-011-typescript-candidate-profile.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-012-oyoha-local-adoption.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-013-oyoha-local-rule-cutover.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-014-oyoha-independent-evaluation.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-015-claudian-clean-room.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-016-oyoha-supportability-slice.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-017-typescript-profile-instantiation.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-018-codex-host-install-attempt.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-019-independent-review-remediation.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-020-codex-host-install-attempt.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-021-claude-review-attempt.md", ".dset/project/evidence/DSET-EVIDENCE-RECORD-022-codex-host-invocation-attempt.md", ".dset/layer_2_gov/evidence/DSET-EVIDENCE-RECORD-023-typed-artifact-relations.md", ".dset/layer_2_gov/evidence/DSET-EVIDENCE-RECORD-024-legacy-relation-sealing.md", ".dset/layer_2_gov/evidence/DSET-EVIDENCE-RECORD-025-verbose-project-settings.md", ".dset/project/evidence/archive/clarify-rename-verification-2026-07-14.md", ".dset/project/evidence/archive/end-to-end-toolchain-verification-2026-07-16.md", ".dset/project/evidence/archive/expanded-skill-surface-verification-2026-07-16.md", ".dset/project/evidence/archive/five-skill-source-verification-2026-07-16.md", ".dset/project/evidence/archive/fpf-flat-type-model-review-2026-07-20.md", ".dset/project/evidence/archive/fpf-governance-constitution-review-2026-07-16.md", ".dset/project/evidence/archive/fpf-principles-audit-2026-07-15.md", ".dset/project/evidence/archive/fpf-principles-reaudit-2026-07-15.md", ".dset/project/evidence/archive/hosted-fixed-point-2026-07-14.md", ".dset/project/evidence/archive/invariant-contract-verification-2026-07-14.md", ".dset/project/evidence/archive/layered-work-area-verification-2026-07-15.md", ".dset/project/evidence/archive/local-fixed-point-2026-07-14.md", ".dset/project/evidence/archive/local-gate-2026-07-15.md", ".dset/project/evidence/archive/recursive-session-provenance-2026-07-16.md", ".dset/project/evidence/archive/schema-self-application-audit-2026-07-15.md", ".dset/project/evidence/archive/schema-self-application-reaudit-2026-07-15.md", ".dset/project/evidence/archive/skill-runtime-consistency-2026-07-16.md", ".dset/project/evidence/archive/wrapper-rule-inventory-2026-07-14.md", ".dset/versions/archive/2026-07-14-operationalize-dset-v1/proofs/archive-readiness-2026-07-14.md", ".dset/versions/archive/2026-07-14-operationalize-dset-v1/proofs/deterministic-verification-2026-07-14.md", ".dset/versions/archive/2026-07-14-operationalize-dset-v1/proofs/github-delivery-evidence-2026-07-14.md", ".dset/versions/archive/2026-07-14-operationalize-dset-v1/proofs/qualitative-evals-2026-07-14.md"]
 
 [classification]
 unclassified = "error"
@@ -33,7 +33,7 @@ rationale = "The generated dependency lock is classified through its owning pack
 [[legacy_structured]]
 path = "dset/scopes/meta/specs/packages/methodology/package.yaml"
 sha256 = "4fbb3bba040b5daf4440b65b4900c1e8ed7c2a637403086402853e4efa2490dc"
-current_owner = ".dset/meta/package.toml"
+current_owner = ".dset/layer_1_meta/package.toml"
 artifact_type = "implementation"
 artifact_subtype = "configuration"
 current_path = ".dset/project/migrations/legacy/meta-package.legacy.toml"
@@ -91,7 +91,7 @@ reason = "Selector-sealed legacy authority fragment."
 [[legacy_structured]]
 path = "dset/scopes/gov/specs/packages/methodology/package.yaml"
 sha256 = "36d6a91447595dc0247ba4dd0ae7a43367b00a53086cf17214defeaa09f96074"
-current_owner = ".dset/gov/package.toml"
+current_owner = ".dset/layer_2_gov/package.toml"
 artifact_type = "implementation"
 artifact_subtype = "configuration"
 current_path = ".dset/project/migrations/legacy/gov-package.legacy.toml"
@@ -241,7 +241,7 @@ reason = "Selector-sealed legacy authority fragment."
 [[legacy_structured]]
 path = "dset/scopes/tool/specs/packages/methodology/package.yaml"
 sha256 = "cbf2fba881d9081281c1adc33f0c06e1203e7637736ad6f1ee1958a238be5a2c"
-current_owner = ".dset/tool/package.toml"
+current_owner = ".dset/layer_3_tool/package.toml"
 artifact_type = "implementation"
 artifact_subtype = "configuration"
 current_path = ".dset/project/migrations/legacy/tool-package.legacy.toml"
@@ -291,7 +291,7 @@ reason = "Selector-sealed legacy authority fragment."
 [[legacy_structured]]
 path = "dset/scopes/skill/specs/packages/methodology/package.yaml"
 sha256 = "8d13339aed1d48b874618d2699b86adbfb25298e78836bf98db718ad5a0dbd5f"
-current_owner = ".dset/skill/package.toml"
+current_owner = ".dset/layer_4_skill/package.toml"
 artifact_type = "implementation"
 artifact_subtype = "configuration"
 current_path = ".dset/project/migrations/legacy/skill-package.legacy.toml"
@@ -353,7 +353,7 @@ reason = "Selector-sealed legacy authority fragment."
 [[legacy_structured]]
 path = "dset/scopes/ops/specs/packages/methodology/package.yaml"
 sha256 = "8fdaf12df71c216c49ec626950e3010d3a0a32a8a5e0b300a11d80c8692395fa"
-current_owner = ".dset/ops/package.toml"
+current_owner = ".dset/layer_5_ops/package.toml"
 artifact_type = "implementation"
 artifact_subtype = "configuration"
 current_path = ".dset/project/migrations/legacy/ops-package.legacy.toml"
@@ -968,12 +968,12 @@ pattern = ".dset/versions/archive/*/tasks.md"
 artifact_type = "atomic_record"
 
 [[path_rules]]
-pattern = ".dset/tool/fixtures/bases/*/specs/example.md"
+pattern = ".dset/layer_3_tool/fixtures/bases/*/specs/example.md"
 artifact_type = "specification"
 artifact_subtype = "behavior"
 
 [[path_rules]]
-pattern = ".dset/tool/fixtures/bases/*/tasks.md"
+pattern = ".dset/layer_3_tool/fixtures/bases/*/tasks.md"
 artifact_type = "atomic_record"
 
 [[path_rules]]
@@ -1032,7 +1032,7 @@ artifact_type = "procedure"
 artifact_subtype = "playbook"
 
 [[path_rules]]
-pattern = ".dset/ops/supportability/delivery-runbook.md"
+pattern = ".dset/layer_5_ops/supportability/delivery-runbook.md"
 artifact_type = "procedure"
 artifact_subtype = "runbook"
 

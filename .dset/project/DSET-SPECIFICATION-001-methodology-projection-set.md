@@ -14,7 +14,7 @@ type = "projection_of"
 [relations.range]
 semantic_type = "decision"
 layer = "gov"
-through = "DSET-ATOMIC-RECORD-107"
+through = "DSET-ATOMIC-RECORD-113"
 
 [relations.range.scope]
 kind = "project"
@@ -27,7 +27,7 @@ type = "projection_of"
 semantic_type = "qa"
 subtype = "test"
 layer = "gov"
-through = "DSET-ATOMIC-RECORD-108"
+through = "DSET-ATOMIC-RECORD-114"
 
 [relations.range.scope]
 kind = "project"
@@ -40,7 +40,7 @@ type = "projection_of"
 semantic_type = "qa"
 subtype = "evaluation"
 layer = "gov"
-through = "DSET-ATOMIC-RECORD-109"
+through = "DSET-ATOMIC-RECORD-115"
 
 [relations.range.scope]
 kind = "project"
@@ -90,9 +90,9 @@ id = "gov"
 This evergreen carrier binds the current GOV semantic frontiers to the package
 fragments that compile them:
 
-- [Behavior specification](../gov/specification-methodology.md)
-- [Deterministic Test plan](../gov/plan-tests.md)
-- [Qualitative Evaluation plan](../gov/plan-evaluations.md)
+- [Behavior specification](../layer_2_gov/specification-methodology.md)
+- [Deterministic Test plan](../layer_2_gov/plan-tests.md)
+- [Qualitative Evaluation plan](../layer_2_gov/plan-evaluations.md)
 
 It owns projection metadata only. The linked fragments own their respective
 compiled content, and the immutable atoms own authority and QA definitions.

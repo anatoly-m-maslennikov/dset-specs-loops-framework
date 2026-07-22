@@ -28,6 +28,7 @@ from dset_toolchain.carrier_transitions import (  # noqa: E402
     render_ledger,
 )
 from dset_toolchain.frontmatter import parse as parse_frontmatter  # noqa: E402
+from dset_toolchain.layout import LAYER_DIRECTORIES  # noqa: E402
 from dset_toolchain.toml_codec import dumps as dump_toml  # noqa: E402
 from dset_toolchain.toml_codec import load as load_toml  # noqa: E402
 from dset_toolchain.toml_codec import loads as loads_toml  # noqa: E402
@@ -54,6 +55,10 @@ SEMANTIC_ID = re.compile(
 
 def _relative(path: Path) -> str:
     return path.relative_to(ROOT).as_posix()
+
+
+def _layer_root(layer: str) -> Path:
+    return CURRENT_DSET / LAYER_DIRECTORIES[layer]
 
 
 def _slug(value: str) -> str:
@@ -100,7 +105,7 @@ def _semantic_target(path: Path) -> Path:
     if not isinstance(identifier, str):
         raise ValueError(f"atomic carrier has no semantic_id: {_relative(path)}")
     layer = _semantic_layer(identifier)
-    owner = CURRENT_DSET / "project" if layer is None else CURRENT_DSET / layer
+    owner = CURRENT_DSET / "project" if layer is None else _layer_root(layer)
     semantic_type = metadata.get("type")
     if semantic_type not in {"decision", "question", "problem", "qa"}:
         raise ValueError(f"atomic carrier has invalid Type: {_relative(path)}")
@@ -122,7 +127,7 @@ def _legacy_decision_target(path: Path) -> Path:
         ),
         "decision",
     )
-    return CURRENT_DSET / layer / "decision" / f"{identifier}-{_slug(heading)}.md"
+    return _layer_root(layer) / "decision" / f"{identifier}-{_slug(heading)}.md"
 
 
 def _analysis_target(path: Path) -> Path:
@@ -144,7 +149,7 @@ def _evidence_target(path: Path) -> Path:
     metadata = _metadata(path)
     identifier = _first_semantic_id(metadata)
     layer = _semantic_layer(identifier) if identifier else None
-    owner = CURRENT_DSET / layer if layer else CURRENT_DSET / "project"
+    owner = _layer_root(layer) if layer else CURRENT_DSET / "project"
     return owner / "evidence" / path.name
 
 
@@ -184,7 +189,7 @@ def _package_target(layer: str, relative: Path) -> Path | None:
         )
     selected = name_map.get(relative.name)
     if selected is not None:
-        return CURRENT_DSET / layer / selected
+        return _layer_root(layer) / selected
     if relative.name.startswith("DSET-SPECIFICATION-"):
         return CURRENT_DSET / "project" / relative.name
     return None
@@ -211,7 +216,7 @@ def _governance_target(layer: str, relative: Path) -> Path:
     }
     if relative.name in {"atoms.toml", "legacy-authority.toml", "lifecycle.toml"}:
         return CURRENT_DSET / "project" / relative.name
-    return CURRENT_DSET / layer / name_map.get(relative.name, relative.name)
+    return _layer_root(layer) / name_map.get(relative.name, relative.name)
 
 
 def _active_change_target(path: Path, relative: Path) -> Path | None:
@@ -304,7 +309,7 @@ def target_for(path: Path) -> Path | None:
         return _package_target(layer, package_relative)
     if local.parts[0] == "governance":
         return _governance_target(layer, Path(*local.parts[1:]))
-    return CURRENT_DSET / layer / local
+    return _layer_root(layer) / local
 
 
 def build_mapping() -> dict[Path, Path]:
@@ -442,12 +447,12 @@ def _combined_settings() -> str:
         'canonical_command = "python -m dset_toolchain verify ."',
     )
     settings = settings.replace(
-        "dset/scopes/skill/budget.toml", ".dset/skill/budget.toml"
+        "dset/scopes/skill/budget.toml", ".dset/layer_4_skill/budget.toml"
     )
     manifest = (
         manifest.replace(
             'runbook = "dset/scopes/ops/supportability/delivery-runbook.md"',
-            'runbook = ".dset/ops/supportability/delivery-runbook.md"',
+            'runbook = ".dset/layer_5_ops/supportability/delivery-runbook.md"',
         )
         .replace(
             'registry = "dset/scopes/gov/intake.toml"',
@@ -455,7 +460,7 @@ def _combined_settings() -> str:
         )
         .replace(
             'layout = "layered-v1"',
-            'layout = "slim-v1"',
+            'layout = "numbered-layers-v1"',
         )
     )
     manifest_lines = manifest.splitlines()
@@ -526,7 +531,7 @@ def _update_package_manifests() -> None:
         "eval_plan": "plan-evaluations.md",
     }
     for layer in sorted(LAYERS):
-        path = CURRENT_DSET / layer / "package.toml"
+        path = _layer_root(layer) / "package.toml"
         text = path.read_text(encoding="utf-8")
         for key, name in names.items():
             text = re.sub(rf'^{key} = "[^"]+"$', f'{key} = "{name}"', text, flags=re.M)
@@ -684,11 +689,11 @@ def _update_artifact_type_registry() -> None:
             (".dset/versions/archive/*/specs/*.md", "specification", "governance"),
             (".dset/versions/archive/*/tasks.md", "atomic_record", None),
             (
-                ".dset/tool/fixtures/bases/*/specs/example.md",
+                ".dset/layer_3_tool/fixtures/bases/*/specs/example.md",
                 "specification",
                 "behavior",
             ),
-            (".dset/tool/fixtures/bases/*/tasks.md", "atomic_record", None),
+            (".dset/layer_3_tool/fixtures/bases/*/tasks.md", "atomic_record", None),
             ("dset_toolchain/*.py", "implementation", "source_code"),
             ("scripts/*.py", "implementation", "source_code"),
             ("tests/*.py", "implementation", "test_implementation"),
@@ -700,7 +705,11 @@ def _update_artifact_type_registry() -> None:
             ("skills/*/SKILL.md", "procedure", "playbook"),
             (".github/DELIVERY.md", "procedure", "runbook"),
             ("documentation/maintenance-playbook.md", "procedure", "playbook"),
-            (".dset/ops/supportability/delivery-runbook.md", "procedure", "runbook"),
+            (
+                ".dset/layer_5_ops/supportability/delivery-runbook.md",
+                "procedure",
+                "runbook",
+            ),
             ("skills/host-distribution.md", "procedure", "runbook"),
             ("documentation/artifact-architecture.md", "specification", "architecture"),
             ("documentation/artifact-types.md", "specification", "governance"),
@@ -757,7 +766,7 @@ def _update_artifact_type_registry() -> None:
         )
     ]
     path.write_text(dump_toml(data), encoding="utf-8", newline="\n")
-    template_path = CURRENT_DSET / "gov/templates/artifact-types.toml"
+    template_path = _layer_root("gov") / "templates/artifact-types.toml"
     template = load_toml(template_path)
     template["legacy_evidence_paths"] = data["legacy_evidence_paths"]
     template["path_rules"] = data["path_rules"]

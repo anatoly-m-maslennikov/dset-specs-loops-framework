@@ -6,11 +6,11 @@ case and criterion.
 
 | Owning plan | Applicable Eval IDs |
 |---|---|
-| [META](../meta/plan-evaluations.md) | `DSET-EVAL-META-008..009` |
-| [GOV](../gov/plan-evaluations.md) | `DSET-EVAL-GOV-007..022`, `DSET-EVAL-GOV-025`, `DSET-EVALUATION-GOV-026` |
-| [TOOL](../tool/plan-evaluations.md) | `DSET-EVALUATION-TOOL-003..004` |
-| [SKILL](../skill/plan-evaluations.md) | `DSET-EVAL-SKILL-002..008`, `DSET-EVAL-SKILL-010..011` |
-| [OPS](../ops/plan-evaluations.md) | `DSET-EVAL-OPS-002..003`, `DSET-EVAL-OPS-010` |
+| [META](../layer_1_meta/plan-evaluations.md) | `DSET-EVAL-META-008..009` |
+| [GOV](../layer_2_gov/plan-evaluations.md) | `DSET-EVAL-GOV-007..022`, `DSET-EVAL-GOV-025`, `DSET-EVALUATION-GOV-026`, `DSET-EVALUATION-GOV-028..029`, `DSET-EVALUATION-GOV-032..034` |
+| [TOOL](../layer_3_tool/plan-evaluations.md) | `DSET-EVALUATION-TOOL-003..004` |
+| [SKILL](../layer_4_skill/plan-evaluations.md) | `DSET-EVAL-SKILL-002..008`, `DSET-EVAL-SKILL-010..011` |
+| [OPS](../layer_5_ops/plan-evaluations.md) | `DSET-EVAL-OPS-002..003`, `DSET-EVAL-OPS-010` |
 
 Connected accepted IDs are `DSET-EVAL-META-008`, `DSET-EVAL-META-009`,
 `DSET-EVAL-GOV-007`, `DSET-EVAL-GOV-008`, `DSET-EVAL-GOV-009`,

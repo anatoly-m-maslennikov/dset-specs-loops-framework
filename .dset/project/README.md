@@ -6,7 +6,7 @@ This is the control-plane hub for the repository as both the DSET framework sour
 
 ## Boundaries
 
-`dset/` owns project control artifacts. Public framework prose remains under `methodology/` and `documentation/`; executable source remains under `dset_toolchain/`, `skills/`, and `.github/`. Those implementation surfaces trace back to accepted layer-owned contracts.
+`.dset/` owns project control artifacts. Public framework prose remains under `methodology/` and `documentation/`; executable source remains under `dset_toolchain/`, `skills/`, and `.github/`. Those implementation surfaces trace back to accepted layer-owned contracts.
 
 ## Project-control map
 
@@ -20,21 +20,21 @@ flowchart LR
     OPS["OPS"]
 
     DSET --> META
-    DSET --> GOV
-    DSET --> TOOL
-    DSET --> SKILL
-    DSET --> OPS
+    META --> GOV
+    GOV --> TOOL
+    TOOL --> SKILL
+    SKILL --> OPS
 ```
 
 ## Start here
 
 - [Project behavior settings](../dset_settings.toml) — documented artifact,
   workflow, Change-workspace, delegation-budget, and priority choices.
-- [META](../meta/README.md) — identity, accepted behavior, specification semantics, and proof plans.
-- [GOV](../gov/README.md) — governance, intake, provenance, migrations, and generated views.
-- [TOOL](../tool/README.md) — executable CLI, validation, fixtures, traceability, and self-hosting.
-- [SKILL](../skill/README.md) — agent workflows, delegation, and local run evidence.
-- [OPS](../ops/README.md) — delivery, release, supportability, and hosted evidence.
+- [META](../layer_1_meta/README.md) — identity, accepted behavior, specification semantics, and proof plans.
+- [GOV](../layer_2_gov/README.md) — governance, intake, provenance, migrations, and generated views.
+- [TOOL](../layer_3_tool/README.md) — executable CLI, validation, fixtures, traceability, and self-hosting.
+- [SKILL](../layer_4_skill/README.md) — agent workflows, delegation, and local run evidence.
+- [OPS](../layer_5_ops/README.md) — delivery, release, supportability, and hosted evidence.
 
 Each layer has a hub and may own governing rules, schemas, templates, a fragment of the logical `methodology` package, and layer-scoped artifacts. Project identity and behavior share one [settings and manifest](../dset_settings.toml). Project-wide governance and intake live in [governance.toml](governance.toml) and [intake.toml](intake.toml). Generated [traceability](generated/traceability.toml) is a non-authoritative relationship view. Changes and releases are project-wide under [versions](../versions/README.md).
 
@@ -49,6 +49,12 @@ Each layer has a hub and may own governing rules, schemas, templates, a fragment
 | OPS | Release, hosted delivery, supportability, incident investigation, and recovery evidence |
 
 The accepted methodology remains one logical package with five writable fragments. A Change lives only under its `primary_layer`; `affected_layers` and stable IDs connect cross-layer work.
+
+Features, when enabled, are peers joined by horizontal Contracts. These layers
+are ordered: authority moves only `META → GOV → TOOL → SKILL → OPS`, preferably
+through the immediately following layer. A downstream layer may consume,
+implement, check, or evidence upstream authority, but cannot govern or override
+it.
 
 The project manifest also declares neutral repository-relative Work Areas. A
 Work Area may contain a deployable service, local tool, library, documentation,

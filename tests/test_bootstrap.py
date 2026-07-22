@@ -161,7 +161,7 @@ class BootstrapTests(unittest.TestCase):
             self.assertEqual(validate_repository(target), [])
             manifest = load(discover_layout(target).manifest_path)
             self.assertEqual(manifest["supportability"]["status"], "applicable")
-            runbook = (target / ".dset/ops/supportability/README.md").read_text(
+            runbook = (target / ".dset/layer_5_ops/supportability/README.md").read_text(
                 encoding="utf-8"
             )
             self.assertIn("Active hosted automation", runbook)

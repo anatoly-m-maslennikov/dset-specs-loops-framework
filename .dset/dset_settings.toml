@@ -102,7 +102,7 @@ default_workspace = "integration-branch"
 # exploration/review breadth, never the accepted scope, safety boundary, or
 # required Tests/Evaluations. Operator instructions override the profile.
 #
-# Accepted profiles are defined in .dset/skill/budget.toml:
+# Accepted profiles are defined in .dset/layer_4_skill/budget.toml:
 # - "low": 0-1 subagents, depth 1, one round.
 # - "medium" (default): target 2 and maximum 3 subagents, depth 1, two rounds.
 # - "high": 4-6 subagents, depth 2, three rounds.
@@ -142,7 +142,7 @@ repository_role = "framework-source-and-adopter"
 status = "applicable"
 reason = "GitHub Actions and repository rules operate the production delivery path from dev to main"
 authority = "github"
-runbook = ".dset/ops/supportability/delivery-runbook.md"
+runbook = ".dset/layer_5_ops/supportability/delivery-runbook.md"
 
 [release]
 status = "applicable"
@@ -155,7 +155,7 @@ tag_pattern = "v{product_version}"
 registry = ".dset/project/intake.toml"
 
 [structure]
-layout = "slim-v1"
+layout = "numbered-layers-v1"
 
 [profiles]
 runtime_risk = "low-risk-hosted-automation"

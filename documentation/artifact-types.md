@@ -4,8 +4,8 @@
 
 This document is the public framework definition of DSET semantic Types and
 subtypes. The DSET repository applies it through
-[`DSET-RULE-WORK-ITEMS`](../.dset/gov/specification-work-items.md), compiled
-from [`DSET-DECISION-GOV-008`](../.dset/gov/decision/DSET-DECISION-GOV-008-fpf-aligned-boundaries-for-the-flat-type-model.md).
+[`DSET-RULE-WORK-ITEMS`](../.dset/layer_2_gov/specification-work-items.md), compiled
+from [`DSET-DECISION-GOV-008`](../.dset/layer_2_gov/decision/DSET-DECISION-GOV-008-fpf-aligned-boundaries-for-the-flat-type-model.md).
 
 ## Type rule
 

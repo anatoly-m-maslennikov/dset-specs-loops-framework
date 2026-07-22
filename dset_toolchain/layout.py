@@ -8,6 +8,15 @@ from typing import Final
 from .yaml_subset import YamlSubsetError, load
 
 LAYERS: Final[tuple[str, ...]] = ("meta", "gov", "tool", "skill", "ops")
+LAYER_DIRECTORIES: Final[dict[str, str]] = {
+    "meta": "layer_1_meta",
+    "gov": "layer_2_gov",
+    "tool": "layer_3_tool",
+    "skill": "layer_4_skill",
+    "ops": "layer_5_ops",
+}
+LEGACY_SLIM_LAYOUT: Final[str] = "slim-v1"
+NUMBERED_LAYER_LAYOUT: Final[str] = "numbered-layers-v1"
 LEGACY_SCHEMA_VERSIONS: Final[frozenset[str]] = frozenset({"1.0", "1.1"})
 LAYERED_SCHEMA_VERSION: Final[str] = "1.2"
 SLIM_SCHEMA_VERSION: Final[str] = "1.3"
@@ -56,6 +65,7 @@ class RepositoryLayout:
     root: Path
     schema_version: str | None
     layered: bool
+    structure_layout: str | None = None
 
     @property
     def slim(self) -> bool:
@@ -88,7 +98,12 @@ class RepositoryLayout:
         normalized = layer.lower()
         if normalized not in LAYERS:
             raise ValueError(f"unknown DSET layer: {layer}")
-        return self.scopes_root / normalized
+        directory = (
+            LAYER_DIRECTORIES[normalized]
+            if self.slim and self.structure_layout == NUMBERED_LAYER_LAYOUT
+            else normalized
+        )
+        return self.scopes_root / directory
 
     @property
     def layer_roots(self) -> dict[str, Path]:
@@ -424,8 +439,16 @@ def discover_layout(root: Path) -> RepositoryLayout:
     is_slim = slim.is_file()
     is_layered = is_slim or layered.is_file()
     version = _schema_version(manifest) if manifest.is_file() else None
+    structure_layout = _structure_layout(manifest) if is_slim else None
     if is_slim and version != SLIM_SCHEMA_VERSION:
         raise ValueError(f"slim DSET manifest must declare schema 1.3: {slim}")
+    if is_slim and structure_layout not in {
+        LEGACY_SLIM_LAYOUT,
+        NUMBERED_LAYER_LAYOUT,
+    }:
+        raise ValueError(
+            f"slim DSET manifest must select slim-v1 or numbered-layers-v1: {slim}"
+        )
     if not is_slim and is_layered and version != LAYERED_SCHEMA_VERSION:
         raise ValueError(f"layered DSET manifest must declare schema 1.2: {layered}")
     if not is_layered and version is not None and version not in LEGACY_SCHEMA_VERSIONS:
@@ -434,15 +457,34 @@ def discover_layout(root: Path) -> RepositoryLayout:
         )
     scopes = legacy_root / "scopes"
     if is_slim:
+        layer_directories = (
+            tuple(LAYER_DIRECTORIES.values())
+            if structure_layout == NUMBERED_LAYER_LAYOUT
+            else LAYERS
+        )
         missing_layers = [
-            current_root / layer
-            for layer in LAYERS
-            if not (current_root / layer).is_dir()
+            current_root / directory
+            for directory in layer_directories
+            if not (current_root / directory).is_dir()
         ]
         if missing_layers:
             raise ValueError(
                 "slim DSET project is missing fixed layer roots: "
                 + ", ".join(path.as_posix() for path in missing_layers)
+            )
+        competing_layers = [
+            current_root / directory
+            for directory in (
+                tuple(LAYER_DIRECTORIES.values())
+                if structure_layout == LEGACY_SLIM_LAYOUT
+                else LAYERS
+            )
+            if (current_root / directory).exists()
+        ]
+        if competing_layers:
+            raise ValueError(
+                "slim DSET project has competing layer roots: "
+                + ", ".join(path.as_posix() for path in competing_layers)
             )
         if scopes.exists():
             raise ValueError(
@@ -481,7 +523,12 @@ def discover_layout(root: Path) -> RepositoryLayout:
         raise ValueError(
             f"layout conflict: legacy manifest and layered DSET roots coexist: {scopes}"
         )
-    return RepositoryLayout(root=root, schema_version=version, layered=is_layered)
+    return RepositoryLayout(
+        root=root,
+        schema_version=version,
+        layered=is_layered,
+        structure_layout=structure_layout,
+    )
 
 
 def has_manifest(root: Path) -> bool:
@@ -508,6 +555,16 @@ def _schema_version(path: Path) -> str | None:
     if isinstance(raw, (int, float)) and not isinstance(raw, bool):
         return f"{float(raw):.1f}"
     return None
+
+
+def _structure_layout(path: Path) -> str | None:
+    try:
+        data = load(path)
+    except (OSError, ValueError, YamlSubsetError):
+        return None
+    structure = data.get("structure") if isinstance(data, dict) else None
+    raw = structure.get("layout") if isinstance(structure, dict) else None
+    return raw if isinstance(raw, str) else None
 
 
 def _canonical_relative(relative: str | PurePath) -> Path:

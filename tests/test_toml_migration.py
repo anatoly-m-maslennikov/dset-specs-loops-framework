@@ -1208,7 +1208,7 @@ class TomlMigrationTests(unittest.TestCase):
             ignore=lambda _directory, names: set(names) & excluded,
         )
         atom = staged / (
-            ".dset/gov/decision/DSET-REQUIREMENT-GOV-030-artifact-type-name-policy.md"
+            ".dset/layer_2_gov/decision/DSET-REQUIREMENT-GOV-030-artifact-type-name-policy.md"
         )
         before = atom.read_bytes()
         plan = plan_toml_migration(staged, bypass_runtime_readiness=True)

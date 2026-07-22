@@ -23,6 +23,8 @@ the implementation scope to its current layer-owned Requirement owners.
 | Type-first artifact names and independently selectable subtype-name capability | `DSET-REQUIREMENT-GOV-038` |
 | Medium/high immutable-artifact admission strictness | `DSET-REQUIREMENT-GOV-039` |
 | Hidden control-plane root, one settings/manifest carrier, distinct ignored runtime state, disposable host scratch, explicit path bases, and direct ownership roots | `DSET-REQUIREMENT-GOV-043` |
+| Visibly ordered layer directories with stable logical layer IDs | `DSET-REQUIREMENT-GOV-044` |
+| Horizontal feature Contracts and forward-only layer authority | `DSET-REQUIREMENT-GOV-045` |
 | One-level-down project/group/feature/layer architecture views | `DSET-REQUIREMENT-GOV-031` |
 | Narrowest-common-scope ownership for project, group, feature, and layer truth | `DSET-REQUIREMENT-GOV-032` |
 | Parent-to-child artifact inheritance, local implementation/cancellation, and direct fallback | `DSET-REQUIREMENT-GOV-033` |
@@ -33,7 +35,7 @@ the implementation scope to its current layer-owned Requirement owners.
 | Framework-reference versus project-applied TypeScript profile authority | `DSET-REQUIREMENT-TOOL-022` |
 
 The canonical text lives in the accepted META, GOV, TOOL, SKILL, and OPS
-evergreen package fragments directly under `.dset/<layer>/`. This Change
+evergreen package fragments directly under `.dset/layer_<n>_<layer>/`. This Change
 owns implementation and proof for those accepted requirements, not duplicate
 normative prose.
 
@@ -50,7 +52,8 @@ Connected accepted IDs are `DSET-REQUIREMENT-META-007`,
 `DSET-REQUIREMENT-GOV-029`,
 `DSET-REQUIREMENT-GOV-031`, `DSET-REQUIREMENT-GOV-038`,
 `DSET-REQUIREMENT-GOV-039`,
-`DSET-REQUIREMENT-GOV-043`,
+`DSET-REQUIREMENT-GOV-043`, `DSET-REQUIREMENT-GOV-044`,
+`DSET-REQUIREMENT-GOV-045`,
 `DSET-REQUIREMENT-GOV-032`,
 `DSET-REQUIREMENT-GOV-033`,
 `DSET-REQUIREMENT-GOV-034`,

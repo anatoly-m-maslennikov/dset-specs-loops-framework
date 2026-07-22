@@ -49,7 +49,7 @@ locations, currentness, and reopen triggers.
 
 ## Supportability
 
-No adopter application runtime or production data is changed. The CLI reads repository files; only explicit materialize/refresh operations write, and the self-host adopter is temporary. Proposed local skill-run records are ignored, bounded, redacted operational evidence and never project truth. Failures identify the earliest stable boundary. Commit, PR, check, tag, release, and ruleset evidence is covered by the existing [delivery runbook](../ops/supportability/delivery-runbook.md). A misleading release claim is contained by keeping this change active and the PR draft until hosted proof, evals, pilots, and release work pass.
+No adopter application runtime or production data is changed. The CLI reads repository files; only explicit materialize/refresh operations write, and the self-host adopter is temporary. Proposed local skill-run records are ignored, bounded, redacted operational evidence and never project truth. Failures identify the earliest stable boundary. Commit, PR, check, tag, release, and ruleset evidence is covered by the existing [delivery runbook](../layer_5_ops/supportability/delivery-runbook.md). A misleading release claim is contained by keeping this change active and the PR draft until hosted proof, evals, pilots, and release work pass.
 
 ## Decisions
 

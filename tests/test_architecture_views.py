@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 
 from dset_toolchain.frontmatter import metadata as frontmatter_metadata
+from dset_toolchain.layout import LAYER_DIRECTORIES
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -15,6 +16,31 @@ class ArchitectureViewTests(unittest.TestCase):
         self.assertIn("```mermaid", content)
         for layer in ("META", "GOV", "TOOL", "SKILL", "OPS"):
             self.assertIn(f'{layer}["{layer}', content)
+        for edge in (
+            "META --> GOV",
+            "GOV --> TOOL",
+            "TOOL --> SKILL",
+            "SKILL --> OPS",
+        ):
+            self.assertIn(edge, content)
+
+    def test_features_are_horizontal_and_layers_are_forward_only(self) -> None:
+        live = ROOT / ".dset/layer_2_gov/specification-architecture.md"
+        template = (
+            ROOT / ".dset/layer_2_gov/templates/governance/core-v1/architecture.md"
+        )
+        content = live.read_text(encoding="utf-8")
+        self.assertEqual(content, template.read_text(encoding="utf-8"))
+        for phrase in (
+            "Features are peer capabilities",
+            "interactions are horizontal",
+            "`META → GOV → TOOL → SKILL → OPS`",
+            "immediately following layer is preferred",
+            "same or an earlier layer",
+            "or a later layer",
+            "Backward authority fails validation",
+        ):
+            self.assertIn(phrase, content)
 
     def test_every_layer_hub_maps_its_main_functions(self) -> None:
         expected = {
@@ -26,16 +52,16 @@ class ArchitectureViewTests(unittest.TestCase):
         }
         for layer, phrases in expected.items():
             with self.subTest(layer=layer):
-                content = (ROOT / f".dset/{layer}/README.md").read_text(
-                    encoding="utf-8"
-                )
+                content = (
+                    ROOT / ".dset" / LAYER_DIRECTORIES[layer] / "README.md"
+                ).read_text(encoding="utf-8")
                 self.assertIn("## Layer map", content)
                 self.assertIn("```mermaid", content)
                 for phrase in phrases:
                     self.assertIn(phrase, content)
 
     def test_templates_cover_only_enabled_structural_levels(self) -> None:
-        root = ROOT / ".dset/gov/templates/architecture-view"
+        root = ROOT / ".dset/layer_2_gov/templates/architecture-view"
         expected = {"project.md", "feature-group.md", "feature-or-layer.md"}
         self.assertEqual(
             {path.name for path in root.glob("*.md") if path.name != "README.md"},
@@ -52,8 +78,10 @@ class ArchitectureViewTests(unittest.TestCase):
                 self.assertIn("```mermaid", content)
 
     def test_governance_requires_one_level_down_without_placeholders(self) -> None:
-        live = ROOT / ".dset/gov/specification-architecture.md"
-        template = ROOT / ".dset/gov/templates/governance/core-v1/architecture.md"
+        live = ROOT / ".dset/layer_2_gov/specification-architecture.md"
+        template = (
+            ROOT / ".dset/layer_2_gov/templates/governance/core-v1/architecture.md"
+        )
         content = live.read_text(encoding="utf-8")
         self.assertEqual(content, template.read_text(encoding="utf-8"))
         self.assertIn("feature groups when present", content)
@@ -61,8 +89,10 @@ class ArchitectureViewTests(unittest.TestCase):
         self.assertIn("Each view stays one level deep", content)
 
     def test_global_truth_owns_only_cross_child_concerns(self) -> None:
-        live = ROOT / ".dset/gov/specification-architecture.md"
-        template = ROOT / ".dset/gov/templates/governance/core-v1/architecture.md"
+        live = ROOT / ".dset/layer_2_gov/specification-architecture.md"
+        template = (
+            ROOT / ".dset/layer_2_gov/templates/governance/core-v1/architecture.md"
+        )
         content = live.read_text(encoding="utf-8")
         self.assertEqual(content, template.read_text(encoding="utf-8"))
         for phrase in (
@@ -79,8 +109,10 @@ class ArchitectureViewTests(unittest.TestCase):
         self.assertIn("narrowest common structural owner", root)
 
     def test_artifact_relations_are_typed_and_forward_only(self) -> None:
-        live = ROOT / ".dset/gov/specification-architecture.md"
-        template = ROOT / ".dset/gov/templates/governance/core-v1/architecture.md"
+        live = ROOT / ".dset/layer_2_gov/specification-architecture.md"
+        template = (
+            ROOT / ".dset/layer_2_gov/templates/governance/core-v1/architecture.md"
+        )
         content = live.read_text(encoding="utf-8")
         self.assertEqual(content, template.read_text(encoding="utf-8"))
         for phrase in (
