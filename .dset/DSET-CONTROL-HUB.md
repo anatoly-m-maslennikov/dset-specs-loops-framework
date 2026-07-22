@@ -13,6 +13,10 @@ authority.
 `150_versions` contain applied project artifacts only. `.dset_runtime` owns
 ignored runtime state and is not part of this control plane.
 
+Historical aggregates, completed migrations, and compatibility snapshots live
+in the inert repository archive outside `.dset`. Skills do not discover or
+compile that archive.
+
 ## Start here
 
 - `dset_settings.toml` — settings and identity registries.

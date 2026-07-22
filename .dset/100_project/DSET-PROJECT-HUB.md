@@ -2,14 +2,16 @@
 
 ## Purpose
 
-This directory owns project-wide atomic artifacts, evergreen specifications
-and plans, analysis, promoted evidence, migrations, and retained history for
+This directory owns current project-wide atomic artifacts, evergreen
+specifications and plans, analysis, promoted evidence, and verification for
 the repository that develops DSET.
 
 ## Boundaries
 
 Layer-specific truth belongs to the corresponding applied layer. Installed
 methodology is referenced by unique identity and never duplicated here.
+Historical aggregates and completed migration records are inert repository
+history outside `.dset` and are not project-control inputs.
 
 ```mermaid
 flowchart LR

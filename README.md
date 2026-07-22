@@ -76,8 +76,9 @@ DSET keeps three active carrier roles separate:
 Settings and registries share the unique `dset_settings.toml` carrier inside
 the selected project control plane. Aggregate artifact, intake, atom,
 lifecycle, provenance, and version registries are not parallel active
-authorities. Historical aggregate carriers live only under the project-owned
-legacy archive.
+authorities. Historical aggregates, completed migrations, and compatibility
+snapshots live only in the inert root `90_legacy` archive, outside `.dset` and
+outside skill discovery or current compilation.
 
 Semantic compilation is **on demand**. A new atom does not force every
 evergreen document to be rewritten. `dset-compile` updates only affected owners
@@ -197,6 +198,6 @@ landscape analysis, prototyping, triage, release, and completion.
 
 The coordinated public baseline is `0.3.1`. This working repository now uses
 schema `1.5` and the separated-methodology layout intended for the next
-version. Historical migrations and proofs remain project history; they are not
+version. Historical migrations remain in the inert root archive and are not
 current framework inputs. Release-readiness claims continue to require the
 separate configured verification and hosted-delivery gates.

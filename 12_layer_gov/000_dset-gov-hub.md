@@ -2,7 +2,8 @@
 
 ## Purpose
 
-Own repository governance, artifact architecture, intake, provenance, migrations, and derived relationship views.
+Own repository governance, artifact architecture, intake, provenance,
+migration rules, and derived relationship views.
 
 ## Boundaries
 
@@ -15,7 +16,7 @@ flowchart TB
     GOV["GOV"]
     RULES["Governance and artifact registries"]
     INTAKE["Problems, Questions, provenance"]
-    ASSETS["Schemas, templates, migrations"]
+    ASSETS["Schemas, templates, migration rules"]
     VIEWS["Traceability and derived views"]
 
     GOV --> RULES

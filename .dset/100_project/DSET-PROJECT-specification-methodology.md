@@ -23,6 +23,7 @@ the implementation scope to its current layer-owned Requirement owners.
 | Type-first artifact names and independently selectable subtype-name capability | `DSET-REQUIREMENT-GOV-038` |
 | Medium/high immutable-artifact admission strictness | `DSET-REQUIREMENT-GOV-039` |
 | Hidden control-plane root, one settings/manifest carrier, distinct ignored runtime state, disposable host scratch, explicit path bases, and direct ownership roots | `DSET-REQUIREMENT-GOV-043` |
+| Current-only project control plane with inert historical aggregates and completed migrations outside skill discovery | `DSET-DECISION-GOV-028` |
 | Visibly ordered layer directories with stable logical layer IDs | `DSET-REQUIREMENT-GOV-044` |
 | Horizontal feature Contracts and forward-only layer authority | `DSET-REQUIREMENT-GOV-045` |
 | One-level-down project/group/feature/layer architecture views | `DSET-REQUIREMENT-GOV-031` |
@@ -52,6 +53,7 @@ Connected accepted IDs are `DSET-REQUIREMENT-META-007`,
 `DSET-REQUIREMENT-GOV-029`,
 `DSET-REQUIREMENT-GOV-031`, `DSET-REQUIREMENT-GOV-038`,
 `DSET-REQUIREMENT-GOV-039`,
+`DSET-DECISION-GOV-028`,
 `DSET-REQUIREMENT-GOV-043`, `DSET-REQUIREMENT-GOV-044`,
 `DSET-REQUIREMENT-GOV-045`,
 `DSET-REQUIREMENT-GOV-032`,

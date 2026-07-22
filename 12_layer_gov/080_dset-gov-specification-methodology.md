@@ -32,6 +32,7 @@ presentation.
 | `DSET-DECISION-GOV-025` | Resolve every DSET authority reference by ID or globally unique carrier name only inside the selected project control plane |
 | `DSET-DECISION-GOV-026` | Number installed methodology for reading order without creating a durable path registry |
 | `DSET-DECISION-GOV-027` | Atomize carrier representation transitions and exclude physical paths from current identity |
+| `DSET-DECISION-GOV-028` | Keep `.dset` current and exclude inert historical aggregates and completed migrations from skill discovery and compilation |
 
 Absorbed predecessors remain immutable history and are excluded from the active
 compilation set by append-only lifecycle events.
@@ -93,6 +94,18 @@ Numbering is presentation, not identity: skills ignore it and resolve the
 requested ID or unique carrier name within `.dset`. Deterministic source
 materialization computes the installed layout without persisting a
 source-to-destination path registry.
+
+## DSET-DECISION-GOV-028 — Keep the control plane current
+
+The selected project's `.dset` tree contains only current settings, installed
+methodology, applied project/layer/Version artifacts, evergreen specifications
+and plans, and current evidence and verification records.
+
+Historical aggregate registries, completed migration records, compatibility
+snapshots, pre-current change folders, and retained pre-current documentation
+live in an inert repository archive outside `.dset`. Skills and current
+semantic compilation search only `.dset`; they never consult the archive as a
+fallback authority or coverage source.
 
 ## DSET-REQUIREMENT-GOV-005 — Package structure is proportional
 
@@ -907,15 +920,18 @@ priority, retirement, and stable lookup.
 
 A current DSET project has one writable settings and project-manifest carrier
 at `.dset/dset_settings.toml`. Installed methodology lives exclusively under
-`.dset/000_dset_methodology/`. Project-wide evergreen artifacts, records,
-registries, migrations, evidence, and verification live under
-`.dset/100_project/`; Version lifecycle artifacts, Changes, archives, and
-delivery history live under `.dset/150_versions/`; and layer-owned applied
+`.dset/000_dset_methodology/`. Current project-wide evergreen artifacts,
+atomic records, analysis, evidence, and verification live under
+`.dset/100_project/`; current Version lifecycle artifacts and Changes live
+under `.dset/150_versions/`; and layer-owned applied
 truth lives under `.dset/101_layer_meta/`, `.dset/102_layer_gov/`,
 `.dset/103_layer_tool/`, `.dset/104_layer_skill/`, and
 `.dset/105_layer_ops/`. Generated views remain runtime state under
 `.dset_runtime/generated/` unless a separate artifact explicitly promotes an
 observation into the applied evidence owner.
+Historical aggregates, completed migrations, compatibility snapshots,
+pre-current change folders, and retained delivery history live outside `.dset`
+and are not current discovery or compilation inputs.
 Resumable run, session, cache, readiness, and migration-recovery state lives
 under the ignored sibling `.dset_runtime/` root and cannot become project
 authority. Disposable DSET scratch and test workspaces live under `/tmp` on
