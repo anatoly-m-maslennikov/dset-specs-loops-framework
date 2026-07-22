@@ -47,6 +47,7 @@ from .governance import (
 )
 from .health import health_is_fresh, health_path, render_health, write_health
 from .layout import discover_layout
+from .project_data import project_section
 from .release import check_release, plan_release, prepare_release
 from .runtime_bridge import (
     advance_runtime_closure,
@@ -529,7 +530,7 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         if args.command == "version":
             root = _repository_root(args.root)
-            data = load(discover_layout(root).version_path)
+            data = project_section(root, "version_registry")
             if args.format == "json":
                 print(json.dumps(data, indent=2))
             else:

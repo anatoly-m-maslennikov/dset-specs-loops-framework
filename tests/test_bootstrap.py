@@ -92,8 +92,8 @@ class BootstrapTests(unittest.TestCase):
             self.assertNotIn("workspace_default", manifest["change_contract"])
             self.assertTrue(layout.governance_path.is_file())
             self.assertTrue((target / ".dset/dset_settings.toml").is_file())
-            self.assertTrue((target / ".dset/project/README.md").is_file())
-            self.assertTrue((target / ".dset/versions/README.md").is_file())
+            self.assertTrue((target / "00_project/README.md").is_file())
+            self.assertTrue((target / "10_versions/README.md").is_file())
             self.assertEqual(
                 (target / ".dset_runtime/.gitignore").read_text(encoding="utf-8"),
                 "*\n!.gitignore\n",
@@ -161,7 +161,7 @@ class BootstrapTests(unittest.TestCase):
             self.assertEqual(validate_repository(target), [])
             manifest = load(discover_layout(target).manifest_path)
             self.assertEqual(manifest["supportability"]["status"], "applicable")
-            runbook = (target / ".dset/layer_5_ops/supportability/README.md").read_text(
+            runbook = (target / ".dset/05_layer_ops/supportability/README.md").read_text(
                 encoding="utf-8"
             )
             self.assertIn("Active hosted automation", runbook)

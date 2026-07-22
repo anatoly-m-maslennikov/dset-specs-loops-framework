@@ -4,8 +4,8 @@
 
 This document is the public framework definition of DSET semantic Types and
 subtypes. The DSET repository applies it through
-[`DSET-RULE-WORK-ITEMS`](../.dset/layer_2_gov/specification-work-items.md), compiled
-from [`DSET-DECISION-GOV-008`](../.dset/layer_2_gov/decision/DSET-DECISION-GOV-008-fpf-aligned-boundaries-for-the-flat-type-model.md).
+[`DSET-RULE-WORK-ITEMS`](../.dset/02_layer_gov/specification-work-items.md), compiled
+from [`DSET-DECISION-GOV-008`](../.dset/02_layer_gov/decision/DSET-DECISION-GOV-008-fpf-aligned-boundaries-for-the-flat-type-model.md).
 
 ## Type rule
 
@@ -188,7 +188,7 @@ than another semantic Type.
 independent from the semantic `type` and `subtype` of an Atomic Record.
 
 The machine-readable catalog is
-[`.dset/project/artifact-types.toml`](../.dset/project/artifact-types.toml).
+[`00_project/artifact-types.toml`](../00_project/artifact-types.toml).
 It defines eleven artifact types:
 
 | Artifact type | Direct artifact subtypes |

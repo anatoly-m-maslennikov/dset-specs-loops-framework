@@ -9,8 +9,8 @@ from dset_toolchain.frontmatter import render
 from dset_toolchain.temp_paths import temporary_directory
 
 ROOT = Path(__file__).resolve().parents[1]
-SCHEMA = ROOT / ".dset/layer_2_gov/schemas/evidence-record.schema.json"
-TEMPLATE = ROOT / ".dset/layer_2_gov/templates/evidence-record.md"
+SCHEMA = ROOT / ".dset/02_layer_gov/schemas/evidence-record.schema.json"
+TEMPLATE = ROOT / ".dset/02_layer_gov/templates/evidence-record.md"
 
 
 class EvidenceRecordTests(unittest.TestCase):

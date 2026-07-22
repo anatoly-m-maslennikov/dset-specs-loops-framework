@@ -505,7 +505,7 @@ def _immutable_classifications(
     atom_ledger, atom_errors = _load_history_ledger(
         root,
         (
-            ".dset/project/atoms",
+            "00_project/atoms",
             "dset/scopes/gov/governance/atoms",
             "dset/governance/atoms",
         ),
@@ -538,7 +538,7 @@ def _immutable_classifications(
     legacy_ledger, legacy_errors = _load_history_ledger(
         root,
         (
-            ".dset/project/legacy-authority",
+            "00_project/legacy-authority",
             "dset/scopes/gov/governance/legacy-authority",
             "dset/governance/legacy-authority",
         ),
@@ -720,7 +720,7 @@ def _legacy_structured_registry(
     """Load exact historical structured snapshots without accepting wildcards."""
 
     candidates = (
-        root / ".dset/project/artifact-types.toml",
+        root / "00_project/artifact-types.toml",
         root / "dset/scopes/gov/artifact-types.toml",
         root / "dset/scopes/gov/artifact-types.yaml",
         root / "dset/artifact-types.toml",
@@ -921,9 +921,9 @@ def _carrier_transition_entries(
         return entries, transition_sources, blockers
 
     for relative in (
-        ".dset/project/atoms.toml",
-        ".dset/project/legacy-authority.toml",
-        ".dset/project/artifact-types.toml",
+        "00_project/atoms.toml",
+        "00_project/legacy-authority.toml",
+        "00_project/artifact-types.toml",
         "dset/scopes/gov/governance/atoms.toml",
         "dset/scopes/gov/governance/legacy-authority.toml",
         "dset/scopes/gov/artifact-types.toml",
@@ -978,7 +978,7 @@ def _transition_identities(root: Path, source: Path) -> tuple[list[str], list[st
     for stems, record_field in (
         (
             (
-                ".dset/project/atoms",
+                "00_project/atoms",
                 "dset/scopes/gov/governance/atoms",
                 "dset/governance/atoms",
             ),
@@ -986,7 +986,7 @@ def _transition_identities(root: Path, source: Path) -> tuple[list[str], list[st
         ),
         (
             (
-                ".dset/project/legacy-authority",
+                "00_project/legacy-authority",
                 "dset/scopes/gov/governance/legacy-authority",
                 "dset/governance/legacy-authority",
             ),
@@ -1019,7 +1019,7 @@ def _transition_identities(root: Path, source: Path) -> tuple[list[str], list[st
         (
             path
             for path in (
-                root / ".dset/project/artifact-types.toml",
+                root / "00_project/artifact-types.toml",
                 root / "dset/scopes/gov/artifact-types.toml",
                 root / "dset/artifact-types.toml",
             )
@@ -1332,7 +1332,7 @@ def _inactive_semantic_ids(root: Path) -> tuple[set[str], list[str]]:
     ledger, blockers = _load_history_ledger(
         root,
         (
-            ".dset/project/lifecycle",
+            "00_project/lifecycle",
             "dset/scopes/gov/governance/lifecycle",
             "dset/governance/lifecycle",
         ),

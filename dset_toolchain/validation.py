@@ -31,6 +31,7 @@ from .frontmatter import parse as parse_frontmatter
 from .governance import validate_governance
 from .health import health_is_fresh, health_path
 from .layout import LAYER_DIRECTORIES, RepositoryLayout, discover_layout
+from .project_data import project_section
 from .legacy_authority import legacy_authority_ids
 from .lineage import validate_artifact_lineage
 from .profiles import VALID_PROFILES, required_artifacts
@@ -207,7 +208,7 @@ def validate_repository(root: Path) -> list[Diagnostic]:
             if path.is_dir() and re.match(r"^\d{4}-\d{2}-\d{2}-", path.name):
                 diagnostics.extend(validate_change(root, path, archived=True))
     diagnostics.extend(_validate_markdown(root))
-    transition_ledger = root / ".dset/project/migrations/carrier-transitions.toml"
+    transition_ledger = root / "00_project/migrations/carrier-transitions.toml"
     diagnostics.extend(
         _diag("DSET-E168", transition_ledger, issue)
         for issue in validate_carrier_transition_ledger(root)
@@ -490,7 +491,7 @@ def _validate_project_manifest(
         )
     if str(data.get("schema_version")) in {"1.2", "1.3"}:
         expected_registries = (
-            {".dset/project/intake.toml"}
+            {"00_project/intake.toml"}
             if str(data.get("schema_version")) == "1.3"
             else {
                 "dset/scopes/gov/intake.toml",
@@ -1247,7 +1248,11 @@ def _validate_artifacts(
             )
         ]
     diagnostics: list[Diagnostic] = []
-    registry = _safe_load(registry_path, diagnostics)
+    try:
+        registry = project_section(root, "artifact_structure")
+    except (OSError, ValueError, YamlSubsetError) as error:
+        diagnostics.append(_diag("DSET-E120", registry_path, str(error)))
+        registry = {}
     if not registry:
         return diagnostics
     if registry.get("profile") != profile:
@@ -1270,7 +1275,11 @@ def _validate_artifacts(
             )
         )
         return diagnostics
-    type_registry = _safe_load(type_registry_path, diagnostics)
+    try:
+        type_registry = project_section(root, "artifact_catalog")
+    except (OSError, ValueError, YamlSubsetError) as error:
+        diagnostics.append(_diag("DSET-E156", type_registry_path, str(error)))
+        type_registry = {}
     if type_registry:
         project = manifest.get("project", {})
         project_key = project.get("key") if isinstance(project, dict) else None
@@ -3205,7 +3214,7 @@ def _validate_layered_change(
         policy = release.get("policy")
         owner = release.get("owner_change")
         expected_policy = (
-            ".dset/layer_5_ops/procedure-release.md"
+            ".dset/05_layer_ops/procedure-release.md"
             if layout.slim
             else "dset/scopes/ops/governance/release.md"
         )
@@ -3544,7 +3553,11 @@ def _validate_schemas(schema_paths: tuple[Path, ...]) -> list[Diagnostic]:
 def _validate_provenance(root: Path) -> list[Diagnostic]:
     path = discover_layout(root).provenance_path
     diagnostics: list[Diagnostic] = []
-    data = _safe_load(path, diagnostics)
+    try:
+        data = project_section(root, "source_provenance")
+    except (OSError, ValueError, YamlSubsetError) as error:
+        diagnostics.append(_diag("DSET-E112", path, str(error)))
+        data = {}
     if not data:
         return diagnostics or [_diag("DSET-E112", path, "provenance is missing")]
     for source in data.get("sources", []):

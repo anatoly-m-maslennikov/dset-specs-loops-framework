@@ -75,7 +75,7 @@ class RepositoryLayoutTest(unittest.TestCase):
                     for layer, directory in LAYER_DIRECTORIES.items()
                 },
             )
-            self.assertEqual(layout.layer_root("GOV"), dset / "layer_2_gov")
+            self.assertEqual(layout.layer_root("GOV"), dset / "02_layer_gov")
 
             (dset / "gov").mkdir()
             with self.assertRaisesRegex(ValueError, "competing layer roots"):

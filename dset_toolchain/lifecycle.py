@@ -8,6 +8,7 @@ from typing import Any
 
 IMPLEMENT_CRITERIA = (
     "decisions_reconciled",
+    "evergreen_current",
     "proof_plan_complete",
     "implementation_plan_complete",
     "implementation_authorized",
@@ -15,6 +16,7 @@ IMPLEMENT_CRITERIA = (
 )
 IMPLEMENT_WORKFLOWS = (
     "decisions",
+    "compile",
     "plan-proof",
     "plan-implementation",
     "implement",
@@ -22,6 +24,7 @@ IMPLEMENT_WORKFLOWS = (
 IMPLEMENTATION_MODES = frozenset({"lazy", "strict"})
 WORKFLOW_PROGRESS = {
     "decisions": "decisions_reconciled",
+    "compile": "evergreen_current",
     "plan-proof": "proof_plan_complete",
     "plan-implementation": "implementation_plan_complete",
     "implement": "implementation_complete",
@@ -63,6 +66,7 @@ def initial_closure(
         "status": "active",
         "criteria": {
             "decisions_reconciled": False,
+            "evergreen_current": None,
             "proof_plan_complete": None,
             "implementation_plan_complete": None,
             "implementation_authorized": None,
@@ -161,6 +165,10 @@ def _select_next(closure: dict[str, Any]) -> None:
     criteria = closure["criteria"]
     if criteria["decisions_reconciled"] is not True:
         _set_next(closure, "active", "decisions", "DSET-RUNTIME-DECISIONS-FIRST")
+    elif criteria["evergreen_current"] is None:
+        _set_next(closure, "blocked", None, "DSET-RUNTIME-CRITERIA-UNKNOWN")
+    elif criteria["evergreen_current"] is False:
+        _set_next(closure, "active", "compile", "DSET-RUNTIME-COMPILE")
     elif criteria["proof_plan_complete"] is None:
         _set_next(closure, "blocked", None, "DSET-RUNTIME-CRITERIA-UNKNOWN")
     elif criteria["proof_plan_complete"] is False:
@@ -203,6 +211,7 @@ def _strict_closure() -> dict[str, Any]:
         "status": "ready",
         "criteria": {
             "decisions_reconciled": None,
+            "evergreen_current": None,
             "proof_plan_complete": None,
             "implementation_plan_complete": None,
             "implementation_authorized": None,
@@ -313,6 +322,7 @@ def _strict_inputs_insufficient(criteria: Mapping[str, object]) -> bool:
         criteria.get(name) is False
         for name in (
             "decisions_reconciled",
+            "evergreen_current",
             "proof_plan_complete",
             "implementation_plan_complete",
         )

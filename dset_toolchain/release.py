@@ -13,6 +13,7 @@ from typing import Any
 from .frontmatter import FrontmatterError
 from .frontmatter import parse as parse_frontmatter
 from .layout import RepositoryLayout, discover_layout
+from .project_data import project_section, write_project_section
 from .yaml_subset import dump, load
 
 _SEMVER = re.compile(
@@ -186,7 +187,7 @@ def plan_release(root: Path) -> ReleasePlan:
             "release tag pattern must contain exactly one {product_version} placeholder"
         )
 
-    prepared_version = _current_product_version(layout.version_path)
+    prepared_version = _current_product_version(root)
     owner_path, owner, references = _release_owner(
         layout.active_change_roots,
         layout.archive_change_roots,
@@ -240,7 +241,7 @@ def plan_release(root: Path) -> ReleasePlan:
     if re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", tag) is None:
         raise ReleaseError(f"rendered release tag is not supported safely: {tag}")
 
-    surfaces = _read_version_surfaces(root, layout.version_path)
+    surfaces = _read_version_surfaces(root)
     changes = tuple(
         sorted(
             {
@@ -302,12 +303,17 @@ def prepare_release(root: Path, *, execute: bool = False) -> ReleasePreparation:
     changed: list[str] = []
     version_path = layout.version_path
     if version_path.relative_to(root).as_posix() in plan.changes:
-        version_data = _mapping(load(version_path), "version contract")
+        version_data = _mapping(
+            project_section(root, "version_registry"), "version contract"
+        )
         framework = _mapping(version_data.get("framework"), "framework version")
         package = _mapping(version_data.get("python_package"), "package version")
         framework["version"] = plan.target
         package["version"] = plan.python_target
-        _atomic_replace_text(version_path, dump(version_data, version_path))
+        if layout.recursive:
+            write_project_section(root, "version_registry", version_data)
+        else:
+            _atomic_replace_text(version_path, dump(version_data, version_path))
         changed.append(version_path.relative_to(root).as_posix())
     pyproject = root / "pyproject.toml"
     if pyproject.relative_to(root).as_posix() in plan.changes:
@@ -384,8 +390,10 @@ def _release_owner(
     return owner_path, owner, references
 
 
-def _current_product_version(version_path: Path) -> str:
-    version_data = _mapping(load(version_path), "version contract")
+def _current_product_version(root: Path) -> str:
+    version_data = _mapping(
+        project_section(root, "version_registry"), "version contract"
+    )
     framework = _mapping(version_data.get("framework"), "framework version")
     return _required_string(framework, "version")
 
@@ -422,8 +430,10 @@ def _readiness_passed(path: Path, candidate_commit: str) -> bool:
     return True
 
 
-def _read_version_surfaces(root: Path, version_path: Path) -> dict[str, str]:
-    version_data = _mapping(load(version_path), "version contract")
+def _read_version_surfaces(root: Path) -> dict[str, str]:
+    version_data = _mapping(
+        project_section(root, "version_registry"), "version contract"
+    )
     framework = _mapping(version_data.get("framework"), "framework version")
     package = _mapping(version_data.get("python_package"), "package version")
     pyproject = (root / "pyproject.toml").read_text(encoding="utf-8")

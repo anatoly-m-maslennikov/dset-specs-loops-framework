@@ -1,0 +1,4 @@
+interface:
+  display_name: "DSET Compile"
+  short_description: "Compile atomic DSET truth into evergreen specs and plans"
+  default_prompt: "Use $dset-compile to reconcile pending atomic artifacts into the affected evergreen specifications and plans."

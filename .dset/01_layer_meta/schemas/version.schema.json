@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/.dset/01_layer_meta/schemas/version.schema.json",
+  "title": "DSET product version contract",
+  "type": "object",
+  "required": ["schema_version", "framework", "python_package", "schemas", "released_validator", "candidate_validator", "bootstrap"],
+  "properties": {
+    "schema_version": {"oneOf": [{"enum": [1.0, 1.1]}, {"const": "1.2"}]},
+    "framework": {"oneOf": [{"$ref": "#/$defs/legacy_framework"}, {"$ref": "#/$defs/current_framework"}]},
+    "python_package": {"oneOf": [{"$ref": "#/$defs/legacy_python_package"}, {"$ref": "#/$defs/current_python_package"}]},
+    "schemas": {
+      "type": "object",
+      "required": ["version", "versioning"],
+      "properties": {
+        "version": {"type": "string"},
+        "versioning": {"const": "independent"}
+      },
+      "additionalProperties": false
+    },
+    "released_validator": {"$ref": "#/$defs/validator"},
+    "candidate_validator": {
+      "type": "object",
+      "required": ["command"],
+      "properties": {"command": {"type": "string", "minLength": 1}},
+      "additionalProperties": false
+    },
+    "bootstrap": {
+      "type": "object",
+      "required": ["manifest", "governance_registry", "precedence"],
+      "properties": {
+        "manifest": {"type": "string", "minLength": 1},
+        "governance_registry": {"type": "string", "minLength": 1},
+        "precedence": {"const": "project-local-rule-then-selected-local-profile-then-failure"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"schema_version": {"const": 1.0}}},
+      "then": {"properties": {"framework": {"$ref": "#/$defs/legacy_framework"}, "python_package": {"$ref": "#/$defs/legacy_python_package"}}},
+      "else": {"properties": {"framework": {"$ref": "#/$defs/current_framework"}, "python_package": {"$ref": "#/$defs/current_python_package"}}}
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": "1.2"}}, "required": ["schema_version"]},
+      "then": {
+        "properties": {
+          "bootstrap": {
+            "properties": {
+              "manifest": {"enum": [".dset/dset_settings.toml", "dset/scopes/meta/dset.toml", "dset/scopes/meta/dset.yaml"]},
+              "governance_registry": {"enum": ["00_project/governance.toml", "dset/scopes/gov/governance.toml", "dset/scopes/gov/governance.yaml"]}
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "bootstrap": {
+            "properties": {
+              "manifest": {"enum": ["dset/dset.toml", "dset/dset.yaml"]},
+              "governance_registry": {"enum": ["dset/governance.toml", "dset/governance.yaml"]}
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "legacy_framework": {
+      "type": "object",
+      "required": ["milestone", "status", "versioning"],
+      "properties": {
+        "milestone": {"const": "0.2"},
+        "status": {"enum": ["candidate", "released"]},
+        "versioning": {"const": "independent-framework-milestone"}
+      },
+      "additionalProperties": false
+    },
+    "current_framework": {
+      "type": "object",
+      "required": ["version", "versioning"],
+      "properties": {
+        "version": {"$ref": "#/$defs/semver"},
+        "versioning": {"const": "coordinated-product-package"}
+      },
+      "additionalProperties": false
+    },
+    "legacy_python_package": {
+      "type": "object",
+      "required": ["name", "version", "versioning"],
+      "properties": {
+        "name": {"const": "dset-spec-loops"},
+        "version": {"$ref": "#/$defs/pep440"},
+        "versioning": {"const": "independent"}
+      },
+      "additionalProperties": false
+    },
+    "current_python_package": {
+      "type": "object",
+      "required": ["name", "version", "versioning"],
+      "properties": {
+        "name": {"const": "dset-spec-loops"},
+        "version": {"$ref": "#/$defs/pep440"},
+        "versioning": {"const": "coordinated-product-package"}
+      },
+      "additionalProperties": false
+    },
+    "semver": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-rc\\.[1-9][0-9]*)?$"
+    },
+    "pep440": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:rc[1-9][0-9]*)?$"
+    },
+    "validator": {
+      "type": "object",
+      "required": ["identity", "commit", "command"],
+      "properties": {
+        "identity": {"type": "string", "minLength": 1},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "command": {"type": "string", "minLength": 1},
+        "assurance": {"enum": ["published-release", "bootstrap-transition"]}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"identity": {"pattern": "not-release$"}}, "required": ["identity"]},
+          "then": {"required": ["assurance"], "properties": {"assurance": {"const": "bootstrap-transition"}}}
+        }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

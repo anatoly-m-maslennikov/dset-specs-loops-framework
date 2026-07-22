@@ -1,0 +1,9 @@
+schema_version = "1.0"
+artifact_type = "lifecycle_event"
+artifact_id = "DSET-LIFECYCLE-EVENT-054"
+atom_id = "DSET-DEFECT-GOV-006"
+event = "resolved"
+occurred_at = "2026-07-21T01:48:04+04:00"
+related = ["DSET-REQUIREMENT-GOV-025"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "Native TOML Evidence Records now have a schema, template, validator, compatibility boundary, and focused deterministic coverage."

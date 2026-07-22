@@ -35,9 +35,9 @@ AUTHORITY = "DSET-REQUIREMENT-GOV-044"
 SESSION = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
 IMMUTABLE_OWNERS = frozenset({"decision", "question", "problem", "qa", "evidence"})
 TEXT_SUFFIXES = frozenset({".json", ".md", ".py", ".toml", ".txt", ".yaml", ".yml"})
-ATOMS = ROOT / ".dset/project/atoms.toml"
-LEGACY_AUTHORITY = ROOT / ".dset/project/legacy-authority.toml"
-TRANSITIONS = ROOT / ".dset/project/migrations/carrier-transitions.toml"
+ATOMS = ROOT / "00_project/atoms.toml"
+LEGACY_AUTHORITY = ROOT / "00_project/legacy-authority.toml"
+TRANSITIONS = ROOT / "00_project/migrations/carrier-transitions.toml"
 
 
 def _git_lines(*arguments: str) -> list[str]:

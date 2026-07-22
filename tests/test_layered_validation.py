@@ -337,13 +337,13 @@ class LayeredValidationTests(unittest.TestCase):
 
     def test_schema_1_2_shapes_are_explicit(self) -> None:
         project = json.loads(
-            (ROOT / ".dset/layer_1_meta/schemas/project.schema.json").read_text(
+            (ROOT / ".dset/01_layer_meta/schemas/project.schema.json").read_text(
                 encoding="utf-8"
             )
         )
         fragment = json.loads(
             (
-                ROOT / ".dset/layer_1_meta/schemas/package-fragment.schema.json"
+                ROOT / ".dset/01_layer_meta/schemas/package-fragment.schema.json"
             ).read_text(encoding="utf-8")
         )
         self.assertIn(
@@ -351,7 +351,7 @@ class LayeredValidationTests(unittest.TestCase):
             project["$defs"]["layered_structure"]["properties"]["layout"]["enum"],
         )
         change = json.loads(
-            (ROOT / ".dset/layer_2_gov/schemas/change.schema.json").read_text(
+            (ROOT / ".dset/02_layer_gov/schemas/change.schema.json").read_text(
                 encoding="utf-8"
             )
         )
@@ -367,7 +367,7 @@ class LayeredValidationTests(unittest.TestCase):
             ),
             {
                 "dset/scopes/ops/governance/release.md",
-                ".dset/layer_5_ops/procedure-release.md",
+                ".dset/05_layer_ops/procedure-release.md",
             },
         )
         forbidden = project["allOf"][0]["then"]["not"]["anyOf"]
@@ -405,17 +405,17 @@ class LayeredValidationTests(unittest.TestCase):
 
     def test_schema_1_2_work_area_contract_has_two_target_modes(self) -> None:
         project = json.loads(
-            (ROOT / ".dset/layer_1_meta/schemas/project.schema.json").read_text(
+            (ROOT / ".dset/01_layer_meta/schemas/project.schema.json").read_text(
                 encoding="utf-8"
             )
         )
         change = json.loads(
-            (ROOT / ".dset/layer_2_gov/schemas/change.schema.json").read_text(
+            (ROOT / ".dset/02_layer_gov/schemas/change.schema.json").read_text(
                 encoding="utf-8"
             )
         )
         traceability = json.loads(
-            (ROOT / ".dset/layer_3_tool/schemas/traceability.schema.json").read_text(
+            (ROOT / ".dset/03_layer_tool/schemas/traceability.schema.json").read_text(
                 encoding="utf-8"
             )
         )

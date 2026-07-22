@@ -11,6 +11,7 @@ from .frontmatter import FrontmatterError
 from .frontmatter import metadata as frontmatter_metadata
 from .layout import discover_layout
 from .legacy_authority import legacy_authority_ids
+from .project_data import lifecycle_events
 from .semantic_types import SEMANTIC_SUBTYPES
 from .yaml_subset import YamlSubsetError, load
 
@@ -717,9 +718,9 @@ def _reject_reverse_fields(
 
 
 def _known_relation_ids(root: Path) -> set[str]:
-    identifiers = legacy_authority_ids(root)
+    identifiers = set() if discover_layout(root).recursive else legacy_authority_ids(root)
     layout = discover_layout(root)
-    if layout.intake_path.is_file():
+    if not layout.recursive and layout.intake_path.is_file():
         data = load(layout.intake_path)
         items = data.get("items", []) if isinstance(data, dict) else []
         identifiers.update(
@@ -786,16 +787,10 @@ def _absorption_edges(root: Path) -> dict[str, str]:
 
 
 def _lifecycle_events(root: Path) -> list[dict[str, Any]]:
-    layout = discover_layout(root)
-    path = layout.structured_file(layout.project_state_root, "lifecycle.toml")
-    if not path.is_file():
-        return []
     try:
-        data = load(path)
-    except (OSError, UnicodeError, YamlSubsetError):
+        return lifecycle_events(root)
+    except (OSError, UnicodeError, ValueError, YamlSubsetError):
         return []
-    values = data.get("events", []) if isinstance(data, dict) else []
-    return [item for item in values if isinstance(item, dict)]
 
 
 def _layer_from_id(identifier: str) -> str | None:

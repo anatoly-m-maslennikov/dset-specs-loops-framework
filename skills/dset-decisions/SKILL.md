@@ -1,6 +1,6 @@
 ---
 name: dset-decisions
-description: Reconcile available operator/session intent and repository evidence into missing accepted atomic DSET records and current compiled handoffs. Use when a desired outcome may rely on directives not yet captured; expose unclear acceptance and stop before implementation.
+description: Reconcile available operator/session intent and repository evidence into missing accepted atomic DSET records. Use when a desired outcome may rely on directives not yet captured; expose unclear acceptance and stop before semantic compilation or implementation.
 ---
 
 # DSET Decisions
@@ -16,4 +16,7 @@ This is the thin wrapper for `decisions`; resolved repository-local documents ow
 
 ## Handoff
 
-Follow the resolved entry and exit criteria to reconcile only available current evidence. Return emitted atomic IDs, compiled-owner updates, material unknowns, and session provenance. Never invent acceptance, edit an emitted atom, or continue into implementation.
+Follow the resolved entry and exit criteria to reconcile only available current
+evidence. Return emitted atomic IDs, affected evergreen owners, material
+unknowns, and session provenance. Never invent acceptance, edit an emitted
+atom, compile evergreen truth implicitly, or continue into implementation.

@@ -23,7 +23,7 @@ class ProjectSettingsTests(unittest.TestCase):
     def test_emitted_settings_are_documented_1_3_defaults(self) -> None:
         root_text = (ROOT / ".dset" / SETTINGS_FILENAME).read_text(encoding="utf-8")
         template_text = (
-            ROOT / f".dset/layer_1_meta/templates/{SETTINGS_FILENAME}"
+            ROOT / f".dset/01_layer_meta/templates/{SETTINGS_FILENAME}"
         ).read_text(encoding="utf-8")
         self.assertEqual(
             load_toml(template_text)["artifacts"],
@@ -201,15 +201,15 @@ class ProjectSettingsTests(unittest.TestCase):
 
     def test_published_priority_schemas_defer_vocabulary_to_settings(self) -> None:
         paths = {
-            "atom": ROOT / ".dset/layer_2_gov/schemas/atom.schema.json",
-            "change": ROOT / ".dset/layer_2_gov/schemas/change.schema.json",
-            "review": ROOT / ".dset/layer_2_gov/schemas/review-report.schema.json",
+            "atom": ROOT / ".dset/02_layer_gov/schemas/atom.schema.json",
+            "change": ROOT / ".dset/02_layer_gov/schemas/change.schema.json",
+            "review": ROOT / ".dset/02_layer_gov/schemas/review-report.schema.json",
             "conflict": (
-                ROOT / ".dset/layer_2_gov/schemas/conflict-candidate.schema.json"
+                ROOT / ".dset/02_layer_gov/schemas/conflict-candidate.schema.json"
             ),
-            "lifecycle": ROOT / ".dset/layer_2_gov/schemas/lifecycle.schema.json",
+            "lifecycle": ROOT / ".dset/02_layer_gov/schemas/lifecycle.schema.json",
             "traceability": (
-                ROOT / ".dset/layer_3_tool/schemas/traceability.schema.json"
+                ROOT / ".dset/03_layer_tool/schemas/traceability.schema.json"
             ),
         }
         schemas = {

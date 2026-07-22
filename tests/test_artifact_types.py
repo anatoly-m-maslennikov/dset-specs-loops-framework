@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 LAYOUT = discover_layout(ROOT)
 REGISTRY_PATH = LAYOUT.artifact_type_registry_path
 TEMPLATE_PATH = LAYOUT.find_template("artifact-types.toml")
-SCHEMA_PATH = ROOT / ".dset/layer_2_gov/schemas/artifact-types.schema.json"
+SCHEMA_PATH = ROOT / ".dset/02_layer_gov/schemas/artifact-types.schema.json"
 
 
 class ArtifactTypeRegistryTests(unittest.TestCase):
@@ -129,7 +129,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
         self.assertTrue({"roadmap", "release_plan"}.isdisjoint(catalog["plan"]))
 
     def test_analysis_report_templates_cover_every_direct_subtype(self) -> None:
-        template_root = ROOT / ".dset/layer_2_gov/templates/change"
+        template_root = ROOT / ".dset/02_layer_gov/templates/change"
         expected = {
             "solution-landscape.md": "solution_landscape",
             "root-cause.md": "root_cause_analysis",
@@ -302,7 +302,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
         expected = {
             "skills/*/SKILL.md": ("procedure", "playbook"),
             "documentation/maintenance-playbook.md": ("procedure", "playbook"),
-            ".dset/layer_5_ops/supportability/delivery-runbook.md": (
+            ".dset/05_layer_ops/supportability/delivery-runbook.md": (
                 "procedure",
                 "runbook",
             ),
@@ -368,7 +368,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
 
     def test_project_settings_default_to_type_only_names(self) -> None:
         settings = LAYOUT.settings_path.read_text(encoding="utf-8")
-        template = (ROOT / ".dset/layer_1_meta/templates/dset_settings.toml").read_text(
+        template = (ROOT / ".dset/01_layer_meta/templates/dset_settings.toml").read_text(
             encoding="utf-8"
         )
         for carrier in (settings, template):
@@ -377,7 +377,7 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
 
     def test_release_lifecycle_projection_is_compiled(self) -> None:
         rule = (
-            ROOT / ".dset/layer_2_gov/specification-artifact-classification.md"
+            ROOT / ".dset/02_layer_gov/specification-artifact-classification.md"
         ).read_text(encoding="utf-8")
         for phrase in (
             "`version`",

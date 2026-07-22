@@ -34,6 +34,7 @@ project policy is retained or copied across that boundary.
 - [`dset-landscape`](dset-landscape/SKILL.md) — compare solution, library, framework, architecture, and language alternatives.
 - [`dset-prototype`](dset-prototype/SKILL.md) — run bounded disposable design experiments and feed evidence into the Solution Landscape and Decision.
 - [`dset-decisions`](dset-decisions/SKILL.md) — reconcile accepted session intent into immutable atomic records and compiled handoffs.
+- [`dset-compile`](dset-compile/SKILL.md) — semantically synthesize pending accepted atoms into only the affected evergreen specifications and plans when compilation is requested or required by an entry gate.
 - [`dset-plan-proof`](dset-plan-proof/SKILL.md) — maintain separate deterministic test and qualitative eval plans.
 - [`dset-plan-implementation`](dset-plan-implementation/SKILL.md) — create dependency-ordered implementation work and Change tasks.
 - [`dset-triage`](dset-triage/SKILL.md) — classify and route Questions, including Conflicts and Opportunities, and Problems.
@@ -42,8 +43,8 @@ project policy is retained or copied across that boundary.
 The base skills accept desired outcomes. `dset` routes an uncertain request to
 one next mode and handoff; it does not execute the selected specialist.
 Specialist entrypoints may traverse only their registered prerequisite closure,
-notably the lazy `dset-implement` workflow. These 17 folders are the exact
-implemented source catalog. Fifteen wrappers
+notably the lazy `dset-implement` workflow. These 18 folders are the exact
+implemented source catalog. Sixteen wrappers
 resolve repository-local workflows; `dset-init` and
 `dset-repair-governance` are the only bounded pre-resolution exceptions. The
 primary router owns the shared session checkpoint/resume boundary; there

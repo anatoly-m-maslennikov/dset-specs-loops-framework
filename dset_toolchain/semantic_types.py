@@ -10,6 +10,7 @@ from .frontmatter import FrontmatterError
 from .frontmatter import metadata as frontmatter_metadata
 from .layout import discover_layout
 from .legacy_authority import legacy_shared_package_paths
+from .project_data import lifecycle_events
 from .yaml_subset import YamlSubsetError, load
 
 SEMANTIC_SUBTYPES: dict[str, frozenset[str]] = {
@@ -268,7 +269,11 @@ def _collect(
         intake_path = discover_layout(root).intake_path
     except ValueError:
         intake_path = root / "dset/intake.yaml"
-    data = _safe_load(intake_path, diagnostics) if intake_path.is_file() else None
+    data = (
+        _safe_load(intake_path, diagnostics)
+        if intake_path.is_file() and not discover_layout(root).recursive
+        else None
+    )
     items = data.get("items", []) if isinstance(data, dict) else []
     if isinstance(items, list):
         for item in items:
@@ -383,13 +388,6 @@ def _safe_load(path: Path, diagnostics: list[Diagnostic]) -> Any:
 
 def _lifecycle_events(root: Path) -> list[dict[str, Any]]:
     try:
-        layout = discover_layout(root)
-        path = layout.structured_file(layout.project_state_root, "lifecycle.toml")
+        return lifecycle_events(root)
     except ValueError:
         return []
-    try:
-        data = load(path)
-    except (OSError, UnicodeError, YamlSubsetError):
-        return []
-    events = data.get("events", []) if isinstance(data, dict) else []
-    return [item for item in events if isinstance(item, dict)]

@@ -52,7 +52,7 @@ class CompilationTests(unittest.TestCase):
             shutil.copytree(ROOT / ".dset", root / ".dset")
             write_compilation(root)
             self.assertTrue(compilation_is_fresh(root))
-            spec = root / ".dset/layer_2_gov/specification-methodology.md"
+            spec = root / ".dset/02_layer_gov/specification-methodology.md"
             spec.write_text(spec.read_text(encoding="utf-8") + "\n", encoding="utf-8")
             self.assertFalse(compilation_is_fresh(root))
             write_compilation(root)

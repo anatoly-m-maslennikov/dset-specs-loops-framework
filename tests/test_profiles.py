@@ -24,7 +24,7 @@ class ProfileTests(unittest.TestCase):
         self.assertIn("root-cause.md", defect_files)
         self.assertIn("adoption-decision.md", adoption_files)
         adoption_template = (
-            ROOT / ".dset/layer_2_gov/templates/change/adoption-decision.md"
+            ROOT / ".dset/02_layer_gov/templates/change/adoption-decision.md"
         ).read_text(encoding="utf-8")
         self.assertIn("(decision.md)", adoption_template)
         self.assertIn("proofs/candidate-fit", adoption_dirs)

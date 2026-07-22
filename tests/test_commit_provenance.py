@@ -120,7 +120,7 @@ class CommitProvenanceTests(unittest.TestCase):
         schema = json.loads(
             (
                 Path(__file__).parents[1]
-                / ".dset/layer_1_meta/schemas/project.schema.json"
+                / ".dset/01_layer_meta/schemas/project.schema.json"
             ).read_text(encoding="utf-8")
         )
 

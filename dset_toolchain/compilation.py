@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from .layout import discover_layout
+from .project_data import lifecycle_events
 from .semantic_atoms import collect_semantic_atoms
 from .yaml_subset import YamlSubsetError, dump, load
 
@@ -166,6 +167,19 @@ def _authority_sources(root: Path) -> dict[str, Path]:
 
 def _projection_paths(root: Path) -> list[Path]:
     layout = discover_layout(root)
+    if layout.recursive:
+        prefixes = ("specification-", "procedure-", "plan-", "navigation-")
+        owners = (
+            layout.project_root,
+            *(layout.layer_root(layer) for layer in ("meta", "gov", "tool", "skill", "ops")),
+            layout.dset_root,
+        )
+        return [
+            path
+            for owner in owners
+            for path in sorted(owner.rglob("*.md"))
+            if not _ignored(root, path) and path.name.lower().startswith(prefixes)
+        ]
     if layout.slim:
         prefixes = (
             "specification-",
@@ -187,16 +201,9 @@ def _projection_paths(root: Path) -> list[Path]:
 
 
 def _lifecycle_status(root: Path) -> dict[str, str]:
-    layout = discover_layout(root)
-    path = layout.structured_file(layout.project_state_root, "lifecycle.toml")
-    if not path.is_file():
-        return {}
-    data = load(path)
-    events = data.get("events", []) if isinstance(data, dict) else []
     return {
         str(item.get("atom_id")): str(item.get("event"))
-        for item in events
-        if isinstance(item, dict)
+        for item in lifecycle_events(root)
     }
 
 

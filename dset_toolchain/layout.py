@@ -9,17 +9,26 @@ from .yaml_subset import YamlSubsetError, load
 
 LAYERS: Final[tuple[str, ...]] = ("meta", "gov", "tool", "skill", "ops")
 LAYER_DIRECTORIES: Final[dict[str, str]] = {
-    "meta": "layer_1_meta",
-    "gov": "layer_2_gov",
-    "tool": "layer_3_tool",
-    "skill": "layer_4_skill",
-    "ops": "layer_5_ops",
+    "meta": "01_layer_meta",
+    "gov": "02_layer_gov",
+    "tool": "03_layer_tool",
+    "skill": "04_layer_skill",
+    "ops": "05_layer_ops",
+}
+RECURSIVE_LAYER_DIRECTORIES: Final[dict[str, str]] = {
+    "meta": "01_layer_meta",
+    "gov": "02_layer_gov",
+    "tool": "03_layer_tool",
+    "skill": "04_layer_skill",
+    "ops": "05_layer_ops",
 }
 LEGACY_SLIM_LAYOUT: Final[str] = "slim-v1"
 NUMBERED_LAYER_LAYOUT: Final[str] = "numbered-layers-v1"
+RECURSIVE_FRAMEWORK_LAYOUT: Final[str] = "recursive-framework-v1"
 LEGACY_SCHEMA_VERSIONS: Final[frozenset[str]] = frozenset({"1.0", "1.1"})
 LAYERED_SCHEMA_VERSION: Final[str] = "1.2"
 SLIM_SCHEMA_VERSION: Final[str] = "1.3"
+RECURSIVE_SCHEMA_VERSION: Final[str] = "1.4"
 CURRENT_DSET_ROOT: Final[str] = ".dset"
 LEGACY_DSET_ROOT: Final[str] = "dset"
 LEGACY_AUTHORITY_PATHS: Final[tuple[str, ...]] = (
@@ -56,10 +65,9 @@ class RepositoryLayout:
     """Canonical path authority for one DSET repository.
 
     Schema 1.0 and 1.1 use the central ``dset/`` layout. Schema 1.2 uses
-    layer-owned roots below ``dset/``. Schema 1.3 uses the hidden, distinctive
-    ``.dset/`` control root, removes the redundant ``scopes`` segment, moves
-    project-wide control artifacts below ``.dset/project/``, and uses one
-    combined settings and project manifest at ``.dset/dset_settings.toml``.
+    layer-owned roots below ``dset/``. Schema 1.3 uses the hidden ``.dset/``
+    control root. Schema 1.4 separates the portable framework below ``.dset``
+    from the recursively governed project artifacts at the repository root.
     """
 
     root: Path
@@ -69,7 +77,11 @@ class RepositoryLayout:
 
     @property
     def slim(self) -> bool:
-        return self.schema_version == SLIM_SCHEMA_VERSION
+        return self.schema_version in {SLIM_SCHEMA_VERSION, RECURSIVE_SCHEMA_VERSION}
+
+    @property
+    def recursive(self) -> bool:
+        return self.schema_version == RECURSIVE_SCHEMA_VERSION
 
     @property
     def dset_root(self) -> Path:
@@ -84,26 +96,37 @@ class RepositoryLayout:
 
     @property
     def project_root(self) -> Path:
-        return self.dset_root / "project"
+        return self.root / "00_project" if self.recursive else self.dset_root / "project"
 
     @property
     def versions_root(self) -> Path:
-        return self.dset_root / "versions"
+        return self.root / "10_versions" if self.recursive else self.dset_root / "versions"
 
     @property
     def scopes_root(self) -> Path:
+        if self.recursive:
+            return self.root
         return self.dset_root if self.slim else self.dset_root / "scopes"
 
     def layer_root(self, layer: str) -> Path:
         normalized = layer.lower()
         if normalized not in LAYERS:
             raise ValueError(f"unknown DSET layer: {layer}")
-        directory = (
-            LAYER_DIRECTORIES[normalized]
-            if self.slim and self.structure_layout == NUMBERED_LAYER_LAYOUT
-            else normalized
-        )
+        if self.recursive:
+            directory = RECURSIVE_LAYER_DIRECTORIES[normalized]
+        elif self.slim and self.structure_layout == NUMBERED_LAYER_LAYOUT:
+            directory = LAYER_DIRECTORIES[normalized]
+        else:
+            directory = normalized
         return self.scopes_root / directory
+
+    def framework_layer_root(self, layer: str) -> Path:
+        normalized = layer.lower()
+        if normalized not in LAYERS:
+            raise ValueError(f"unknown DSET layer: {layer}")
+        if self.recursive:
+            return self.dset_root / RECURSIVE_LAYER_DIRECTORIES[normalized]
+        return self.layer_root(normalized)
 
     @property
     def layer_roots(self) -> dict[str, Path]:
@@ -119,12 +142,16 @@ class RepositoryLayout:
 
     @property
     def governance_path(self) -> Path:
+        if self.recursive:
+            return self.settings_path
         if self.slim:
             return self.structured_file(self.project_root, "governance.toml")
         return self._owned_file("gov", self._preferred_name("governance"))
 
     @property
     def governance_root(self) -> Path:
+        if self.recursive:
+            return self.framework_layer_root("gov")
         if self.slim:
             return self.layer_root("gov")
         return self._owned_directory("gov", "governance")
@@ -137,30 +164,40 @@ class RepositoryLayout:
 
     @property
     def artifact_registry_path(self) -> Path:
+        if self.recursive:
+            return self.settings_path
         if self.slim:
             return self.structured_file(self.project_root, "artifacts.toml")
         return self._owned_file("gov", self._preferred_name("artifacts"))
 
     @property
     def artifact_type_registry_path(self) -> Path:
+        if self.recursive:
+            return self.settings_path
         if self.slim:
             return self.structured_file(self.project_root, "artifact-types.toml")
         return self._owned_file("gov", self._preferred_name("artifact-types"))
 
     @property
     def intake_path(self) -> Path:
+        if self.recursive:
+            return self.project_root
         if self.slim:
             return self.structured_file(self.project_root, "intake.toml")
         return self._owned_file("gov", self._preferred_name("intake"))
 
     @property
     def provenance_path(self) -> Path:
+        if self.recursive:
+            return self.settings_path
         if self.slim:
             return self.structured_file(self.project_root, "provenance.toml")
         return self._owned_file("gov", self._preferred_name("provenance"))
 
     @property
     def traceability_path(self) -> Path:
+        if self.recursive:
+            return self.root / ".dset_runtime/generated/traceability.toml"
         if self.slim:
             return self.structured_file(
                 self.project_root / "generated",
@@ -177,12 +214,16 @@ class RepositoryLayout:
 
     @property
     def migrations_root(self) -> Path:
+        if self.recursive:
+            return self.project_root / "migrations"
         if self.slim:
             return self.project_root / "migrations"
         return self._owned_directory("gov", "migrations")
 
     @property
     def version_path(self) -> Path:
+        if self.recursive:
+            return self.settings_path
         if self.slim:
             return self.structured_file(self.versions_root, "version.toml")
         return self._owned_file("meta", self._preferred_name("version"))
@@ -193,6 +234,8 @@ class RepositoryLayout:
 
     @property
     def history_root(self) -> Path:
+        if self.recursive:
+            return self.versions_root / "history"
         if self.slim:
             return self.versions_root / "history"
         return self._owned_directory("ops", "history")
@@ -205,20 +248,38 @@ class RepositoryLayout:
 
     @property
     def supportability_root(self) -> Path:
-        return self._owned_directory("ops", "supportability")
+        base = (
+            self.framework_layer_root("ops")
+            if self.recursive
+            else self.layer_root("ops")
+        )
+        return base / "supportability"
 
     @property
     def fixtures_root(self) -> Path:
-        return self._owned_directory("tool", "fixtures")
+        base = (
+            self.framework_layer_root("tool")
+            if self.recursive
+            else self.layer_root("tool")
+        )
+        return base / "fixtures"
 
     @property
     def schema_roots(self) -> tuple[Path, ...]:
+        if self.recursive:
+            return tuple(
+                self.framework_layer_root(layer) / "schemas" for layer in LAYERS
+            )
         if self.layered:
             return tuple(self.layer_root(layer) / "schemas" for layer in LAYERS)
         return (self.dset_root / "schemas",)
 
     @property
     def template_roots(self) -> tuple[Path, ...]:
+        if self.recursive:
+            return tuple(
+                self.framework_layer_root(layer) / "templates" for layer in LAYERS
+            )
         if self.layered:
             return tuple(self.layer_root(layer) / "templates" for layer in LAYERS)
         return (self.dset_root / "templates",)
@@ -239,6 +300,8 @@ class RepositoryLayout:
 
     @property
     def package_roots(self) -> tuple[Path, ...]:
+        if self.recursive:
+            return ()
         if self.slim:
             return tuple(self.layer_root(layer) for layer in LAYERS)
         if self.layered:
@@ -265,6 +328,8 @@ class RepositoryLayout:
         return self._find_unique(self.template_roots, relative, "template")
 
     def package_fragments(self) -> tuple[Path, ...]:
+        if self.recursive:
+            return ()
         if self.slim:
             return tuple(
                 path
@@ -440,15 +505,25 @@ def discover_layout(root: Path) -> RepositoryLayout:
     is_layered = is_slim or layered.is_file()
     version = _schema_version(manifest) if manifest.is_file() else None
     structure_layout = _structure_layout(manifest) if is_slim else None
-    if is_slim and version != SLIM_SCHEMA_VERSION:
-        raise ValueError(f"slim DSET manifest must declare schema 1.3: {slim}")
-    if is_slim and structure_layout not in {
+    if is_slim and version not in {SLIM_SCHEMA_VERSION, RECURSIVE_SCHEMA_VERSION}:
+        raise ValueError(f"hidden DSET manifest must declare schema 1.3 or 1.4: {slim}")
+    allowed_hidden_layouts = {
         LEGACY_SLIM_LAYOUT,
         NUMBERED_LAYER_LAYOUT,
-    }:
+        RECURSIVE_FRAMEWORK_LAYOUT,
+    }
+    if is_slim and structure_layout not in allowed_hidden_layouts:
         raise ValueError(
-            f"slim DSET manifest must select slim-v1 or numbered-layers-v1: {slim}"
+            "hidden DSET manifest must select slim-v1, numbered-layers-v1, "
+            f"or recursive-framework-v1: {slim}"
         )
+    if (
+        version == RECURSIVE_SCHEMA_VERSION
+        and structure_layout != RECURSIVE_FRAMEWORK_LAYOUT
+    ):
+        raise ValueError(f"schema 1.4 must select recursive-framework-v1: {slim}")
+    if version == SLIM_SCHEMA_VERSION and structure_layout == RECURSIVE_FRAMEWORK_LAYOUT:
+        raise ValueError(f"recursive-framework-v1 requires schema 1.4: {slim}")
     if not is_slim and is_layered and version != LAYERED_SCHEMA_VERSION:
         raise ValueError(f"layered DSET manifest must declare schema 1.2: {layered}")
     if not is_layered and version is not None and version not in LEGACY_SCHEMA_VERSIONS:
@@ -457,33 +532,56 @@ def discover_layout(root: Path) -> RepositoryLayout:
         )
     scopes = legacy_root / "scopes"
     if is_slim:
-        layer_directories = (
-            tuple(LAYER_DIRECTORIES.values())
-            if structure_layout == NUMBERED_LAYER_LAYOUT
-            else LAYERS
-        )
-        missing_layers = [
-            current_root / directory
-            for directory in layer_directories
-            if not (current_root / directory).is_dir()
-        ]
-        if missing_layers:
-            raise ValueError(
-                "slim DSET project is missing fixed layer roots: "
-                + ", ".join(path.as_posix() for path in missing_layers)
+        if structure_layout == RECURSIVE_FRAMEWORK_LAYOUT:
+            framework_directories = tuple(RECURSIVE_LAYER_DIRECTORIES.values())
+            project_directories = (
+                "00_project",
+                *framework_directories,
+                "10_versions",
             )
-        competing_layers = [
-            current_root / directory
-            for directory in (
+            missing_layers = [
+                path
+                for path in (
+                    *(current_root / directory for directory in project_directories),
+                    *(root / directory for directory in project_directories),
+                )
+                if not path.is_dir()
+            ]
+            competing_names = (
+                *LAYERS,
+                *LAYER_DIRECTORIES.values(),
+                "project",
+                "versions",
+            )
+        else:
+            layer_directories = (
+                tuple(LAYER_DIRECTORIES.values())
+                if structure_layout == NUMBERED_LAYER_LAYOUT
+                else LAYERS
+            )
+            missing_layers = [
+                current_root / directory
+                for directory in layer_directories
+                if not (current_root / directory).is_dir()
+            ]
+            competing_names = (
                 tuple(LAYER_DIRECTORIES.values())
                 if structure_layout == LEGACY_SLIM_LAYOUT
                 else LAYERS
             )
+        if missing_layers:
+            raise ValueError(
+                "hidden DSET project is missing fixed roots: "
+                + ", ".join(path.as_posix() for path in missing_layers)
+            )
+        competing_layers = [
+            current_root / directory
+            for directory in competing_names
             if (current_root / directory).exists()
         ]
         if competing_layers:
             raise ValueError(
-                "slim DSET project has competing layer roots: "
+                "hidden DSET project has competing roots: "
                 + ", ".join(path.as_posix() for path in competing_layers)
             )
         if scopes.exists():
@@ -592,7 +690,7 @@ def _registered_snapshot_after_cutover(snapshot: Path) -> bool:
     resolved = snapshot.resolve()
     for root in (resolved.parent, *resolved.parents):
         registry_candidates = (
-            root / ".dset/project/artifact-types.toml",
+            root / "00_project/artifact-types.toml",
             root / "dset/scopes/gov/artifact-types.toml",
             root / "dset/scopes/gov/artifact-types.yaml",
             root / "dset/artifact-types.toml",

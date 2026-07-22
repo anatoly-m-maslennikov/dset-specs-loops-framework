@@ -447,16 +447,16 @@ def _combined_settings() -> str:
         'canonical_command = "python -m dset_toolchain verify ."',
     )
     settings = settings.replace(
-        "dset/scopes/skill/budget.toml", ".dset/layer_4_skill/budget.toml"
+        "dset/scopes/skill/budget.toml", ".dset/04_layer_skill/budget.toml"
     )
     manifest = (
         manifest.replace(
             'runbook = "dset/scopes/ops/supportability/delivery-runbook.md"',
-            'runbook = ".dset/layer_5_ops/supportability/delivery-runbook.md"',
+            'runbook = ".dset/05_layer_ops/supportability/delivery-runbook.md"',
         )
         .replace(
             'registry = "dset/scopes/gov/intake.toml"',
-            'registry = ".dset/project/intake.toml"',
+            'registry = "00_project/intake.toml"',
         )
         .replace(
             'layout = "layered-v1"',
@@ -656,20 +656,20 @@ def _update_artifact_type_registry() -> None:
             ("**/verification.md", "verification", None),
             ("**/README.md", "navigation", "hub"),
             (".dset/dset_settings.toml", "implementation", "configuration"),
-            (".dset/project/artifact-types.toml", "specification", "governance"),
-            (".dset/project/artifacts.toml", "implementation", "configuration"),
-            (".dset/project/governance.toml", "implementation", "configuration"),
-            (".dset/project/intake.toml", "implementation", "configuration"),
-            (".dset/project/provenance.toml", "implementation", "configuration"),
-            (".dset/project/atoms.toml", "implementation", "configuration"),
-            (".dset/project/legacy-authority.toml", "implementation", "configuration"),
-            (".dset/project/lifecycle.toml", "implementation", "configuration"),
-            (".dset/project/migrations/*.toml", "implementation", "migration"),
-            (".dset/project/generated/*.toml", "derived_view", "traceability_index"),
-            (".dset/project/generated/*.md", "derived_view", "health_dashboard"),
-            (".dset/project/plan-implementation.md", "plan", "implementation_plan"),
-            (".dset/project/plan-work.md", "plan", "implementation_plan"),
-            (".dset/project/analysis-*.md", "analysis_report", None),
+            ("00_project/artifact-types.toml", "specification", "governance"),
+            ("00_project/artifacts.toml", "implementation", "configuration"),
+            ("00_project/governance.toml", "implementation", "configuration"),
+            ("00_project/intake.toml", "implementation", "configuration"),
+            ("00_project/provenance.toml", "implementation", "configuration"),
+            ("00_project/atoms.toml", "implementation", "configuration"),
+            ("00_project/legacy-authority.toml", "implementation", "configuration"),
+            ("00_project/lifecycle.toml", "implementation", "configuration"),
+            ("00_project/migrations/*.toml", "implementation", "migration"),
+            ("00_project/generated/*.toml", "derived_view", "traceability_index"),
+            ("00_project/generated/*.md", "derived_view", "health_dashboard"),
+            ("00_project/plan-implementation.md", "plan", "implementation_plan"),
+            ("00_project/plan-work.md", "plan", "implementation_plan"),
+            ("00_project/analysis-*.md", "analysis_report", None),
             (".dset/*/decision/*.md", "atomic_record", None),
             (".dset/*/question/*.md", "atomic_record", None),
             (".dset/*/problem/*.md", "atomic_record", None),
@@ -684,16 +684,16 @@ def _update_artifact_type_registry() -> None:
             (".dset/*/dependency-policy.toml", "implementation", "configuration"),
             (".dset/*/budget.toml", "implementation", "configuration"),
             (".dset/*/fixtures/*.toml", "implementation", "test_implementation"),
-            (".dset/versions/version.toml", "implementation", "configuration"),
-            (".dset/versions/history/*.toml", "implementation", "configuration"),
-            (".dset/versions/archive/*/specs/*.md", "specification", "governance"),
-            (".dset/versions/archive/*/tasks.md", "atomic_record", None),
+            ("10_versions/version.toml", "implementation", "configuration"),
+            ("10_versions/history/*.toml", "implementation", "configuration"),
+            ("10_versions/archive/*/specs/*.md", "specification", "governance"),
+            ("10_versions/archive/*/tasks.md", "atomic_record", None),
             (
-                ".dset/layer_3_tool/fixtures/bases/*/specs/example.md",
+                ".dset/03_layer_tool/fixtures/bases/*/specs/example.md",
                 "specification",
                 "behavior",
             ),
-            (".dset/layer_3_tool/fixtures/bases/*/tasks.md", "atomic_record", None),
+            (".dset/03_layer_tool/fixtures/bases/*/tasks.md", "atomic_record", None),
             ("dset_toolchain/*.py", "implementation", "source_code"),
             ("scripts/*.py", "implementation", "source_code"),
             ("tests/*.py", "implementation", "test_implementation"),
@@ -706,7 +706,7 @@ def _update_artifact_type_registry() -> None:
             (".github/DELIVERY.md", "procedure", "runbook"),
             ("documentation/maintenance-playbook.md", "procedure", "playbook"),
             (
-                ".dset/layer_5_ops/supportability/delivery-runbook.md",
+                ".dset/05_layer_ops/supportability/delivery-runbook.md",
                 "procedure",
                 "runbook",
             ),
@@ -800,7 +800,7 @@ def _repair_mutable_links() -> None:
     path.write_text(text, encoding="utf-8", newline="\n")
     adopter = ROOT / "dset_toolchain/adopter.py"
     text = adopter.read_text(encoding="utf-8").replace(
-        "[DSET project control](.dset/project/README.md)",
+        "[DSET project control](00_project/README.md)",
         "[DSET project control](dset/README.md)",
     )
     adopter.write_text(text, encoding="utf-8", newline="\n")

@@ -10,13 +10,14 @@ from .toml_codec import load as load_toml
 SETTINGS_FILENAME = "dset_settings.toml"
 SETTINGS_DIRECTORY = ".dset"
 LEGACY_SETTINGS_FILENAME = "dset.toml"
-SETTINGS_SCHEMA_VERSION = "1.3"
-PREVIOUS_SETTINGS_SCHEMA_VERSION = "1.2"
+SETTINGS_SCHEMA_VERSION = "1.4"
+PREVIOUS_SETTINGS_SCHEMA_VERSION = "1.3"
 LEGACY_SETTINGS_SCHEMA_VERSION = "1.0"
 SUPPORTED_SETTINGS_SCHEMA_VERSIONS = frozenset(
     {
         LEGACY_SETTINGS_SCHEMA_VERSION,
         "1.1",
+        "1.2",
         PREVIOUS_SETTINGS_SCHEMA_VERSION,
         SETTINGS_SCHEMA_VERSION,
     }
@@ -25,6 +26,7 @@ ARTIFACT_CREATION_STRICTNESS = frozenset({"medium", "high"})
 IMPLEMENTATION_MODES = frozenset({"lazy", "strict"})
 CHANGE_WORKSPACE_MODES = frozenset({"integration-branch", "branch-worktree"})
 DELEGATION_BUDGET_PROFILES = frozenset({"low", "medium", "high"})
+SEMANTIC_COMPILATION_MODES = frozenset({"on_demand", "eager"})
 DEFAULT_PRIORITY_SCALE = ("critical", "high", "medium", "low", "deferred")
 
 
@@ -38,6 +40,7 @@ class ProjectSettings:
     implementation_mode: str = "lazy"
     change_workspace_mode: str = "integration-branch"
     delegation_budget_profile: str = "medium"
+    semantic_compilation_mode: str = "on_demand"
     priority_scale: tuple[str, ...] = DEFAULT_PRIORITY_SCALE
     default_priority: str = "medium"
 
@@ -64,7 +67,7 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
     """Read canonical settings with explicit legacy-name compatibility.
 
     New writers use ``.dset/dset_settings.toml`` and schema 1.3. This reader
-    accepts the uncommitted schema-1.3 preview path plus retired root filenames
+    accepts the earlier schema-1.3 hidden layout plus retired root filenames
     and 1.0-1.2 field contracts only so an adopter can plan a deliberate
     migration; it never emits them. Competing names fail closed instead of
     selecting by precedence.
@@ -98,7 +101,7 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
     issues: list[str] = []
     schema_version = _string(raw.get("schema_version"), "schema_version", issues)
     if schema_version not in SUPPORTED_SETTINGS_SCHEMA_VERSIONS:
-        issues.append("settings schema_version must be 1.0, 1.1, 1.2, or 1.3")
+        issues.append("settings schema_version must be 1.0, 1.1, 1.2, 1.3, or 1.4")
 
     legacy = schema_version == LEGACY_SETTINGS_SCHEMA_VERSION
     _validate_known_keys(raw, schema_version, issues)
@@ -122,6 +125,7 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
         strictness = "medium"
 
     implementation_mode = "lazy"
+    semantic_compilation_mode = "on_demand"
     if not legacy:
         workflows = _table(raw.get("workflows"), "workflows", issues)
         implement = _table(workflows.get("implement"), "workflows.implement", issues)
@@ -131,10 +135,17 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
         if implementation_mode not in IMPLEMENTATION_MODES:
             issues.append("workflows.implement.mode must be lazy or strict")
             implementation_mode = "lazy"
+        compilation = _table(raw.get("compilation"), "compilation", issues)
+        semantic_compilation_mode = _string(
+            compilation.get("mode", "on_demand"), "compilation.mode", issues
+        )
+        if semantic_compilation_mode not in SEMANTIC_COMPILATION_MODES:
+            issues.append("compilation.mode must be on_demand or eager")
+            semantic_compilation_mode = "on_demand"
 
     change_workspace_mode = "integration-branch"
     delegation_budget_profile = "medium"
-    if schema_version in {PREVIOUS_SETTINGS_SCHEMA_VERSION, SETTINGS_SCHEMA_VERSION}:
+    if schema_version in {"1.2", PREVIOUS_SETTINGS_SCHEMA_VERSION, SETTINGS_SCHEMA_VERSION}:
         changes = _table(raw.get("changes"), "changes", issues)
         change_workspace_mode = _string(
             changes.get("default_workspace", "integration-branch"),
@@ -180,6 +191,7 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
             implementation_mode=implementation_mode,
             change_workspace_mode=change_workspace_mode,
             delegation_budget_profile=delegation_budget_profile,
+            semantic_compilation_mode=semantic_compilation_mode,
             priority_scale=priority_scale,
             default_priority=default_priority,
         ),
@@ -192,6 +204,7 @@ def _validate_known_keys(
 ) -> None:
     legacy = schema_version == LEGACY_SETTINGS_SCHEMA_VERSION
     current = schema_version in {
+        "1.2",
         PREVIOUS_SETTINGS_SCHEMA_VERSION,
         SETTINGS_SCHEMA_VERSION,
     }
@@ -201,7 +214,7 @@ def _validate_known_keys(
         "priority",
     }
     if not legacy:
-        allowed_top.add("workflows")
+        allowed_top.update({"workflows", "compilation"})
     if current:
         allowed_top.update({"changes", "delegation"})
     if schema_version == SETTINGS_SCHEMA_VERSION:
@@ -219,6 +232,14 @@ def _validate_known_keys(
                 "verification",
                 "work_areas",
                 "packages",
+                "artifact_catalog",
+                "artifact_structure",
+                "governance_registry",
+                "source_provenance",
+                "version_registry",
+                "package_catalog",
+                "structure_roots",
+                "framework_roots",
             }
         )
     _unknown_keys(raw, allowed_top, "settings", issues)
@@ -244,6 +265,14 @@ def _validate_known_keys(
         implement = workflows.get("implement")
         if isinstance(implement, dict):
             _unknown_keys(implement, {"mode"}, "workflows.implement", issues)
+    compilation = raw.get("compilation")
+    if isinstance(compilation, dict):
+        _unknown_keys(
+            compilation,
+            {"mode", "skill", "runtime_output"},
+            "compilation",
+            issues,
+        )
     changes = raw.get("changes")
     if isinstance(changes, dict):
         _unknown_keys(changes, {"default_workspace"}, "changes", issues)

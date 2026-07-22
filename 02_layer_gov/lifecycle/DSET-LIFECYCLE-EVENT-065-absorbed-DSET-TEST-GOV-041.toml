@@ -1,0 +1,9 @@
+schema_version = "1.0"
+artifact_type = "lifecycle_event"
+artifact_id = "DSET-LIFECYCLE-EVENT-065"
+atom_id = "DSET-TEST-GOV-041"
+event = "absorbed"
+occurred_at = "2026-07-21T02:15:07+04:00"
+related = ["DSET-TEST-GOV-043"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "The successor preserves digest, link, ownership, rollback, and idempotency checks while eliminating the retained-YAML exception."

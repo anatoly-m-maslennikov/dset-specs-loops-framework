@@ -228,7 +228,7 @@ class CarrierTransitionTests(unittest.TestCase):
     def test_registered_target_follows_relocation_chain(self) -> None:
         apply_toml_migration(self.root, bypass_runtime_readiness=True)
         original_target = self.root / "dset/scopes/gov/intake.legacy.toml"
-        relocated_target = self.root / ".dset/project/intake.legacy.toml"
+        relocated_target = self.root / "00_project/intake.legacy.toml"
         relocated_target.parent.mkdir(parents=True, exist_ok=True)
         original_target.replace(relocated_target)
 
@@ -239,7 +239,7 @@ class CarrierTransitionTests(unittest.TestCase):
                 "id": "DSET-CARRIER-TRANSITION-RELOCATION",
                 "kind": "carrier_relocation",
                 "original_path": "dset/scopes/gov/intake.legacy.toml",
-                "current_path": ".dset/project/intake.legacy.toml",
+                "current_path": "00_project/intake.legacy.toml",
             }
         )
         ledger_path.write_text(dump_toml(ledger), encoding="utf-8", newline="\n")
@@ -247,7 +247,7 @@ class CarrierTransitionTests(unittest.TestCase):
         registry_path = self.root / "dset/scopes/gov/artifact-types.toml"
         registry = load_toml(registry_path.read_text(encoding="utf-8"))
         retained = registry["legacy_structured"][0]
-        retained["current_path"] = ".dset/project/intake.legacy.toml"
+        retained["current_path"] = "00_project/intake.legacy.toml"
         registry_path.write_text(dump_toml(registry), encoding="utf-8", newline="\n")
 
         target = validation._registered_transition_target(

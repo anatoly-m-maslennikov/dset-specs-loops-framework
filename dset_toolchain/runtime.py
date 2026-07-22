@@ -48,6 +48,7 @@ _NEXT_MODES = {
     "landscape",
     "prototype",
     "decisions",
+    "compile",
     "plan-proof",
     "plan-implementation",
     "implement",

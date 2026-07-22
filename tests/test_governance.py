@@ -447,7 +447,7 @@ class GovernanceTests(unittest.TestCase):
     def test_bootstrap_release_target_is_explicit_not_framework_hard_coded(
         self,
     ) -> None:
-        release = (ROOT / ".dset/layer_5_ops/procedure-release.md").read_text(
+        release = (ROOT / ".dset/05_layer_ops/procedure-release.md").read_text(
             encoding="utf-8"
         )
         self.assertIn("explicit first `0.Y.Z` target", release)
@@ -541,8 +541,8 @@ class GovernanceTests(unittest.TestCase):
         self.assertEqual(intake_schema["$defs"]["rationale"]["minLength"], 1)
 
         for schema_path in (
-            ROOT / ".dset/layer_4_skill/schemas/skill-run.schema.json",
-            ROOT / ".dset/layer_4_skill/schemas/session-checkpoint.schema.json",
+            ROOT / ".dset/04_layer_skill/schemas/skill-run.schema.json",
+            ROOT / ".dset/04_layer_skill/schemas/session-checkpoint.schema.json",
         ):
             schema = json.loads(schema_path.read_text(encoding="utf-8"))
             self.assertIn("rationale", schema["properties"])
@@ -551,14 +551,14 @@ class GovernanceTests(unittest.TestCase):
 
         for name in ("decision.md", "adoption-decision.md"):
             decision_template = (
-                ROOT / ".dset/layer_2_gov/templates/change" / name
+                ROOT / ".dset/02_layer_gov/templates/change" / name
             ).read_text(encoding="utf-8")
             self.assertIn("Rationale (recommended, optional)", decision_template)
             self.assertIn("Omission alone does", decision_template)
             self.assertIn("not invalidate the Decision", decision_template)
 
         rule = (
-            ROOT / ".dset/layer_2_gov/specification-artifact-maintenance.md"
+            ROOT / ".dset/02_layer_gov/specification-artifact-maintenance.md"
         ).read_text(encoding="utf-8")
         self.assertIn("absence alone never invalidates", rule)
         self.assertIn("not hidden authority", rule)
@@ -862,7 +862,7 @@ class GovernanceTests(unittest.TestCase):
         ):
             self.assertIn(field, decision_template)
 
-        active = (ROOT / ".dset/project/analysis-solution-landscape.md").read_text(
+        active = (ROOT / "00_project/analysis-solution-landscape.md").read_text(
             encoding="utf-8"
         )
         active_candidates, _ = active.split("## Decision", maxsplit=1)
@@ -922,11 +922,11 @@ class GovernanceTests(unittest.TestCase):
 
     def test_health_review_and_ranking_rules_are_compiled(self) -> None:
         live = (
-            ROOT / ".dset/layer_2_gov/specification-artifact-maintenance.md"
+            ROOT / ".dset/02_layer_gov/specification-artifact-maintenance.md"
         ).read_text(encoding="utf-8")
         template = (
             ROOT
-            / ".dset/layer_2_gov/templates/governance/core-v1/artifact-maintenance.md"
+            / ".dset/02_layer_gov/templates/governance/core-v1/artifact-maintenance.md"
         ).read_text(encoding="utf-8")
         self.assertEqual(live, template)
         for phrase in (
@@ -945,10 +945,10 @@ class GovernanceTests(unittest.TestCase):
             self.assertIn(phrase, live)
 
         architecture = (
-            ROOT / ".dset/layer_2_gov/specification-architecture.md"
+            ROOT / ".dset/02_layer_gov/specification-architecture.md"
         ).read_text(encoding="utf-8")
         architecture_template = (
-            ROOT / ".dset/layer_2_gov/templates/governance/core-v1/architecture.md"
+            ROOT / ".dset/02_layer_gov/templates/governance/core-v1/architecture.md"
         ).read_text(encoding="utf-8")
         self.assertEqual(architecture, architecture_template)
         for phrase in (
@@ -962,11 +962,11 @@ class GovernanceTests(unittest.TestCase):
         ):
             self.assertIn(phrase, architecture)
 
-        work_items = (ROOT / ".dset/layer_2_gov/specification-work-items.md").read_text(
+        work_items = (ROOT / ".dset/02_layer_gov/specification-work-items.md").read_text(
             encoding="utf-8"
         )
         work_items_template = (
-            ROOT / ".dset/layer_2_gov/templates/governance/core-v1/work-items.md"
+            ROOT / ".dset/02_layer_gov/templates/governance/core-v1/work-items.md"
         ).read_text(encoding="utf-8")
         self.assertEqual(work_items, work_items_template)
         self.assertIn("one Type and at most one direct subtype", work_items)
@@ -977,16 +977,16 @@ class GovernanceTests(unittest.TestCase):
 
         for name in ("decision.md", "adoption-decision.md"):
             decision_template = (
-                ROOT / ".dset/layer_2_gov/templates/change" / name
+                ROOT / ".dset/02_layer_gov/templates/change" / name
             ).read_text(encoding="utf-8")
             self.assertIn("**Absorbs:**", decision_template)
             self.assertNotIn("**Superseded by:**", decision_template)
             self.assertIn("emitted Decision", decision_template)
 
-        gov = (ROOT / ".dset/layer_2_gov/specification-methodology.md").read_text(
+        gov = (ROOT / ".dset/02_layer_gov/specification-methodology.md").read_text(
             encoding="utf-8"
         )
-        tool = (ROOT / ".dset/layer_3_tool/specification-methodology.md").read_text(
+        tool = (ROOT / ".dset/03_layer_tool/specification-methodology.md").read_text(
             encoding="utf-8"
         )
         self.assertIn("DSET-REQUIREMENT-GOV-024", gov)

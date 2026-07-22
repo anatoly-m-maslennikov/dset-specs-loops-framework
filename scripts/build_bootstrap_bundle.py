@@ -16,7 +16,17 @@ OUTPUT = ROOT / "dset_toolchain" / "bootstrap_bundle.json"
 
 def selected_files(root: Path = ROOT) -> list[Path]:
     root = root.resolve()
-    selected = [root / ".dset" / "dset_settings.toml"]
+    selected = [root / ".dset" / "dset_settings.toml", root / ".dset" / "README.md"]
+    for directory in ("00_project", *LAYER_DIRECTORIES.values(), "10_versions"):
+        for candidate in (
+            root / directory / "README.md",
+            root / ".dset" / directory / "README.md",
+        ):
+            if candidate.is_file():
+                selected.append(candidate)
+    licenses = root / ".dset" / "00_project" / "licenses"
+    if licenses.is_dir():
+        selected.extend(path for path in licenses.iterdir() if path.is_file())
     for layer in ("meta", "gov", "tool", "skill", "ops"):
         layer_root = root / ".dset" / LAYER_DIRECTORIES[layer]
         for folder in ("schemas", "templates"):

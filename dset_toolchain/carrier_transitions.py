@@ -25,7 +25,7 @@ AUTHORITY_DECISIONS = frozenset(
     {AUTHORITY_DECISION, LAYOUT_AUTHORITY, "DSET-REQUIREMENT-GOV-044"}
 )
 SESSION_ID = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
-LEDGER_RELATIVE = Path(".dset/project/migrations/carrier-transitions.toml")
+LEDGER_RELATIVE = Path("00_project/migrations/carrier-transitions.toml")
 LEGACY_LEDGER_RELATIVES = (
     Path("dset/scopes/gov/migrations/carrier-transitions.toml"),
     Path("dset/migrations/carrier-transitions.toml"),

@@ -14,6 +14,7 @@ from .frontmatter import metadata as frontmatter_metadata
 from .frontmatter import render as render_frontmatter
 from .layout import discover_layout
 from .lineage import build_relation_index
+from .project_data import lifecycle_events, project_section
 from .semantic_atoms import collect_semantic_atoms, effective_priority
 from .semantic_types import build_semantic_classification_index
 from .settings import load_project_settings
@@ -367,7 +368,7 @@ def health_path(root: Path) -> Path:
 
 def _classified_artifacts(root: Path) -> list[dict[str, Any]]:
     layout = discover_layout(root)
-    registry = load(layout.artifact_type_registry_path)
+    registry = project_section(root, "artifact_catalog")
     rules = registry.get("path_rules", []) if isinstance(registry, dict) else []
     artifacts: list[dict[str, Any]] = []
     for path in sorted(root.rglob("*")):
@@ -527,18 +528,30 @@ def _coverage_proof(qa_ids: set[str], relations: list[dict[str, Any]]) -> Covera
 
 
 def _lifecycle_events(root: Path) -> list[dict[str, Any]]:
-    layout = discover_layout(root)
-    path = layout.structured_file(layout.project_state_root, "lifecycle.toml")
-    if not path.is_file():
-        return []
-    data = load(path)
-    events = data.get("events", []) if isinstance(data, dict) else []
-    return [dict(item) for item in events if isinstance(item, dict)]
+    return lifecycle_events(root)
 
 
 def _intake_items(
     root: Path, path: Path, lifecycle: list[dict[str, Any]]
 ) -> list[dict[str, Any]]:
+    if path.is_dir():
+        atoms, diagnostics = collect_semantic_atoms(root)
+        if diagnostics:
+            raise ValueError(diagnostics[0].message)
+        return [
+            {
+                "id": atom.semantic_id,
+                "type": atom.semantic_type,
+                "subtype": atom.subtype,
+                "title": Path(atom.path).stem,
+                "effective_status": _current_status(
+                    atom.semantic_id, atom.emission_status, lifecycle
+                ),
+                "path": atom.path,
+            }
+            for atom in atoms.values()
+            if atom.semantic_type in {"problem", "question"}
+        ]
     data = load(path)
     raw = data.get("items", []) if isinstance(data, dict) else []
     latest = {str(item.get("atom_id")): str(item.get("event")) for item in lifecycle}

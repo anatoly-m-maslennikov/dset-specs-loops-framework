@@ -14,9 +14,8 @@ from typing import Any, cast
 
 from .governance import materialize_governance
 from .layout import LAYER_DIRECTORIES, LAYERS, discover_layout, has_manifest
-from .legacy_authority import write_legacy_authority_ledger
+from .project_data import project_section
 from .temp_paths import temporary_directory
-from .traceability import write_traceability
 from .validation import validate_repository
 from .yaml_subset import dump, load
 
@@ -143,8 +142,8 @@ def distribution_source(source_root: Path | None = None) -> Iterator[tuple[Path,
 
     if source_root is not None:
         source = source_root.resolve()
-        if not has_manifest(source) or not discover_layout(source).slim:
-            raise InitializationError(f"source is not a schema 1.3 DSET root: {source}")
+        if not has_manifest(source) or not discover_layout(source).recursive:
+            raise InitializationError(f"source is not a schema 1.4 DSET root: {source}")
         yield source, f"path:{source.as_posix()}"
         return
     with temporary_directory(prefix="dset-source-") as raw:
@@ -222,20 +221,26 @@ def _stage_project(
 ) -> None:
     source_layout = discover_layout(source)
     dset_root = stage / ".dset"
-    project_root = dset_root / "project"
-    versions_root = dset_root / "versions"
-    project_root.mkdir(parents=True)
-    versions_root.mkdir()
+    dset_root.mkdir()
+    for directory in ("00_project", *LAYER_DIRECTORIES.values(), "10_versions"):
+        (stage / directory).mkdir()
+        (dset_root / directory).mkdir()
+    framework_licenses = source_layout.dset_root / "00_project" / "licenses"
+    if framework_licenses.is_dir():
+        shutil.copytree(
+            framework_licenses,
+            dset_root / "00_project" / "licenses",
+            dirs_exist_ok=True,
+        )
     for layer in LAYERS:
         layer_root = dset_root / LAYER_DIRECTORIES[layer]
-        layer_root.mkdir()
         for folder in ("schemas", "templates"):
-            origin = source_layout.layer_root(layer) / folder
+            origin = source_layout.framework_layer_root(layer) / folder
             if origin.is_dir():
                 shutil.copytree(origin, layer_root / folder)
 
     manifest = {
-        "schema_version": "1.3",
+        "schema_version": "1.4",
         "project": {
             "key": project_key,
             "id": project_id,
@@ -255,7 +260,7 @@ def _stage_project(
                 )
             ),
             "authority": "local-repository",
-            "runbook": ".dset/layer_5_ops/supportability/README.md",
+            "runbook": ".dset/05_layer_ops/supportability/README.md",
         },
         "release": {
             "status": "not-applicable",
@@ -265,8 +270,13 @@ def _stage_project(
             "integration_branch": "dev",
             "protected_branch": "main",
         },
-        "work_items": {"registry": ".dset/project/intake.toml"},
-        "structure": {"layout": "numbered-layers-v1"},
+        "work_items": {
+            "atomic_roots": [
+                "00_project",
+                *LAYER_DIRECTORIES.values(),
+            ]
+        },
+        "structure": {"layout": "recursive-framework-v1"},
         "work_areas": [
             {"id": item.identifier, "path": item.path} for item in work_areas
         ],
@@ -287,6 +297,52 @@ def _stage_project(
         "commit_provenance": {"start_commit": "manifest-addition"},
         "verification": {"commands": ["{python} -m dset_toolchain check ."]},
         "canonical_command": "python -m dset_toolchain verify .",
+        "artifact_catalog": project_section(source, "artifact_catalog"),
+        "artifact_structure": _artifact_structure(),
+        "source_provenance": {
+            "schema_version": 1.0,
+            "project_license": project_license,
+            "sources": [],
+        },
+        "version_registry": project_section(source, "version_registry"),
+        "package_catalog": {
+            "packages": [
+                {
+                    "schema_version": "1.4",
+                    "package_id": package_id,
+                    "layer": "meta",
+                    "requirements": [],
+                    "tests": [],
+                    "evals": [],
+                    "contracts": [],
+                    "stories": [],
+                    "outcomes": [],
+                    "artifacts": {
+                        "hub": "navigation-methodology.md",
+                        "domain": "specification-domain.md",
+                        "spec": "specification-methodology.md",
+                        "contracts": "specification-contracts.md",
+                        "stories": "specification-user-stories.md",
+                        "outcomes": "specification-outcomes.md",
+                        "test_plan": "plan-tests.md",
+                        "eval_plan": "plan-evaluations.md",
+                    },
+                }
+            ]
+        },
+        "structure_roots": {
+            "project": "00_project",
+            **{layer: LAYER_DIRECTORIES[layer] for layer in LAYERS},
+            "versions": "10_versions",
+        },
+        "framework_roots": {
+            "project": ".dset/00_project",
+            **{
+                layer: f".dset/{LAYER_DIRECTORIES[layer]}"
+                for layer in LAYERS
+            },
+            "versions": ".dset/10_versions",
+        },
     }
     manifest_path = dset_root / "dset_settings.toml"
     _write_combined_settings(
@@ -298,22 +354,6 @@ def _stage_project(
         project_key,
         package_id,
         project_name,
-    )
-    _copy_structured(
-        source_layout.find_template("intake.yaml"),
-        project_root / "intake.toml",
-    )
-    provenance_path = project_root / "provenance.toml"
-    provenance_path.write_text(
-        dump(
-            {
-                "schema_version": 1.0,
-                "project_license": project_license,
-                "sources": [],
-            },
-            provenance_path,
-        ),
-        encoding="utf-8",
     )
     skill = dset_root / LAYER_DIRECTORIES["skill"]
     _copy_structured(
@@ -333,52 +373,35 @@ def _stage_project(
         f"# Supportability\n\n{supportability_state}\n",
         encoding="utf-8",
     )
-    history = versions_root / "history"
-    history.mkdir()
-    history_path = history / "pull-requests.toml"
-    history_path.write_text(
-        dump(
-            {
-                "schema_version": 1.0,
-                "repository": repository,
-                "authoritative_source": "github",
-                "observed_on": date.today().isoformat(),
-                "pull_requests": [],
-            },
-            history_path,
-        ),
-        encoding="utf-8",
-    )
-    runtime = stage / ".dset_runtime"
-    runtime.mkdir()
-    (runtime / ".gitignore").write_text("*\n!.gitignore\n", encoding="utf-8")
     (dset_root / "README.md").write_text(
-        "# DSET project control\n\n"
-        "- [Project truth and records](project/README.md)\n"
+        "# Local DSET framework\n\n"
+        "Portable framework rules, templates, schemas, and settings.\n\n"
         "- [Settings and manifest](dset_settings.toml)\n"
-        "- [Version lifecycle](versions/README.md)\n\n"
-        "Ignored resumable runtime state lives in the repository-root sibling "
-        "`.dset_runtime/`. Disposable process scratch lives under `/tmp` on "
-        "POSIX or the native operating-system temporary root on Windows.\n",
+        "- [Project truth](../00_project/README.md)\n",
         encoding="utf-8",
     )
-    (project_root / "README.md").write_text(
+    (stage / "00_project" / "README.md").write_text(
         "# Project truth and records\n\n"
-        "Project-wide evergreen artifacts, registries, and generated views.\n",
+        "Project-wide evergreen artifacts and atomic records.\n",
         encoding="utf-8",
     )
-    (versions_root / "README.md").write_text(
+    (stage / "10_versions" / "README.md").write_text(
         "# Version lifecycle\n\nProject-wide Changes and release records.\n",
         encoding="utf-8",
     )
     for layer in LAYERS:
-        (dset_root / LAYER_DIRECTORIES[layer] / "README.md").write_text(
-            f"# {layer.upper()} layer\n\nLayer-owned DSET control artifacts.\n",
+        framework_readme = source_layout.framework_layer_root(layer) / "README.md"
+        if framework_readme.is_file():
+            shutil.copyfile(
+                framework_readme,
+                dset_root / LAYER_DIRECTORIES[layer] / "README.md",
+            )
+        (stage / LAYER_DIRECTORIES[layer] / "README.md").write_text(
+            f"# {layer.upper()} project layer\n\n"
+            "Project-owned atoms and evergreen artifacts live here.\n",
             encoding="utf-8",
         )
     materialize_governance(source, stage, profile, install_wrappers=True)
-    write_legacy_authority_ledger(stage)
-    write_traceability(stage)
 
 
 def _materialize_package(
@@ -388,7 +411,7 @@ def _materialize_package(
     package_id: str,
     project_name: str,
 ) -> None:
-    destination = stage / ".dset" / LAYER_DIRECTORIES["meta"]
+    destination = stage / LAYER_DIRECTORIES["meta"]
     replacements = {
         "{{project_key}}": project_key,
         "{{package_id}}": package_id,
@@ -430,6 +453,61 @@ def _materialize_package(
     }
     target = destination / "package.toml"
     target.write_text(dump(manifest, target), encoding="utf-8")
+
+
+def _artifact_structure() -> dict[str, Any]:
+    areas = [
+        {
+            "id": "framework-control",
+            "root": ".dset",
+            "hub": ".dset/README.md",
+            "parent": "repository",
+            "owner": "framework",
+            "purpose": "Portable repository-local DSET framework",
+        },
+        {
+            "id": "project-control",
+            "root": "00_project",
+            "hub": "00_project/README.md",
+            "parent": "repository",
+            "owner": "project",
+            "purpose": "Project-wide evergreen truth and atomic records",
+        },
+    ]
+    for layer in LAYERS:
+        directory = LAYER_DIRECTORIES[layer]
+        areas.append(
+            {
+                "id": f"project-{layer}",
+                "root": directory,
+                "hub": f"{directory}/README.md",
+                "parent": "project-control",
+                "owner": layer,
+                "purpose": f"Project-owned {layer.upper()} truth",
+            }
+        )
+    areas.append(
+        {
+            "id": "project-versions",
+            "root": "10_versions",
+            "hub": "10_versions/README.md",
+            "parent": "project-control",
+            "owner": "ops",
+            "purpose": "Version scopes, roadmaps, changes, and release records",
+        }
+    )
+    return {
+        "schema_version": 1.0,
+        "profile": "documentation-v1",
+        "root": {
+            "id": "repository",
+            "root": ".",
+            "hub": "README.md",
+            "owner": "project",
+            "purpose": "Project navigation",
+        },
+        "areas": areas,
+    }
 
 
 def _write_combined_settings(

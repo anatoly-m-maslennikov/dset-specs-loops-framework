@@ -128,12 +128,12 @@ class SkillWrapperTests(unittest.TestCase):
 
     def test_implementation_uses_governed_entry_criteria_closure(self) -> None:
         lifecycle = (
-            ROOT / ".dset/layer_4_skill/procedure-lifecycle-orchestration.md"
+            ROOT / ".dset/04_layer_skill/procedure-lifecycle-orchestration.md"
         ).read_text(encoding="utf-8")
         template = (
             ROOT
             / ".dset"
-            / "layer_4_skill"
+            / "04_layer_skill"
             / "templates"
             / "governance"
             / "core-v1"
@@ -163,11 +163,11 @@ class SkillWrapperTests(unittest.TestCase):
         self.assertIn("Only true completion or stop", lifecycle)
         self.assertNotIn("two workflow transitions", lifecycle)
 
-        skill_runs = (ROOT / ".dset/layer_4_skill/procedure-skill-runs.md").read_text(
+        skill_runs = (ROOT / ".dset/04_layer_skill/procedure-skill-runs.md").read_text(
             encoding="utf-8"
         )
         skill_runs_template = (
-            ROOT / ".dset/layer_4_skill/templates/governance/core-v1/skill-runs.md"
+            ROOT / ".dset/04_layer_skill/templates/governance/core-v1/skill-runs.md"
         ).read_text(encoding="utf-8")
         self.assertEqual(skill_runs, skill_runs_template)
         self.assertIn("`dset runtime handoff`", skill_runs)

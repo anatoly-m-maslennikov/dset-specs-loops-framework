@@ -14,6 +14,7 @@ from .frontmatter import metadata as frontmatter_metadata
 from .layout import discover_layout
 from .legacy_authority import legacy_authority_ids, validate_legacy_authority_ledger
 from .lineage import ArtifactRelation, parse_authored_relations
+from .project_data import lifecycle_events as load_lifecycle_events
 from .semantic_types import SEMANTIC_ID_KINDS, SEMANTIC_SUBTYPES
 from .settings import load_project_settings
 from .yaml_subset import YamlSubsetError, dump, load
@@ -103,8 +104,9 @@ def validate_semantic_atoms(root: Path) -> list[Diagnostic]:
             {identifier: atom.emission_status for identifier, atom in atoms.items()},
         )
     )
-    diagnostics.extend(_validate_ledger(root, atoms))
-    diagnostics.extend(validate_legacy_authority_ledger(root))
+    if not discover_layout(root).recursive:
+        diagnostics.extend(_validate_ledger(root, atoms))
+        diagnostics.extend(validate_legacy_authority_ledger(root))
     return sorted(set(diagnostics))
 
 
@@ -158,6 +160,8 @@ def seal_atom(root: Path, path: Path) -> Path:
     if assessment["emission_allowed"] is not True:
         first = assessment["diagnostics"][0]
         raise ValueError(f"artifact emission is blocked: {first['message']}")
+    if discover_layout(root).recursive:
+        return path
     ledger_path = _ledger_path(root)
     data = _load_or_empty(ledger_path, "records")
     records = data["records"]
@@ -180,6 +184,31 @@ def append_lifecycle_event(root: Path, event: dict[str, Any]) -> Path:
         raise ValueError(diagnostics[0].message)
     known_ids = _known_semantic_ids(root, atoms)
     normalized = _validate_event(root, event, known_ids)
+    layout = discover_layout(root)
+    if layout.recursive:
+        events = _lifecycle_events(root)
+        event_id = str(normalized["id"])
+        if any(item.get("id") == event_id for item in events):
+            raise FileExistsError(f"lifecycle event already exists: {event_id}")
+        _validate_event_graph(
+            [*events, normalized],
+            {identifier: atom.emission_status for identifier, atom in atoms.items()},
+        )
+        atom = atoms.get(str(normalized["atom_id"]))
+        owner = (
+            layout.project_root
+            if atom is None
+            else root / Path(atom.path).parts[0]
+        )
+        destination = owner / "lifecycle" / _event_filename(normalized)
+        carrier = {
+            "schema_version": "1.0",
+            "artifact_type": "lifecycle_event",
+            "artifact_id": event_id,
+            **{key: value for key, value in normalized.items() if key != "id"},
+        }
+        _atomic_dump(destination, carrier)
+        return destination
     lifecycle_path = _lifecycle_path(root)
     data = _load_or_empty(lifecycle_path, "events")
     events = data["events"]
@@ -197,20 +226,15 @@ def append_lifecycle_event(root: Path, event: dict[str, Any]) -> Path:
 
 
 def effective_priority(root: Path, atom: SemanticAtom) -> tuple[str, str]:
-    lifecycle_path = _lifecycle_path(root)
-    if lifecycle_path.is_file():
-        data = load(lifecycle_path)
-        events = data.get("events", []) if isinstance(data, dict) else []
-        changes = [
-            item
-            for item in events
-            if isinstance(item, dict)
-            and item.get("atom_id") == atom.semantic_id
-            and item.get("event") == "priority_changed"
-        ]
-        if changes:
-            latest = changes[-1]
-            return str(latest["priority"]), f"lifecycle:{latest['id']}"
+    changes = [
+        item
+        for item in _lifecycle_events(root)
+        if item.get("atom_id") == atom.semantic_id
+        and item.get("event") == "priority_changed"
+    ]
+    if changes:
+        latest = changes[-1]
+        return str(latest["priority"]), f"lifecycle:{latest['id']}"
     if atom.priority == "unknown":
         return "unknown", f"atom:{atom.semantic_id}"
     return atom.priority, f"atom:{atom.semantic_id}"
@@ -388,17 +412,10 @@ def _validate_lifecycle(
     initial_statuses: dict[str, str],
 ) -> list[Diagnostic]:
     path = _lifecycle_path(root)
-    if not path.is_file():
-        return []
     try:
-        data = load(path)
-    except (OSError, UnicodeError, YamlSubsetError) as error:
+        events = _lifecycle_events(root)
+    except (OSError, UnicodeError, ValueError, YamlSubsetError) as error:
         return [Diagnostic("DSET-E160", path, f"invalid lifecycle registry: {error}")]
-    events = data.get("events") if isinstance(data, dict) else None
-    if not isinstance(data, dict) or str(data.get("schema_version")) != "1.0":
-        return [Diagnostic("DSET-E160", path, "lifecycle schema_version must be 1.0")]
-    if not isinstance(events, list):
-        return [Diagnostic("DSET-E160", path, "lifecycle events must be a list")]
     diagnostics: list[Diagnostic] = []
     seen: set[str] = set()
     normalized_events: list[dict[str, Any]] = []
@@ -565,9 +582,15 @@ def _validate_event_graph(
 
 
 def _known_semantic_ids(root: Path, atoms: dict[str, SemanticAtom]) -> set[str]:
-    identifiers = set(atoms) | legacy_authority_ids(root)
     layout = discover_layout(root)
-    if layout.intake_path.is_file():
+    identifiers = set(atoms)
+    if not layout.recursive:
+        identifiers.update(legacy_authority_ids(root))
+    else:
+        for event in _lifecycle_events(root):
+            identifiers.add(str(event.get("atom_id", "")))
+            identifiers.update(str(item) for item in event.get("related", []))
+    if not layout.recursive and layout.intake_path.is_file():
         data = load(layout.intake_path)
         items = data.get("items", []) if isinstance(data, dict) else []
         identifiers.update(
@@ -669,12 +692,14 @@ def _validate_ledger(root: Path, atoms: dict[str, SemanticAtom]) -> list[Diagnos
 
 
 def _lifecycle_events(root: Path) -> list[dict[str, Any]]:
-    path = _lifecycle_path(root)
-    if not path.is_file():
-        return []
-    data = load(path)
-    values = data.get("events", []) if isinstance(data, dict) else []
-    return [item for item in values if isinstance(item, dict)]
+    return load_lifecycle_events(root)
+
+
+def _event_filename(event: dict[str, Any]) -> str:
+    identifier = str(event["id"])
+    kind = str(event["event"])
+    target = str(event["atom_id"])
+    return f"{identifier}-{kind}-{target}.toml"
 
 
 def _current_status(atom: SemanticAtom, events: list[dict[str, Any]]) -> str:
@@ -762,6 +787,8 @@ def _ledger_path(root: Path) -> Path:
 
 def _lifecycle_path(root: Path) -> Path:
     layout = discover_layout(root)
+    if layout.recursive:
+        return layout.project_root / "lifecycle"
     return layout.structured_file(layout.project_state_root, "lifecycle.toml")
 
 

@@ -12,6 +12,7 @@ from .frontmatter import FrontmatterError
 from .frontmatter import parse as parse_frontmatter
 from .frontmatter import render as render_frontmatter
 from .layout import discover_layout
+from .project_data import project_section
 from .settings import load_project_settings
 from .yaml_subset import load
 
@@ -52,7 +53,7 @@ def create_review_packet(
     if not scope.strip():
         raise ValueError("packet requires a bounded scope")
     reviewed = [_file_identity(root, raw) for raw in artifacts]
-    registry = load(discover_layout(root).governance_path)
+    registry = project_section(root, "governance_registry")
     raw_rules = registry.get("rules", []) if isinstance(registry, dict) else []
     rules: list[dict[str, str]] = []
     for item in raw_rules:

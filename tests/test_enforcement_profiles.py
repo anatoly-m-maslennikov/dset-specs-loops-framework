@@ -20,7 +20,7 @@ from dset_toolchain.yaml_subset import dump
 ROOT = Path(__file__).resolve().parents[1]
 PROFILE = (
     ROOT
-    / ".dset/layer_3_tool/templates/enforcement-profiles/typescript-v1-candidate.toml"
+    / ".dset/03_layer_tool/templates/enforcement-profiles/typescript-v1-candidate.toml"
 )
 
 

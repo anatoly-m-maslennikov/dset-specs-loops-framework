@@ -10,6 +10,7 @@ from typing import Any, cast
 from .diagnostics import Diagnostic
 from .errors import DsetCommandError
 from .layout import LAYER_DIRECTORIES, LAYERS, discover_layout, has_manifest
+from .project_data import project_section, write_project_section
 from .yaml_subset import YamlSubsetError, dump, load
 
 RULE_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
@@ -76,8 +77,8 @@ def validate_governance(
     if not registry_path.is_file():
         return [_diag("DSET-E130", registry_path, "governance registry is missing")]
     try:
-        data = load(registry_path)
-    except (OSError, YamlSubsetError) as error:
+        data = project_section(root, "governance_registry")
+    except (OSError, ValueError, YamlSubsetError) as error:
         return [_diag("DSET-E131", registry_path, str(error))]
     if not isinstance(data, dict):
         return [_diag("DSET-E131", registry_path, "registry must be a mapping")]
@@ -189,7 +190,11 @@ def validate_governance_registry(
             )
             continue
         if layout.layered and layer in RULE_LAYERS:
-            expected_root = layout.layer_root(str(layer).lower())
+            expected_root = (
+                layout.framework_layer_root(str(layer).lower())
+                if layout.recursive
+                else layout.layer_root(str(layer).lower())
+            )
             if not layout.slim:
                 expected_root /= "governance"
             try:
@@ -311,7 +316,7 @@ def resolve_workflow(
     if diagnostics:
         return None, diagnostics
     path = discover_layout(root).governance_path
-    data = cast(dict[str, Any], load(path))
+    data = project_section(root, "governance_registry")
     workflow = next(
         (
             item
@@ -433,7 +438,11 @@ def materialize_governance(
         templates[rule_id] = source_template(profile_relative / str(item["template"]))
         destination = target_layout.governance_root
         if target_layout.layered:
-            destination = target_layout.layer_root(str(layer).lower())
+            destination = (
+                target_layout.framework_layer_root(str(layer).lower())
+                if target_layout.recursive
+                else target_layout.layer_root(str(layer).lower())
+            )
             if not target_layout.slim:
                 destination /= "governance"
             governance_roots.add(destination)
@@ -447,8 +456,16 @@ def materialize_governance(
     existing = [path for path in targets.values() if path.exists()]
     if hub_path.exists():
         existing.append(hub_path)
-    if registry_path.exists() or existing:
-        occupied = registry_path if registry_path.exists() else sorted(existing)[0]
+    registry_exists = False
+    if registry_path.is_file():
+        try:
+            registry_exists = bool(
+                project_section(target_root, "governance_registry")
+            )
+        except ValueError:
+            registry_exists = False
+    if registry_exists or existing:
+        occupied = registry_path if registry_exists else sorted(existing)[0]
         raise FileExistsError(f"governance destination already exists: {occupied}")
     copied_wrappers: list[Path] = []
     for destination in sorted(governance_roots):
@@ -541,9 +558,12 @@ def materialize_governance(
             "workflows": rendered_workflows,
             "wrappers": wrappers,
         }
-        registry_path.write_text(dump(registry, registry_path), encoding="utf-8")
+        if target_layout.recursive:
+            write_project_section(target_root, "governance_registry", registry)
+        else:
+            registry_path.write_text(dump(registry, registry_path), encoding="utf-8")
     except Exception:
-        if registry_path.exists():
+        if registry_path.exists() and not target_layout.recursive:
             registry_path.unlink()
         hub_path.unlink(missing_ok=True)
         for target in targets.values():
@@ -575,37 +595,37 @@ def _write_governance_hub(
             "architecture.md": "specification-architecture.md",
             (
                 "../../tool/governance/build-rules.md"
-            ): "../layer_3_tool/specification-build-rules.md",
+            ): "../03_layer_tool/specification-build-rules.md",
             (
                 "../../meta/governance/domain-spec-authoring.md"
-            ): "../layer_1_meta/procedure-domain-spec-authoring.md",
+            ): "../01_layer_meta/procedure-domain-spec-authoring.md",
             (
                 "../../meta/governance/test-planning.md"
-            ): "../layer_1_meta/procedure-test-planning.md",
+            ): "../01_layer_meta/procedure-test-planning.md",
             (
                 "../../meta/governance/eval-planning.md"
-            ): "../layer_1_meta/procedure-evaluation-planning.md",
+            ): "../01_layer_meta/procedure-evaluation-planning.md",
             (
                 "../../skill/governance/diagnosis.md"
-            ): "../layer_4_skill/procedure-diagnosis.md",
+            ): "../04_layer_skill/procedure-diagnosis.md",
             (
                 "../../skill/governance/prototyping.md"
-            ): "../layer_4_skill/procedure-prototyping.md",
+            ): "../04_layer_skill/procedure-prototyping.md",
             (
                 "../../ops/governance/supportability.md"
-            ): "../layer_5_ops/specification-supportability.md",
+            ): "../05_layer_ops/specification-supportability.md",
             "artifact-maintenance.md": "specification-artifact-maintenance.md",
             "artifact-classification.md": "specification-artifact-classification.md",
             (
                 "../../skill/governance/lifecycle-orchestration.md"
-            ): "../layer_4_skill/procedure-lifecycle-orchestration.md",
+            ): "../04_layer_skill/procedure-lifecycle-orchestration.md",
             (
                 "../../skill/governance/skill-runs.md"
-            ): "../layer_4_skill/procedure-skill-runs.md",
+            ): "../04_layer_skill/procedure-skill-runs.md",
             (
                 "../../skill/governance/delegation-budget.md"
-            ): "../layer_4_skill/procedure-delegation-budget.md",
-            ("../../ops/governance/release.md"): "../layer_5_ops/procedure-release.md",
+            ): "../04_layer_skill/procedure-delegation-budget.md",
+            ("../../ops/governance/release.md"): "../05_layer_ops/procedure-release.md",
             "work-items.md": "specification-work-items.md",
         }
         for old, new in replacements.items():
@@ -616,7 +636,7 @@ def _write_governance_hub(
 def refresh_customization(root: Path) -> Path:
     root = root.resolve()
     path = discover_layout(root).governance_path
-    data = cast(dict[str, Any], load(path))
+    data = project_section(root, "governance_registry")
     custom = False
     for rule in cast(list[dict[str, Any]], data.get("rules", [])):
         local = _local_path(root, rule.get("path"))
@@ -630,14 +650,14 @@ def refresh_customization(root: Path) -> Path:
     cast(dict[str, Any], data["profile"])["customization"] = (
         "custom" if custom else "unmodified"
     )
-    path.write_text(dump(data, path), encoding="utf-8")
+    write_project_section(root, "governance_registry", data)
     return path
 
 
 def diff_governance(root: Path, source_root: Path) -> str:
     root = root.resolve()
     source_root = source_root.resolve()
-    data = cast(dict[str, Any], load(discover_layout(root).governance_path))
+    data = project_section(root, "governance_registry")
     output: list[str] = []
     for rule in cast(list[dict[str, Any]], data.get("rules", [])):
         source = cast(dict[str, Any], rule["source"])

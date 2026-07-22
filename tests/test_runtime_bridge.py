@@ -237,7 +237,7 @@ class RuntimeBridgeTests(unittest.TestCase):
             self.assertGreater(semantic_routing["classification_count"], 0)
             self.assertEqual(
                 semantic_routing["source"],
-                ".dset/layer_2_gov/specification-work-items.md",
+                ".dset/02_layer_gov/specification-work-items.md",
             )
             self.assertTrue(str(context["ruleset_identity"]).startswith("ruleset:"))
             closure = cast(dict[str, Any], context["closure"])

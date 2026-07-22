@@ -25,9 +25,9 @@ class ArchitectureViewTests(unittest.TestCase):
             self.assertIn(edge, content)
 
     def test_features_are_horizontal_and_layers_are_forward_only(self) -> None:
-        live = ROOT / ".dset/layer_2_gov/specification-architecture.md"
+        live = ROOT / ".dset/02_layer_gov/specification-architecture.md"
         template = (
-            ROOT / ".dset/layer_2_gov/templates/governance/core-v1/architecture.md"
+            ROOT / ".dset/02_layer_gov/templates/governance/core-v1/architecture.md"
         )
         content = live.read_text(encoding="utf-8")
         self.assertEqual(content, template.read_text(encoding="utf-8"))
@@ -61,7 +61,7 @@ class ArchitectureViewTests(unittest.TestCase):
                     self.assertIn(phrase, content)
 
     def test_templates_cover_only_enabled_structural_levels(self) -> None:
-        root = ROOT / ".dset/layer_2_gov/templates/architecture-view"
+        root = ROOT / ".dset/02_layer_gov/templates/architecture-view"
         expected = {"project.md", "feature-group.md", "feature-or-layer.md"}
         self.assertEqual(
             {path.name for path in root.glob("*.md") if path.name != "README.md"},
@@ -78,9 +78,9 @@ class ArchitectureViewTests(unittest.TestCase):
                 self.assertIn("```mermaid", content)
 
     def test_governance_requires_one_level_down_without_placeholders(self) -> None:
-        live = ROOT / ".dset/layer_2_gov/specification-architecture.md"
+        live = ROOT / ".dset/02_layer_gov/specification-architecture.md"
         template = (
-            ROOT / ".dset/layer_2_gov/templates/governance/core-v1/architecture.md"
+            ROOT / ".dset/02_layer_gov/templates/governance/core-v1/architecture.md"
         )
         content = live.read_text(encoding="utf-8")
         self.assertEqual(content, template.read_text(encoding="utf-8"))
@@ -89,9 +89,9 @@ class ArchitectureViewTests(unittest.TestCase):
         self.assertIn("Each view stays one level deep", content)
 
     def test_global_truth_owns_only_cross_child_concerns(self) -> None:
-        live = ROOT / ".dset/layer_2_gov/specification-architecture.md"
+        live = ROOT / ".dset/02_layer_gov/specification-architecture.md"
         template = (
-            ROOT / ".dset/layer_2_gov/templates/governance/core-v1/architecture.md"
+            ROOT / ".dset/02_layer_gov/templates/governance/core-v1/architecture.md"
         )
         content = live.read_text(encoding="utf-8")
         self.assertEqual(content, template.read_text(encoding="utf-8"))
@@ -109,9 +109,9 @@ class ArchitectureViewTests(unittest.TestCase):
         self.assertIn("narrowest common structural owner", root)
 
     def test_artifact_relations_are_typed_and_forward_only(self) -> None:
-        live = ROOT / ".dset/layer_2_gov/specification-architecture.md"
+        live = ROOT / ".dset/02_layer_gov/specification-architecture.md"
         template = (
-            ROOT / ".dset/layer_2_gov/templates/governance/core-v1/architecture.md"
+            ROOT / ".dset/02_layer_gov/templates/governance/core-v1/architecture.md"
         )
         content = live.read_text(encoding="utf-8")
         self.assertEqual(content, template.read_text(encoding="utf-8"))

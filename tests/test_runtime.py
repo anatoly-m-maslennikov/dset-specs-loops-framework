@@ -101,7 +101,7 @@ class RuntimeTests(unittest.TestCase):
         persisted = json.loads(terminals[0].read_text(encoding="utf-8"))
         self.assertEqual(persisted, terminal)
         run_schema = json.loads(
-            (ROOT / ".dset/layer_4_skill/schemas/skill-run.schema.json").read_text(
+            (ROOT / ".dset/04_layer_skill/schemas/skill-run.schema.json").read_text(
                 encoding="utf-8"
             )
         )
@@ -110,7 +110,7 @@ class RuntimeTests(unittest.TestCase):
         final_checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
         checkpoint_schema = json.loads(
             (
-                ROOT / ".dset/layer_4_skill/schemas/session-checkpoint.schema.json"
+                ROOT / ".dset/04_layer_skill/schemas/session-checkpoint.schema.json"
             ).read_text(encoding="utf-8")
         )
         self.assertEqual(set(final_checkpoint), set(checkpoint_schema["required"]))

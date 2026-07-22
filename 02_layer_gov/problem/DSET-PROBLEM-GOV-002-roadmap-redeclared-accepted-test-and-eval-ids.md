@@ -1,0 +1,31 @@
++++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-141"
+type = "problem"
+subtype = "none"
+semantic_id = "DSET-PROBLEM-GOV-002"
+status = "accepted"
+priority = "medium"
+authority = "operator:anatoly-m-maslennikov"
+claim = "The active roadmap formerly assigned already-owned Test and Eval IDs to different assertions, creating duplicate semantic owners. Sections 8 and 9 now link to the layer-owned proof plans and the active Change execution plans without redefining those entities."
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+
+[scope]
+kind = "project"
+id = "dset-specs-loops-framework"
+
+[promotion]
++++
+
+# Problem — Roadmap redeclared accepted Test and Eval IDs
+
+The active roadmap formerly assigned already-owned Test and Eval IDs to different assertions, creating duplicate semantic owners. Sections 8 and 9 now link to the layer-owned proof plans and the active Change execution plans without redefining those entities.
+
+## Migrated context
+
+- Original intake status: `resolved`
+- Original owner Change: `DSET-CHANGE-SKILL-001`
+- External references: https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/9
+
+This one-claim carrier replaces the former aggregate intake row. Current
+status is derived from atomic lifecycle events.

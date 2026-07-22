@@ -11,6 +11,7 @@ from .frontmatter import FrontmatterError
 from .frontmatter import metadata as frontmatter_metadata
 from .frontmatter import render as render_frontmatter
 from .layout import discover_layout
+from .project_data import project_section
 from .semantic_atoms import (
     build_semantic_atom_index,
     collect_semantic_atoms,
@@ -584,7 +585,7 @@ def _governance_rules(
     path = discover_layout(root).governance_path
     if not path.is_file():
         return {}, None
-    data = _read_metadata(path)
+    data = project_section(root, "governance_registry")
     raw_rules = data.get("rules", [])
     if not isinstance(raw_rules, list):
         raise ValueError("governance registry rules must be a list")

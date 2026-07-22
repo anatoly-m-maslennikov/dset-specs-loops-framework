@@ -13,6 +13,7 @@ from .adopter import create_adopter
 from .errors import DsetCommandError
 from .governance import refresh_customization, resolve_workflow, validate_governance
 from .layout import discover_layout
+from .project_data import project_section
 from .yaml_subset import load
 
 
@@ -30,7 +31,7 @@ def run_self_host(
         raise DsetCommandError(
             "DSET-E140", version_path, "self-host version contract is missing"
         )
-    version = load(version_path)
+    version = project_section(root, "version_registry")
     released = version.get("released_validator", {})
     reference = released_ref or str(released.get("commit", ""))
     extracted = work_root / "released-validator"
@@ -70,7 +71,7 @@ def run_self_host(
         "DSET-E141",
         "candidate validator rejected the temporary adopter",
     )
-    adopter_registry = load(discover_layout(adopter).governance_path)
+    adopter_registry = project_section(adopter, "governance_registry")
     workflow_ids = tuple(
         str(item["workflow"])
         for item in adopter_registry.get("wrappers", [])
