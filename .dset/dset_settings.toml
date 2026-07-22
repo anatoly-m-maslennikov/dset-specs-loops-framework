@@ -20,20 +20,24 @@ schema_version = "1.5"
 canonical_command = "python -m dset_toolchain verify ."
 
 [artifacts]
-# Include the optional direct artifact subtype after the primary artifact type
-# in IDs and filenames for newly emitted artifacts only.
+# Select the visible classification and project-wide numbering axis for newly
+# emitted artifacts.
 #
 # Accepted:
-# - false (default): type-only structural name.
+# - false (default): type-only structural name and one sequence per Type.
 #   Example: DSET-VERSION-001-0-4-core.md
 #   Inside the artifact: artifact_type = "version" and
 #   artifact_subtype = "version_scope".
-# - true: add the direct subtype token.
+# - true: expose the direct subtype and use one sequence per subtype.
 #   Example: DSET-VERSION-VERSION-SCOPE-001-0-4-core.md
+#   Atomic records use the semantic subtype kind directly, such as
+#   DSET-REQ-GOV-054-readable-summary.md. Empty-subtype atoms continue to use
+#   their Type kind, such as DSET-DECISION-GOV-033-readable-summary.md.
 #
 # Existing IDs and filenames are immutable and are never renamed when this
-# value changes. The setting affects the carrier name only; it does not change
-# an atomic record's separate semantic Type/subtype.
+# value changes. Layers, features, feature groups, folders, and lifecycle state
+# never restart a sequence. The setting changes identity presentation and
+# allocation, not semantic or artifact classification.
 #
 # Registered artifact subtype examples:
 # - analysis_report: solution_landscape, root_cause_analysis, proposal,
@@ -50,7 +54,7 @@ canonical_command = "python -m dset_toolchain verify ."
 #   changelog
 # - navigation: readme, hub, index
 # atomic_record and verification currently have no artifact subtypes.
-subtype_in_names = false
+subtype_in_names = true
 
 # Set the gate used before a new immutable atomic artifact is emitted.
 #

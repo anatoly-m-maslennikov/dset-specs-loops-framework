@@ -4,36 +4,35 @@
 
 This document is the public framework definition of DSET semantic Types and
 subtypes. The DSET repository applies it through
-`specification-work-items.md`, compiled from the active Requirement and
-Decision authority set.
+`specification-work-items.md`, compiled from the active Decision authority set.
 
 ## Type rule
 
-DSET has exactly five core semantic Types:
+DSET has exactly four core semantic Types:
 
-1. **Requirement**
-2. **Decision**
-3. **Question**
-4. **Problem**
-5. **QA**
+1. **Decision**
+2. **Question**
+3. **Problem**
+4. **QA**
 
 A Type identifies what an atomic project claim or directive means for DSET
 governance and routing. It does not classify every real-world condition, work
 occurrence, or file. A subtype adds precision without creating a second
-top-level Type. Type is not a “family,” and an empty subtype is represented by
-omitting `subtype`; it is never represented by repeating the Type name.
+top-level Type. An empty subtype is represented by omitting `subtype`; it is
+never represented by repeating the Type name.
 
-```yaml
-# General Requirement: valid
-type: requirement
+```toml
+# Requirement: valid
+type = "decision"
+subtype = "requirement"
 
 # Contract: valid
-type: requirement
-subtype: contract
+type = "decision"
+subtype = "contract"
 
 # Synthetic self-subtype: invalid
-type: decision
-subtype: decision
+type = "decision"
+subtype = "decision"
 ```
 
 Every emitted atom has one primary Type and at most one direct subtype. There
@@ -42,70 +41,35 @@ queue, skill, host, tool, status, filename, folder, or intended next action.
 They are immutable after emission. Changed semantics require a new linked atom,
 not an in-place retype.
 
-Classify the smallest independently reviewable primary claim, not its entire
-file, ticket, paragraph, or workflow. If a statement contains several
-independently enforceable or verifiable claims, split it into linked sibling
-atoms. If an irreducible claim still fits several subtypes, use the empty
-subtype of its Type and record a Question when the ambiguity matters. Never
-guess from location or encode multiple subtypes.
+Classify the smallest independently reviewable primary claim. Split several
+independently enforceable or verifiable claims into linked sibling atoms. If an
+irreducible claim fits several subtypes, use the empty subtype of its Type and
+record a Question when the ambiguity matters.
 
-When a subtype exists, its full name is the artifact's external kind and ID
-kind. A Requirement carries `type: requirement` with no subtype and uses
-`REQUIREMENT` in its ID. A Contract carries `type: requirement` and
-`subtype: contract`. A Decision carries `type: decision` with no subtype.
-Legacy Decision-parent carriers remain immutable compatibility history and
-normalize to the current five-Type model without in-place retyping.
-
-## Requirement
-
-**Definition:** An immutable required result or obligation that the operator
-has explicitly accepted as project authority. It states what the project must
-provide, prevent, or keep true and compiles into mutable evergreen
-specifications, plans, and rules.
-
-An empty subtype means a residual observable obligation. Direct subtypes are
-`constraint`, `contract`, `user_story`, `outcome`, `scenario`, and `invariant`.
-They are siblings: links among them never create a subtype path.
-
-| Requirement subtype | Canonical definition | Classification test | Must not represent |
-|---|---|---|---|
-| `constraint` | A restriction on the acceptable solution space, including required or forbidden technologies, dependencies, environments, resources, formats, or operating limits | Does it remove otherwise valid implementation choices without a boundary participant relying on it as a Contract? | A boundary obligation between named participants |
-| `contract` | An obligation at a boundary between the project and an external system or between project components | Are provider, consumer, interface, schema/protocol, compatibility, or failure obligations identifiable? | An internal preference that no boundary participant relies on |
-| `user_story` | An actor's or stakeholder's desired capability or outcome and its value | Does it clearly state who wants what and why? | Acceptance criteria or a Requirement nested beneath the story; link sibling atoms instead |
-| `outcome` | An intended measurable change in user, business, operational, or system state | Are baseline, target, observation method, and evaluation window identifiable where applicable? | An observed result, which is evidence, or an output with no state change |
-| `scenario` | A concrete accepted behavioral example with preconditions, interaction or event, and expected observable result | Does it define one behavior instance that can guide implementation or QA? | An executed run, which is work and evidence |
-| `invariant` | A condition that must always hold in every state within a declared scope | Would any violation make the governed state invalid? | Evidence that the condition currently holds |
-
-Choose the subtype whose defining acceptance condition owns the claim:
-Contract before Constraint when a boundary participant relies on it; User
-Story for actor/want/value framing; Outcome for intended measurable change;
-Scenario for one accepted example; Invariant for an always-hold condition; and
-Requirement for a remaining observable obligation. Requirements own **what**
-the project must provide. Constraints narrow the
-allowed solution space. Contracts define what must hold across a boundary.
-User Stories, Outcomes, Scenarios, and Invariants express other direct forms of
-accepted authority. They may link each other, but none is nested under another
-subtype. A Decision separately owns material selected approaches.
+When subtype-bearing names are enabled, the direct Decision subtype is the
+external kind: `REQ`, `CONSTR`, `CONTR`, or `IMPDEC`. An empty-subtype Decision
+uses `DECISION`. Type-only naming uses the Type token and retains the subtype in
+metadata. Historical long-form kinds remain immutable compatibility input.
 
 ## Decision
 
-**Definition:** An immutable material selected implementation, architecture,
-governance, or operating approach that the operator has explicitly accepted as
-project authority.
+**Definition:** An immutable directive that the operator has explicitly
+accepted as project authority.
 
 The operator's acceptance is an act or append-only lifecycle event that grants
-authority to the selected approach; it is not the approach itself. A Markdown,
-TOML, database, or hosted record is only its carrier or representation. The
-record may store both atom and acceptance metadata, but their semantics stay
-distinct.
+authority to the directive; it is not the directive itself. A Markdown, TOML,
+database, or hosted record is only its carrier or representation.
 
-An external law, customer statement, DDL, API schema, platform rule, or library
-policy is source material until the operator accepts a corresponding project
-Requirement. The source remains linked provenance.
+| Decision subtype | Canonical definition | New kind |
+|---|---|---|
+| `requirement` | Required observable result, behavior, capability, quality, prevention condition, or obligation | `REQ` |
+| `constraint` | Restriction on acceptable technologies, dependencies, environments, resources, formats, or operating limits | `CONSTR` |
+| `contract` | Provider/consumer and compatibility obligation across a boundary | `CONTR` |
+| `implementation_decision` | Material selected architecture, design, algorithm, data, tooling, or operating approach | `IMPDEC` |
 
-Decision has no subtype. Routine code detail remains implementation rather than
-a Decision; record a Decision only when a selected approach must remain durable
-authority or its rationale matters to future work.
+An empty subtype is the general fallback. Routine code detail remains
+implementation. User Story, Outcome, Scenario, and Invariant may appear in
+prose or compatibility history but are not current semantic subtypes.
 
 ## Question
 
@@ -179,15 +143,14 @@ Evaluation becomes project authority.
 
 Classify an atomic artifact in this order:
 
-1. Does it state a required result or obligation? Use **Requirement**, then
-   choose one direct Requirement subtype or no subtype.
-2. Does it state a material selected approach? Use **Decision** with no subtype.
-3. Does it state missing knowledge, incompatible authority, possible future
+1. Does it state accepted project authority? Use **Decision**, then choose
+   Requirement, Constraint, Contract, Implementation Decision, or no subtype.
+2. Does it state missing knowledge, incompatible authority, possible future
    harm, or optional value? Use **Question**, then choose Conflict, Risk,
    Opportunity, or no subtype.
-4. Does it state a currently true insufficiency? Use **Problem**, then choose
+3. Does it state a currently true insufficiency? Use **Problem**, then choose
    Defect, Gap, Debt, or no subtype.
-5. Does it define how to check a claim? Use **QA**, then choose Test or
+4. Does it define how to check a claim? Use **QA**, then choose Test or
    Evaluation.
 
 If none applies, the artifact is probably a document role, lifecycle record,

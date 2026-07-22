@@ -23,6 +23,8 @@ from .semantic_types import (
     SEMANTIC_ID_KINDS,
     SEMANTIC_SUBTYPES,
     normalize_semantic_classification,
+    semantic_id_matches_classification,
+    semantic_naming_axis,
 )
 from .settings import load_project_settings
 from .yaml_subset import YamlSubsetError, dump, load
@@ -153,6 +155,16 @@ def seal_atom(root: Path, path: Path) -> Path:
     if diagnostics or atom is None:
         message = diagnostics[0].message if diagnostics else "invalid atom"
         raise ValueError(message)
+    expected_kind = semantic_naming_axis(
+        atom.semantic_type,
+        atom.subtype,
+        include_subtype=settings.artifact_subtype_in_names,
+    )
+    if expected_kind not in atom.semantic_id.split("-"):
+        mode = "subtype" if settings.artifact_subtype_in_names else "type"
+        raise ValueError(
+            f"new atom must use the configured {mode} naming kind: {expected_kind}"
+        )
     from .artifact_emission import assess_artifact_candidate
 
     candidate = {
@@ -378,7 +390,7 @@ def _parse_atom(
     priority = data.get("priority")
     sessions = data.get("llm_session_ids")
     if semantic_type not in SEMANTIC_SUBTYPES:
-        diagnostics.append(_atom_diag(path, "atom requires one of the five Types"))
+        diagnostics.append(_atom_diag(path, "atom requires one of the four Types"))
     elif subtype is not None and subtype not in SEMANTIC_SUBTYPES[semantic_type]:
         diagnostics.append(_atom_diag(path, "atom has an invalid direct subtype"))
     elif semantic_type == "qa" and subtype not in {"test", "evaluation"}:
@@ -387,8 +399,9 @@ def _parse_atom(
         diagnostics.append(_atom_diag(path, "atom requires a canonical semantic_id"))
     elif semantic_type in SEMANTIC_SUBTYPES:
         expected = SEMANTIC_ID_KINDS.get((semantic_type, subtype))
-        segments = semantic_id.split("-")
-        if expected is None or expected not in segments:
+        if expected is None or not semantic_id_matches_classification(
+            semantic_id, semantic_type, subtype
+        ):
             diagnostics.append(
                 _atom_diag(path, f"semantic_id must use the {expected} kind")
             )

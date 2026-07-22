@@ -379,13 +379,14 @@ class ArtifactTypeRegistryTests(unittest.TestCase):
                 [],
             )
 
-    def test_project_settings_default_to_type_only_names(self) -> None:
+    def test_project_enables_subtype_names_but_template_defaults_to_type_only(self) -> None:
         settings = LAYOUT.settings_path.read_text(encoding="utf-8")
         template = (
             ROOT / ".dset/01_layer_meta/templates/dset_settings.toml"
         ).read_text(encoding="utf-8")
+        self.assertIn("subtype_in_names = true", settings)
+        self.assertIn("subtype_in_names = false", template)
         for carrier in (settings, template):
-            self.assertIn("subtype_in_names = false", carrier)
             self.assertIn('creation_strictness = "medium"', carrier)
 
     def test_release_lifecycle_projection_is_compiled(self) -> None:

@@ -18,31 +18,20 @@ from .yaml_subset import YamlSubsetError, load
 
 # SEMANTIC_SUBTYPES defines semantic subtypes; this module owns the default.
 SEMANTIC_SUBTYPES: dict[str, frozenset[str]] = {
-    "requirement": frozenset(
-        {
-            "constraint",
-            "contract",
-            "user_story",
-            "outcome",
-            "scenario",
-            "invariant",
-        }
+    "decision": frozenset(
+        {"requirement", "constraint", "contract", "implementation_decision"}
     ),
-    "decision": frozenset(),
     "question": frozenset({"conflict", "risk", "opportunity"}),
     "problem": frozenset({"defect", "gap", "debt"}),
     "qa": frozenset({"test", "evaluation"}),
 }
 # SEMANTIC_ID_KINDS defines semantic id kinds; this module owns the default.
 SEMANTIC_ID_KINDS: dict[tuple[str, str | None], str] = {
-    ("requirement", None): "REQUIREMENT",
-    ("requirement", "constraint"): "CONSTRAINT",
-    ("requirement", "contract"): "CONTRACT",
-    ("requirement", "user_story"): "STORY",
-    ("requirement", "outcome"): "OUTCOME",
-    ("requirement", "scenario"): "SCENARIO",
-    ("requirement", "invariant"): "INVARIANT",
     ("decision", None): "DECISION",
+    ("decision", "requirement"): "REQ",
+    ("decision", "constraint"): "CONSTR",
+    ("decision", "contract"): "CONTR",
+    ("decision", "implementation_decision"): "IMPDEC",
     ("question", None): "QUESTION",
     ("question", "conflict"): "CONFLICT",
     ("question", "risk"): "RISK",
@@ -54,30 +43,51 @@ SEMANTIC_ID_KINDS: dict[tuple[str, str | None], str] = {
     ("qa", "test"): "TEST",
     ("qa", "evaluation"): "EVALUATION",
 }
+# SEMANTIC_TYPE_ID_KINDS defines type-only naming axes for atomic identities.
+SEMANTIC_TYPE_ID_KINDS: dict[str, str] = {
+    "decision": "DECISION",
+    "question": "QUESTION",
+    "problem": "PROBLEM",
+    "qa": "QA",
+}
 # KIND_CLASSIFICATION defines kind classification; this module owns the default.
 KIND_CLASSIFICATION = {
     kind: classification for classification, kind in SEMANTIC_ID_KINDS.items()
 }
+# Historical kinds remain immutable compatibility input.
+KIND_CLASSIFICATION.update(
+    {
+        "REQUIREMENT": ("decision", "requirement"),
+        "CONSTRAINT": ("decision", "constraint"),
+        "CONTRACT": ("decision", "contract"),
+        "STORY": ("decision", "requirement"),
+        "OUTCOME": ("decision", "requirement"),
+        "SCENARIO": ("decision", "requirement"),
+        "INVARIANT": ("decision", "requirement"),
+    }
+)
 KIND_CLASSIFICATION["EVAL"] = ("qa", "evaluation")
+KIND_CLASSIFICATION["QA"] = ("qa", None)
 # FIELD_CLASSIFICATION defines field classification; this module owns the default.
 FIELD_CLASSIFICATION: dict[str, tuple[str, str | None]] = {
-    "requirements": ("requirement", None),
-    "contracts": ("requirement", "contract"),
-    "stories": ("requirement", "user_story"),
-    "outcomes": ("requirement", "outcome"),
+    "requirements": ("decision", "requirement"),
+    "contracts": ("decision", "contract"),
+    "stories": ("decision", "requirement"),
+    "outcomes": ("decision", "requirement"),
     "tests": ("qa", "test"),
     "evals": ("qa", "evaluation"),
 }
 # LEGACY_INTAKE_CLASSIFICATION defines legacy intake classification; this module owns the default.
 LEGACY_INTAKE_CLASSIFICATION: dict[str, tuple[str, str | None]] = {
     "decision": ("decision", None),
-    "requirement": ("requirement", None),
-    "constraint": ("requirement", "constraint"),
-    "contract": ("requirement", "contract"),
-    "user_story": ("requirement", "user_story"),
-    "outcome": ("requirement", "outcome"),
-    "scenario": ("requirement", "scenario"),
-    "invariant": ("requirement", "invariant"),
+    "requirement": ("decision", "requirement"),
+    "constraint": ("decision", "constraint"),
+    "contract": ("decision", "contract"),
+    "implementation_decision": ("decision", "implementation_decision"),
+    "user_story": ("decision", "requirement"),
+    "outcome": ("decision", "requirement"),
+    "scenario": ("decision", "requirement"),
+    "invariant": ("decision", "requirement"),
     "question": ("question", None),
     "conflict": ("question", "conflict"),
     "risk": ("question", "risk"),
@@ -132,21 +142,70 @@ def classify_semantic_id(identifier: str) -> tuple[str, str | None] | None:
     return next(iter(matches))
 
 
+def semantic_naming_axis(
+    semantic_type: str,
+    subtype: str | None,
+    *,
+    include_subtype: bool,
+) -> str:
+    """Return the project-wide sequence axis selected for a new atom."""
+    if include_subtype and subtype is not None:
+        return SEMANTIC_ID_KINDS[(semantic_type, subtype)]
+    return SEMANTIC_TYPE_ID_KINDS[semantic_type]
+
+
+def semantic_id_matches_classification(
+    identifier: str,
+    semantic_type: str,
+    subtype: str | None,
+) -> bool:
+    """Accept either a type-axis or subtype-axis identity for one atom."""
+    classification = classify_semantic_id(identifier)
+    return classification in {
+        (semantic_type, subtype),
+        (semantic_type, None),
+    }
+
+
+def next_semantic_sequence(
+    root: Path,
+    semantic_type: str,
+    subtype: str | None,
+    *,
+    include_subtype: bool,
+) -> int:
+    """Return the next project-wide number for the configured naming axis."""
+    numbers: list[int] = []
+    for row in build_semantic_classification_index(root):
+        if row["type"] != semantic_type:
+            continue
+        if include_subtype and row["subtype"] != (subtype or "none"):
+            continue
+        tail = str(row["id"]).rsplit("-", 1)[-1]
+        if tail.isdigit():
+            numbers.append(int(tail))
+    return max(numbers, default=0) + 1
+
+
 def normalize_semantic_classification(
     semantic_type: str, subtype: str | None
 ) -> tuple[str, str | None]:
-    """Return the canonical five-Type classification for a carrier.
+    """Return the canonical four-Type classification for a carrier.
 
-    Emitted atoms are immutable. Carriers authored under the former model used
-    Decision as a parent for required claims, so those spellings remain valid
-    compatibility input while their semantic index uses the current Type.
+    Emitted atoms are immutable. Historical richer required-claim kinds and the
+    brief peer-Requirement vocabulary remain compatibility input while new
+    atoms use the four current Decision subtypes.
     """
+    if semantic_type == "requirement":
+        if subtype in {"constraint", "contract"}:
+            return "decision", subtype
+        return "decision", "requirement"
     if semantic_type != "decision" or subtype is None:
         return semantic_type, subtype
-    if subtype == "requirement":
-        return "requirement", None
-    if subtype in SEMANTIC_SUBTYPES["requirement"]:
-        return "requirement", subtype
+    if subtype in SEMANTIC_SUBTYPES["decision"]:
+        return semantic_type, subtype
+    if subtype in {"user_story", "outcome", "scenario", "invariant"}:
+        return "decision", "requirement"
     return semantic_type, subtype
 
 
@@ -228,7 +287,11 @@ def _collect(
                     classification,
                     origin="modern_atom",
                     status=str(metadata.get("status", "unknown")),
-                    modern=classification == authored,
+                    modern=(
+                        classification == authored
+                        and SEMANTIC_ID_KINDS.get(classification)
+                        in identifier.split("-")
+                    ),
                 )
             continue
         if path.name.startswith("decision-") or (

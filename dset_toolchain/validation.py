@@ -2719,17 +2719,21 @@ def _validate_artifact_name(
         if semantic is not None:
             type_token = semantic.group(1).split("-")[0]
     tokens = [project_key, type_token]
+    compatible_tokens: list[list[str]] = []
     if include_subtype_in_names and artifact_subtype is not None:
+        compatible_tokens.append(tokens.copy())
         tokens.append(artifact_subtype.replace("_", "-").upper())
     prefix = "-".join(tokens) + "-"
-    layered_prefix = re.compile(
-        rf"^{re.escape(prefix)}(?:(?:{'|'.join(TRACE_LAYERS)})-)?"
-        rf"(?P<number>\d+)$"
-    )
-    if layered_prefix.fullmatch(artifact_id) is not None and path.stem.startswith(
-        f"{artifact_id}-"
-    ):
-        return []
+    accepted_prefixes = [prefix, *("-".join(item) + "-" for item in compatible_tokens)]
+    for accepted in accepted_prefixes:
+        layered_prefix = re.compile(
+            rf"^{re.escape(accepted)}(?:(?:{'|'.join(TRACE_LAYERS)})-)?"
+            rf"(?P<number>\d+)$"
+        )
+        if layered_prefix.fullmatch(artifact_id) is not None and path.stem.startswith(
+            f"{artifact_id}-"
+        ):
+            return []
     return [
         _diag(
             "DSET-E157",

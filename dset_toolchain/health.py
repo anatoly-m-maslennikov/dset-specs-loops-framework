@@ -68,7 +68,7 @@ def build_health_model(root: Path) -> dict[str, Any]:
     modern_authorities = {
         atom.semantic_id
         for atom in atoms.values()
-        if atom.semantic_type in {"requirement", "decision"}
+        if atom.semantic_type == "decision"
         and atom.emission_status == "accepted"
         and atom.semantic_id in authorities
     }
@@ -460,7 +460,7 @@ def _coverage_compiled(
     covered = authorities & projected_authorities
     gaps = tuple(sorted(authorities - covered))
     return Coverage(
-        "Requirement and Decision authority compiled into evergreen truth",
+        "Decision authority compiled into evergreen truth",
         len(covered),
         len(authorities),
         0,
@@ -478,7 +478,7 @@ def _coverage_implemented(
     gaps = tuple(sorted(modern_authorities - covered))
     excluded = authorities - modern_authorities
     return Coverage(
-        "Requirement and Decision authority linked from implementation commits",
+        "Decision authority linked from implementation commits",
         len(covered),
         len(modern_authorities),
         len(excluded),

@@ -23,7 +23,7 @@ DECISIONS = GOV_PACKAGE / "decision"
 
 
 class ConflictEntityTests(unittest.TestCase):
-    def test_accepted_truth_defines_five_types_and_flat_subtypes(self) -> None:
+    def test_accepted_truth_defines_four_types_and_flat_subtypes(self) -> None:
         domain = (GOV_PACKAGE / "specification-domain.md").read_text(encoding="utf-8")
         spec = (GOV_PACKAGE / "specification-methodology.md").read_text(
             encoding="utf-8"
@@ -34,10 +34,10 @@ class ConflictEntityTests(unittest.TestCase):
         self.assertIn("**QA**", domain)
         self.assertIn("**Conflict**", domain)
         self.assertIn("direct Question subtype", domain)
-        self.assertIn("direct Requirement subtype", domain)
+        self.assertIn("direct Decision subtype", domain)
         self.assertIn("DSET-INVARIANT-GOV-017", domain)
         self.assertIn("DSET-REQUIREMENT-GOV-027", spec)
-        self.assertIn("Five Types use one flat subtype level", spec)
+        self.assertIn("Four Types use one flat subtype level", spec)
         self.assertIn("never contains another subtype", spec)
         self.assertIn("reviewable primary claim", spec)
         self.assertIn("operator's acceptance is an act", spec)

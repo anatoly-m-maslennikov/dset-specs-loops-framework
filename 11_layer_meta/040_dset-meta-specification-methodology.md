@@ -70,55 +70,26 @@ Markdown or local scripts alone cannot satisfy them. An unclear host format is
 a Question, incompatible active formats are a Question/Conflict, and a failing
 platform or disallowed dependency is a Problem with the applicable subtype.
 
-## DSET-REQUIREMENT-META-009 — User Story is a direct Requirement subtype
+## DSET-REQUIREMENT-META-009 — User Stories remain Requirement forms
 
-When meaningful, accepted project truth records a User Story with
-`type: decision`, `subtype: user_story`, and a stable `STORY` compatibility ID.
-It captures the actor or stakeholder, desired capability or outcome, and value
-or purpose without absorbing acceptance criteria. User Story, Requirement,
-Constraint, Contract, Outcome, Scenario,
-and Invariant are sibling Requirement subtypes. Links among them never create
-subtype nesting, and a User Story is never represented as
-Decision/Requirement/User Story.
+When actor, capability, and value framing is useful, it belongs inside or links
+to a Decision/Requirement atom. User Story is not a semantic subtype. Split
+independently enforceable acceptance criteria into sibling Requirement atoms.
 
-Each sibling owns its own semantics: Requirement owns residual observable
-obligations; Constraint narrows solutions when no boundary participant relies
-on the restriction; Contract owns boundary obligations; Outcome owns intended
-measurable state change; Scenario owns a concrete accepted behavior rather than
-its execution; Invariant owns an always-true condition rather than evidence
-that it currently holds. Design owns internal logic
-and implementation plans own build order. A package with no meaningful actor
-perspective may omit User Story without inventing one.
+**Scenario DSET-SCENARIO-META-010:** A contributor story explains why a host
+integration matters, while separate Requirement and QA atoms own the behavior
+and proof without nested subtype paths.
 
-**Scenario DSET-SCENARIO-META-010:** `DSET-STORY-SKILL-001` states that a
-contributor wants a released DSET skill to load in a declared host and links to
-sibling Requirement, Contract, Scenario, and QA atoms. The links make behavior
-traceable without making any atom a subtype of User Story or Requirement.
+## DSET-REQUIREMENT-META-010 — Outcomes remain requirement or evaluation content
 
-## DSET-REQUIREMENT-META-010 — Outcomes measure intended state change
+An intended measurable state change belongs in a Decision/Requirement when it
+is required, or in QA/Evaluation when it defines assessment. An observed result
+is evidence. Outcome is not a semantic subtype, and shipping an output alone
+does not prove an intended state change.
 
-An accepted Outcome uses `type: decision`, `subtype: outcome`, and a stable
-`OUTCOME` ID. It describes a measurable change in user, business, operational,
-or system state that the project intends rather than a delivered output,
-feature, or observed result and records its
-baseline, target, observation method/source, evaluation window, originating
-Problem or Question/Opportunity links, relevant sibling User Story links, and
-applicable QA/Evaluation links. A model-only methodology change does not invent
-a concrete Outcome atom.
-
-Requirement and Outcome are sibling Requirement forms with different proof. A
-Requirement defines observable behavior or result the implementation must
-deliver. Deterministic QA/Test evidence proves delivery. Outcome observations
-are evidence and use
-the declared source and window to show whether delivery produced the intended
-state change; shipping an artifact alone cannot satisfy an Outcome.
-
-**Scenario DSET-SCENARIO-META-011:** A Requirement states that the release
-workflow records a stable failed check on the exact pull-request SHA. A linked
-operational Outcome instead targets a measurable reduction from a recorded
-baseline in time-to-diagnose failed releases over a stated window, using hosted
-check/run timestamps as its observation source and QA/Evaluation to judge the
-evidence. Adding the workflow file proves the Requirement, not the Outcome.
+**Scenario DSET-SCENARIO-META-011:** A Requirement defines the release behavior;
+a linked Evaluation defines how time-to-diagnose improvement is assessed; the
+observed timestamps remain evidence.
 
 ## DSET-REQUIREMENT-META-011 — Work Areas bound repository scope without assuming implementation type
 

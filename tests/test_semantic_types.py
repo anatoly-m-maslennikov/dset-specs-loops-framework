@@ -16,6 +16,8 @@ from dset_toolchain.semantic_types import (
     SEMANTIC_SUBTYPES,
     build_semantic_classification_index,
     classify_semantic_id,
+    next_semantic_sequence,
+    semantic_naming_axis,
     validate_semantic_classifications,
 )
 from dset_toolchain.temp_paths import temporary_directory
@@ -27,23 +29,45 @@ ROOT = repository_root(Path(__file__))
 
 
 class SemanticTypeCompatibilityTests(unittest.TestCase):
-    def test_exact_five_types_and_flat_direct_subtypes(self) -> None:
+    def test_exact_four_types_and_flat_direct_subtypes(self) -> None:
         self.assertEqual(
-            set(SEMANTIC_SUBTYPES),
-            {"requirement", "decision", "question", "problem", "qa"},
+            set(SEMANTIC_SUBTYPES), {"decision", "question", "problem", "qa"}
         )
         self.assertEqual(
-            classify_semantic_id("APP-REQUIREMENT-001"), ("requirement", None)
+            classify_semantic_id("APP-REQ-001"), ("decision", "requirement")
         )
         self.assertEqual(
-            classify_semantic_id("APP-CONTRACT-002"),
-            ("requirement", "contract"),
+            classify_semantic_id("APP-IMPDEC-002"),
+            ("decision", "implementation_decision"),
         )
         self.assertEqual(
             classify_semantic_id("APP-OPPORTUNITY-002"), ("question", "opportunity")
         )
         self.assertEqual(classify_semantic_id("APP-EVAL-003"), ("qa", "evaluation"))
         self.assertIsNone(classify_semantic_id("APP-TASK-004"))
+
+    def test_naming_mode_selects_one_project_wide_sequence_axis(self) -> None:
+        self.assertEqual(
+            semantic_naming_axis(
+                "decision", "requirement", include_subtype=False
+            ),
+            "DECISION",
+        )
+        self.assertEqual(
+            semantic_naming_axis(
+                "decision", "requirement", include_subtype=True
+            ),
+            "REQ",
+        )
+        self.assertEqual(
+            next_semantic_sequence(
+                ROOT,
+                "decision",
+                "requirement",
+                include_subtype=True,
+            ),
+            56,
+        )
 
     def test_repository_legacy_ids_are_classified_without_retyping(self) -> None:
         rows = {item["id"]: item for item in build_semantic_classification_index(ROOT)}
@@ -61,7 +85,7 @@ class SemanticTypeCompatibilityTests(unittest.TestCase):
         compatibility = rows["DSET-REQUIREMENT-GOV-035"]
         self.assertEqual(
             (compatibility["type"], compatibility["subtype"]),
-            ("requirement", "none"),
+            ("decision", "requirement"),
         )
         self.assertTrue(compatibility["compatibility"])
         self.assertEqual(validate_semantic_classifications(ROOT), [])

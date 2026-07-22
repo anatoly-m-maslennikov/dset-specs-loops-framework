@@ -193,9 +193,9 @@ assessment and refuses the immutable write when it is not allowed.
 ## Commit and session provenance
 
 Every commit that changes evergreen truth or implementation artifacts must name
-the Requirement or Decision IDs it implements in the commit body, for example
+the Decision IDs it implements in the commit body, for example
 `Implements: DSET-REQUIREMENT-IMPL-004`. A linked Problem may explain why a
-correction is needed, but only an active Requirement or Decision authorizes the
+correction is needed, but only an active Decision authorizes the
 resulting behavior.
 
 The repository manifest activates deterministic commit validation from an

@@ -9,7 +9,12 @@ from typing import Any
 
 from .layout import LAYERS, discover_layout
 from .lineage import collect_artifact_relations
-from .semantic_types import SEMANTIC_SUBTYPES, build_semantic_classification_index
+from .semantic_types import (
+    SEMANTIC_SUBTYPES,
+    build_semantic_classification_index,
+    next_semantic_sequence,
+    semantic_naming_axis,
+)
 from .settings import load_project_settings
 from .yaml_subset import load
 
@@ -126,7 +131,7 @@ def assess_artifact_candidate(
             }
         )
 
-    return {
+    result = {
         "schema_version": "1.0",
         "strictness": strictness,
         "emission_allowed": not diagnostics,
@@ -135,6 +140,31 @@ def assess_artifact_candidate(
         "promotion": promotion,
         "writes_performed": False,
     }
+    semantic_type = candidate.get("type")
+    raw_subtype = candidate.get("subtype")
+    subtype = str(raw_subtype) if raw_subtype is not None else None
+    if (
+        isinstance(semantic_type, str)
+        and semantic_type in SEMANTIC_SUBTYPES
+        and (subtype is None or subtype in SEMANTIC_SUBTYPES[semantic_type])
+    ):
+        include_subtype = settings.artifact_subtype_in_names
+        result["identity"] = {
+            "naming_axis": "subtype" if include_subtype else "type",
+            "kind": semantic_naming_axis(
+                semantic_type,
+                subtype,
+                include_subtype=include_subtype,
+            ),
+            "next_sequence": next_semantic_sequence(
+                root,
+                semantic_type,
+                subtype,
+                include_subtype=include_subtype,
+            ),
+            "sequence_scope": "project",
+        }
+    return result
 
 
 def _has_explicit_value(candidate: Mapping[str, Any], field: str) -> bool:
@@ -157,7 +187,7 @@ def _semantic_diagnostics(candidate: Mapping[str, Any]) -> list[dict[str, str]]:
                 "code": "DSET-ARTIFACT-TYPE",
                 "field": "type",
                 "message": (
-                    "type must be requirement, decision, question, problem, or qa"
+                    "type must be decision, question, problem, or qa"
                 ),
             }
         ]

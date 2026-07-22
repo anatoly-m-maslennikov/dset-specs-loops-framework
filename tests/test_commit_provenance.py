@@ -23,7 +23,7 @@ from tests import repository_root
 class CommitProvenanceTests(unittest.TestCase):
     def setUp(self) -> None:
         self.known = {
-            "APP-REQUIREMENT-001": ("requirement", None),
+            "APP-REQ-001": ("decision", "requirement"),
             "APP-TEST-001": ("qa", "test"),
             "APP-DEFECT-001": ("problem", "defect"),
         }
@@ -31,7 +31,7 @@ class CommitProvenanceTests(unittest.TestCase):
     def test_implementation_mode_requires_decision_and_session(self) -> None:
         message = (
             "feat: implement behavior\n\n"
-            "Implements: APP-REQUIREMENT-001\n"
+            "Implements: APP-REQ-001\n"
             "Resolves: APP-DEFECT-001\n"
             "Session: codex:test-session\n"
         )
@@ -41,7 +41,7 @@ class CommitProvenanceTests(unittest.TestCase):
     def test_evidence_mode_is_distinct(self) -> None:
         message = (
             "test: record proof\n\n"
-            "Decision: APP-REQUIREMENT-001\n"
+            "Decision: APP-REQ-001\n"
             "Verifies: APP-TEST-001\n"
             "Session: codex:test-session\n"
         )
@@ -57,7 +57,7 @@ class CommitProvenanceTests(unittest.TestCase):
             self.known,
         )
         self.assertIn(
-            "Implements must reference a Requirement or Decision: APP-TEST-001",
+            "Implements must reference a Decision: APP-TEST-001",
             problems,
         )
         self.assertIn("Implements references unknown ID: APP-UNKNOWN-001", problems)
@@ -66,7 +66,7 @@ class CommitProvenanceTests(unittest.TestCase):
         record = self._record(
             "a" * 40,
             "fix: legacy\n\n"
-            "Implements: APP-REQUIREMENT-001, APP-TEST-001\n"
+            "Implements: APP-REQ-001, APP-TEST-001\n"
             "Session: codex:test-session\n",
         )
         correction = self._correction(record)
@@ -105,7 +105,7 @@ class CommitProvenanceTests(unittest.TestCase):
         valid = self._record(
             "d" * 40,
             "feat: valid\n\n"
-            "Implements: APP-REQUIREMENT-001\n"
+            "Implements: APP-REQ-001\n"
             "Session: codex:test-session\n",
         )
         unnecessary = validate_commit_history(
@@ -123,7 +123,7 @@ class CommitProvenanceTests(unittest.TestCase):
         semantic_problems = validate_commit_history([invalid], self.known, [correction])
         self.assertIn(
             f"correction for commit {invalid.commit}: Implements must reference "
-            "a Requirement or Decision: APP-TEST-001",
+            "a Decision: APP-TEST-001",
             semantic_problems,
         )
 
@@ -170,7 +170,7 @@ class CommitProvenanceTests(unittest.TestCase):
             "commit": record.commit,
             "original_message_sha256": record.message_sha256,
             "mode": "implementation",
-            "decision_ids": ["APP-REQUIREMENT-001"],
+            "decision_ids": ["APP-REQ-001"],
             "verifies": [],
             "resolves": [],
             "session": "codex:test-session",

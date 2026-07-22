@@ -80,6 +80,15 @@ class ArtifactEmissionTests(unittest.TestCase):
         self.assertEqual(assessment["strictness"], "medium")
         self.assertEqual(assessment["questions"], [])
         self.assertFalse(assessment["writes_performed"])
+        self.assertEqual(
+            assessment["identity"],
+            {
+                "naming_axis": "type",
+                "kind": "DECISION",
+                "next_sequence": 1,
+                "sequence_scope": "project",
+            },
+        )
 
     def test_missing_setting_uses_medium_but_invalid_value_stops(self) -> None:
         path = self.root / "dset_settings.toml"

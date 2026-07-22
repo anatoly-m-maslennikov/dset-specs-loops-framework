@@ -20,8 +20,8 @@ A project selects each applicable axis explicitly. Selecting `documentation-v1` 
 Every governed carrier has one primary artifact type from the project-local
 MECE registry. Atomic Record, Analysis Report, Specification, Procedure, Plan,
 Version, Implementation, Evidence Record, Verification, Derived View, and
-Navigation cover the development lifecycle without changing the five semantic
-Types—Requirement, Decision, Question, Problem, and QA. Version's direct
+Navigation cover the development lifecycle without changing the four semantic
+Types—Decision, Question, Problem, and QA. Version's direct
 subtypes are
 Roadmap, Version Scope, Change, Release Plan, Readiness Record, and Release
 Record.
@@ -31,8 +31,9 @@ an Atomic Record means. Workflow, queue, skill, tool, host, filename, folder,
 and intended next action determine neither axis. Direct metadata or exactly one
 registered path rule supplies artifact classification; ambiguity fails closed.
 
-Base artifact IDs and filenames expose the primary artifact type, not its
-optional subtype. The subtype remains direct metadata.
+Base artifact IDs and filenames expose the primary artifact Type. Projects may
+enable subtype-bearing names; whichever classification is visible owns one
+project-wide number sequence. The subtype always remains direct metadata.
 `.dset/dset_settings.toml` exposes independent behavior settings; setting
 `artifacts.subtype_in_names = true` opts only newly emitted artifacts into
 subtype-bearing names and never rewrites stable history.

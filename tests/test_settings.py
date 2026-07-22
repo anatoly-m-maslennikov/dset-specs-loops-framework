@@ -34,10 +34,6 @@ class ProjectSettingsTests(unittest.TestCase):
         template_text = (
             ROOT / f".dset/01_layer_meta/templates/{SETTINGS_FILENAME}"
         ).read_text(encoding="utf-8")
-        self.assertEqual(
-            load_toml(template_text)["artifacts"],
-            load_toml(root_text)["artifacts"],
-        )
         for setting in (
             "schema_version",
             "subtype_in_names",
@@ -51,7 +47,10 @@ class ProjectSettingsTests(unittest.TestCase):
             self.assertIn("#", root_text.split(setting, 1)[0])
         parsed = load_toml(root_text)
         self.assertEqual(parsed["schema_version"], SETTINGS_SCHEMA_VERSION)
-        self.assertEqual(parsed["artifacts"]["subtype_in_names"], False)
+        self.assertEqual(parsed["artifacts"]["subtype_in_names"], True)
+        self.assertEqual(
+            load_toml(template_text)["artifacts"]["subtype_in_names"], False
+        )
         self.assertEqual(parsed["artifacts"]["creation_strictness"], "medium")
         self.assertEqual(parsed["workflows"]["implement"]["mode"], "lazy")
         self.assertEqual(parsed["changes"]["default_workspace"], "integration-branch")

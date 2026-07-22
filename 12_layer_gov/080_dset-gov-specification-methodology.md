@@ -171,20 +171,20 @@ Every governed public artifact area must declare one purpose, owner, root, hub, 
 
 ## DSET-REQUIREMENT-GOV-010 — Semantic Types and document roles stay separate
 
-DSET must define exactly five semantic Types—Requirement, Decision, Question,
-Problem, and QA—and at most one allowed direct subtype per emitted atom.
-Navigation,
+DSET must define exactly four semantic Types—Decision, Question, Problem, and
+QA—and at most one allowed direct subtype per emitted atom. Decision permits
+Requirement, Constraint, Contract, and Implementation Decision. Navigation,
 specification, architecture, rationale, procedure, plan, evidence/history,
 implementation, derived view, agent workflow, Change, and Release are document,
 lifecycle, implementation, or optional-container roles rather than additional
 semantic Types. Workflow, queue, skill, tool, host, filename, path, and next
 action never determine Type or subtype.
 
-**Scenario DSET-SCENARIO-GOV-011:** A User Story is a direct Requirement subtype
-linked from one specification; the specification is its evergreen document
-role rather than another Type. A design explanation moves to
-rationale and a repeatable sequence to a playbook without retyping either as an
-atom.
+**Scenario DSET-SCENARIO-GOV-011:** A required user-facing behavior is a
+Decision/Requirement atom linked from one specification; the specification is
+its evergreen document role rather than another Type. A design explanation
+moves to rationale and a repeatable sequence to a playbook without retyping
+either as an atom.
 
 ## DSET-REQUIREMENT-GOV-011 — Authoring rules are type-specific
 
@@ -242,9 +242,9 @@ qualitative, probabilistic, statistical, or model-judged Evaluation definitions
 to QA. Every named subtype is direct; no subtype may contain another subtype.
 
 Problems and Questions do not authorize implementation. A Problem may return
-directly to implementation only when an active Requirement or Decision already
+directly to implementation only when an active Decision already
 defines the correction; otherwise it raises a Question whose consequential
-answer becomes a Requirement or Decision. GitHub Issues, Jira/support tickets,
+answer becomes a Decision. GitHub Issues, Jira/support tickets,
 tasks, Changes, and releases are
 representations, steps, or optional containers rather than semantic Types.
 
@@ -252,7 +252,7 @@ representations, steps, or optional containers rather than semantic Types.
 missing required platform is a Problem/Gap, future delivery harm is a
 Question/Risk, optional release-note automation is a Question/Opportunity, and
 incompatible active API obligations form a Question/Conflict. An operator
-answer becomes a Requirement or Decision before implementation.
+answer becomes a Decision before implementation.
 
 ## DSET-REQUIREMENT-GOV-019 — IDs expose the concrete Type or subtype
 
@@ -401,7 +401,7 @@ the source, marks the document stale, and blocks reliance until recompilation.
 Both graphs must be acyclic; registry order must not imply precedence; missing
 precedence targets or unresolved conflicts must fail closed.
 
-Active Requirements and Decisions authorize and explain rule changes;
+Active Decisions authorize and explain rule changes;
 provenance identifies origin but does not authorize. QA/Test and
 QA/Evaluation results, reviews, and evidence assess
 reliance claims. None becomes rule
@@ -424,7 +424,7 @@ Question/Conflict subtypes; unresolved Problems and Questions with their
 subtypes; proof freshness; and traceability coverage for Requirement and Decision atoms
 compiled into evergreen owners, applicable authority connected to
 implementation and QA/Test or QA/Evaluation, implementation commits connected
-to their authorizing Requirement or Decision, and proof plans connected to current evidence.
+to their authorizing Decision, and proof plans connected to current evidence.
 
 Every coverage result states its numerator, denominator, exclusions,
 not-applicable, unknown, and stale counts and links back to canonical owners.
@@ -528,90 +528,43 @@ Decision wins over its absorbed predecessor by explicit lifecycle relation,
 not because it is newer. Equal selectable priorities stop for a Decision; no
 outcome is inferred from document order.
 
-## DSET-REQUIREMENT-GOV-027 — Five Types use one flat subtype level
+## DSET-REQUIREMENT-GOV-027 — Four Types use one flat subtype level
 
-DSET must represent each semantic atom with exactly one of five Types and at
+DSET must represent each semantic atom with exactly one of four Types and at
 most one direct allowed subtype:
 
-- Requirement: Constraint, Contract, User Story, Outcome, Scenario, or
-  Invariant;
-- Decision: no subtype;
+- Decision: Requirement, Constraint, Contract, or Implementation Decision;
 - Question: Conflict, Risk, or Opportunity;
 - Problem: Defect, Gap, or Debt; and
 - QA: Test or Evaluation, with subtype required.
 
-A general Requirement, Decision, Question, or Problem omits subtype. A subtype
-never repeats its Type and never contains another subtype. Requirement
-subtypes are siblings; links between them do not create subtype nesting.
-
-Classification depends on semantic content, never workflow, queue, skill,
-tool, host, filename, path, or next action. Changed semantics require a new
-linked atom. All emitted atoms are immutable.
-
-Types are application-level routing classifications for durable project claims
-and directives, not universal classifications of people, systems, real-world
-conditions, performed work, or files. Classify the smallest independently
-reviewable primary claim. Split multi-head statements into linked sibling
-atoms. When an irreducible claim remains plausible under several subtypes, use
-the empty subtype of its Type and raise a Question when ambiguity affects work;
-never guess or assign several subtypes.
+A general Decision, Question, or Problem omits subtype. A subtype never repeats
+its Type and never contains another subtype. Classification depends on semantic
+content, never workflow, queue, skill, tool, host, filename, path, or next
+action. Changed semantics require a new linked atom. All emitted atoms are
+immutable.
 
 The operator's acceptance is an act or lifecycle event distinct from accepted
-Requirement or Decision content and its carrier. QA atoms define checks; Test/Evaluation
+Decision content and its carrier. QA atoms define checks; Test/Evaluation
 execution is work; results and logs are evidence; gate decisions and
-Verification are derived. Storage may colocate linked roles without collapsing
-their semantics or identities.
+Verification are derived.
 
-Direct Requirement subtypes are recognized by the acceptance condition that owns
-the claim. Contract owns named boundary obligations. Constraint narrows
-otherwise acceptable solutions when no boundary participant relies on it as a
-Contract. User Story owns actor/want/value framing but not acceptance criteria.
-Outcome owns intended measurable state change, not observed evidence. Scenario
-owns one accepted example, not its run. Invariant owns an always-hold
-condition, not evidence that it currently holds. Requirement owns the remaining
-observable obligation that no more precise Requirement subtype owns. Decision
-owns a material selected implementation, architecture, governance, or operating
-approach and has no subtype.
+Requirement owns required observable results. Constraint narrows otherwise
+acceptable solutions. Contract owns named boundary obligations. Implementation
+Decision owns material selected architecture, design, algorithm, data, tooling,
+or operating approaches. User Story, Outcome, Scenario, and Invariant may
+structure Requirement prose or compatibility history but are not current
+semantic subtypes.
 
 Problem means presently true insufficiency. Wrong now is Defect; missing now is
 Gap; a working known compromise with continuing cost is Debt. Question means
 uncertainty. Possible future harm is Risk; optional possible value is
 Opportunity; verified incompatible active applicable authority is Conflict.
-Different wording, stale compilation, failed QA, implementation nonconformance,
-and contradictory evidence alone are not Conflicts.
-
-Debt cannot hide a Defect or Gap. If a compromise also violates active
-authority or leaves an obligation absent, record linked Defect or Gap atoms or
-emit a Decision that changes the applicable authority.
 
 QA/Test is an exact reproducible predicate under declared conditions.
 QA/Evaluation is qualitative, probabilistic, statistical, or model-judged and
-declares its
-method, criterion, threshold, and uncertainty handling where applicable. QA
-remains Evaluation when deterministic code executes the method but the
-conclusion depends on judgment, sampling, calibration, probability, statistics,
-or a model. QA results affect assurance and never override Decision authority.
-
-New atoms use this explicit envelope and direct-subtype ID kind. Existing
-stable IDs and carriers are never rewritten merely to adopt it. A deterministic
-compatibility classifier maps each legacy ID-kind/carrier pair to the same four
-Types, including legacy `EVAL` to QA/Evaluation and standalone Opportunity to
-Question/Opportunity, and fails closed when the pair disagrees. Traceability,
-project health, validation, lifecycle lookup, and skill context consume that
-single mapping so compatibility does not become a second taxonomy.
-
-A Question/Conflict records exact incompatible authority and resolves through
-an append-only lifecycle event linked to the answering or absorbing Decision,
-precedence, exception, boundary change, or external-authority update. A
-Problem returns directly to implementation only when an active Decision already
-defines the correction; otherwise it raises a Question.
-
-**Scenario DSET-SCENARIO-GOV-028:** A failing QA/Test against an active
-Requirement creates assurance failure and a Problem/Defect when current
-behavior is wrong, not a Conflict. Two active Contract subtypes demanding
-mutually exclusive values create one Question/Conflict. An operator-accepted
-absorbing Contract resolves it through an append-only event without editing the
-original atoms.
+declares its method, criterion, threshold, and uncertainty handling where
+applicable.
 
 ## DSET-REQUIREMENT-GOV-028 — Atomic rationale is recommended and optional
 

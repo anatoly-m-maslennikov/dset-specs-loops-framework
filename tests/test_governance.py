@@ -979,7 +979,7 @@ class GovernanceTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertEqual(work_items, work_items_template)
         self.assertIn("one Type and at most one direct subtype", work_items)
-        self.assertIn("sibling Requirement subtypes", work_items)
+        self.assertIn("exactly four core semantic Types", work_items)
         self.assertIn("never edits the Question atom", work_items)
         self.assertIn("QA always has one of its two", work_items)
         self.assertIn("append-only", work_items)

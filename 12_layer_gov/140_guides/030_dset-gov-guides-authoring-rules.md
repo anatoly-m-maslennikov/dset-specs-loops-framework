@@ -121,7 +121,7 @@ When two entities are mutually related, define each independently first using sh
 - Never edit an emitted Decision atom. Record later state in an append-only
   lifecycle event or emit an explicit absorbing successor while preserving the
   predecessor and both directions.
-- Every active applicable Requirement or Decision is an atomic
+- Every active applicable Decision is an atomic
   authority source. Compile its consequences into the owning evergreen spec or
   plan; when they differ, the Decision wins and the projection is stale until
   recompiled.

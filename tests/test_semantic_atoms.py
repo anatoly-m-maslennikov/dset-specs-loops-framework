@@ -131,15 +131,15 @@ class SemanticAtomTests(unittest.TestCase):
                 messages,
             )
 
-    def test_five_type_atom_is_sealed_and_later_mutation_fails(self) -> None:
+    def test_four_type_atom_is_sealed_and_later_mutation_fails(self) -> None:
         self._write_atom()
 
         seal_atom(self.root, self.atom_path)
 
         atoms, diagnostics = collect_semantic_atoms(self.root)
         self.assertEqual(diagnostics, [])
-        self.assertEqual(atoms["DSET-CONTRACT-001"].semantic_type, "requirement")
-        self.assertEqual(atoms["DSET-CONTRACT-001"].subtype, "contract")
+        self.assertEqual(atoms["DSET-DECISION-001"].semantic_type, "decision")
+        self.assertEqual(atoms["DSET-DECISION-001"].subtype, "contract")
         self.assertEqual(validate_semantic_atoms(self.root), [])
 
         self.atom_path.write_text(
@@ -148,7 +148,7 @@ class SemanticAtomTests(unittest.TestCase):
         )
         messages = [item.message for item in validate_semantic_atoms(self.root)]
         self.assertIn(
-            "sealed atom sha256 changed: DSET-CONTRACT-001",
+            "sealed atom sha256 changed: DSET-DECISION-001",
             messages,
         )
 
@@ -175,7 +175,7 @@ class SemanticAtomTests(unittest.TestCase):
         self._write_atom()
         self.atom_path.write_text(
             self.atom_path.read_text(encoding="utf-8").replace(
-                "type: requirement\nsubtype: contract",
+                "type: decision\nsubtype: contract",
                 "type: qa\nsubtype: requirement/test",
             ),
             encoding="utf-8",
@@ -201,7 +201,7 @@ class SemanticAtomTests(unittest.TestCase):
             self.root,
             self._event(
                 "DSET-LIFECYCLE-EVENT-001",
-                "DSET-CONTRACT-001",
+                "DSET-DECISION-001",
                 "DSET-CONTRACT-002",
             ),
         )
@@ -212,7 +212,7 @@ class SemanticAtomTests(unittest.TestCase):
                 self._event(
                     "DSET-LIFECYCLE-EVENT-002",
                     "DSET-CONTRACT-002",
-                    "DSET-CONTRACT-001",
+                    "DSET-DECISION-001",
                 ),
             )
 
@@ -233,7 +233,7 @@ class SemanticAtomTests(unittest.TestCase):
             self.root,
             self._event(
                 "DSET-LIFECYCLE-EVENT-001",
-                "DSET-CONTRACT-001",
+                "DSET-DECISION-001",
                 "DSET-CONTRACT-002",
             ),
         )
@@ -243,7 +243,7 @@ class SemanticAtomTests(unittest.TestCase):
                 self.root,
                 self._event(
                     "DSET-LIFECYCLE-EVENT-002",
-                    "DSET-CONTRACT-001",
+                    "DSET-DECISION-001",
                     "DSET-CONTRACT-003",
                 ),
             )
@@ -264,7 +264,7 @@ class SemanticAtomTests(unittest.TestCase):
             self.root,
             self._event(
                 "DSET-LIFECYCLE-EVENT-001",
-                "DSET-CONTRACT-001",
+                "DSET-DECISION-001",
                 "DSET-CONTRACT-002",
             ),
         )
@@ -274,7 +274,7 @@ class SemanticAtomTests(unittest.TestCase):
                 self.root,
                 {
                     "id": "DSET-LIFECYCLE-EVENT-002",
-                    "atom_id": "DSET-CONTRACT-001",
+                    "atom_id": "DSET-DECISION-001",
                     "event": "accepted",
                     "occurred_at": "2026-07-20T00:01:00+04:00",
                     "related": [],
@@ -290,7 +290,7 @@ class SemanticAtomTests(unittest.TestCase):
             self.root,
             {
                 "id": "DSET-LIFECYCLE-EVENT-001",
-                "atom_id": "DSET-CONTRACT-001",
+                "atom_id": "DSET-DECISION-001",
                 "event": "retired",
                 "occurred_at": "2026-07-20T00:00:00+04:00",
                 "related": [],
@@ -299,7 +299,7 @@ class SemanticAtomTests(unittest.TestCase):
         )
 
         with self.assertRaisesRegex(ValueError, "registered carrier transition"):
-            archive_atom(self.root, "DSET-CONTRACT-001")
+            archive_atom(self.root, "DSET-DECISION-001")
 
         self.assertEqual(self.atom_path.read_bytes(), original)
         self.assertEqual(validate_semantic_atoms(self.root), [])
@@ -311,7 +311,7 @@ class SemanticAtomTests(unittest.TestCase):
     def _write_atom(self) -> str:
         text = self._atom_text(
             carrier="DSET-ATOMIC-RECORD-001",
-            semantic="DSET-CONTRACT-001",
+            semantic="DSET-DECISION-001",
         )
         self.atom_path.write_text(text, encoding="utf-8")
         return text
@@ -321,7 +321,7 @@ class SemanticAtomTests(unittest.TestCase):
         return f"""---
 artifact_type: atomic_record
 artifact_id: {carrier}
-type: requirement
+type: decision
 subtype: contract
 semantic_id: {semantic}
 status: accepted

@@ -346,13 +346,8 @@ def _authority_reference_problems(
 ) -> list[str]:
     problems = _known_reference_problems(label, identifiers, known)
     for identifier in identifiers:
-        if identifier in known and known[identifier][0] not in {
-            "requirement",
-            "decision",
-        }:
-            problems.append(
-                f"{label} must reference a Requirement or Decision: {identifier}"
-            )
+        if identifier in known and known[identifier][0] != "decision":
+            problems.append(f"{label} must reference a Decision: {identifier}")
     return problems
 
 

@@ -390,7 +390,7 @@ def _stage_project(
     (dset_root / APPLIED_VERSIONS_ROOT / f"{project_key}-VERSIONS-HUB.md").write_text(
         "# Version lifecycle\n\n"
         "## Purpose\n\nOwn project-wide Changes and release records.\n\n"
-        "## Boundaries\n\nVersion records do not replace Requirement or Decision authority.\n\n"
+        "## Boundaries\n\nVersion records do not replace Decision authority.\n\n"
         "## Start here\n\nSearch by unique Version identity.\n",
         encoding="utf-8",
     )

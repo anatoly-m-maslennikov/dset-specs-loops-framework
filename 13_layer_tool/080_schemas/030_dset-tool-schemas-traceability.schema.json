@@ -82,7 +82,7 @@
         "carrier": {"type": "string", "pattern": "^[^/\\\\]+$"},
         "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
         "type": {"enum": ["decision", "question", "problem", "qa"]},
-        "subtype": {"enum": ["none", "requirement", "constraint", "contract", "user_story", "outcome", "scenario", "invariant", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
+        "subtype": {"enum": ["none", "requirement", "constraint", "contract", "implementation_decision", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
         "emission_status": {"enum": ["proposed", "accepted"]},
         "current_status": {"enum": ["proposed", "accepted", "answered", "absorbed", "confirmed", "reopened", "rejected", "resolved", "retired", "withdrawn"]},
         "priority": {"type": "string", "minLength": 1},
@@ -100,7 +100,7 @@
       "properties": {
         "id": {"$ref": "#/$defs/relation_id"},
         "type": {"enum": ["decision", "question", "problem", "qa"]},
-        "subtype": {"enum": ["none", "requirement", "constraint", "contract", "user_story", "outcome", "scenario", "invariant", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
+        "subtype": {"enum": ["none", "requirement", "constraint", "contract", "implementation_decision", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
         "compatibility": {"type": "boolean"},
         "origins": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
         "carriers": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
@@ -115,7 +115,7 @@
       "required": ["semantic_type", "scope", "through"],
       "properties": {
         "semantic_type": {"enum": ["decision", "question", "problem", "qa"]},
-        "subtype": {"enum": ["none", "requirement", "constraint", "contract", "user_story", "outcome", "scenario", "invariant", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
+        "subtype": {"enum": ["none", "requirement", "constraint", "contract", "implementation_decision", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
         "layer": {"enum": ["meta", "gov", "tool", "skill", "ops"]},
         "scope": {
           "type": "object",

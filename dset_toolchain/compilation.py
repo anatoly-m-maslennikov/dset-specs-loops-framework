@@ -64,7 +64,7 @@ def build_compilation_index(root: Path) -> dict[str, Any]:
         )
     if missing:
         raise ValueError(
-            "active Requirement or Decision authority lacks an evergreen projection: "
+            "active Decision authority lacks an evergreen projection: "
             + ", ".join(missing)
         )
     return {
@@ -131,7 +131,7 @@ def _authority_sources(root: Path) -> dict[str, Path]:
         raise ValueError(diagnostics[0].message)
     for atom in atoms.values():
         if (
-            atom.semantic_type in {"requirement", "decision"}
+            atom.semantic_type == "decision"
             and atom.emission_status == "accepted"
             and lifecycle.get(atom.semantic_id) not in INACTIVE_EVENTS
         ):
