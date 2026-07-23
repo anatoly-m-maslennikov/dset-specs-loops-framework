@@ -4,13 +4,12 @@
 
 ## Purpose
 
-DSET classifies every governed artifact through independent axes. The axes
-describe how an artifact changes, what it contributes, whether its primary
-meaning is relational, who governs its current content, and where it belongs
-structurally.
+DSET classifies every governed artifact through exactly three primary axes:
+Revision Mode, Content Role, and Scope Path.
 
 Concrete Type and subtype definitions are governed separately. A Type occupies
-an eligible combination of these axes; the axes are not themselves Types.
+an eligible cell in this three-dimensional artifact cube; the axes are not
+themselves Types.
 
 ## Revision mode
 
@@ -45,48 +44,14 @@ Tests and Evaluations are Method when they define reusable checks. A dated
 execution is a work occurrence rather than another content role. Its persisted
 result is Observation.
 
-## Relation shape
-
-`relation_shape` declares the artifact's inherent semantic arity:
-
-| Value | Definition |
-|---|---|
-| `standalone` | Primary meaning does not require multiple typed endpoints |
-| `relational` | Primary meaning requires at least two typed, directed endpoints |
-
-An ordinary citation, provenance field, or traceability link does not make an
-artifact Relational. A Relational artifact declares its relation kind,
-endpoint roles, direction, and endpoint origins.
-
-Relational and Standalone artifacts use the same Revision Mode and Content Role
-axes. Separate matrix renderings may improve readability, but they do not
-create different classification systems.
-
-## Governance origin
-
-A Standalone artifact declares:
-
-```toml
-governance_origin = "internal" # internal | external
-```
-
-Governance origin identifies who controls the artifact's semantic content and
-currentness. It does not establish truth, project authority, authorship,
-storage location, or provenance.
-
-A Relational artifact has no single governance origin. Each endpoint declares
-its own `origin = "internal"` or `origin = "external"`.
-
-Origin qualifies a Type; it does not create a second canonical Type. A UI may
-show an origin-qualified label for readability without changing catalog
-identity.
-
-## Structural scope
+## Scope path
 
 `scope_path` is an extensible structural address composed from enabled project,
-feature-group, feature, layer, and future scope dimensions. It is independent
-from classification and never determines Revision Mode, Content Role, Relation
-Shape, Governance Origin, Type, or subtype.
+feature-group, feature, layer, and future structural dimensions. It supplies
+the third primary coordinate and follows narrowest-common-owner rules.
+
+Scope Path never determines Revision Mode, Content Role, Type, subtype, or any
+qualifying property.
 
 OPS is a layer in `scope_path`, not a Content Role:
 
@@ -100,6 +65,47 @@ OPS is a layer in `scope_path`, not a Content Role:
 
 A deployment procedure is Method, a deployment run is a dated work occurrence,
 and the persisted result is Observation.
+
+## Qualifying properties
+
+Relation Shape and Governance Origin refine an artifact inside the
+three-dimensional cube. They are not additional primary axes.
+
+### Relation shape
+
+`relation_shape` declares the artifact's inherent semantic arity:
+
+| Value | Definition |
+|---|---|
+| `standalone` | Primary meaning does not require multiple typed endpoints |
+| `relational` | Primary meaning requires at least two typed, directed endpoints |
+
+An ordinary citation, provenance field, or traceability link does not make an
+artifact Relational. A Relational artifact declares its relation kind,
+endpoint roles, direction, and endpoint origins.
+
+Relational and Standalone artifacts use the same three primary axes. Separate
+renderings may improve readability, but they do not create different
+classification systems.
+
+### Governance origin
+
+A Standalone artifact declares:
+
+```toml
+governance_origin = "internal" # internal | external
+```
+
+Governance Origin identifies who controls the artifact's semantic content and
+currentness. It does not establish truth, project authority, authorship,
+storage location, or provenance.
+
+A Relational artifact has no single Governance Origin. Each endpoint declares
+its own `origin = "internal"` or `origin = "external"`.
+
+Origin qualifies a Type; it does not create a second canonical Type. A UI may
+show an origin-qualified label for readability without changing catalog
+identity.
 
 ## Pull-request direction
 
@@ -128,25 +134,25 @@ proof of final PR state, when required, is a separate Atomic Observation.
 1. Recover the EntityOfConcern and one primary artifact job. Split a
    multi-head artifact.
 2. Assign `scope_path`.
-3. Select `relation_shape`. For a Relational artifact, recover the relation
+3. Select `content_role` from the primary contribution.
+4. Select `revision_mode` from the change semantics.
+5. Select `relation_shape`. For a Relational artifact, recover the relation
    kind, endpoint roles, direction, and endpoint origins.
-4. Select `content_role` from the primary contribution.
-5. Select `revision_mode` from the change semantics.
 6. For a Standalone artifact, select `governance_origin`.
 7. Select one admitted concrete Type and at most one direct subtype.
 8. Add provenance, evidence, and traceability without treating them as truth
    or authority.
 
-No axis value is inferred from another. Classification never derives meaning
-from a filename, path, workflow, host, tool, or next action. DSET does not force
-every Cartesian cell to contain a Type.
+No primary-axis value is inferred from another. Classification never derives
+meaning from a filename, workflow, host, tool, or next action. DSET does not
+force every cube cell to contain a Type.
 
 ## Matrix rendering
 
-The primary matrix uses Revision Mode as rows and Content Role as columns.
-Standalone views may show Internal and External occupants inside each cell.
-Relational views show Types together with their required endpoint roles and
-origin combinations.
+Each `scope_path` selects one two-dimensional matrix slice. The slice uses
+Revision Mode as rows and Content Role as columns. Standalone views may qualify
+occupants as Internal or External. Relational views show Types together with
+their required endpoint roles and origin combinations.
 
 The current cut finalizes the axes only. Concrete Type names, direct subtype
 definitions, and cell occupancy require a separate accepted authority set
