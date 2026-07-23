@@ -8,6 +8,20 @@ The concrete distribution/platform/dependency/hosted-delivery contracts are defi
 in `specification-contracts.md`. They state observable compatibility and
 evidence boundaries; Decisions remain separate records of choices and rationale.
 
+## Recursive governance loci
+
+`DSET-REQUIREMENT-003` assigns contextual governance defaults for this
+self-hosting repository:
+
+- root framework and methodology sources outside `.dset` are internal;
+- `.dset/000_dset_methodology` is the external installed-framework boundary;
+- all other applied project artifacts under `.dset` are internal.
+
+The installed copy remains external from the consuming project's perspective
+even when it is synchronized from the same repository's internal root source.
+A relational artifact uses the relation locus instead of the directory default;
+its endpoints retain independent internal or external origins.
+
 ## State and durability
 
 | Concern | Authority | Writer model | Refresh boundary | Failure/recovery proof |
