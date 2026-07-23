@@ -231,3 +231,62 @@ This routing model adapts three FPF constraints:
 Therefore the axes classify one artifact's current governance role, registered
 names remain sparse interface vocabulary, and relational participants remain
 explicit rather than encoded in names.
+
+## DSET-REQUIREMENT-META-019 — Analysis Mode defers artifact creation
+
+Atomic source: `DSET-REQUIREMENT-META-019`.
+
+Analysis Mode sits outside the artifact-routing matrix. It permits research,
+brainstorming, comparison, and read-only inspection, but creates no governed
+artifacts or governance commits. Explicit operator acceptance is the only exit
+that authorizes durable emission.
+
+| Status | Entry criteria | Exit criteria | Allowed next status | Required evidence | Atomic sources |
+|---|---|---|---|---|---|
+| Inactive | No active analysis request | Clear brainstorming or explicit analysis request | Active | Operator/session instruction | `DSET-REQUIREMENT-META-019` |
+| Active | Analysis intent is established | Explicit accept, finalize, apply, or end-analysis instruction | Inactive | Operator acceptance instruction | `DSET-REQUIREMENT-META-019` |
+
+## DSET-REQUIREMENT-META-020 — Evergreen documents are thin semantic views
+
+Atomic source: `DSET-REQUIREMENT-META-020`.
+
+```mermaid
+flowchart LR
+    ANALYSIS["Analysis Mode<br/>DSET-REQUIREMENT-META-019"]
+    ACCEPT["Explicit acceptance<br/>DSET-REQUIREMENT-META-019"]
+    ATOMS["Atomic records<br/>DSET-REQUIREMENT-META-020"]
+    REFACTOR["Optional atomic refactoring<br/>DSET-REQUIREMENT-META-020"]
+    VIEW["Thin evergreen view<br/>DSET-REQUIREMENT-META-020"]
+    GATE["Downstream gate<br/>DSET-REQUIREMENT-META-020"]
+
+    ANALYSIS --> ACCEPT
+    ACCEPT --> ATOMS
+    ATOMS --> REFACTOR
+    REFACTOR --> VIEW
+    ATOMS --> VIEW
+    VIEW --> GATE
+```
+
+An evergreen domain specification contains:
+
+1. a domain-flow Mermaid diagram;
+2. topologically ordered entity definitions;
+3. per-entity lifecycle models;
+4. cross-entity relations outside definitions; and
+5. direct atomic-source IDs at each summarized semantic location.
+
+Entity definitions use only previously defined entities. A forward reference is
+a connection, not part of the definition.
+
+| Evergreen status | Entry criteria | Exit criteria | Allowed next status | Required evidence | Atomic sources |
+|---|---|---|---|---|---|
+| Current | Reasoned refresh reflects all applicable active atoms and every semantic source resolves | An applicable atomic record is added, replaced, archived, or found unrepresented | Stale | Resolved atomic links and reviewed refresh | `DSET-REQUIREMENT-META-020` |
+| Stale | The current view no longer represents its applicable atomic frontier | A reasoned refresh restores complete atomic coverage | Current | Staleness reason and affected atomic IDs | `DSET-REQUIREMENT-META-020` |
+
+Each stateful entity lifecycle records identity, uniqueness, invariants,
+transition authority, status meaning, entry criteria, exit criteria, allowed
+and forbidden transitions, required evidence, and applicable failure/recovery
+behavior.
+
+Semantic links target atomic records only. Links to hubs or other evergreen
+documents are navigation and carry no semantic authority.

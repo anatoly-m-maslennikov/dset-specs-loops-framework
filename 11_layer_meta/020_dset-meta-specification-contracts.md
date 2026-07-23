@@ -19,6 +19,9 @@
 - Applied project-wide truth under `.dset/100_project/`, applied layer truth
   under `.dset/101_layer_meta/` through `.dset/106_layer_ops/`, and Version
   lifecycle artifacts under `.dset/150_versions/`.
+- Thin evergreen semantic views that expose current flows, ordered entities,
+  lifecycle models, and direct atomic provenance without duplicating atomic
+  authority.
 - Versioned schemas, templates, fixtures, migration guidance, provenance, and
   generated traceability in their configured methodology, applied, or runtime
   owners.
@@ -53,6 +56,14 @@ Decision to atomic Method/internal.
 User Stories, Outcomes, Scenarios, and Invariants may structure artifact prose,
 analysis, or compatibility history. Independently enforceable claims remain
 separate atomic records.
+
+## Evergreen document boundary
+
+Evergreen documents are reasoned current views rather than compiled
+restatements. Their semantic source links target atomic records only.
+Evergreen-to-evergreen and hub links are navigation and cannot establish
+semantic provenance. Refresh occurs on demand after accepted atomic change and
+before a downstream gate requires a current view.
 
 ## Non-contractual surfaces
 

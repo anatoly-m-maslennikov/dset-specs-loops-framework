@@ -64,15 +64,15 @@ governance_loci = ["internal"]
 #   Decisions or plans and never falls back to lazy mode.
 #
 # Example lazy chain:
-# decisions -> compile when required -> plan-proof -> plan-implementation -> implement
+# decisions -> refresh views when required -> plan-proof -> plan-implementation -> implement
 mode = "lazy"
 
-[compilation]
-# Compile accepted atoms into affected evergreen specs/plans only on explicit
-# request or when a downstream entry gate requires current evergreen truth.
-mode = "on_demand"
-skill = "dset-compile"
-runtime_output = ".dset_runtime/generated"
+[evergreen_views]
+# Refresh thin evergreen semantic views only on explicit request or when a
+# downstream entry gate requires a current view. Refresh is reasoned synthesis,
+# not concatenation or mechanical compilation.
+refresh_mode = "on_demand"
+skill = "dset-refresh"
 
 [changes]
 # Select the default Git workspace for a newly created Change when the caller

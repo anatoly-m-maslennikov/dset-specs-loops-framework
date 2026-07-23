@@ -69,6 +69,19 @@ const = "internal"
 [properties.workflows]
 type = "object"
 
+[properties.evergreen_views]
+type = "object"
+required = ["refresh_mode", "skill"]
+additionalProperties = false
+
+[properties.evergreen_views.properties]
+
+[properties.evergreen_views.properties.refresh_mode]
+const = "on_demand"
+
+[properties.evergreen_views.properties.skill]
+const = "dset-refresh"
+
 [properties.changes]
 type = "object"
 
