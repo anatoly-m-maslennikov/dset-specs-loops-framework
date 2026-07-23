@@ -3,7 +3,7 @@ schema_version = "1.0"
 artifact_type = "evidence_record"
 artifact_subtype = "test_result"
 artifact_id = "DSET-EVIDENCE-RECORD-039"
-priority = "critical"
+priority = "high"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 context = ["repository=anatoly-m-maslennikov/dset-specs-loops-framework", "environment=codex-desktop-macos", "codex-cli=0.144.5", "claude-code=2.1.205", "public-skills=17", "installation-scope=repository"]
 observed_at = "2026-07-21T07:55:00+04:00"
@@ -13,7 +13,7 @@ currentness = "current"
 reopen_when = "A real Codex process can initialize writable host state, Claude Code can authenticate through an allowed API domain, the DSET distribution changes, or either pinned host version changes."
 
 [subject]
-id = "DSET-TEST-SKILL-018"
+id = "DSET-TEST-PLAN-SKILL-018"
 revision = "b09cd0fe2beb7e14326c0f8bcb3693c032afada0"
 intended_use = "Bound repository-scoped installation and real-process invocation claims for the seventeen-skill distribution without treating deterministic discoverability as observed host load."
 
@@ -27,7 +27,7 @@ setup = "Codex Desktop managed workspace on macOS; repository virtual environmen
 
 [[relations]]
 type = "evidence_for"
-target = "DSET-TEST-SKILL-018"
+target = "DSET-TEST-PLAN-SKILL-018"
 +++
 
 # Test result — Project-scoped host boundary

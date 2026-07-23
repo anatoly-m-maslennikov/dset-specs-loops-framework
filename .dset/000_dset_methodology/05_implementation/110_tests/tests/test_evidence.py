@@ -83,7 +83,7 @@ class EvidenceRecordTests(unittest.TestCase):
             "currentness": "current",
             "reopen_when": "The subject revision or method changes.",
             "subject": {
-                "id": "APP-TEST-001",
+                "id": "APP-TEST-PLAN-001",
                 "revision": "0123456789abcdef0123456789abcdef01234567",
                 "intended_use": "Support one bounded Verification claim.",
             },
@@ -95,7 +95,7 @@ class EvidenceRecordTests(unittest.TestCase):
                 "description": "Run the focused unit test.",
                 "setup": "Python 3.14 with locked dependencies.",
             },
-            "relations": [{"type": "evidence_for", "target": "APP-TEST-001"}],
+            "relations": [{"type": "evidence_for", "target": "APP-TEST-PLAN-001"}],
         }
 
 

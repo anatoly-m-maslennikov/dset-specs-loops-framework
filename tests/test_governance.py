@@ -33,7 +33,7 @@ from dset_toolchain.legacy_authority import write_legacy_authority_ledger
 from dset_toolchain.skill_catalog import REGISTERED_SKILL_WORKFLOWS
 from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.validation import validate_repository
-from dset_toolchain.yaml_subset import dump, load
+from dset_toolchain.structured_data import dump, load
 from tests import repository_root
 
 # ROOT locates the repository fixture; repository layout is authoritative.
@@ -523,7 +523,7 @@ class GovernanceTests(unittest.TestCase):
         )
 
     def test_current_schema_suite_preserves_legacy_change_shape(self) -> None:
-        change_schema = json.loads(_framework_schema("change.schema.json").read_text())
+        change_schema = json.loads(_framework_schema("change.schema.toml").read_text())
         current = change_schema["allOf"][0]
         self.assertEqual(current["then"]["required"], ["adrs"])
         self.assertEqual(current["then"]["not"]["required"], ["decisions"])
@@ -534,19 +534,19 @@ class GovernanceTests(unittest.TestCase):
         self.assertEqual(current["else"]["not"]["required"], ["adrs"])
         release_variants = change_schema["$defs"]["release"]["oneOf"]
         self.assertEqual(len(release_variants), 2)
-        intake_schema = json.loads(_framework_schema("intake.schema.json").read_text())
+        intake_schema = json.loads(_framework_schema("intake.schema.toml").read_text())
         for item_name in ("legacy_item", "layered_item"):
             self.assertIn(
                 "llm_session_ids", intake_schema["$defs"][item_name]["required"]
             )
 
     def test_atomic_rationale_is_supported_but_optional(self) -> None:
-        change_schema = json.loads(_framework_schema("change.schema.json").read_text())
+        change_schema = json.loads(_framework_schema("change.schema.toml").read_text())
         self.assertIn("rationale", change_schema["properties"])
         self.assertNotIn("rationale", change_schema["required"])
         self.assertEqual(change_schema["$defs"]["rationale"]["minLength"], 1)
 
-        intake_schema = json.loads(_framework_schema("intake.schema.json").read_text())
+        intake_schema = json.loads(_framework_schema("intake.schema.toml").read_text())
         for item_name in ("legacy_item", "layered_item"):
             item = intake_schema["$defs"][item_name]
             self.assertIn("rationale", item["properties"])
@@ -554,8 +554,8 @@ class GovernanceTests(unittest.TestCase):
         self.assertEqual(intake_schema["$defs"]["rationale"]["minLength"], 1)
 
         for schema_path in (
-            ROOT / ".dset/04_layer_skill/schemas/skill-run.schema.json",
-            ROOT / ".dset/04_layer_skill/schemas/session-checkpoint.schema.json",
+            ROOT / ".dset/04_layer_skill/schemas/skill-run.schema.toml",
+            ROOT / ".dset/04_layer_skill/schemas/session-checkpoint.schema.toml",
         ):
             schema = json.loads(schema_path.read_text(encoding="utf-8"))
             self.assertIn("rationale", schema["properties"])
@@ -577,7 +577,7 @@ class GovernanceTests(unittest.TestCase):
         self.assertIn("not hidden authority", rule)
 
     def test_trace_id_schemas_are_type_first_and_layer_bounded(self) -> None:
-        change_schema = json.loads(_framework_schema("change.schema.json").read_text())
+        change_schema = json.loads(_framework_schema("change.schema.toml").read_text())
         patterns = change_schema["$defs"]
         complete_pattern = patterns["trace_id"]["pattern"]
         for valid in (
@@ -616,7 +616,7 @@ class GovernanceTests(unittest.TestCase):
         )
         for invalid in (
             "REQUIREMENT-DSET-GOV-001",
-            "DSET-REQ-GOV-001",
+            "DSET-REQUIREMENT-GOV-001",
             "DSET-REQUIREMENT-GLOBAL-001",
             "DSET-ADR-GOV-001",
         ):
@@ -636,7 +636,7 @@ class GovernanceTests(unittest.TestCase):
         package_path = layout.structured_file(package_root, "package.toml")
         package = cast(dict[str, Any], load(package_path))
         package["requirements"] = ["ACME-REQUIREMENT-001"]
-        package["tests"] = ["ACME-TEST-001"]
+        package["tests"] = ["ACME-TEST-PLAN-001"]
         package["contracts"] = ["ACME-CONTRACT-001"]
         package_path.write_text(dump(package, package_path), encoding="utf-8")
         for filename in ("spec.md", "test-plan.md", "contracts.md"):
@@ -971,7 +971,7 @@ class GovernanceTests(unittest.TestCase):
             "lossless carrier transition",
             "smallest independently reviewable primary project claim",
             "acceptance act grants authority to Decision",
-            "QA atom defines a check",
+            "QA atom defines a Test Plan or Evaluation Plan",
         ):
             self.assertIn(phrase, architecture)
 
@@ -1024,8 +1024,8 @@ class GovernanceTests(unittest.TestCase):
             {
                 "DSET-REQUIREMENT-TOOL-018",
                 "DSET-REQUIREMENT-TOOL-019",
-                "DSET-TEST-TOOL-018",
-                "DSET-TEST-TOOL-019",
+                "DSET-TEST-PLAN-TOOL-018",
+                "DSET-TEST-PLAN-TOOL-019",
             }.isdisjoint(archived_ids)
         )
 

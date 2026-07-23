@@ -1,0 +1,9 @@
+schema_version = "1.0"
+artifact_type = "lifecycle_event"
+artifact_id = "DSET-LIFECYCLE-EVENT-106"
+atom_id = "DSET-QUESTION-META-001"
+event = "withdrawn"
+occurred_at = "2026-07-23T08:00:00+04:00"
+related = ["DSET-VERSION-008"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "The question concerns possible 0.6 scope and now lives in the 0.6 Version Roadmap rather than the current atomic work set."

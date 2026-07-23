@@ -5,7 +5,7 @@ type = "problem"
 subtype = "gap"
 semantic_id = "DSET-GAP-SKILL-001"
 status = "accepted"
-priority = "critical"
+priority = "high"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 +++
 

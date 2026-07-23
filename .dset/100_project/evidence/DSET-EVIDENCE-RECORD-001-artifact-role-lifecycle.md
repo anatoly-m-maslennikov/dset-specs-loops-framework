@@ -56,7 +56,7 @@ bodies. The authoritative rerun used the real system temporary directory and
 passed all 157 tests. This proof makes no claim that multiple complete suites
 may safely share one checkout-local temporary root.
 
-The qualitative `DSET-EVAL-GOV-019..021` and `DSET-EVAL-OPS-010` runs remain
+The qualitative `DSET-EVAL-PLAN-GOV-019..021` and `DSET-EVAL-PLAN-OPS-010` runs remain
 pending. No placeholder Release Plan, Readiness Record, or Release Record was
 created: those artifacts require a real exact release subject or publication
 event. `DSET-TASK-GOV-049` remains open for the broader four-Type runtime and

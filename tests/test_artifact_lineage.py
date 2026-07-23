@@ -12,7 +12,7 @@ import unittest
 from pathlib import Path
 from typing import Any
 
-from dset_toolchain import yaml_subset
+from dset_toolchain import structured_data
 from dset_toolchain.lineage import (
     RELATION_TYPES,
     build_commit_implementation_relations,
@@ -37,7 +37,7 @@ class ArtifactRelationTests(unittest.TestCase):
                 "child_of": ("atomic_record", "decision", None),
                 "analysis_of": ("analysis_report", None, None),
                 "implementation_of": ("implementation", None, None),
-                "check_of": ("atomic_record", "qa", "test"),
+                "check_of": ("atomic_record", "qa", "test_plan"),
                 "evidence_for": ("evidence_record", None, None),
                 "resolution_of": ("atomic_record", "decision", None),
                 "override_of": ("atomic_record", "decision", None),
@@ -270,21 +270,21 @@ class ArtifactRelationTests(unittest.TestCase):
         cls._artifact(
             root,
             "OLD-REPLACE",
-            "APP-TEST-GOV-020",
+            "APP-TEST-PLAN-GOV-020",
             artifact_type="atomic_record",
             semantic_type="qa",
-            subtype="test",
+            subtype="test_plan",
         )
         cls._artifact(
             root,
             "NEW-REPLACE",
-            "APP-TEST-GOV-021",
+            "APP-TEST-PLAN-GOV-021",
             artifact_type="atomic_record",
             semantic_type="qa",
-            subtype="test",
-            relations=[{"type": "replacement_of", "target": "APP-TEST-GOV-020"}],
+            subtype="test_plan",
+            relations=[{"type": "replacement_of", "target": "APP-TEST-PLAN-GOV-020"}],
         )
-        cls._lifecycle(root, "APP-TEST-GOV-020", "APP-TEST-GOV-021")
+        cls._lifecycle(root, "APP-TEST-PLAN-GOV-020", "APP-TEST-PLAN-GOV-021")
 
     @classmethod
     def _projection(cls, root: Path, *, through: str) -> None:
@@ -326,7 +326,7 @@ class ArtifactRelationTests(unittest.TestCase):
         path = root / "dset/governance/lifecycle.yaml"
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(
-            yaml_subset.dump(
+            structured_data.dump(
                 {
                     "schema_version": "1.0",
                     "events": [
@@ -376,7 +376,7 @@ class ArtifactRelationTests(unittest.TestCase):
             data["relations"] = relations
         if child_of is not None:
             data["child_of"] = child_of
-        text = f"---\n{yaml_subset.dump(data)}"
+        text = f"---\n{structured_data.dump(data)}"
         if extra:
             text += extra
         text += f"---\n\n# {name}\n"

@@ -1,0 +1,186 @@
+"$schema" = "https://json-schema.org/draft/2020-12/schema"
+"$id" = "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/.dset/000_dset_methodology/05_implementation/schemas/dependency-policy.schema.toml"
+title = "DSET exact dependency policy"
+type = "object"
+required = ["schema_version", "policy_id", "version", "authority", "exception_authority", "ecosystems", "allow", "deny", "exceptions"]
+additionalProperties = false
+
+[properties]
+
+[properties.schema_version]
+const = "1.0"
+
+[properties.policy_id]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*-DEPENDENCY-POLICY-[0-9]{3,}$"
+
+[properties.version]
+type = "string"
+minLength = 1
+
+[properties.authority]
+type = "string"
+minLength = 1
+
+[properties.exception_authority]
+type = "string"
+minLength = 1
+
+[properties.ecosystems]
+type = "array"
+minItems = 1
+uniqueItems = true
+
+[properties.ecosystems.items]
+"$ref" = "#/$defs/ecosystem"
+
+[properties.allow]
+type = "array"
+uniqueItems = true
+
+[properties.allow.items]
+"$ref" = "#/$defs/dependency"
+
+[properties.deny]
+type = "array"
+uniqueItems = true
+
+[properties.deny.items]
+"$ref" = "#/$defs/denial"
+
+[properties.exceptions]
+type = "array"
+uniqueItems = true
+
+[properties.exceptions.items]
+"$ref" = "#/$defs/exception"
+
+["$defs"]
+
+["$defs".ecosystem]
+type = "object"
+required = ["id", "manifest", "lockfile", "registry"]
+additionalProperties = false
+
+["$defs".ecosystem.properties]
+
+["$defs".ecosystem.properties.id]
+type = "string"
+minLength = 1
+
+["$defs".ecosystem.properties.manifest]
+type = "string"
+minLength = 1
+
+["$defs".ecosystem.properties.lockfile]
+type = "string"
+minLength = 1
+
+["$defs".ecosystem.properties.registry]
+type = "string"
+format = "uri"
+
+["$defs".dependency]
+type = "object"
+required = ["ecosystem", "name", "version", "registry", "license", "provenance", "rationale"]
+additionalProperties = false
+
+["$defs".dependency.properties]
+
+["$defs".dependency.properties.ecosystem]
+type = "string"
+minLength = 1
+
+["$defs".dependency.properties.name]
+type = "string"
+minLength = 1
+
+["$defs".dependency.properties.version]
+type = "string"
+minLength = 1
+
+["$defs".dependency.properties.registry]
+type = "string"
+format = "uri"
+
+["$defs".dependency.properties.license]
+type = "string"
+minLength = 1
+
+["$defs".dependency.properties.provenance]
+type = "string"
+format = "uri"
+
+["$defs".dependency.properties.rationale]
+type = "string"
+minLength = 1
+
+["$defs".denial]
+type = "object"
+required = ["ecosystem", "name", "rationale"]
+additionalProperties = false
+
+["$defs".denial.properties]
+
+["$defs".denial.properties.ecosystem]
+type = "string"
+minLength = 1
+
+["$defs".denial.properties.name]
+type = "string"
+minLength = 1
+
+["$defs".denial.properties.version]
+type = "string"
+minLength = 1
+
+["$defs".denial.properties.rationale]
+type = "string"
+minLength = 1
+
+["$defs".exception]
+type = "object"
+required = ["id", "ecosystem", "name", "version", "registry", "license", "provenance", "authority", "expires_on", "rationale"]
+additionalProperties = false
+
+["$defs".exception.properties]
+
+["$defs".exception.properties.id]
+type = "string"
+minLength = 1
+
+["$defs".exception.properties.ecosystem]
+type = "string"
+minLength = 1
+
+["$defs".exception.properties.name]
+type = "string"
+minLength = 1
+
+["$defs".exception.properties.version]
+type = "string"
+minLength = 1
+
+["$defs".exception.properties.registry]
+type = "string"
+format = "uri"
+
+["$defs".exception.properties.license]
+type = "string"
+minLength = 1
+
+["$defs".exception.properties.provenance]
+type = "string"
+format = "uri"
+
+["$defs".exception.properties.authority]
+type = "string"
+minLength = 1
+
+["$defs".exception.properties.expires_on]
+type = "string"
+format = "date"
+
+["$defs".exception.properties.rationale]
+type = "string"
+minLength = 1

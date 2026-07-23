@@ -18,7 +18,7 @@ id = "{{project_id}}"
 # {{title}}
 
 State exactly one independently reviewable primary claim. QA requires the
-direct `test` or `evaluation` subtype. Do not infer Type from this filename,
+direct `test_plan` or `evaluation_plan` subtype. Do not infer Type from this filename,
 folder, workflow, or requested next action.
 
 ## Rationale (recommended, optional)

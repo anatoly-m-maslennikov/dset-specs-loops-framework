@@ -2,4 +2,4 @@
 
 | Test ID | Requirement | Proof |
 |---|---|---|
-| **DSET-TEST-001** | DSET-REQUIREMENT-001 | Assert exact output `ok` |
+| **DSET-TEST-PLAN-001** | DSET-REQUIREMENT-001 | Assert exact output `ok` |

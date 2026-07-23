@@ -23,11 +23,12 @@ from .semantic_types import (
     SEMANTIC_ID_KINDS,
     SEMANTIC_SUBTYPES,
     normalize_semantic_classification,
+    semantic_id_kind,
     semantic_id_matches_classification,
     semantic_naming_axis,
 )
 from .settings import load_project_settings
-from .yaml_subset import YamlSubsetError, dump, load
+from .structured_data import StructuredDataError, dump, load
 
 # ID_PATTERN validates id pattern; this module owns the accepted syntax.
 ID_PATTERN = re.compile(r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$")
@@ -56,6 +57,8 @@ REOPENABLE_STATES = frozenset({"answered", "confirmed", "resolved"})
 
 @dataclass(frozen=True)
 class SemanticAtom:
+    """Represent semantic atom behavior and state."""
+
     semantic_id: str
     carrier_id: str
     path: str
@@ -80,6 +83,7 @@ class SemanticAtom:
 def collect_semantic_atoms(
     root: Path,
 ) -> tuple[dict[str, SemanticAtom], list[Diagnostic]]:
+    """Collect semantic atoms using the declared repository contract."""
     root = root.resolve()
     atoms: dict[str, SemanticAtom] = {}
     diagnostics: list[Diagnostic] = []
@@ -117,6 +121,7 @@ def collect_semantic_atoms(
 
 
 def validate_semantic_atoms(root: Path) -> list[Diagnostic]:
+    """Validate semantic atoms using the declared repository contract."""
     atoms, diagnostics = collect_semantic_atoms(root)
     diagnostics.extend(
         _validate_lifecycle(
@@ -133,6 +138,7 @@ def validate_semantic_atoms(root: Path) -> list[Diagnostic]:
 
 
 def seal_atom(root: Path, path: Path) -> Path:
+    """Seal atom using the declared repository contract."""
     root = root.resolve()
     path = path.resolve()
     try:
@@ -160,7 +166,7 @@ def seal_atom(root: Path, path: Path) -> Path:
         atom.subtype,
         include_subtype=settings.artifact_subtype_in_names,
     )
-    if expected_kind not in atom.semantic_id.split("-"):
+    if expected_kind != semantic_id_kind(atom.semantic_id):
         mode = "subtype" if settings.artifact_subtype_in_names else "type"
         raise ValueError(
             f"new atom must use the configured {mode} naming kind: {expected_kind}"
@@ -211,6 +217,7 @@ def seal_atom(root: Path, path: Path) -> Path:
 
 
 def append_lifecycle_event(root: Path, event: dict[str, Any]) -> Path:
+    """Append lifecycle event using the declared repository contract."""
     root = root.resolve()
     atoms, diagnostics = collect_semantic_atoms(root)
     if diagnostics:
@@ -269,6 +276,7 @@ def append_lifecycle_event(root: Path, event: dict[str, Any]) -> Path:
 
 
 def effective_priority(root: Path, atom: SemanticAtom) -> tuple[str, str]:
+    """Handle priority using the declared repository contract."""
     changes = [
         item
         for item in _lifecycle_events(root)
@@ -374,6 +382,7 @@ def _parse_atom(
     data: dict[str, Any],
     allowed_priorities: set[str],
 ) -> tuple[SemanticAtom | None, list[Diagnostic]]:
+    """Parse atom using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     raw_semantic_type = data.get("type")
     raw_subtype = data.get("subtype")
@@ -393,8 +402,13 @@ def _parse_atom(
         diagnostics.append(_atom_diag(path, "atom requires one of the four Types"))
     elif subtype is not None and subtype not in SEMANTIC_SUBTYPES[semantic_type]:
         diagnostics.append(_atom_diag(path, "atom has an invalid direct subtype"))
-    elif semantic_type == "qa" and subtype not in {"test", "evaluation"}:
-        diagnostics.append(_atom_diag(path, "QA atom requires test or evaluation"))
+    elif semantic_type == "qa" and subtype not in {
+        "test_plan",
+        "evaluation_plan",
+    }:
+        diagnostics.append(
+            _atom_diag(path, "QA atom requires test_plan or evaluation_plan")
+        )
     if not isinstance(semantic_id, str) or not ID_PATTERN.fullmatch(semantic_id):
         diagnostics.append(_atom_diag(path, "atom requires a canonical semantic_id"))
     elif semantic_type in SEMANTIC_SUBTYPES:
@@ -444,6 +458,7 @@ def _parse_atom(
 
 
 def _material_relation_links(data: dict[str, Any], path: Path) -> list[str]:
+    """Handle relation links using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     relations = parse_authored_relations(path, data, diagnostics)
     if diagnostics:
@@ -462,10 +477,11 @@ def _validate_lifecycle(
     known_ids: set[str],
     initial_statuses: dict[str, str],
 ) -> list[Diagnostic]:
+    """Validate lifecycle using the declared repository contract."""
     path = _lifecycle_path(root)
     try:
         events = _lifecycle_events(root)
-    except (OSError, UnicodeError, ValueError, YamlSubsetError) as error:
+    except (OSError, UnicodeError, ValueError, StructuredDataError) as error:
         return [Diagnostic("DSET-E160", path, f"invalid lifecycle registry: {error}")]
     diagnostics: list[Diagnostic] = []
     seen: set[str] = set()
@@ -491,6 +507,7 @@ def _validate_lifecycle(
 
 
 def _validate_event(root: Path, event: object, known_ids: set[str]) -> dict[str, Any]:
+    """Validate event using the declared repository contract."""
     if not isinstance(event, dict):
         raise ValueError("every lifecycle event must be a mapping")
     event_id = event.get("id")
@@ -552,6 +569,7 @@ def _validate_event(root: Path, event: object, known_ids: set[str]) -> dict[str,
 def _validate_event_graph(
     events: Sequence[object], initial_statuses: dict[str, str] | None = None
 ) -> None:
+    """Validate event graph using the declared repository contract."""
     edges: dict[str, str] = {}
     states = dict(initial_statuses or {})
     explicit_acceptance: set[str] = set()
@@ -633,6 +651,7 @@ def _validate_event_graph(
 
 
 def _known_semantic_ids(root: Path, atoms: dict[str, SemanticAtom]) -> set[str]:
+    """Handle semantic ids using the declared repository contract."""
     layout = discover_layout(root)
     identifiers = set(atoms)
     if not (layout.recursive or layout.separated):
@@ -682,7 +701,7 @@ def _known_semantic_ids(root: Path, atoms: dict[str, SemanticAtom]) -> set[str]:
     for path in layout.structured_named_files(root, "package"):
         try:
             data = load(path)
-        except (OSError, UnicodeError, YamlSubsetError):
+        except (OSError, UnicodeError, StructuredDataError):
             continue
         if not isinstance(data, dict):
             continue
@@ -704,6 +723,7 @@ def _known_semantic_ids(root: Path, atoms: dict[str, SemanticAtom]) -> set[str]:
 
 
 def _validate_ledger(root: Path, atoms: dict[str, SemanticAtom]) -> list[Diagnostic]:
+    """Validate ledger using the declared repository contract."""
     path = _ledger_path(root)
     if not path.is_file():
         if atoms:
@@ -711,7 +731,7 @@ def _validate_ledger(root: Path, atoms: dict[str, SemanticAtom]) -> list[Diagnos
         return []
     try:
         data = load(path)
-    except (OSError, UnicodeError, YamlSubsetError) as error:
+    except (OSError, UnicodeError, StructuredDataError) as error:
         return [Diagnostic("DSET-E161", path, f"invalid atom ledger: {error}")]
     records = data.get("records") if isinstance(data, dict) else None
     if not isinstance(data, dict) or str(data.get("schema_version")) != "1.0":
@@ -779,6 +799,7 @@ def _event_filename(event: dict[str, Any]) -> str:
 
 
 def _current_status(atom: SemanticAtom, events: list[dict[str, Any]]) -> str:
+    """Handle status using the declared repository contract."""
     status = atom.emission_status
     for event in events:
         kind = event.get("event")
@@ -792,6 +813,7 @@ def _current_status(atom: SemanticAtom, events: list[dict[str, Any]]) -> str:
 
 
 def _ledger_record(atom: SemanticAtom) -> dict[str, Any]:
+    """Handle record using the declared repository contract."""
     return {
         "semantic_id": atom.semantic_id,
         "carrier_id": atom.carrier_id,
@@ -803,6 +825,7 @@ def _ledger_record(atom: SemanticAtom) -> dict[str, Any]:
 
 
 def _load_or_empty(path: Path, field: str) -> dict[str, Any]:
+    """Load or empty using the declared repository contract."""
     if not path.is_file():
         return {"schema_version": "1.0", field: []}
     data = load(path)
@@ -830,6 +853,7 @@ def _frontmatter(path: Path) -> dict[str, Any] | None:
 
 
 def _valid_sessions(value: object) -> bool:
+    """Handle sessions using the declared repository contract."""
     return (
         isinstance(value, list)
         and len(value) == len(set(str(item) for item in value))
@@ -840,6 +864,7 @@ def _valid_sessions(value: object) -> bool:
 
 
 def _ignored(relative: Path) -> bool:
+    """Handle ignored using the declared repository contract."""
     if relative.parts[:1] == (".dset_runtime",) or relative.parts[:2] == (
         ".dset",
         "runtime",

@@ -9,18 +9,18 @@ Three independent agent reviewers received bounded, read-only cases and used onl
 
 | Eval ID | Initial result | Corrective loop | Final result |
 |---|---|---|---|
-| DSET-EVAL-GOV-007 | Pass at `5e5b24f` in approximately 2 minutes 20 seconds; the project-control hub required minor filesystem navigation | `174c10b` made accepted truth, changes, contracts, traceability, migration, and supportability routes clickable | Pass at `174c10b` in under two minutes |
-| DSET-EVAL-META-002 | Pass at `9fa34ab`; rationale and maintenance were unambiguous but lacked direct authority links | `174c10b` linked rationale and procedure to the artifact-type catalog, hub rules, and specification authoring rules | Pass at `174c10b` with one normative owner per rule |
-| DSET-EVAL-META-003 | Pass at `5e5b24f`; reviewer requested clearer handling of value objects/external actors and a connection heuristic | `174c10b` scoped lifecycles to owned entities and added the remove-forward-sentence review test | Pass at `174c10b` without weakening definition-before-use |
-| DSET-EVAL-GOV-008 | Pass at `5e5b24f` | No blocking correction; profile surfaces were unchanged by `174c10b` | Pass remains valid at `174c10b` |
+| DSET-EVAL-PLAN-GOV-007 | Pass at `5e5b24f` in approximately 2 minutes 20 seconds; the project-control hub required minor filesystem navigation | `174c10b` made accepted truth, changes, contracts, traceability, migration, and supportability routes clickable | Pass at `174c10b` in under two minutes |
+| DSET-EVAL-PLAN-META-002 | Pass at `9fa34ab`; rationale and maintenance were unambiguous but lacked direct authority links | `174c10b` linked rationale and procedure to the artifact-type catalog, hub rules, and specification authoring rules | Pass at `174c10b` with one normative owner per rule |
+| DSET-EVAL-PLAN-META-003 | Pass at `5e5b24f`; reviewer requested clearer handling of value objects/external actors and a connection heuristic | `174c10b` scoped lifecycles to owned entities and added the remove-forward-sentence review test | Pass at `174c10b` without weakening definition-before-use |
+| DSET-EVAL-PLAN-GOV-008 | Pass at `5e5b24f` | No blocking correction; profile surfaces were unchanged by `174c10b` | Pass remains valid at `174c10b` |
 
-## DSET-EVAL-GOV-007 — Cold-start helicopter navigation
+## DSET-EVAL-PLAN-GOV-007 — Cold-start helicopter navigation
 
 The final route was root README → documentation and methodology hubs → framework purpose, methodology stages, artifact-type owner, authoring rules, rationale, and maintenance playbook. The reviewer completed it in under two minutes without repository search. The DSET project hub separately exposed clickable routes for accepted truth, changes, contracts, traceability, migration, and supportability.
 
 Non-blocking observation: `changes/README.md` describes the lifecycle but does not manually list each active change. This is consistent with the rule that hubs route stable owners rather than duplicate volatile leaf inventories.
 
-## DSET-EVAL-META-002 — Artifact classification
+## DSET-EVAL-PLAN-META-002 — Artifact classification
 
 Six representative requests produced one primary type each:
 
@@ -35,13 +35,13 @@ Six representative requests produced one primary type each:
 
 The re-evaluation confirmed direct authority links and no duplicate normative owner.
 
-## DSET-EVAL-META-003 — Specification dependency order
+## DSET-EVAL-PLAN-META-003 — Specification dependency order
 
 The reviewer used a synthetic Customer → Order → Shipment/Return → Refund domain. A defective version defined Refund, Shipment, Order, and Return before entities required by their definitions. The rules identified each undefined downstream dependency and rejected the forward section links as substitutes for meaning.
 
 The corrected order was Customer, Order, Shipment, Return, Refund, then relationships. Each owned entity declared a lifecycle; value/reference/external concepts were classified separately. Forward sentences remained only where removing one would leave the current entity's identity and invariants comprehensible. A later relationships section expressed bidirectional connections after all definitions existed.
 
-## DSET-EVAL-GOV-008 — Orthogonal profiles
+## DSET-EVAL-PLAN-GOV-008 — Orthogonal profiles
 
 | Scenario | Selection |
 |---|---|

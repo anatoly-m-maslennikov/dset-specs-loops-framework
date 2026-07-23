@@ -24,7 +24,7 @@ from dset_toolchain.layout import discover_layout
 from dset_toolchain.scaffold import create_change
 from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.validation import validate_repository
-from dset_toolchain.yaml_subset import load
+from dset_toolchain.structured_data import load
 from scripts.build_bootstrap_bundle import render_bundle
 from tests import repository_root
 from tests.git_fixtures import initialize_exact_git_repository

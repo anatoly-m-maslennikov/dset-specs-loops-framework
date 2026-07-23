@@ -31,7 +31,7 @@ from dset_toolchain.runtime_bridge import (
 from dset_toolchain.skill_catalog import PUBLIC_SKILL_WORKFLOWS
 from dset_toolchain.skill_context import resolve_skill_context
 from dset_toolchain.temp_paths import temporary_directory
-from dset_toolchain.yaml_subset import dump
+from dset_toolchain.structured_data import dump
 from tests import repository_root
 
 # ROOT locates the repository fixture; repository layout is authoritative.

@@ -17,3 +17,4 @@ and Release Records are created only when their real subject exists.
 - `DSET-VERSION-003-0-5-adopter-ready.md`
 - `DSET-VERSION-004-1-0-stable.md`
 - `DSET-VERSION-005-0-4-core-vertical-cut.md`
+- `DSET-VERSION-008-0-6-roadmap.md`

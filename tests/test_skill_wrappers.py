@@ -17,7 +17,7 @@ from dset_toolchain.skill_catalog import (
     PUBLIC_SKILL_WORKFLOWS,
     SKILL_INVOCATION_MARKERS,
 )
-from dset_toolchain.yaml_subset import load
+from dset_toolchain.structured_data import load
 from tests import repository_root
 
 # ROOT locates the repository fixture; repository layout is authoritative.

@@ -21,7 +21,7 @@ real adopter moved substantive engineering rules into its repository-local
 governance registry while keeping agent-host files thin. It does not prove
 native Codex or Claude installation or invocation. It provides real-adopter
 evidence for `DSET-REQUIREMENT-SKILL-011`; the accepted compatibility Test
-mappings remain `DSET-TEST-SKILL-010` and `DSET-TEST-GOV-017`.
+mappings remain `DSET-TEST-PLAN-SKILL-010` and `DSET-TEST-PLAN-GOV-017`.
 
 ## Result
 

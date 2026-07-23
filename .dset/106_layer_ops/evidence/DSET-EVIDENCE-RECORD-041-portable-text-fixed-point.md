@@ -3,7 +3,7 @@ schema_version = "1.0"
 artifact_type = "evidence_record"
 artifact_subtype = "test_result"
 artifact_id = "DSET-EVIDENCE-RECORD-041"
-priority = "critical"
+priority = "high"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 context = ["commit=a473c29073a9660b35f2a7f78d3d715609b063fe", "platform=macos", "python=3.14.6", "github_actions_failure_run=29799045908", "tests=314"]
 observed_at = "2026-07-21T16:45:37+04:00"
@@ -13,7 +13,7 @@ currentness = "current"
 reopen_when = "The repository text-attribute policy, carrier hashing, commit-relation path filter, bootstrap template/bundle, or covered validation commands change; hosted platform proof remains independently open."
 
 [subject]
-id = "DSET-TEST-OPS-017"
+id = "DSET-TEST-PLAN-OPS-017"
 revision = "a473c29073a9660b35f2a7f78d3d715609b063fe"
 intended_use = "Prove the local portable-text repair and the generated-view fixed point without claiming fresh hosted Windows or WSL execution."
 
@@ -27,7 +27,7 @@ setup = "macOS Codex workspace; existing locked .venv; direct .venv executables 
 
 [[relations]]
 type = "evidence_for"
-target = "DSET-TEST-OPS-017"
+target = "DSET-TEST-PLAN-OPS-017"
 +++
 
 # Test result — Portable text and generated-view fixed point

@@ -83,8 +83,8 @@ def resolve_skill_context(
         "semantic_routing": {
             "types": ["decision", "question", "problem", "qa"],
             "classification_count": len(semantic_index),
-            "compatibility_count": sum(
-                1 for item in semantic_index if item["compatibility"]
+            "historical_carrier_count": sum(
+                1 for item in semantic_index if item["historical_carrier"]
             ),
             "source": find_unique_name(
                 root, "110_dset-gov-specification-work-items.md"

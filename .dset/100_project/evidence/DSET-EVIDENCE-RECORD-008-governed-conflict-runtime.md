@@ -16,7 +16,7 @@ llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 - **Intended use:** Support `DSET-DECISION-GOV-003`,
   `DSET-DECISION-GOV-010`, `DSET-REQUIREMENT-GOV-020`,
   `DSET-REQUIREMENT-GOV-026`, `DSET-REQUIREMENT-TOOL-019`,
-  `DSET-TEST-GOV-026`, and `DSET-TEST-TOOL-019`.
+  `DSET-TEST-PLAN-GOV-026`, and `DSET-TEST-PLAN-TOOL-019`.
 - **Producer/performed work:** Deterministic resolver, atom emission and
   sealing, append-only lifecycle integration, result freshness check,
   retirement archive move, traceability/health propagation, schemas, CLI,

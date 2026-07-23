@@ -5,7 +5,7 @@ type = "decision"
 subtype = "requirement"
 semantic_id = "DSET-REQUIREMENT-SKILL-011"
 status = "accepted"
-priority = "critical"
+priority = "high"
 child_of = ["DSET-REQUIREMENT-SKILL-010"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 +++

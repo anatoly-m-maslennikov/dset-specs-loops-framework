@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from .layout import discover_layout
-from .yaml_subset import load
+from .structured_data import load
 
 # VALID_PROFILES defines valid profiles; this module owns the default.
 VALID_PROFILES = {"small", "standard", "large", "defect", "adoption"}

@@ -13,7 +13,7 @@ currentness = "current"
 reopen_when = "Claude Code can authenticate through an allowed API domain, or any packet commit, reviewed input, resolved rule, scope, criterion, or pinned host version changes."
 
 [subject]
-id = "DSET-EVAL-GOV-015"
+id = "DSET-EVAL-PLAN-GOV-015"
 revision = "231c56db48a9d1805efdc42f48767e55387dbbe1"
 intended_use = "Record whether the repaired exact DSET review packet received an independent qualitative governance audit without promoting an authentication failure as review evidence."
 
@@ -27,7 +27,7 @@ setup = "Codex Desktop managed workspace on macOS; Claude Code 2.1.205; plan per
 
 [[relations]]
 type = "evidence_for"
-target = "DSET-EVAL-GOV-015"
+target = "DSET-EVAL-PLAN-GOV-015"
 +++
 
 # Evaluation result — Claude review packet 007

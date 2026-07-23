@@ -1,0 +1,241 @@
+"$schema" = "https://json-schema.org/draft/2020-12/schema"
+"$id" = "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/.dset/000_dset_methodology/05_implementation/schemas/enforcement-profile.schema.toml"
+title = "DSET applied enforcement profile"
+type = "object"
+required = ["schema_version", "id", "version", "status", "profile_role", "language_family", "target_revision_policy", "evidence", "toolchain", "scope", "observed", "warning_baseline", "canonical_sequence", "gates", "known_blockers", "promotion"]
+additionalProperties = false
+
+[properties]
+
+[properties.schema_version]
+const = "1.0"
+
+[properties.id]
+type = "string"
+pattern = "^[a-z][a-z0-9-]*$"
+
+[properties.version]
+type = "string"
+minLength = 1
+
+[properties.status]
+enum = ["candidate", "active", "custom"]
+
+[properties.profile_role]
+enum = ["reference", "applied"]
+
+[properties.derived_from]
+type = "string"
+minLength = 1
+
+[properties.language_family]
+type = "string"
+minLength = 1
+
+[properties.target_revision_policy]
+enum = ["exact", "descendant"]
+
+[properties.evidence]
+type = "object"
+required = ["repository", "revision", "observed_on", "license"]
+additionalProperties = false
+
+[properties.evidence.properties]
+
+[properties.evidence.properties.repository]
+type = "string"
+format = "uri"
+pattern = "^https://"
+
+[properties.evidence.properties.revision]
+"$ref" = "#/$defs/sha"
+
+[properties.evidence.properties.upstream_revision]
+"$ref" = "#/$defs/sha"
+
+[properties.evidence.properties.observed_on]
+type = "string"
+format = "date"
+
+[properties.evidence.properties.license]
+type = "string"
+minLength = 1
+
+[properties.toolchain]
+type = "object"
+required = ["runtime", "runtime_range", "package_manager", "lockfile", "scripts"]
+additionalProperties = false
+
+[properties.toolchain.properties]
+
+[properties.toolchain.properties.runtime]
+type = "string"
+minLength = 1
+
+[properties.toolchain.properties.runtime_range]
+type = "string"
+minLength = 1
+
+[properties.toolchain.properties.package_manager]
+type = "string"
+minLength = 1
+
+[properties.toolchain.properties.lockfile]
+"$ref" = "#/$defs/path"
+
+[properties.toolchain.properties.scripts]
+type = "object"
+minProperties = 1
+
+[properties.toolchain.properties.scripts.additionalProperties]
+type = "string"
+minLength = 1
+
+[properties.scope]
+type = "object"
+required = ["source_roots", "test_roots", "required_files", "generated_outputs", "exclusions"]
+additionalProperties = false
+
+[properties.scope.properties]
+
+[properties.scope.properties.source_roots]
+"$ref" = "#/$defs/paths"
+
+[properties.scope.properties.test_roots]
+"$ref" = "#/$defs/paths"
+
+[properties.scope.properties.required_files]
+"$ref" = "#/$defs/paths"
+
+[properties.scope.properties.generated_outputs]
+"$ref" = "#/$defs/paths"
+
+[properties.scope.properties.exclusions]
+"$ref" = "#/$defs/paths"
+
+[properties.observed]
+type = "object"
+
+[properties.warning_baseline]
+type = "object"
+required = ["revision", "policy", "error_count", "warning_count", "rules"]
+additionalProperties = false
+
+[properties.warning_baseline.properties]
+
+[properties.warning_baseline.properties.revision]
+"$ref" = "#/$defs/sha"
+
+[properties.warning_baseline.properties.policy]
+const = "shrink-only"
+
+[properties.warning_baseline.properties.error_count]
+const = 0
+
+[properties.warning_baseline.properties.warning_count]
+type = "integer"
+minimum = 0
+
+[properties.warning_baseline.properties.rules]
+type = "object"
+
+[properties.warning_baseline.properties.rules.additionalProperties]
+type = "integer"
+minimum = 0
+
+[properties.canonical_sequence]
+type = "array"
+minItems = 1
+uniqueItems = true
+
+[properties.canonical_sequence.items]
+type = "string"
+minLength = 1
+
+[properties.gates]
+type = "array"
+minItems = 6
+maxItems = 6
+
+[properties.gates.items]
+type = "object"
+required = ["id", "status", "owner", "commands", "mechanism", "thresholds"]
+additionalProperties = false
+
+[properties.gates.items.properties]
+
+[properties.gates.items.properties.id]
+enum = ["conformance", "purity", "spec_sync", "typing_contracts", "lint_static_analysis", "secret_hygiene"]
+
+[properties.gates.items.properties.status]
+enum = ["enforced", "ratcheted", "blocked", "not-applicable"]
+
+[properties.gates.items.properties.owner]
+type = "string"
+minLength = 1
+
+[properties.gates.items.properties.commands]
+type = "array"
+uniqueItems = true
+
+[properties.gates.items.properties.commands.items]
+type = "string"
+minLength = 1
+
+[properties.gates.items.properties.mechanism]
+type = "string"
+minLength = 1
+
+[properties.gates.items.properties.thresholds]
+type = "object"
+
+[properties.gates.items.properties.reason]
+type = "string"
+minLength = 1
+
+[properties.known_blockers]
+type = "array"
+uniqueItems = true
+
+[properties.known_blockers.items]
+type = "string"
+minLength = 1
+
+[properties.promotion]
+type = "object"
+required = ["target_id", "requires"]
+additionalProperties = false
+
+[properties.promotion.properties]
+
+[properties.promotion.properties.target_id]
+type = "string"
+pattern = "^[a-z][a-z0-9-]*$"
+
+[properties.promotion.properties.requires]
+type = "array"
+minItems = 1
+uniqueItems = true
+
+[properties.promotion.properties.requires.items]
+type = "string"
+minLength = 1
+
+["$defs"]
+
+["$defs".sha]
+type = "string"
+pattern = "^[0-9a-f]{40}$"
+
+["$defs".path]
+type = "string"
+minLength = 1
+pattern = "^(?!/)(?![A-Za-z]:)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+
+["$defs".paths]
+type = "array"
+minItems = 1
+uniqueItems = true
+
+["$defs".paths.items]
+"$ref" = "#/$defs/path"

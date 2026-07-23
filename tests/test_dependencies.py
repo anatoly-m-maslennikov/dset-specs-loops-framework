@@ -13,7 +13,7 @@ from pathlib import Path
 
 from dset_toolchain.dependencies import validate_dependency_policy
 from dset_toolchain.temp_paths import temporary_directory
-from dset_toolchain.yaml_subset import dump
+from dset_toolchain.structured_data import dump
 
 
 class DependencyPolicyTests(unittest.TestCase):

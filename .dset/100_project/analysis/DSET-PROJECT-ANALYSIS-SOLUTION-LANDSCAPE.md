@@ -4,18 +4,18 @@
 
 | Capability | Requirement/test/eval IDs | Hard constraints |
 |---|---|---|
-| Repository rule authority | `DSET-REQUIREMENT-GOV-014`, `DSET-REQUIREMENT-GOV-017`; `DSET-TEST-GOV-014`, `DSET-TEST-GOV-017`; `DSET-EVAL-GOV-007` | Local paths, one editable owner per rule ID, no remote live authority |
-| Thin adaptive wrappers | `DSET-REQUIREMENT-SKILL-002`, `DSET-REQUIREMENT-SKILL-003`; `DSET-TEST-SKILL-002`, `DSET-TEST-SKILL-003`; `DSET-EVAL-SKILL-002`, `DSET-EVAL-GOV-009` | Same wrapper hash, no embedded normative fallback |
-| Bounded self-hosting | `DSET-REQUIREMENT-OPS-003`, `DSET-REQUIREMENT-TOOL-004`; `DSET-TEST-OPS-003`, `DSET-TEST-TOOL-005` | Terminates, profile-aware, framework before external pilot |
-| Honest failure/customization | `DSET-REQUIREMENT-GOV-015..016`; `DSET-TEST-GOV-015..016`; `DSET-EVAL-GOV-008..009` | Stable diagnostics, justified non-applicability, explicit custom identity |
-| Separate proof | `DSET-REQUIREMENT-META-007`; `DSET-TEST-META-007`; all evals | Tests and evals remain different artifacts and evidence streams |
-| Discoverable skill surface | `DSET-REQUIREMENT-SKILL-004`, `DSET-REQUIREMENT-SKILL-005`; `DSET-TEST-SKILL-004`, `DSET-TEST-SKILL-005`; `DSET-EVAL-SKILL-003` | One catch-all entrypoint, explicit lifecycle shortcuts, no duplicated substantive rules |
-| Investigable next-step routing | `DSET-REQUIREMENT-SKILL-006`; `DSET-TEST-SKILL-006`; `DSET-EVAL-SKILL-005` | Bounded local evidence, redaction, no competing authority |
-| Predictable pre-1.0 releases | `DSET-REQUIREMENT-OPS-004`, `DSET-REQUIREMENT-OPS-007`; `DSET-TEST-OPS-004`, `DSET-TEST-OPS-007`; `DSET-EVAL-OPS-002` | Integer version tuple, one bump per main PR, coordinated product/package identity |
-| Guarded RC/final publication | `DSET-REQUIREMENT-OPS-005..006`; `DSET-TEST-OPS-005..006`; `DSET-EVAL-OPS-003` | PR-only main updates, fully working RC, evidence-gated 1.0 |
-| Proportional delegation budget | `DSET-REQUIREMENT-SKILL-007..008`; `DSET-TEST-SKILL-007..008`; `DSET-EVAL-SKILL-005..006` | Main model/effort inheritance, useful medium fan-out, outcome cost rather than nominal price |
-| Session continuity | `DSET-REQUIREMENT-SKILL-009`; `DSET-TEST-SKILL-009`; `DSET-EVAL-SKILL-008` | One public entrypoint, linked internal runs, bounded checkpoint recovery after compaction, and authoritative-state refresh |
-| Unambiguous semantic routing | `DSET-REQUIREMENT-GOV-018..019`; `DSET-TEST-GOV-018..019`; `DSET-EVAL-GOV-010..011` | Exactly four Types; one direct subtype at most; User Story is a Decision subtype; tasks and Changes remain non-Type structures; legacy IDs retain stable lookup |
+| Repository rule authority | `DSET-REQUIREMENT-GOV-014`, `DSET-REQUIREMENT-GOV-017`; `DSET-TEST-PLAN-GOV-014`, `DSET-TEST-PLAN-GOV-017`; `DSET-EVAL-PLAN-GOV-007` | Local paths, one editable owner per rule ID, no remote live authority |
+| Thin adaptive wrappers | `DSET-REQUIREMENT-SKILL-002`, `DSET-REQUIREMENT-SKILL-003`; `DSET-TEST-PLAN-SKILL-002`, `DSET-TEST-PLAN-SKILL-003`; `DSET-EVAL-PLAN-SKILL-002`, `DSET-EVAL-PLAN-GOV-009` | Same wrapper hash, no embedded normative fallback |
+| Bounded self-hosting | `DSET-REQUIREMENT-OPS-003`, `DSET-REQUIREMENT-TOOL-004`; `DSET-TEST-PLAN-OPS-003`, `DSET-TEST-PLAN-TOOL-005` | Terminates, profile-aware, framework before external pilot |
+| Honest failure/customization | `DSET-REQUIREMENT-GOV-015..016`; `DSET-TEST-PLAN-GOV-015..016`; `DSET-EVAL-PLAN-GOV-008..009` | Stable diagnostics, justified non-applicability, explicit custom identity |
+| Separate proof | `DSET-REQUIREMENT-META-007`; `DSET-TEST-PLAN-META-007`; all evals | Tests and evals remain different artifacts and evidence streams |
+| Discoverable skill surface | `DSET-REQUIREMENT-SKILL-004`, `DSET-REQUIREMENT-SKILL-005`; `DSET-TEST-PLAN-SKILL-004`, `DSET-TEST-PLAN-SKILL-005`; `DSET-EVAL-PLAN-SKILL-003` | One catch-all entrypoint, explicit lifecycle shortcuts, no duplicated substantive rules |
+| Investigable next-step routing | `DSET-REQUIREMENT-SKILL-006`; `DSET-TEST-PLAN-SKILL-006`; `DSET-EVAL-PLAN-SKILL-005` | Bounded local evidence, redaction, no competing authority |
+| Predictable pre-1.0 releases | `DSET-REQUIREMENT-OPS-004`, `DSET-REQUIREMENT-OPS-007`; `DSET-TEST-PLAN-OPS-004`, `DSET-TEST-PLAN-OPS-007`; `DSET-EVAL-PLAN-OPS-002` | Integer version tuple, one bump per main PR, coordinated product/package identity |
+| Guarded RC/final publication | `DSET-REQUIREMENT-OPS-005..006`; `DSET-TEST-PLAN-OPS-005..006`; `DSET-EVAL-PLAN-OPS-003` | PR-only main updates, fully working RC, evidence-gated 1.0 |
+| Proportional delegation budget | `DSET-REQUIREMENT-SKILL-007..008`; `DSET-TEST-PLAN-SKILL-007..008`; `DSET-EVAL-PLAN-SKILL-005..006` | Main model/effort inheritance, useful medium fan-out, outcome cost rather than nominal price |
+| Session continuity | `DSET-REQUIREMENT-SKILL-009`; `DSET-TEST-PLAN-SKILL-009`; `DSET-EVAL-PLAN-SKILL-008` | One public entrypoint, linked internal runs, bounded checkpoint recovery after compaction, and authoritative-state refresh |
+| Unambiguous semantic routing | `DSET-REQUIREMENT-GOV-018..019`; `DSET-DECISION-GOV-034`; `DSET-TEST-PLAN-GOV-018..019`; `DSET-EVAL-PLAN-GOV-010..011` | Exactly four Types; one direct subtype at most; User Story is a Decision subtype; tasks and Changes remain non-Type structures; current and historical identities use one canonical verbose vocabulary without aliases |
 
 ## Candidates
 

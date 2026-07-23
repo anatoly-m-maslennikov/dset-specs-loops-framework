@@ -13,7 +13,7 @@ currentness = "current"
 reopen_when = "Session state, handoff semantics, specialist context resolution, wrapper terminalization, or the subject revision changes."
 
 [subject]
-id = "DSET-TEST-SKILL-017"
+id = "DSET-TEST-PLAN-SKILL-017"
 revision = "b7d79ec08c9a446f8a5358ac44c4c26bf7486d42"
 intended_use = "Support the bounded claim that handoff preserves one explicit active session and only a terminal outcome closes it."
 
@@ -27,7 +27,7 @@ setup = "Python 3.14.6; local macOS execution with isolated runtime state and wr
 
 [[relations]]
 type = "evidence_for"
-target = "DSET-TEST-SKILL-017"
+target = "DSET-TEST-PLAN-SKILL-017"
 +++
 
 # Test result — Session handoff and terminalization

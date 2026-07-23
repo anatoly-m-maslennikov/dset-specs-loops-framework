@@ -8,7 +8,7 @@
     "artifact_type": {"const": "atomic_record"},
     "artifact_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-ATOMIC-RECORD-[0-9]{3,}$"},
     "type": {"enum": ["decision", "question", "problem", "qa"]},
-    "subtype": {"enum": ["requirement", "constraint", "contract", "implementation_decision", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
+    "subtype": {"enum": ["requirement", "constraint", "contract", "implementation_decision", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test_plan", "evaluation_plan"]},
     "semantic_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"},
     "status": {"enum": ["proposed", "accepted"]},
     "priority": {"type": "string", "minLength": 1},
@@ -61,7 +61,7 @@
   "allOf": [
     {
       "if": {"properties": {"type": {"const": "qa"}}, "required": ["type"]},
-      "then": {"required": ["subtype"], "properties": {"subtype": {"enum": ["test", "evaluation"]}}}
+      "then": {"required": ["subtype"], "properties": {"subtype": {"enum": ["test_plan", "evaluation_plan"]}}}
     },
     {
       "if": {"properties": {"type": {"const": "decision"}}, "required": ["type", "subtype"]},
@@ -109,7 +109,7 @@
       "required": ["semantic_type", "scope", "through"],
       "properties": {
         "semantic_type": {"enum": ["decision", "question", "problem", "qa"]},
-        "subtype": {"enum": ["none", "requirement", "constraint", "contract", "implementation_decision", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
+        "subtype": {"enum": ["none", "requirement", "constraint", "contract", "implementation_decision", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test_plan", "evaluation_plan"]},
         "layer": {"enum": ["meta", "gov", "tool", "skill", "implementation", "ops"]},
         "scope": {
           "type": "object",

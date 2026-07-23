@@ -14,7 +14,7 @@ llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
   starts with Decision reconciliation, conditionally routes proof and build
   planning, preserves child-run provenance, and stops safely.
 - **Intended use:** Replace the earlier static wrapper/rule evidence for
-  `DSET-REQUIREMENT-SKILL-010`, `DSET-TEST-SKILL-012`, and
+  `DSET-REQUIREMENT-SKILL-010`, `DSET-TEST-PLAN-SKILL-012`, and
   `DSET-TASK-SKILL-024` with executable runtime evidence.
 - **Producer/performed work:** Closure state machine, checkpoint schema 1.2,
   child-run and closure bridge commands, shared-context handoff, compatibility
@@ -29,7 +29,7 @@ llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
   schema, child-run linkage, authorization classes, context resolution, or
   repair exception boundaries change.
 - **Unsupported uses:** this proof does not claim native-host usefulness,
-  qualitative `DSET-EVAL-SKILL-010`, automatic judgment of plan completeness,
+  qualitative `DSET-EVAL-PLAN-SKILL-010`, automatic judgment of plan completeness,
   or implementation/release authority.
 
 ## Deterministic results

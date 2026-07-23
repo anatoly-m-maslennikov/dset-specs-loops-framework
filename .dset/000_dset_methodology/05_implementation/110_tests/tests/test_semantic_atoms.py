@@ -122,7 +122,7 @@ class SemanticAtomTests(unittest.TestCase):
                 for item in build_semantic_classification_index(root)
             }
             self.assertEqual(rows["DSET-CONTRACT-GOV-001"]["subtype"], "contract")
-            self.assertTrue(rows["DSET-CONTRACT-GOV-001"]["compatibility"])
+            self.assertTrue(rows["DSET-CONTRACT-GOV-001"]["historical_carrier"])
 
             historical.write_text("contracts: []\n", encoding="utf-8")
             messages = [item.message for item in validate_legacy_authority_ledger(root)]

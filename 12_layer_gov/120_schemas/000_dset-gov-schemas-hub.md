@@ -2,22 +2,22 @@
 
 Repository-governance schemas owned by GOV:
 
-- `artifacts.schema.json`
-- `artifact-types.schema.json`
-- `atom.schema.json` — canonical typed relations plus
+- `artifacts.schema.toml`
+- `artifact-types.schema.toml`
+- `atom.schema.toml` — canonical typed relations plus
   sealed legacy `child_of` compatibility
-- `atom-ledger.schema.json`
-- `lifecycle.schema.json`
-- `change.schema.json`
-- `governance.schema.json` — schema 1.1 separates
+- `atom-ledger.schema.toml`
+- `lifecycle.schema.toml`
+- `change.schema.toml`
+- `governance.schema.toml` — schema 1.1 separates
   dependency from conflict precedence
-- `intake.schema.json`
-- `provenance.schema.json`
-- `compilation.schema.json`
-- `conflict-candidate.schema.json`
-- `conflict-result.schema.json`
-- `review-packet.schema.json`
-- `review-report.schema.json`
-- `review-reconciliation.schema.json`
+- `intake.schema.toml`
+- `provenance.schema.toml`
+- `compilation.schema.toml`
+- `conflict-candidate.schema.toml`
+- `conflict-result.schema.toml`
+- `review-packet.schema.toml`
+- `review-report.schema.toml`
+- `review-reconciliation.schema.toml`
 
 Other schema families live with their META, TOOL, SKILL, or OPS owner.

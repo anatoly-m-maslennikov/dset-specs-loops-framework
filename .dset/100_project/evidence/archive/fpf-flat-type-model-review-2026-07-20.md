@@ -71,6 +71,6 @@ from workflow or carrier.
 - 133 unit and fixture tests — passed.
 - `git diff --check` — passed before proof promotion.
 
-The qualitative `DSET-EVAL-GOV-017` reviewer-agreement run remains a separate
+The qualitative `DSET-EVAL-PLAN-GOV-017` reviewer-agreement run remains a separate
 pending Evaluation; deterministic checks prove projection consistency, not
 human classification reliability.

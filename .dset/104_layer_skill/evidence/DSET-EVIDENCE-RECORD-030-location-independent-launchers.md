@@ -13,7 +13,7 @@ currentness = "current"
 reopen_when = "A wrapper command, governed executable instruction, launcher renderer, supported shell contract, or subject revision changes."
 
 [subject]
-id = "DSET-TEST-SKILL-016"
+id = "DSET-TEST-PLAN-SKILL-016"
 revision = "b7d79ec08c9a446f8a5358ac44c4c26bf7486d42"
 intended_use = "Support the bounded claim that every executable DSET instruction uses one package-local launcher without ambient PATH fallback."
 
@@ -27,7 +27,7 @@ setup = "Python 3.14.6; local macOS execution with deterministic macOS, Linux, W
 
 [[relations]]
 type = "evidence_for"
-target = "DSET-TEST-SKILL-016"
+target = "DSET-TEST-PLAN-SKILL-016"
 +++
 
 # Test result — Location-independent launchers

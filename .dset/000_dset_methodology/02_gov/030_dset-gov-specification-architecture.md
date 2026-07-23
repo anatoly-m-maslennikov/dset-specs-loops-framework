@@ -88,7 +88,7 @@ view connected to it. One stored record may link several of those roles but
 must keep their meanings and identifiers distinct.
 
 In particular, an operator acceptance act grants authority to Decision
-directive content; a QA atom defines a check; execution performs work; results
+directive content; a QA atom defines a Test Plan or Evaluation Plan; execution performs work; results
 and logs provide evidence; and Verification derives a current bounded reliance
 statement. A carrier does none of those merely by containing readable text.
 Multi-head claims split into linked sibling atoms. Irreducible subtype
@@ -172,6 +172,13 @@ influence on the immediately following layer is preferred because it keeps
 boundaries local and legible. An explicit longer forward jump is valid when an
 intermediate layer has no meaningful ownership to add.
 
+When an otherwise eligible normative conflict reaches priority comparison, the
+artifact owned by the earlier layer receives one virtual effective-priority
+step over the later-layer artifact. The bonus applies once regardless of layer
+distance and never changes stored priority. It is a comparison consequence of
+the forward-only authority chain, not a new backward dependency or a permanent
+precedence relation.
+
 A downstream artifact may cite, depend on, implement, check, or provide
 evidence for upstream authority. Those relations consume earlier authority;
 they do not reverse it. In the rule registry, a rule may depend only on a rule
@@ -193,6 +200,12 @@ features inside one feature group belongs to that group; a concern spanning
 groups or layers belongs to the project. Abstract, important, or reusable does
 not by itself mean project-level.
 
+During an eligible conflict comparison, a strict structural-scope ancestor
+receives one virtual effective-priority step over its applicable descendant.
+Thus a project Contract gains one step over a conflicting feature, group, or
+layer Requirement. Peer features and unrelated scopes gain no structural
+bonus, and the comparison never changes either artifact's canonical owner.
+
 The project-level set owns genuinely project-wide outcomes, user journeys, and
 requirements; cross-child Contracts and dependency rules; shared API, data,
 and event semantics; end-to-end Tests and Evaluations; cross-cutting
@@ -211,7 +224,7 @@ authored. One source-target pair has one primary relation.
 
 `child_of` narrows or decomposes a claim and keeps both active. `analysis_of`
 owns investigation. `implementation_of` owns realization. `check_of` owns a
-Test/Evaluation definition. `evidence_for` owns observed support.
+Test Plan or Evaluation Plan definition. `evidence_for` owns observed support.
 `resolution_of` closes a Question, Conflict, or Problem. `override_of` changes
 authority only in a narrower scope. `replacement_of` completely replaces an
 atom and requires append-only absorption. These three structural or

@@ -294,14 +294,15 @@ Actionable work uses priority as one execution-order input; dependencies,
 authorization, gates, and resources may still determine the next action.
 Impact, severity, likelihood, expected value, obligations, and Outcome value
 stay in their owning semantics as priority evidence, not a second universal
-rank. The selected project profile owns one bounded scale, legend, inheritance,
-override, and escalation rules. `core-v1` orders `critical`, `high`, `medium`,
-`low`, then `deferred`; lower list position means lower current execution
-priority. `.dset/dset_settings.toml` publishes the ordered scale and its default. An
-artifact without a direct priority inherits through its owning atom or Change,
-then the project default. An explicit historical `unknown` remains unknown
-until an append-only priority event supplies a value; it never silently falls
-back.
+rank. DSET stores only `high`, `medium`, and `low`; lower list position means
+lower current execution priority. `highest` is virtual-only. The former
+`critical` label is recoded to `high`. `deferred` is not a priority: current
+low-urgency work uses `low`, while non-current work belongs in a named future
+Version Roadmap. `.dset/dset_settings.toml` publishes the ordered scale and its
+default. An artifact without a direct priority inherits through its owning atom
+or Change, then the project default. An explicit historical `unknown` remains
+unknown until an append-only priority event supplies a value; it never silently
+falls back.
 
 Classify each conflict before resolving it. Immutable external authority wins
 over mutable project truth. If two immutable obligations cannot both be

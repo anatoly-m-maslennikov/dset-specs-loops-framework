@@ -16,7 +16,7 @@ from .layout import ID_TOKEN_LAYERS, LAYERS, discover_layout
 from .legacy_authority import legacy_authority_ids
 from .project_data import lifecycle_events, project_section
 from .semantic_types import SEMANTIC_SUBTYPES, build_semantic_classification_index
-from .yaml_subset import YamlSubsetError, load
+from .structured_data import StructuredDataError, load
 
 # ID_PATTERN validates id pattern; this module owns the accepted syntax.
 ID_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
@@ -83,6 +83,8 @@ IGNORED_PARTS = frozenset(
 
 @dataclass(frozen=True)
 class ProjectionRange:
+    """Represent projection range behavior and state."""
+
     semantic_type: str
     subtype: str | None
     layer: str | None
@@ -91,6 +93,7 @@ class ProjectionRange:
     through: str
 
     def as_dict(self) -> dict[str, Any]:
+        """Handle dict using the declared repository contract."""
         data: dict[str, Any] = {
             "semantic_type": self.semantic_type,
             "scope": {"kind": self.scope_kind, "id": self.scope_id},
@@ -105,12 +108,15 @@ class ProjectionRange:
 
 @dataclass(frozen=True)
 class ArtifactRelation:
+    """Represent artifact relation behavior and state."""
+
     type: str
     target: str | None
     range: ProjectionRange | None
     origin: str
 
     def as_dict(self) -> dict[str, Any]:
+        """Handle dict using the declared repository contract."""
         data: dict[str, Any] = {"type": self.type, "origin": self.origin}
         if self.target is not None:
             data["target"] = self.target
@@ -121,6 +127,8 @@ class ArtifactRelation:
 
 @dataclass(frozen=True)
 class RelationNode:
+    """Represent relation node behavior and state."""
+
     id: str
     artifact_id: str
     path: str
@@ -134,6 +142,7 @@ class RelationNode:
 
     @property
     def child_of(self) -> tuple[str, ...]:
+        """Handle of using the declared repository contract."""
         return tuple(
             relation.target
             for relation in self.relations
@@ -143,6 +152,8 @@ class RelationNode:
 
 @dataclass(frozen=True)
 class _RawNode:
+    """Represent raw node behavior and state."""
+
     node: RelationNode
     path: Path
 
@@ -194,6 +205,7 @@ def collect_artifact_relations(
 
 
 def build_relation_index(root: Path) -> list[dict[str, Any]]:
+    """Build relation index using the declared repository contract."""
     nodes, diagnostics = collect_artifact_relations(root)
     if diagnostics:
         raise ValueError(diagnostics[0].message)
@@ -240,6 +252,7 @@ def build_commit_implementation_relations(root: Path) -> list[dict[str, Any]]:
 
 
 def validate_artifact_relations(root: Path) -> list[Diagnostic]:
+    """Validate artifact relations using the declared repository contract."""
     _, diagnostics = collect_artifact_relations(root)
     return diagnostics
 
@@ -252,6 +265,7 @@ def validate_artifact_lineage(root: Path) -> list[Diagnostic]:
 def _collect_raw_nodes(
     root: Path,
 ) -> tuple[list[_RawNode], dict[str, str], list[Diagnostic]]:
+    """Collect raw nodes using the declared repository contract."""
     raw_nodes: list[_RawNode] = []
     aliases: dict[str, str] = {}
     alias_paths: dict[str, Path] = {}
@@ -292,6 +306,7 @@ def _node_from_metadata(
     metadata: dict[str, Any],
     relations: tuple[ArtifactRelation, ...],
 ) -> RelationNode:
+    """Handle from metadata using the declared repository contract."""
     semantic_id = metadata.get("semantic_id")
     node_id = artifact_id
     if (
@@ -326,6 +341,7 @@ def _register_aliases(
     alias_paths: dict[str, Path],
     diagnostics: list[Diagnostic],
 ) -> None:
+    """Handle aliases using the declared repository contract."""
     for alias in {node.artifact_id, node.id}:
         previous = aliases.get(alias)
         if previous is not None and alias_paths[alias] != path:
@@ -343,6 +359,7 @@ def _resolve_nodes(
     inactive: set[str],
     diagnostics: list[Diagnostic],
 ) -> dict[str, RelationNode]:
+    """Resolve nodes using the declared repository contract."""
     nodes: dict[str, RelationNode] = {}
     for raw in raw_nodes:
         resolved = tuple(
@@ -364,6 +381,7 @@ def _resolve_relation(
     inactive: set[str],
     diagnostics: list[Diagnostic],
 ) -> ArtifactRelation:
+    """Resolve relation using the declared repository contract."""
     if relation.target is None:
         return relation
     canonical = aliases.get(relation.target, relation.target)
@@ -385,6 +403,7 @@ def _parse_relation(
     value: object,
     diagnostics: list[Diagnostic],
 ) -> ArtifactRelation | None:
+    """Parse relation using the declared repository contract."""
     if not isinstance(value, dict):
         diagnostics.append(_diag(path, "every relation must be a mapping"))
         return None
@@ -423,6 +442,7 @@ def _parse_range(
     value: object,
     diagnostics: list[Diagnostic],
 ) -> ProjectionRange | None:
+    """Parse range using the declared repository contract."""
     if not isinstance(value, dict):
         diagnostics.append(_diag(path, "projection range must be a mapping"))
         return None
@@ -464,6 +484,7 @@ def _parse_legacy_child_of(
     value: object,
     diagnostics: list[Diagnostic],
 ) -> tuple[ArtifactRelation, ...]:
+    """Parse legacy child of using the declared repository contract."""
     if not isinstance(value, list) or not value:
         diagnostics.append(
             _diag(path, "legacy child_of must be a non-empty list of canonical IDs")
@@ -488,6 +509,7 @@ def _validate_local_uniqueness(
     relations: list[ArtifactRelation],
     diagnostics: list[Diagnostic],
 ) -> None:
+    """Validate local uniqueness using the declared repository contract."""
     keys = [_local_relation_key(item) for item in relations]
     if len(set(keys)) != len(keys):
         diagnostics.append(_diag(path, "relations must be unique"))
@@ -503,6 +525,7 @@ def _validate_resolved_uniqueness(
     nodes: dict[str, RelationNode],
     diagnostics: list[Diagnostic],
 ) -> None:
+    """Validate resolved uniqueness using the declared repository contract."""
     for node in nodes.values():
         targets = [item.target for item in node.relations if item.target is not None]
         if len(set(targets)) != len(targets):
@@ -519,6 +542,7 @@ def _range_diagnostics(
     nodes: dict[str, RelationNode],
     inactive: set[str],
 ) -> list[Diagnostic]:
+    """Handle diagnostics using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     by_artifact = {node.artifact_id: node for node in nodes.values()}
     for node in nodes.values():
@@ -557,6 +581,7 @@ def _range_diagnostics(
 
 
 def _range_matches(node: RelationNode, selector: ProjectionRange) -> bool:
+    """Handle matches using the declared repository contract."""
     if node.artifact_type != "atomic_record":
         return False
     if node.semantic_type != selector.semantic_type:
@@ -572,6 +597,7 @@ def _replacement_diagnostics(
     root: Path,
     nodes: dict[str, RelationNode],
 ) -> list[Diagnostic]:
+    """Handle diagnostics using the declared repository contract."""
     absorbed = _absorption_edges(root)
     diagnostics: list[Diagnostic] = []
     for node in nodes.values():
@@ -592,6 +618,7 @@ def _source_diagnostics(
     root: Path,
     nodes: dict[str, RelationNode],
 ) -> list[Diagnostic]:
+    """Handle diagnostics using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     for node in nodes.values():
         for relation in node.relations:
@@ -604,6 +631,7 @@ def _source_diagnostics(
 
 
 def _source_error(node: RelationNode, relation_type: str) -> str | None:
+    """Handle error using the declared repository contract."""
     if relation_type == "analysis_of" and node.artifact_type != "analysis_report":
         return "analysis_of must originate from an Analysis Report"
     if (
@@ -612,9 +640,10 @@ def _source_error(node: RelationNode, relation_type: str) -> str | None:
     ):
         return "projection_of must originate from an evergreen artifact"
     if relation_type == "check_of" and not (
-        node.semantic_type == "qa" and node.subtype in {"test", "evaluation"}
+        node.semantic_type == "qa"
+        and node.subtype in {"test_plan", "evaluation_plan"}
     ):
-        return "check_of must originate from a Test or Evaluation atom"
+        return "check_of must originate from a Test Plan or Evaluation Plan atom"
     if relation_type == "evidence_for" and node.artifact_type != "evidence_record":
         return "evidence_for must originate from an Evidence Record"
     if relation_type == "override_of" and node.semantic_type != "decision":
@@ -631,6 +660,7 @@ def _cycle_diagnostics(
     nodes: dict[str, RelationNode],
     inactive: set[str],
 ) -> list[Diagnostic]:
+    """Handle diagnostics using the declared repository contract."""
     graph: dict[str, list[str]] = {}
     for identifier, node in nodes.items():
         graph[identifier] = [
@@ -655,6 +685,7 @@ def _visit_cycle(
     diagnostics: list[Diagnostic],
     root: Path,
 ) -> None:
+    """Handle cycle using the declared repository contract."""
     if state.get(identifier) == 2:
         return
     if state.get(identifier) == 1:
@@ -686,6 +717,7 @@ def _visit_cycle(
 
 
 def _commit_relations(record: str) -> list[dict[str, Any]]:
+    """Handle relations using the declared repository contract."""
     record = record.strip()
     if not record or "\x1f" not in record:
         return []
@@ -737,6 +769,7 @@ def _reject_reverse_fields(
 
 
 def _known_relation_ids(root: Path) -> set[str]:
+    """Handle relation ids using the declared repository contract."""
     layout = discover_layout(root)
     current = layout.recursive or layout.separated
     identifiers = set() if current else legacy_authority_ids(root)
@@ -785,9 +818,10 @@ def _known_relation_ids(root: Path) -> set[str]:
 
 
 def _package_ids(path: Path) -> set[str]:
+    """Handle ids using the declared repository contract."""
     try:
         data = load(path)
-    except (OSError, UnicodeError, YamlSubsetError):
+    except (OSError, UnicodeError, StructuredDataError):
         return set()
     if not isinstance(data, dict):
         return set()
@@ -811,6 +845,7 @@ def _frontmatter(path: Path) -> dict[str, Any] | None:
 
 
 def _inactive_semantic_ids(root: Path) -> set[str]:
+    """Handle semantic ids using the declared repository contract."""
     current: dict[str, str] = {}
     for event in _lifecycle_events(root):
         atom_id = event.get("atom_id")
@@ -827,6 +862,7 @@ def _inactive_semantic_ids(root: Path) -> set[str]:
 
 
 def _absorption_edges(root: Path) -> dict[str, str]:
+    """Handle edges using the declared repository contract."""
     edges: dict[str, str] = {}
     for event in _lifecycle_events(root):
         related = event.get("related")
@@ -840,11 +876,12 @@ def _absorption_edges(root: Path) -> dict[str, str]:
 def _lifecycle_events(root: Path) -> list[dict[str, Any]]:
     try:
         return lifecycle_events(root)
-    except (OSError, UnicodeError, ValueError, YamlSubsetError):
+    except (OSError, UnicodeError, ValueError, StructuredDataError):
         return []
 
 
 def _layer_from_id(identifier: str) -> str | None:
+    """Handle from id using the declared repository contract."""
     for segment in identifier.split("-"):
         mapped = ID_TOKEN_LAYERS.get(segment.upper())
         if mapped is not None:
@@ -865,6 +902,7 @@ def _optional_text(value: object) -> str | None:
 
 
 def _valid_range_subtype(semantic_type: object, subtype: object) -> bool:
+    """Handle range subtype using the declared repository contract."""
     if subtype is None:
         return True
     if not isinstance(semantic_type, str) or not isinstance(subtype, str):

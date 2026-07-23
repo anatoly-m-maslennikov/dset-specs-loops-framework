@@ -21,43 +21,43 @@ from dset_toolchain.semantic_types import (
     validate_semantic_classifications,
 )
 from dset_toolchain.temp_paths import temporary_directory
-from dset_toolchain.yaml_subset import dump, load
 from tests import repository_root
 
 # ROOT locates the repository fixture; repository layout is authoritative.
 ROOT = repository_root(Path(__file__))
 
 
-class SemanticTypeCompatibilityTests(unittest.TestCase):
+class SemanticTypeClassificationTests(unittest.TestCase):
+    """Verify canonical semantic types across native and historical carriers."""
+
     def test_exact_four_types_and_flat_direct_subtypes(self) -> None:
         self.assertEqual(
             set(SEMANTIC_SUBTYPES), {"decision", "question", "problem", "qa"}
         )
         self.assertEqual(
-            classify_semantic_id("APP-REQ-001"), ("decision", "requirement")
+            classify_semantic_id("APP-REQUIREMENT-001"), ("decision", "requirement")
         )
         self.assertEqual(
-            classify_semantic_id("APP-IMPDEC-002"),
+            classify_semantic_id("APP-IMPL-002"),
             ("decision", "implementation_decision"),
         )
         self.assertEqual(
             classify_semantic_id("APP-OPPORTUNITY-002"), ("question", "opportunity")
         )
-        self.assertEqual(classify_semantic_id("APP-EVAL-003"), ("qa", "evaluation"))
+        self.assertEqual(
+            classify_semantic_id("APP-EVAL-PLAN-003"),
+            ("qa", "evaluation_plan"),
+        )
         self.assertIsNone(classify_semantic_id("APP-TASK-004"))
 
     def test_naming_mode_selects_one_project_wide_sequence_axis(self) -> None:
         self.assertEqual(
-            semantic_naming_axis(
-                "decision", "requirement", include_subtype=False
-            ),
+            semantic_naming_axis("decision", "requirement", include_subtype=False),
             "DECISION",
         )
         self.assertEqual(
-            semantic_naming_axis(
-                "decision", "requirement", include_subtype=True
-            ),
-            "REQ",
+            semantic_naming_axis("decision", "requirement", include_subtype=True),
+            "REQUIREMENT",
         )
         self.assertEqual(
             next_semantic_sequence(
@@ -66,46 +66,54 @@ class SemanticTypeCompatibilityTests(unittest.TestCase):
                 "requirement",
                 include_subtype=True,
             ),
-            56,
+            63,
         )
 
-    def test_repository_legacy_ids_are_classified_without_retyping(self) -> None:
+    def test_repository_uses_canonical_ids_across_carrier_generations(self) -> None:
         rows = {item["id"]: item for item in build_semantic_classification_index(ROOT)}
 
         opportunity = rows["DSET-OPPORTUNITY-GOV-001"]
         self.assertEqual(
             (opportunity["type"], opportunity["subtype"]), ("question", "opportunity")
         )
-        self.assertFalse(opportunity["compatibility"])
-        evaluation = rows["DSET-EVAL-OPS-001"]
+        self.assertFalse(opportunity["historical_carrier"])
+        evaluation = rows["DSET-EVAL-PLAN-OPS-001"]
         self.assertEqual(
-            (evaluation["type"], evaluation["subtype"]), ("qa", "evaluation")
+            (evaluation["type"], evaluation["subtype"]),
+            ("qa", "evaluation_plan"),
         )
-        self.assertTrue(evaluation["compatibility"])
-        compatibility = rows["DSET-REQUIREMENT-GOV-035"]
+        self.assertTrue(evaluation["historical_carrier"])
+        requirement = rows["DSET-REQUIREMENT-GOV-035"]
         self.assertEqual(
-            (compatibility["type"], compatibility["subtype"]),
+            (requirement["type"], requirement["subtype"]),
             ("decision", "requirement"),
         )
-        self.assertTrue(compatibility["compatibility"])
+        self.assertFalse(requirement["historical_carrier"])
         self.assertEqual(validate_semantic_classifications(ROOT), [])
 
     def test_carrier_and_id_kind_mismatch_fails_closed(self) -> None:
         with temporary_directory() as raw:
             root = create_adopter(ROOT, Path(raw) / "adopter")
-            intake_path = discover_layout(root).intake_path
-            intake = load(intake_path)
-            assert isinstance(intake, dict)
-            items = intake["items"]
-            assert isinstance(items, list)
-            items.append(
-                {
-                    "id": "DSET-PROBLEM-GOV-001",
-                    "type": "opportunity",
-                    "status": "open",
-                }
+            carrier = (
+                discover_layout(root).project_root
+                / "question"
+                / "DSET-PROBLEM-GOV-001-mismatched-kind.md"
             )
-            intake_path.write_text(dump(intake, intake_path), encoding="utf-8")
+            carrier.parent.mkdir(parents=True, exist_ok=True)
+            carrier.write_text(
+                """+++
+artifact_type = "atomic_record"
+artifact_id = "DSET-ATOMIC-RECORD-TEST"
+type = "question"
+subtype = "opportunity"
+semantic_id = "DSET-PROBLEM-GOV-001"
+status = "open"
++++
+
+# Deliberately mismatched semantic identity
+""",
+                encoding="utf-8",
+            )
 
             messages = [
                 diagnostic.message

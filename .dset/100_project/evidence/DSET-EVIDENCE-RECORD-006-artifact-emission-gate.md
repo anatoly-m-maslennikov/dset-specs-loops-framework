@@ -14,7 +14,7 @@ llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
   strictness, blocks material ambiguity with focused questions, and proposes
   eligible one-step broader-scope placement without emitting or promoting.
 - **Intended use:** Support `DSET-REQUIREMENT-GOV-035`,
-  `DSET-TEST-GOV-035`, and `DSET-TASK-GOV-058`.
+  `DSET-TEST-PLAN-GOV-035`, and `DSET-TASK-GOV-058`.
 - **Producer/performed work:** Settings parser, deterministic read-only gate,
   CLI integration, skill-context propagation, governance compilation,
   bootstrap regeneration, and repository validation.
@@ -28,7 +28,7 @@ llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
   hierarchy, emission fields, promotion rules, CLI contract, or governing
   artifact-maintenance rule changes.
 - **Unsupported uses:** this proof does not claim the independent qualitative
-  `DSET-EVAL-GOV-025`, operator acceptance of any proposed promotion, or that a
+  `DSET-EVAL-PLAN-GOV-025`, operator acceptance of any proposed promotion, or that a
   successful assessment itself authorizes a write.
 
 ## Deterministic results

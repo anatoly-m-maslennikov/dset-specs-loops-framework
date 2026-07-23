@@ -47,9 +47,13 @@ irreducible claim fits several subtypes, use the empty subtype of its Type and
 record a Question when the ambiguity matters.
 
 When subtype-bearing names are enabled, the direct Decision subtype is the
-external kind: `REQ`, `CONSTR`, `CONTR`, or `IMPDEC`. An empty-subtype Decision
+external kind: `REQUIREMENT`, `CONSTRAINT`, `CONTRACT`, or `IMPL`. An empty-subtype Decision
 uses `DECISION`. Type-only naming uses the Type token and retains the subtype in
-metadata. Historical long-form kinds remain immutable compatibility input.
+metadata. The canonical vocabulary is applied through a complete repository
+migration; short identity aliases are rejected rather than retained as a
+second live naming scheme. The migration changes how an immutable atom is
+addressed; it does not rewrite the atom's claim, rationale, provenance, or
+lifecycle meaning.
 
 ## Decision
 
@@ -62,10 +66,10 @@ database, or hosted record is only its carrier or representation.
 
 | Decision subtype | Canonical definition | New kind |
 |---|---|---|
-| `requirement` | Required observable result, behavior, capability, quality, prevention condition, or obligation | `REQ` |
-| `constraint` | Restriction on acceptable technologies, dependencies, environments, resources, formats, or operating limits | `CONSTR` |
-| `contract` | Provider/consumer and compatibility obligation across a boundary | `CONTR` |
-| `implementation_decision` | Material selected architecture, design, algorithm, data, tooling, or operating approach | `IMPDEC` |
+| `requirement` | Required observable result, behavior, capability, quality, prevention condition, or obligation | `REQUIREMENT` |
+| `constraint` | Externally imposed limitation on acceptable technologies, dependencies, environments, resources, formats, or operating limits | `CONSTRAINT` |
+| `contract` | Provider/consumer and compatibility obligation across a boundary | `CONTRACT` |
+| `implementation_decision` | Material selected architecture, design, algorithm, data, tooling, or operating approach | `IMPL` |
 
 An empty subtype is the general fallback. Routine code detail remains
 implementation. User Story, Outcome, Scenario, and Invariant may appear in
@@ -131,13 +135,14 @@ it does not say whether deterministic or judgment-based proof semantics apply.
 
 | Subtype | Canonical definition | Classification test | Must not represent |
 |---|---|---|---|
-| `test` | A deterministic check with declared conditions and an exact reproducible pass/fail result | Should the same controlled inputs and environment always produce the same verdict? | Rubric-based or probabilistic judgment disguised as exact proof |
-| `evaluation` | A qualitative, probabilistic, statistical, or model-judged assessment with an explicit method, rubric or metric, threshold, and uncertainty treatment where applicable | Does the conclusion require judgment, sampling, calibration, statistics, probability, or an evaluator/model, even if deterministic code executes the method? | An exact deterministic predicate that should be a Test |
+| `test_plan` | A deterministic check definition with declared conditions and an exact reproducible pass/fail result | Should the same controlled inputs and environment always produce the same verdict? | Executable Test code or rubric-based judgment disguised as exact proof |
+| `evaluation_plan` | A qualitative, probabilistic, statistical, or model-judged assessment definition with an explicit method, rubric or metric, threshold, and uncertainty treatment where applicable | Does the conclusion require judgment, sampling, calibration, statistics, probability, or an evaluator/model, even if deterministic code executes the method? | An executable Evaluation or exact deterministic predicate that should be a Test Plan |
 
-A QA atom defines what must be checked. Test code, Evaluation prompts,
+A QA atom is a Test Plan or Evaluation Plan defining what must be checked.
+Test code, Evaluation prompts,
 datasets, harnesses, and fixtures are implementation artifacts. Execution
 results are evidence used by derived Verification. Neither a passing Test nor
-Evaluation becomes project authority.
+Evaluation result becomes project authority.
 
 ## Classification order
 
@@ -150,8 +155,8 @@ Classify an atomic artifact in this order:
    Opportunity, or no subtype.
 3. Does it state a currently true insufficiency? Use **Problem**, then choose
    Defect, Gap, Debt, or no subtype.
-4. Does it define how to check a claim? Use **QA**, then choose Test or
-   Evaluation.
+4. Does it define how to check a claim? Use **QA**, then choose Test Plan or
+   Evaluation Plan.
 
 If none applies, the artifact is probably a document role, lifecycle record,
 implementation artifact, derived view, or optional workflow container rather
@@ -194,7 +199,9 @@ the optional subtype remains metadata. For example, Version Scope may use
 Projects may opt newly emitted artifacts into
 subtype tokens with
 `artifacts.subtype_in_names = true` in `.dset/dset_settings.toml`.
-This independent optional capability never renames existing stable identities.
+Changing this capability requires one complete governed identity migration; a
+repository never operates with two canonical naming vocabularies. Identity
+fields and references migrate; immutable claim content does not.
 
 An Analysis Report interprets information without authorizing its conclusion.
 A Solution Landscape compares live options; Root-Cause Analysis supports a

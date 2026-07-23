@@ -1,0 +1,735 @@
+"$schema" = "https://json-schema.org/draft/2020-12/schema"
+"$id" = "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/.dset/000_dset_methodology/02_gov/schemas/change.schema.toml"
+title = "DSET change manifest"
+type = "object"
+required = ["schema_version", "id", "profile", "status", "packages", "pull_request", "requirements", "tests", "evals"]
+additionalProperties = false
+
+[properties]
+
+[properties.schema_version]
+
+[[properties.schema_version.oneOf]]
+enum = [1.0, 1.1]
+
+[[properties.schema_version.oneOf]]
+type = "string"
+pattern = "^1\\.(?:0|1)-draft$"
+
+[[properties.schema_version.oneOf]]
+const = "1.2"
+
+[properties.id]
+type = "string"
+minLength = 1
+
+[properties.slug]
+"$ref" = "#/$defs/kebab"
+
+[properties.profile]
+enum = ["small", "standard", "large", "defect", "adoption"]
+
+[properties.status]
+enum = ["proposed", "in-progress", "failed", "verified", "archive-ready", "archived"]
+
+[properties.primary_layer]
+"$ref" = "#/$defs/layer"
+
+[properties.affected_layers]
+type = "array"
+minItems = 1
+uniqueItems = true
+
+[properties.affected_layers.items]
+"$ref" = "#/$defs/layer"
+
+[properties.workspace]
+"$ref" = "#/$defs/workspace"
+
+[properties.dependencies]
+type = "array"
+uniqueItems = true
+
+[properties.dependencies.items]
+"$ref" = "#/$defs/dependency"
+
+[properties.priority]
+"$ref" = "#/$defs/priority"
+
+[properties.llm_session_ids]
+"$ref" = "#/$defs/llm_session_ids"
+
+[properties.rationale]
+"$ref" = "#/$defs/rationale"
+
+[properties.target]
+"$ref" = "#/$defs/target"
+
+[properties.packages]
+type = "array"
+minItems = 1
+uniqueItems = true
+
+[properties.packages.items]
+type = "string"
+
+[properties.pull_request]
+"$ref" = "#/$defs/pr"
+
+[properties.release]
+
+[[properties.release.oneOf]]
+"$ref" = "#/$defs/release"
+
+[[properties.release.oneOf]]
+"$ref" = "#/$defs/layered_release"
+
+[properties.intake]
+"$ref" = "#/$defs/intake_ids"
+
+[properties.related_pull_requests]
+type = "array"
+
+[properties.related_pull_requests.items]
+"$ref" = "#/$defs/related_pr"
+
+[properties.requirements]
+"$ref" = "#/$defs/legacy_ids"
+
+[properties.tests]
+"$ref" = "#/$defs/legacy_ids"
+
+[properties.evals]
+"$ref" = "#/$defs/legacy_ids"
+
+[properties.adrs]
+"$ref" = "#/$defs/legacy_ids"
+
+[properties.decisions]
+"$ref" = "#/$defs/decision_ids"
+
+[properties.contracts]
+"$ref" = "#/$defs/contract_ids"
+
+[properties.stories]
+"$ref" = "#/$defs/story_ids"
+
+[properties.outcomes]
+"$ref" = "#/$defs/outcome_ids"
+
+[properties.archive]
+
+[[properties.archive.oneOf]]
+"$ref" = "#/$defs/legacy_archive"
+
+[[properties.archive.oneOf]]
+"$ref" = "#/$defs/layered_archive"
+
+["$defs"]
+
+["$defs".layer]
+enum = ["meta", "gov", "tool", "skill", "ops"]
+
+["$defs".kebab]
+type = "string"
+pattern = "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+
+["$defs".sha_or_pending]
+
+[["$defs".sha_or_pending.oneOf]]
+type = "string"
+pattern = "^[0-9a-f]{40}$"
+
+[["$defs".sha_or_pending.oneOf]]
+const = "pending"
+
+["$defs".change_id]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*-CHANGE-(?:META|GOV|TOOL|SKILL|IMPL|OPS)-[0-9]{3,}$"
+
+["$defs".trace_id]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*-(?:DECISION|REQUIREMENT|CONSTRAINT|CONTRACT|STORY|OUTCOME|SCENARIO|INVARIANT|QUESTION|CONFLICT|RISK|OPPORTUNITY|PROBLEM|DEFECT|GAP|DEBT|TEST-PLAN|EVAL-PLAN|TASK|CHANGE)(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"
+
+["$defs".llm_session_ids]
+type = "array"
+uniqueItems = true
+
+["$defs".llm_session_ids.items]
+type = "string"
+pattern = "^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$"
+
+["$defs".rationale]
+type = "string"
+minLength = 1
+maxLength = 4096
+
+["$defs".priority]
+type = "string"
+minLength = 1
+
+["$defs".legacy_ids]
+type = "array"
+uniqueItems = true
+
+["$defs".legacy_ids.items]
+type = "string"
+pattern = "^[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+
+["$defs".requirement_ids]
+type = "array"
+uniqueItems = true
+
+["$defs".requirement_ids.items]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*-REQUIREMENT(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"
+
+["$defs".test_ids]
+type = "array"
+uniqueItems = true
+
+["$defs".test_ids.items]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*-TEST-PLAN(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"
+
+["$defs".eval_ids]
+type = "array"
+uniqueItems = true
+
+["$defs".eval_ids.items]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*-EVAL-PLAN(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"
+
+["$defs".intake_ids]
+type = "array"
+uniqueItems = true
+
+["$defs".intake_ids.items]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*-(?:QUESTION|CONFLICT|RISK|OPPORTUNITY|PROBLEM|DEFECT|GAP|DEBT)(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"
+
+["$defs".decision_ids]
+type = "array"
+uniqueItems = true
+
+["$defs".decision_ids.items]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*-DECISION(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"
+
+["$defs".contract_ids]
+type = "array"
+uniqueItems = true
+
+["$defs".contract_ids.items]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*-CONTRACT(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"
+
+["$defs".story_ids]
+type = "array"
+uniqueItems = true
+
+["$defs".story_ids.items]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*-STORY(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"
+
+["$defs".outcome_ids]
+type = "array"
+uniqueItems = true
+
+["$defs".outcome_ids.items]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*-OUTCOME(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"
+
+["$defs".pr]
+type = "object"
+required = ["repository", "number", "url"]
+additionalProperties = false
+
+["$defs".pr.properties]
+
+["$defs".pr.properties.repository]
+type = "string"
+pattern = "^[^/]+/[^/]+$"
+
+["$defs".pr.properties.number]
+
+[["$defs".pr.properties.number.oneOf]]
+type = "integer"
+minimum = 1
+
+[["$defs".pr.properties.number.oneOf]]
+const = "pending"
+
+["$defs".pr.properties.url]
+type = "string"
+minLength = 1
+
+["$defs".exact_pr]
+type = "object"
+required = ["repository", "number", "url"]
+additionalProperties = false
+
+["$defs".exact_pr.properties]
+
+["$defs".exact_pr.properties.repository]
+type = "string"
+pattern = "^[^/]+/[^/]+$"
+
+["$defs".exact_pr.properties.number]
+type = "integer"
+minimum = 1
+
+["$defs".exact_pr.properties.url]
+type = "string"
+format = "uri"
+pattern = "^https://"
+
+["$defs".workspace]
+type = "object"
+required = ["isolation", "branch", "base_ref", "base_commit", "head_commit"]
+additionalProperties = false
+
+["$defs".workspace.properties]
+
+["$defs".workspace.properties.isolation]
+enum = ["integration-branch", "branch-worktree"]
+
+["$defs".workspace.properties.branch]
+type = "string"
+minLength = 1
+
+["$defs".workspace.properties.base_ref]
+type = "string"
+minLength = 1
+
+["$defs".workspace.properties.base_commit]
+"$ref" = "#/$defs/sha_or_pending"
+
+["$defs".workspace.properties.head_commit]
+"$ref" = "#/$defs/sha_or_pending"
+
+["$defs".dependency]
+type = "object"
+required = ["change_id", "pull_request", "required_commit", "consumes", "claim", "use", "evidence", "checked_at", "reopen_when", "status"]
+additionalProperties = false
+
+["$defs".dependency.properties]
+
+["$defs".dependency.properties.change_id]
+"$ref" = "#/$defs/change_id"
+
+["$defs".dependency.properties.pull_request]
+"$ref" = "#/$defs/pr"
+
+["$defs".dependency.properties.required_commit]
+"$ref" = "#/$defs/sha_or_pending"
+
+["$defs".dependency.properties.consumes]
+type = "array"
+minItems = 1
+uniqueItems = true
+
+["$defs".dependency.properties.consumes.items]
+"$ref" = "#/$defs/trace_id"
+
+["$defs".dependency.properties.claim]
+type = "string"
+minLength = 1
+
+["$defs".dependency.properties.use]
+type = "string"
+minLength = 1
+
+["$defs".dependency.properties.evidence]
+type = "string"
+minLength = 1
+
+["$defs".dependency.properties.checked_at]
+type = "string"
+format = "date"
+
+["$defs".dependency.properties.reopen_when]
+type = "string"
+minLength = 1
+
+["$defs".dependency.properties.status]
+enum = ["planned", "available", "integrated", "blocked", "stale"]
+
+[["$defs".dependency.allOf]]
+
+["$defs".dependency.allOf.if]
+required = ["status"]
+
+["$defs".dependency.allOf.if.properties]
+
+["$defs".dependency.allOf.if.properties.status]
+enum = ["available", "integrated"]
+
+["$defs".dependency.allOf.then]
+
+["$defs".dependency.allOf.then.properties]
+
+["$defs".dependency.allOf.then.properties.pull_request]
+"$ref" = "#/$defs/exact_pr"
+
+["$defs".dependency.allOf.then.properties.required_commit]
+type = "string"
+pattern = "^[0-9a-f]{40}$"
+
+["$defs".target]
+type = "object"
+required = ["repository", "work_areas"]
+additionalProperties = false
+
+["$defs".target.properties]
+
+["$defs".target.properties.repository]
+type = "boolean"
+
+["$defs".target.properties.work_areas]
+type = "array"
+uniqueItems = true
+
+["$defs".target.properties.work_areas.items]
+"$ref" = "#/$defs/kebab"
+
+[["$defs".target.oneOf]]
+
+["$defs".target.oneOf.properties]
+
+["$defs".target.oneOf.properties.repository]
+const = true
+
+["$defs".target.oneOf.properties.work_areas]
+maxItems = 0
+
+[["$defs".target.oneOf]]
+
+["$defs".target.oneOf.properties]
+
+["$defs".target.oneOf.properties.repository]
+const = false
+
+["$defs".target.oneOf.properties.work_areas]
+minItems = 1
+
+["$defs".related_pr]
+type = "object"
+required = ["number", "role"]
+additionalProperties = false
+
+["$defs".related_pr.properties]
+
+["$defs".related_pr.properties.number]
+type = "integer"
+minimum = 1
+
+["$defs".related_pr.properties.role]
+type = "string"
+minLength = 1
+
+["$defs".release]
+
+[["$defs".release.oneOf]]
+"$ref" = "#/$defs/release_declaration"
+
+[["$defs".release.oneOf]]
+"$ref" = "#/$defs/release_reference"
+
+["$defs".release_declaration]
+type = "object"
+required = ["policy", "class", "base", "target", "readiness", "candidate_commit"]
+additionalProperties = false
+
+["$defs".release_declaration.properties]
+
+["$defs".release_declaration.properties.policy]
+const = "dset/governance/release.md"
+
+["$defs".release_declaration.properties.class]
+enum = ["pending", "bootstrap", "small", "normal", "rc", "final", "breaking"]
+
+["$defs".release_declaration.properties.base]
+type = "object"
+required = ["ref", "commit", "version"]
+additionalProperties = false
+
+["$defs".release_declaration.properties.base.properties]
+
+["$defs".release_declaration.properties.base.properties.ref]
+type = "string"
+minLength = 1
+
+["$defs".release_declaration.properties.base.properties.commit]
+
+[["$defs".release_declaration.properties.base.properties.commit.oneOf]]
+type = "string"
+pattern = "^[0-9a-f]{40}$"
+
+[["$defs".release_declaration.properties.base.properties.commit.oneOf]]
+const = "pending"
+
+["$defs".release_declaration.properties.base.properties.version]
+
+[["$defs".release_declaration.properties.base.properties.version.oneOf]]
+const = "unversioned"
+
+[["$defs".release_declaration.properties.base.properties.version.oneOf]]
+const = "pending"
+
+[["$defs".release_declaration.properties.base.properties.version.oneOf]]
+"$ref" = "#/$defs/semver"
+
+["$defs".release_declaration.properties.target]
+
+[["$defs".release_declaration.properties.target.oneOf]]
+const = "pending"
+
+[["$defs".release_declaration.properties.target.oneOf]]
+"$ref" = "#/$defs/semver"
+
+["$defs".release_declaration.properties.readiness]
+
+[["$defs".release_declaration.properties.readiness.oneOf]]
+const = "pending"
+
+[["$defs".release_declaration.properties.readiness.oneOf]]
+type = "string"
+pattern = "^[A-Za-z0-9][A-Za-z0-9._-]*\\.md$"
+
+["$defs".release_declaration.properties.candidate_commit]
+
+[["$defs".release_declaration.properties.candidate_commit.oneOf]]
+type = "string"
+pattern = "^[0-9a-f]{40}$"
+
+[["$defs".release_declaration.properties.candidate_commit.oneOf]]
+const = "pending"
+
+["$defs".release_reference]
+type = "object"
+required = ["owner_change"]
+additionalProperties = false
+
+["$defs".release_reference.properties]
+
+["$defs".release_reference.properties.owner_change]
+type = "string"
+pattern = "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+
+["$defs".layered_release]
+
+[["$defs".layered_release.oneOf]]
+"$ref" = "#/$defs/layered_release_declaration"
+
+[["$defs".layered_release.oneOf]]
+"$ref" = "#/$defs/layered_release_reference"
+
+["$defs".layered_release_declaration]
+type = "object"
+required = ["policy", "class", "base", "target", "readiness", "candidate_commit"]
+additionalProperties = false
+
+["$defs".layered_release_declaration.properties]
+
+["$defs".layered_release_declaration.properties.policy]
+enum = ["dset/scopes/ops/governance/release.md", ".dset/000_dset_methodology/06_ops/procedure-release.md"]
+
+["$defs".layered_release_declaration.properties.class]
+enum = ["pending", "bootstrap", "small", "normal", "rc", "final", "breaking"]
+
+["$defs".layered_release_declaration.properties.base]
+"$ref" = "#/$defs/release_base"
+
+["$defs".layered_release_declaration.properties.target]
+
+[["$defs".layered_release_declaration.properties.target.oneOf]]
+const = "pending"
+
+[["$defs".layered_release_declaration.properties.target.oneOf]]
+"$ref" = "#/$defs/semver"
+
+["$defs".layered_release_declaration.properties.readiness]
+
+[["$defs".layered_release_declaration.properties.readiness.oneOf]]
+const = "pending"
+
+[["$defs".layered_release_declaration.properties.readiness.oneOf]]
+type = "string"
+pattern = "^[A-Za-z0-9][A-Za-z0-9._-]*\\.md$"
+
+["$defs".layered_release_declaration.properties.candidate_commit]
+"$ref" = "#/$defs/sha_or_pending"
+
+["$defs".layered_release_reference]
+type = "object"
+required = ["owner_change"]
+additionalProperties = false
+
+["$defs".layered_release_reference.properties]
+
+["$defs".layered_release_reference.properties.owner_change]
+"$ref" = "#/$defs/change_id"
+
+["$defs".release_base]
+type = "object"
+required = ["ref", "commit", "version"]
+additionalProperties = false
+
+["$defs".release_base.properties]
+
+["$defs".release_base.properties.ref]
+type = "string"
+minLength = 1
+
+["$defs".release_base.properties.commit]
+"$ref" = "#/$defs/sha_or_pending"
+
+["$defs".release_base.properties.version]
+
+[["$defs".release_base.properties.version.oneOf]]
+const = "unversioned"
+
+[["$defs".release_base.properties.version.oneOf]]
+const = "pending"
+
+[["$defs".release_base.properties.version.oneOf]]
+"$ref" = "#/$defs/semver"
+
+["$defs".semver]
+type = "string"
+pattern = "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-rc\\.[1-9][0-9]*)?$"
+
+["$defs".legacy_archive]
+type = "object"
+required = ["date", "path"]
+additionalProperties = false
+
+["$defs".legacy_archive.properties]
+
+["$defs".legacy_archive.properties.date]
+type = "string"
+format = "date"
+
+["$defs".legacy_archive.properties.path]
+type = "string"
+pattern = "^dset/changes/archive/[0-9]{4}-[0-9]{2}-[0-9]{2}-"
+
+["$defs".layered_archive]
+type = "object"
+required = ["date", "path"]
+additionalProperties = false
+
+["$defs".layered_archive.properties]
+
+["$defs".layered_archive.properties.date]
+type = "string"
+format = "date"
+
+["$defs".layered_archive.properties.path]
+type = "string"
+pattern = "^dset/(?:meta|gov|tool|skill|ops)/changes/archive/[0-9]{4}-[0-9]{2}-[0-9]{2}-"
+
+[[allOf]]
+
+[allOf.if]
+
+[allOf.if.properties]
+
+[allOf.if.properties.schema_version]
+enum = ["1.0", "1.0-draft"]
+
+[allOf.then]
+required = ["adrs"]
+
+[allOf.then.not]
+required = ["decisions"]
+
+[allOf.else]
+required = ["release", "intake", "decisions", "contracts", "llm_session_ids"]
+
+[allOf.else.not]
+required = ["adrs"]
+
+[allOf.else.properties]
+
+[allOf.else.properties.requirements]
+"$ref" = "#/$defs/requirement_ids"
+
+[allOf.else.properties.tests]
+"$ref" = "#/$defs/test_ids"
+
+[allOf.else.properties.evals]
+"$ref" = "#/$defs/eval_ids"
+
+[allOf.else.properties.intake]
+"$ref" = "#/$defs/intake_ids"
+
+[allOf.else.properties.decisions]
+"$ref" = "#/$defs/decision_ids"
+
+[allOf.else.properties.contracts]
+"$ref" = "#/$defs/contract_ids"
+
+[allOf.else.properties.stories]
+"$ref" = "#/$defs/story_ids"
+
+[allOf.else.properties.outcomes]
+"$ref" = "#/$defs/outcome_ids"
+
+[[allOf]]
+
+[allOf.if]
+required = ["schema_version"]
+
+[allOf.if.properties]
+
+[allOf.if.properties.schema_version]
+const = "1.2"
+
+[allOf.then]
+required = ["slug", "stories", "outcomes", "primary_layer", "affected_layers", "workspace", "dependencies", "target"]
+
+[allOf.then.properties]
+
+[allOf.then.properties.id]
+"$ref" = "#/$defs/change_id"
+
+[allOf.then.properties.release]
+"$ref" = "#/$defs/layered_release"
+
+[allOf.then.properties.archive]
+"$ref" = "#/$defs/layered_archive"
+
+[allOf.else]
+
+[allOf.else.not]
+
+[[allOf.else.not.anyOf]]
+required = ["slug"]
+
+[[allOf.else.not.anyOf]]
+required = ["primary_layer"]
+
+[[allOf.else.not.anyOf]]
+required = ["affected_layers"]
+
+[[allOf.else.not.anyOf]]
+required = ["workspace"]
+
+[[allOf.else.not.anyOf]]
+required = ["dependencies"]
+
+[[allOf.else.not.anyOf]]
+required = ["target"]
+
+[allOf.else.properties]
+
+[allOf.else.properties.id]
+"$ref" = "#/$defs/kebab"
+
+[allOf.else.properties.release]
+"$ref" = "#/$defs/release"
+
+[allOf.else.properties.archive]
+"$ref" = "#/$defs/legacy_archive"

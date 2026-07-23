@@ -14,7 +14,7 @@ type = "projection_of"
 [relations.range]
 semantic_type = "decision"
 layer = "gov"
-through = "DSET-ATOMIC-RECORD-167"
+through = "DSET-ATOMIC-RECORD-210"
 
 [relations.range.scope]
 kind = "project"
@@ -25,9 +25,9 @@ type = "projection_of"
 
 [relations.range]
 semantic_type = "qa"
-subtype = "test"
+subtype = "test_plan"
 layer = "gov"
-through = "DSET-ATOMIC-RECORD-114"
+through = "DSET-ATOMIC-RECORD-211"
 
 [relations.range.scope]
 kind = "project"
@@ -38,7 +38,7 @@ type = "projection_of"
 
 [relations.range]
 semantic_type = "qa"
-subtype = "evaluation"
+subtype = "evaluation_plan"
 layer = "gov"
 through = "DSET-ATOMIC-RECORD-115"
 
@@ -63,7 +63,7 @@ type = "projection_of"
 
 [relations.range]
 semantic_type = "qa"
-subtype = "test"
+subtype = "test_plan"
 layer = "gov"
 through = "DSET-ATOMIC-RECORD-079"
 
@@ -76,7 +76,7 @@ type = "projection_of"
 
 [relations.range]
 semantic_type = "qa"
-subtype = "evaluation"
+subtype = "evaluation_plan"
 layer = "gov"
 through = "DSET-ATOMIC-RECORD-080"
 
@@ -102,7 +102,7 @@ type = "projection_of"
 [relations.range]
 semantic_type = "decision"
 layer = "implementation"
-through = "DSET-ATOMIC-RECORD-177"
+through = "DSET-ATOMIC-RECORD-201"
 
 [relations.range.scope]
 kind = "layer"

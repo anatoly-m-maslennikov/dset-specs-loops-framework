@@ -24,7 +24,7 @@ from dset_toolchain.runtime import (
     update_checkpoint,
 )
 from dset_toolchain.temp_paths import temporary_directory
-from dset_toolchain.yaml_subset import dump
+from dset_toolchain.structured_data import dump
 from tests import repository_root
 
 # ROOT locates the repository fixture; repository layout is authoritative.
@@ -83,7 +83,7 @@ class RuntimeTests(unittest.TestCase):
             pending=[
                 {
                     "kind": "proof",
-                    "id": "DSET-TEST-SKILL-009",
+                    "id": "DSET-TEST-PLAN-SKILL-009",
                     "path": "proofs/session.json",
                 }
             ],
@@ -114,7 +114,7 @@ class RuntimeTests(unittest.TestCase):
         persisted = json.loads(terminals[0].read_text(encoding="utf-8"))
         self.assertEqual(persisted, terminal)
         run_schema = json.loads(
-            (ROOT / ".dset/04_layer_skill/schemas/skill-run.schema.json").read_text(
+            (ROOT / ".dset/04_layer_skill/schemas/skill-run.schema.toml").read_text(
                 encoding="utf-8"
             )
         )
@@ -123,7 +123,7 @@ class RuntimeTests(unittest.TestCase):
         final_checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
         checkpoint_schema = json.loads(
             (
-                ROOT / ".dset/04_layer_skill/schemas/session-checkpoint.schema.json"
+                ROOT / ".dset/04_layer_skill/schemas/session-checkpoint.schema.toml"
             ).read_text(encoding="utf-8")
         )
         self.assertEqual(set(final_checkpoint), set(checkpoint_schema["required"]))

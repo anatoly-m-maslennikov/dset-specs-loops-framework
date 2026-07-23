@@ -1,0 +1,69 @@
+"$schema" = "https://json-schema.org/draft/2020-12/schema"
+"$id" = "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/.dset/000_dset_methodology/02_gov/schemas/review-reconciliation.schema.toml"
+title = "DSET external review reconciliation record"
+type = "object"
+required = ["schema_version", "report_id", "report_sha256", "reconciled_at", "llm_session_ids", "findings"]
+additionalProperties = false
+
+[properties]
+
+[properties.schema_version]
+const = "1.0"
+
+[properties.report_id]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*-EVIDENCE-RECORD-[0-9]{3,}$"
+
+[properties.report_sha256]
+type = "string"
+pattern = "^[0-9a-f]{64}$"
+
+[properties.reconciled_at]
+type = "string"
+format = "date-time"
+
+[properties.llm_session_ids]
+type = "array"
+uniqueItems = true
+
+[properties.llm_session_ids.items]
+type = "string"
+pattern = "^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$"
+
+[properties.findings]
+type = "array"
+
+[properties.findings.items]
+"$ref" = "#/$defs/finding"
+
+["$defs"]
+
+["$defs".finding]
+type = "object"
+required = ["finding_id", "disposition", "rationale"]
+additionalProperties = false
+
+["$defs".finding.properties]
+
+["$defs".finding.properties.finding_id]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*-REVIEW-FINDING-[0-9]{3,}$"
+
+["$defs".finding.properties.disposition]
+enum = ["reject", "defer", "route_problem", "route_question", "route_decision", "route_change", "route_evergreen", "route_proof"]
+
+["$defs".finding.properties.rationale]
+type = "string"
+minLength = 1
+
+["$defs".finding.properties.target_id]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"
+
+["$defs".finding.properties.reopen_proof]
+type = "array"
+uniqueItems = true
+
+["$defs".finding.properties.reopen_proof.items]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"

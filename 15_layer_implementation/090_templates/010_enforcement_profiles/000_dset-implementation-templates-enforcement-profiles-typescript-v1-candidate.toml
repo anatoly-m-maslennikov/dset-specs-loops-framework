@@ -6,7 +6,7 @@ profile_role = "reference"
 language_family = "javascript-typescript"
 target_revision_policy = "exact"
 canonical_sequence = ["npm run typecheck", "npm run lint", "npm test -- --runInBand", "npm run build", "python -m dset_toolchain check .", "python -m dset_toolchain trace . --check", "git diff --check"]
-known_blockers = ["OYOHA-TYPECHECK-001", "OYOHA-LINT-001", "OYOHA-TEST-001", "OYOHA-DSET-001", "OYOHA-SECRET-001", "OYOHA-HOSTED-001"]
+known_blockers = ["OYOHA-TYPECHECK-001", "OYOHA-LINT-001", "OYOHA-TEST-PLAN-001", "OYOHA-DSET-001", "OYOHA-SECRET-001", "OYOHA-HOSTED-001"]
 
 [evidence]
 repository = "https://github.com/anatoly-m-maslennikov/obsidian-your-harness"

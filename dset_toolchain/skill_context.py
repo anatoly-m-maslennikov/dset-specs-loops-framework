@@ -16,7 +16,7 @@ from .skill_catalog import (
     PUBLIC_SKILL_MODES,
     PUBLIC_SKILL_WORKFLOWS,
 )
-from .yaml_subset import load
+from .structured_data import load
 
 # CONTEXT_SCHEMA_VERSION defines context schema version; this module owns the default.
 CONTEXT_SCHEMA_VERSION = "1.0"
@@ -115,8 +115,8 @@ def _resolved_context(
         "semantic_routing": {
             "types": ["decision", "question", "problem", "qa"],
             "classification_count": len(semantic_index),
-            "compatibility_count": sum(
-                1 for item in semantic_index if item["compatibility"]
+            "historical_carrier_count": sum(
+                1 for item in semantic_index if item["historical_carrier"]
             ),
             "source": find_unique_name(
                 root, "110_dset-gov-specification-work-items.md"

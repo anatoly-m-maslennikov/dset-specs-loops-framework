@@ -30,10 +30,10 @@
     }
   },
   "$defs": {
-    "trace_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-(?:DECISION|REQUIREMENT|CONSTRAINT|CONTRACT|STORY|OUTCOME|SCENARIO|INVARIANT|QUESTION|CONFLICT|RISK|OPPORTUNITY|PROBLEM|DEFECT|GAP|DEBT|TEST|EVAL|EVALUATION|TASK|CHANGE)(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"},
+    "trace_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-(?:DECISION|REQUIREMENT|CONSTRAINT|CONTRACT|STORY|OUTCOME|SCENARIO|INVARIANT|QUESTION|CONFLICT|RISK|OPPORTUNITY|PROBLEM|DEFECT|GAP|DEBT|TEST-PLAN|EVAL-PLAN|TASK|CHANGE)(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"},
     "requirement_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-REQUIREMENT(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"}},
-    "test_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-TEST(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"}},
-    "eval_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-(?:EVAL|EVALUATION)(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"}},
+    "test_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-TEST-PLAN(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"}},
+    "eval_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-EVAL-PLAN(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"}},
     "contract_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-CONTRACT(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"}},
     "story_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-STORY(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"}},
     "outcome_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-OUTCOME(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"}}

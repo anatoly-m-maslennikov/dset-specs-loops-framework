@@ -2,7 +2,7 @@
 artifact_type = "evidence_record"
 artifact_subtype = "test_result"
 artifact_id = "DSET-EVIDENCE-RECORD-018"
-priority = "critical"
+priority = "high"
 child_of = ["DSET-REQUIREMENT-SKILL-011"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 +++
@@ -17,7 +17,7 @@ llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 
 DSET commit `ca3faa2c99099ca708c5be5f0f0e685926132240`. This record
 tests the real Codex installation boundary for `DSET-CONTRACT-SKILL-001` and
-`DSET-TEST-SKILL-011`. It may support only the current blocked disposition; it
+`DSET-TEST-PLAN-SKILL-011`. It may support only the current blocked disposition; it
 does not prove host discovery, load, invocation, local-rule handoff, or stop
 behavior.
 

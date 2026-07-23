@@ -16,7 +16,7 @@ from .semantic_types import (
     semantic_naming_axis,
 )
 from .settings import load_project_settings
-from .yaml_subset import load
+from .structured_data import load
 
 # SESSION_PATTERN validates session pattern; this module owns the accepted syntax.
 SESSION_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")

@@ -15,7 +15,7 @@ llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
   proof and implementation plans, and local governance bounds the chain by
   observable criterion progress rather than a fixed transition count.
 - **Intended use:** Support `DSET-REQUIREMENT-SKILL-010`,
-  `DSET-INVARIANT-SKILL-009`, `DSET-TEST-SKILL-012`, and
+  `DSET-INVARIANT-SKILL-009`, `DSET-TEST-PLAN-SKILL-012`, and
   `DSET-TASK-SKILL-024`.
 - **Producer/performed work:** Main-session specification compilation, wrapper
   and workflow rename, registry/schema/runtime migration, distribution-bundle
@@ -32,7 +32,7 @@ llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 - **Unsupported uses:** this proof does not claim that every host exposes full
   conversation history, that missing acceptance can be inferred, that native
   Codex/Claude invocation has been re-proved, or that qualitative
-  `DSET-EVAL-SKILL-010` has run.
+  `DSET-EVAL-PLAN-SKILL-010` has run.
 
 ## Deterministic results
 

@@ -37,7 +37,7 @@ where relevant, and authority or override boundary. Profile thresholds,
 including the exclusive 40-line function limit, remain explicit profile TOML
 settings rather than hidden checker literals.
 
-## DSET-REQ-IMPL-007 — Promote runtime configuration deliberately
+## DSET-REQUIREMENT-IMPL-007 — Promote runtime configuration deliberately
 
 Every Implementation Profile defines explicit heuristics for keeping invariants
 as code constants and promoting runtime policy to a typed settings carrier.
@@ -49,7 +49,7 @@ share it as runtime policy, or it needs typed validation, documented precedence,
 or an auditable override boundary. A Test variant alone does not justify a
 settings file, and a settings file is not a dumping ground for literals.
 
-## DSET-REQ-IMPL-008 — Implement project-wide secret exclusion
+## DSET-REQUIREMENT-IMPL-008 — Implement project-wide secret exclusion
 
 Every applicable Implementation Profile excludes secret values from DSET,
 source, non-secret settings, command lines, builds, logs, diagnostics, Tests,
@@ -64,7 +64,7 @@ Email addresses, usernames, and account IDs are not authenticators. They may
 appear in DSET when necessary and authorized, but remain minimized personal
 data and are sourced from the environment when used as mutable runtime values.
 
-## DSET-REQ-IMPL-009 — Resolve runtime identities and secrets by key
+## DSET-REQUIREMENT-IMPL-009 — Resolve runtime identities and secrets by key
 
 Source code and DSET store only stable environment-variable key names for
 runtime logins, emails, account IDs, API keys, passwords, tokens, and other
@@ -74,7 +74,7 @@ development backs the keys with ignored `.env`; managed hosts may supply the
 same keys through environment or secret injection. Help, diagnostics, logs,
 prompts, evidence, and errors never render resolved values.
 
-## DSET-REQ-IMPL-005 — Apply the Agent Skills profile
+## DSET-REQUIREMENT-IMPL-005 — Apply the Agent Skills profile
 
 Every created or updated reusable agent skill must pass
 `agent-skills-v1` before acceptance, installation, distribution, or use as
@@ -90,7 +90,7 @@ coexistence, instruction-following, stop, and output-quality coverage. A claim
 for one provider, host, or model requires evidence for that exact matrix cell
 and never implies compatibility with another.
 
-## DSET-REQ-IMPL-006 — Apply the LLM Evaluations profile
+## DSET-REQUIREMENT-IMPL-006 — Apply the LLM Evaluations profile
 
 Every created or updated Evaluation definition, case set, prompt, harness,
 grader, reconciliation procedure, and result carrier must pass

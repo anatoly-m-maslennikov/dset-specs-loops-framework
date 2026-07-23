@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from pathlib import Path, PurePath
 from typing import Final
 
-from .yaml_subset import YamlSubsetError, load
+from .structured_data import StructuredDataError, load
 
 # LAYERS defines layers; this module owns the default.
 LAYERS: Final[tuple[str, ...]] = (
@@ -501,7 +501,7 @@ class RepositoryLayout:
         seen: dict[str, Path] = {}
         for root in self.schema_roots:
             if root.is_dir():
-                for path in sorted(root.glob("*.json")):
+                for path in sorted(root.glob("*.schema.toml")):
                     previous = seen.get(path.name)
                     if previous is not None:
                         raise ValueError(
@@ -601,7 +601,7 @@ class RepositoryLayout:
                         continue
                     try:
                         data = load(manifest)
-                    except (OSError, ValueError, YamlSubsetError):
+                    except (OSError, ValueError, StructuredDataError):
                         continue
                     if isinstance(data, dict) and data.get("id") == change_id:
                         matches.append(path)
@@ -626,7 +626,7 @@ class RepositoryLayout:
             manifest = self.structured_file(resolved, "change.toml")
             try:
                 data = load(manifest)
-            except (OSError, ValueError, YamlSubsetError) as error:
+            except (OSError, ValueError, StructuredDataError) as error:
                 raise ValueError(
                     f"cannot read Change layer: {manifest}: {error}"
                 ) from error
@@ -976,7 +976,7 @@ def _schema_version(path: Path) -> str | None:
     """Handle version using the declared repository contract."""
     try:
         data = load(path)
-    except (OSError, ValueError, YamlSubsetError):
+    except (OSError, ValueError, StructuredDataError):
         return None
     raw = data.get("schema_version") if isinstance(data, dict) else None
     if isinstance(raw, str):
@@ -990,7 +990,7 @@ def _structure_layout(path: Path) -> str | None:
     """Handle layout using the declared repository contract."""
     try:
         data = load(path)
-    except (OSError, ValueError, YamlSubsetError):
+    except (OSError, ValueError, StructuredDataError):
         return None
     structure = data.get("structure") if isinstance(data, dict) else None
     raw = structure.get("layout") if isinstance(structure, dict) else None
@@ -1045,7 +1045,7 @@ def _registered_snapshot_after_cutover(snapshot: Path) -> bool:
             return False
         try:
             data = load(registry)
-        except (OSError, ValueError, YamlSubsetError):
+        except (OSError, ValueError, StructuredDataError):
             return False
         entries = data.get("legacy_structured") if isinstance(data, dict) else None
         if not isinstance(entries, list):

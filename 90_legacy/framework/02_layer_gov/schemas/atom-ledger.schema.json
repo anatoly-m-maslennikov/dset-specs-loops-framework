@@ -23,7 +23,7 @@
             "pattern": "^DSET-CARRIER-TRANSITION-[A-F0-9]{16}$"
           },
           "type": {"enum": ["decision", "question", "problem", "qa"]},
-          "subtype": {"enum": ["none", "requirement", "constraint", "contract", "user_story", "outcome", "scenario", "invariant", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]}
+          "subtype": {"enum": ["none", "requirement", "constraint", "contract", "user_story", "outcome", "scenario", "invariant", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test_plan", "evaluation_plan"]}
         },
         "additionalProperties": false
       }

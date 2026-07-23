@@ -176,11 +176,11 @@ def build_health_model(root: Path) -> dict[str, Any]:
                     ).items()
                 )
             ),
-            "compatibility": sum(
-                1 for item in semantic_classifications if item["compatibility"]
+            "historical_carriers": sum(
+                1 for item in semantic_classifications if item["historical_carrier"]
             ),
             "native_atoms": sum(
-                1 for item in semantic_classifications if not item["compatibility"]
+                1 for item in semantic_classifications if not item["historical_carrier"]
             ),
         },
         "relation_counts": {
@@ -277,8 +277,8 @@ def render_health(root: Path) -> str:
             f"- **By Type:** {_counter_text(semantic_counts['by_type'])}",
             f"- **By direct subtype:** {_counter_text(semantic_counts['by_subtype'])}",
             f"- **Native immutable atoms:** {semantic_counts['native_atoms']}",
-            "- **Compatibility-classified legacy IDs:** "
-            f"{semantic_counts['compatibility']}",
+            "- **Historically classified carriers:** "
+            f"{semantic_counts['historical_carriers']}",
             "",
             "## Typed relation inventory",
             "",

@@ -33,8 +33,8 @@
   "$defs": {
     "layer": {"enum": ["meta", "gov", "tool", "skill", "ops"]},
     "requirement_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-REQUIREMENT(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"}},
-    "test_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-TEST(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"}},
-    "eval_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-EVAL(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"}},
+    "test_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-TEST-PLAN(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"}},
+    "eval_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-EVAL-PLAN(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"}},
     "contract_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-CONTRACT(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"}},
     "story_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-STORY(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"}},
     "outcome_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-OUTCOME(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"}}

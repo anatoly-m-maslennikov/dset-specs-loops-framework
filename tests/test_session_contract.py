@@ -24,7 +24,7 @@ class SessionContractTests(unittest.TestCase):
 
     def test_run_records_link_every_invocation_to_one_session(self) -> None:
         schema = json.loads(
-            (SKILL_ROOT / "schemas" / "skill-run.schema.json").read_text(
+            (SKILL_ROOT / "schemas" / "skill-run.schema.toml").read_text(
                 encoding="utf-8"
             )
         )
@@ -58,7 +58,7 @@ class SessionContractTests(unittest.TestCase):
 
     def test_checkpoint_is_bounded_and_points_back_to_authority(self) -> None:
         schema = json.loads(
-            (SKILL_ROOT / "schemas" / "session-checkpoint.schema.json").read_text(
+            (SKILL_ROOT / "schemas" / "session-checkpoint.schema.toml").read_text(
                 encoding="utf-8"
             )
         )

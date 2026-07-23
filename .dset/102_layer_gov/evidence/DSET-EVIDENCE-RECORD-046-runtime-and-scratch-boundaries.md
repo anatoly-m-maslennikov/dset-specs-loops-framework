@@ -3,7 +3,7 @@ schema_version = "1.0"
 artifact_type = "evidence_record"
 artifact_subtype = "test_result"
 artifact_id = "DSET-EVIDENCE-RECORD-046"
-priority = "critical"
+priority = "high"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 context = ["candidate_commit=57dd0a1a17f0c85118e10e628180c2222834df22", "platform=macos", "python=3.14.3", "tests=326", "ruff_files=94", "mypy_modules=44", "schema=1.3"]
 observed_at = "2026-07-22T21:19:36+04:00"
@@ -13,7 +13,7 @@ currentness = "current"
 reopen_when = "The .dset control boundary, .dset_runtime storage boundary, temporary-directory helper, bootstrap/self-host lifecycle, atomic-publication mechanism, migration, ignore rules, or configured verification commands change."
 
 [subject]
-id = "DSET-TEST-GOV-048"
+id = "DSET-TEST-PLAN-GOV-048"
 revision = "57dd0a1a17f0c85118e10e628180c2222834df22"
 intended_use = "Verify separate committed-control, ignored-runtime, disposable-scratch, and bounded atomic-publication boundaries at one exact implementation commit."
 
@@ -27,7 +27,7 @@ setup = "Codex Desktop managed workspace on macOS; repository virtual environmen
 
 [[relations]]
 type = "evidence_for"
-target = "DSET-TEST-GOV-048"
+target = "DSET-TEST-PLAN-GOV-048"
 +++
 
 # Test result — runtime and scratch boundaries
@@ -61,4 +61,4 @@ and was removed.
 The managed Codex sandbox did not permit a direct filesystem write to `/tmp`;
 therefore this record proves the production POSIX path choice deterministically
 but does not claim a native-host `/tmp` creation receipt. Qualitative boundary
-interpretation remains separate under `DSET-EVALUATION-GOV-032`.
+interpretation remains separate under `DSET-EVAL-PLAN-GOV-032`.

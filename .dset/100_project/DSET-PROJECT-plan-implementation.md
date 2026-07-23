@@ -59,7 +59,7 @@
 - Define `DSET-CONTRACT-OPS-001` for real GitHub Actions workflow/run/check evidence bound to the actual implementing PR SHA and protected integration.
 - Keep these observable conformance boundaries separate from Decisions, which record choices and rationale.
 
-## Batch 6 — Outcome and deferred product practices — specification complete
+## Batch 6 — Outcome and future product practices — specification complete
 
 - Define Outcome as a measurable state change rather than an output, feature, milestone, or task completion.
 - Record one DSET 0.3 adoption-readiness Decision/Outcome with baseline,

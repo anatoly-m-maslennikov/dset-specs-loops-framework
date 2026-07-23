@@ -9,7 +9,7 @@ from typing import Any
 
 from .diagnostics import Diagnostic
 from .layout import discover_layout
-from .yaml_subset import YamlSubsetError, load
+from .structured_data import StructuredDataError, load
 
 # PACKAGE_BLOCK defines package block; this module owns the default.
 PACKAGE_BLOCK = re.compile(r"(?ms)^\[\[package\]\]\n(.*?)(?=^\[\[package\]\]|\Z)")
@@ -52,7 +52,7 @@ def validate_dependency_policy(
     current_date = today or date.today()
     try:
         data = load(path)
-    except (OSError, UnicodeError, YamlSubsetError) as error:
+    except (OSError, UnicodeError, StructuredDataError) as error:
         return [_diag(path, f"dependency policy cannot be parsed: {error}")]
     if not isinstance(data, dict):
         return [_diag(path, "dependency policy must be a mapping")]
@@ -363,7 +363,7 @@ def _repository_role(manifest_path: Path) -> str | None:
     """Handle role using the declared repository contract."""
     try:
         manifest = load(manifest_path)
-    except (OSError, UnicodeError, YamlSubsetError):
+    except (OSError, UnicodeError, StructuredDataError):
         return None
     if not isinstance(manifest, dict):
         return None

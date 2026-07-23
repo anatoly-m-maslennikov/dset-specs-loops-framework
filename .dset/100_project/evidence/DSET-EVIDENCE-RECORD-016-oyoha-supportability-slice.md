@@ -24,7 +24,7 @@ recovery, released-bundle rollback, hosted workflow, or real incident path.
 ## Result
 
 OYOHA emitted and sealed `OYOHA-REQUIREMENT-OPS-001`,
-`OYOHA-DECISION-OPS-001`, and `OYOHA-TEST-OPS-002`; compiled them into its OPS
+`OYOHA-DECISION-OPS-001`, and `OYOHA-TEST-PLAN-OPS-002`; compiled them into its OPS
 specification and runbook; and implemented **Copy support report** as an
 allowlist-built, clipboard-only JSON snapshot. The command exposes plugin,
 host/runtime, provider, workspace, and opaque session-correlation identity;

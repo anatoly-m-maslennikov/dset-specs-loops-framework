@@ -22,7 +22,7 @@ from dset_toolchain.validation import (
     ARTIFACT_TYPE_SUBTYPES,
     validate_artifact_type_registry,
 )
-from dset_toolchain.yaml_subset import load
+from dset_toolchain.structured_data import load
 from tests import repository_root
 from tests.git_fixtures import initialize_exact_git_repository
 
@@ -35,7 +35,7 @@ REGISTRY_PATH = LAYOUT.artifact_type_registry_path
 # TEMPLATE_PATH defines template path; this module owns the default.
 TEMPLATE_PATH = LAYOUT.find_template("artifact-types.toml")
 # SCHEMA_PATH defines schema path; this module owns the default.
-SCHEMA_PATH = ROOT / ".dset/02_layer_gov/schemas/artifact-types.schema.json"
+SCHEMA_PATH = ROOT / ".dset/02_layer_gov/schemas/artifact-types.schema.toml"
 
 
 class ArtifactTypeRegistryTests(unittest.TestCase):

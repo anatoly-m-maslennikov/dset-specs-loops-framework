@@ -3,7 +3,7 @@ schema_version = "1.0"
 artifact_type = "evidence_record"
 artifact_subtype = "test_result"
 artifact_id = "DSET-EVIDENCE-RECORD-044"
-priority = "critical"
+priority = "high"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 context = ["candidate_commit=92fd2a8df05ff37eecc3c45a0143466b36ba1be9", "remote_commit=0ed3ccb8a0dcef377a5870d0f3d14fddb158fac6", "platform=macos", "python=3.14.6", "tests=321", "push_run=29848351686", "pull_request_run=29848356251"]
 observed_at = "2026-07-21T20:48:14+04:00"
@@ -13,7 +13,7 @@ currentness = "current"
 reopen_when = "The repaired candidate is published and receives a completed hosted matrix, or its path/newline policy, migration byte handling, fixture policy, or configured verification commands change."
 
 [subject]
-id = "DSET-TEST-OPS-021"
+id = "DSET-TEST-PLAN-OPS-021"
 revision = "92fd2a8df05ff37eecc3c45a0143466b36ba1be9"
 intended_use = "Bind the locally passing Windows repair candidate and the failing hosted predecessor without claiming exact-head hosted success."
 
@@ -27,7 +27,7 @@ setup = "GitHub-hosted Ubuntu, macOS, and native Windows for the remote predeces
 
 [[relations]]
 type = "evidence_for"
-target = "DSET-TEST-OPS-021"
+target = "DSET-TEST-PLAN-OPS-021"
 +++
 
 # Test result — Windows hosted repair boundary

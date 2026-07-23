@@ -28,7 +28,7 @@ from dset_toolchain.semantic_atoms import (
 )
 from dset_toolchain.semantic_types import build_semantic_classification_index
 from dset_toolchain.temp_paths import temporary_directory
-from dset_toolchain.yaml_subset import dump, load
+from dset_toolchain.structured_data import dump, load
 from tests import repository_root
 
 # ROOT locates the repository fixture; repository layout is authoritative.
@@ -54,12 +54,12 @@ class SemanticAtomTests(unittest.TestCase):
         self.assertEqual(validate_semantic_atoms(ROOT), [])
         schema_root = ROOT / ".dset/02_layer_gov/schemas"
         schemas = (
-            "atom.schema.json",
-            "atom-ledger.schema.json",
-            "conflict-candidate.schema.json",
-            "conflict-result.schema.json",
-            "lifecycle.schema.json",
-            "legacy-authority-ledger.schema.json",
+            "atom.schema.toml",
+            "atom-ledger.schema.toml",
+            "conflict-candidate.schema.toml",
+            "conflict-result.schema.toml",
+            "lifecycle.schema.toml",
+            "legacy-authority-ledger.schema.toml",
         )
         for name in schemas:
             with self.subTest(name=name):
@@ -126,7 +126,7 @@ class SemanticAtomTests(unittest.TestCase):
                 for item in build_semantic_classification_index(root)
             }
             self.assertEqual(rows["DSET-CONTRACT-GOV-001"]["subtype"], "contract")
-            self.assertTrue(rows["DSET-CONTRACT-GOV-001"]["compatibility"])
+            self.assertTrue(rows["DSET-CONTRACT-GOV-001"]["historical_carrier"])
 
             historical.write_text("contracts: []\n", encoding="utf-8")
             messages = [item.message for item in validate_legacy_authority_ledger(root)]

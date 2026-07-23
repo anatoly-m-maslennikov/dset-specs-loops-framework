@@ -3,7 +3,7 @@ schema_version = "1.0"
 artifact_type = "evidence_record"
 artifact_subtype = "test_result"
 artifact_id = "DSET-EVIDENCE-RECORD-029"
-priority = "critical"
+priority = "high"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 context = ["repository=anatoly-m-maslennikov/dset-specs-loops-framework", "environment=isolated-host-fixtures", "python=3.14.6"]
 observed_at = "2026-07-21T01:55:03+04:00"
@@ -13,7 +13,7 @@ currentness = "current"
 reopen_when = "Wrapper rendering, installation manifests, runtime payloads, receipt verification, or the subject revision changes."
 
 [subject]
-id = "DSET-TEST-SKILL-015"
+id = "DSET-TEST-PLAN-SKILL-015"
 revision = "b7d79ec08c9a446f8a5358ac44c4c26bf7486d42"
 intended_use = "Support the bounded claim that installed wrapper and runtime mutation is detected against source-bound expected identities."
 
@@ -27,7 +27,7 @@ setup = "Python 3.14.6; local macOS execution with isolated cross-host filesyste
 
 [[relations]]
 type = "evidence_for"
-target = "DSET-TEST-SKILL-015"
+target = "DSET-TEST-PLAN-SKILL-015"
 +++
 
 # Test result — Installed skill integrity

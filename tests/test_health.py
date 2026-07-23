@@ -23,7 +23,7 @@ from dset_toolchain.health import (
 )
 from dset_toolchain.layout import discover_layout
 from dset_toolchain.temp_paths import temporary_directory
-from dset_toolchain.yaml_subset import dump, load
+from dset_toolchain.structured_data import dump, load
 from tests import repository_root
 
 # ROOT locates the repository fixture; repository layout is authoritative.
@@ -51,7 +51,7 @@ class ProjectHealthTests(unittest.TestCase):
         self.assertIn(header, first)
         self.assertIn("This generated view is not authority", first)
         self.assertIn("## Semantic inventory", first)
-        self.assertIn("Compatibility-classified legacy IDs", first)
+        self.assertIn("Historically classified carriers", first)
         self.assertIn("## Typed relation inventory", first)
         self.assertIn("## Canonical return paths", first)
 
@@ -91,10 +91,10 @@ class ProjectHealthTests(unittest.TestCase):
         )
         self.assertIn("decision", semantic_types)
         self.assertIn("qa", semantic_types)
-        self.assertGreater(model["semantic_counts"]["compatibility"], 0)
+        self.assertGreater(model["semantic_counts"]["historical_carriers"], 0)
         self.assertEqual(
             model["semantic_counts"]["native_atoms"]
-            + model["semantic_counts"]["compatibility"],
+            + model["semantic_counts"]["historical_carriers"],
             model["semantic_counts"]["total"],
         )
         repository = build_health_model(ROOT)
@@ -119,7 +119,7 @@ class ProjectHealthTests(unittest.TestCase):
         assert isinstance(requirements, list)
         assert isinstance(tests, list)
         requirements.append("DSET-REQUIREMENT-999")
-        tests.append("DSET-TEST-999")
+        tests.append("DSET-TEST-PLAN-999")
         manifest.write_text(dump(data, manifest), encoding="utf-8")
 
         spec = self.root / "dset/specs/packages/sample/spec.md"
@@ -131,13 +131,13 @@ class ProjectHealthTests(unittest.TestCase):
         test_plan = self.root / "dset/specs/packages/sample/test-plan.md"
         test_plan.write_text(
             test_plan.read_text(encoding="utf-8")
-            + "\nDSET-TEST-999 mentions DSET-REQUIREMENT-999.\n",
+            + "\nDSET-TEST-PLAN-999 mentions DSET-REQUIREMENT-999.\n",
             encoding="utf-8",
         )
         proofs = self.root / "dset/changes/sample/proofs"
         proofs.mkdir(parents=True, exist_ok=True)
         (proofs / "mention.md").write_text(
-            "DSET-TEST-999 is mentioned without an evidence_for relation.\n",
+            "DSET-TEST-PLAN-999 is mentioned without an evidence_for relation.\n",
             encoding="utf-8",
         )
 
@@ -150,10 +150,10 @@ class ProjectHealthTests(unittest.TestCase):
         evidenced = coverage["QA definitions connected to current evidence"]
         self.assertIn("DSET-REQUIREMENT-999", compiled.gaps)
         self.assertIn("DSET-REQUIREMENT-999", checked.gaps)
-        self.assertIn("DSET-TEST-999", evidenced.gaps)
+        self.assertIn("DSET-TEST-PLAN-999", evidenced.gaps)
 
     def test_inactive_qa_is_excluded_from_current_evidence_coverage(self) -> None:
-        identifier = "DSET-TEST-998"
+        identifier = "DSET-TEST-PLAN-998"
         atom = SimpleNamespace(
             semantic_id=identifier,
             semantic_type="qa",

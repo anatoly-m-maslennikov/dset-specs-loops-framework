@@ -612,7 +612,7 @@ class GovernanceTests(unittest.TestCase):
         )
         for invalid in (
             "REQUIREMENT-DSET-GOV-001",
-            "DSET-REQ-GOV-001",
+            "DSET-REQUIREMENT-GOV-001",
             "DSET-REQUIREMENT-GLOBAL-001",
             "DSET-ADR-GOV-001",
         ):
@@ -632,7 +632,7 @@ class GovernanceTests(unittest.TestCase):
         package_path = layout.structured_file(package_root, "package.toml")
         package = cast(dict[str, Any], load(package_path))
         package["requirements"] = ["ACME-REQUIREMENT-001"]
-        package["tests"] = ["ACME-TEST-001"]
+        package["tests"] = ["ACME-TEST-PLAN-001"]
         package["contracts"] = ["ACME-CONTRACT-001"]
         package_path.write_text(dump(package, package_path), encoding="utf-8")
         for filename in ("spec.md", "test-plan.md", "contracts.md"):
@@ -967,7 +967,7 @@ class GovernanceTests(unittest.TestCase):
             "lossless carrier transition",
             "smallest independently reviewable primary project claim",
             "acceptance act grants authority to Decision",
-            "QA atom defines a check",
+            "QA atom defines a Test Plan or Evaluation Plan",
         ):
             self.assertIn(phrase, architecture)
 
@@ -1020,8 +1020,8 @@ class GovernanceTests(unittest.TestCase):
             {
                 "DSET-REQUIREMENT-TOOL-018",
                 "DSET-REQUIREMENT-TOOL-019",
-                "DSET-TEST-TOOL-018",
-                "DSET-TEST-TOOL-019",
+                "DSET-TEST-PLAN-TOOL-018",
+                "DSET-TEST-PLAN-TOOL-019",
             }.isdisjoint(archived_ids)
         )
 

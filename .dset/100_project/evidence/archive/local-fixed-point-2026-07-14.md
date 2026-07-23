@@ -66,5 +66,5 @@ passes.
 
 Roadmap §§0–§3 and the local portion of §4 pass. Hosted execution of the same
 fixed point remains required before `DSET-TASK-TOOL-025` or external-adoption
-readiness can pass. `DSET-EVAL-TOOL-001`–`004` remain separate pending evals and
+readiness can pass. `DSET-EVAL-PLAN-TOOL-001`–`004` remain separate pending evals and
 are not implied by these deterministic results.

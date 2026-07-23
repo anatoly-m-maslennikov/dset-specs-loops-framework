@@ -3,7 +3,7 @@ artifact_type = "evidence_record"
 artifact_subtype = "evaluation_result"
 artifact_id = "DSET-EVIDENCE-RECORD-014"
 priority = "high"
-child_of = ["DSET-EVALUATION-TOOL-003"]
+child_of = ["DSET-EVAL-PLAN-TOOL-003"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 +++
 
@@ -42,4 +42,4 @@ native-host, supportability, and product-cutover prerequisites are met.
 
 The candidate is not promotion-eligible. This is negative evidence for the
 evaluated revision and partial evidence for reviewer convergence; it cannot
-satisfy the clean-upstream half of `DSET-EVALUATION-TOOL-003`.
+satisfy the clean-upstream half of `DSET-EVAL-PLAN-TOOL-003`.

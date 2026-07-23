@@ -13,7 +13,7 @@ currentness = "current"
 reopen_when = "The subject revision, method, setup, or applicable context changes."
 
 [subject]
-id = "APP-TEST-001"
+id = "APP-TEST-PLAN-001"
 revision = "0000000000000000000000000000000000000000"
 intended_use = "Support one bounded Verification claim."
 
@@ -27,7 +27,7 @@ setup = "Describe the exact tools, versions, inputs, and setup."
 
 [[relations]]
 type = "evidence_for"
-target = "APP-TEST-001"
+target = "APP-TEST-PLAN-001"
 +++
 
 # Evidence Record

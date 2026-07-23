@@ -21,8 +21,8 @@ presentation.
 | `DSET-DECISION-GOV-002` | Use one constitutional governance root; separate dependency from precedence and authority from assurance |
 | `DSET-DECISION-GOV-003` | Keep semantic atoms immutable and resolve conflicts by role and lifecycle before priority |
 | `DSET-DECISION-GOV-032` | Use peer Requirement and Decision Types: required obligations are Requirements; material selected approaches are Decisions |
-| `DSET-REQ-GOV-058` | Assign `high`, `medium`, or `low` base priority and derive capped virtual priority from scope and upstream-layer bonuses during comparison |
-| `DSET-REQ-GOV-059` | Default conflict selection to `ask_always`; permit opt-in automatic selection only for one unique effective-priority winner |
+| `DSET-REQUIREMENT-GOV-058` | Assign `high`, `medium`, or `low` base priority and derive capped virtual priority from scope and upstream-layer bonuses during comparison |
+| `DSET-REQUIREMENT-GOV-059` | Default conflict selection to `ask_always`; permit opt-in automatic selection only for one unique effective-priority winner |
 | `DSET-DECISION-GOV-019` | Use Version as the shared primary artifact type for six flat release-lifecycle roles |
 | `DSET-DECISION-GOV-013` | Use ten typed forward artifact relations, derived inverses, and range-based evergreen projection frontiers |
 | `DSET-DECISION-GOV-014` | Normalize explicit null to omission only for governed optional-unset TOML fields; block every other null |
@@ -258,24 +258,32 @@ answer becomes a Decision before implementation.
 ## DSET-REQUIREMENT-GOV-019 — IDs expose the concrete Type or subtype
 
 The project prefix is `DSET`. Project-wide IDs use
-`DSET-<FULL-KIND>-<NNN>`; layer-owned compatibility IDs use
+`DSET-<FULL-KIND>-<NNN>`; layer-owned IDs use
 `DSET-<FULL-KIND>-<LAYER>-<NNN>`, where `<LAYER>` is `META`, `GOV`, `TOOL`,
 `SKILL`, `IMPL`, or `OPS`. `<FULL-KIND>` is the subtype when present and the Type when
 subtype is empty. No ID encodes a subtype path.
 
-Requirement kinds are `REQUIREMENT`, `CONSTRAINT`, `CONTRACT`, `STORY`,
-`OUTCOME`, `SCENARIO`, and `INVARIANT`; Decision uses `DECISION`; Question kinds are `QUESTION`,
-`CONFLICT`, `RISK`, and `OPPORTUNITY`; Problem kinds are `PROBLEM`, `DEFECT`,
-`GAP`, and `DEBT`; QA kinds are `TEST` and `EVALUATION`. Existing stable
-`EVAL` and other legacy IDs remain resolvable compatibility history and are not
-renamed in place. No alternate global prefix is used, and directory moves do
-not rename identities.
+Decision subtype kinds are `REQUIREMENT`, `CONSTRAINT`, `CONTRACT`, and
+`IMPL`; an empty-subtype Decision uses `DECISION`. Question kinds are
+`QUESTION`, `CONFLICT`, `RISK`, and `OPPORTUNITY`; Problem kinds are `PROBLEM`,
+`DEFECT`, `GAP`, and `DEBT`; QA plan kinds are `TEST-PLAN` and `EVAL-PLAN`.
+A naming-policy change migrates the complete current and historical identity
+graph. Short aliases do not remain as a second accepted vocabulary. No
+alternate global prefix is used, and directory moves alone do not rename
+identities.
+
+Identity migration does not mutate an atomic artifact's governed content. It
+may rewrite the canonical ID, identity-bearing carrier label, and every stored
+reference to that ID, while preserving the claim, rationale, provenance,
+lifecycle meaning, and non-identity relation semantics. Historical terminology
+inside a predecessor claim remains historical content; current authority comes
+from the active successor and lifecycle graph.
 
 **Scenario DSET-SCENARIO-GOV-020:** A general Decision uses
 `DSET-DECISION-001`; a User Story uses `DSET-STORY-002` with
 `type: decision` and `subtype: user_story`; a Risk uses `DSET-RISK-003` with
-`type: question`; and a Test uses `DSET-TEST-004` with `type: qa`. None carries
-a nested subtype in its ID or metadata.
+`type: question`; and a Test Plan uses `DSET-TEST-PLAN-004` with `type: qa`
+and `subtype: test_plan`. None carries a nested subtype in its ID or metadata.
 
 ## DSET-REQUIREMENT-GOV-020 — Artifacts declare authority and lifecycle roles
 
@@ -320,17 +328,49 @@ location, and fragment digests. This proves declared structure and freshness,
 not semantic equivalence. Review or Evaluation separately judges whether the
 fragment faithfully carries the source consequence.
 
-Atomic semantic records are immutable. Editable drafts are not atoms. Emission
-fixes the atom's ID, semantic payload, provenance, creation status, and links.
-Acceptance, rejection, reopening, correction, withdrawal, or any other later
-semantic change is a new append-only lifecycle event or successor atom.
-Atomic semantic content never changes. Directory placement may change while
-the globally unique carrier name remains stable. A carrier-name or
-representation migration is a separate immutable transition record with
-old/new carrier names, digests, semantic-equivalence proof, and Git return
-identity. A semantic change requires a successor atom and lifecycle event.
+## DSET-REQUIREMENT-GOV-061 — Atomic immutability protects governed meaning
 
-Compatibility migration must not leave older Decision authority mutable.
+Atomic semantic records are immutable. Editable drafts are not atoms. Emission
+fixes the atom's governed meaning: its primary claim or proof intent, rationale,
+accepted authority and creation state, provenance, scope, priority at creation,
+and the meanings of its relations. For a QA atom, conditions, criteria,
+thresholds, and expected disposition are part of that immutable meaning.
+Acceptance, rejection, reopening, correction, withdrawal, reprioritization, or
+any later semantic change is a new append-only lifecycle event or successor
+atom.
+
+The canonical ID is the atom's governed address, not its semantic content. A
+governed identity or representation migration may change an ID token, a
+one-to-one classification label, carrier filename or path, heading label,
+carrier encoding, seal, and stored reference spelling only when the referenced
+atom and every relation or lifecycle meaning remain the same. The migration
+uses a complete collision-free old-to-new map, updates the whole current and
+historical reference graph, records semantic-equivalence and Git return
+evidence, and leaves no retired alias accepted after cutover. Changing a claim,
+rationale, authority, provenance fact, scope meaning, relation meaning, or QA
+criterion is not migration; it requires a successor atom and lifecycle event.
+
+| Boundary | Governed rule |
+| --- | --- |
+| Immutable atom | Primary claim, question, problem, or proof intent; rationale; authority and creation state; provenance and creation-session facts; scope and applicability meaning; creation priority; relation meaning and connected artifact; and QA conditions, criteria, thresholds, and expected disposition |
+| Derived later state | Lifecycle status, effective priority, verification state, and active compilation membership are append-only or derived; they never rewrite the atom |
+| Migratable address or representation | Canonical ID, classification-label spelling, filename or path, heading label, carrier encoding, seal, and stored ID references may be recoded only by the governed one-to-one migration above |
+
+## DSET-REQUIREMENT-GOV-060 — Identity migration preserves atomic content
+
+Atomic immutability protects governed meaning rather than a particular ID
+spelling, filename, path, frontmatter syntax, or carrier encoding. Historical
+terminology that forms part of an older atom's claim remains unchanged. Current
+execution follows active successor and lifecycle authority instead of rewriting
+a predecessor to make it look current.
+
+**Scenario DSET-SCENARIO-GOV-045:** A repository replaces `REQ` with
+`REQUIREMENT`. The migration renames the carrier and ID, rewrites relation and
+lifecycle targets, and updates derived references. A normalized comparison
+proves the claim, rationale, provenance, scope, priority, and relation meanings
+unchanged; the runtime rejects the retired `REQ` address after cutover.
+
+Historical carrier migration must not leave older Decision authority mutable.
 Dedicated legacy Decision carriers are sealed by whole-file digest; Decision
 identifiers held in shared package registries are sealed as independent
 selector fragments so unrelated registry additions remain possible. A missing
@@ -349,8 +389,9 @@ links and the active compilation set are derived views.
 An atom with no active claims, open reliance, or unresolved lifecycle work is
 fully retired and may move into its artifact type's `archive/` subfolder
 through a registered carrier transition. Its semantic ID and payload remain
-unchanged, the original and current carrier digests remain linked, and the
-canonical ID registry updates its location. Partial absorption does not
+unchanged unless a complete governed identity migration recodes the ID without
+changing the payload. Original and current carrier digests remain linked, and
+the canonical ID registry updates its address and location. Partial absorption does not
 qualify. Archived atoms remain immutable history and are not deleted.
 
 **Scenario DSET-SCENARIO-GOV-022:** A resolved Question produces a Decision, the
@@ -477,8 +518,10 @@ New writers store only `high`, `medium`, or `low`. Creation defaults are `high`
 for Constraints, `medium` for Contracts, Requirements, and empty-subtype
 Decisions, and `low` for implementation carriers. Other roles inherit from a
 canonical owner or default to `medium`. `highest` is virtual-only and cannot be
-emitted. Immutable legacy `critical` and `deferred` values remain readable as
-`high` and `low` respectively; new writers never emit them.
+emitted. No other stored priority is accepted. The former `critical` label is
+recoded to `high` without changing effective priority. `deferred` is removed:
+current low-urgency work uses `low`, and future work belongs in a named Version
+Roadmap rather than a current atomic artifact.
 
 For one eligible comparison, start from current stored priority. Add one step
 when one artifact's applicable structural scope is a strict ancestor of the
@@ -540,7 +583,7 @@ most one direct allowed subtype:
 - Decision: Requirement, Constraint, Contract, or Implementation Decision;
 - Question: Conflict, Risk, or Opportunity;
 - Problem: Defect, Gap, or Debt; and
-- QA: Test or Evaluation, with subtype required.
+- QA: Test Plan or Evaluation Plan, with subtype required.
 
 A general Decision, Question, or Problem omits subtype. A subtype never repeats
 its Type and never contains another subtype. Classification depends on semantic
@@ -549,9 +592,9 @@ action. Changed semantics require a new linked atom. All emitted atoms are
 immutable.
 
 The operator's acceptance is an act or lifecycle event distinct from accepted
-Decision content and its carrier. QA atoms define checks; Test/Evaluation
-execution is work; results and logs are evidence; gate decisions and
-Verification are derived.
+Decision content and its carrier. QA atoms define Test Plans or Evaluation
+Plans; Test/Evaluation execution is work; results and logs are evidence; gate
+decisions and Verification are derived.
 
 Requirement owns project- or operator-selected required observable results.
 Constraint owns externally imposed limitations that narrow otherwise acceptable
@@ -632,19 +675,18 @@ workflow position changes any semantic or artifact classification.
 ## DSET-REQUIREMENT-GOV-038 — Artifact names default to primary type
 
 New artifact IDs and filenames must include the primary artifact type token by
-default. The optional direct artifact subtype remains metadata and cannot force
-identity churn. A project may opt only newly emitted artifacts into subtype
-tokens with `artifacts.subtype_in_names = true` in root
-`dset_settings.toml`. Optional capabilities are independently selectable; DSET has no
-single bundled advanced mode. A settings change never renames immutable atoms
-or already stable artifact identities.
+default. The optional direct artifact subtype remains metadata. A project may
+enable subtype tokens with `artifacts.subtype_in_names = true` in root
+`dset_settings.toml`. Optional capabilities are independently selectable; DSET
+has no single bundled advanced mode. A naming-policy change requires a complete
+governed migration of current and historical identities and every reference;
+the repository never keeps two accepted naming vocabularies.
 
 **Scenario DSET-SCENARIO-GOV-031:** A Version Scope is emitted as
 `APP-VERSION-001-0-4-core.md` with `artifact_subtype: version_scope`, and a
 Roadmap uses the same `VERSION` sequence with `artifact_subtype: roadmap`. An
-adopter that explicitly enables subtype-bearing names may include those subtype
-tokens in new artifacts, while every existing stable identity remains
-unchanged.
+adopter that explicitly enables subtype-bearing names migrates all governed
+artifact identities and references as one validated transaction.
 
 `DSET-REQUIREMENT-GOV-030` is absorbed by
 `DSET-REQUIREMENT-GOV-038` and remains immutable history.
@@ -704,7 +746,7 @@ and never authored. A source-target pair has one primary relation.
 `child_of` is claim refinement or decomposition and keeps both claims active.
 `analysis_of` owns non-authoritative investigation. `implementation_of` owns
 realization by code, configuration, documentation, migration, or commit.
-`check_of` owns Test/Evaluation definitions. `evidence_for` owns observed
+`check_of` owns Test Plan/Evaluation Plan definitions. `evidence_for` owns observed
 support for an explicit result, finding, or Verification. `resolution_of`
 closes a Question, Conflict, or Problem. `override_of` changes inherited
 authority only inside a narrower declared scope. `replacement_of` completely
@@ -731,8 +773,8 @@ Requirement is `child_of`; a scoped exception is `override_of`; and a complete
 successor is `replacement_of`. None stores an additional `child_of` edge.
 
 **Scenario DSET-SCENARIO-GOV-035:** A specification records one
-`projection_of` Decision range through its current carrier frontier. A Test is
-`check_of` the Requirement, its result is `evidence_for` the Verification, and
+`projection_of` Decision range through its current carrier frontier. A Test
+Plan is `check_of` the Requirement, its executed Test result is `evidence_for` the Verification, and
 the implementation commit produces `implementation_of` edges. No reverse edge
 is stored.
 

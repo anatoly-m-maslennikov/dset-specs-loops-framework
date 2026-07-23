@@ -13,7 +13,7 @@ from typing import Any
 from .diagnostics import Diagnostic
 from .layout import discover_layout
 from .semantic_types import build_semantic_classification_index
-from .yaml_subset import load
+from .structured_data import load
 
 # ID_PATTERN validates id pattern; this module owns the accepted syntax.
 ID_PATTERN = re.compile(r"[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+")

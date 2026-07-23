@@ -11,7 +11,7 @@ from .identity import iter_control_files, logical_part
 from .layout import LAYERS, discover_layout
 from .project_data import lifecycle_events
 from .semantic_atoms import collect_semantic_atoms
-from .yaml_subset import YamlSubsetError, dump, load
+from .structured_data import StructuredDataError, dump, load
 
 # DECISION_FIELDS defines decision fields; this module owns the default.
 DECISION_FIELDS = ("requirements", "contracts", "stories", "outcomes")
@@ -185,7 +185,7 @@ def _collect_package_authority(
             continue
         try:
             data = load(path)
-        except (OSError, UnicodeError, YamlSubsetError):
+        except (OSError, UnicodeError, StructuredDataError):
             continue
         if not isinstance(data, dict):
             continue

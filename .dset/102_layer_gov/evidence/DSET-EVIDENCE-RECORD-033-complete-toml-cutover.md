@@ -3,7 +3,7 @@ schema_version = "1.0"
 artifact_type = "evidence_record"
 artifact_subtype = "test_result"
 artifact_id = "DSET-EVIDENCE-RECORD-033"
-priority = "critical"
+priority = "high"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 context = ["repository=anatoly-m-maslennikov/dset-specs-loops-framework", "environment=local-macos", "python=3.14", "dset_yaml_files=0", "dset_yaml_frontmatter=0"]
 observed_at = "2026-07-21T04:13:20+04:00"
@@ -13,7 +13,7 @@ currentness = "current"
 reopen_when = "A DSET-owned YAML carrier or YAML frontmatter is added, a migrated carrier/reference/generated view changes, the migration implementation changes, or the subject revision changes."
 
 [subject]
-id = "DSET-TEST-GOV-043"
+id = "DSET-TEST-PLAN-GOV-043"
 revision = "483ea2af321505f40713a73a51b3b68f327ba7f3"
 intended_use = "Support the bounded claim that all DSET-owned artifact carriers use TOML and the completed migration is idempotent and repository-valid."
 
@@ -27,7 +27,7 @@ setup = "Commit 483ea2af321505f40713a73a51b3b68f327ba7f3; project .venv; local m
 
 [[relations]]
 type = "evidence_for"
-target = "DSET-TEST-GOV-043"
+target = "DSET-TEST-PLAN-GOV-043"
 +++
 
 # Test result — Complete TOML cutover

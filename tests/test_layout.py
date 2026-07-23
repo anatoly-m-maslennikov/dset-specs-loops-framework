@@ -21,7 +21,7 @@ from dset_toolchain.layout import (
     discover_layout,
 )
 from dset_toolchain.temp_paths import temporary_directory
-from dset_toolchain.yaml_subset import dump
+from dset_toolchain.structured_data import dump
 
 
 class RepositoryLayoutTest(unittest.TestCase):
@@ -250,7 +250,7 @@ class RepositoryLayoutTest(unittest.TestCase):
                 dump({"schema_version": "1.2"}), encoding="utf-8"
             )
             for layer in ("meta", "gov"):
-                path = scopes / layer / "schemas" / "duplicate.schema.json"
+                path = scopes / layer / "schemas" / "duplicate.schema.toml"
                 path.parent.mkdir()
                 path.write_text(json.dumps({"type": "object"}), encoding="utf-8")
 

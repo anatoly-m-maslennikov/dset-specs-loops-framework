@@ -17,7 +17,7 @@ from dset_toolchain.archive import archive_plan, execute_archive
 from dset_toolchain.layout import discover_layout
 from dset_toolchain.scaffold import create_change
 from dset_toolchain.temp_paths import temporary_directory
-from dset_toolchain.yaml_subset import dump, load
+from dset_toolchain.structured_data import dump, load
 from tests import repository_root
 
 # ROOT locates the repository fixture; repository layout is authoritative.

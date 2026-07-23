@@ -52,7 +52,7 @@ class CarrierTransitionTests(unittest.TestCase):
             "type: decision\n"
             "semantic_id: DSET-DECISION-GOV-999\n"
             "status: accepted\n"
-            "priority: critical\n"
+            "priority: high\n"
             "authority: operator:test\n"
             "claim: Preserve this claim.\n"
             "llm_session_ids:\n  - codex:test-session\n"

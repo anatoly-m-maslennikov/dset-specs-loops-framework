@@ -15,4 +15,4 @@
 
 ## Output
 
-Update only the owning proposal, domain/spec/contracts, separate proof plans, and linked decisions. A Decision is complete only when its consequences are discharged and its Question is closed or explicitly deferred. Implementation begins only after unresolved material branches are closed or explicitly deferred.
+Update only the owning proposal, domain/spec/contracts, separate proof plans, and linked decisions. A Decision is complete only when its consequences are discharged and its Question is closed or moved to a named future Version Roadmap. Implementation begins only after unresolved material branches are closed or removed from current scope into such a Roadmap.

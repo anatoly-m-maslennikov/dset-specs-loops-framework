@@ -13,7 +13,7 @@ llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
   ownership so project-level truth owns cross-child concerns without copying
   child-owned detail.
 - **Intended use:** Support `DSET-REQUIREMENT-GOV-032`,
-  `DSET-INVARIANT-GOV-022`, `DSET-TEST-GOV-032`, and
+  `DSET-INVARIANT-GOV-022`, `DSET-TEST-PLAN-GOV-032`, and
   `DSET-TASK-GOV-054`.
 - **Producer/performed work:** Main-session Requirement emission, compile-down,
   DSET layer self-application, bootstrap refresh, and deterministic validation.
@@ -49,4 +49,4 @@ The current repository exercises the project-to-layer case. Feature-group and
 feature behavior is normatively specified and covered by reusable architecture
 templates, but executable feature/group allocation fixtures remain pending
 until those optional structural modes have runtime scaffolding. The qualitative
-`DSET-EVAL-GOV-022` reviewer-placement run also remains pending.
+`DSET-EVAL-PLAN-GOV-022` reviewer-placement run also remains pending.

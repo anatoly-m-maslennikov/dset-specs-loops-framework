@@ -76,8 +76,8 @@ _PACKAGE_FIELD_BY_CLASSIFICATION: dict[tuple[str, str | None], str] = {
     ("decision", "contract"): "contracts",
     ("decision", "user_story"): "stories",
     ("decision", "outcome"): "outcomes",
-    ("qa", "test"): "tests",
-    ("qa", "evaluation"): "evals",
+    ("qa", "test_plan"): "tests",
+    ("qa", "evaluation_plan"): "evals",
 }
 # _PACKAGE_ARTIFACT_BY_FIELD validates package artifact by field; this module owns the accepted syntax.
 _PACKAGE_ARTIFACT_BY_FIELD = {

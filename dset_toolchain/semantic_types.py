@@ -15,6 +15,7 @@ from .semantic_type_model import (
     SEMANTIC_TYPE_ID_KINDS,
     classify_semantic_id,
     normalize_semantic_classification,
+    semantic_id_kind,
     semantic_id_matches_classification,
     semantic_naming_axis,
 )
@@ -29,6 +30,7 @@ __all__ = [
     "classify_semantic_id",
     "next_semantic_sequence",
     "normalize_semantic_classification",
+    "semantic_id_kind",
     "semantic_id_matches_classification",
     "semantic_naming_axis",
     "validate_semantic_classifications",

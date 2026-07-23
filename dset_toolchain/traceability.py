@@ -9,7 +9,7 @@ from .layout import discover_layout
 from .lineage import build_relation_index
 from .semantic_atoms import build_semantic_atom_index
 from .semantic_types import build_semantic_classification_index
-from .yaml_subset import dump, load
+from .structured_data import dump, load
 
 
 def build_traceability(root: Path) -> dict[str, Any]:

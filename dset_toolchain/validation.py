@@ -48,7 +48,7 @@ from .project_data import project_section
 from .semantic_atoms import collect_semantic_atoms, validate_semantic_atoms
 from .semantic_types import classify_semantic_id, validate_semantic_classifications
 from .settings import load_project_settings, selected_settings_path
-from .yaml_subset import YamlSubsetError, load
+from .structured_data import StructuredDataError, load
 
 # ID_PATTERN validates id pattern; this module owns the accepted syntax.
 ID_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
@@ -76,9 +76,8 @@ TRACE_TYPES = (
     "DEFECT",
     "GAP",
     "DEBT",
-    "TEST",
-    "EVAL",
-    "EVALUATION",
+    "TEST-PLAN",
+    "EVAL-PLAN",
     "TASK",
     "CHANGE",
 )
@@ -311,7 +310,7 @@ def validate_change(
     if not layout.slim:
         try:
             files, directories = required_artifacts(root, profile)
-        except (KeyError, ValueError, YamlSubsetError) as error:
+        except (KeyError, ValueError, StructuredDataError) as error:
             diagnostics.append(_diag("DSET-E103", manifest_path, str(error)))
             return diagnostics
         for relative in sorted(files):
@@ -907,7 +906,7 @@ def _validate_version(
     if layout.recursive or layout.separated:
         try:
             data = project_section(root, "version_registry")
-        except (OSError, ValueError, YamlSubsetError) as error:
+        except (OSError, ValueError, StructuredDataError) as error:
             diagnostics.append(_diag("DSET-E124", path, str(error)))
             data = None
     else:
@@ -974,8 +973,8 @@ def _validate_packages(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]
         return diagnostics
     group_types = {
         "requirements": "REQUIREMENT",
-        "tests": "TEST",
-        "evals": "EVAL",
+        "tests": "TEST-PLAN",
+        "evals": "EVAL-PLAN",
         "contracts": "CONTRACT",
         "stories": "STORY",
         "outcomes": "OUTCOME",
@@ -1026,10 +1025,7 @@ def _validate_packages(root: Path, manifest: dict[str, Any]) -> list[Diagnostic]
                     _diag("DSET-E117", package_manifest, f"{group} must be a list")
                 )
                 continue
-            pattern = _trace_id_pattern(
-                project_key,
-                ("EVAL", "EVALUATION") if trace_type == "EVAL" else (trace_type,),
-            )
+            pattern = _trace_id_pattern(project_key, (trace_type,))
             content = "\n".join(
                 path.read_text(encoding="utf-8")
                 for path in owner_paths[group]
@@ -1097,8 +1093,8 @@ def _validate_layered_packages(
     owners: dict[str, Path] = {}
     group_types = {
         "requirements": "REQUIREMENT",
-        "tests": "TEST",
-        "evals": "EVAL",
+        "tests": "TEST-PLAN",
+        "evals": "EVAL-PLAN",
         "contracts": "CONTRACT",
         "stories": "STORY",
         "outcomes": "OUTCOME",
@@ -1200,10 +1196,7 @@ def _validate_layered_packages(
                     _diag("DSET-E144", path, f"{group} must be a unique list")
                 )
                 continue
-            pattern = _trace_id_pattern(
-                project_key,
-                ("EVAL", "EVALUATION") if trace_type == "EVAL" else (trace_type,),
-            )
+            pattern = _trace_id_pattern(project_key, (trace_type,))
             owner = path.parent / artifact_names[owner_artifact[group]]
             content = owner.read_text(encoding="utf-8") if owner.is_file() else ""
             for identifier in identifiers:
@@ -1379,7 +1372,7 @@ def _validate_artifacts(
     diagnostics: list[Diagnostic] = []
     try:
         registry = project_section(root, "artifact_structure")
-    except (OSError, ValueError, YamlSubsetError) as error:
+    except (OSError, ValueError, StructuredDataError) as error:
         diagnostics.append(_diag("DSET-E120", registry_path, str(error)))
         registry = {}
     if not registry:
@@ -1406,7 +1399,7 @@ def _validate_artifacts(
         return diagnostics
     try:
         type_registry = project_section(root, "artifact_catalog")
-    except (OSError, ValueError, YamlSubsetError) as error:
+    except (OSError, ValueError, StructuredDataError) as error:
         diagnostics.append(_diag("DSET-E156", type_registry_path, str(error)))
         type_registry = {}
     if type_registry:
@@ -2001,7 +1994,7 @@ def _legacy_authority_records(root: Path) -> list[dict[str, Any]]:
         return []
     try:
         data = load(path)
-    except (OSError, ValueError, YamlSubsetError):
+    except (OSError, ValueError, StructuredDataError):
         return []
     records = data.get("records") if isinstance(data, dict) else None
     return (
@@ -2349,7 +2342,7 @@ def _validate_legacy_structured_links(
     if atoms.is_file():
         try:
             atom_data = load(atoms)
-        except (OSError, ValueError, YamlSubsetError):
+        except (OSError, ValueError, StructuredDataError):
             atom_data = {}
         records = atom_data.get("records") if isinstance(atom_data, dict) else None
         if isinstance(records, list):
@@ -3102,8 +3095,8 @@ def _validate_change_ids(
     }
     group_types = {
         "requirements": "REQUIREMENT",
-        "tests": "TEST",
-        "evals": "EVAL",
+        "tests": "TEST-PLAN",
+        "evals": "EVAL-PLAN",
     }
     if legacy:
         if "adrs" not in data or "decisions" in data:
@@ -3163,11 +3156,7 @@ def _validate_change_ids(
             if legacy
             else _trace_id_pattern(
                 project_key,
-                (
-                    ("EVAL", "EVALUATION")
-                    if group_types[group] == "EVAL"
-                    else (group_types[group],)
-                ),
+                (group_types[group],),
             )
         )
         content = "\n".join(
@@ -3278,8 +3267,8 @@ def _validate_slim_change_ids(
                 known.update(item for item in values if isinstance(item, str))
     groups = {
         "requirements": ("REQUIREMENT",),
-        "tests": ("TEST",),
-        "evals": ("EVAL", "EVALUATION"),
+        "tests": ("TEST-PLAN",),
+        "evals": ("EVAL-PLAN",),
         "decisions": ("DECISION",),
         "contracts": ("CONTRACT",),
         "stories": ("STORY",),
@@ -3533,7 +3522,7 @@ def _validate_change_uniqueness(layout: RepositoryLayout) -> list[Diagnostic]:
                 continue
             try:
                 data = load(manifest)
-            except (OSError, ValueError, YamlSubsetError):
+            except (OSError, ValueError, StructuredDataError):
                 continue
             identifier = data.get("id") if isinstance(data, dict) else None
             if not isinstance(identifier, str):
@@ -3758,8 +3747,8 @@ def _validate_schemas(schema_paths: tuple[Path, ...]) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     for path in schema_paths:
         try:
-            json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError) as error:
+            load(path)
+        except (OSError, ValueError, StructuredDataError) as error:
             diagnostics.append(_diag("DSET-E118", path, str(error)))
     return diagnostics
 
@@ -3771,7 +3760,7 @@ def _validate_provenance(root: Path) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     try:
         data = project_section(root, "source_provenance")
-    except (OSError, ValueError, YamlSubsetError) as error:
+    except (OSError, ValueError, StructuredDataError) as error:
         diagnostics.append(_diag("DSET-E112", path, str(error)))
         data = {}
     if not data:
@@ -4075,7 +4064,7 @@ def _safe_load(path: Path, diagnostics: list[Diagnostic]) -> dict[str, Any] | No
     """Handle load using the declared repository contract."""
     try:
         data = load(path)
-    except (OSError, YamlSubsetError) as error:
+    except (OSError, StructuredDataError) as error:
         diagnostics.append(_diag("DSET-E119", path, str(error)))
         return None
     if not isinstance(data, dict):

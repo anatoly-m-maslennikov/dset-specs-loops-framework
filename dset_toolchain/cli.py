@@ -67,12 +67,6 @@ from .semantic_atoms import append_lifecycle_event, archive_atom, seal_atom
 from .skill_catalog import PUBLIC_SKILL_WORKFLOWS
 from .skill_distribution import main as skill_distribution_main
 from .temp_paths import temporary_directory
-from .toml_migration import (
-    MigrationPlan,
-    apply_toml_migration,
-    plan_toml_migration,
-    prove_runtime_readiness,
-)
 from .traceability import (
     rendered_traceability,
     trace_is_fresh,
@@ -208,26 +202,6 @@ def build_parser() -> argparse.ArgumentParser:
     _root_argument(self_host)
     self_host.add_argument("--work-dir", type=Path)
     self_host.add_argument("--released-ref")
-
-    migrate = commands.add_parser(
-        "migrate", help="preview or apply a deterministic DSET format migration"
-    )
-    migrate_commands = migrate.add_subparsers(dest="migration_command", required=True)
-    migrate_toml = migrate_commands.add_parser(
-        "toml", help="preview canonical TOML conversion; writes require --apply"
-    )
-    _root_argument(migrate_toml)
-    migration_mode = migrate_toml.add_mutually_exclusive_group()
-    migration_mode.add_argument("--apply", action="store_true")
-    migration_mode.add_argument(
-        "--prove-runtime-readiness",
-        action="store_true",
-        help=(
-            "prove the preview in a disposable migrated copy and write "
-            "digest-only evidence"
-        ),
-    )
-    migrate_toml.add_argument("--format", choices=["text", "json"], default="text")
 
     version = commands.add_parser("version", help="show framework version semantics")
     _root_argument(version)
@@ -703,29 +677,6 @@ def main(argv: list[str] | None = None) -> int:
                 for diagnostic in result["diagnostics"]:
                     print(diagnostic)
             return 0 if result["status"] == "pass" else 1
-        if args.command == "migrate":
-            root = _repository_root(args.root)
-            migration_plan = plan_toml_migration(root)
-            if args.prove_runtime_readiness:
-                try:
-                    prove_runtime_readiness(root)
-                except ValueError as error:
-                    print(f"TOML runtime readiness proof failed: {error}")
-                    return 1
-                migration_plan = plan_toml_migration(root)
-                _print_migration_report(migration_plan, args.format, applied=False)
-                return 0 if migration_plan.ready else 1
-            if not migration_plan.ready:
-                _print_migration_report(migration_plan, args.format, applied=False)
-                return 1
-            if args.apply:
-                migration_plan = apply_toml_migration(root)
-            _print_migration_report(
-                migration_plan,
-                args.format,
-                applied=bool(args.apply),
-            )
-            return 0
         if args.command == "review":
             root = _repository_root(args.root)
             if args.review_command == "packet":
@@ -842,29 +793,6 @@ def _parse_criteria(values: Sequence[str]) -> dict[str, bool | None]:
         else:
             raise ValueError(f"criterion value must be true, false, or unknown: {raw}")
     return parsed
-
-
-def _print_migration_report(
-    plan: MigrationPlan,
-    output_format: str,
-    *,
-    applied: bool,
-) -> None:
-    """Render one preview or blocked migration plan without raising to the host."""
-
-    report = plan.report()
-    report["applied"] = applied
-    if output_format == "json":
-        print(json.dumps(report, indent=2, sort_keys=True))
-        return
-    label = "APPLIED" if applied else "DRY RUN"
-    print(
-        f"{label} TOML migration {report['status']} "
-        f"changes={len(plan.entries)} references={len(plan.references)} "
-        f"exceptions={len(plan.exceptions)}"
-    )
-    for blocker in plan.blockers:
-        print(f"BLOCKED {blocker}")
 
 
 def _repository_root(raw: Path | None) -> Path:

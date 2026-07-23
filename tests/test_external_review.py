@@ -94,7 +94,7 @@ class ExternalReviewTests(unittest.TestCase):
                             "disposition": "route_problem",
                             "rationale": "Observed behavior violates accepted truth.",
                             "target_id": "DSET-PROBLEM-GOV-099",
-                            "reopen_proof": ["DSET-TEST-GOV-025"],
+                            "reopen_proof": ["DSET-TEST-PLAN-GOV-025"],
                         }
                     ],
                 }
@@ -102,7 +102,7 @@ class ExternalReviewTests(unittest.TestCase):
             encoding="utf-8",
         )
         result = reconcile_review(ROOT, self.packet, report, candidate)
-        self.assertEqual(result["reopen_proof"], ["DSET-TEST-GOV-025"])
+        self.assertEqual(result["reopen_proof"], ["DSET-TEST-PLAN-GOV-025"])
         self.assertFalse(result["implementation_authorized"])
         output = self.work / "result.json"
         write_reconciliation(self.work, output, result)

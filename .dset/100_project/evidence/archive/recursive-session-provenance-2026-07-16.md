@@ -6,7 +6,7 @@
   to the framework repository and to the bounded generated adopter without
   making provenance authoritative or recursing indefinitely.
 - **Intended use:** Support `DSET-REQUIREMENT-GOV-022`,
-  `DSET-TEST-GOV-022`, and `DSET-TASK-GOV-041`; not certify hosted delivery,
+  `DSET-TEST-PLAN-GOV-022`, and `DSET-TASK-GOV-041`; not certify hosted delivery,
   external pilots, or the pending runtime implementation.
 - **Producer/performed work:** Main-thread repository audit, schema/template/
   validator implementation, retroactive material-review backfill, deterministic

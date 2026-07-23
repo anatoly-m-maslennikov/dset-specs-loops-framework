@@ -41,7 +41,7 @@ Implement the first bounded self-hosting fixed point and finalize the next contr
   Question.
 - Concrete conformance contracts for installable host-native skills, declared macOS/native-Windows/WSL/Linux applicability, dependency provenance and bounded exceptions, and real protected GitHub delivery evidence.
 - One measurable DSET 0.3 adoption-readiness Outcome with baseline, target, source/method, window, and proof links; features and task completion remain contributing outputs rather than the Outcome.
-- Six deferred product-practice Questions covering Journey, Actor/Persona, Hypothesis/Experiment, prioritization, feedback/analytics, and generated roadmap/release views, without introducing new semantic Types or queues.
+- Six candidate 0.6 Roadmap items covering Journey, Actor/Persona, Hypothesis/Experiment, prioritization, feedback/analytics, and generated roadmap/release views, without introducing current atomic authority, new semantic Types, or queues.
 
 ## Non-goals
 

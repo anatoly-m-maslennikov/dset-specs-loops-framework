@@ -2,7 +2,7 @@
 artifact_type = "analysis_report"
 artifact_subtype = "external_audit_analysis"
 artifact_id = "DSET-ANALYSIS-REPORT-002"
-priority = "critical"
+priority = "high"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 
 [[relations]]

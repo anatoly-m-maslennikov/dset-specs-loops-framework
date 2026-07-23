@@ -19,7 +19,7 @@ from tests import repository_root
 # ROOT locates the repository fixture; repository layout is authoritative.
 ROOT = repository_root(Path(__file__))
 # SCHEMA defines schema; this module owns the default.
-SCHEMA = ROOT / ".dset/02_layer_gov/schemas/evidence-record.schema.json"
+SCHEMA = ROOT / ".dset/02_layer_gov/schemas/evidence-record.schema.toml"
 # TEMPLATE defines template; this module owns the default.
 TEMPLATE = ROOT / ".dset/02_layer_gov/templates/evidence-record.md"
 
@@ -86,7 +86,7 @@ class EvidenceRecordTests(unittest.TestCase):
             "currentness": "current",
             "reopen_when": "The subject revision or method changes.",
             "subject": {
-                "id": "APP-TEST-001",
+                "id": "APP-TEST-PLAN-001",
                 "revision": "0123456789abcdef0123456789abcdef01234567",
                 "intended_use": "Support one bounded Verification claim.",
             },
@@ -98,7 +98,7 @@ class EvidenceRecordTests(unittest.TestCase):
                 "description": "Run the focused unit test.",
                 "setup": "Python 3.14 with locked dependencies.",
             },
-            "relations": [{"type": "evidence_for", "target": "APP-TEST-001"}],
+            "relations": [{"type": "evidence_for", "target": "APP-TEST-PLAN-001"}],
         }
 
 

@@ -1,0 +1,118 @@
+"$schema" = "https://json-schema.org/draft/2020-12/schema"
+"$id" = "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/.dset/000_dset_methodology/01_meta/schemas/package.schema.toml"
+title = "DSET accepted package manifest"
+type = "object"
+required = ["schema_version", "id", "status", "requirements", "tests", "evals", "contracts", "artifacts"]
+additionalProperties = false
+
+[properties]
+
+[properties.schema_version]
+pattern = "^1\\.0(?:-draft)?$"
+
+[properties.id]
+type = "string"
+pattern = "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+
+[properties.status]
+enum = ["active", "retired"]
+
+[properties.requirements]
+"$ref" = "#/$defs/requirement_ids"
+
+[properties.tests]
+"$ref" = "#/$defs/test_ids"
+
+[properties.evals]
+"$ref" = "#/$defs/eval_ids"
+
+[properties.contracts]
+"$ref" = "#/$defs/contract_ids"
+
+[properties.stories]
+"$ref" = "#/$defs/story_ids"
+
+[properties.outcomes]
+"$ref" = "#/$defs/outcome_ids"
+
+[properties.artifacts]
+type = "object"
+required = ["domain", "spec", "contracts", "test_plan", "eval_plan"]
+additionalProperties = false
+
+[properties.artifacts.properties]
+
+[properties.artifacts.properties.domain]
+const = "domain.md"
+
+[properties.artifacts.properties.spec]
+const = "spec.md"
+
+[properties.artifacts.properties.contracts]
+const = "contracts.md"
+
+[properties.artifacts.properties.stories]
+const = "stories.md"
+
+[properties.artifacts.properties.outcomes]
+const = "outcomes.md"
+
+[properties.artifacts.properties.test_plan]
+const = "test-plan.md"
+
+[properties.artifacts.properties.eval_plan]
+const = "eval-plan.md"
+
+["$defs"]
+
+["$defs".trace_id]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*-(?:DECISION|REQUIREMENT|CONSTRAINT|CONTRACT|STORY|OUTCOME|SCENARIO|INVARIANT|QUESTION|CONFLICT|RISK|OPPORTUNITY|PROBLEM|DEFECT|GAP|DEBT|TEST-PLAN|EVAL-PLAN|TASK|CHANGE)(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"
+
+["$defs".requirement_ids]
+type = "array"
+uniqueItems = true
+
+["$defs".requirement_ids.items]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*-REQUIREMENT(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"
+
+["$defs".test_ids]
+type = "array"
+uniqueItems = true
+
+["$defs".test_ids.items]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*-TEST-PLAN(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"
+
+["$defs".eval_ids]
+type = "array"
+uniqueItems = true
+
+["$defs".eval_ids.items]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*-EVAL-PLAN(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"
+
+["$defs".contract_ids]
+type = "array"
+uniqueItems = true
+
+["$defs".contract_ids.items]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*-CONTRACT(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"
+
+["$defs".story_ids]
+type = "array"
+uniqueItems = true
+
+["$defs".story_ids.items]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*-STORY(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"
+
+["$defs".outcome_ids]
+type = "array"
+uniqueItems = true
+
+["$defs".outcome_ids.items]
+type = "string"
+pattern = "^[A-Z][A-Z0-9]*-OUTCOME(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"

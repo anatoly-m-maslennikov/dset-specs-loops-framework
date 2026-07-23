@@ -16,7 +16,7 @@ from .frontmatter import FrontmatterError
 from .frontmatter import parse as parse_frontmatter
 from .layout import RepositoryLayout, discover_layout
 from .project_data import project_section, write_project_section
-from .yaml_subset import dump, load
+from .structured_data import dump, load
 
 # _SEMVER validates semver; this module owns the accepted syntax.
 _SEMVER = re.compile(

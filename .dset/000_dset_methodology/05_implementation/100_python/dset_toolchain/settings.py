@@ -13,17 +13,17 @@ from .toml_codec import load as load_toml
 SETTINGS_FILENAME = "dset_settings.toml"
 # SETTINGS_DIRECTORY defines settings directory; this module owns the default.
 SETTINGS_DIRECTORY = ".dset"
-# LEGACY_SETTINGS_FILENAME defines legacy settings filename; this module owns the default.
+# LEGACY_SETTINGS_FILENAME defines the retired settings filename.
 LEGACY_SETTINGS_FILENAME = "dset.toml"
 # SETTINGS_SCHEMA_VERSION defines settings schema version; this module owns the default.
 SETTINGS_SCHEMA_VERSION = "1.5"
-# PREVIOUS_SETTINGS_SCHEMA_VERSION defines previous settings schema version; this module owns the default.
+# PREVIOUS_SETTINGS_SCHEMA_VERSION defines the previous settings schema.
 PREVIOUS_SETTINGS_SCHEMA_VERSION = "1.4"
-# HIDDEN_SETTINGS_SCHEMA_VERSION defines hidden settings schema version; this module owns the default.
+# HIDDEN_SETTINGS_SCHEMA_VERSION defines the first hidden-layout schema.
 HIDDEN_SETTINGS_SCHEMA_VERSION = "1.3"
-# LEGACY_SETTINGS_SCHEMA_VERSION defines legacy settings schema version; this module owns the default.
+# LEGACY_SETTINGS_SCHEMA_VERSION defines the oldest readable schema.
 LEGACY_SETTINGS_SCHEMA_VERSION = "1.0"
-# SUPPORTED_SETTINGS_SCHEMA_VERSIONS defines supported settings schema versions; this module owns the default.
+# SUPPORTED_SETTINGS_SCHEMA_VERSIONS defines every readable schema.
 SUPPORTED_SETTINGS_SCHEMA_VERSIONS = frozenset(
     {
         LEGACY_SETTINGS_SCHEMA_VERSION,
@@ -34,18 +34,20 @@ SUPPORTED_SETTINGS_SCHEMA_VERSIONS = frozenset(
         SETTINGS_SCHEMA_VERSION,
     }
 )
-# ARTIFACT_CREATION_STRICTNESS defines artifact creation strictness; this module owns the default.
+# ARTIFACT_CREATION_STRICTNESS defines artifact creation gates.
 ARTIFACT_CREATION_STRICTNESS = frozenset({"medium", "high"})
 # IMPLEMENTATION_MODES defines implementation modes; this module owns the default.
 IMPLEMENTATION_MODES = frozenset({"lazy", "strict"})
 # CHANGE_WORKSPACE_MODES defines change workspace modes; this module owns the default.
 CHANGE_WORKSPACE_MODES = frozenset({"integration-branch", "branch-worktree"})
-# DELEGATION_BUDGET_PROFILES defines delegation budget profiles; this module owns the default.
+# DELEGATION_BUDGET_PROFILES defines delegation budgets.
 DELEGATION_BUDGET_PROFILES = frozenset({"low", "medium", "high"})
-# SEMANTIC_COMPILATION_MODES defines semantic compilation modes; this module owns the default.
+# SEMANTIC_COMPILATION_MODES defines compilation timing.
 SEMANTIC_COMPILATION_MODES = frozenset({"on_demand", "eager"})
+# CONFLICT_RESOLUTION_MODES defines conflict selection modes.
+CONFLICT_RESOLUTION_MODES = frozenset({"ask_always", "auto_by_effective_priority"})
 # DEFAULT_PRIORITY_SCALE defines default priority scale; this module owns the default.
-DEFAULT_PRIORITY_SCALE = ("critical", "high", "medium", "low", "deferred")
+DEFAULT_PRIORITY_SCALE = ("high", "medium", "low")
 
 
 @dataclass(frozen=True)
@@ -61,6 +63,7 @@ class ProjectSettings:
     semantic_compilation_mode: str = "on_demand"
     priority_scale: tuple[str, ...] = DEFAULT_PRIORITY_SCALE
     default_priority: str = "medium"
+    conflict_resolution_mode: str = "ask_always"
 
 
 def selected_settings_path(root: Path) -> Path:
@@ -196,13 +199,32 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
 
     priority = _table(raw.get("priority"), "priority", issues)
     priority_scale = _priority_scale(
-        priority.get("scale", DEFAULT_PRIORITY_SCALE), legacy, issues
+        priority.get("scale", DEFAULT_PRIORITY_SCALE),
+        legacy,
+        schema_version == SETTINGS_SCHEMA_VERSION,
+        issues,
     )
     default_priority = _string(
         priority.get("default", "medium"), "priority.default", issues
     )
     if default_priority not in priority_scale:
         issues.append("priority.default must be present in priority.scale")
+
+    conflict_resolution = _table(
+        raw.get("conflict_resolution"),
+        "conflict_resolution",
+        issues,
+    )
+    conflict_resolution_mode = _string(
+        conflict_resolution.get("mode", "ask_always"),
+        "conflict_resolution.mode",
+        issues,
+    )
+    if conflict_resolution_mode not in CONFLICT_RESOLUTION_MODES:
+        issues.append(
+            "conflict_resolution.mode must be ask_always or auto_by_effective_priority"
+        )
+        conflict_resolution_mode = "ask_always"
 
     return (
         ProjectSettings(
@@ -219,6 +241,7 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
             semantic_compilation_mode=semantic_compilation_mode,
             priority_scale=priority_scale,
             default_priority=default_priority,
+            conflict_resolution_mode=conflict_resolution_mode,
         ),
         tuple(issues),
     )
@@ -264,6 +287,7 @@ def _validate_known_keys(
                 "source_provenance",
                 "version_registry",
                 "package_catalog",
+                "conflict_resolution",
             }
         )
     _unknown_keys(raw, allowed_top, "settings", issues)
@@ -282,7 +306,43 @@ def _validate_known_keys(
         )
     priority = raw.get("priority")
     if isinstance(priority, dict):
-        _unknown_keys(priority, {"scale", "default"}, "priority", issues)
+        _unknown_keys(
+            priority,
+            {"scale", "default", "creation_defaults", "comparison"},
+            "priority",
+            issues,
+        )
+        creation_defaults = priority.get("creation_defaults")
+        if isinstance(creation_defaults, dict):
+            _unknown_keys(
+                creation_defaults,
+                {
+                    "constraint",
+                    "contract",
+                    "requirement",
+                    "decision",
+                    "implementation",
+                    "other",
+                },
+                "priority.creation_defaults",
+                issues,
+            )
+        comparison = priority.get("comparison")
+        if isinstance(comparison, dict):
+            _unknown_keys(
+                comparison,
+                {
+                    "strict_scope_ancestor_steps",
+                    "earlier_layer_steps",
+                    "bonuses_are_additive",
+                    "cap",
+                    "layer_order",
+                    "peer_features_are_ordered",
+                    "unrelated_scopes_receive_bonus",
+                },
+                "priority.comparison",
+                issues,
+            )
     workflows = raw.get("workflows")
     if isinstance(workflows, dict):
         _unknown_keys(workflows, {"implement"}, "workflows", issues)
@@ -303,6 +363,21 @@ def _validate_known_keys(
     delegation = raw.get("delegation")
     if isinstance(delegation, dict):
         _unknown_keys(delegation, {"budget_profile"}, "delegation", issues)
+    conflict_resolution = raw.get("conflict_resolution")
+    if isinstance(conflict_resolution, dict):
+        _unknown_keys(
+            conflict_resolution,
+            {
+                "mode",
+                "allowed_modes",
+                "automatic_requires_unique_winner",
+                "tie_or_same_level",
+                "unknown_uncertain_or_incomparable",
+                "unsatisfiable_external_obligations",
+            },
+            "conflict_resolution",
+            issues,
+        )
 
 
 def _unknown_keys(
@@ -335,7 +410,12 @@ def _boolean(value: object, name: str, issues: list[str]) -> bool:
     return False
 
 
-def _priority_scale(value: object, legacy: bool, issues: list[str]) -> tuple[str, ...]:
+def _priority_scale(
+    value: object,
+    legacy: bool,
+    current_contract: bool,
+    issues: list[str],
+) -> tuple[str, ...]:
     if legacy and isinstance(value, str):
         selected = tuple(item.strip() for item in value.split(",") if item.strip())
     elif isinstance(value, (list, tuple)) and all(
@@ -347,5 +427,12 @@ def _priority_scale(value: object, legacy: bool, issues: list[str]) -> tuple[str
         return DEFAULT_PRIORITY_SCALE
     if len(selected) < 2 or len(set(selected)) != len(selected):
         issues.append("priority.scale must contain at least two unique values")
+        return DEFAULT_PRIORITY_SCALE
+    removed = sorted({"critical", "deferred"}.intersection(selected))
+    if removed:
+        issues.append("priority.scale contains removed values: " + ", ".join(removed))
+        return DEFAULT_PRIORITY_SCALE
+    if current_contract and selected != DEFAULT_PRIORITY_SCALE:
+        issues.append("priority.scale must be high, medium, low")
         return DEFAULT_PRIORITY_SCALE
     return selected

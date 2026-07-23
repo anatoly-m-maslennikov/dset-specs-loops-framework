@@ -9,8 +9,8 @@ applies_to = ["agent-skill-package", "skill-creation", "skill-update", "skill-re
 does_not_apply_to = ["one-off-prompt", "provider-host-adapter-without-a-skill-core", "substantive-domain-governance"]
 
 [authority]
-requirement = "DSET-REQ-IMPL-005"
-provider_neutral_requirement = "DSET-REQ-001"
+requirement = "DSET-REQUIREMENT-IMPL-005"
+provider_neutral_requirement = "DSET-REQUIREMENT-001"
 mandatory_on_create_or_update = true
 substantive_rules_owner = "project-local-governance"
 

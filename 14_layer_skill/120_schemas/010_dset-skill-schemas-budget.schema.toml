@@ -1,0 +1,127 @@
+"$schema" = "https://json-schema.org/draft/2020-12/schema"
+"$id" = "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/.dset/000_dset_methodology/04_skill/schemas/budget.schema.toml"
+title = "DSET delegation budget policy"
+type = "object"
+required = ["schema_version", "default_profile", "model_policy", "profiles", "quality_floor", "no_delegation_reason_required"]
+additionalProperties = false
+
+[properties]
+
+[properties.schema_version]
+const = 1.0
+
+[properties.default_profile]
+enum = ["low", "medium", "high"]
+
+[properties.model_policy]
+type = "object"
+required = ["default", "attest", "unknown_for_required_gate"]
+additionalProperties = false
+
+[properties.model_policy.properties]
+
+[properties.model_policy.properties.default]
+const = "inherit-main-model-and-effort"
+
+[properties.model_policy.properties.attest]
+const = "required-when-runtime-supports"
+
+[properties.model_policy.properties.unknown_for_required_gate]
+const = "stop-for-decision"
+
+[properties.profiles]
+type = "object"
+required = ["low", "medium", "high"]
+additionalProperties = false
+
+[properties.profiles.properties]
+
+[properties.profiles.properties.low]
+"$ref" = "#/$defs/low_profile"
+
+[properties.profiles.properties.medium]
+"$ref" = "#/$defs/medium_profile"
+
+[properties.profiles.properties.high]
+"$ref" = "#/$defs/high_profile"
+
+[properties.quality_floor]
+type = "object"
+required = ["preserve_requested_scope", "preserve_required_tests", "preserve_required_evals", "preserve_safety_gates"]
+additionalProperties = false
+
+[properties.quality_floor.properties]
+
+[properties.quality_floor.properties.preserve_requested_scope]
+const = true
+
+[properties.quality_floor.properties.preserve_required_tests]
+const = true
+
+[properties.quality_floor.properties.preserve_required_evals]
+const = true
+
+[properties.quality_floor.properties.preserve_safety_gates]
+const = true
+
+[properties.no_delegation_reason_required]
+const = true
+
+["$defs"]
+
+["$defs".low_profile]
+type = "object"
+required = ["target_subagents", "max_subagents", "max_depth", "max_rounds"]
+additionalProperties = false
+
+["$defs".low_profile.properties]
+
+["$defs".low_profile.properties.target_subagents]
+const = 0
+
+["$defs".low_profile.properties.max_subagents]
+const = 1
+
+["$defs".low_profile.properties.max_depth]
+const = 1
+
+["$defs".low_profile.properties.max_rounds]
+const = 1
+
+["$defs".medium_profile]
+type = "object"
+required = ["target_subagents", "max_subagents", "max_depth", "max_rounds"]
+additionalProperties = false
+
+["$defs".medium_profile.properties]
+
+["$defs".medium_profile.properties.target_subagents]
+const = 2
+
+["$defs".medium_profile.properties.max_subagents]
+const = 3
+
+["$defs".medium_profile.properties.max_depth]
+const = 1
+
+["$defs".medium_profile.properties.max_rounds]
+const = 2
+
+["$defs".high_profile]
+type = "object"
+required = ["target_subagents", "max_subagents", "max_depth", "max_rounds"]
+additionalProperties = false
+
+["$defs".high_profile.properties]
+
+["$defs".high_profile.properties.target_subagents]
+const = 4
+
+["$defs".high_profile.properties.max_subagents]
+const = 6
+
+["$defs".high_profile.properties.max_depth]
+const = 2
+
+["$defs".high_profile.properties.max_rounds]
+const = 3

@@ -3,7 +3,7 @@ artifact_type = "evidence_record"
 artifact_subtype = "evaluation_result"
 artifact_id = "DSET-EVIDENCE-RECORD-015"
 priority = "high"
-child_of = ["DSET-EVALUATION-TOOL-003"]
+child_of = ["DSET-EVAL-PLAN-TOOL-003"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 +++
 
@@ -18,7 +18,7 @@ Clean upstream Claudian commit
 `783df1ceb149ac9cd9a00a3444c3dadf83bbacf4`, OYOHA through
 `badbd69b5e8b6e847fc096a21db1c8fab3fb194b`, and DSET implementation
 `581714c`. This record satisfies the clean-upstream execution half of
-`DSET-EVALUATION-TOOL-003`; it does not promote the candidate.
+`DSET-EVAL-PLAN-TOOL-003`; it does not promote the candidate.
 
 ## Method and observations
 

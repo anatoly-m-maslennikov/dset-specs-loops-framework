@@ -42,13 +42,13 @@ Roadmap uses the same `VERSION` sequence with `artifact_subtype: roadmap`.
 Projects may opt into subtype tokens for newly emitted artifacts with
 `artifacts.subtype_in_names = true` in `.dset/dset_settings.toml`.
 Each subtype then owns one project-wide sequence. Atomic records use their
-semantic subtype kind directly (`REQ`, `CONSTR`, `CONTR`, `IMPDEC`, and the
+semantic subtype kind directly (`REQUIREMENT`, `CONSTRAINT`, `CONTRACT`, `IMPL`, and the
 other registered subtype kinds); an empty-subtype atom uses its Type kind and
 that Type's empty-subtype sequence. Layers, features, feature groups, folders,
 and lifecycle state never restart numbering.
 This is an independent optional capability, not a bundled “advanced mode.” A
-setting change never renames an immutable atom or an already stable artifact
-identity.
+naming-policy change requires one complete governed historical migration; a
+repository never retains two canonical identity vocabularies.
 
 ## Role boundaries
 

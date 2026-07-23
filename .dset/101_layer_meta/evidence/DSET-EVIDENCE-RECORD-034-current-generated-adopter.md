@@ -3,7 +3,7 @@ schema_version = "1.0"
 artifact_type = "evidence_record"
 artifact_subtype = "test_result"
 artifact_id = "DSET-EVIDENCE-RECORD-034"
-priority = "critical"
+priority = "high"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 context = ["repository=anatoly-m-maslennikov/dset-specs-loops-framework", "environment=local-macos", "python=3.14", "generated_schema=1.2", "workspace_modes=integration-branch,branch-worktree"]
 observed_at = "2026-07-21T05:11:11+04:00"
@@ -13,7 +13,7 @@ currentness = "current"
 reopen_when = "Bootstrap inputs, schema 1.2 layout or Work Area rules, release branch configuration, Change workspace selection, generated-adopter validation, or the subject revision changes."
 
 [subject]
-id = "DSET-TEST-META-011"
+id = "DSET-TEST-PLAN-META-011"
 revision = "347df79ba1d1310476ff587e55489b8d723576dd"
 intended_use = "Support the bounded claim that a newly generated schema 1.2 adopter validates Work Areas and both configured Change workspace modes."
 
@@ -27,11 +27,11 @@ setup = "Commit 347df79ba1d1310476ff587e55489b8d723576dd; project .venv; local m
 
 [[relations]]
 type = "evidence_for"
-target = "DSET-TEST-META-011"
+target = "DSET-TEST-PLAN-META-011"
 
 [[relations]]
 type = "evidence_for"
-target = "DSET-TEST-OPS-005"
+target = "DSET-TEST-PLAN-OPS-005"
 +++
 
 # Test result — Current generated adopter

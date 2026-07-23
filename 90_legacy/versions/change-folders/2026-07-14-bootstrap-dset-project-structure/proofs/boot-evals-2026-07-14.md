@@ -13,12 +13,12 @@ Four isolated, read-only reviewers each evaluated one bootstrap criterion from t
 
 | Eval ID | Result | Independent finding |
 |---|---|---|
-| **DSET-EVAL-GOV-001** | Pass | All five contributor cases resolved to the correct repository-owned path without private context. |
-| **DSET-EVAL-GOV-002** | Pass | The reviewer kept framework publication, accepted project truth, active deltas, and archived evidence under distinct owners. |
-| **DSET-EVAL-GOV-003** | Pass | The one-package tree covers all current accepted behavior; no present cross-package contract justifies an empty global layer. |
-| **DSET-EVAL-GOV-004** | Pass | The reviewer reconstructed completed tasks, PR identity, remaining gates, and the next task from repository files alone. |
+| **DSET-EVAL-PLAN-GOV-001** | Pass | All five contributor cases resolved to the correct repository-owned path without private context. |
+| **DSET-EVAL-PLAN-GOV-002** | Pass | The reviewer kept framework publication, accepted project truth, active deltas, and archived evidence under distinct owners. |
+| **DSET-EVAL-PLAN-GOV-003** | Pass | The one-package tree covers all current accepted behavior; no present cross-package contract justifies an empty global layer. |
+| **DSET-EVAL-PLAN-GOV-004** | Pass | The reviewer reconstructed completed tasks, PR identity, remaining gates, and the next task from repository files alone. |
 
-## DSET-EVAL-GOV-001 — Findability
+## DSET-EVAL-PLAN-GOV-001 — Findability
 
 The reviewer started at `README.md`, followed its `dset/README.md` entrypoint, then used the manifest, package README, changes README, and active bootstrap documents.
 
@@ -32,7 +32,7 @@ The reviewer started at `README.md`, followed its `dset/README.md` entrypoint, t
 
 The only friction was that no copy-ready change template exists yet and resumption state spans several intentionally separate artifacts. Neither issue caused a misroute. Result: **Pass, 5/5 cases**.
 
-## DSET-EVAL-GOV-002 — Ownership
+## DSET-EVAL-PLAN-GOV-002 — Ownership
 
 The reviewer found the ownership boundary consistently in `README.md`, `dset/README.md`, `dset/dset.yaml`, the methodology package README, and the changes READMEs:
 
@@ -43,13 +43,13 @@ The reviewer found the ownership boundary consistently in `README.md`, `dset/REA
 
 The shared word “methodology” and normative language inside the active delta were tested as likely confusion points. Explicit boundary statements and active-change status resolved both. Result: **Pass, no ownership confusion observed**.
 
-## DSET-EVAL-GOV-003 — Proportionality
+## DSET-EVAL-PLAN-GOV-003 — Proportionality
 
 The manifest registers exactly one active package, `methodology`; its current-truth directory contains a domain, specification, public contract, deterministic test plan, and qualitative eval plan. No second independently meaningful capability, cross-package dependency, shared journey, or aggregate release gate exists.
 
 The reviewer also checked the future `schemas/` and `templates/` roots. Their READMEs identify placeholders rather than implemented packages or global truth. The design and solution landscape provide a concrete trigger for later expansion: add a global layer only when multiple packages create shared contracts or release gates. Result: **Pass, no global layer required**.
 
-## DSET-EVAL-GOV-004 — Resumability
+## DSET-EVAL-PLAN-GOV-004 — Resumability
 
 The reviewer reconstructed this state without chat history:
 

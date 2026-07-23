@@ -13,7 +13,7 @@ currentness = "current"
 reopen_when = "The settings schema, defaults, reader precedence, bootstrap writer, selected workflow behavior, or subject revision changes."
 
 [subject]
-id = "DSET-TEST-GOV-039"
+id = "DSET-TEST-PLAN-GOV-039"
 revision = "b7d79ec08c9a446f8a5358ac44c4c26bf7486d42"
 intended_use = "Support the bounded claim that canonical settings select naming, creation strictness, and implementation preparation without a legacy write path."
 
@@ -27,7 +27,7 @@ setup = "Python 3.14.6; Ruff 0.15.21; mypy 2.3.0; local macOS repository checkou
 
 [[relations]]
 type = "evidence_for"
-target = "DSET-TEST-GOV-039"
+target = "DSET-TEST-PLAN-GOV-039"
 +++
 
 # Test result — Canonical settings selections

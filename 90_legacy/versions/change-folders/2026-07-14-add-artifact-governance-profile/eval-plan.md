@@ -8,10 +8,10 @@ Applicable. Navigation usefulness, artifact classification, semantic dependency 
 
 | Eval ID | Case | Threshold |
 |---|---|---|
-| **DSET-EVAL-GOV-007** | Cold-start helicopter navigation | A reviewer locates the framework purpose, methodology stages, artifact-type owner, authoring rule, rationale, and maintenance procedure from hubs within three minutes without using repository search |
-| **DSET-EVAL-META-002** | Artifact classification | Given six mixed requests, a reviewer selects hub, normative reference, rationale, Decision record, playbook/runbook, or evidence without assigning the same rule to two artifacts |
-| **DSET-EVAL-META-003** | Specification dependency order | A reviewer detects undefined forward dependencies, distinguishes connections from definitions, and produces a domain-entity/lifecycle ordering that can be read top-to-bottom |
-| **DSET-EVAL-GOV-008** | Orthogonal profile selection | Python code, TypeScript code, documentation-only governance, and mixed repositories select implementation-language and artifact profiles independently with no inherited Python thresholds for documents |
+| **DSET-EVAL-PLAN-GOV-007** | Cold-start helicopter navigation | A reviewer locates the framework purpose, methodology stages, artifact-type owner, authoring rule, rationale, and maintenance procedure from hubs within three minutes without using repository search |
+| **DSET-EVAL-PLAN-META-002** | Artifact classification | Given six mixed requests, a reviewer selects hub, normative reference, rationale, Decision record, playbook/runbook, or evidence without assigning the same rule to two artifacts |
+| **DSET-EVAL-PLAN-META-003** | Specification dependency order | A reviewer detects undefined forward dependencies, distinguishes connections from definitions, and produces a domain-entity/lifecycle ordering that can be read top-to-bottom |
+| **DSET-EVAL-PLAN-GOV-008** | Orthogonal profile selection | Python code, TypeScript code, documentation-only governance, and mixed repositories select implementation-language and artifact profiles independently with no inherited Python thresholds for documents |
 
 ## Evidence
 

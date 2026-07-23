@@ -12,7 +12,7 @@ workflow, queue, skill, host, tool, status, filename, path, or next action.
 | `decision` | General accepted directive | `requirement`, `constraint`, `contract`, `implementation_decision` |
 | `question` | General missing knowledge, interpretation, or choice | `conflict`, `risk`, `opportunity` |
 | `problem` | General current insufficiency | `defect`, `gap`, `debt` |
-| `qa` | Invalid for an emitted QA atom | `test`, `evaluation` |
+| `qa` | Invalid for an emitted QA atom | `test_plan`, `evaluation_plan` |
 
 Omit an empty subtype. Never repeat the Type as its own subtype. Every emitted
 atom has one Type and at most one direct subtype; QA always has one of its two
@@ -20,30 +20,25 @@ subtypes. Subtypes never contain subtypes. Type and subtype are immutable after
 emission.
 
 When subtype-bearing names are enabled, a Requirement, Constraint, Contract,
-or Implementation Decision uses `REQ`, `CONSTR`, `CONTR`, or `IMPDEC` as its
+or Implementation Decision uses `REQUIREMENT`, `CONSTRAINT`, `CONTRACT`, or `IMPL` as its
 external ID kind. An empty-subtype Decision uses `DECISION`. Type-only naming
 uses the Type token while keeping the subtype in atom metadata.
 
-## Compatibility without retyping
+## Canonical identity migration
 
-New atoms use the explicit four-Type envelope. Existing stable semantic IDs and
-normalized payloads remain unchanged and are interpreted through a
-deterministic compatibility classification even when a governed carrier
-transition changes their encoding or path. Their one recognized ID-kind token
-and canonical carrier role must agree on one Type and at most one direct
-subtype. Legacy `EVAL` IDs map to
-`qa/evaluation`; legacy standalone Opportunity, Conflict, and Risk carriers map
-to direct Question subtypes; Requirement, Constraint, and Contract map to their
-direct Decision subtypes; and Story, Outcome, Scenario, and Invariant remain
-compatibility input normalized to Decision/Requirement. The mapping is a
-derived view, not an edit, alias, new atom, or lifecycle event.
+All current and historical project identities use the same canonical
+vocabulary. A naming change is a complete governed migration of IDs, carrier
+names, relations, lifecycle targets, compiled projections, settings, code,
+proof references, and generated views. Short aliases are rejected after the
+migration; they do not remain as a second compatibility vocabulary. One
+recognized ID-kind token and the carrier's semantic role must agree on one
+Type and at most one direct subtype.
 
 `dset check` fails with `DSET-E166` when an ID kind and carrier classification
 disagree or a carrier cannot resolve to the flat model. Traceability publishes
-the preserved ID, normalized Type/subtype, carrier paths, compatibility flag,
-and lifecycle event IDs. Project health reports the same population by Type
-and subtype and keeps native immutable atoms separate from compatibility-
-classified history. Skill context exposes the four-Type routing identity and
+the canonical ID, normalized Type/subtype, carrier paths, and lifecycle event
+IDs. Project health reports the same population by Type and subtype. Skill
+context exposes the four-Type routing identity and
 counts from the current repository; wrappers never infer a Type from the skill
 that happened to run.
 
@@ -144,16 +139,16 @@ missing, create a linked Question first.
 QA defines how accepted claims are checked and changes assurance, not
 authority.
 
-- A **Test** is deterministic under declared conditions and has an exact,
+- A **Test Plan** defines deterministic proof under declared conditions with an exact,
   reproducible pass/fail result.
-- An **Evaluation** uses qualitative, probabilistic, statistical, or
+- An **Evaluation Plan** defines qualitative, probabilistic, statistical, or
   model-judged assessment with an explicit method, rubric or metric, threshold,
-  and uncertainty treatment where applicable. It remains an Evaluation when
+  and uncertainty treatment where applicable. It remains an Evaluation Plan when
   deterministic code executes the method but the conclusion depends on
   judgment, sampling, calibration, probability, statistics, or a model.
 
-QA atoms define checks. Test code, Evaluation prompts, datasets, fixtures, and
-harnesses are implementation artifacts. Execution results are evidence for
+QA atoms define Test Plans or Evaluation Plans. Test code, Evaluation prompts,
+datasets, fixtures, and harnesses are implementation artifacts. Execution results are evidence for
 derived Verification and never rewrite Requirements or Decisions.
 
 ## Lifecycle and authority
@@ -176,17 +171,17 @@ task, Change,
 or Release is a route, representation, step, or optional container rather than
 another semantic Type.
 
-## Representation migration
+## Complete identity migration
 
-Existing emitted semantic records remain immutable. Legacy top-level
-Opportunity and Conflict records, Problem/Risk classifications, separate
-Requirement/Contract authority records, and `EVAL` identities must not be
-silently retyped or renamed. A carrier transition must preserve their IDs,
-normalized payloads, provenance, and explicit successor or absorption
-relations while retaining the original digest and source-return address.
+Payloads and provenance remain attributable, but a naming-policy change
+migrates the complete current and historical identity graph in one governed
+transaction. IDs, carrier names, relations, lifecycle targets, compiled
+projections, settings, implementations, proof references, and generated views
+must agree before the migration is accepted. Short aliases are rejected after
+cutover rather than retained as compatibility identities.
 
-The compatibility projection is implemented across validation, traceability,
-project health, and skill routing. Native atoms and compatibility-classified
-legacy IDs both resolve through an original seal plus any validated current-
+The canonical projection is implemented across validation, traceability,
+project health, and skill routing. Every migrated atom resolves through its
+original seal plus any validated current-
 carrier transition chain. Any immutability claim must distinguish semantic
 immutability from carrier representation.

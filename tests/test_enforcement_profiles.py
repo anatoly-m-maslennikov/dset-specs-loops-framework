@@ -22,7 +22,7 @@ from dset_toolchain.enforcement_profiles import (
     validate_profile_file,
 )
 from dset_toolchain.temp_paths import temporary_directory
-from dset_toolchain.yaml_subset import dump
+from dset_toolchain.structured_data import dump
 from tests import repository_root
 
 # ROOT locates the repository fixture; repository layout is authoritative.

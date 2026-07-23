@@ -9,8 +9,8 @@ from typing import Any
 
 from .layout import LAYERS, RepositoryLayout, discover_layout
 from .toml_codec import dumps as dump_toml
-from .yaml_subset import dump as dump_structured
-from .yaml_subset import load
+from .structured_data import dump as dump_structured
+from .structured_data import load
 
 
 def project_section(root: Path, name: str) -> dict[str, Any]:

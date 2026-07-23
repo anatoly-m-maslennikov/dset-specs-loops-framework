@@ -23,7 +23,7 @@ from dset_toolchain.release import (
     prepare_release,
 )
 from dset_toolchain.temp_paths import temporary_directory
-from dset_toolchain.yaml_subset import dump, load
+from dset_toolchain.structured_data import dump, load
 from tests import repository_root
 
 # ROOT locates the repository fixture; repository layout is authoritative.

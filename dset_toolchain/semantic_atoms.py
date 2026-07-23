@@ -23,11 +23,12 @@ from .semantic_types import (
     SEMANTIC_ID_KINDS,
     SEMANTIC_SUBTYPES,
     normalize_semantic_classification,
+    semantic_id_kind,
     semantic_id_matches_classification,
     semantic_naming_axis,
 )
 from .settings import load_project_settings
-from .yaml_subset import YamlSubsetError, dump, load
+from .structured_data import StructuredDataError, dump, load
 
 # ID_PATTERN validates id pattern; this module owns the accepted syntax.
 ID_PATTERN = re.compile(r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$")
@@ -165,7 +166,7 @@ def seal_atom(root: Path, path: Path) -> Path:
         atom.subtype,
         include_subtype=settings.artifact_subtype_in_names,
     )
-    if expected_kind not in atom.semantic_id.split("-"):
+    if expected_kind != semantic_id_kind(atom.semantic_id):
         mode = "subtype" if settings.artifact_subtype_in_names else "type"
         raise ValueError(
             f"new atom must use the configured {mode} naming kind: {expected_kind}"
@@ -401,8 +402,13 @@ def _parse_atom(
         diagnostics.append(_atom_diag(path, "atom requires one of the four Types"))
     elif subtype is not None and subtype not in SEMANTIC_SUBTYPES[semantic_type]:
         diagnostics.append(_atom_diag(path, "atom has an invalid direct subtype"))
-    elif semantic_type == "qa" and subtype not in {"test", "evaluation"}:
-        diagnostics.append(_atom_diag(path, "QA atom requires test or evaluation"))
+    elif semantic_type == "qa" and subtype not in {
+        "test_plan",
+        "evaluation_plan",
+    }:
+        diagnostics.append(
+            _atom_diag(path, "QA atom requires test_plan or evaluation_plan")
+        )
     if not isinstance(semantic_id, str) or not ID_PATTERN.fullmatch(semantic_id):
         diagnostics.append(_atom_diag(path, "atom requires a canonical semantic_id"))
     elif semantic_type in SEMANTIC_SUBTYPES:
@@ -475,7 +481,7 @@ def _validate_lifecycle(
     path = _lifecycle_path(root)
     try:
         events = _lifecycle_events(root)
-    except (OSError, UnicodeError, ValueError, YamlSubsetError) as error:
+    except (OSError, UnicodeError, ValueError, StructuredDataError) as error:
         return [Diagnostic("DSET-E160", path, f"invalid lifecycle registry: {error}")]
     diagnostics: list[Diagnostic] = []
     seen: set[str] = set()
@@ -695,7 +701,7 @@ def _known_semantic_ids(root: Path, atoms: dict[str, SemanticAtom]) -> set[str]:
     for path in layout.structured_named_files(root, "package"):
         try:
             data = load(path)
-        except (OSError, UnicodeError, YamlSubsetError):
+        except (OSError, UnicodeError, StructuredDataError):
             continue
         if not isinstance(data, dict):
             continue
@@ -725,7 +731,7 @@ def _validate_ledger(root: Path, atoms: dict[str, SemanticAtom]) -> list[Diagnos
         return []
     try:
         data = load(path)
-    except (OSError, UnicodeError, YamlSubsetError) as error:
+    except (OSError, UnicodeError, StructuredDataError) as error:
         return [Diagnostic("DSET-E161", path, f"invalid atom ledger: {error}")]
     records = data.get("records") if isinstance(data, dict) else None
     if not isinstance(data, dict) or str(data.get("schema_version")) != "1.0":

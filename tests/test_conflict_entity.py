@@ -11,7 +11,7 @@ import unittest
 from pathlib import Path
 
 from dset_toolchain.layout import discover_layout
-from dset_toolchain.yaml_subset import load
+from dset_toolchain.structured_data import load
 from tests import repository_root
 
 # ROOT locates the repository fixture; repository layout is authoritative.
@@ -67,8 +67,8 @@ class ConflictEntityTests(unittest.TestCase):
         )
         assert isinstance(package, dict)
         self.assertIn("DSET-REQUIREMENT-GOV-027", package["requirements"])
-        self.assertIn("DSET-TEST-GOV-027", package["tests"])
-        self.assertIn("DSET-EVAL-GOV-017", package["evals"])
+        self.assertIn("DSET-TEST-PLAN-GOV-027", package["tests"])
+        self.assertIn("DSET-EVAL-PLAN-GOV-017", package["evals"])
 
     def test_absorbing_decision_preserves_immutable_predecessor(self) -> None:
         predecessor = DECISIONS / (

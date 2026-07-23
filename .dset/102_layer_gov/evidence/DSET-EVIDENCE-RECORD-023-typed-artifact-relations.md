@@ -7,7 +7,7 @@ llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 
 [[relations]]
 type = "evidence_for"
-target = "DSET-TEST-GOV-036"
+target = "DSET-TEST-PLAN-GOV-036"
 +++
 
 # Test result — typed artifact relations
@@ -19,9 +19,9 @@ target = "DSET-TEST-GOV-036"
 ## Subject and intended use
 
 Implementation commit `cbddc0ab00606aa79b47dc7deced66dca73a1f56` for
-`DSET-DECISION-GOV-013` and deterministic Test `DSET-TEST-GOV-036`.
+`DSET-DECISION-GOV-013` and deterministic Test `DSET-TEST-PLAN-GOV-036`.
 This evidence supports the local executable relation contract only. It does
-not satisfy qualitative Evaluation `DSET-EVALUATION-GOV-026`, hosted CI,
+not satisfy qualitative Evaluation `DSET-EVAL-PLAN-GOV-026`, hosted CI,
 release readiness, or publication.
 
 ## Observed result

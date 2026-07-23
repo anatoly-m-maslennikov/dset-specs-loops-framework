@@ -11,7 +11,7 @@ from .diagnostics import Diagnostic
 from .layout import discover_layout
 from .traceability import trace_is_fresh
 from .validation import validate_repository
-from .yaml_subset import load
+from .structured_data import load
 
 
 def _verification_args(command: object) -> list[str]:

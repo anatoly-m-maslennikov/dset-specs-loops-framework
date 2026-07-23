@@ -128,19 +128,19 @@ rationale = "The successor preserves the claim while removing an invalid immedia
 
 [[events]]
 id = "DSET-LIFECYCLE-EVENT-015"
-atom_id = "DSET-TEST-TOOL-020"
+atom_id = "DSET-TEST-PLAN-TOOL-020"
 event = "absorbed"
 occurred_at = "2026-07-20T12:01:00+04:00"
-related = ["DSET-TEST-TOOL-021"]
+related = ["DSET-TEST-PLAN-TOOL-021"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The successor attaches deterministic proof to the corrected active Requirement lineage."
 
 [[events]]
 id = "DSET-LIFECYCLE-EVENT-016"
-atom_id = "DSET-EVALUATION-TOOL-002"
+atom_id = "DSET-EVAL-PLAN-TOOL-002"
 event = "absorbed"
 occurred_at = "2026-07-20T12:02:00+04:00"
-related = ["DSET-EVALUATION-TOOL-003"]
+related = ["DSET-EVAL-PLAN-TOOL-003"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The successor attaches qualitative proof to the corrected active Requirement lineage."
 
@@ -158,7 +158,7 @@ id = "DSET-LIFECYCLE-EVENT-018"
 atom_id = "DSET-PROBLEM-TOOL-006"
 event = "resolved"
 occurred_at = "2026-07-20T11:25:00+04:00"
-related = ["DSET-REQUIREMENT-SKILL-005", "DSET-REQUIREMENT-OPS-001", "DSET-TEST-SKILL-005"]
+related = ["DSET-REQUIREMENT-SKILL-005", "DSET-REQUIREMENT-OPS-001", "DSET-TEST-PLAN-SKILL-005"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Bootstrap now detects active hosted automation, emits applicable supportability with a bounded incomplete-runbook warning, validates its own output, and retains the stricter production-supportability validator."
 
@@ -248,7 +248,7 @@ id = "DSET-LIFECYCLE-EVENT-028"
 atom_id = "DSET-DEFECT-GOV-002"
 event = "resolved"
 occurred_at = "2026-07-21T01:10:00+04:00"
-related = ["DSET-DECISION-GOV-003", "DSET-EVAL-GOV-012"]
+related = ["DSET-DECISION-GOV-003", "DSET-EVAL-PLAN-GOV-012"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Compilation now rejects loose identifier mentions, digest-binds explicit claim fragments, and confines semantic-equivalence judgment to the separately governed Evaluation route."
 
@@ -362,19 +362,19 @@ rationale = "The successor preserves lazy outcome-first preparation and adds the
 
 [[events]]
 id = "DSET-LIFECYCLE-EVENT-041"
-atom_id = "DSET-TEST-SKILL-012"
+atom_id = "DSET-TEST-PLAN-SKILL-012"
 event = "absorbed"
 occurred_at = "2026-07-20T19:28:01+04:00"
-related = ["DSET-TEST-SKILL-014"]
+related = ["DSET-TEST-PLAN-SKILL-014"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The successor retains the lazy closure assertions and adds deterministic strict-mode and settings coverage."
 
 [[events]]
 id = "DSET-LIFECYCLE-EVENT-042"
-atom_id = "DSET-EVAL-SKILL-010"
+atom_id = "DSET-EVAL-PLAN-SKILL-010"
 event = "absorbed"
 occurred_at = "2026-07-20T19:28:02+04:00"
-related = ["DSET-EVALUATION-SKILL-012"]
+related = ["DSET-EVAL-PLAN-SKILL-012"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The successor keeps outcome-first usability and explicitly evaluates operator understanding of lazy and strict modes."
 
@@ -398,19 +398,19 @@ rationale = "The successor renames and expands project settings, separates selec
 
 [[events]]
 id = "DSET-LIFECYCLE-EVENT-045"
-atom_id = "DSET-TEST-GOV-037"
+atom_id = "DSET-TEST-PLAN-GOV-037"
 event = "absorbed"
 occurred_at = "2026-07-20T21:49:15+04:00"
-related = ["DSET-TEST-GOV-038"]
+related = ["DSET-TEST-PLAN-GOV-038"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The successor retains canonical TOML coverage and adds deterministic filename, compatibility, manifest-boundary, and selected-behavior checks."
 
 [[events]]
 id = "DSET-LIFECYCLE-EVENT-046"
-atom_id = "DSET-EVALUATION-GOV-027"
+atom_id = "DSET-EVAL-PLAN-GOV-027"
 event = "absorbed"
 occurred_at = "2026-07-20T21:49:16+04:00"
-related = ["DSET-EVALUATION-GOV-028"]
+related = ["DSET-EVAL-PLAN-GOV-028"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The successor focuses the readability evaluation on discoverable settings and the settings-manifest-governance ownership boundary."
 
@@ -560,28 +560,28 @@ rationale = "The successor retains verbose settings and ownership semantics whil
 
 [[events]]
 id = "DSET-LIFECYCLE-EVENT-063"
-atom_id = "DSET-TEST-GOV-038"
+atom_id = "DSET-TEST-PLAN-GOV-038"
 event = "absorbed"
 occurred_at = "2026-07-21T02:15:05+04:00"
-related = ["DSET-TEST-GOV-043"]
+related = ["DSET-TEST-PLAN-GOV-043"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The successor retains settings and migration proof while requiring complete historical carrier conversion."
 
 [[events]]
 id = "DSET-LIFECYCLE-EVENT-064"
-atom_id = "DSET-TEST-GOV-040"
+atom_id = "DSET-TEST-PLAN-GOV-040"
 event = "absorbed"
 occurred_at = "2026-07-21T02:15:06+04:00"
-related = ["DSET-TEST-GOV-043"]
+related = ["DSET-TEST-PLAN-GOV-043"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The successor retains package-history preservation checks while requiring TOML historical envelopes instead of YAML snapshots."
 
 [[events]]
 id = "DSET-LIFECYCLE-EVENT-065"
-atom_id = "DSET-TEST-GOV-041"
+atom_id = "DSET-TEST-PLAN-GOV-041"
 event = "absorbed"
 occurred_at = "2026-07-21T02:15:07+04:00"
-related = ["DSET-TEST-GOV-043"]
+related = ["DSET-TEST-PLAN-GOV-043"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The successor preserves digest, link, ownership, rollback, and idempotency checks while eliminating the retained-YAML exception."
 
@@ -590,7 +590,7 @@ id = "DSET-LIFECYCLE-EVENT-066"
 atom_id = "DSET-DEFECT-TOOL-007"
 event = "resolved"
 occurred_at = "2026-07-21T04:13:20+04:00"
-related = ["DSET-DECISION-GOV-018", "DSET-REQUIREMENT-GOV-040", "DSET-INVARIANT-GOV-027"]
+related = ["DSET-DECISION-GOV-018", "DSET-REQUIREMENT-GOV-040", "DSET-REQUIREMENT-GOV-062"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "All DSET-owned YAML artifact and Markdown YAML-frontmatter carriers now use lossless TOML transitions with current validation, zero-change repetition, and complete deterministic proof."
 
@@ -599,7 +599,7 @@ id = "DSET-LIFECYCLE-EVENT-067"
 atom_id = "DSET-PROBLEM-TOOL-002"
 event = "resolved"
 occurred_at = "2026-07-21T05:11:11+04:00"
-related = ["DSET-REQUIREMENT-META-011", "DSET-REQUIREMENT-OPS-005", "DSET-TEST-META-011", "DSET-TEST-OPS-005"]
+related = ["DSET-REQUIREMENT-META-011", "DSET-REQUIREMENT-OPS-005", "DSET-TEST-PLAN-META-011", "DSET-TEST-PLAN-OPS-005"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The generated schema 1.2 adopter now validates declared Work Areas, configured integration and protected branches, the default integration-branch Change, and the optional isolated worktree Change."
 
@@ -623,37 +623,37 @@ rationale = "The successor preserves the flat six-role classification while repl
 
 [[events]]
 id = "DSET-LIFECYCLE-EVENT-070"
-atom_id = "DSET-TEST-GOV-029"
+atom_id = "DSET-TEST-PLAN-GOV-029"
 event = "absorbed"
 occurred_at = "2026-07-21T05:20:02+04:00"
-related = ["DSET-TEST-GOV-044"]
+related = ["DSET-TEST-PLAN-GOV-044"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The successor retains exact flat-role and registry validation while requiring Version and rejecting Delivery on every current surface."
 
 [[events]]
 id = "DSET-LIFECYCLE-EVENT-071"
-atom_id = "DSET-TEST-OPS-016"
+atom_id = "DSET-TEST-PLAN-OPS-016"
 event = "absorbed"
 occurred_at = "2026-07-21T05:20:03+04:00"
-related = ["DSET-TEST-GOV-044"]
+related = ["DSET-TEST-PLAN-GOV-044"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The cross-layer successor retains release-role boundary checks while enforcing the Version classification consistently."
 
 [[events]]
 id = "DSET-LIFECYCLE-EVENT-072"
-atom_id = "DSET-EVAL-GOV-019"
+atom_id = "DSET-EVAL-PLAN-GOV-019"
 event = "absorbed"
 occurred_at = "2026-07-21T05:20:04+04:00"
-related = ["DSET-EVALUATION-GOV-029"]
+related = ["DSET-EVAL-PLAN-GOV-029"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The successor preserves MECE classification judgment while directly testing whether Version is understood without explanation."
 
 [[events]]
 id = "DSET-LIFECYCLE-EVENT-073"
-atom_id = "DSET-EVAL-OPS-010"
+atom_id = "DSET-EVAL-PLAN-OPS-010"
 event = "absorbed"
 occurred_at = "2026-07-21T05:20:05+04:00"
-related = ["DSET-EVALUATION-GOV-029"]
+related = ["DSET-EVAL-PLAN-GOV-029"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The cross-layer successor retains release-role interpretation checks while evaluating the new Version name explicitly."
 
@@ -677,19 +677,19 @@ rationale = "The successor retains the slim ownership layout while moving the co
 
 [[events]]
 id = "DSET-LIFECYCLE-EVENT-076"
-atom_id = "DSET-TEST-GOV-046"
+atom_id = "DSET-TEST-PLAN-GOV-046"
 event = "absorbed"
 occurred_at = "2026-07-22T06:50:01+04:00"
-related = ["DSET-TEST-GOV-047"]
+related = ["DSET-TEST-PLAN-GOV-047"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The successor retains slim-layout coverage while adding hidden-root, path-base, runtime-state, and chained-transition checks."
 
 [[events]]
 id = "DSET-LIFECYCLE-EVENT-077"
-atom_id = "DSET-EVALUATION-GOV-030"
+atom_id = "DSET-EVAL-PLAN-GOV-030"
 event = "absorbed"
 occurred_at = "2026-07-22T06:50:02+04:00"
-related = ["DSET-EVALUATION-GOV-031"]
+related = ["DSET-EVAL-PLAN-GOV-031"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The successor tests the distinctive hidden root and the explicit distinction between stored control paths and Markdown links."
 
@@ -704,18 +704,18 @@ rationale = "The successor keeps .dset as committed control truth while moving r
 
 [[events]]
 id = "DSET-LIFECYCLE-EVENT-079"
-atom_id = "DSET-TEST-GOV-047"
+atom_id = "DSET-TEST-PLAN-GOV-047"
 event = "absorbed"
 occurred_at = "2026-07-22T20:56:58+04:00"
-related = ["DSET-TEST-GOV-048"]
+related = ["DSET-TEST-PLAN-GOV-048"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The successor preserves hidden-control-root and compatibility coverage while proving the separate runtime and scratch lifecycles and absence of repository scratch leakage."
 
 [[events]]
 id = "DSET-LIFECYCLE-EVENT-080"
-atom_id = "DSET-EVALUATION-GOV-031"
+atom_id = "DSET-EVAL-PLAN-GOV-031"
 event = "absorbed"
 occurred_at = "2026-07-22T20:56:59+04:00"
-related = ["DSET-EVALUATION-GOV-032"]
+related = ["DSET-EVAL-PLAN-GOV-032"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The successor retains control-root interpretability while adding the distinct ignored runtime root, disposable scratch root, and bounded atomic-publication exception."

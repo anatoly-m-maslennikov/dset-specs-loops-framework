@@ -82,7 +82,7 @@
         "carrier": {"type": "string", "pattern": "^[^/\\\\]+$"},
         "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
         "type": {"enum": ["decision", "question", "problem", "qa"]},
-        "subtype": {"enum": ["none", "requirement", "constraint", "contract", "implementation_decision", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
+        "subtype": {"enum": ["none", "requirement", "constraint", "contract", "implementation_decision", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test_plan", "evaluation_plan"]},
         "emission_status": {"enum": ["proposed", "accepted"]},
         "current_status": {"enum": ["proposed", "accepted", "answered", "absorbed", "confirmed", "reopened", "rejected", "resolved", "retired", "withdrawn"]},
         "priority": {"type": "string", "minLength": 1},
@@ -96,12 +96,12 @@
     },
     "semantic_classification": {
       "type": "object",
-      "required": ["id", "type", "subtype", "compatibility", "origins", "carriers", "carrier_statuses", "lifecycle_events"],
+      "required": ["id", "type", "subtype", "historical_carrier", "origins", "carriers", "carrier_statuses", "lifecycle_events"],
       "properties": {
         "id": {"$ref": "#/$defs/relation_id"},
         "type": {"enum": ["decision", "question", "problem", "qa"]},
-        "subtype": {"enum": ["none", "requirement", "constraint", "contract", "implementation_decision", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
-        "compatibility": {"type": "boolean"},
+        "subtype": {"enum": ["none", "requirement", "constraint", "contract", "implementation_decision", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test_plan", "evaluation_plan"]},
+        "historical_carrier": {"type": "boolean"},
         "origins": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
         "carriers": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
         "carrier_statuses": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
@@ -115,7 +115,7 @@
       "required": ["semantic_type", "scope", "through"],
       "properties": {
         "semantic_type": {"enum": ["decision", "question", "problem", "qa"]},
-        "subtype": {"enum": ["none", "requirement", "constraint", "contract", "implementation_decision", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test", "evaluation"]},
+        "subtype": {"enum": ["none", "requirement", "constraint", "contract", "implementation_decision", "conflict", "risk", "opportunity", "defect", "gap", "debt", "test_plan", "evaluation_plan"]},
         "layer": {"enum": ["meta", "gov", "tool", "skill", "ops"]},
         "scope": {
           "type": "object",
@@ -187,7 +187,7 @@
       "additionalProperties": false
     },
     "change_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-CHANGE-(?:META|GOV|TOOL|SKILL|IMPL|OPS)-[0-9]{3,}$"},
-    "trace_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-(?:DECISION|REQUIREMENT|CONSTRAINT|CONTRACT|STORY|OUTCOME|SCENARIO|INVARIANT|QUESTION|CONFLICT|RISK|OPPORTUNITY|PROBLEM|DEFECT|GAP|DEBT|TEST|EVAL|EVALUATION|TASK|CHANGE)(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"},
+    "trace_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*-(?:DECISION|REQUIREMENT|CONSTRAINT|CONTRACT|STORY|OUTCOME|SCENARIO|INVARIANT|QUESTION|CONFLICT|RISK|OPPORTUNITY|PROBLEM|DEFECT|GAP|DEBT|TEST-PLAN|EVAL-PLAN|TASK|CHANGE)(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"},
     "sha_or_pending": {"oneOf": [{"type": "string", "pattern": "^[0-9a-f]{40}$"}, {"const": "pending"}]},
     "pull_request": {
       "type": "object",

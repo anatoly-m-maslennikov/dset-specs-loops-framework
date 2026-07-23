@@ -14,7 +14,7 @@ llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
   child, derives `parent_to` and transitive ancestry, and fails closed on
   malformed or invalid artifact lineage without editing parents.
 - **Intended use:** Support `DSET-REQUIREMENT-GOV-034`,
-  `DSET-INVARIANT-GOV-024`, `DSET-TEST-GOV-034`, and
+  `DSET-INVARIANT-GOV-024`, `DSET-TEST-PLAN-GOV-034`, and
   `DSET-TASK-GOV-056`.
 - **Producer/performed work:** Main-session implementation, repository-local
   self-application, generated traceability refresh, and deterministic
@@ -31,7 +31,7 @@ llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
   validator changes.
 - **Unsupported uses:** this proof does not claim that every historical DSET
   artifact already has complete lineage, that `Implements:` trailers are yet
-  rendered as graph nodes, or that qualitative `DSET-EVAL-GOV-024` has run.
+  rendered as graph nodes, or that qualitative `DSET-EVAL-PLAN-GOV-024` has run.
 
 ## Deterministic results
 

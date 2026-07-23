@@ -12,7 +12,7 @@ from typing import Any
 
 from .diagnostics import Diagnostic
 from .layout import discover_layout
-from .yaml_subset import YamlSubsetError, load
+from .structured_data import StructuredDataError, load
 
 # PROFILE_SCHEMA_VERSION defines profile schema version; this module owns the default.
 PROFILE_SCHEMA_VERSION = "1.0"
@@ -65,7 +65,7 @@ def validate_profile_file(path: Path) -> tuple[dict[str, Any], list[Diagnostic]]
     """Validate profile file using the declared repository contract."""
     try:
         data = load(path)
-    except (OSError, UnicodeError, YamlSubsetError) as error:
+    except (OSError, UnicodeError, StructuredDataError) as error:
         return {}, [_diag(path, f"profile cannot be loaded: {error}")]
     if not isinstance(data, dict):
         return {}, [_diag(path, "profile must be a mapping")]
@@ -338,7 +338,7 @@ def _repository_role(manifest_path: Path) -> str | None:
     """Handle role using the declared repository contract."""
     try:
         manifest = load(manifest_path)
-    except (OSError, UnicodeError, YamlSubsetError):
+    except (OSError, UnicodeError, StructuredDataError):
         return None
     if not isinstance(manifest, dict):
         return None

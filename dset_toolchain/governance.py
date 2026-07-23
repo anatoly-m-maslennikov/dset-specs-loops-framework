@@ -21,7 +21,7 @@ from .layout import (
     layer_key_from_id_token,
 )
 from .project_data import project_section, write_project_section
-from .yaml_subset import YamlSubsetError, dump, load
+from .structured_data import StructuredDataError, dump, load
 
 # RULE_PATTERN validates rule pattern; this module owns the accepted syntax.
 RULE_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
@@ -80,7 +80,7 @@ def validate_governance(
     if expected_profile is None:
         try:
             manifest = load(manifest_path)
-        except (OSError, YamlSubsetError):
+        except (OSError, StructuredDataError):
             manifest = {}
         profiles = manifest.get("profiles", {}) if isinstance(manifest, dict) else {}
         if isinstance(profiles, dict):
@@ -99,7 +99,7 @@ def validate_governance(
         return [_diag("DSET-E130", registry_path, "governance registry is missing")]
     try:
         data = project_section(root, "governance_registry")
-    except (OSError, ValueError, YamlSubsetError) as error:
+    except (OSError, ValueError, StructuredDataError) as error:
         return [_diag("DSET-E131", registry_path, str(error))]
     if not isinstance(data, dict):
         return [_diag("DSET-E131", registry_path, "registry must be a mapping")]

@@ -88,7 +88,7 @@ view connected to it. One stored record may link several of those roles but
 must keep their meanings and identifiers distinct.
 
 In particular, an operator acceptance act grants authority to Decision
-directive content; a QA atom defines a check; execution performs work; results
+directive content; a QA atom defines a Test Plan or Evaluation Plan; execution performs work; results
 and logs provide evidence; and Verification derives a current bounded reliance
 statement. A carrier does none of those merely by containing readable text.
 Multi-head claims split into linked sibling atoms. Irreducible subtype
@@ -211,7 +211,7 @@ authored. One source-target pair has one primary relation.
 
 `child_of` narrows or decomposes a claim and keeps both active. `analysis_of`
 owns investigation. `implementation_of` owns realization. `check_of` owns a
-Test/Evaluation definition. `evidence_for` owns observed support.
+Test Plan or Evaluation Plan definition. `evidence_for` owns observed support.
 `resolution_of` closes a Question, Conflict, or Problem. `override_of` changes
 authority only in a narrower scope. `replacement_of` completely replaces an
 atom and requires append-only absorption. These three structural or

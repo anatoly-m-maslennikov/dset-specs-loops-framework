@@ -16,7 +16,7 @@ from .frontmatter import parse as parse_frontmatter
 from .frontmatter import render as render_frontmatter
 from .toml_codec import dumps as dump_toml
 from .toml_codec import loads as load_toml
-from .yaml_subset import load as load_structured
+from .structured_data import load as load_structured
 
 # SCHEMA_VERSION defines schema version; this module owns the default.
 SCHEMA_VERSION = "1.0"

@@ -14,7 +14,7 @@ llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
   carriers.
 - **Intended use:** Support `DSET-DECISION-GOV-008`,
   `DSET-REQUIREMENT-GOV-027`, `DSET-INVARIANT-GOV-004`,
-  `DSET-INVARIANT-GOV-017`, `DSET-TEST-GOV-027`, and
+  `DSET-INVARIANT-GOV-017`, `DSET-TEST-PLAN-GOV-027`, and
   `DSET-TASK-GOV-049`.
 - **Producer/performed work:** Canonical Type/subtype module, modern atom and
   artifact-gate reuse, legacy ID/carrier compatibility classifier, layered
@@ -42,7 +42,7 @@ llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 | Native atoms | Atom parsing, ID-kind enforcement, sealing, lifecycle, and artifact-gate assessment consume the shared catalog | Pass |
 | Legacy compatibility | 233 legacy IDs map to one Type/direct subtype through agreeing stable ID kind and canonical carrier role; no carrier is rewritten | Pass |
 | Complete current population | Health reports 242 current semantic claims: 93 Decision-family, 18 Question-family, 15 Problem-family, and 116 QA-family records | Pass |
-| Legacy vocabulary | `EVAL` maps to QA/Evaluation; standalone Opportunity maps to Question/Opportunity; all original IDs remain lookup keys | Pass |
+| Canonical vocabulary | QA definitions use Test Plan/Evaluation Plan identities; standalone Opportunity maps to Question/Opportunity; the governed historical identity graph uses the same canonical tokens as current artifacts | Pass |
 | Fail closed | `DSET-E166` rejects ID-kind/carrier mismatch; nested, invalid, and QA-without-subtype native atoms remain rejected | Pass |
 | Intake cutover | Schema 1.1 remains readable; schema 1.2 records Question/Problem plus direct subtype and accepts Decision-family resolution links | Pass |
 | Trace and health | Traceability publishes normalized classification, carriers, compatibility flag, and lifecycle IDs; health publishes Type/subtype/native/compatibility counts | Pass |

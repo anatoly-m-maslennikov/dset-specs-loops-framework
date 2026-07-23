@@ -13,7 +13,7 @@ currentness = "current"
 reopen_when = "The public skill catalog, Overview workflow or stop boundary, project-health renderer, runtime/session schema, bootstrap bundle, distribution payload, or subject revision changes."
 
 [subject]
-id = "DSET-TEST-SKILL-018"
+id = "DSET-TEST-PLAN-SKILL-018"
 revision = "74f4c90d82b5fc76a9c292d4ff41ec88626e42bd"
 intended_use = "Support the bounded claim that DSET exposes one read-only Overview skill alongside an unchanged sixteen-entry lifecycle topology and distributes all seventeen packages consistently."
 
@@ -27,7 +27,7 @@ setup = "Commit 74f4c90d82b5fc76a9c292d4ff41ec88626e42bd; project .venv; local m
 
 [[relations]]
 type = "evidence_for"
-target = "DSET-TEST-SKILL-018"
+target = "DSET-TEST-PLAN-SKILL-018"
 +++
 
 # Test result — Read-only Overview skill

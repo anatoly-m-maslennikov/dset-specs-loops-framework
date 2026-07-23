@@ -5,7 +5,7 @@ type = "problem"
 subtype = "gap"
 semantic_id = "DSET-GAP-GOV-003"
 status = "accepted"
-priority = "critical"
+priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "The current Python-owned DSET implementation still ships a live YAML compatibility parser, JSON schema carriers, and a JSON bootstrap bundle despite the TOML-only project constraint."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
@@ -19,7 +19,7 @@ id = "dset-specs-loops-framework"
 
 [[relations]]
 type = "child_of"
-target = "DSET-CONSTR-GOV-001"
+target = "DSET-CONSTRAINT-GOV-001"
 +++
 
 # Gap — Live YAML and JSON remain in Python-owned DSET carriers

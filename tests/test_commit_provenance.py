@@ -26,15 +26,15 @@ class CommitProvenanceTests(unittest.TestCase):
     def setUp(self) -> None:
         """Handle set up using the declared repository contract."""
         self.known = {
-            "APP-REQ-001": ("decision", "requirement"),
-            "APP-TEST-001": ("qa", "test"),
+            "APP-REQUIREMENT-001": ("decision", "requirement"),
+            "APP-TEST-PLAN-001": ("qa", "test_plan"),
             "APP-DEFECT-001": ("problem", "defect"),
         }
 
     def test_implementation_mode_requires_decision_and_session(self) -> None:
         message = (
             "feat: implement behavior\n\n"
-            "Implements: APP-REQ-001\n"
+            "Implements: APP-REQUIREMENT-001\n"
             "Resolves: APP-DEFECT-001\n"
             "Session: codex:test-session\n"
         )
@@ -44,8 +44,8 @@ class CommitProvenanceTests(unittest.TestCase):
     def test_evidence_mode_is_distinct(self) -> None:
         message = (
             "test: record proof\n\n"
-            "Decision: APP-REQ-001\n"
-            "Verifies: APP-TEST-001\n"
+            "Decision: APP-REQUIREMENT-001\n"
+            "Verifies: APP-TEST-PLAN-001\n"
             "Session: codex:test-session\n"
         )
 
@@ -55,12 +55,12 @@ class CommitProvenanceTests(unittest.TestCase):
         self.assertTrue(validate_commit_message("fix: no trailers", self.known))
         problems = validate_commit_message(
             "fix: wrong\n\n"
-            "Implements: APP-TEST-001, APP-UNKNOWN-001\n"
+            "Implements: APP-TEST-PLAN-001, APP-UNKNOWN-001\n"
             "Session: codex:test-session\n",
             self.known,
         )
         self.assertIn(
-            "Implements must reference a Decision: APP-TEST-001",
+            "Implements must reference a Decision: APP-TEST-PLAN-001",
             problems,
         )
         self.assertIn("Implements references unknown ID: APP-UNKNOWN-001", problems)
@@ -69,7 +69,7 @@ class CommitProvenanceTests(unittest.TestCase):
         record = self._record(
             "a" * 40,
             "fix: legacy\n\n"
-            "Implements: APP-REQ-001, APP-TEST-001\n"
+            "Implements: APP-REQUIREMENT-001, APP-TEST-PLAN-001\n"
             "Session: codex:test-session\n",
         )
         correction = self._correction(record)
@@ -107,7 +107,7 @@ class CommitProvenanceTests(unittest.TestCase):
     def test_correction_cannot_exempt_valid_or_invalid_semantics(self) -> None:
         valid = self._record(
             "d" * 40,
-            "feat: valid\n\nImplements: APP-REQ-001\nSession: codex:test-session\n",
+            "feat: valid\n\nImplements: APP-REQUIREMENT-001\nSession: codex:test-session\n",
         )
         unnecessary = validate_commit_history(
             [valid], self.known, [self._correction(valid)]
@@ -120,11 +120,11 @@ class CommitProvenanceTests(unittest.TestCase):
 
         invalid = self._record("e" * 40, "fix: no trailers\n")
         correction = self._correction(invalid)
-        correction["decision_ids"] = ["APP-TEST-001"]
+        correction["decision_ids"] = ["APP-TEST-PLAN-001"]
         semantic_problems = validate_commit_history([invalid], self.known, [correction])
         self.assertIn(
             f"correction for commit {invalid.commit}: Implements must reference "
-            "a Decision: APP-TEST-001",
+            "a Decision: APP-TEST-PLAN-001",
             semantic_problems,
         )
 
@@ -132,7 +132,7 @@ class CommitProvenanceTests(unittest.TestCase):
         schema = json.loads(
             (
                 repository_root(Path(__file__))
-                / ".dset/01_layer_meta/schemas/project.schema.json"
+                / ".dset/01_layer_meta/schemas/project.schema.toml"
             ).read_text(encoding="utf-8")
         )
 
@@ -172,7 +172,7 @@ class CommitProvenanceTests(unittest.TestCase):
             "commit": record.commit,
             "original_message_sha256": record.message_sha256,
             "mode": "implementation",
-            "decision_ids": ["APP-REQ-001"],
+            "decision_ids": ["APP-REQUIREMENT-001"],
             "verifies": [],
             "resolves": [],
             "session": "codex:test-session",

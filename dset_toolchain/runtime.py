@@ -19,7 +19,7 @@ from typing import Any
 from .layout import discover_layout, has_manifest
 from .lifecycle import advance_closure, initial_closure
 from .skill_catalog import PUBLIC_SKILL_MODES, PUBLIC_SKILL_WORKFLOWS
-from .yaml_subset import load
+from .structured_data import load
 
 # RUN_SCHEMA_VERSION defines run schema version; this module owns the default.
 RUN_SCHEMA_VERSION = "1.2"

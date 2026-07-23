@@ -16,7 +16,7 @@ from .layout import ID_TOKEN_LAYERS, LAYERS, discover_layout
 from .legacy_authority import legacy_authority_ids
 from .project_data import lifecycle_events, project_section
 from .semantic_types import SEMANTIC_SUBTYPES, build_semantic_classification_index
-from .yaml_subset import YamlSubsetError, load
+from .structured_data import StructuredDataError, load
 
 # ID_PATTERN validates id pattern; this module owns the accepted syntax.
 ID_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
@@ -640,9 +640,10 @@ def _source_error(node: RelationNode, relation_type: str) -> str | None:
     ):
         return "projection_of must originate from an evergreen artifact"
     if relation_type == "check_of" and not (
-        node.semantic_type == "qa" and node.subtype in {"test", "evaluation"}
+        node.semantic_type == "qa"
+        and node.subtype in {"test_plan", "evaluation_plan"}
     ):
-        return "check_of must originate from a Test or Evaluation atom"
+        return "check_of must originate from a Test Plan or Evaluation Plan atom"
     if relation_type == "evidence_for" and node.artifact_type != "evidence_record":
         return "evidence_for must originate from an Evidence Record"
     if relation_type == "override_of" and node.semantic_type != "decision":
@@ -820,7 +821,7 @@ def _package_ids(path: Path) -> set[str]:
     """Handle ids using the declared repository contract."""
     try:
         data = load(path)
-    except (OSError, UnicodeError, YamlSubsetError):
+    except (OSError, UnicodeError, StructuredDataError):
         return set()
     if not isinstance(data, dict):
         return set()
@@ -875,7 +876,7 @@ def _absorption_edges(root: Path) -> dict[str, str]:
 def _lifecycle_events(root: Path) -> list[dict[str, Any]]:
     try:
         return lifecycle_events(root)
-    except (OSError, UnicodeError, ValueError, YamlSubsetError):
+    except (OSError, UnicodeError, ValueError, StructuredDataError):
         return []
 
 

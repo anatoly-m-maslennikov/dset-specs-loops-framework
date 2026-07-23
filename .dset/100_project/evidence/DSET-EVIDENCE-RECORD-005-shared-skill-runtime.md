@@ -14,7 +14,7 @@ llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
   mechanics for all 16 thin DSET skills and resolves the repository-local
   context belonging to an explicit target.
 - **Intended use:** Support `DSET-REQUIREMENT-SKILL-011`,
-  `DSET-TEST-SKILL-013`, and `DSET-TASK-SKILL-057`.
+  `DSET-TEST-PLAN-SKILL-013`, and `DSET-TASK-SKILL-057`.
 - **Producer/performed work:** Shared-context implementation, all-wrapper
   migration, runtime-package installation, copied-package execution, and
   deterministic validation.
@@ -28,7 +28,7 @@ llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
   layout, launcher contract, root/Work Area discovery, governance resolver, or
   installation transaction changes.
 - **Unsupported uses:** this proof does not claim a real authenticated
-  Codex/Claude inference, qualitative `DSET-EVAL-SKILL-011`, or successful
+  Codex/Claude inference, qualitative `DSET-EVAL-PLAN-SKILL-011`, or successful
   hosted Linux/macOS/native-Windows/WSL execution.
 
 ## Deterministic results

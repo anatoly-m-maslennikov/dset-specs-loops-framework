@@ -85,7 +85,7 @@ No adopter application runtime or production data is changed. The CLI reads repo
   execution, results, evidence, gates, and Verification.
 - Define Outcome as a measured state change with baseline, target, source/method, window, and related links or explicit dispositions; never use it as a synonym for a feature, output, milestone, or completed task.
 - Defer Journey, Actor/Persona, Hypothesis/Experiment, prioritization, feedback/analytics, and generated roadmap/release views as Questions only; do not create new semantic Types or intake queues before Decisions standardize them.
-- Expose the direct subtype kind in an atom ID when a subtype exists and the Type kind when it does not; never encode a nested subtype path. Preserve every emitted legacy ID and its lookup. Implement the successor Type/subtype envelope, recognition boundaries, and compatibility resolver under `DSET-TASK-GOV-049` rather than silently retyping history.
+- Expose the direct subtype kind in an atom ID when a subtype exists and the Type kind when it does not; never encode a nested subtype path. A naming-vocabulary change performs one complete migration of current and historical IDs, filenames, references, lifecycle targets, and generated surfaces. Preserve history through provenance and lineage, not accepted aliases.
 
 ## Open questions
 

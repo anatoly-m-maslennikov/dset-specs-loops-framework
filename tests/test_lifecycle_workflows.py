@@ -15,7 +15,7 @@ from typing import Any, cast
 from dset_toolchain.governance import resolve_workflow
 from dset_toolchain.layout import discover_layout
 from dset_toolchain.skill_catalog import REGISTERED_SKILL_WORKFLOWS
-from dset_toolchain.yaml_subset import load
+from dset_toolchain.structured_data import load
 from tests import repository_root
 
 # ROOT locates the repository fixture; repository layout is authoritative.

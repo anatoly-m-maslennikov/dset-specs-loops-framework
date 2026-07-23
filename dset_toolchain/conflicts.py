@@ -22,7 +22,7 @@ from .semantic_atoms import (
 )
 from .settings import load_project_settings
 from .toml_codec import loads as load_toml
-from .yaml_subset import load as load_structured
+from .structured_data import load as load_structured
 
 # ROLES defines roles; this module owns the default.
 ROLES = frozenset(

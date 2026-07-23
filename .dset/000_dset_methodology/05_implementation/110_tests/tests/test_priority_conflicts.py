@@ -49,7 +49,7 @@ class PriorityConflictTests(unittest.TestCase):
             root,
             "DSET-SPECIFICATION-099",
             artifact_type="specification",
-            priority="critical",
+            priority="high",
             scope={"kind": "project", "id": "dset-temporary-adopter"},
             relations=[{"type": "projection_of", "target": "DSET-DECISION-001"}],
         )
@@ -268,7 +268,7 @@ class PriorityConflictTests(unittest.TestCase):
                 "atom_id": "DSET-DECISION-001",
                 "event": "priority_changed",
                 "occurred_at": "2026-07-20T00:00:00+04:00",
-                "priority": "critical",
+                "priority": "high",
                 "related": [],
                 "llm_session_ids": ["codex:test-session"],
             },

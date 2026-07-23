@@ -40,7 +40,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-023"]
-semantic_ids = ["DSET-TEST-GOV-036"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-036"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-022C9B1CFDDB653F"
@@ -151,11 +151,11 @@ semantic_ids = []
 id = "DSET-CARRIER-TRANSITION-054D4C842597A510"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/ops/qa/DSET-TEST-OPS-019-platform-native-verification-placeholder-test.md"
+original_path = ".dset/ops/qa/DSET-TEST-PLAN-OPS-019-platform-native-verification-placeholder-test-plan.md"
 original_format = "md"
 original_sha256 = "50396aaec5f268362ca0921dc7740f83d61c43bee2a10df98c9b2b4eeb707e36"
 source_git_blob = "4b796d089bf2fce30d329e18b80dfff1b0c11f31"
-current_path = ".dset/05_layer_ops/qa/DSET-TEST-OPS-019-platform-native-verification-placeholder-test.md"
+current_path = ".dset/05_layer_ops/qa/DSET-TEST-PLAN-OPS-019-platform-native-verification-placeholder-test-plan.md"
 current_format = "md"
 current_sha256 = "50396aaec5f268362ca0921dc7740f83d61c43bee2a10df98c9b2b4eeb707e36"
 source_semantic_sha256 = "726f1f2327a646dbdf14d150fe6d2c738b35d9e1c74ee41f6d72802d71b2ded9"
@@ -166,17 +166,17 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-094"]
-semantic_ids = ["DSET-TEST-OPS-019"]
+semantic_ids = ["DSET-TEST-PLAN-OPS-019"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-055F13A0D8A9510F"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/tool/qa/DSET-EVALUATION-TOOL-003-typescript-candidate-evaluation.md"
+original_path = ".dset/tool/qa/DSET-EVAL-PLAN-TOOL-003-typescript-candidate-evaluation-plan.md"
 original_format = "md"
 original_sha256 = "00efda90f7a40ae1f8687fee65ad0ef02a1a82b4d1fcc9ee3ba3584992663111"
 source_git_blob = "eb3020c781ae3cdd50a76089ac9d7b09128cb215"
-current_path = ".dset/03_layer_tool/qa/DSET-EVALUATION-TOOL-003-typescript-candidate-evaluation.md"
+current_path = ".dset/03_layer_tool/qa/DSET-EVAL-PLAN-TOOL-003-typescript-candidate-evaluation-plan.md"
 current_format = "md"
 current_sha256 = "00efda90f7a40ae1f8687fee65ad0ef02a1a82b4d1fcc9ee3ba3584992663111"
 source_semantic_sha256 = "ecaf17f423290b234bc1a61f0d0b5ba25a071d7192d4994202b15851f273a9ea"
@@ -187,7 +187,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-015"]
-semantic_ids = ["DSET-EVALUATION-TOOL-003"]
+semantic_ids = ["DSET-EVAL-PLAN-TOOL-003"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-055F6061D4C549FC"
@@ -319,11 +319,11 @@ semantic_ids = ["DSET-DEFECT-GOV-004"]
 id = "DSET-CARRIER-TRANSITION-07EB2DE87520B485"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/skill/qa/DSET-TEST-SKILL-014-implementation-preparation-mode-test.md"
+original_path = ".dset/skill/qa/DSET-TEST-PLAN-SKILL-014-implementation-preparation-mode-test-plan.md"
 original_format = "md"
 original_sha256 = "dbe400e0103c02b08c6a7cd30e3031b31f51ee1edd5c461561f3081376f1e162"
 source_git_blob = "9caae7179bb159dfffc5c9cf2ddeb09f60ac1e32"
-current_path = ".dset/04_layer_skill/qa/DSET-TEST-SKILL-014-implementation-preparation-mode-test.md"
+current_path = ".dset/04_layer_skill/qa/DSET-TEST-PLAN-SKILL-014-implementation-preparation-mode-test-plan.md"
 current_format = "md"
 current_sha256 = "dbe400e0103c02b08c6a7cd30e3031b31f51ee1edd5c461561f3081376f1e162"
 source_semantic_sha256 = "44b0d335e36060ecdcd8bbfba8785f326cccae3af6ff307140996cee7392d78f"
@@ -334,7 +334,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-041"]
-semantic_ids = ["DSET-TEST-SKILL-014"]
+semantic_ids = ["DSET-TEST-PLAN-SKILL-014"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-081A5EEF00FCF973"
@@ -502,7 +502,7 @@ source_commit = "28cc55484a834436878f122eb41a8860d2a5ba21"
 transitioned_at = "2026-07-21T03:20:51+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-043"]
-semantic_ids = ["DSET-EVALUATION-SKILL-012"]
+semantic_ids = ["DSET-EVAL-PLAN-SKILL-012"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-0BFA9FAB9BF1C30B"
@@ -544,7 +544,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-029"]
-semantic_ids = ["DSET-TEST-SKILL-015"]
+semantic_ids = ["DSET-TEST-PLAN-SKILL-015"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-0C2BB5A4E5DF6895"
@@ -649,7 +649,7 @@ source_commit = "28cc55484a834436878f122eb41a8860d2a5ba21"
 transitioned_at = "2026-07-21T03:20:51+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-042"]
-semantic_ids = ["DSET-TEST-GOV-037"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-037"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-0DD5BD95F9421F08"
@@ -659,7 +659,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "59665301d0230456f8bc68a465c391e445d25d4bbcc2383209c7afd55dcefe0c"
 source_git_blob = "d370bf79a2964530dbbea48fb4bebc08dfbf1df4"
-current_path = ".dset/skill/qa/DSET-TEST-SKILL-015-installed-skill-integrity-test.md"
+current_path = ".dset/skill/qa/DSET-TEST-PLAN-SKILL-015-installed-skill-integrity-test-plan.md"
 current_format = "md"
 current_sha256 = "59665301d0230456f8bc68a465c391e445d25d4bbcc2383209c7afd55dcefe0c"
 source_semantic_sha256 = "651bc133194bd6aeeaf93744bd5ab411ee0c7dcd92a1c04e1878dc65ee023db8"
@@ -670,7 +670,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-065"]
-semantic_ids = ["DSET-REQUIREMENT-SKILL-011", "DSET-TEST-SKILL-015"]
+semantic_ids = ["DSET-REQUIREMENT-SKILL-011", "DSET-TEST-PLAN-SKILL-015"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-0DE904413A0025B4"
@@ -907,11 +907,11 @@ semantic_ids = []
 id = "DSET-CARRIER-TRANSITION-128FBB033739F7A5"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/gov/qa/DSET-EVALUATION-GOV-028-verbose-project-settings-evaluation.md"
+original_path = ".dset/gov/qa/DSET-EVAL-PLAN-GOV-028-verbose-project-settings-evaluation-plan.md"
 original_format = "md"
 original_sha256 = "0acee9747599519f949835531fcb0d01859efdfa8b2f6a02d1da3574e61b7dbc"
 source_git_blob = "5322e4f2701a22f2638c420e36d61f83a4bee479"
-current_path = ".dset/02_layer_gov/qa/DSET-EVALUATION-GOV-028-verbose-project-settings-evaluation.md"
+current_path = ".dset/02_layer_gov/qa/DSET-EVAL-PLAN-GOV-028-verbose-project-settings-evaluation-plan.md"
 current_format = "md"
 current_sha256 = "0acee9747599519f949835531fcb0d01859efdfa8b2f6a02d1da3574e61b7dbc"
 source_semantic_sha256 = "164abb2afc90fc401578974c591e5e34ab31d2159367161d3fe055c27e33fd06"
@@ -922,7 +922,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-050"]
-semantic_ids = ["DSET-EVALUATION-GOV-028"]
+semantic_ids = ["DSET-EVAL-PLAN-GOV-028"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-12D108C6FB844006"
@@ -964,7 +964,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-032"]
-semantic_ids = ["DSET-TEST-GOV-042"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-042"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-136475AAA3F1435B"
@@ -1012,11 +1012,11 @@ semantic_ids = ["DSET-DEFECT-TOOL-002"]
 id = "DSET-CARRIER-TRANSITION-13992B467FD86A81"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/gov/qa/DSET-TEST-GOV-039-canonical-settings-selections-test.md"
+original_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-039-canonical-settings-selections-test-plan.md"
 original_format = "md"
 original_sha256 = "f536d80ac9ac187587f1a745b1e6ec91b8135fac2e6eb93036592223d6ef84b4"
 source_git_blob = "c507c86d938c303e0d47d4827fdd5a884628afb5"
-current_path = ".dset/02_layer_gov/qa/DSET-TEST-GOV-039-canonical-settings-selections-test.md"
+current_path = ".dset/02_layer_gov/qa/DSET-TEST-PLAN-GOV-039-canonical-settings-selections-test-plan.md"
 current_format = "md"
 current_sha256 = "f536d80ac9ac187587f1a745b1e6ec91b8135fac2e6eb93036592223d6ef84b4"
 source_semantic_sha256 = "6d32fbd6c26e344ebee36c856315206d8fb11df9fb938bc6469ce30dc99e8921"
@@ -1027,7 +1027,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-054"]
-semantic_ids = ["DSET-TEST-GOV-039"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-039"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-14E1E65F02B6B800"
@@ -1058,7 +1058,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "c834d1be52d391e794ee3320c63b9dd1b283b3aab78cd9ba129cf9627bf10543"
 source_git_blob = "7be225805e6f3156c6d9b5953f0f679f1834e50b"
-current_path = ".dset/tool/qa/DSET-TEST-TOOL-022-typescript-profile-instantiation-test.md"
+current_path = ".dset/tool/qa/DSET-TEST-PLAN-TOOL-022-typescript-profile-instantiation-test-plan.md"
 current_format = "md"
 current_sha256 = "c834d1be52d391e794ee3320c63b9dd1b283b3aab78cd9ba129cf9627bf10543"
 source_semantic_sha256 = "e805076aee0e0a98c79a39d35f7ef6376e7721c3bba9637823d168363bc91e48"
@@ -1069,7 +1069,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-018"]
-semantic_ids = ["DSET-REQUIREMENT-TOOL-022", "DSET-TEST-TOOL-022"]
+semantic_ids = ["DSET-REQUIREMENT-TOOL-022", "DSET-TEST-PLAN-TOOL-022"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-172B6440F05C033F"
@@ -1079,7 +1079,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "4c3f931063874dabbe09a5ae3bb5edd47648c494c56c77328e09c651e7d6cc52"
 source_git_blob = "2c9e3ef86b8f2a4167fee7d238647f6a817e1a56"
-current_path = ".dset/gov/qa/DSET-TEST-GOV-036-typed-artifact-relations-test.md"
+current_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-036-typed-artifact-relations-test-plan.md"
 current_format = "md"
 current_sha256 = "4c3f931063874dabbe09a5ae3bb5edd47648c494c56c77328e09c651e7d6cc52"
 source_semantic_sha256 = "5df34b360e14273b3a9d491d88f860d4ddec5eda938c5f3183a7c2f926356178"
@@ -1090,7 +1090,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-036"]
-semantic_ids = ["DSET-DECISION-GOV-013", "DSET-TEST-GOV-036"]
+semantic_ids = ["DSET-DECISION-GOV-013", "DSET-TEST-PLAN-GOV-036"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-17ADAFC1B7021EA0"
@@ -1258,7 +1258,7 @@ source_commit = "28cc55484a834436878f122eb41a8860d2a5ba21"
 transitioned_at = "2026-07-21T03:20:51+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-037"]
-semantic_ids = ["DSET-EVALUATION-GOV-026"]
+semantic_ids = ["DSET-EVAL-PLAN-GOV-026"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-1D54413FCDAAFCFD"
@@ -1495,11 +1495,11 @@ semantic_ids = []
 id = "DSET-CARRIER-TRANSITION-22ACBAF87F34AEF2"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/ops/qa/DSET-TEST-OPS-018-canonical-health-path-order-test.md"
+original_path = ".dset/ops/qa/DSET-TEST-PLAN-OPS-018-canonical-health-path-order-test-plan.md"
 original_format = "md"
 original_sha256 = "ed984d92dddebe5d7b034a8d261c7891c3e8f62e7cfe7ba0688284806c00a3c3"
 source_git_blob = "e640696cee18499028b41ce7e2111afce0657c92"
-current_path = ".dset/05_layer_ops/qa/DSET-TEST-OPS-018-canonical-health-path-order-test.md"
+current_path = ".dset/05_layer_ops/qa/DSET-TEST-PLAN-OPS-018-canonical-health-path-order-test-plan.md"
 current_format = "md"
 current_sha256 = "ed984d92dddebe5d7b034a8d261c7891c3e8f62e7cfe7ba0688284806c00a3c3"
 source_semantic_sha256 = "36fdf8a650e24b09caf5eef42cde3dd24db19cff531074f56b9a239cd2e17602"
@@ -1510,7 +1510,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-091"]
-semantic_ids = ["DSET-TEST-OPS-018"]
+semantic_ids = ["DSET-TEST-PLAN-OPS-018"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-22C452FADAEE266C"
@@ -1678,7 +1678,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-044"]
-semantic_ids = ["DSET-TEST-OPS-021"]
+semantic_ids = ["DSET-TEST-PLAN-OPS-021"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-287C495688BC2C1D"
@@ -1699,7 +1699,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-027"]
-semantic_ids = ["DSET-TEST-GOV-040"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-040"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-28EED7FDF0CEC00B"
@@ -1772,7 +1772,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "8786cfcf3aa3ebfad82570b0991d733a819a66e6367aa996d1c86aaef9e3cbf7"
 source_git_blob = "d1fa8b743e8bba33bf7b808a4babfcf007eb2383"
-current_path = ".dset/skill/qa/DSET-EVALUATION-SKILL-012-implementation-preparation-mode-evaluation.md"
+current_path = ".dset/skill/qa/DSET-EVAL-PLAN-SKILL-012-implementation-preparation-mode-evaluation-plan.md"
 current_format = "md"
 current_sha256 = "8786cfcf3aa3ebfad82570b0991d733a819a66e6367aa996d1c86aaef9e3cbf7"
 source_semantic_sha256 = "4018da71d441e9ac90a58cb4c9f8c6b9e9ca050ff395da74f412cfc4dc2099e7"
@@ -1783,7 +1783,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-043"]
-semantic_ids = ["DSET-EVAL-SKILL-010", "DSET-EVALUATION-SKILL-012", "DSET-REQUIREMENT-SKILL-012"]
+semantic_ids = ["DSET-EVAL-PLAN-SKILL-010", "DSET-EVAL-PLAN-SKILL-012", "DSET-REQUIREMENT-SKILL-012"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-2C1697787C66E223"
@@ -1835,7 +1835,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "67de18d495d944184a8749216fce2d43f421276bd2ccde05ad81f2f6cc3e0523"
 source_git_blob = "5e9e1e207f4916f696e1a1b929ada374e3306845"
-current_path = ".dset/tool/qa/DSET-TEST-TOOL-021-typescript-candidate-test.md"
+current_path = ".dset/tool/qa/DSET-TEST-PLAN-TOOL-021-typescript-candidate-test-plan.md"
 current_format = "md"
 current_sha256 = "67de18d495d944184a8749216fce2d43f421276bd2ccde05ad81f2f6cc3e0523"
 source_semantic_sha256 = "2761ee891c3c206f0309f30608194ee7628c9d887a252cf74006aed837350a3f"
@@ -1846,7 +1846,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-014"]
-semantic_ids = ["DSET-REQUIREMENT-TOOL-021", "DSET-TEST-TOOL-021"]
+semantic_ids = ["DSET-REQUIREMENT-TOOL-021", "DSET-TEST-PLAN-TOOL-021"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-2E069CC11A3A5AFB"
@@ -1909,7 +1909,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-024"]
-semantic_ids = ["DSET-DEFECT-TOOL-002", "DSET-TEST-GOV-036"]
+semantic_ids = ["DSET-DEFECT-TOOL-002", "DSET-TEST-PLAN-GOV-036"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-302B4DA180237552"
@@ -1972,7 +1972,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-015"]
-semantic_ids = ["DSET-EVALUATION-TOOL-003"]
+semantic_ids = ["DSET-EVAL-PLAN-TOOL-003"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-30E856988C2E99C5"
@@ -1993,7 +1993,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-035"]
-semantic_ids = ["DSET-TEST-GOV-044"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-044"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-310BC4439554BE34"
@@ -2020,11 +2020,11 @@ semantic_ids = ["DSET-REQUIREMENT-SKILL-010", "DSET-REQUIREMENT-SKILL-011"]
 id = "DSET-CARRIER-TRANSITION-3170D2BA2D564EA5"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/gov/qa/DSET-EVALUATION-GOV-031-hidden-layout-interpretability.md"
+original_path = ".dset/gov/qa/DSET-EVAL-PLAN-GOV-031-hidden-layout-interpretability.md"
 original_format = "md"
 original_sha256 = "c7c507455dd8378c8217bfea086b4c34d2cf54d60e6325aac4b459458634ba70"
 source_git_blob = "5d54449f841ea6baee9995df9eca554e38fe1f20"
-current_path = ".dset/02_layer_gov/qa/DSET-EVALUATION-GOV-031-hidden-layout-interpretability.md"
+current_path = ".dset/02_layer_gov/qa/DSET-EVAL-PLAN-GOV-031-hidden-layout-interpretability.md"
 current_format = "md"
 current_sha256 = "c7c507455dd8378c8217bfea086b4c34d2cf54d60e6325aac4b459458634ba70"
 source_semantic_sha256 = "89b43875c1b4badfc40cdd3e7a4f9d9147b02aa3bb05a7fc5feea5ff645975f2"
@@ -2035,7 +2035,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-106"]
-semantic_ids = ["DSET-EVALUATION-GOV-031"]
+semantic_ids = ["DSET-EVAL-PLAN-GOV-031"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-31FD0E5C0329E5AD"
@@ -2062,11 +2062,11 @@ semantic_ids = []
 id = "DSET-CARRIER-TRANSITION-321F1DCDDE264277"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/gov/qa/DSET-TEST-GOV-046-slim-project-control-layout-test.md"
+original_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-046-slim-project-control-layout-test-plan.md"
 original_format = "md"
 original_sha256 = "efe1b85563c5d13d9ad404890b72bfd26e45c901176f564049396ebe740eabce"
 source_git_blob = "3924cbac33d3e957b2e94bf850acd0b1a0daef46"
-current_path = ".dset/02_layer_gov/qa/DSET-TEST-GOV-046-slim-project-control-layout-test.md"
+current_path = ".dset/02_layer_gov/qa/DSET-TEST-PLAN-GOV-046-slim-project-control-layout-test-plan.md"
 current_format = "md"
 current_sha256 = "efe1b85563c5d13d9ad404890b72bfd26e45c901176f564049396ebe740eabce"
 source_semantic_sha256 = "14ea742b397014d20276f3738a9877de61684c8c81b7ee2ea4644cfbf4c51da4"
@@ -2077,7 +2077,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-102"]
-semantic_ids = ["DSET-TEST-GOV-046"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-046"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-323B4453318000A6"
@@ -2482,7 +2482,7 @@ source_commit = "28cc55484a834436878f122eb41a8860d2a5ba21"
 transitioned_at = "2026-07-21T03:20:51+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-011"]
-semantic_ids = ["DSET-TEST-TOOL-020"]
+semantic_ids = ["DSET-TEST-PLAN-TOOL-020"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-38934CF7407FF581"
@@ -3082,7 +3082,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-033"]
-semantic_ids = ["DSET-TEST-GOV-043"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-043"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-48365FDEEC3C0898"
@@ -3103,7 +3103,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-041"]
-semantic_ids = ["DSET-TEST-OPS-017"]
+semantic_ids = ["DSET-TEST-PLAN-OPS-017"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-49F09144596332FB"
@@ -3124,7 +3124,7 @@ source_commit = "28cc55484a834436878f122eb41a8860d2a5ba21"
 transitioned_at = "2026-07-21T03:20:51+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-041"]
-semantic_ids = ["DSET-TEST-SKILL-014"]
+semantic_ids = ["DSET-TEST-PLAN-SKILL-014"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-49FB01AEFBB779AE"
@@ -3155,7 +3155,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "43a27b039efd438f4213c6261e5417dc82c2477041ea1ef2009cdf7ff480f066"
 source_git_blob = "919d5357d689cd135f00853c51abbd6764832fcf"
-current_path = ".dset/gov/qa/DSET-TEST-GOV-040-native-package-successors-test.md"
+current_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-040-native-package-successors-test-plan.md"
 current_format = "md"
 current_sha256 = "43a27b039efd438f4213c6261e5417dc82c2477041ea1ef2009cdf7ff480f066"
 source_semantic_sha256 = "1da0a2910fb93b7770cfd70db46faea2d5b8ef58e71c52baa20cca1b7f0237c4"
@@ -3166,7 +3166,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-061"]
-semantic_ids = ["DSET-DECISION-GOV-016", "DSET-TEST-GOV-040"]
+semantic_ids = ["DSET-DECISION-GOV-016", "DSET-TEST-PLAN-GOV-040"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-4A9FB6903984811A"
@@ -3187,7 +3187,7 @@ source_commit = "28cc55484a834436878f122eb41a8860d2a5ba21"
 transitioned_at = "2026-07-21T03:20:51+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-014"]
-semantic_ids = ["DSET-TEST-TOOL-021"]
+semantic_ids = ["DSET-TEST-PLAN-TOOL-021"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-4C0E781995734133"
@@ -3271,7 +3271,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-028"]
-semantic_ids = ["DSET-TEST-GOV-041"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-041"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-4E72CA8905C64ACA"
@@ -3281,7 +3281,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "ebe02fdf287631f58c6ecad027c37ffe677faa33f55d05ce3aadd1b2a38176b5"
 source_git_blob = "3ebc29b128d2a873e4bb55965b2d66f0cb31717c"
-current_path = ".dset/skill/qa/DSET-TEST-SKILL-016-location-independent-launcher-test.md"
+current_path = ".dset/skill/qa/DSET-TEST-PLAN-SKILL-016-location-independent-launcher-test-plan.md"
 current_format = "md"
 current_sha256 = "ebe02fdf287631f58c6ecad027c37ffe677faa33f55d05ce3aadd1b2a38176b5"
 source_semantic_sha256 = "6d1e7a86b1bc443b4d1a79cc6df271eb56f4f73c65810d5f53a847c171f9d719"
@@ -3292,7 +3292,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-067"]
-semantic_ids = ["DSET-REQUIREMENT-SKILL-011", "DSET-TEST-SKILL-016"]
+semantic_ids = ["DSET-REQUIREMENT-SKILL-011", "DSET-TEST-PLAN-SKILL-016"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-4F33C0EF55FD6108"
@@ -3365,7 +3365,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "0858aeaec6e7f76d0053961b41c4892eb0dba7a157f0d5856b859715bfcaeaae"
 source_git_blob = "34fd601a9c279c155e2d4f43682b519e510089b0"
-current_path = ".dset/gov/qa/DSET-TEST-GOV-043-complete-toml-cutover-test.md"
+current_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-043-complete-toml-cutover-test-plan.md"
 current_format = "md"
 current_sha256 = "0858aeaec6e7f76d0053961b41c4892eb0dba7a157f0d5856b859715bfcaeaae"
 source_semantic_sha256 = "a66585b5500010c73fc2742b09e07678a63d9e53da548a9290a63d738f57f777"
@@ -3376,7 +3376,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-075"]
-semantic_ids = ["DSET-REQUIREMENT-GOV-040", "DSET-TEST-GOV-038", "DSET-TEST-GOV-040", "DSET-TEST-GOV-041", "DSET-TEST-GOV-043"]
+semantic_ids = ["DSET-REQUIREMENT-GOV-040", "DSET-TEST-PLAN-GOV-038", "DSET-TEST-PLAN-GOV-040", "DSET-TEST-PLAN-GOV-041", "DSET-TEST-PLAN-GOV-043"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-4FE78C5D07D5C576"
@@ -3449,7 +3449,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "773958d6b81cb0fc3e1d0d4542fc9f0e06121501a273026eafb97f0eabc3c2c5"
 source_git_blob = "a84035f651bb43a48952c2da54aeb42c431a6e7a"
-current_path = ".dset/tool/qa/DSET-EVALUATION-TOOL-002-typescript-candidate-evaluation.md"
+current_path = ".dset/tool/qa/DSET-EVAL-PLAN-TOOL-002-typescript-candidate-evaluation-plan.md"
 current_format = "md"
 current_sha256 = "773958d6b81cb0fc3e1d0d4542fc9f0e06121501a273026eafb97f0eabc3c2c5"
 source_semantic_sha256 = "0a671795c852da73cb5b7f571413c1136e7b3ae6ba3242d2f5b7e6547b5b413b"
@@ -3460,7 +3460,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-012"]
-semantic_ids = ["DSET-EVALUATION-TOOL-002", "DSET-REQUIREMENT-TOOL-020"]
+semantic_ids = ["DSET-EVAL-PLAN-TOOL-002", "DSET-REQUIREMENT-TOOL-020"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-516B4886C0B5ED91"
@@ -3512,7 +3512,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "ac4cc10f8d575b2c4d3a2576adf06b75371048895db302b62e6a0c9ed6cc2f21"
 source_git_blob = "bc0dd75f09f7d45afbcf06749ac0e40f0670791d"
-current_path = ".dset/ops/qa/DSET-TEST-OPS-021-deterministic-git-fixture-bytes-test.md"
+current_path = ".dset/ops/qa/DSET-TEST-PLAN-OPS-021-deterministic-git-fixture-bytes-test-plan.md"
 current_format = "md"
 current_sha256 = "ac4cc10f8d575b2c4d3a2576adf06b75371048895db302b62e6a0c9ed6cc2f21"
 source_semantic_sha256 = "d3890b41427e1add54f3f232929a77660a5349a5bc2a679446430ed31e566a26"
@@ -3523,17 +3523,17 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-100"]
-semantic_ids = ["DSET-CONTRACT-TOOL-001", "DSET-DECISION-OPS-012", "DSET-TEST-OPS-021"]
+semantic_ids = ["DSET-CONTRACT-TOOL-001", "DSET-DECISION-OPS-012", "DSET-TEST-PLAN-OPS-021"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-52F40440F1A0C8EA"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/gov/qa/DSET-EVALUATION-GOV-030-slim-layout-interpretability.md"
+original_path = ".dset/gov/qa/DSET-EVAL-PLAN-GOV-030-slim-layout-interpretability.md"
 original_format = "md"
 original_sha256 = "4e4b330e0c0e70a73f89e682620c1287ce0898b3fd15c401163639df44cdc31d"
 source_git_blob = "7bafc6dbcfeae9f233dd06fce45beeb90dcd04cb"
-current_path = ".dset/02_layer_gov/qa/DSET-EVALUATION-GOV-030-slim-layout-interpretability.md"
+current_path = ".dset/02_layer_gov/qa/DSET-EVAL-PLAN-GOV-030-slim-layout-interpretability.md"
 current_format = "md"
 current_sha256 = "4e4b330e0c0e70a73f89e682620c1287ce0898b3fd15c401163639df44cdc31d"
 source_semantic_sha256 = "1de8b91fdbafbadc00a93d3bfecf8d8de4d7e66a139676b0d482246e8d96353b"
@@ -3544,7 +3544,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-103"]
-semantic_ids = ["DSET-EVALUATION-GOV-030"]
+semantic_ids = ["DSET-EVAL-PLAN-GOV-030"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-52F69F08565C8494"
@@ -3680,7 +3680,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "00efda90f7a40ae1f8687fee65ad0ef02a1a82b4d1fcc9ee3ba3584992663111"
 source_git_blob = "eb3020c781ae3cdd50a76089ac9d7b09128cb215"
-current_path = ".dset/tool/qa/DSET-EVALUATION-TOOL-003-typescript-candidate-evaluation.md"
+current_path = ".dset/tool/qa/DSET-EVAL-PLAN-TOOL-003-typescript-candidate-evaluation-plan.md"
 current_format = "md"
 current_sha256 = "00efda90f7a40ae1f8687fee65ad0ef02a1a82b4d1fcc9ee3ba3584992663111"
 source_semantic_sha256 = "ecaf17f423290b234bc1a61f0d0b5ba25a071d7192d4994202b15851f273a9ea"
@@ -3691,7 +3691,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-015"]
-semantic_ids = ["DSET-EVALUATION-TOOL-003", "DSET-REQUIREMENT-TOOL-021"]
+semantic_ids = ["DSET-EVAL-PLAN-TOOL-003", "DSET-REQUIREMENT-TOOL-021"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-557FDD57256FFD05"
@@ -3733,7 +3733,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-043"]
-semantic_ids = ["DSET-EVAL-GOV-015"]
+semantic_ids = ["DSET-EVAL-PLAN-GOV-015"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-55A15567AF8D970F"
@@ -3754,7 +3754,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-074"]
-semantic_ids = ["DSET-DECISION-GOV-018", "DSET-INVARIANT-GOV-027"]
+semantic_ids = ["DSET-DECISION-GOV-018", "DSET-REQUIREMENT-GOV-062"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-564C4E783BF7DC96"
@@ -3922,7 +3922,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-074"]
-semantic_ids = ["DSET-INVARIANT-GOV-027"]
+semantic_ids = ["DSET-REQUIREMENT-GOV-062"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-5A56D179BC520254"
@@ -4111,7 +4111,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-025"]
-semantic_ids = ["DSET-REQUIREMENT-GOV-037", "DSET-TEST-GOV-038"]
+semantic_ids = ["DSET-REQUIREMENT-GOV-037", "DSET-TEST-PLAN-GOV-038"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-60680AC52CAF31A6"
@@ -4142,7 +4142,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "dbe400e0103c02b08c6a7cd30e3031b31f51ee1edd5c461561f3081376f1e162"
 source_git_blob = "9caae7179bb159dfffc5c9cf2ddeb09f60ac1e32"
-current_path = ".dset/skill/qa/DSET-TEST-SKILL-014-implementation-preparation-mode-test.md"
+current_path = ".dset/skill/qa/DSET-TEST-PLAN-SKILL-014-implementation-preparation-mode-test-plan.md"
 current_format = "md"
 current_sha256 = "dbe400e0103c02b08c6a7cd30e3031b31f51ee1edd5c461561f3081376f1e162"
 source_semantic_sha256 = "44b0d335e36060ecdcd8bbfba8785f326cccae3af6ff307140996cee7392d78f"
@@ -4153,17 +4153,17 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-041"]
-semantic_ids = ["DSET-REQUIREMENT-SKILL-012", "DSET-TEST-SKILL-012", "DSET-TEST-SKILL-014"]
+semantic_ids = ["DSET-REQUIREMENT-SKILL-012", "DSET-TEST-PLAN-SKILL-012", "DSET-TEST-PLAN-SKILL-014"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-612FDC5F57B58AA4"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/gov/qa/DSET-TEST-GOV-042-all-toml-carrier-migration-test.md"
+original_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-042-all-toml-carrier-migration-test-plan.md"
 original_format = "md"
 original_sha256 = "16fe714de6d6f55fb9f788d2626a8703b4647cbafa703cec73cf4110814b5598"
 source_git_blob = "234db48d4ef2a0b99b914cf86504765649de127b"
-current_path = ".dset/02_layer_gov/qa/DSET-TEST-GOV-042-all-toml-carrier-migration-test.md"
+current_path = ".dset/02_layer_gov/qa/DSET-TEST-PLAN-GOV-042-all-toml-carrier-migration-test-plan.md"
 current_format = "md"
 current_sha256 = "16fe714de6d6f55fb9f788d2626a8703b4647cbafa703cec73cf4110814b5598"
 source_semantic_sha256 = "9117f14ad2e37797dcbbb130cf106c3e84ee04963db5f44a2cacf37ce944a0b2"
@@ -4174,7 +4174,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-072"]
-semantic_ids = ["DSET-TEST-GOV-042"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-042"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-61BFDF48562F56B6"
@@ -4264,11 +4264,11 @@ semantic_ids = []
 id = "DSET-CARRIER-TRANSITION-6314D030FACD5C82"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/gov/qa/DSET-TEST-GOV-040-native-package-successors-test.md"
+original_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-040-native-package-successors-test-plan.md"
 original_format = "md"
 original_sha256 = "43a27b039efd438f4213c6261e5417dc82c2477041ea1ef2009cdf7ff480f066"
 source_git_blob = "919d5357d689cd135f00853c51abbd6764832fcf"
-current_path = ".dset/02_layer_gov/qa/DSET-TEST-GOV-040-native-package-successors-test.md"
+current_path = ".dset/02_layer_gov/qa/DSET-TEST-PLAN-GOV-040-native-package-successors-test-plan.md"
 current_format = "md"
 current_sha256 = "43a27b039efd438f4213c6261e5417dc82c2477041ea1ef2009cdf7ff480f066"
 source_semantic_sha256 = "1da0a2910fb93b7770cfd70db46faea2d5b8ef58e71c52baa20cca1b7f0237c4"
@@ -4279,7 +4279,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-061"]
-semantic_ids = ["DSET-TEST-GOV-040"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-040"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-63983977520F5D1E"
@@ -4310,7 +4310,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "16fe714de6d6f55fb9f788d2626a8703b4647cbafa703cec73cf4110814b5598"
 source_git_blob = "234db48d4ef2a0b99b914cf86504765649de127b"
-current_path = ".dset/gov/qa/DSET-TEST-GOV-042-all-toml-carrier-migration-test.md"
+current_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-042-all-toml-carrier-migration-test-plan.md"
 current_format = "md"
 current_sha256 = "16fe714de6d6f55fb9f788d2626a8703b4647cbafa703cec73cf4110814b5598"
 source_semantic_sha256 = "9117f14ad2e37797dcbbb130cf106c3e84ee04963db5f44a2cacf37ce944a0b2"
@@ -4321,7 +4321,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-072"]
-semantic_ids = ["DSET-DECISION-GOV-018", "DSET-TEST-GOV-042"]
+semantic_ids = ["DSET-DECISION-GOV-018", "DSET-TEST-PLAN-GOV-042"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-64E07C2A820F12ED"
@@ -4415,7 +4415,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "608072c0960e646a7219f3ba4ba4673bcc12892547986352e2a4ab96a7d5882b"
 source_git_blob = "836c50a55ada055732d046f609891c85aaf1a592"
-current_path = ".dset/skill/qa/DSET-TEST-SKILL-018-overview-public-entrypoint-test.md"
+current_path = ".dset/skill/qa/DSET-TEST-PLAN-SKILL-018-overview-public-entrypoint-test-plan.md"
 current_format = "md"
 current_sha256 = "608072c0960e646a7219f3ba4ba4673bcc12892547986352e2a4ab96a7d5882b"
 source_semantic_sha256 = "c399688f4c784b3a2c7b2442002c337089435ba7e626eab39c0cc3f8feff6709"
@@ -4426,7 +4426,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-082"]
-semantic_ids = ["DSET-DECISION-SKILL-003", "DSET-TEST-SKILL-018"]
+semantic_ids = ["DSET-DECISION-SKILL-003", "DSET-TEST-PLAN-SKILL-018"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-661643266D563117"
@@ -4499,7 +4499,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "0acee9747599519f949835531fcb0d01859efdfa8b2f6a02d1da3574e61b7dbc"
 source_git_blob = "5322e4f2701a22f2638c420e36d61f83a4bee479"
-current_path = ".dset/gov/qa/DSET-EVALUATION-GOV-028-verbose-project-settings-evaluation.md"
+current_path = ".dset/gov/qa/DSET-EVAL-PLAN-GOV-028-verbose-project-settings-evaluation-plan.md"
 current_format = "md"
 current_sha256 = "0acee9747599519f949835531fcb0d01859efdfa8b2f6a02d1da3574e61b7dbc"
 source_semantic_sha256 = "164abb2afc90fc401578974c591e5e34ab31d2159367161d3fe055c27e33fd06"
@@ -4510,7 +4510,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-050"]
-semantic_ids = ["DSET-EVALUATION-GOV-027", "DSET-EVALUATION-GOV-028", "DSET-REQUIREMENT-GOV-037"]
+semantic_ids = ["DSET-EVAL-PLAN-GOV-027", "DSET-EVAL-PLAN-GOV-028", "DSET-REQUIREMENT-GOV-037"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-67590B144FAF3837"
@@ -4772,7 +4772,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "29fe325dd5b3989b4e19b264d079fe0affe0a3518ad1affb94dc701433496e45"
 source_git_blob = "62ad673ba9e9fc5791142773413d4e9e5180881c"
-current_path = ".dset/gov/qa/DSET-TEST-GOV-041-legacy-structured-snapshots-test.md"
+current_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-041-legacy-structured-snapshots-test-plan.md"
 current_format = "md"
 current_sha256 = "29fe325dd5b3989b4e19b264d079fe0affe0a3518ad1affb94dc701433496e45"
 source_semantic_sha256 = "37e5002f0d2e3a376c58b49eea10a6e6b7e198b345a4b7d0ba4baf1942492dd4"
@@ -4783,7 +4783,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-063"]
-semantic_ids = ["DSET-DECISION-GOV-017", "DSET-TEST-GOV-041"]
+semantic_ids = ["DSET-DECISION-GOV-017", "DSET-TEST-PLAN-GOV-041"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-70524F293D86E55C"
@@ -4835,7 +4835,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "ed984d92dddebe5d7b034a8d261c7891c3e8f62e7cfe7ba0688284806c00a3c3"
 source_git_blob = "e640696cee18499028b41ce7e2111afce0657c92"
-current_path = ".dset/ops/qa/DSET-TEST-OPS-018-canonical-health-path-order-test.md"
+current_path = ".dset/ops/qa/DSET-TEST-PLAN-OPS-018-canonical-health-path-order-test-plan.md"
 current_format = "md"
 current_sha256 = "ed984d92dddebe5d7b034a8d261c7891c3e8f62e7cfe7ba0688284806c00a3c3"
 source_semantic_sha256 = "36fdf8a650e24b09caf5eef42cde3dd24db19cff531074f56b9a239cd2e17602"
@@ -4846,7 +4846,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-091"]
-semantic_ids = ["DSET-CONTRACT-TOOL-001", "DSET-DECISION-OPS-009", "DSET-TEST-OPS-018"]
+semantic_ids = ["DSET-CONTRACT-TOOL-001", "DSET-DECISION-OPS-009", "DSET-TEST-PLAN-OPS-018"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-70BAC9C341F22E3F"
@@ -4877,7 +4877,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "6becc0da178ce1a89bd77440350698cac4ee7802cc0ef139c4231a9a1c7974d5"
 source_git_blob = "21871772de8bf9371e212250a38a11c0d0e32b52"
-current_path = ".dset/ops/qa/DSET-TEST-OPS-020-canonical-filesystem-path-boundary-test.md"
+current_path = ".dset/ops/qa/DSET-TEST-PLAN-OPS-020-canonical-filesystem-path-boundary-test-plan.md"
 current_format = "md"
 current_sha256 = "6becc0da178ce1a89bd77440350698cac4ee7802cc0ef139c4231a9a1c7974d5"
 source_semantic_sha256 = "aa9094526549ae63bf2aaea7a955ad8de4550f6015ee187eeca061e3c671969c"
@@ -4888,17 +4888,17 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-097"]
-semantic_ids = ["DSET-CONTRACT-TOOL-001", "DSET-DECISION-OPS-011", "DSET-TEST-OPS-020"]
+semantic_ids = ["DSET-CONTRACT-TOOL-001", "DSET-DECISION-OPS-011", "DSET-TEST-PLAN-OPS-020"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-725488CDFD4978FA"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/gov/qa/DSET-TEST-GOV-045-generated-only-provenance-test.md"
+original_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-045-generated-only-provenance-test-plan.md"
 original_format = "md"
 original_sha256 = "13bba87da7938ee91400326fc05fa71b1f23a245a4c93233b9cd681ec56096bf"
 source_git_blob = "56d5610be94768dd3d66ab8a03775ab4a5d289ed"
-current_path = ".dset/02_layer_gov/qa/DSET-TEST-GOV-045-generated-only-provenance-test.md"
+current_path = ".dset/02_layer_gov/qa/DSET-TEST-PLAN-GOV-045-generated-only-provenance-test-plan.md"
 current_format = "md"
 current_sha256 = "13bba87da7938ee91400326fc05fa71b1f23a245a4c93233b9cd681ec56096bf"
 source_semantic_sha256 = "4fb4694a2794585550c7b3b7dc13d67d26a2c3dfbdbc39103aa7061f3b8efd0b"
@@ -4909,7 +4909,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-088"]
-semantic_ids = ["DSET-TEST-GOV-045"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-045"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-73A18951239D223C"
@@ -4919,7 +4919,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "f536d80ac9ac187587f1a745b1e6ec91b8135fac2e6eb93036592223d6ef84b4"
 source_git_blob = "c507c86d938c303e0d47d4827fdd5a884628afb5"
-current_path = ".dset/gov/qa/DSET-TEST-GOV-039-canonical-settings-selections-test.md"
+current_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-039-canonical-settings-selections-test-plan.md"
 current_format = "md"
 current_sha256 = "f536d80ac9ac187587f1a745b1e6ec91b8135fac2e6eb93036592223d6ef84b4"
 source_semantic_sha256 = "6d32fbd6c26e344ebee36c856315206d8fb11df9fb938bc6469ce30dc99e8921"
@@ -4930,7 +4930,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-054"]
-semantic_ids = ["DSET-REQUIREMENT-GOV-038", "DSET-REQUIREMENT-GOV-039", "DSET-REQUIREMENT-SKILL-013", "DSET-TEST-GOV-039"]
+semantic_ids = ["DSET-REQUIREMENT-GOV-038", "DSET-REQUIREMENT-GOV-039", "DSET-REQUIREMENT-SKILL-013", "DSET-TEST-PLAN-GOV-039"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-73EBB3EED9280FA4"
@@ -4972,7 +4972,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ANALYSIS-REPORT-001"]
-semantic_ids = ["DSET-EVALUATION-TOOL-003"]
+semantic_ids = ["DSET-EVAL-PLAN-TOOL-003"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-75185B43398301BE"
@@ -5297,7 +5297,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "c781bd13c244ba24f4ff062a5814967d451a0fbd009806e561c48587dd15fda9"
 source_git_blob = "a0c04d06436f07c7fc49e2214681dc8a0747fea4"
-current_path = ".dset/gov/qa/DSET-EVALUATION-GOV-029-version-name-interpretability-evaluation.md"
+current_path = ".dset/gov/qa/DSET-EVAL-PLAN-GOV-029-version-name-interpretability-evaluation-plan.md"
 current_format = "md"
 current_sha256 = "c781bd13c244ba24f4ff062a5814967d451a0fbd009806e561c48587dd15fda9"
 source_semantic_sha256 = "0dcb53fed90ec8d70ffbbf92412e48c187a76171911a2304568922ebdb491ab4"
@@ -5308,7 +5308,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-080"]
-semantic_ids = ["DSET-DECISION-GOV-019", "DSET-DECISION-OPS-007", "DSET-EVALUATION-GOV-029"]
+semantic_ids = ["DSET-DECISION-GOV-019", "DSET-DECISION-OPS-007", "DSET-EVAL-PLAN-GOV-029"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-7AE81FF353B48738"
@@ -5392,7 +5392,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-039"]
-semantic_ids = ["DSET-TEST-SKILL-018"]
+semantic_ids = ["DSET-TEST-PLAN-SKILL-018"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-7DDD5D4DFF76973D"
@@ -5434,17 +5434,17 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ANALYSIS-REPORT-001"]
-semantic_ids = ["DSET-EVALUATION-TOOL-003"]
+semantic_ids = ["DSET-EVAL-PLAN-TOOL-003"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-7E373E04873C2CAD"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/gov/qa/DSET-TEST-GOV-038-verbose-project-settings-test.md"
+original_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-038-verbose-project-settings-test-plan.md"
 original_format = "md"
 original_sha256 = "db02d80840e3c245783281ca8070559c92b0c19653e92fe5705704c9e191bb94"
 source_git_blob = "9dce80cf42981aaa8da66eea22bff883da0f1611"
-current_path = ".dset/02_layer_gov/qa/DSET-TEST-GOV-038-verbose-project-settings-test.md"
+current_path = ".dset/02_layer_gov/qa/DSET-TEST-PLAN-GOV-038-verbose-project-settings-test-plan.md"
 current_format = "md"
 current_sha256 = "db02d80840e3c245783281ca8070559c92b0c19653e92fe5705704c9e191bb94"
 source_semantic_sha256 = "b1778210af15842810a83c0024a30b051b579b0eda715c05583bf3379115c681"
@@ -5455,7 +5455,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-049"]
-semantic_ids = ["DSET-TEST-GOV-038"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-038"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-7E3FC70C29FA492C"
@@ -5650,11 +5650,11 @@ semantic_ids = []
 id = "DSET-CARRIER-TRANSITION-84988E639E350105"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/tool/qa/DSET-EVALUATION-TOOL-002-typescript-candidate-evaluation.md"
+original_path = ".dset/tool/qa/DSET-EVAL-PLAN-TOOL-002-typescript-candidate-evaluation-plan.md"
 original_format = "md"
 original_sha256 = "773958d6b81cb0fc3e1d0d4542fc9f0e06121501a273026eafb97f0eabc3c2c5"
 source_git_blob = "a84035f651bb43a48952c2da54aeb42c431a6e7a"
-current_path = ".dset/03_layer_tool/qa/DSET-EVALUATION-TOOL-002-typescript-candidate-evaluation.md"
+current_path = ".dset/03_layer_tool/qa/DSET-EVAL-PLAN-TOOL-002-typescript-candidate-evaluation-plan.md"
 current_format = "md"
 current_sha256 = "773958d6b81cb0fc3e1d0d4542fc9f0e06121501a273026eafb97f0eabc3c2c5"
 source_semantic_sha256 = "0a671795c852da73cb5b7f571413c1136e7b3ae6ba3242d2f5b7e6547b5b413b"
@@ -5665,7 +5665,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-012"]
-semantic_ids = ["DSET-EVALUATION-TOOL-002"]
+semantic_ids = ["DSET-EVAL-PLAN-TOOL-002"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-84AB1EB69E55B15D"
@@ -5906,7 +5906,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "eb8bc82a066e828898b60689732469e293c5631e1fb4fedd906fd5e15ccd7e06"
 source_git_blob = "351adf10409a04a78fa096df8b2a187d995a9667"
-current_path = ".dset/skill/qa/DSET-TEST-SKILL-017-session-handoff-terminalization-test.md"
+current_path = ".dset/skill/qa/DSET-TEST-PLAN-SKILL-017-session-handoff-terminalization-test-plan.md"
 current_format = "md"
 current_sha256 = "eb8bc82a066e828898b60689732469e293c5631e1fb4fedd906fd5e15ccd7e06"
 source_semantic_sha256 = "d35cf7e3e179bc4d0b782509766f443a2cb88117c31b2661fdccb625df6cb648"
@@ -5917,7 +5917,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-069"]
-semantic_ids = ["DSET-REQUIREMENT-SKILL-009", "DSET-TEST-SKILL-017"]
+semantic_ids = ["DSET-REQUIREMENT-SKILL-009", "DSET-TEST-PLAN-SKILL-017"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-8A47DBB2BEC69AF1"
@@ -5927,7 +5927,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "efa295093bfa9db49a23e358dba09d480d92a0b7d1bace559c07000838ce272c"
 source_git_blob = "e5f225fa55539a74e81388ae6f60a965063ffbad"
-current_path = ".dset/gov/qa/DSET-TEST-GOV-037-canonical-toml-artifacts-test.md"
+current_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-037-canonical-toml-artifacts-test-plan.md"
 current_format = "md"
 current_sha256 = "efa295093bfa9db49a23e358dba09d480d92a0b7d1bace559c07000838ce272c"
 source_semantic_sha256 = "6d84479c47b20dd12a6a254359fef270ce1c23b801e09d8d0e23e6863934b3c7"
@@ -5938,7 +5938,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-042"]
-semantic_ids = ["DSET-REQUIREMENT-GOV-036", "DSET-TEST-GOV-037"]
+semantic_ids = ["DSET-REQUIREMENT-GOV-036", "DSET-TEST-PLAN-GOV-037"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-8AE45F2B64FF808B"
@@ -6007,11 +6007,11 @@ semantic_ids = ["DSET-REQUIREMENT-GOV-035", "DSET-REQUIREMENT-GOV-037", "DSET-RE
 id = "DSET-CARRIER-TRANSITION-8C0A60AECA71C772"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/gov/qa/DSET-TEST-GOV-037-canonical-toml-artifacts-test.md"
+original_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-037-canonical-toml-artifacts-test-plan.md"
 original_format = "md"
 original_sha256 = "efa295093bfa9db49a23e358dba09d480d92a0b7d1bace559c07000838ce272c"
 source_git_blob = "e5f225fa55539a74e81388ae6f60a965063ffbad"
-current_path = ".dset/02_layer_gov/qa/DSET-TEST-GOV-037-canonical-toml-artifacts-test.md"
+current_path = ".dset/02_layer_gov/qa/DSET-TEST-PLAN-GOV-037-canonical-toml-artifacts-test-plan.md"
 current_format = "md"
 current_sha256 = "efa295093bfa9db49a23e358dba09d480d92a0b7d1bace559c07000838ce272c"
 source_semantic_sha256 = "6d84479c47b20dd12a6a254359fef270ce1c23b801e09d8d0e23e6863934b3c7"
@@ -6022,7 +6022,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-042"]
-semantic_ids = ["DSET-TEST-GOV-037"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-037"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-8C97400422B7FBEF"
@@ -6049,11 +6049,11 @@ semantic_ids = ["DSET-DECISION-OPS-008"]
 id = "DSET-CARRIER-TRANSITION-8CB38C75E8AD8066"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/skill/qa/DSET-TEST-SKILL-016-location-independent-launcher-test.md"
+original_path = ".dset/skill/qa/DSET-TEST-PLAN-SKILL-016-location-independent-launcher-test-plan.md"
 original_format = "md"
 original_sha256 = "ebe02fdf287631f58c6ecad027c37ffe677faa33f55d05ce3aadd1b2a38176b5"
 source_git_blob = "3ebc29b128d2a873e4bb55965b2d66f0cb31717c"
-current_path = ".dset/04_layer_skill/qa/DSET-TEST-SKILL-016-location-independent-launcher-test.md"
+current_path = ".dset/04_layer_skill/qa/DSET-TEST-PLAN-SKILL-016-location-independent-launcher-test-plan.md"
 current_format = "md"
 current_sha256 = "ebe02fdf287631f58c6ecad027c37ffe677faa33f55d05ce3aadd1b2a38176b5"
 source_semantic_sha256 = "6d1e7a86b1bc443b4d1a79cc6df271eb56f4f73c65810d5f53a847c171f9d719"
@@ -6064,7 +6064,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-067"]
-semantic_ids = ["DSET-TEST-SKILL-016"]
+semantic_ids = ["DSET-TEST-PLAN-SKILL-016"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-8CED23C7FA6E3606"
@@ -6148,7 +6148,7 @@ source_commit = "28cc55484a834436878f122eb41a8860d2a5ba21"
 transitioned_at = "2026-07-21T03:20:51+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-044"]
-semantic_ids = ["DSET-EVALUATION-GOV-027"]
+semantic_ids = ["DSET-EVAL-PLAN-GOV-027"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-8F51E6A8BC9419F3"
@@ -6217,11 +6217,11 @@ semantic_ids = []
 id = "DSET-CARRIER-TRANSITION-9038BBD2A70B7458"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/tool/qa/DSET-TEST-TOOL-022-typescript-profile-instantiation-test.md"
+original_path = ".dset/tool/qa/DSET-TEST-PLAN-TOOL-022-typescript-profile-instantiation-test-plan.md"
 original_format = "md"
 original_sha256 = "c834d1be52d391e794ee3320c63b9dd1b283b3aab78cd9ba129cf9627bf10543"
 source_git_blob = "7be225805e6f3156c6d9b5953f0f679f1834e50b"
-current_path = ".dset/03_layer_tool/qa/DSET-TEST-TOOL-022-typescript-profile-instantiation-test.md"
+current_path = ".dset/03_layer_tool/qa/DSET-TEST-PLAN-TOOL-022-typescript-profile-instantiation-test-plan.md"
 current_format = "md"
 current_sha256 = "c834d1be52d391e794ee3320c63b9dd1b283b3aab78cd9ba129cf9627bf10543"
 source_semantic_sha256 = "e805076aee0e0a98c79a39d35f7ef6376e7721c3bba9637823d168363bc91e48"
@@ -6232,7 +6232,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-018"]
-semantic_ids = ["DSET-TEST-TOOL-022"]
+semantic_ids = ["DSET-TEST-PLAN-TOOL-022"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-92556906A604A78C"
@@ -6568,7 +6568,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-034"]
-semantic_ids = ["DSET-TEST-META-011", "DSET-TEST-OPS-005"]
+semantic_ids = ["DSET-TEST-PLAN-META-011", "DSET-TEST-PLAN-OPS-005"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-9C6EB1997AFC0B85"
@@ -6704,7 +6704,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "13bba87da7938ee91400326fc05fa71b1f23a245a4c93233b9cd681ec56096bf"
 source_git_blob = "56d5610be94768dd3d66ab8a03775ab4a5d289ed"
-current_path = ".dset/gov/qa/DSET-TEST-GOV-045-generated-only-provenance-test.md"
+current_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-045-generated-only-provenance-test-plan.md"
 current_format = "md"
 current_sha256 = "13bba87da7938ee91400326fc05fa71b1f23a245a4c93233b9cd681ec56096bf"
 source_semantic_sha256 = "4fb4694a2794585550c7b3b7dc13d67d26a2c3dfbdbc39103aa7061f3b8efd0b"
@@ -6715,7 +6715,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-088"]
-semantic_ids = ["DSET-DECISION-GOV-020", "DSET-TEST-GOV-045"]
+semantic_ids = ["DSET-DECISION-GOV-020", "DSET-TEST-PLAN-GOV-045"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-9FE17D6CF7AF197F"
@@ -6725,7 +6725,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "f7116d3e8b47b13199e24e90dee6d442436a8e23c9744efe4036492c211b7f3f"
 source_git_blob = "8a702520057f0154dddfb71fe52a81b901ea64d7"
-current_path = ".dset/tool/qa/DSET-EVALUATION-TOOL-004-typescript-profile-instantiation-evaluation.md"
+current_path = ".dset/tool/qa/DSET-EVAL-PLAN-TOOL-004-typescript-profile-instantiation-evaluation-plan.md"
 current_format = "md"
 current_sha256 = "f7116d3e8b47b13199e24e90dee6d442436a8e23c9744efe4036492c211b7f3f"
 source_semantic_sha256 = "aa721e3409d27aa7fef4a3ea1b8903d0e29187b7ccacb03a8e95180980a07fa9"
@@ -6736,7 +6736,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-019"]
-semantic_ids = ["DSET-EVALUATION-TOOL-004", "DSET-REQUIREMENT-TOOL-022"]
+semantic_ids = ["DSET-EVAL-PLAN-TOOL-004", "DSET-REQUIREMENT-TOOL-022"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-A000188688F61161"
@@ -6778,7 +6778,7 @@ source_commit = "28cc55484a834436878f122eb41a8860d2a5ba21"
 transitioned_at = "2026-07-21T03:20:51+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-012"]
-semantic_ids = ["DSET-EVALUATION-TOOL-002"]
+semantic_ids = ["DSET-EVAL-PLAN-TOOL-002"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-A06A2781F1524D55"
@@ -6805,11 +6805,11 @@ semantic_ids = ["DSET-DECISION-GOV-011"]
 id = "DSET-CARRIER-TRANSITION-A168142548D3DAD6"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/skill/qa/DSET-EVALUATION-SKILL-012-implementation-preparation-mode-evaluation.md"
+original_path = ".dset/skill/qa/DSET-EVAL-PLAN-SKILL-012-implementation-preparation-mode-evaluation-plan.md"
 original_format = "md"
 original_sha256 = "8786cfcf3aa3ebfad82570b0991d733a819a66e6367aa996d1c86aaef9e3cbf7"
 source_git_blob = "d1fa8b743e8bba33bf7b808a4babfcf007eb2383"
-current_path = ".dset/04_layer_skill/qa/DSET-EVALUATION-SKILL-012-implementation-preparation-mode-evaluation.md"
+current_path = ".dset/04_layer_skill/qa/DSET-EVAL-PLAN-SKILL-012-implementation-preparation-mode-evaluation-plan.md"
 current_format = "md"
 current_sha256 = "8786cfcf3aa3ebfad82570b0991d733a819a66e6367aa996d1c86aaef9e3cbf7"
 source_semantic_sha256 = "4018da71d441e9ac90a58cb4c9f8c6b9e9ca050ff395da74f412cfc4dc2099e7"
@@ -6820,7 +6820,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-043"]
-semantic_ids = ["DSET-EVALUATION-SKILL-012"]
+semantic_ids = ["DSET-EVAL-PLAN-SKILL-012"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-A17A89A660C67AC8"
@@ -6868,11 +6868,11 @@ semantic_ids = ["DSET-GAP-TOOL-001"]
 id = "DSET-CARRIER-TRANSITION-A307FF61DF5DA7F8"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/skill/qa/DSET-TEST-SKILL-015-installed-skill-integrity-test.md"
+original_path = ".dset/skill/qa/DSET-TEST-PLAN-SKILL-015-installed-skill-integrity-test-plan.md"
 original_format = "md"
 original_sha256 = "59665301d0230456f8bc68a465c391e445d25d4bbcc2383209c7afd55dcefe0c"
 source_git_blob = "d370bf79a2964530dbbea48fb4bebc08dfbf1df4"
-current_path = ".dset/04_layer_skill/qa/DSET-TEST-SKILL-015-installed-skill-integrity-test.md"
+current_path = ".dset/04_layer_skill/qa/DSET-TEST-PLAN-SKILL-015-installed-skill-integrity-test-plan.md"
 current_format = "md"
 current_sha256 = "59665301d0230456f8bc68a465c391e445d25d4bbcc2383209c7afd55dcefe0c"
 source_semantic_sha256 = "651bc133194bd6aeeaf93744bd5ab411ee0c7dcd92a1c04e1878dc65ee023db8"
@@ -6883,7 +6883,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-065"]
-semantic_ids = ["DSET-TEST-SKILL-015"]
+semantic_ids = ["DSET-TEST-PLAN-SKILL-015"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-A314828A3993A29D"
@@ -7030,7 +7030,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-030"]
-semantic_ids = ["DSET-TEST-SKILL-016"]
+semantic_ids = ["DSET-TEST-PLAN-SKILL-016"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-A4E175CABD42D25F"
@@ -7124,7 +7124,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "50396aaec5f268362ca0921dc7740f83d61c43bee2a10df98c9b2b4eeb707e36"
 source_git_blob = "4b796d089bf2fce30d329e18b80dfff1b0c11f31"
-current_path = ".dset/ops/qa/DSET-TEST-OPS-019-platform-native-verification-placeholder-test.md"
+current_path = ".dset/ops/qa/DSET-TEST-PLAN-OPS-019-platform-native-verification-placeholder-test-plan.md"
 current_format = "md"
 current_sha256 = "50396aaec5f268362ca0921dc7740f83d61c43bee2a10df98c9b2b4eeb707e36"
 source_semantic_sha256 = "726f1f2327a646dbdf14d150fe6d2c738b35d9e1c74ee41f6d72802d71b2ded9"
@@ -7135,7 +7135,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-094"]
-semantic_ids = ["DSET-CONTRACT-TOOL-001", "DSET-DECISION-OPS-010", "DSET-TEST-OPS-019"]
+semantic_ids = ["DSET-CONTRACT-TOOL-001", "DSET-DECISION-OPS-010", "DSET-TEST-PLAN-OPS-019"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-A70500C5223970B1"
@@ -7177,17 +7177,17 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-011"]
-semantic_ids = ["DSET-TEST-TOOL-021"]
+semantic_ids = ["DSET-TEST-PLAN-TOOL-021"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-A7363A1325E37497"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/skill/qa/DSET-TEST-SKILL-017-session-handoff-terminalization-test.md"
+original_path = ".dset/skill/qa/DSET-TEST-PLAN-SKILL-017-session-handoff-terminalization-test-plan.md"
 original_format = "md"
 original_sha256 = "eb8bc82a066e828898b60689732469e293c5631e1fb4fedd906fd5e15ccd7e06"
 source_git_blob = "351adf10409a04a78fa096df8b2a187d995a9667"
-current_path = ".dset/04_layer_skill/qa/DSET-TEST-SKILL-017-session-handoff-terminalization-test.md"
+current_path = ".dset/04_layer_skill/qa/DSET-TEST-PLAN-SKILL-017-session-handoff-terminalization-test-plan.md"
 current_format = "md"
 current_sha256 = "eb8bc82a066e828898b60689732469e293c5631e1fb4fedd906fd5e15ccd7e06"
 source_semantic_sha256 = "d35cf7e3e179bc4d0b782509766f443a2cb88117c31b2661fdccb625df6cb648"
@@ -7198,7 +7198,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-069"]
-semantic_ids = ["DSET-TEST-SKILL-017"]
+semantic_ids = ["DSET-TEST-PLAN-SKILL-017"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-A7FC24B5B4C7EDA4"
@@ -7261,7 +7261,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-038"]
-semantic_ids = ["DSET-TEST-SKILL-018"]
+semantic_ids = ["DSET-TEST-PLAN-SKILL-018"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-A99D342C7A1B189C"
@@ -7282,7 +7282,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-014"]
-semantic_ids = ["DSET-EVALUATION-TOOL-003"]
+semantic_ids = ["DSET-EVAL-PLAN-TOOL-003"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-A9B0A06B10BE01F2"
@@ -7355,7 +7355,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "350104cae7f0c76bd7f2170e7acf3194082b7b428033083970a984d252f9bdf9"
 source_git_blob = "5da03569a1d4881fbffa5e0eef24697fc279564e"
-current_path = ".dset/gov/qa/DSET-EVALUATION-GOV-027-canonical-toml-artifacts-evaluation.md"
+current_path = ".dset/gov/qa/DSET-EVAL-PLAN-GOV-027-canonical-toml-artifacts-evaluation-plan.md"
 current_format = "md"
 current_sha256 = "350104cae7f0c76bd7f2170e7acf3194082b7b428033083970a984d252f9bdf9"
 source_semantic_sha256 = "e81b8ea195f9bec0f9e2f493793e8e7099b03d68301218db76ec167f984b5a0f"
@@ -7366,17 +7366,17 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-044"]
-semantic_ids = ["DSET-EVALUATION-GOV-027", "DSET-REQUIREMENT-GOV-036"]
+semantic_ids = ["DSET-EVAL-PLAN-GOV-027", "DSET-REQUIREMENT-GOV-036"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-AB2CDF3C52B811AC"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/gov/qa/DSET-TEST-GOV-048-control-runtime-and-scratch-boundaries-test.md"
+original_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-048-control-runtime-and-scratch-boundaries-test-plan.md"
 original_format = "md"
 original_sha256 = "6be90133120e50eb16c7c6edad3ea2e8aa0ffe2dc602efbee90a4153cb96f0a7"
 source_git_blob = "095281f11713eddb99d00632ca11c784069b3d5b"
-current_path = ".dset/02_layer_gov/qa/DSET-TEST-GOV-048-control-runtime-and-scratch-boundaries-test.md"
+current_path = ".dset/02_layer_gov/qa/DSET-TEST-PLAN-GOV-048-control-runtime-and-scratch-boundaries-test-plan.md"
 current_format = "md"
 current_sha256 = "6be90133120e50eb16c7c6edad3ea2e8aa0ffe2dc602efbee90a4153cb96f0a7"
 source_semantic_sha256 = "a810e13d58c0a5ad0c21da4b9beeadc108e02517153538661e29e2c358e72316"
@@ -7387,7 +7387,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-108"]
-semantic_ids = ["DSET-TEST-GOV-048"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-048"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-AB6BAC724B0E063E"
@@ -7397,7 +7397,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "2e0a1f7cbfc86f9883a99594b9d86567ab1d3273b7a5839dca05ffb8a71ac0cd"
 source_git_blob = "81a2058c965b8b3d7f305f75cb5c1cc5b41041b5"
-current_path = ".dset/gov/qa/DSET-EVALUATION-GOV-026-typed-artifact-relations-evaluation.md"
+current_path = ".dset/gov/qa/DSET-EVAL-PLAN-GOV-026-typed-artifact-relations-evaluation-plan.md"
 current_format = "md"
 current_sha256 = "2e0a1f7cbfc86f9883a99594b9d86567ab1d3273b7a5839dca05ffb8a71ac0cd"
 source_semantic_sha256 = "1b14f82f842342e8b8c4f9ad81fa201f5fac22c2527866131f5797295ee39a58"
@@ -7408,7 +7408,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-037"]
-semantic_ids = ["DSET-DECISION-GOV-013", "DSET-EVALUATION-GOV-026"]
+semantic_ids = ["DSET-DECISION-GOV-013", "DSET-EVAL-PLAN-GOV-026"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-ABA595CB7E057A84"
@@ -7429,7 +7429,7 @@ source_commit = "28cc55484a834436878f122eb41a8860d2a5ba21"
 transitioned_at = "2026-07-21T03:20:51+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-036"]
-semantic_ids = ["DSET-TEST-GOV-036"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-036"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-AEB8403ADDC5ECCF"
@@ -7519,11 +7519,11 @@ semantic_ids = ["DSET-DEFECT-SKILL-003"]
 id = "DSET-CARRIER-TRANSITION-B0F0D645C82DF00A"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/gov/qa/DSET-EVALUATION-GOV-026-typed-artifact-relations-evaluation.md"
+original_path = ".dset/gov/qa/DSET-EVAL-PLAN-GOV-026-typed-artifact-relations-evaluation-plan.md"
 original_format = "md"
 original_sha256 = "2e0a1f7cbfc86f9883a99594b9d86567ab1d3273b7a5839dca05ffb8a71ac0cd"
 source_git_blob = "81a2058c965b8b3d7f305f75cb5c1cc5b41041b5"
-current_path = ".dset/02_layer_gov/qa/DSET-EVALUATION-GOV-026-typed-artifact-relations-evaluation.md"
+current_path = ".dset/02_layer_gov/qa/DSET-EVAL-PLAN-GOV-026-typed-artifact-relations-evaluation-plan.md"
 current_format = "md"
 current_sha256 = "2e0a1f7cbfc86f9883a99594b9d86567ab1d3273b7a5839dca05ffb8a71ac0cd"
 source_semantic_sha256 = "1b14f82f842342e8b8c4f9ad81fa201f5fac22c2527866131f5797295ee39a58"
@@ -7534,7 +7534,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-037"]
-semantic_ids = ["DSET-EVALUATION-GOV-026"]
+semantic_ids = ["DSET-EVAL-PLAN-GOV-026"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-B1C2723C7907D9D6"
@@ -7618,7 +7618,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-031"]
-semantic_ids = ["DSET-TEST-SKILL-017"]
+semantic_ids = ["DSET-TEST-PLAN-SKILL-017"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-B36F613E46D3DE56"
@@ -7750,11 +7750,11 @@ semantic_ids = ["DSET-REQUIREMENT-GOV-031"]
 id = "DSET-CARRIER-TRANSITION-B6388BE12DF918BF"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/ops/qa/DSET-TEST-OPS-017-portable-text-byte-policy-test.md"
+original_path = ".dset/ops/qa/DSET-TEST-PLAN-OPS-017-portable-text-byte-policy-test-plan.md"
 original_format = "md"
 original_sha256 = "1d609dd8ea329c916d6b85f18f6e8e9b0fc3356ae646a397a6da02bfdd6d3f8e"
 source_git_blob = "029a3d49327b7d9ae012e238d720822b905a89fd"
-current_path = ".dset/05_layer_ops/qa/DSET-TEST-OPS-017-portable-text-byte-policy-test.md"
+current_path = ".dset/05_layer_ops/qa/DSET-TEST-PLAN-OPS-017-portable-text-byte-policy-test-plan.md"
 current_format = "md"
 current_sha256 = "1d609dd8ea329c916d6b85f18f6e8e9b0fc3356ae646a397a6da02bfdd6d3f8e"
 source_semantic_sha256 = "fe21458d2b28f4cb165c3be40eec329773ad2316b14b6e637bb510f866f743ed"
@@ -7765,7 +7765,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-085"]
-semantic_ids = ["DSET-TEST-OPS-017"]
+semantic_ids = ["DSET-TEST-PLAN-OPS-017"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-B6538D24E2EEC22B"
@@ -8113,11 +8113,11 @@ semantic_ids = ["DSET-GAP-GOV-001"]
 id = "DSET-CARRIER-TRANSITION-BD0B7EB6F32F2663"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/ops/qa/DSET-TEST-OPS-020-canonical-filesystem-path-boundary-test.md"
+original_path = ".dset/ops/qa/DSET-TEST-PLAN-OPS-020-canonical-filesystem-path-boundary-test-plan.md"
 original_format = "md"
 original_sha256 = "6becc0da178ce1a89bd77440350698cac4ee7802cc0ef139c4231a9a1c7974d5"
 source_git_blob = "21871772de8bf9371e212250a38a11c0d0e32b52"
-current_path = ".dset/05_layer_ops/qa/DSET-TEST-OPS-020-canonical-filesystem-path-boundary-test.md"
+current_path = ".dset/05_layer_ops/qa/DSET-TEST-PLAN-OPS-020-canonical-filesystem-path-boundary-test-plan.md"
 current_format = "md"
 current_sha256 = "6becc0da178ce1a89bd77440350698cac4ee7802cc0ef139c4231a9a1c7974d5"
 source_semantic_sha256 = "aa9094526549ae63bf2aaea7a955ad8de4550f6015ee187eeca061e3c671969c"
@@ -8128,7 +8128,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-097"]
-semantic_ids = ["DSET-TEST-OPS-020"]
+semantic_ids = ["DSET-TEST-PLAN-OPS-020"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-BDC8945B6E93167E"
@@ -8285,7 +8285,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "db02d80840e3c245783281ca8070559c92b0c19653e92fe5705704c9e191bb94"
 source_git_blob = "9dce80cf42981aaa8da66eea22bff883da0f1611"
-current_path = ".dset/gov/qa/DSET-TEST-GOV-038-verbose-project-settings-test.md"
+current_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-038-verbose-project-settings-test-plan.md"
 current_format = "md"
 current_sha256 = "db02d80840e3c245783281ca8070559c92b0c19653e92fe5705704c9e191bb94"
 source_semantic_sha256 = "b1778210af15842810a83c0024a30b051b579b0eda715c05583bf3379115c681"
@@ -8296,7 +8296,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-049"]
-semantic_ids = ["DSET-REQUIREMENT-GOV-037", "DSET-TEST-GOV-037", "DSET-TEST-GOV-038"]
+semantic_ids = ["DSET-REQUIREMENT-GOV-037", "DSET-TEST-PLAN-GOV-037", "DSET-TEST-PLAN-GOV-038"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-C179EAE8B6234894"
@@ -8512,11 +8512,11 @@ semantic_ids = ["DSET-REQUIREMENT-SKILL-010"]
 id = "DSET-CARRIER-TRANSITION-C720CC2628FBB43F"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/gov/qa/DSET-TEST-GOV-041-legacy-structured-snapshots-test.md"
+original_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-041-legacy-structured-snapshots-test-plan.md"
 original_format = "md"
 original_sha256 = "29fe325dd5b3989b4e19b264d079fe0affe0a3518ad1affb94dc701433496e45"
 source_git_blob = "62ad673ba9e9fc5791142773413d4e9e5180881c"
-current_path = ".dset/02_layer_gov/qa/DSET-TEST-GOV-041-legacy-structured-snapshots-test.md"
+current_path = ".dset/02_layer_gov/qa/DSET-TEST-PLAN-GOV-041-legacy-structured-snapshots-test-plan.md"
 current_format = "md"
 current_sha256 = "29fe325dd5b3989b4e19b264d079fe0affe0a3518ad1affb94dc701433496e45"
 source_semantic_sha256 = "37e5002f0d2e3a376c58b49eea10a6e6b7e198b345a4b7d0ba4baf1942492dd4"
@@ -8527,17 +8527,17 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-063"]
-semantic_ids = ["DSET-TEST-GOV-041"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-041"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-C7E2635F821E10A5"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/skill/qa/DSET-TEST-SKILL-018-overview-public-entrypoint-test.md"
+original_path = ".dset/skill/qa/DSET-TEST-PLAN-SKILL-018-overview-public-entrypoint-test-plan.md"
 original_format = "md"
 original_sha256 = "608072c0960e646a7219f3ba4ba4673bcc12892547986352e2a4ab96a7d5882b"
 source_git_blob = "836c50a55ada055732d046f609891c85aaf1a592"
-current_path = ".dset/04_layer_skill/qa/DSET-TEST-SKILL-018-overview-public-entrypoint-test.md"
+current_path = ".dset/04_layer_skill/qa/DSET-TEST-PLAN-SKILL-018-overview-public-entrypoint-test-plan.md"
 current_format = "md"
 current_sha256 = "608072c0960e646a7219f3ba4ba4673bcc12892547986352e2a4ab96a7d5882b"
 source_semantic_sha256 = "c399688f4c784b3a2c7b2442002c337089435ba7e626eab39c0cc3f8feff6709"
@@ -8548,7 +8548,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-082"]
-semantic_ids = ["DSET-TEST-SKILL-018"]
+semantic_ids = ["DSET-TEST-PLAN-SKILL-018"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-C8F0672C83C88706"
@@ -8569,7 +8569,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-017"]
-semantic_ids = ["DSET-TEST-TOOL-022"]
+semantic_ids = ["DSET-TEST-PLAN-TOOL-022"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-C91F0ADCD0F45A2E"
@@ -8695,7 +8695,7 @@ source_commit = "28cc55484a834436878f122eb41a8860d2a5ba21"
 transitioned_at = "2026-07-21T03:20:51+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-019"]
-semantic_ids = ["DSET-EVALUATION-TOOL-004"]
+semantic_ids = ["DSET-EVAL-PLAN-TOOL-004"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-CAC686281FE47AED"
@@ -8842,7 +8842,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-036"]
-semantic_ids = ["DSET-TEST-SKILL-018"]
+semantic_ids = ["DSET-TEST-PLAN-SKILL-018"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-CE6625E769CE9F89"
@@ -8863,7 +8863,7 @@ source_commit = "28cc55484a834436878f122eb41a8860d2a5ba21"
 transitioned_at = "2026-07-21T03:20:51+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-015"]
-semantic_ids = ["DSET-EVALUATION-TOOL-003"]
+semantic_ids = ["DSET-EVAL-PLAN-TOOL-003"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-CE874B83BF1C9D58"
@@ -8911,11 +8911,11 @@ semantic_ids = []
 id = "DSET-CARRIER-TRANSITION-CFF4C65F001C85EB"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/ops/qa/DSET-TEST-OPS-021-deterministic-git-fixture-bytes-test.md"
+original_path = ".dset/ops/qa/DSET-TEST-PLAN-OPS-021-deterministic-git-fixture-bytes-test-plan.md"
 original_format = "md"
 original_sha256 = "ac4cc10f8d575b2c4d3a2576adf06b75371048895db302b62e6a0c9ed6cc2f21"
 source_git_blob = "bc0dd75f09f7d45afbcf06749ac0e40f0670791d"
-current_path = ".dset/05_layer_ops/qa/DSET-TEST-OPS-021-deterministic-git-fixture-bytes-test.md"
+current_path = ".dset/05_layer_ops/qa/DSET-TEST-PLAN-OPS-021-deterministic-git-fixture-bytes-test-plan.md"
 current_format = "md"
 current_sha256 = "ac4cc10f8d575b2c4d3a2576adf06b75371048895db302b62e6a0c9ed6cc2f21"
 source_semantic_sha256 = "d3890b41427e1add54f3f232929a77660a5349a5bc2a679446430ed31e566a26"
@@ -8926,7 +8926,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-100"]
-semantic_ids = ["DSET-TEST-OPS-021"]
+semantic_ids = ["DSET-TEST-PLAN-OPS-021"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-D00F10D21D52408E"
@@ -8953,11 +8953,11 @@ semantic_ids = ["DSET-DEFECT-TOOL-010"]
 id = "DSET-CARRIER-TRANSITION-D01C2AB79DD12D22"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/gov/qa/DSET-TEST-GOV-047-hidden-project-control-root-test.md"
+original_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-047-hidden-project-control-root-test-plan.md"
 original_format = "md"
 original_sha256 = "37745026e493eedd3bb801d763029dccc026f47611c2250b0b4dd159d6eb96c3"
 source_git_blob = "5672bad0875d092ec2d42cd1c46ec50f956b756c"
-current_path = ".dset/02_layer_gov/qa/DSET-TEST-GOV-047-hidden-project-control-root-test.md"
+current_path = ".dset/02_layer_gov/qa/DSET-TEST-PLAN-GOV-047-hidden-project-control-root-test-plan.md"
 current_format = "md"
 current_sha256 = "37745026e493eedd3bb801d763029dccc026f47611c2250b0b4dd159d6eb96c3"
 source_semantic_sha256 = "7bb778475ec065ea4d9580ccb257f8ec7ac6da6c066d8174c9f26b0215a50921"
@@ -8968,7 +8968,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-105"]
-semantic_ids = ["DSET-TEST-GOV-047"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-047"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-D02B17D5E1264A15"
@@ -9178,7 +9178,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-026"]
-semantic_ids = ["DSET-TEST-GOV-039"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-039"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-D5D5A28CEBDAD2E9"
@@ -9331,11 +9331,11 @@ semantic_ids = ["DSET-GAP-SKILL-001"]
 id = "DSET-CARRIER-TRANSITION-D8F73416D8214507"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/tool/qa/DSET-TEST-TOOL-021-typescript-candidate-test.md"
+original_path = ".dset/tool/qa/DSET-TEST-PLAN-TOOL-021-typescript-candidate-test-plan.md"
 original_format = "md"
 original_sha256 = "67de18d495d944184a8749216fce2d43f421276bd2ccde05ad81f2f6cc3e0523"
 source_git_blob = "5e9e1e207f4916f696e1a1b929ada374e3306845"
-current_path = ".dset/03_layer_tool/qa/DSET-TEST-TOOL-021-typescript-candidate-test.md"
+current_path = ".dset/03_layer_tool/qa/DSET-TEST-PLAN-TOOL-021-typescript-candidate-test-plan.md"
 current_format = "md"
 current_sha256 = "67de18d495d944184a8749216fce2d43f421276bd2ccde05ad81f2f6cc3e0523"
 source_semantic_sha256 = "2761ee891c3c206f0309f30608194ee7628c9d887a252cf74006aed837350a3f"
@@ -9346,7 +9346,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-014"]
-semantic_ids = ["DSET-TEST-TOOL-021"]
+semantic_ids = ["DSET-TEST-PLAN-TOOL-021"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-DA50DD0BD2C2B539"
@@ -9388,7 +9388,7 @@ source_commit = "28cc55484a834436878f122eb41a8860d2a5ba21"
 transitioned_at = "2026-07-21T03:20:51+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-018"]
-semantic_ids = ["DSET-TEST-TOOL-022"]
+semantic_ids = ["DSET-TEST-PLAN-TOOL-022"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-DAFDAF18503B7E66"
@@ -9472,7 +9472,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-012"]
-semantic_ids = ["DSET-TEST-TOOL-021"]
+semantic_ids = ["DSET-TEST-PLAN-TOOL-021"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-DD8E5639DE45C3A4"
@@ -9482,7 +9482,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "c0edefe06f59233d9286ae59637504e90ed19fce9946e4029eafa5af717d712a"
 source_git_blob = "b8263249d48b1614c5cb9419ac0679de1a5e7801"
-current_path = ".dset/gov/qa/DSET-TEST-GOV-044-version-artifact-classification-test.md"
+current_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-044-version-artifact-classification-test-plan.md"
 current_format = "md"
 current_sha256 = "c0edefe06f59233d9286ae59637504e90ed19fce9946e4029eafa5af717d712a"
 source_semantic_sha256 = "a2b6489c2dab6aeaa37b8ac781c71b62092c91352a9e4ca43da7e0c2869ca099"
@@ -9493,7 +9493,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-079"]
-semantic_ids = ["DSET-DECISION-GOV-019", "DSET-DECISION-OPS-007", "DSET-TEST-GOV-044"]
+semantic_ids = ["DSET-DECISION-GOV-019", "DSET-DECISION-OPS-007", "DSET-TEST-PLAN-GOV-044"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-DDE25F1E896CF2F9"
@@ -9604,11 +9604,11 @@ semantic_ids = ["DSET-REQUIREMENT-TOOL-020"]
 id = "DSET-CARRIER-TRANSITION-DFC23BB8BABD122A"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/gov/qa/DSET-EVALUATION-GOV-027-canonical-toml-artifacts-evaluation.md"
+original_path = ".dset/gov/qa/DSET-EVAL-PLAN-GOV-027-canonical-toml-artifacts-evaluation-plan.md"
 original_format = "md"
 original_sha256 = "350104cae7f0c76bd7f2170e7acf3194082b7b428033083970a984d252f9bdf9"
 source_git_blob = "5da03569a1d4881fbffa5e0eef24697fc279564e"
-current_path = ".dset/02_layer_gov/qa/DSET-EVALUATION-GOV-027-canonical-toml-artifacts-evaluation.md"
+current_path = ".dset/02_layer_gov/qa/DSET-EVAL-PLAN-GOV-027-canonical-toml-artifacts-evaluation-plan.md"
 current_format = "md"
 current_sha256 = "350104cae7f0c76bd7f2170e7acf3194082b7b428033083970a984d252f9bdf9"
 source_semantic_sha256 = "e81b8ea195f9bec0f9e2f493793e8e7099b03d68301218db76ec167f984b5a0f"
@@ -9619,7 +9619,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-044"]
-semantic_ids = ["DSET-EVALUATION-GOV-027"]
+semantic_ids = ["DSET-EVAL-PLAN-GOV-027"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-DFE5BFE8A66A9A87"
@@ -9961,7 +9961,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-EVIDENCE-RECORD-042"]
-semantic_ids = ["DSET-EVAL-GOV-015"]
+semantic_ids = ["DSET-EVAL-PLAN-GOV-015"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-E60490E79D5F3F78"
@@ -10030,11 +10030,11 @@ semantic_ids = []
 id = "DSET-CARRIER-TRANSITION-E78F57A8ADB614A1"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/tool/qa/DSET-TEST-TOOL-020-typescript-candidate-test.md"
+original_path = ".dset/tool/qa/DSET-TEST-PLAN-TOOL-020-typescript-candidate-test-plan.md"
 original_format = "md"
 original_sha256 = "41a9d657bdf25b7f823b10510cab7d9bbac1cb183493c6057aa012bd1fe13a2e"
 source_git_blob = "25ecbd3f8c55bd7b7d77192280676d870601c2f3"
-current_path = ".dset/03_layer_tool/qa/DSET-TEST-TOOL-020-typescript-candidate-test.md"
+current_path = ".dset/03_layer_tool/qa/DSET-TEST-PLAN-TOOL-020-typescript-candidate-test-plan.md"
 current_format = "md"
 current_sha256 = "41a9d657bdf25b7f823b10510cab7d9bbac1cb183493c6057aa012bd1fe13a2e"
 source_semantic_sha256 = "7909e1919374c6661c8cf38908f90931f76dfa6183e838e9c331303f02888b5a"
@@ -10045,7 +10045,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-011"]
-semantic_ids = ["DSET-TEST-TOOL-020"]
+semantic_ids = ["DSET-TEST-PLAN-TOOL-020"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-E7FF646765646D02"
@@ -10055,7 +10055,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "1d609dd8ea329c916d6b85f18f6e8e9b0fc3356ae646a397a6da02bfdd6d3f8e"
 source_git_blob = "029a3d49327b7d9ae012e238d720822b905a89fd"
-current_path = ".dset/ops/qa/DSET-TEST-OPS-017-portable-text-byte-policy-test.md"
+current_path = ".dset/ops/qa/DSET-TEST-PLAN-OPS-017-portable-text-byte-policy-test-plan.md"
 current_format = "md"
 current_sha256 = "1d609dd8ea329c916d6b85f18f6e8e9b0fc3356ae646a397a6da02bfdd6d3f8e"
 source_semantic_sha256 = "fe21458d2b28f4cb165c3be40eec329773ad2316b14b6e637bb510f866f743ed"
@@ -10066,7 +10066,7 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-085"]
-semantic_ids = ["DSET-CONTRACT-TOOL-001", "DSET-DECISION-OPS-008", "DSET-TEST-OPS-017"]
+semantic_ids = ["DSET-CONTRACT-TOOL-001", "DSET-DECISION-OPS-008", "DSET-TEST-PLAN-OPS-017"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-E83AB78BD2253316"
@@ -10240,11 +10240,11 @@ semantic_ids = []
 id = "DSET-CARRIER-TRANSITION-ECCD03257703D29C"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/gov/qa/DSET-EVALUATION-GOV-032-runtime-boundary-interpretability.md"
+original_path = ".dset/gov/qa/DSET-EVAL-PLAN-GOV-032-runtime-boundary-interpretability.md"
 original_format = "md"
 original_sha256 = "d0952956441295a36bf62c04e84518718413dc1434a6d13279d33d1e649161d7"
 source_git_blob = "68d25239048d1d6f832c5d346427967a35aee34c"
-current_path = ".dset/02_layer_gov/qa/DSET-EVALUATION-GOV-032-runtime-boundary-interpretability.md"
+current_path = ".dset/02_layer_gov/qa/DSET-EVAL-PLAN-GOV-032-runtime-boundary-interpretability.md"
 current_format = "md"
 current_sha256 = "d0952956441295a36bf62c04e84518718413dc1434a6d13279d33d1e649161d7"
 source_semantic_sha256 = "a30e16327f493829e2b692763f64970222d7a360f8e16245ebd2adae4b4c9446"
@@ -10255,7 +10255,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-109"]
-semantic_ids = ["DSET-EVALUATION-GOV-032"]
+semantic_ids = ["DSET-EVAL-PLAN-GOV-032"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-EDA5F9616B0E93D3"
@@ -10408,11 +10408,11 @@ semantic_ids = ["DSET-REQUIREMENT-TOOL-022"]
 id = "DSET-CARRIER-TRANSITION-F2955256080E04A4"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/gov/qa/DSET-TEST-GOV-043-complete-toml-cutover-test.md"
+original_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-043-complete-toml-cutover-test-plan.md"
 original_format = "md"
 original_sha256 = "0858aeaec6e7f76d0053961b41c4892eb0dba7a157f0d5856b859715bfcaeaae"
 source_git_blob = "34fd601a9c279c155e2d4f43682b519e510089b0"
-current_path = ".dset/02_layer_gov/qa/DSET-TEST-GOV-043-complete-toml-cutover-test.md"
+current_path = ".dset/02_layer_gov/qa/DSET-TEST-PLAN-GOV-043-complete-toml-cutover-test-plan.md"
 current_format = "md"
 current_sha256 = "0858aeaec6e7f76d0053961b41c4892eb0dba7a157f0d5856b859715bfcaeaae"
 source_semantic_sha256 = "a66585b5500010c73fc2742b09e07678a63d9e53da548a9290a63d738f57f777"
@@ -10423,7 +10423,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-075"]
-semantic_ids = ["DSET-TEST-GOV-043"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-043"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-F41CF947185B7C48"
@@ -10471,11 +10471,11 @@ semantic_ids = ["DSET-DEFECT-TOOL-009"]
 id = "DSET-CARRIER-TRANSITION-F4747174E2A95A53"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/gov/qa/DSET-TEST-GOV-036-typed-artifact-relations-test.md"
+original_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-036-typed-artifact-relations-test-plan.md"
 original_format = "md"
 original_sha256 = "4c3f931063874dabbe09a5ae3bb5edd47648c494c56c77328e09c651e7d6cc52"
 source_git_blob = "2c9e3ef86b8f2a4167fee7d238647f6a817e1a56"
-current_path = ".dset/02_layer_gov/qa/DSET-TEST-GOV-036-typed-artifact-relations-test.md"
+current_path = ".dset/02_layer_gov/qa/DSET-TEST-PLAN-GOV-036-typed-artifact-relations-test-plan.md"
 current_format = "md"
 current_sha256 = "4c3f931063874dabbe09a5ae3bb5edd47648c494c56c77328e09c651e7d6cc52"
 source_semantic_sha256 = "5df34b360e14273b3a9d491d88f860d4ddec5eda938c5f3183a7c2f926356178"
@@ -10486,7 +10486,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-036"]
-semantic_ids = ["DSET-TEST-GOV-036"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-036"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-F61FE46F88F2B97E"
@@ -10555,11 +10555,11 @@ semantic_ids = ["DSET-DEFECT-GOV-002"]
 id = "DSET-CARRIER-TRANSITION-F6FE5BCF0B4B2E1D"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/gov/qa/DSET-TEST-GOV-044-version-artifact-classification-test.md"
+original_path = ".dset/gov/qa/DSET-TEST-PLAN-GOV-044-version-artifact-classification-test-plan.md"
 original_format = "md"
 original_sha256 = "c0edefe06f59233d9286ae59637504e90ed19fce9946e4029eafa5af717d712a"
 source_git_blob = "b8263249d48b1614c5cb9419ac0679de1a5e7801"
-current_path = ".dset/02_layer_gov/qa/DSET-TEST-GOV-044-version-artifact-classification-test.md"
+current_path = ".dset/02_layer_gov/qa/DSET-TEST-PLAN-GOV-044-version-artifact-classification-test-plan.md"
 current_format = "md"
 current_sha256 = "c0edefe06f59233d9286ae59637504e90ed19fce9946e4029eafa5af717d712a"
 source_semantic_sha256 = "a2b6489c2dab6aeaa37b8ac781c71b62092c91352a9e4ca43da7e0c2869ca099"
@@ -10570,7 +10570,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-079"]
-semantic_ids = ["DSET-TEST-GOV-044"]
+semantic_ids = ["DSET-TEST-PLAN-GOV-044"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-F76B30A75EB90173"
@@ -10786,11 +10786,11 @@ semantic_ids = []
 id = "DSET-CARRIER-TRANSITION-FBBC4CA9CEC54126"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/tool/qa/DSET-EVALUATION-TOOL-004-typescript-profile-instantiation-evaluation.md"
+original_path = ".dset/tool/qa/DSET-EVAL-PLAN-TOOL-004-typescript-profile-instantiation-evaluation-plan.md"
 original_format = "md"
 original_sha256 = "f7116d3e8b47b13199e24e90dee6d442436a8e23c9744efe4036492c211b7f3f"
 source_git_blob = "8a702520057f0154dddfb71fe52a81b901ea64d7"
-current_path = ".dset/03_layer_tool/qa/DSET-EVALUATION-TOOL-004-typescript-profile-instantiation-evaluation.md"
+current_path = ".dset/03_layer_tool/qa/DSET-EVAL-PLAN-TOOL-004-typescript-profile-instantiation-evaluation-plan.md"
 current_format = "md"
 current_sha256 = "f7116d3e8b47b13199e24e90dee6d442436a8e23c9744efe4036492c211b7f3f"
 source_semantic_sha256 = "aa721e3409d27aa7fef4a3ea1b8903d0e29187b7ccacb03a8e95180980a07fa9"
@@ -10801,7 +10801,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-019"]
-semantic_ids = ["DSET-EVALUATION-TOOL-004"]
+semantic_ids = ["DSET-EVAL-PLAN-TOOL-004"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-FC4A2926111377C0"
@@ -10891,11 +10891,11 @@ semantic_ids = ["DSET-GAP-SKILL-001"]
 id = "DSET-CARRIER-TRANSITION-FCD8D2586E7D6754"
 kind = "carrier_relocation"
 authority_decision = "DSET-REQUIREMENT-GOV-044"
-original_path = ".dset/gov/qa/DSET-EVALUATION-GOV-029-version-name-interpretability-evaluation.md"
+original_path = ".dset/gov/qa/DSET-EVAL-PLAN-GOV-029-version-name-interpretability-evaluation-plan.md"
 original_format = "md"
 original_sha256 = "c781bd13c244ba24f4ff062a5814967d451a0fbd009806e561c48587dd15fda9"
 source_git_blob = "a0c04d06436f07c7fc49e2214681dc8a0747fea4"
-current_path = ".dset/02_layer_gov/qa/DSET-EVALUATION-GOV-029-version-name-interpretability-evaluation.md"
+current_path = ".dset/02_layer_gov/qa/DSET-EVAL-PLAN-GOV-029-version-name-interpretability-evaluation-plan.md"
 current_format = "md"
 current_sha256 = "c781bd13c244ba24f4ff062a5814967d451a0fbd009806e561c48587dd15fda9"
 source_semantic_sha256 = "0dcb53fed90ec8d70ffbbf92412e48c187a76171911a2304568922ebdb491ab4"
@@ -10906,7 +10906,7 @@ source_commit = "0a7faf15c019cb6e5519b88dfa84af95df7a6bb9"
 transitioned_at = "2026-07-22T21:21:11+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-080"]
-semantic_ids = ["DSET-EVALUATION-GOV-029"]
+semantic_ids = ["DSET-EVAL-PLAN-GOV-029"]
 
 [[transitions]]
 id = "DSET-CARRIER-TRANSITION-FD04F1C7B7FC388D"
@@ -11021,7 +11021,7 @@ original_path = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thi
 original_format = "md"
 original_sha256 = "41a9d657bdf25b7f823b10510cab7d9bbac1cb183493c6057aa012bd1fe13a2e"
 source_git_blob = "25ecbd3f8c55bd7b7d77192280676d870601c2f3"
-current_path = ".dset/tool/qa/DSET-TEST-TOOL-020-typescript-candidate-test.md"
+current_path = ".dset/tool/qa/DSET-TEST-PLAN-TOOL-020-typescript-candidate-test-plan.md"
 current_format = "md"
 current_sha256 = "41a9d657bdf25b7f823b10510cab7d9bbac1cb183493c6057aa012bd1fe13a2e"
 source_semantic_sha256 = "7909e1919374c6661c8cf38908f90931f76dfa6183e838e9c331303f02888b5a"
@@ -11032,4 +11032,4 @@ source_commit = "a09f2241becc76ae493c878559af81d32fc391ba"
 transitioned_at = "2026-07-21T20:50:33+04:00"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 carrier_ids = ["DSET-ATOMIC-RECORD-011"]
-semantic_ids = ["DSET-REQUIREMENT-TOOL-020", "DSET-TEST-TOOL-020"]
+semantic_ids = ["DSET-REQUIREMENT-TOOL-020", "DSET-TEST-PLAN-TOOL-020"]

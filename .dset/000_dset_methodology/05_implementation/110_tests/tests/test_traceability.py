@@ -147,7 +147,9 @@ class TraceabilityTests(unittest.TestCase):
             classifications["DSET-OPPORTUNITY-GOV-001"]["subtype"],
             "opportunity",
         )
-        self.assertTrue(classifications["DSET-OPPORTUNITY-GOV-001"]["compatibility"])
+        self.assertTrue(
+            classifications["DSET-OPPORTUNITY-GOV-001"]["historical_carrier"]
+        )
 
     def test_write_is_stable_and_checkable(self) -> None:
         with temporary_directory() as raw:

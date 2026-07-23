@@ -48,7 +48,7 @@ Decision, Change, compile-down, and proof lifecycle.
 This Decision is compiled into current truth through:
 
 - `DSET-REQUIREMENT-GOV-023` and `DSET-INVARIANT-GOV-012`;
-- `DSET-TEST-GOV-023` and `DSET-EVAL-GOV-013`;
+- `DSET-TEST-PLAN-GOV-023` and `DSET-EVAL-PLAN-GOV-013`;
 - `dset/scopes/gov/governance/architecture.md`;
 - governance registry schema 1.1 and profile `core-v1` version 0.3;
 - executable precedence validation and deterministic regressions;

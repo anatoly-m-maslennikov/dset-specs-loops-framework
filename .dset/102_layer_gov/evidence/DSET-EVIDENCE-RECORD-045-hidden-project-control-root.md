@@ -13,7 +13,7 @@ currentness = "current"
 reopen_when = "The .dset layout, repository-root-relative path rule, runtime-state boundary, compatibility reader, migration script, bootstrap bundle, or configured verification commands change."
 
 [subject]
-id = "DSET-TEST-GOV-047"
+id = "DSET-TEST-PLAN-GOV-047"
 revision = "fa07cd2ecef6b93474a9b7f0909a9e74f8adc56a"
 intended_use = "Verify the hidden project-control root, canonical persisted-path base, ignored runtime boundary, migration behavior, and compatibility reads at one exact implementation commit."
 
@@ -27,7 +27,7 @@ setup = "Codex Desktop managed workspace on macOS; Python 3.14.6; repository vir
 
 [[relations]]
 type = "evidence_for"
-target = "DSET-TEST-GOV-047"
+target = "DSET-TEST-PLAN-GOV-047"
 +++
 
 # Test result — hidden project-control root
@@ -51,5 +51,5 @@ The complete deterministic verifier passed:
 The suite includes current-layout initialization and discovery, schema 1.2 and
 legacy compatibility reads, deterministic schema 1.3 migration, carrier
 relocation-chain validation, runtime isolation, generated-adopter validation,
-and recursive self-hosting. `DSET-EVALUATION-GOV-031` remains a separate
+and recursive self-hosting. `DSET-EVAL-PLAN-GOV-031` remains a separate
 qualitative Evaluation and is not claimed by this Test result.

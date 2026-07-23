@@ -22,11 +22,11 @@ local_context_required = true
 
 [[relations]]
 type = "relates_to"
-target = "DSET-REQ-GOV-058"
+target = "DSET-REQUIREMENT-GOV-058"
 
 [[relations]]
 type = "relates_to"
-target = "DSET-REQ-GOV-059"
+target = "DSET-REQUIREMENT-GOV-059"
 +++
 
 # Gap — Derived-priority conflict handling is not executable yet

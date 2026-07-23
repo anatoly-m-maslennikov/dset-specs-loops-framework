@@ -22,7 +22,7 @@ from dset_toolchain.scaffold import create_change
 from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.traceability import build_traceability
 from dset_toolchain.validation import validate_change, validate_repository
-from dset_toolchain.yaml_subset import dump, load
+from dset_toolchain.structured_data import dump, load
 from tests import repository_root
 
 # ROOT locates the repository fixture; repository layout is authoritative.
@@ -43,8 +43,8 @@ class LayeredValidationTests(unittest.TestCase):
             (self.root / "src" / work_area).mkdir(parents=True)
         self._write_project()
         self._write_control_files()
-        self._write_fragment("meta", "DSET-REQUIREMENT-001", "DSET-TEST-001")
-        self._write_fragment("tool", "DSET-REQUIREMENT-TOOL-001", "DSET-TEST-TOOL-001")
+        self._write_fragment("meta", "DSET-REQUIREMENT-001", "DSET-TEST-PLAN-001")
+        self._write_fragment("tool", "DSET-REQUIREMENT-TOOL-001", "DSET-TEST-PLAN-TOOL-001")
 
     def tearDown(self) -> None:
         """Handle tear down using the declared repository contract."""
@@ -60,8 +60,8 @@ class LayeredValidationTests(unittest.TestCase):
         assert isinstance(manifest, dict)
         native_ids = {
             "requirements": "DSET-REQUIREMENT-TOOL-100",
-            "tests": "DSET-TEST-TOOL-100",
-            "evals": "DSET-EVALUATION-TOOL-100",
+            "tests": "DSET-TEST-PLAN-TOOL-100",
+            "evals": "DSET-EVAL-PLAN-TOOL-100",
         }
         for sequence, (group, identifier) in enumerate(native_ids.items(), start=100):
             values = manifest[group]
@@ -315,7 +315,7 @@ class LayeredValidationTests(unittest.TestCase):
         self.assertIn(
             "DSET-E144", {item.code for item in validate_repository(self.root)}
         )
-        self._write_fragment("tool", "DSET-REQUIREMENT-TOOL-001", "DSET-TEST-TOOL-001")
+        self._write_fragment("tool", "DSET-REQUIREMENT-TOOL-001", "DSET-TEST-PLAN-TOOL-001")
         path = self._fragment_path("tool")
         data = load(path)
         assert isinstance(data, dict)
@@ -350,13 +350,13 @@ class LayeredValidationTests(unittest.TestCase):
 
     def test_schema_1_2_shapes_are_explicit(self) -> None:
         project = json.loads(
-            (ROOT / ".dset/01_layer_meta/schemas/project.schema.json").read_text(
+            (ROOT / ".dset/01_layer_meta/schemas/project.schema.toml").read_text(
                 encoding="utf-8"
             )
         )
         fragment = json.loads(
             (
-                ROOT / ".dset/01_layer_meta/schemas/package-fragment.schema.json"
+                ROOT / ".dset/01_layer_meta/schemas/package-fragment.schema.toml"
             ).read_text(encoding="utf-8")
         )
         self.assertIn(
@@ -364,7 +364,7 @@ class LayeredValidationTests(unittest.TestCase):
             project["$defs"]["layered_structure"]["properties"]["layout"]["enum"],
         )
         change = json.loads(
-            (ROOT / ".dset/02_layer_gov/schemas/change.schema.json").read_text(
+            (ROOT / ".dset/02_layer_gov/schemas/change.schema.toml").read_text(
                 encoding="utf-8"
             )
         )
@@ -418,17 +418,17 @@ class LayeredValidationTests(unittest.TestCase):
 
     def test_schema_1_2_work_area_contract_has_two_target_modes(self) -> None:
         project = json.loads(
-            (ROOT / ".dset/01_layer_meta/schemas/project.schema.json").read_text(
+            (ROOT / ".dset/01_layer_meta/schemas/project.schema.toml").read_text(
                 encoding="utf-8"
             )
         )
         change = json.loads(
-            (ROOT / ".dset/02_layer_gov/schemas/change.schema.json").read_text(
+            (ROOT / ".dset/02_layer_gov/schemas/change.schema.toml").read_text(
                 encoding="utf-8"
             )
         )
         traceability = json.loads(
-            (ROOT / ".dset/03_layer_tool/schemas/traceability.schema.json").read_text(
+            (ROOT / ".dset/03_layer_tool/schemas/traceability.schema.toml").read_text(
                 encoding="utf-8"
             )
         )
@@ -880,7 +880,7 @@ class LayeredValidationTests(unittest.TestCase):
         root = self.scopes / layer / "changes" / change_slug
         (root / "specs").mkdir(parents=True)
         requirement = f"DSET-REQUIREMENT-{id_layer}-099"
-        test = f"DSET-TEST-{id_layer}-099"
+        test = f"DSET-TEST-PLAN-{id_layer}-099"
         data = {
             "schema_version": "1.2",
             "id": stable_id or f"DSET-CHANGE-{id_layer}-099",

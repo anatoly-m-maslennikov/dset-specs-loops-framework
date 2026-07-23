@@ -12,9 +12,9 @@
 | Active change artifact set | Pass: eight top-level documents plus `specs/` and `proofs/` |
 | Accepted package shape | Pass: six methodology current-truth documents, one registered package, no premature global root |
 | Resolve local links and balance fences/details | Final pass: 32 Markdown files, 148 links, and 29 collapsed details blocks |
-| Independent qualitative folder-routing baseline | Pass: DSET-EVAL-GOV-001 through DSET-EVAL-GOV-004; see [baseline proof](proofs/boot-evals-2026-07-14.md) |
-| Independent pushed-head folder-routing eval | Pass: DSET-EVAL-GOV-001 through DSET-EVAL-GOV-004 against `02812a1`; see [final proof](proofs/boot-evals-pushed-head-2026-07-14.md) |
-| Current-truth reconciliation | Pass: DSET-REQUIREMENT-GOV-001 through DSET-REQUIREMENT-GOV-003 mapped into METH-REQ-006 and METH-REQ-008 through METH-REQ-011 with deterministic proof rows |
+| Independent qualitative folder-routing baseline | Pass: DSET-EVAL-PLAN-GOV-001 through DSET-EVAL-PLAN-GOV-004; see [baseline proof](proofs/boot-evals-2026-07-14.md) |
+| Independent pushed-head folder-routing eval | Pass: DSET-EVAL-PLAN-GOV-001 through DSET-EVAL-PLAN-GOV-004 against `02812a1`; see [final proof](proofs/boot-evals-pushed-head-2026-07-14.md) |
+| Current-truth reconciliation | Pass: DSET-REQUIREMENT-GOV-001 through DSET-REQUIREMENT-GOV-003 mapped into METH-REQUIREMENT-006 and METH-REQUIREMENT-008 through METH-REQUIREMENT-011 with deterministic proof rows |
 | Enforcement availability | `documentation-v1-pending`; manual archive audit required; no CI, validator, or traceability-generation pass claimed |
 | Public terminology | Pass: no `exactly-once` claim in README or methodology |
 | Portable Markdown syntax | Pass: no Obsidian callout or wiki-link syntax in public/project Markdown |

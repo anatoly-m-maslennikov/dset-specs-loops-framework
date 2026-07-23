@@ -121,6 +121,49 @@ class ProjectSettingsTests(unittest.TestCase):
         self.assertEqual(settings.change_workspace_mode, "integration-branch")
         self.assertEqual(settings.delegation_budget_profile, "medium")
 
+    def test_removed_priority_values_fail_closed(self) -> None:
+        for removed in ("critical", "deferred"):
+            with self.subTest(priority=removed):
+                with temporary_directory() as raw:
+                    root = Path(raw).resolve()
+                    settings_path = root / ".dset" / SETTINGS_FILENAME
+                    settings_path.parent.mkdir()
+                    settings_path.write_text(
+                        "\n".join(
+                            (
+                                f'schema_version = "{SETTINGS_SCHEMA_VERSION}"',
+                                "",
+                                "[artifacts]",
+                                "subtype_in_names = false",
+                                'creation_strictness = "medium"',
+                                "",
+                                "[workflows.implement]",
+                                'mode = "lazy"',
+                                "",
+                                "[compilation]",
+                                'mode = "on_demand"',
+                                "",
+                                "[changes]",
+                                'default_workspace = "integration-branch"',
+                                "",
+                                "[delegation]",
+                                'budget_profile = "medium"',
+                                "",
+                                "[priority]",
+                                f'scale = ["high", "medium", "low", "{removed}"]',
+                                'default = "medium"',
+                                "",
+                            )
+                        ),
+                        encoding="utf-8",
+                    )
+                    settings, issues = load_project_settings(root)
+                self.assertEqual(settings.priority_scale, DEFAULT_PRIORITY_SCALE)
+                self.assertTrue(
+                    any("removed values" in issue for issue in issues),
+                    issues,
+                )
+
     def test_competing_settings_filenames_fail_closed(self) -> None:
         with temporary_directory() as raw:
             root = Path(raw).resolve()
@@ -211,15 +254,15 @@ class ProjectSettingsTests(unittest.TestCase):
 
     def test_published_priority_schemas_defer_vocabulary_to_settings(self) -> None:
         paths = {
-            "atom": ROOT / ".dset/02_layer_gov/schemas/atom.schema.json",
-            "change": ROOT / ".dset/02_layer_gov/schemas/change.schema.json",
-            "review": ROOT / ".dset/02_layer_gov/schemas/review-report.schema.json",
+            "atom": ROOT / ".dset/02_layer_gov/schemas/atom.schema.toml",
+            "change": ROOT / ".dset/02_layer_gov/schemas/change.schema.toml",
+            "review": ROOT / ".dset/02_layer_gov/schemas/review-report.schema.toml",
             "conflict": (
-                ROOT / ".dset/02_layer_gov/schemas/conflict-candidate.schema.json"
+                ROOT / ".dset/02_layer_gov/schemas/conflict-candidate.schema.toml"
             ),
-            "lifecycle": ROOT / ".dset/02_layer_gov/schemas/lifecycle.schema.json",
+            "lifecycle": ROOT / ".dset/02_layer_gov/schemas/lifecycle.schema.toml",
             "traceability": (
-                ROOT / ".dset/03_layer_tool/schemas/traceability.schema.json"
+                ROOT / ".dset/03_layer_tool/schemas/traceability.schema.toml"
             ),
         }
         schemas = {

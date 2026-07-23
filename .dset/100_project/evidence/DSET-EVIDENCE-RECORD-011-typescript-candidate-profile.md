@@ -2,7 +2,7 @@
 artifact_type = "evidence_record"
 artifact_subtype = "test_result"
 artifact_id = "DSET-EVIDENCE-RECORD-011"
-child_of = ["DSET-TEST-TOOL-021"]
+child_of = ["DSET-TEST-PLAN-TOOL-021"]
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 +++
 

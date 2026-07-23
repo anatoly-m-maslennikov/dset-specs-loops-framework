@@ -19,9 +19,9 @@
 | PR identity | Pass: repository-qualified PR #3 owns the full diff and eventual merge result |
 | Remote identity | Pass: local `HEAD`, remote `dev`, and live PR head all resolved to candidate `47a8b2e17dc9e14f4b168897a9d6be30f0846e1c` before this evidence-only commit |
 | Archive layout | Pass: the dated directory contains exactly eight top-level document artifacts plus `specs/` and `proofs/`; no tracked active change path remains |
-| Current-truth reconciliation | Pass: METH-REQ-012/013, METH-SCN-014–016, METH-INV-007, METH-TEST-013/014, and METH-EVAL-006 are present under `dset/specs/packages/methodology/` |
-| Deterministic supportability proof | Pass: `DSET-TEST-META-002`, `DSET-TEST-OPS-002..006`, and `DSET-TEST-GOV-005` results remain recorded in [deterministic-checks-2026-07-14.md](deterministic-checks-2026-07-14.md) |
-| Independent supportability evals | Pass: two reviewers independently passed `DSET-EVAL-OPS-001..004` and `DSET-EVAL-META-001` after the synthetic-fixture correction; see [supportability-evals-2026-07-14.md](supportability-evals-2026-07-14.md) |
+| Current-truth reconciliation | Pass: METH-REQUIREMENT-012/013, METH-SCN-014–016, METH-INV-007, METH-TEST-PLAN-013/014, and METH-EVAL-PLAN-006 are present under `dset/specs/packages/methodology/` |
+| Deterministic supportability proof | Pass: `DSET-TEST-PLAN-META-002`, `DSET-TEST-PLAN-OPS-002..006`, and `DSET-TEST-PLAN-GOV-005` results remain recorded in [deterministic-checks-2026-07-14.md](deterministic-checks-2026-07-14.md) |
+| Independent supportability evals | Pass: two reviewers independently passed `DSET-EVAL-PLAN-OPS-001..004` and `DSET-EVAL-PLAN-META-001` after the synthetic-fixture correction; see [supportability-evals-2026-07-14.md](supportability-evals-2026-07-14.md) |
 | Workflow policy | Pass: YAML parses; shell syntax is valid; policy requires owner-authored, same-repository `dev → main`; auto-merge depends on that policy and a non-draft PR |
 | `dev` update policy | Pass: active ruleset `18896762` restricts `dev` creation, update, and deletion to GitHub user ID `66016264` (`anatoly-m-maslennikov`) |
 | Markdown structure | Pass: 46 Markdown files, 130 local links, 29 balanced details blocks, balanced fences, no wiki links, and no unsupported GitHub alerts |

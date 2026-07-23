@@ -20,7 +20,7 @@ from .project_data import lifecycle_events, project_section
 from .semantic_atoms import collect_semantic_atoms, effective_priority
 from .semantic_types import build_semantic_classification_index
 from .settings import load_project_settings
-from .yaml_subset import YamlSubsetError, load
+from .structured_data import StructuredDataError, load
 
 # INACTIVE_STATUSES defines inactive statuses; this module owns the default.
 INACTIVE_STATUSES = frozenset({"absorbed", "rejected", "retired", "withdrawn"})
@@ -179,11 +179,11 @@ def build_health_model(root: Path) -> dict[str, Any]:
                     ).items()
                 )
             ),
-            "compatibility": sum(
-                1 for item in semantic_classifications if item["compatibility"]
+            "historical_carriers": sum(
+                1 for item in semantic_classifications if item["historical_carrier"]
             ),
             "native_atoms": sum(
-                1 for item in semantic_classifications if not item["compatibility"]
+                1 for item in semantic_classifications if not item["historical_carrier"]
             ),
         },
         "relation_counts": {
@@ -281,8 +281,8 @@ def render_health(root: Path) -> str:
             f"- **By Type:** {_counter_text(semantic_counts['by_type'])}",
             f"- **By direct subtype:** {_counter_text(semantic_counts['by_subtype'])}",
             f"- **Native immutable atoms:** {semantic_counts['native_atoms']}",
-            "- **Compatibility-classified legacy IDs:** "
-            f"{semantic_counts['compatibility']}",
+            "- **Historically classified carriers:** "
+            f"{semantic_counts['historical_carriers']}",
             "",
             "## Typed relation inventory",
             "",
@@ -446,7 +446,7 @@ def _qa_ids(
             continue
         try:
             data = load(path)
-        except (OSError, UnicodeError, YamlSubsetError):
+        except (OSError, UnicodeError, StructuredDataError):
             continue
         if not isinstance(data, dict):
             continue
@@ -650,7 +650,7 @@ def _change_statuses(root: Path) -> list[str]:
             continue
         try:
             data = load(path)
-        except (OSError, UnicodeError, YamlSubsetError):
+        except (OSError, UnicodeError, StructuredDataError):
             continue
         if isinstance(data, dict) and isinstance(data.get("status"), str):
             statuses.append(str(data["status"]))

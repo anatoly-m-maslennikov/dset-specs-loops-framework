@@ -13,7 +13,7 @@ currentness = "current"
 reopen_when = "The operator explicitly approves sending packet 006's bounded repository inputs to Claude after disclosure, or any packet commit, reviewed input, resolved rule, scope, criterion, or pinned host version changes."
 
 [subject]
-id = "DSET-EVAL-GOV-015"
+id = "DSET-EVAL-PLAN-GOV-015"
 revision = "a3100b59497298a74c43ec90612be20db7343499"
 intended_use = "Record whether the current exact DSET review packet received an independent qualitative audit without treating an unlaunched external process as a reviewer."
 
@@ -27,7 +27,7 @@ setup = "Codex Desktop managed workspace on macOS; Claude Code 2.1.205; external
 
 [[relations]]
 type = "evidence_for"
-target = "DSET-EVAL-GOV-015"
+target = "DSET-EVAL-PLAN-GOV-015"
 +++
 
 # Evaluation result — Claude review packet 006 approval boundary

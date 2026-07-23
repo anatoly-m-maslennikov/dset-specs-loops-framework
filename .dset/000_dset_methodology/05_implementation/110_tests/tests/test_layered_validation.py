@@ -40,8 +40,8 @@ class LayeredValidationTests(unittest.TestCase):
             (self.root / "src" / work_area).mkdir(parents=True)
         self._write_project()
         self._write_control_files()
-        self._write_fragment("meta", "DSET-REQUIREMENT-001", "DSET-TEST-001")
-        self._write_fragment("tool", "DSET-REQUIREMENT-TOOL-001", "DSET-TEST-TOOL-001")
+        self._write_fragment("meta", "DSET-REQUIREMENT-001", "DSET-TEST-PLAN-001")
+        self._write_fragment("tool", "DSET-REQUIREMENT-TOOL-001", "DSET-TEST-PLAN-TOOL-001")
 
     def tearDown(self) -> None:
         self.temporary.cleanup()
@@ -56,8 +56,8 @@ class LayeredValidationTests(unittest.TestCase):
         assert isinstance(manifest, dict)
         native_ids = {
             "requirements": "DSET-REQUIREMENT-TOOL-100",
-            "tests": "DSET-TEST-TOOL-100",
-            "evals": "DSET-EVALUATION-TOOL-100",
+            "tests": "DSET-TEST-PLAN-TOOL-100",
+            "evals": "DSET-EVAL-PLAN-TOOL-100",
         }
         for sequence, (group, identifier) in enumerate(native_ids.items(), start=100):
             values = manifest[group]
@@ -311,7 +311,7 @@ class LayeredValidationTests(unittest.TestCase):
         self.assertIn(
             "DSET-E144", {item.code for item in validate_repository(self.root)}
         )
-        self._write_fragment("tool", "DSET-REQUIREMENT-TOOL-001", "DSET-TEST-TOOL-001")
+        self._write_fragment("tool", "DSET-REQUIREMENT-TOOL-001", "DSET-TEST-PLAN-TOOL-001")
         path = self._fragment_path("tool")
         data = load(path)
         assert isinstance(data, dict)
@@ -872,7 +872,7 @@ class LayeredValidationTests(unittest.TestCase):
         root = self.scopes / layer / "changes" / change_slug
         (root / "specs").mkdir(parents=True)
         requirement = f"DSET-REQUIREMENT-{id_layer}-099"
-        test = f"DSET-TEST-{id_layer}-099"
+        test = f"DSET-TEST-PLAN-{id_layer}-099"
         data = {
             "schema_version": "1.2",
             "id": stable_id or f"DSET-CHANGE-{id_layer}-099",

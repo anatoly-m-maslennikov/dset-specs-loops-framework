@@ -8,7 +8,7 @@ from pathlib import Path
 
 from .layout import discover_layout
 from .validation import validate_change
-from .yaml_subset import dump, load
+from .structured_data import dump, load
 
 
 def archive_plan(root: Path, change_id: str, archive_date: date) -> tuple[Path, Path]:

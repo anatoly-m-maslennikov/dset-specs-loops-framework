@@ -3,7 +3,7 @@ schema_version = "1.0"
 artifact_type = "evidence_record"
 artifact_subtype = "test_result"
 artifact_id = "DSET-EVIDENCE-RECORD-027"
-priority = "critical"
+priority = "high"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 context = ["repository=anatoly-m-maslennikov/dset-specs-loops-framework", "environment=local-macos", "python=3.14.6"]
 observed_at = "2026-07-21T01:55:01+04:00"
@@ -13,7 +13,7 @@ currentness = "current"
 reopen_when = "A package registry, selector seal, package reader, migration transaction, or subject revision changes."
 
 [subject]
-id = "DSET-TEST-GOV-040"
+id = "DSET-TEST-PLAN-GOV-040"
 revision = "b7d79ec08c9a446f8a5358ac44c4c26bf7486d42"
 intended_use = "Support the bounded claim that each shared package has one native TOML current owner while selector-sealed YAML remains byte-stable history."
 
@@ -27,7 +27,7 @@ setup = "Python 3.14.6; local macOS repository checkout on branch dev; exact com
 
 [[relations]]
 type = "evidence_for"
-target = "DSET-TEST-GOV-040"
+target = "DSET-TEST-PLAN-GOV-040"
 +++
 
 # Test result — Native package successors

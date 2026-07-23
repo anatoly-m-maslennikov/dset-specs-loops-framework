@@ -10,7 +10,7 @@ from typing import Any
 from .carrier_transitions import decode_historical_envelope
 from .diagnostics import Diagnostic
 from .layout import discover_layout
-from .yaml_subset import YamlSubsetError, dump, load
+from .structured_data import StructuredDataError, dump, load
 
 # ID_PATTERN validates id pattern; this module owns the accepted syntax.
 ID_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
@@ -84,7 +84,7 @@ def validate_legacy_authority_ledger(root: Path) -> list[Diagnostic]:
         return []
     try:
         actual = load(path)
-    except (OSError, UnicodeError, YamlSubsetError) as error:
+    except (OSError, UnicodeError, StructuredDataError) as error:
         return [Diagnostic("DSET-E167", path, f"invalid legacy ledger: {error}")]
     if _recorded_fragment_errors(root, actual):
         return [
@@ -139,7 +139,7 @@ def legacy_authority_ids(root: Path) -> set[str]:
     for path in legacy_shared_package_paths(root):
         try:
             data = _load_fragment_carrier(path)
-        except (OSError, UnicodeError, YamlSubsetError):
+        except (OSError, UnicodeError, StructuredDataError):
             continue
         if not isinstance(data, dict):
             continue
@@ -174,7 +174,7 @@ def _load_recorded_ledger(root: Path) -> dict[str, Any] | None:
         return None
     try:
         data = load(path)
-    except (OSError, UnicodeError, YamlSubsetError):
+    except (OSError, UnicodeError, StructuredDataError):
         return None
     return data if isinstance(data, dict) else None
 
@@ -270,7 +270,7 @@ def _validate_selected_fragment(
         return f"legacy authority selector is invalid: {semantic_id}"
     try:
         data = _load_fragment_carrier(path)
-    except (OSError, UnicodeError, YamlSubsetError):
+    except (OSError, UnicodeError, StructuredDataError):
         return f"legacy authority carrier is invalid: {raw_path}"
     values = data.get(field) if isinstance(data, dict) else None
     if not isinstance(values, list) or semantic_id not in values:
@@ -305,7 +305,7 @@ def _authority_fragment(
         field = origin.partition(":")[2]
         try:
             data = load(path)
-        except (OSError, UnicodeError, YamlSubsetError):
+        except (OSError, UnicodeError, StructuredDataError):
             return None
         values = data.get(field, []) if isinstance(data, dict) else []
         if semantic_id not in values:

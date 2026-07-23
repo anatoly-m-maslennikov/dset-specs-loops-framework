@@ -26,11 +26,11 @@ The documentation area is a framework surface, not pipeline stage 7. `methodolog
 
 | Concern | Authority | Writer model | Refresh boundary | Failure/recovery proof |
 |---|---|---|---|---|
-| Artifact-profile selection | `dset/dset.toml` | Reviewed repository change | Every validation run | DSET-TEST-GOV-007 |
-| Governed area graph | `dset/artifacts.toml` | Reviewed repository change | Every validation run | `DSET-TEST-TOOL-006`, `DSET-TEST-GOV-008` |
-| Artifact-type rules | `documentation/` normative docs | Reviewed methodology change | When rules change | `DSET-TEST-META-003`, `DSET-EVAL-META-002`, `DSET-EVAL-META-003` |
+| Artifact-profile selection | `dset/dset.toml` | Reviewed repository change | Every validation run | DSET-TEST-PLAN-GOV-007 |
+| Governed area graph | `dset/artifacts.toml` | Reviewed repository change | Every validation run | `DSET-TEST-PLAN-TOOL-006`, `DSET-TEST-PLAN-GOV-008` |
+| Artifact-type rules | `documentation/` normative docs | Reviewed methodology change | When rules change | `DSET-TEST-PLAN-META-003`, `DSET-EVAL-PLAN-META-002`, `DSET-EVAL-PLAN-META-003` |
 | Rationale | `documentation/rationale.md` | Reviewed methodology change | When reasoning changes | Link and navigation checks |
-| Runtime evidence | GitHub checks and archived DSET proof | GitHub plus evidence-only commits | Per PR head | DSET-TEST-TOOL-008 |
+| Runtime evidence | GitHub checks and archived DSET proof | GitHub plus evidence-only commits | Per PR head | DSET-TEST-PLAN-TOOL-008 |
 
 ## Supportability
 

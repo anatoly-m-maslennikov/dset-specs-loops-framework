@@ -298,8 +298,10 @@ rank. New writers use the stored scale `high`, `medium`, `low`. Creation
 defaults are Constraint `high`; Contract, Requirement, and Decision `medium`;
 and implementation carrier `low`. Other roles inherit through their owning
 atom or Change, then use the project `medium` default. `highest` is
-virtual-only. Immutable legacy `critical` and `deferred` values normalize to
-`high` and `low` for comparison without rewriting their atoms.
+virtual-only. No other stored value is valid. The former `critical` label is
+recoded to `high` by a governed meaning-preserving migration. `deferred` is not
+a priority: current low-urgency work uses `low`, while non-current work belongs
+in a named future Version Roadmap.
 
 For an eligible comparison, add one effective-priority step to a strict
 structural-scope ancestor and one step to an earlier owning layer. Apply each

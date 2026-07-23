@@ -1,0 +1,444 @@
+"$schema" = "https://json-schema.org/draft/2020-12/schema"
+"$id" = "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/.dset/000_dset_methodology/04_skill/schemas/skill-run.schema.toml"
+title = "DSET local skill-run record"
+type = "object"
+required = ["schema_version", "session_id", "llm_session_ids", "run_id", "root_run_id", "parent_run_id", "invocation_source", "checkpoint", "started_at", "finished_at", "status", "persistence", "scope", "skill_id", "workflow_id", "mode_id", "ruleset_identity", "parameters", "outputs", "diagnostics", "next_signals", "budget"]
+additionalProperties = false
+
+[properties]
+
+[properties.schema_version]
+const = "1.2"
+
+[properties.session_id]
+"$ref" = "#/$defs/id"
+
+[properties.llm_session_ids]
+type = "array"
+maxItems = 8
+uniqueItems = true
+
+[properties.llm_session_ids.items]
+"$ref" = "#/$defs/llm_session_id"
+
+[properties.rationale]
+"$ref" = "#/$defs/rationale"
+
+[properties.run_id]
+"$ref" = "#/$defs/id"
+
+[properties.root_run_id]
+"$ref" = "#/$defs/id"
+
+[properties.parent_run_id]
+
+[[properties.parent_run_id.oneOf]]
+"$ref" = "#/$defs/id"
+
+[[properties.parent_run_id.oneOf]]
+type = "null"
+
+[properties.invocation_source]
+enum = ["operator", "public-skill", "chained-skill", "governed-model", "delegated-run"]
+
+[properties.checkpoint]
+
+[[properties.checkpoint.oneOf]]
+"$ref" = "#/$defs/relative_path"
+
+[[properties.checkpoint.oneOf]]
+type = "null"
+
+[properties.started_at]
+type = "string"
+format = "date-time"
+maxLength = 40
+
+[properties.finished_at]
+
+[[properties.finished_at.oneOf]]
+type = "string"
+format = "date-time"
+maxLength = 40
+
+[[properties.finished_at.oneOf]]
+type = "null"
+
+[properties.status]
+enum = ["running", "succeeded", "failed", "stopped", "interrupted"]
+
+[properties.persistence]
+enum = ["persisted", "unavailable"]
+
+[properties.scope]
+type = "object"
+required = ["repository", "workspace", "project", "package", "change", "target"]
+additionalProperties = false
+
+[properties.scope.properties]
+
+[properties.scope.properties.repository]
+"$ref" = "#/$defs/nullable_scope"
+
+[properties.scope.properties.workspace]
+"$ref" = "#/$defs/nullable_scope"
+
+[properties.scope.properties.project]
+"$ref" = "#/$defs/nullable_scope"
+
+[properties.scope.properties.package]
+"$ref" = "#/$defs/nullable_scope"
+
+[properties.scope.properties.change]
+"$ref" = "#/$defs/nullable_scope"
+
+[properties.scope.properties.target]
+"$ref" = "#/$defs/target"
+
+[properties.skill_id]
+"$ref" = "#/$defs/nullable_id"
+
+[properties.workflow_id]
+"$ref" = "#/$defs/nullable_id"
+
+[properties.mode_id]
+"$ref" = "#/$defs/nullable_id"
+
+[properties.ruleset_identity]
+"$ref" = "#/$defs/nullable_id"
+
+[properties.parameters]
+type = "array"
+maxItems = 32
+
+[properties.parameters.items]
+"$ref" = "#/$defs/parameter"
+
+[properties.outputs]
+type = "array"
+maxItems = 32
+
+[properties.outputs.items]
+"$ref" = "#/$defs/relative_path"
+
+[properties.diagnostics]
+type = "array"
+maxItems = 32
+
+[properties.diagnostics.items]
+"$ref" = "#/$defs/stable_code"
+
+[properties.next_signals]
+type = "array"
+maxItems = 16
+
+[properties.next_signals.items]
+enum = ["initialize", "repair-governance", "decompose", "diagnose", "clarify", "landscape", "prototype", "decisions", "plan-proof", "plan-implementation", "implement", "verify", "overview", "triage-work", "release", "complete"]
+
+[properties.budget]
+type = "object"
+required = ["profile", "requested_model", "requested_effort", "effective_model", "effective_effort", "attestation", "planned_subagents", "actual_subagents", "planned_rounds", "actual_rounds", "deviations"]
+additionalProperties = false
+
+[properties.budget.properties]
+
+[properties.budget.properties.profile]
+enum = ["low", "medium", "high"]
+
+[properties.budget.properties.requested_model]
+"$ref" = "#/$defs/nullable_id"
+
+[properties.budget.properties.requested_effort]
+"$ref" = "#/$defs/nullable_id"
+
+[properties.budget.properties.effective_model]
+"$ref" = "#/$defs/nullable_id"
+
+[properties.budget.properties.effective_effort]
+"$ref" = "#/$defs/nullable_id"
+
+[properties.budget.properties.attestation]
+enum = ["confirmed", "runtime-default-unverified", "unsupported"]
+
+[properties.budget.properties.planned_subagents]
+type = "integer"
+minimum = 0
+maximum = 6
+
+[properties.budget.properties.actual_subagents]
+type = "integer"
+minimum = 0
+maximum = 6
+
+[properties.budget.properties.planned_rounds]
+type = "integer"
+minimum = 0
+maximum = 3
+
+[properties.budget.properties.actual_rounds]
+type = "integer"
+minimum = 0
+maximum = 3
+
+[properties.budget.properties.deviations]
+type = "array"
+maxItems = 8
+
+[properties.budget.properties.deviations.items]
+"$ref" = "#/$defs/stable_code"
+
+[[properties.budget.allOf]]
+
+[properties.budget.allOf.if]
+
+[properties.budget.allOf.if.properties]
+
+[properties.budget.allOf.if.properties.profile]
+const = "low"
+
+[properties.budget.allOf.then]
+
+[properties.budget.allOf.then.properties]
+
+[properties.budget.allOf.then.properties.planned_subagents]
+maximum = 1
+
+[properties.budget.allOf.then.properties.actual_subagents]
+maximum = 1
+
+[properties.budget.allOf.then.properties.planned_rounds]
+maximum = 1
+
+[properties.budget.allOf.then.properties.actual_rounds]
+maximum = 1
+
+[[properties.budget.allOf]]
+
+[properties.budget.allOf.if]
+
+[properties.budget.allOf.if.properties]
+
+[properties.budget.allOf.if.properties.profile]
+const = "medium"
+
+[properties.budget.allOf.then]
+
+[properties.budget.allOf.then.properties]
+
+[properties.budget.allOf.then.properties.planned_subagents]
+maximum = 3
+
+[properties.budget.allOf.then.properties.actual_subagents]
+maximum = 3
+
+[properties.budget.allOf.then.properties.planned_rounds]
+maximum = 2
+
+[properties.budget.allOf.then.properties.actual_rounds]
+maximum = 2
+
+[properties.usage]
+
+[[properties.usage.oneOf]]
+type = "null"
+
+[[properties.usage.oneOf]]
+type = "object"
+additionalProperties = false
+
+[properties.usage.oneOf.properties]
+
+[properties.usage.oneOf.properties.input_tokens]
+type = "integer"
+minimum = 0
+
+[properties.usage.oneOf.properties.output_tokens]
+type = "integer"
+minimum = 0
+
+[properties.usage.oneOf.properties.currency]
+type = "string"
+pattern = "^[A-Z]{3}$"
+
+[properties.usage.oneOf.properties.cost]
+type = "number"
+minimum = 0
+
+["$defs"]
+
+["$defs".id]
+type = "string"
+pattern = "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+
+["$defs".llm_session_id]
+type = "string"
+pattern = "^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$"
+maxLength = 160
+
+["$defs".rationale]
+type = "string"
+minLength = 1
+maxLength = 1024
+
+["$defs".nullable_id]
+
+[["$defs".nullable_id.oneOf]]
+"$ref" = "#/$defs/id"
+
+[["$defs".nullable_id.oneOf]]
+type = "null"
+
+["$defs".nullable_scope]
+
+[["$defs".nullable_scope.oneOf]]
+type = "string"
+pattern = "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$"
+
+[["$defs".nullable_scope.oneOf]]
+type = "null"
+
+["$defs".target]
+type = "object"
+required = ["repository", "work_areas"]
+additionalProperties = false
+
+["$defs".target.properties]
+
+["$defs".target.properties.repository]
+type = "boolean"
+
+["$defs".target.properties.work_areas]
+type = "array"
+maxItems = 32
+uniqueItems = true
+
+["$defs".target.properties.work_areas.items]
+"$ref" = "#/$defs/id"
+
+[["$defs".target.oneOf]]
+
+["$defs".target.oneOf.properties]
+
+["$defs".target.oneOf.properties.repository]
+const = true
+
+["$defs".target.oneOf.properties.work_areas]
+maxItems = 0
+
+[["$defs".target.oneOf]]
+
+["$defs".target.oneOf.properties]
+
+["$defs".target.oneOf.properties.repository]
+const = false
+
+["$defs".target.oneOf.properties.work_areas]
+minItems = 1
+
+["$defs".relative_path]
+type = "string"
+maxLength = 512
+pattern = "^(?!/)(?!.*\\.\\./)[A-Za-z0-9._-]+(?:/[A-Za-z0-9._-]+)*$"
+
+["$defs".stable_code]
+type = "string"
+maxLength = 64
+pattern = "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+){1,5}$"
+
+["$defs".parameter_name]
+enum = ["operation", "change_profile", "budget_profile", "applicability", "authorization", "scope_kind", "source_kind", "target_kind", "result_class", "risk_class"]
+
+["$defs".parameter]
+
+[["$defs".parameter.oneOf]]
+type = "object"
+required = ["name", "representation", "value"]
+additionalProperties = false
+
+["$defs".parameter.oneOf.properties]
+
+["$defs".parameter.oneOf.properties.name]
+"$ref" = "#/$defs/parameter_name"
+
+["$defs".parameter.oneOf.properties.representation]
+const = "category"
+
+["$defs".parameter.oneOf.properties.value]
+enum = ["none", "small", "standard", "large", "defect", "adoption", "low", "medium", "high", "applicable", "not-applicable", "read-only", "write-authorized", "automatic", "manual", "local", "hosted", "success", "failure", "stopped", "unknown"]
+
+[["$defs".parameter.oneOf]]
+type = "object"
+required = ["name", "representation", "value"]
+additionalProperties = false
+
+["$defs".parameter.oneOf.properties]
+
+["$defs".parameter.oneOf.properties.name]
+"$ref" = "#/$defs/parameter_name"
+
+["$defs".parameter.oneOf.properties.representation]
+const = "sha256"
+
+["$defs".parameter.oneOf.properties.value]
+type = "string"
+pattern = "^[0-9a-f]{64}$"
+
+[["$defs".parameter.oneOf]]
+type = "object"
+required = ["name", "representation", "value"]
+additionalProperties = false
+
+["$defs".parameter.oneOf.properties]
+
+["$defs".parameter.oneOf.properties.name]
+"$ref" = "#/$defs/parameter_name"
+
+["$defs".parameter.oneOf.properties.representation]
+const = "redacted"
+
+["$defs".parameter.oneOf.properties.value]
+const = "[redacted]"
+
+[[allOf]]
+
+[allOf.if]
+
+[allOf.if.properties]
+
+[allOf.if.properties.status]
+const = "running"
+
+[allOf.then]
+
+[allOf.then.properties]
+
+[allOf.then.properties.finished_at]
+type = "null"
+
+[allOf.then.properties.persistence]
+const = "persisted"
+
+[allOf.else]
+
+[allOf.else.properties]
+
+[allOf.else.properties.finished_at]
+type = "string"
+format = "date-time"
+maxLength = 40
+
+[[allOf]]
+
+[allOf.if]
+
+[allOf.if.properties]
+
+[allOf.if.properties.persistence]
+const = "unavailable"
+
+[allOf.then]
+
+[allOf.then.properties]
+
+[allOf.then.properties.status]
+enum = ["succeeded", "failed", "stopped", "interrupted"]

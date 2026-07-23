@@ -19,8 +19,8 @@ schema_version = "1.5"
 canonical_command = "python -m dset_toolchain verify ."
 
 [artifacts]
-# Select the visible classification and project-wide numbering axis for newly
-# emitted artifacts.
+# Select the visible classification and project-wide numbering axis for
+# governed artifacts.
 #
 # Accepted:
 # - false (default): type-only structural name and one sequence per Type.
@@ -30,13 +30,17 @@ canonical_command = "python -m dset_toolchain verify ."
 # - true: expose the direct subtype and use one sequence per subtype.
 #   Example: DSET-VERSION-VERSION-SCOPE-001-0-4-core.md
 #   Atomic records use the semantic subtype kind directly, such as
-#   APP-REQ-GOV-001-readable-summary.md. Empty-subtype atoms continue to use
+#   APP-REQUIREMENT-GOV-001-readable-summary.md. Empty-subtype atoms continue to use
 #   their Type kind, such as APP-DECISION-GOV-001-readable-summary.md.
 #
-# Existing IDs and filenames are immutable and are never renamed when this
-# value changes. Layers, features, feature groups, folders, and lifecycle state
-# never restart a sequence. The setting changes identity presentation and
-# allocation, not semantic or artifact classification.
+# Changing this value requires a complete governed migration of current and
+# historical IDs, filenames, relations, lifecycle targets, compiled documents,
+# settings, implementations, proof references, and generated views. Layers,
+# features, feature groups, folders, and lifecycle state never restart a
+# sequence. The repository never retains two accepted naming vocabularies.
+# This migrates identity and carrier-representation fields only. Atomic claims,
+# rationale, provenance, scope/relation meaning, and QA criteria remain
+# immutable; changing them requires a successor atom.
 #
 # Registered artifact subtype examples:
 # - analysis_report: solution_landscape, root_cause_analysis, proposal,
@@ -121,21 +125,17 @@ default_workspace = "integration-branch"
 budget_profile = "medium"
 
 [priority]
-# Compatibility vocabulary accepted when reading current and immutable legacy
-# artifacts. New writers use only priority.assignable_scale.
+# Complete stored priority vocabulary. `highest` is intentionally absent
+# because it exists only as a virtual comparison result.
 #
-# `critical` and `deferred` are legacy read values normalized below. `highest`
-# is intentionally absent because it exists only during comparison.
-scale = ["critical", "high", "medium", "low", "deferred"]
-assignable_scale = ["high", "medium", "low"]
-effective_scale = ["highest", "high", "medium", "low"]
-virtual_only = ["highest"]
-legacy_aliases = { critical = "high", deferred = "low" }
+# Future work is placed in a named Version Roadmap; it does not use a
+# `deferred` priority.
+scale = ["high", "medium", "low"]
 
 # Priority assigned when a governed artifact has neither a direct value nor an
 # inherited value from its canonical owner.
 #
-# Accepted: one value present in priority.scale. Default: "medium".
+# Accepted: `high`, `medium`, or `low`. Default: "medium".
 default = "medium"
 
 [priority.creation_defaults]

@@ -19,7 +19,7 @@ from dset_toolchain.traceability import (
     trace_is_fresh,
     write_traceability,
 )
-from dset_toolchain.yaml_subset import load
+from dset_toolchain.structured_data import load
 from tests import repository_root
 
 # ROOT locates the repository fixture; repository layout is authoritative.
@@ -149,7 +149,9 @@ class TraceabilityTests(unittest.TestCase):
             classifications["DSET-OPPORTUNITY-GOV-001"]["subtype"],
             "opportunity",
         )
-        self.assertTrue(classifications["DSET-OPPORTUNITY-GOV-001"]["compatibility"])
+        self.assertTrue(
+            classifications["DSET-OPPORTUNITY-GOV-001"]["historical_carrier"]
+        )
 
     def test_write_is_stable_and_checkable(self) -> None:
         with temporary_directory() as raw:

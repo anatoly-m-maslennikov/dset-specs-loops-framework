@@ -29,7 +29,7 @@ from .layout import (
 from .project_data import project_section
 from .temp_paths import temporary_directory
 from .validation import validate_repository
-from .yaml_subset import dump, load
+from .structured_data import dump, load
 
 # _KEBAB validates kebab; this module owns the accepted syntax.
 _KEBAB = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")

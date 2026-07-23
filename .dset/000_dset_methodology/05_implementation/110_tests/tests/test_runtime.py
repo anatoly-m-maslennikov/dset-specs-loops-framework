@@ -79,7 +79,7 @@ class RuntimeTests(unittest.TestCase):
             pending=[
                 {
                     "kind": "proof",
-                    "id": "DSET-TEST-SKILL-009",
+                    "id": "DSET-TEST-PLAN-SKILL-009",
                     "path": "proofs/session.json",
                 }
             ],

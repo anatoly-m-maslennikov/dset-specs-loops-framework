@@ -17,7 +17,7 @@ from .identity import find_unique_name
 from .layout import discover_layout
 from .project_data import project_section
 from .settings import load_project_settings
-from .yaml_subset import load
+from .structured_data import load
 
 # ID_PATTERN validates id pattern; this module owns the accepted syntax.
 ID_PATTERN = re.compile(r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$")

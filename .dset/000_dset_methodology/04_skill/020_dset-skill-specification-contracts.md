@@ -18,7 +18,7 @@ Semantic routing uses exactly four Types with one optional direct subtype:
 Decision, Question, Problem, and QA. User Story, Outcome, Requirement,
 Constraint, Contract, Scenario, and Invariant are sibling Decision subtypes;
 Conflict, Risk, and Opportunity are Question subtypes; Defect, Gap, and Debt
-are Problem subtypes; Test and Evaluation are QA subtypes. Type follows meaning,
+are Problem subtypes; Test Plan and Evaluation Plan are QA subtypes. Type follows meaning,
 never workflow or skill. Tasks and hosted tickets are representations, and
 Change is optional. IDs expose the direct subtype kind when present and the
 Type kind when subtype is absent; they never encode subtype nesting.

@@ -70,7 +70,7 @@ class ArtifactEmissionTests(unittest.TestCase):
         self.assertEqual(settings.artifact_creation_strictness, "medium")
         self.assertEqual(
             settings.priority_scale,
-            ("critical", "high", "medium", "low", "deferred"),
+            ("high", "medium", "low"),
         )
         self.assertEqual(settings.default_priority, "medium")
 
@@ -101,6 +101,15 @@ class ArtifactEmissionTests(unittest.TestCase):
         settings, issues = load_project_settings(self.root)
         self.assertEqual(settings.artifact_creation_strictness, "medium")
         self.assertEqual(issues, ())
+
+        for removed in ("critical", "deferred"):
+            candidate = self.candidate()
+            candidate["priority"] = removed
+            assessment = assess_artifact_candidate(self.root, candidate)
+            self.assertFalse(assessment["emission_allowed"])
+            self.assertTrue(
+                any(item["field"] == "priority" for item in assessment["diagnostics"])
+            )
 
         path.write_text(
             path.read_text(encoding="utf-8").replace(
@@ -140,7 +149,7 @@ class ArtifactEmissionTests(unittest.TestCase):
                 "lineage": [],
                 "acceptance": "accepted",
                 "conflict_state": "clear",
-                "verification_obligation": "DSET-TEST-TOOL-001",
+                "verification_obligation": "DSET-TEST-PLAN-TOOL-001",
             }
         )
         allowed = assess_artifact_candidate(self.root, complete)

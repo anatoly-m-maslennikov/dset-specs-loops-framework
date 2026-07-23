@@ -13,13 +13,13 @@ Checks ran on `dev` after the identity, methodology, accepted-truth, and synthet
 
 | Test | Result | Evidence |
 |---|---|---|
-| DSET-TEST-META-002 identity | Pass | README title is `DSET Spec Loops: A Production Vibecoding Framework`; expansion is `Domain–Supportability–Evals–Tests`; `dset/dset.yaml` uses project ID and repository slug `dset-specs-loops-framework`; origin uses the personal-account SSH alias and renamed slug; active truth contains no stale old slug or old expansion outside historical/problem context |
-| DSET-TEST-OPS-002 contract fields | Pass | Methodology 01 specifies incident objectives, signals, correlation/deploy identity, safe diagnostics, governance/bounds, runbooks, and incident traceability; documents 02–05 assign proof, implementation, runtime, and supplemental-gate ownership |
-| DSET-TEST-OPS-003 incident chain | Pass | Each case in [synthetic-incidents.md](synthetic-incidents.md) traverses incident/run identity → runtime/build identity → commit → repository-qualified synthetic PR → DSET change → requirement → test/eval → repair |
-| DSET-TEST-OPS-004 safe bounded evidence | Pass | Public contract and fixtures exclude secrets/unnecessary personal data, require read-only diagnostics and redaction/access/retention/deletion controls, bound volume/cardinality/sampling, and keep telemetry derived from business authorities |
-| DSET-TEST-OPS-005 proportional mechanisms | Pass | Profile A/local, Profile B stateful/retryable, and Profile C high-risk rules differ; local fixture SYN-INC-003 explicitly avoids centralized tracing while asynchronous SYN-INC-002 carries cross-boundary correlation |
-| DSET-TEST-OPS-006 proof separation | Pass | Schema, identity, propagation, permission, redaction, retention, and bounds checks remain deterministic tests; independent operator diagnosis and LLM response quality remain evals |
-| DSET-TEST-GOV-005 structure | Pass | 45 Markdown files inspected, 126 local links resolved, 29 `<details>` blocks balanced, code fences balanced, YAML parsed, no wiki links, no unsupported GitHub alerts, and `git diff --check` passed |
+| DSET-TEST-PLAN-META-002 identity | Pass | README title is `DSET Spec Loops: A Production Vibecoding Framework`; expansion is `Domain–Supportability–Evals–Tests`; `dset/dset.yaml` uses project ID and repository slug `dset-specs-loops-framework`; origin uses the personal-account SSH alias and renamed slug; active truth contains no stale old slug or old expansion outside historical/problem context |
+| DSET-TEST-PLAN-OPS-002 contract fields | Pass | Methodology 01 specifies incident objectives, signals, correlation/deploy identity, safe diagnostics, governance/bounds, runbooks, and incident traceability; documents 02–05 assign proof, implementation, runtime, and supplemental-gate ownership |
+| DSET-TEST-PLAN-OPS-003 incident chain | Pass | Each case in [synthetic-incidents.md](synthetic-incidents.md) traverses incident/run identity → runtime/build identity → commit → repository-qualified synthetic PR → DSET change → requirement → test/eval → repair |
+| DSET-TEST-PLAN-OPS-004 safe bounded evidence | Pass | Public contract and fixtures exclude secrets/unnecessary personal data, require read-only diagnostics and redaction/access/retention/deletion controls, bound volume/cardinality/sampling, and keep telemetry derived from business authorities |
+| DSET-TEST-PLAN-OPS-005 proportional mechanisms | Pass | Profile A/local, Profile B stateful/retryable, and Profile C high-risk rules differ; local fixture SYN-INC-003 explicitly avoids centralized tracing while asynchronous SYN-INC-002 carries cross-boundary correlation |
+| DSET-TEST-PLAN-OPS-006 proof separation | Pass | Schema, identity, propagation, permission, redaction, retention, and bounds checks remain deterministic tests; independent operator diagnosis and LLM response quality remain evals |
+| DSET-TEST-PLAN-GOV-005 structure | Pass | 45 Markdown files inspected, 126 local links resolved, 29 `<details>` blocks balanced, code fences balanced, YAML parsed, no wiki links, no unsupported GitHub alerts, and `git diff --check` passed |
 
 ## Commands and observations
 

@@ -4,10 +4,10 @@ Applicable qualitative and probabilistic proof is layer-owned. The representativ
 
 | Eval ID | Criterion | Threshold |
 |---|---|---|
-| **DSET-EVAL-OPS-001** | Diagnostic usefulness | For both supportability scenarios, an independent operator can use only synthetic redacted evidence and the runbook to diagnose the likely failure boundary, choose a safe containment/escalation/rollback action, and locate the governing requirement, change, PR, and fix record |
-| **DSET-EVAL-OPS-002** | Release classification | Every reviewer selects the specified bootstrap, normal, small, RC, final, or post-1.0 class/target or stops on material ambiguity; none promotes 1.0 arithmetically |
-| **DSET-EVAL-OPS-003** | Release restraint | Every reviewer refuses RC/final publication when a required gate is absent, names the owning correction surface, and does not weaken the release threshold |
-| **Historical DSET-EVAL-OPS-010** | Delivery artifact boundaries | Delivery-name interpretation is superseded by cross-layer `DSET-EVALUATION-GOV-029` |
+| **DSET-EVAL-PLAN-OPS-001** | Diagnostic usefulness | For both supportability scenarios, an independent operator can use only synthetic redacted evidence and the runbook to diagnose the likely failure boundary, choose a safe containment/escalation/rollback action, and locate the governing requirement, change, PR, and fix record |
+| **DSET-EVAL-PLAN-OPS-002** | Release classification | Every reviewer selects the specified bootstrap, normal, small, RC, final, or post-1.0 class/target or stops on material ambiguity; none promotes 1.0 arithmetically |
+| **DSET-EVAL-PLAN-OPS-003** | Release restraint | Every reviewer refuses RC/final publication when a required gate is absent, names the owning correction surface, and does not weaken the release threshold |
+| **Historical DSET-EVAL-PLAN-OPS-010** | Delivery artifact boundaries | Delivery-name interpretation is superseded by cross-layer `DSET-EVAL-PLAN-GOV-029` |
 
 ## Calibration and evidence
 

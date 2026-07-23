@@ -9,8 +9,8 @@ applies_to = ["evaluation-definition", "evaluation-case-set", "evaluation-prompt
 does_not_apply_to = ["deterministic-test", "unstructured-opinion", "verification-authority"]
 
 [authority]
-requirement = "DSET-REQ-IMPL-006"
-provider_neutral_requirement = "DSET-REQ-001"
+requirement = "DSET-REQUIREMENT-IMPL-006"
+provider_neutral_requirement = "DSET-REQUIREMENT-001"
 mandatory_on_create_or_update = true
 
 [definition]
