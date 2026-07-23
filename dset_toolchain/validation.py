@@ -22,6 +22,7 @@ from .carrier_transitions import (
     transition_aliases,
     validate_carrier_transition_ledger,
 )
+from .artifact_records import validate_atomic_artifact_routes
 from .commit_provenance import validate_commit_provenance
 from .compilation import compilation_is_fresh, compilation_path
 from .dependencies import validate_dependency_policy
@@ -45,8 +46,8 @@ from .legacy_authority import legacy_authority_ids
 from .lineage import validate_artifact_lineage
 from .profiles import VALID_PROFILES, required_artifacts
 from .project_data import project_section
-from .semantic_atoms import collect_semantic_atoms, validate_semantic_atoms
-from .semantic_types import classify_semantic_id, validate_semantic_classifications
+from .semantic_atoms import collect_semantic_atoms
+from .semantic_types import classify_semantic_id
 from .settings import load_project_settings, selected_settings_path
 from .structured_data import StructuredDataError, load
 
@@ -241,8 +242,7 @@ def validate_repository(root: Path) -> list[Diagnostic]:
             _diag("DSET-E168", transition_ledger, issue)
             for issue in validate_carrier_transition_ledger(root)
         )
-    diagnostics.extend(validate_semantic_atoms(root))
-    diagnostics.extend(validate_semantic_classifications(root))
+    diagnostics.extend(validate_atomic_artifact_routes(root))
     diagnostics.extend(validate_artifact_lineage(root))
     diagnostics.extend(validate_dependency_policy(root))
     diagnostics.extend(validate_commit_provenance(root))
@@ -1387,34 +1387,6 @@ def _validate_artifacts(
         )
         return diagnostics
     diagnostics.extend(validate_artifact_registry(root, registry_path, registry))
-    type_registry_path = layout.artifact_type_registry_path
-    if not type_registry_path.is_file():
-        diagnostics.append(
-            _diag(
-                "DSET-E156",
-                type_registry_path,
-                "documentation-v1 requires an artifact-type registry",
-            )
-        )
-        return diagnostics
-    try:
-        type_registry = project_section(root, "artifact_catalog")
-    except (OSError, ValueError, StructuredDataError) as error:
-        diagnostics.append(_diag("DSET-E156", type_registry_path, str(error)))
-        type_registry = {}
-    if type_registry:
-        project = manifest.get("project", {})
-        project_key = project.get("key") if isinstance(project, dict) else None
-        diagnostics.extend(
-            validate_artifact_type_registry(
-                root,
-                type_registry_path,
-                type_registry,
-                project_key=str(project_key) if project_key else None,
-                include_subtype_in_names=include_subtype_in_names,
-                separated=layout.separated,
-            )
-        )
     return diagnostics
 
 
