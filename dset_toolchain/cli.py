@@ -11,6 +11,7 @@ from pathlib import Path
 
 from . import __version__
 from .archive import archive_plan, execute_archive
+from .artifact_records import archive_atom, seal_atom
 from .artifact_emission import assess_artifact_candidate
 from .bootstrap import initialize_project, parse_work_area
 from .compilation import (
@@ -63,7 +64,6 @@ from .runtime_bridge import (
 )
 from .scaffold import create_change
 from .self_host import run_self_host
-from .semantic_atoms import append_lifecycle_event, archive_atom, seal_atom
 from .skill_catalog import PUBLIC_SKILL_WORKFLOWS
 from .skill_distribution import main as skill_distribution_main
 from .temp_paths import temporary_directory
@@ -236,18 +236,13 @@ def build_parser() -> argparse.ArgumentParser:
     _root_argument(artifact_assess)
     artifact_assess.add_argument("--candidate", type=Path, required=True)
 
-    atom = commands.add_parser("atom", help="seal atoms and append lifecycle events")
+    atom = commands.add_parser("atom", help="seal or archive atomic artifacts")
     atom_commands = atom.add_subparsers(dest="atom_command", required=True)
     atom_seal = atom_commands.add_parser("seal", help="seal an emitted atom carrier")
     _root_argument(atom_seal)
     atom_seal.add_argument("--file", type=Path, required=True)
-    atom_event = atom_commands.add_parser(
-        "event", help="append a validated immutable-atom lifecycle event"
-    )
-    _root_argument(atom_event)
-    atom_event.add_argument("--candidate", type=Path, required=True)
     atom_archive = atom_commands.add_parser(
-        "archive", help="move a fully retired atom while preserving its lookup"
+        "archive", help="move an inactive atom into its adjacent archive"
     )
     _root_argument(atom_archive)
     atom_archive.add_argument("--id", required=True)
@@ -599,11 +594,6 @@ def main(argv: list[str] | None = None) -> int:
             root = _repository_root(args.root)
             if args.atom_command == "seal":
                 path = seal_atom(root, args.file)
-            elif args.atom_command == "event":
-                event = json.loads(args.candidate.read_text(encoding="utf-8"))
-                if not isinstance(event, dict):
-                    raise ValueError("lifecycle candidate must be a JSON object")
-                path = append_lifecycle_event(root, event)
             else:
                 path = archive_atom(root, args.id)
             print(path.relative_to(root).as_posix())

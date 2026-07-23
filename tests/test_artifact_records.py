@@ -6,6 +6,7 @@ import unittest
 from pathlib import Path
 
 from dset_toolchain.artifact_records import (
+    archive_atom,
     build_atomic_artifact_route_index,
     collect_atomic_artifact_records,
 )
@@ -93,6 +94,22 @@ class ArtifactRecordTests(unittest.TestCase):
             any("Type/subtype metadata" in item.message for item in diagnostics),
             diagnostics,
         )
+
+    def test_archive_moves_bytes_without_changing_route(self) -> None:
+        with temporary_directory(prefix="dset-route-record-") as raw:
+            root = self._project(raw)
+            source = self._atom(root)
+            original = source.read_bytes()
+
+            destination = archive_atom(root, "DSET-CLAIM-001")
+
+            self.assertEqual(
+                destination,
+                root.resolve() / ".dset/archive/atom.md",
+            )
+            self.assertEqual(destination.read_bytes(), original)
+            rows = build_atomic_artifact_route_index(root)
+            self.assertTrue(rows[0]["archived"])
 
 
 if __name__ == "__main__":

@@ -13,6 +13,7 @@ from .diagnostics import Diagnostic
 from .frontmatter import FrontmatterError
 from .frontmatter import metadata as frontmatter_metadata
 from .identity import has_logical_part, iter_control_files
+from .layout import discover_layout
 from .lineage import ArtifactRelation, parse_authored_relations
 from .settings import load_project_settings
 
@@ -126,6 +127,84 @@ def build_atomic_artifact_route_index(root: Path) -> list[dict[str, Any]]:
         (record.as_index_row() for record in records.values()),
         key=lambda row: str(row["id"]),
     )
+
+
+def seal_atom(root: Path, path: Path) -> Path:
+    """Validate one newly emitted route-first atom without a separate ledger."""
+    root = root.resolve()
+    path = path.resolve()
+    try:
+        path.relative_to(root)
+    except ValueError as error:
+        raise ValueError("atomic carrier must be inside the repository") from error
+    metadata = _metadata(path)
+    if metadata is None:
+        raise ValueError("atomic carrier requires TOML frontmatter")
+    settings, setting_issues = load_project_settings(root)
+    if setting_issues:
+        raise ValueError("project settings must pass before sealing an atom")
+    record, diagnostics = _parse_record(
+        root,
+        path,
+        metadata,
+        {*settings.priority_scale, "unknown"},
+    )
+    if diagnostics or record is None:
+        raise ValueError(
+            diagnostics[0].message if diagnostics else "invalid atomic carrier"
+        )
+
+    from .artifact_emission import assess_artifact_candidate
+
+    candidate = dict(metadata)
+    candidate["acceptance"] = metadata.get("status")
+    candidate["material_links"] = [
+        relation.target
+        for relation in record.relations
+        if relation.target is not None
+    ]
+    assessment = assess_artifact_candidate(root, candidate)
+    if assessment["emission_allowed"] is not True:
+        first = assessment["diagnostics"][0]
+        raise ValueError(f"artifact emission is blocked: {first['message']}")
+    if not discover_layout(root).separated:
+        raise ValueError("route-first atom sealing requires the separated control plane")
+    return path
+
+
+def archive_atom(root: Path, semantic_id: str) -> Path:
+    """Move an inactive atom into the adjacent archive without changing bytes."""
+    root = root.resolve()
+    records, diagnostics = collect_atomic_artifact_records(root)
+    if diagnostics:
+        raise ValueError(diagnostics[0].message)
+    record = records.get(semantic_id)
+    if record is None:
+        raise ValueError(f"unknown atomic artifact: {semantic_id}")
+    source = root / record.path
+    if "archive" in source.relative_to(root).parts:
+        raise ValueError(f"atomic artifact is already archived: {semantic_id}")
+    active_dependants = [
+        candidate.semantic_id
+        for candidate in records.values()
+        if "archive" not in Path(candidate.path).parts
+        and any(
+            relation.target == semantic_id
+            and relation.type in {"child_of", "override_of"}
+            for relation in candidate.relations
+        )
+    ]
+    if active_dependants:
+        raise ValueError(
+            "atomic artifact has active child reliance: "
+            + ", ".join(sorted(active_dependants))
+        )
+    destination = source.parent / "archive" / source.name
+    if destination.exists():
+        raise FileExistsError(f"archive destination already exists: {source.name}")
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    source.replace(destination)
+    return destination
 
 
 def _parse_record(
