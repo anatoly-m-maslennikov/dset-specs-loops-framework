@@ -42,9 +42,11 @@ class ArtifactEmissionTests(unittest.TestCase):
         return {
             "authority": "operator:test-operator",
             "claim": "The tool writes one deterministic result.",
-            "type": "decision",
-            "subtype": "requirement",
-            "scope": {"kind": "project", "id": "dset-temporary-adopter"},
+            "revision_mode": "atomic",
+            "content_role": "definition",
+            "governance_origin": "internal",
+            "relation_shape": "standalone",
+            "scope_path": ["project:dset-temporary-adopter"],
             "llm_session_ids": ["codex:test-session"],
             "material_links": [],
             "priority": "medium",
@@ -87,12 +89,15 @@ class ArtifactEmissionTests(unittest.TestCase):
         self.assertEqual(assessment["questions"], [])
         self.assertFalse(assessment["writes_performed"])
         self.assertEqual(
-            assessment["identity"],
+            assessment["route"],
             {
-                "naming_axis": "type",
-                "kind": "DECISION",
-                "next_sequence": 1,
-                "sequence_scope": "project",
+                "key": "atomic.definition.internal.standalone",
+                "name": "Internal Atomic Definition Artifact",
+                "revision_mode": "atomic",
+                "content_role": "definition",
+                "governance_origin": "internal",
+                "relation_shape": "standalone",
+                "scope_path": ["project:dset-temporary-adopter"],
             },
         )
 
@@ -180,7 +185,10 @@ class ArtifactEmissionTests(unittest.TestCase):
 
     def test_unknown_repository_scope_is_rejected(self) -> None:
         candidate = self.candidate()
-        candidate["scope"] = {"kind": "feature", "id": "unregistered"}
+        candidate["scope_path"] = [
+            "project:dset-temporary-adopter",
+            "feature:unregistered",
+        ]
 
         assessment = assess_artifact_candidate(self.root, candidate)
 
@@ -193,7 +201,10 @@ class ArtifactEmissionTests(unittest.TestCase):
 
     def test_eligible_promotion_is_proposed_and_never_automatic(self) -> None:
         candidate = self.candidate()
-        candidate["scope"] = {"kind": "layer", "id": "tool"}
+        candidate["scope_path"] = [
+            "project:dset-specs-loops-framework",
+            "layer:tool",
+        ]
         candidate["promotion"] = {
             "parent_scope": {
                 "kind": "project",
