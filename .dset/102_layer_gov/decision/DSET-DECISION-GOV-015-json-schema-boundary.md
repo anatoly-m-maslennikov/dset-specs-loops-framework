@@ -1,18 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-047"
-type = "decision"
 semantic_id = "DSET-DECISION-GOV-015"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Standards-compliant JSON Schema files are externally prescribed contract carriers and remain canonical JSON exceptions rather than generated copies of a private TOML schema dialect."
 promotion = {}
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
 
 [[relations]]
 type = "child_of"

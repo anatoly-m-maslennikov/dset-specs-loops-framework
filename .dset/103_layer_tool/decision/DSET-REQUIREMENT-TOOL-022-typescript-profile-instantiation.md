@@ -1,9 +1,11 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-017"
-type = "decision"
-subtype = "requirement"
 semantic_id = "DSET-REQUIREMENT-TOOL-022"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:tool"]
 status = "accepted"
 priority = "high"
 child_of = ["DSET-REQUIREMENT-TOOL-021"]

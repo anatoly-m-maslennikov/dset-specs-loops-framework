@@ -1,21 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-177"
-type = "decision"
-subtype = "requirement"
 semantic_id = "DSET-REQUIREMENT-IMPL-003"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:implementation"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Python module settings and constants are grouped immediately after module documentation and imports and each constant documents its responsibility, while a separate settings file remains optional."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Predictable placement makes operational limits and behavioral switches visible during first-pass reading, while mandatory per-constant explanations prevent names alone from hiding responsibility or interpretation."
-
-[scope]
-kind = "layer"
-id = "implementation"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "child_of"

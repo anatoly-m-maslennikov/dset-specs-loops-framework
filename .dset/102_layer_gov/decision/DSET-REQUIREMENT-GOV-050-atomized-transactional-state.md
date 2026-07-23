@@ -1,20 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-121"
-type = "decision"
-subtype = "requirement"
 semantic_id = "DSET-REQUIREMENT-GOV-050"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Every active lifecycle event, Problem, Question, Decision-family directive, QA claim, analysis report, and promoted evidence record has its own atomic carrier rather than an aggregate ledger or intake queue."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 +++
 
 # Requirement — Atomize transactional state

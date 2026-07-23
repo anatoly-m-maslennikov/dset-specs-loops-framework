@@ -1,21 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-074"
-type = "decision"
-subtype = "requirement"
 semantic_id = "DSET-REQUIREMENT-GOV-062"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "An atomic artifact's semantic ID, payload, provenance, and relations never change; carrier encoding or path changes only through a lossless append-only transition with a source return address."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Separating semantic immutability from carrier bytes permits readable canonical formats without allowing silent historical revision."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "child_of"

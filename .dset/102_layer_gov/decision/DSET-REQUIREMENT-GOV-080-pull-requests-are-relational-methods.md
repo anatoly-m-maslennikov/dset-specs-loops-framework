@@ -1,19 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-238"
-type = "decision"
-subtype = "requirement"
 semantic_id = "DSET-REQUIREMENT-GOV-080"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "A pull request is classified as maintained + method + relational, retains its native repository and PR-number identity, and represents internal or external participation through its source and target endpoint origins rather than one authority-origin value."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "A pull request is a mutable review and integration mechanism connecting two branches or repositories; merging it produces an immutable commit but does not transform the mutable PR record into an Atomic Implementation."
-
-[scope]
-kind = "layer"
-id = "governance"
 
 [promotion]
 affected_children = ["governance", "tool", "skill", "implementation", "ops"]

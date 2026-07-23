@@ -1,21 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-075"
-type = "qa"
-subtype = "test_plan"
 semantic_id = "DSET-TEST-PLAN-GOV-043"
+revision_mode = "atomic"
+content_role = "method"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Deterministic tests prove complete lossless TOML cutover of every DSET-owned YAML artifact and Markdown YAML-frontmatter carrier with reference closure, rollback parity, and second-run idempotency."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "A zero-YAML claim is valid only when every historical edition, link, seal, and normalized value is preserved in the new representation."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "check_of"

@@ -1,21 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-083"
-type = "problem"
-subtype = "defect"
 semantic_id = "DSET-DEFECT-OPS-002"
+revision_mode = "atomic"
+content_role = "observation"
+governance_origin = "external"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:ops"]
 status = "accepted"
 priority = "high"
 authority = "external:github-actions-run-29799045908"
 claim = "GitHub's native Windows checkout changes immutable DSET carrier bytes because the repository does not pin text line endings."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The Linux and macOS jobs reported only a stale derived trace, while the native Windows job also reported changed current-carrier digests across the migrated immutable corpus."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "child_of"

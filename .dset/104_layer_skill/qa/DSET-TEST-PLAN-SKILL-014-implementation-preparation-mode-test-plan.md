@@ -1,19 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-041"
-type = "qa"
-subtype = "test_plan"
 semantic_id = "DSET-TEST-PLAN-SKILL-014"
+revision_mode = "atomic"
+content_role = "method"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:skill"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Deterministic tests prove lazy prerequisite closure and strict implementation-only behavior from project settings."
 promotion = {}
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
 
 [[relations]]
 type = "check_of"

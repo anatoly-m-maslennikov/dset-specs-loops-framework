@@ -1,20 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-147"
-type = "question"
-subtype = "opportunity"
 semantic_id = "DSET-OPPORTUNITY-GOV-001"
+revision_mode = "atomic"
+content_role = "inquiry"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "medium"
 authority = "operator:anatoly-m-maslennikov"
 claim = "DSET could generate a non-authoritative view of proof dependencies, last evaluated identities, declared reopen triggers, and suspected stale closures while returning reviewers to the canonical proof records."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 +++
 
 # Question — Generate a proof-currentness review view

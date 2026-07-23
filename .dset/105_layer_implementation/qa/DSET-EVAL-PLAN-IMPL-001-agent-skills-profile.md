@@ -1,19 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-197"
-type = "qa"
-subtype = "evaluation_plan"
 semantic_id = "DSET-EVAL-PLAN-IMPL-001"
+revision_mode = "atomic"
+content_role = "method"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:implementation"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Independent runs assess whether every changed DSET skill triggers, abstains, routes ambiguity, follows instructions, preserves isolation and stop boundaries, and produces useful output across each provider, host, and model configuration the project claims."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Static validation can prove package shape and declared cases, but only representative model runs can assess discovery, routing judgment, coexistence, instruction following, and output usefulness."
-
-[scope]
-kind = "layer"
-id = "implementation"
 
 [promotion]
 affected_children = ["implementation"]

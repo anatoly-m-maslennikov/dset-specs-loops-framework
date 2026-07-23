@@ -1,20 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-084"
-type = "decision"
 semantic_id = "DSET-DECISION-OPS-008"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:ops"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "The repository pins all Git-controlled text worktree content to LF so byte-sealed artifacts remain stable on Linux, macOS, native Windows, and WSL."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "DSET validates immutable carrier bytes, so the repository must own text materialization instead of inheriting host-specific Git defaults."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "resolution_of"

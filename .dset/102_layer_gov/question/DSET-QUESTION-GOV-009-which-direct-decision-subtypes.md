@@ -1,20 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-185"
-type = "question"
 semantic_id = "DSET-QUESTION-GOV-009"
+revision_mode = "atomic"
+content_role = "inquiry"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Which direct Decision subtypes should DSET define, and are they semantic categories such as architecture and implementation or the former Requirement, Constraint, and Contract set?"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The operator explicitly requires Decision subtypes, but the accepted Requirement-versus-Decision boundary does not determine their vocabulary; choosing the wrong set would either duplicate layers or collapse required results back into selected approaches."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "relates_to"

@@ -1,20 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-071"
-type = "decision"
 semantic_id = "DSET-DECISION-GOV-018"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Atomic semantics and identity are immutable, but an explicitly authorized lossless carrier migration may convert every DSET-owned YAML artifact carrier to TOML under one transactional old-to-new digest ledger."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Carrier encoding is not the project claim itself; preserving semantic values, stable IDs, provenance, relations, body content, and a verifiable transition map retains history without keeping YAML in the current repository."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "resolution_of"

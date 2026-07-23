@@ -1,21 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-059"
-type = "problem"
-subtype = "defect"
 semantic_id = "DSET-DEFECT-GOV-006"
+revision_mode = "atomic"
+content_role = "observation"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "repository:fpf-review"
 claim = "Promoted Evidence Records are immutable but lack an executable schema for their required subject, producer, method, context, time, polarity, currentness, and reopen boundary."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Evidence cannot support a bounded claim reliably when its because-graph exists only as optional prose."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "relates_to"

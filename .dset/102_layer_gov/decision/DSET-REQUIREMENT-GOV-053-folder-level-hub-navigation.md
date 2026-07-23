@@ -1,21 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-179"
-type = "decision"
-subtype = "requirement"
 semantic_id = "DSET-REQUIREMENT-GOV-053"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Hubs represent atomic artifacts only through their containing folders, list evergreen settings and other long-lived non-atomic carriers, and never list or link a .dset_runtime descendant."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Folder-level navigation stays stable as immutable atoms accumulate, while long-lived owners remain directly discoverable and transient runtime state never leaks into the durable navigation surface."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "child_of"

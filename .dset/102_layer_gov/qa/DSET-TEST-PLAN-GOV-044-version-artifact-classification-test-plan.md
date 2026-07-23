@@ -1,18 +1,16 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-079"
-type = "qa"
-subtype = "test_plan"
 semantic_id = "DSET-TEST-PLAN-GOV-044"
+revision_mode = "atomic"
+content_role = "method"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Deterministic validation requires Version and its six exact direct subtypes across current authority, registries, templates, active carriers, generated views, settings examples, and release behavior, while rejecting Delivery as a current artifact Type."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-
-[scope]
-kind = "layer"
-id = "gov"
 
 [promotion]
 affected_children = ["gov", "tool", "ops"]

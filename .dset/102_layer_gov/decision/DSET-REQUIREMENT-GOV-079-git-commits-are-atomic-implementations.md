@@ -1,19 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-237"
-type = "decision"
-subtype = "requirement"
 semantic_id = "DSET-REQUIREMENT-GOV-079"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "A Git commit is classified as atomic + implementation, uses its native commit SHA as identity instead of a DSET artifact sequence, and has internal or external origin according to the repository authority that produced it."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "A Git commit is already an immutable, content-addressed implementation snapshot; duplicating it as a Markdown Atomic Artifact would create competing identities and provenance."
-
-[scope]
-kind = "layer"
-id = "governance"
 
 [promotion]
 affected_children = ["governance", "tool", "skill", "implementation", "ops"]

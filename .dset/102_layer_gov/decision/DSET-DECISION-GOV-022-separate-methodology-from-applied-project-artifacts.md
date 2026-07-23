@@ -1,20 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-157"
-type = "decision"
-subtype = "none"
 semantic_id = "DSET-DECISION-GOV-022"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "DSET stores the installed project-local methodology only under .dset/000_dset_methodology, stores applied project artifacts only under .dset/100_project through .dset/150_versions, and keeps the reusable framework source in the repository root's 10_project through 50_versions product structure."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "replacement_of"

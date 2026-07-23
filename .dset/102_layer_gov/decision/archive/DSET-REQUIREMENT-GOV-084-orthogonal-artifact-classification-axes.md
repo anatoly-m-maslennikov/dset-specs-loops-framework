@@ -1,19 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-242"
-type = "decision"
-subtype = "requirement"
 semantic_id = "DSET-REQUIREMENT-GOV-084"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "DSET classifies every governed artifact through independent revision_mode, content_role, relation_shape, and governance_origin axes; scope_path remains structural addressing, OPS remains a layer rather than a content role, and relational artifacts express internal and external participation through typed endpoint origins."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "FPF strict-distinction, method-work, provenance, relational-precision, and anti-explosion principles require change semantics, semantic contribution, relational arity, governance origin, and structural scope to remain separate rather than being encoded in Type names or workflow stages."
-
-[scope]
-kind = "layer"
-id = "governance"
 
 [promotion]
 affected_children = ["governance", "tool", "skill", "implementation", "ops"]

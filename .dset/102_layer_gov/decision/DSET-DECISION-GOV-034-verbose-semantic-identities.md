@@ -1,20 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-205"
-type = "decision"
 semantic_id = "DSET-DECISION-GOV-034"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "DSET uses the canonical semantic ID kinds REQUIREMENT, CONSTRAINT, CONTRACT, IMPL, TEST-PLAN, and EVAL-PLAN; QA atoms are plans rather than executable checks, and adopting this vocabulary requires a complete historical identity migration without retained short aliases."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Verbose identity kinds are understandable from a file list, while Test Plan and Evaluation Plan preserve the boundary between a QA definition and its executable implementation or evidence. IMPL remains short to keep the implementation kind readable and distinct from the longer authority kinds."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "replacement_of"

@@ -1,20 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-173"
-type = "decision"
 semantic_id = "DSET-DECISION-IMPL-004"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:implementation"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Implementation compares filesystem paths by resolved identity and serializes repository-relative paths with canonical POSIX separators."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Filesystem identity and serialization are code-level portability rules used to implement TOOL contracts across operating systems."
-
-[scope]
-kind = "layer"
-id = "implementation"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "replacement_of"

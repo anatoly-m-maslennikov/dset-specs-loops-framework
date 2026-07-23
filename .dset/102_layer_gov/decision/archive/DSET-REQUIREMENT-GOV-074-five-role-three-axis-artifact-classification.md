@@ -1,19 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-232"
-type = "decision"
-subtype = "requirement"
 semantic_id = "DSET-REQUIREMENT-GOV-074"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "DSET classifies governed artifacts through artifact_type = atomic | evergreen | maintained, content_role = definition | rationale | method | implementation | observation, and authority_origin = internal | external; relation_shape = standalone | relational remains optional orthogonal metadata."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The five content roles distinguish desired truth, reasoning, mechanisms, realized project assets, and observations without overlapping phase-role and answer-to axes or conflating code with Test and Evaluation results."
-
-[scope]
-kind = "layer"
-id = "governance"
 
 [promotion]
 affected_children = ["governance", "tool", "skill", "implementation", "ops"]

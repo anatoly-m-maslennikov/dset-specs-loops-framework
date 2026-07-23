@@ -1,19 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-245"
-type = "decision"
-subtype = "requirement"
 semantic_id = "DSET-REQUIREMENT-GOV-087"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "DSET content_role includes inquiry for persisted artifacts whose primary contribution is an unresolved request for knowledge, choice, or clarification."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "A Question is mandatory in DSET but is not honestly a Definition, Rationale, Method, Implementation, or Observation. FPF strict distinction requires inquiry to remain separate from both observed claims and accepted definitions."
-
-[scope]
-kind = "layer"
-id = "governance"
 
 [promotion]
 affected_children = ["governance", "tool", "skill", "implementation", "ops"]

@@ -1,20 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-175"
-type = "decision"
 semantic_id = "DSET-DECISION-OPS-013"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:ops"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "OPS consumes and evaluates implemented supportability surfaces after implementation and routes deficiencies upstream without directly governing implementation technique."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Keeping OPS terminal prevents release and runtime concerns from creating backward authority into IMPL while preserving an explicit incident-to-fix loop through new artifacts."
-
-[scope]
-kind = "layer"
-id = "ops"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "child_of"

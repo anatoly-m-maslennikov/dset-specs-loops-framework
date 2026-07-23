@@ -1,19 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-201"
-type = "decision"
-subtype = "requirement"
 semantic_id = "DSET-REQUIREMENT-IMPL-009"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:implementation"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Scripts store only stable environment-variable key names and resolve every runtime login, email, API key, password, or other secret value from those keys at the runtime boundary."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Key-based runtime lookup keeps mutable identities and credentials out of source and DSET while giving local .env files, CI injection, and production secret stores one stable application interface."
-
-[scope]
-kind = "layer"
-id = "implementation"
 
 [promotion]
 affected_children = ["implementation"]

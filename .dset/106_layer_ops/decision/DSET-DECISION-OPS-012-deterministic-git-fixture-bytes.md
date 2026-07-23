@@ -1,20 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-099"
-type = "decision"
 semantic_id = "DSET-DECISION-OPS-012"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:ops"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Temporary Git repositories used by deterministic tests disable autocrlf and select LF explicitly, while byte-sensitive text fixtures write LF explicitly or capture their actual written bytes before asserting preservation."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "A deterministic fixture must own the same byte boundary it asserts instead of inheriting machine-global Git or text-I/O defaults."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "resolution_of"

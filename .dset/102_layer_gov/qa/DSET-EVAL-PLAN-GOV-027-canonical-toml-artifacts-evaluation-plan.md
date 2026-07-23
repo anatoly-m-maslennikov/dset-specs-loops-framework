@@ -1,19 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-044"
-type = "qa"
-subtype = "evaluation_plan"
 semantic_id = "DSET-EVAL-PLAN-GOV-027"
+revision_mode = "atomic"
+content_role = "method"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "medium"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Readers find canonical TOML artifacts and documented settings clearer without mistaking generated or host-mandated adapters for authority."
 promotion = {}
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
 
 [[relations]]
 type = "check_of"

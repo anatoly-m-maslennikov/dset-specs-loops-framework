@@ -1,19 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-204"
-type = "problem"
-subtype = "gap"
 semantic_id = "DSET-GAP-TOOL-004"
+revision_mode = "atomic"
+content_role = "observation"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:tool"]
 status = "accepted"
 priority = "high"
 authority = "agent:codex"
 claim = "The current conflict runtime reads the legacy priority scale and does not yet enforce assignable priorities, scope/layer comparison bonuses, virtual highest, legacy normalization, or conflict_resolution.mode."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Publishing settings without executable consumption would make ask_always appear protective while the existing resolver can still select through its older priority-list behavior."
-
-[scope]
-kind = "layer"
-id = "tool"
 
 [promotion]
 affected_children = ["tool", "skill", "implementation", "ops"]

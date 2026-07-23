@@ -1,19 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-228"
-type = "question"
-subtype = "none"
 semantic_id = "DSET-QUESTION-GOV-011"
+revision_mode = "atomic"
+content_role = "inquiry"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Should DSET replace semantic compilation into evergreen specifications and plans with governed atomic refactoring that creates corrected, consolidated, or extended successor atoms and archives only the fully replaced predecessors?"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Making the active atomic set the complete current specification could remove a competing truth layer, but it also changes how skills consume project truth and how long-form specifications, plans, and release snapshots are represented."
-
-[scope]
-kind = "layer"
-id = "governance"
 
 [promotion]
 affected_children = ["governance", "tool", "skill", "implementation", "ops"]

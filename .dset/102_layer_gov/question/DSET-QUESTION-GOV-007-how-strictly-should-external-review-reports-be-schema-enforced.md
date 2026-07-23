@@ -1,20 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-153"
-type = "question"
-subtype = "none"
 semantic_id = "DSET-QUESTION-GOV-007"
+revision_mode = "atomic"
+content_role = "inquiry"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "medium"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Should DSET 0.3 enforce the entire review report structurally, or validate only a mandatory identity/provenance/finding envelope while keeping the analysis body free-form?"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 +++
 
 # Question — How strictly should external review reports be schema-enforced?

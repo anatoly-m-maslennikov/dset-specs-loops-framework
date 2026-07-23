@@ -1,20 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-136"
-type = "problem"
-subtype = "none"
 semantic_id = "DSET-PROBLEM-GOV-001"
+revision_mode = "atomic"
+content_role = "observation"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "medium"
 authority = "operator:anatoly-m-maslennikov"
 claim = "The active 0.3 Change formerly retained pre-layer IDs whose accepted owners now used those IDs differently. The live delta, manifest, proof plans, solution landscape, and verification now reference the current accepted layer-owned IDs and retain only genuinely unaccepted deltas."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 +++
 
 # Problem — Active deltas and accepted truth reuse IDs inconsistently

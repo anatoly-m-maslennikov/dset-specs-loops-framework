@@ -1,21 +1,29 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-070"
-type = "question"
-subtype = "conflict"
 semantic_id = "DSET-CONFLICT-GOV-001"
+revision_mode = "atomic"
+content_role = "inquiry"
+governance_origin = "internal"
+relation_shape = "relational"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
+relation_kind = "conflict_between"
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "The requirement that every DSET-owned artifact carrier use TOML is incompatible with the active rule that historical and atomic carriers remain byte-stable YAML."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Both directives apply now to the same repository and carrier set, so implementation cannot satisfy both without an explicit authority change."
+promotion = {}
 
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
+[[endpoints]]
+role = "party"
+target = "DSET-DECISION-GOV-003"
+origin = "internal"
 
-[promotion]
+[[endpoints]]
+role = "party"
+target = "DSET-REQUIREMENT-GOV-037"
+origin = "internal"
 
 [[relations]]
 type = "relates_to"

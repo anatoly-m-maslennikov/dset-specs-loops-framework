@@ -1,19 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-217"
-type = "decision"
-subtype = "requirement"
 semantic_id = "DSET-REQUIREMENT-GOV-069"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "medium"
 authority = "operator:anatoly-m-maslennikov"
 claim = "The canonical artifact catalog begins with a field legend, uses source_of_truth for truth ownership, and replaces changed_through_git with explicit commit_on_create and commit_on_update lifecycle flags."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Creation and in-place update are different lifecycle operations, while the former changed_through_git field obscures the difference between immutable and mutable artifacts."
-
-[scope]
-kind = "layer"
-id = "governance"
 
 [promotion]
 affected_children = ["governance", "tool", "skill", "implementation", "ops"]

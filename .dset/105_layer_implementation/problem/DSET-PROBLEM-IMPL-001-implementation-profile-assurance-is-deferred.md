@@ -1,20 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-176"
-type = "problem"
 semantic_id = "DSET-PROBLEM-IMPL-001"
+revision_mode = "atomic"
+content_role = "observation"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:implementation"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "The new IMPL layer, Local Python Tools profile, relocated executable methodology, and replacement implementation Decisions do not yet have current Test/Evaluation definitions and execution evidence."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The operator explicitly deferred Tests and Evaluations until the real structure was finalized; preserving the gap prevents structural completion from being mistaken for assurance."
-
-[scope]
-kind = "layer"
-id = "implementation"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "relates_to"

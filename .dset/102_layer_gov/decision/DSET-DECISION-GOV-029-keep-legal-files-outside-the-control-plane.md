@@ -1,21 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-164"
-type = "decision"
-subtype = "none"
 semantic_id = "DSET-DECISION-GOV-029"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Repository and third-party legal files live in the repository-root LICENSES distribution surface rather than .dset; provenance stores only each globally unique legal carrier name, and legal validation resolves that name exclusively within LICENSES without widening DSET artifact or skill discovery beyond .dset."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Licenses govern repository distribution, while .dset governs current project development state. Keeping legal carriers outside the control plane preserves that boundary and gives standard repository readers a predictable location."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "child_of"

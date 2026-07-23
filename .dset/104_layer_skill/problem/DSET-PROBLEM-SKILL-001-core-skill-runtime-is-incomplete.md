@@ -1,20 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-133"
-type = "problem"
-subtype = "none"
 semantic_id = "DSET-PROBLEM-SKILL-001"
+revision_mode = "atomic"
+content_role = "observation"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:skill"]
 status = "accepted"
 priority = "medium"
 authority = "operator:anatoly-m-maslennikov"
 claim = "DSET now publishes all five repository-native source wrappers, but the run writer, session checkpoint/resume runtime, executable release publisher, and host-native proof remain unimplemented, so the declared continuity and release contracts are not yet usable end to end."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 +++
 
 # Problem — Core skill runtime is incomplete

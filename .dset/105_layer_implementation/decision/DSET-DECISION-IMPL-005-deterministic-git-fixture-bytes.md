@@ -1,20 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-174"
-type = "decision"
 semantic_id = "DSET-DECISION-IMPL-005"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:implementation"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Test implementations isolate temporary Git newline settings and write or observe explicit fixture bytes before asserting byte preservation."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Deterministic fixture construction governs Test implementation and belongs in IMPL rather than the post-implementation OPS layer."
-
-[scope]
-kind = "layer"
-id = "implementation"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "replacement_of"

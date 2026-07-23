@@ -1,20 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-186"
-type = "decision"
 semantic_id = "DSET-DECISION-GOV-033"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Decision has four direct subtypes: requirement, constraint, contract, and implementation_decision, using the canonical new ID tokens REQ, CONSTR, CONTR, and IMPDEC respectively."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "All four artifacts are accepted directives but own different questions: required result, allowed-solution restriction, boundary obligation, or selected implementation approach. The compact tokens keep subtype-bearing atomic filenames readable."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "replacement_of"

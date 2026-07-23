@@ -1,19 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-198"
-type = "decision"
-subtype = "requirement"
 semantic_id = "DSET-REQUIREMENT-IMPL-007"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:implementation"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Every Implementation Profile defines explicit heuristics for keeping invariants as code constants and promoting operator-controlled or environment-varying values to a typed settings carrier."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "A settings file is useful only when it separates runtime policy from code invariants; moving every literal out of code creates indirection, while leaving deployment and operator controls in code forces unnecessary edits and releases."
-
-[scope]
-kind = "layer"
-id = "implementation"
 
 [promotion]
 affected_children = ["implementation"]

@@ -1,21 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-098"
-type = "problem"
-subtype = "defect"
 semantic_id = "DSET-DEFECT-TOOL-010"
+revision_mode = "atomic"
+content_role = "observation"
+governance_origin = "external"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:tool"]
 status = "accepted"
 priority = "high"
 authority = "external:github-actions-run-29844770302"
 claim = "Byte-sensitive temporary Git fixtures inherit host newline and autocrlf policy, so native Windows can compare CRLF working bytes with normalized LF Git blobs and produce platform-dependent assurance failures."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The repository pins LF, but independently initialized temporary repositories do not inherit its tracked attributes; byte-identity tests therefore need an explicit local fixture policy."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "child_of"

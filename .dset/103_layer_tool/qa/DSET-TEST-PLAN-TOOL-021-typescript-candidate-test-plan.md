@@ -1,9 +1,11 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-014"
-type = "qa"
-subtype = "test_plan"
 semantic_id = "DSET-TEST-PLAN-TOOL-021"
+revision_mode = "atomic"
+content_role = "method"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:tool"]
 status = "accepted"
 priority = "high"
 child_of = ["DSET-REQUIREMENT-TOOL-021"]

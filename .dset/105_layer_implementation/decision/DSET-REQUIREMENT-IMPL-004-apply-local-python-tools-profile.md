@@ -1,18 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-184"
-type = "requirement"
 semantic_id = "DSET-REQUIREMENT-IMPL-004"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:implementation"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Every Python tool, library module, runner, and Test distributed inside .dset conforms to the selected Local Python Tools profile through its authoritative root source and explicit installed-methodology synchronization."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The framework must satisfy its own implementation profile recursively; limiting conformance to examples or future adopters would leave the executable methodology outside its own rules."
-
-[scope]
-kind = "layer"
-id = "implementation"
 
 [promotion]
 affected_children = ["implementation"]

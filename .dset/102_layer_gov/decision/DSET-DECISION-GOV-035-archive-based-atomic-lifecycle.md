@@ -1,18 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-220"
-type = "decision"
 semantic_id = "DSET-DECISION-GOV-035"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "DSET removes lifecycle_event artifacts and models an Atomic Artifact as either active or archived; typed successor relations explain resolution and replacement, withdrawn future work moves into a Version Roadmap, and a closed matter can return only as a new atom related to its archived predecessor by recurrence_of."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Standalone lifecycle-event carriers duplicate typed relations and add a second atomic state model when active/archive placement, successor atoms, Version artifacts, provenance, and Git already preserve the required history."
-
-[scope]
-kind = "layer"
-id = "governance"
 
 [promotion]
 affected_children = ["governance", "tool", "skill", "implementation", "ops"]

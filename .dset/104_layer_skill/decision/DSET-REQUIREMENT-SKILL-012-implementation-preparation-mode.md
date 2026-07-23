@@ -1,9 +1,11 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-039"
-type = "decision"
-subtype = "requirement"
 semantic_id = "DSET-REQUIREMENT-SKILL-012"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:skill"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
@@ -11,10 +13,6 @@ claim = "Each project selects lazy or strict dset-implement preparation, with la
 promotion = {}
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "One entrypoint should serve operators who want automatic prerequisite closure and automations that require a preparation-free implementation boundary."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
 
 [[relations]]
 type = "replacement_of"

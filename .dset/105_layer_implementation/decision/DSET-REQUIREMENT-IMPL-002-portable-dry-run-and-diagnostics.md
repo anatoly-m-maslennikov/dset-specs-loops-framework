@@ -1,21 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-169"
-type = "decision"
-subtype = "requirement"
 semantic_id = "DSET-REQUIREMENT-IMPL-002"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:implementation"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Local Python tools are readily transportable across supported operating systems, expose a mutation-free dry-run mode, document executable parameters at the start of each file, report actionable errors, and normally offer a safe debug mode."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Local tools are often copied between hosts and operated during incidents; predictable simulation, discoverable invocation, and actionable diagnostics reduce both portability failures and unsafe trial runs."
-
-[scope]
-kind = "layer"
-id = "implementation"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "child_of"

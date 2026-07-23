@@ -1,21 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-191"
-type = "problem"
-subtype = "gap"
 semantic_id = "DSET-GAP-GOV-003"
+revision_mode = "atomic"
+content_role = "observation"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "The current Python-owned DSET implementation still ships a live YAML compatibility parser, JSON schema carriers, and a JSON bootstrap bundle despite the TOML-only project constraint."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The repository cannot claim a TOML-only Python artifact boundary while production code and distributed resources continue to depend on YAML and JSON carriers."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "child_of"

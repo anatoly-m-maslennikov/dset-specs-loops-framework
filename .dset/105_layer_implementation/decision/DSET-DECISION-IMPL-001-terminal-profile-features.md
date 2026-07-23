@@ -1,20 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-168"
-type = "decision"
 semantic_id = "DSET-DECISION-IMPL-001"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:implementation"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "IMPL is the development-realization layer between SKILL and OPS, and it contains any number of peer selectable implementation-profile features rather than nested layers."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Profiles vary orthogonally by language, runtime, deployment shape, and host; peer features with explicit work-area selection preserve one layer order without premature shared abstractions."
-
-[scope]
-kind = "layer"
-id = "implementation"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "child_of"

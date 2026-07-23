@@ -1,21 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-076"
-type = "problem"
-subtype = "defect"
 semantic_id = "DSET-DEFECT-TOOL-007"
+revision_mode = "atomic"
+content_role = "observation"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:tool"]
 status = "accepted"
 priority = "high"
 authority = "repository:self-host-review"
 claim = "The current DSET tree still contains ten YAML artifact files and seventy-one Markdown YAML-frontmatter carriers contrary to the accepted all-TOML requirement."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The representation gap is present and countable now; it is not a future risk or an unresolved product choice."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "relates_to"

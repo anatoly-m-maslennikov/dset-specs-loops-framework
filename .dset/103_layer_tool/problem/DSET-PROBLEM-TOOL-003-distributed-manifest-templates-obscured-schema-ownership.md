@@ -1,20 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-143"
-type = "problem"
-subtype = "none"
 semantic_id = "DSET-PROBLEM-TOOL-003"
+revision_mode = "atomic"
+content_role = "observation"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:tool"]
 status = "accepted"
 priority = "medium"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Change and package manifest seeds formerly exposed legacy shapes as unsuffixed current templates, and the legacy Change seed referenced a layered release-policy path. Legacy and layered template families are now explicit, hubs label their compatibility, and scaffolding selects by discovered repository layout."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 +++
 
 # Problem — Distributed manifest templates obscured schema ownership

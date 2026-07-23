@@ -1,21 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-194"
-type = "decision"
-subtype = "requirement"
 semantic_id = "DSET-REQUIREMENT-001"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "DSET remains LLM-provider agnostic: its semantic model, governance, workflows, skill contracts, and evaluation methodology must work without depending on Codex, Claude, Grok, any Chinese model provider, or any other single host or model family."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Provider-neutral authority keeps DSET reusable as models and hosts change, while explicit adapters and capability declarations can preserve real host differences without turning one vendor into framework truth."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 +++
 
 # Requirement — Keep DSET LLM-provider agnostic

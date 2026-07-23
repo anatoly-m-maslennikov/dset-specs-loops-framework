@@ -1,20 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-167"
-type = "decision"
 semantic_id = "DSET-DECISION-GOV-031"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Installed methodology separates the DSET executable contract in TOOL from development environments and implementations in IMPL, while OPS owns only post-implementation operation and delivery."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Executable behavior, implementation technique, and post-implementation operation are different owners; separating them removes backward OPS-to-IMPL authority and makes recursive self-hosting inspectable."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "replacement_of"

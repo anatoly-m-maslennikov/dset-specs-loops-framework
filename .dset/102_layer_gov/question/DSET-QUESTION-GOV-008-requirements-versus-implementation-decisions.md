@@ -1,20 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-181"
-type = "question"
 semantic_id = "DSET-QUESTION-GOV-008"
+revision_mode = "atomic"
+content_role = "inquiry"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Should DSET classify observable required results as Requirements and reserve Decisions for selected implementation or governance choices, instead of treating Requirement as a Decision subtype with a broad general Decision fallback?"
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The current parent-and-subtype model may hide the practical WHAT-versus-HOW distinction that authors need when converting operator intent into durable artifacts."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "relates_to"

@@ -1,19 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-214"
-type = "decision"
-subtype = "requirement"
 semantic_id = "DSET-REQUIREMENT-GOV-066"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "DSET defines a development mode that moves accepted Atomic Artifacts through Test and Evaluation planning, implementation, execution, and evidence, plus a mandatory release-readiness mode that first compiles active Atomic Artifacts into evergreen specifications, resolves conflicts to a fixed point, and then refreshes implementation and assurance evidence at the exact release head."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Compiling every accepted atom immediately creates avoidable churn during development, while releasing without a full authority-to-specification reconciliation risks shipping implementation and evidence against stale current truth."
-
-[scope]
-kind = "layer"
-id = "governance"
 
 [promotion]
 affected_children = ["governance", "tool", "skill", "implementation", "ops"]

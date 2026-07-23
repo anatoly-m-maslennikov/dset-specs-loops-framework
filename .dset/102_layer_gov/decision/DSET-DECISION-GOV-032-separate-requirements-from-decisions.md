@@ -1,20 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-183"
-type = "decision"
 semantic_id = "DSET-DECISION-GOV-032"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "DSET uses peer Requirement and Decision Types: Requirements state required results or obligations, while Decisions record material selected implementation, architecture, governance, or operating approaches."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The previous Decision-parent model obscures the practical WHAT-versus-selected-HOW boundary. Peer Types preserve both required truth and the rationale for consequential choices without classifying routine code as authority."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "replacement_of"

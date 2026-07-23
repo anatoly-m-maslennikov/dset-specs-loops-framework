@@ -1,21 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-086"
-type = "problem"
-subtype = "defect"
 semantic_id = "DSET-DEFECT-GOV-007"
+revision_mode = "atomic"
+content_role = "observation"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "repository:dset-verify"
 claim = "A commit containing only generated derived views becomes a new commit-trailer relation input, making the committed views stale again and preventing a clean fixed point."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The derived relation index currently scans every provenance-bearing commit, including commits whose only changed paths are the outputs generated from that same index."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "child_of"

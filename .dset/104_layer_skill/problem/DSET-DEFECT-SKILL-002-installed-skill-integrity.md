@@ -1,21 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-064"
-type = "problem"
-subtype = "defect"
 semantic_id = "DSET-DEFECT-SKILL-002"
+revision_mode = "atomic"
+content_role = "observation"
+governance_origin = "external"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:skill"]
 status = "accepted"
 priority = "high"
 authority = "external:skill-refactor-audit"
 claim = "Installed wrapper and shared-runtime verification accepts post-install content mutation because it reports observed digests without comparing them to a sealed installation identity."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "A verifier that authenticates only shape can bless modified executable instructions and code as a valid DSET installation."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "child_of"

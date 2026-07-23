@@ -1,9 +1,11 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-045"
-type = "problem"
-subtype = "defect"
 semantic_id = "DSET-DEFECT-TOOL-003"
+revision_mode = "atomic"
+content_role = "observation"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:tool"]
 status = "accepted"
 priority = "high"
 authority = "repository:self-host-review"
@@ -11,10 +13,6 @@ claim = "The relation validator rejects replacement_of from immutable QA atoms e
 promotion = {}
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "The first QA successor authored under the typed-relation contract exposed a source restriction narrower than the governing definition."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
 
 [[relations]]
 type = "relates_to"

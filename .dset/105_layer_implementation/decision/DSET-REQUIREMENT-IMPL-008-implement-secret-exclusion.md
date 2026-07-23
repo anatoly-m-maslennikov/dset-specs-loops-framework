@@ -1,19 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-200"
-type = "decision"
-subtype = "requirement"
 semantic_id = "DSET-REQUIREMENT-IMPL-008"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:implementation"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Every applicable Implementation Profile realizes DSET secret exclusion through environment-boundary loading, redaction, scanning, least privilege, short-lived credentials, and immediate revocation or rotation after exposure."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "A prose prohibition is insufficient unless implementations constrain every ingress, execution, diagnostic, build, assurance, and incident boundary through which secret material can be copied."
-
-[scope]
-kind = "layer"
-id = "implementation"
 
 [promotion]
 affected_children = ["implementation"]

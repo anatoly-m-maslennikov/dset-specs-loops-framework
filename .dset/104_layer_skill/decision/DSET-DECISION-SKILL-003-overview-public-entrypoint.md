@@ -1,18 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-081"
-type = "decision"
 semantic_id = "DSET-DECISION-SKILL-003"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:skill"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "DSET publishes dset-overview as a supplemental read-only public skill over generated project health, while the existing sixteen lifecycle entrypoints and their routing model remain unchanged."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Operators need a discoverable helicopter view of artifacts, coverage, freshness, and open obligations without confusing observation with lifecycle routing or mutation."
-
-[scope]
-kind = "layer"
-id = "skill"
 
 [promotion]
 affected_children = ["skill"]

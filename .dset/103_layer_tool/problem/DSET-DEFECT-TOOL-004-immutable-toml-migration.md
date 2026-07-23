@@ -1,21 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-055"
-type = "problem"
-subtype = "defect"
 semantic_id = "DSET-DEFECT-TOOL-004"
+revision_mode = "atomic"
+content_role = "observation"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:tool"]
 status = "accepted"
 priority = "high"
 authority = "repository:self-host-review"
 claim = "The TOML migration plans writes to byte-stable sealed atoms, promoted proof, and registered legacy Decision carriers."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "A representation migration cannot prove self-application by rewriting the immutable history that authorizes and evidences it."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "relates_to"

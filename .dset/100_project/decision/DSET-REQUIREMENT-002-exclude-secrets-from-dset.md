@@ -1,21 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-199"
-type = "decision"
-subtype = "requirement"
 semantic_id = "DSET-REQUIREMENT-002"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "Secret values never enter DSET artifacts, settings, prompts, evidence, logs, generated views, support bundles, issue packets, commits, Tests, or Evaluations."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "DSET is a durable and frequently shared development control plane, so admitting a secret into any DSET carrier creates uncontrolled replication through Git history, agent context, proof, support, and publication surfaces."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 +++
 
 # Requirement — Exclude secrets from DSET

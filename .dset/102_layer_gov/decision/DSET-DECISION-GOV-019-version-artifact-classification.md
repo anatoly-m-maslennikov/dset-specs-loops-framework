@@ -1,18 +1,17 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-078"
-type = "decision"
 semantic_id = "DSET-DECISION-GOV-019"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "The artifact registry classifies the six release-lifecycle roles under the primary Version artifact Type, never Delivery."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Version identifies the governed artifact subject without requiring readers to distinguish DSET's prior use of Delivery from deployment or workflow delivery."
-
-[scope]
-kind = "layer"
-id = "gov"
 
 [promotion]
 affected_children = ["meta", "gov", "tool", "skill", "ops"]

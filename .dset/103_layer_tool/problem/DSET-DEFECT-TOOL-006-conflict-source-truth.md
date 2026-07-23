@@ -1,21 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-058"
-type = "problem"
-subtype = "defect"
 semantic_id = "DSET-DEFECT-TOOL-006"
+revision_mode = "atomic"
+content_role = "observation"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:tool"]
 status = "accepted"
 priority = "high"
 authority = "repository:fpf-review"
 claim = "Conflict resolution accepts caller-asserted authority facts that should be derived from repository truth."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "A caller must not be able to fabricate role, immutability, lifecycle, scope, priority, or precedence and thereby select a winner."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "relates_to"

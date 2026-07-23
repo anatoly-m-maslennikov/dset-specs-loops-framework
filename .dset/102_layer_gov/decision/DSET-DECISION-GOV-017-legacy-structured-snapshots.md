@@ -1,20 +1,18 @@
 +++
-artifact_type = "atomic_record"
 artifact_id = "DSET-ATOMIC-RECORD-062"
-type = "decision"
 semantic_id = "DSET-DECISION-GOV-017"
+revision_mode = "atomic"
+content_role = "definition"
+governance_origin = "internal"
+relation_shape = "standalone"
+scope_path = ["project:dset-specs-loops-framework", "layer:gov"]
 status = "accepted"
 priority = "high"
 authority = "operator:anatoly-m-maslennikov"
 claim = "A YAML carrier required by immutable historical links or selector-sealed authority remains byte-stable only as an exactly registered historical snapshot while its TOML sibling is the sole current owner."
 llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
 rationale = "Physical byte-stable snapshots preserve GitHub links and historical identity without making pointer stubs, symlinks, virtual resolution, or YAML fallback part of the current authority model."
-
-[scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[promotion]
+promotion = {}
 
 [[relations]]
 type = "child_of"
