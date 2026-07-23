@@ -47,6 +47,31 @@ Their runners and harnesses may instead be Implementation. A dated execution
 is a real Work occurrence outside artifact classification; its persisted
 result, trace, or proof is Observation and references that occurrence.
 
+## Content Role loop
+
+Content Roles participate in this canonical semantic loop:
+
+```text
+Inquiry
+  -> Definition
+  -> Rationale
+  -> Method
+  -> Implementation
+  -> Observation
+  -> Inquiry
+  -> ...
+```
+
+Inquiry frames an unresolved matter. Definition establishes the intended or
+accepted state. Rationale explains why. Method describes how to realize or
+check it. Implementation realizes it. Observation records actual state and can
+expose the next unresolved matter.
+
+The loop orders relationships between successor artifacts. It does not mutate
+one artifact through multiple roles. Each artifact retains one primary Content
+Role, one artifact may produce multiple successors, and a role may be omitted
+when its own entry criteria do not require a persisted artifact.
+
 ## Scope path
 
 `scope_path` is an extensible structural address composed from enabled project,
