@@ -1,16 +1,15 @@
-# Artifact classification rules
+# Artifact routing rules
 
 **Rule ID:** `DSET-RULE-ARTIFACT-CLASSIFICATION`
 
 ## Purpose
 
-DSET classifies every persisted governed artifact through exactly two
-intrinsic dimensions: Revision Mode and Content Role.
+DSET routes every persisted governed artifact through four independent fields:
+Revision Mode, Content Role, Governance Origin, and Relation Shape.
 
 Every artifact also has a required structural coordinate, Scope Path, which
-selects a view over the shared two-dimensional matrix. Concrete Type and
-subtype definitions are governed separately. Neither the dimensions nor the
-structural coordinate are themselves Types.
+selects a view over the shared matrix. DSET has no canonical artifact Type or
+subtype taxonomy.
 
 ## Revision mode
 
@@ -44,7 +43,7 @@ not select the role.
 
 Test and Evaluation definitions are Method when they specify reusable checks.
 Their runners and harnesses may instead be Implementation. A dated execution
-is a real Work occurrence outside artifact classification; its persisted
+is a real Work occurrence outside artifact routing; its persisted
 result, trace, or proof is Observation and references that occurrence.
 
 ## Content Role loop
@@ -79,11 +78,11 @@ feature-group, feature, layer, and future structural segments. It identifies
 the narrowest common owner that can govern the whole artifact and selects one
 matrix slice.
 
-Scope Path never determines Revision Mode, Content Role, Type, subtype, or any
-qualifying property. It does not identify the Entity of Concern, declare claim
-applicability, or establish a bounded semantic context. If meanings or
-invariants differ across structural scopes, DSET names the semantic context or
-an explicit bridge rather than inferring it from the path.
+Scope Path never determines any routing field. It does not identify the Entity
+of Concern, declare claim applicability, or establish a bounded semantic
+context. If meanings or invariants differ across structural scopes, DSET names
+the semantic context or an explicit bridge rather than inferring it from the
+path.
 
 OPS is a layer in `scope_path`, not a Content Role:
 
@@ -100,9 +99,8 @@ and the persisted result is Observation.
 
 ## Qualifying properties
 
-Relation Shape and Governance Origin refine an artifact inside the
-two-dimensional classification matrix at its Scope Path. They are not
-additional intrinsic dimensions.
+Relation Shape and Governance Origin complete the route selected inside the
+Revision Mode by Content Role matrix at its Scope Path.
 
 ### Relation shape
 
@@ -120,7 +118,7 @@ and endpoint roles. Relational structures may be n-ary.
 
 Relational and Standalone artifacts use the same two intrinsic dimensions and
 structural Scope Path. Separate renderings may improve readability, but they
-do not create different classification systems.
+do not create different routing systems.
 
 ### Governance origin
 
@@ -139,9 +137,21 @@ A Relational artifact additionally declares each endpoint's independent
 governs the relation record; endpoint origins identify its participants. One
 never substitutes for the other.
 
-Origin qualifies a Type; it does not create a second canonical Type. A UI may
-show an origin-qualified label for readability without changing catalog
-identity.
+Origin participates directly in routing. It does not establish a separate
+taxonomy, authority claim, or duplicate artifact identity.
+
+## Deterministic route names
+
+Every complete route has exactly one canonical display name:
+
+```text
+<Governance Origin> <Revision Mode> <Content Role> <Artifact | Relation>
+```
+
+Examples include `Internal Atomic Definition Artifact` and
+`External Maintained Method Relation`. The name is derived from the routing
+fields and never used as a routing input. Aliases, Types, and subtypes are not
+admitted.
 
 ## Pull-request direction
 
@@ -166,7 +176,7 @@ It has `source` and `target` endpoints:
 The merge or squash commit is a separate Atomic Implementation. Immutable
 proof of final PR state, when required, is a separate Atomic Observation.
 
-This classification applies when the Entity of Concern is the reusable
+This routing applies when the Entity of Concern is the reusable
 integration and review mechanism. A PR carrier may contain proposed
 Definitions, observations, and other separately governed claims; the carrier
 does not force them all into Method.
@@ -181,23 +191,18 @@ does not force them all into Method.
 5. Select `relation_shape`. For a Relational artifact, recover the relation
    kind, endpoint roles, and endpoint origins.
 6. Select the artifact's `governance_origin`.
-7. Select one admitted concrete Type and at most one direct subtype.
+7. Derive the route key and its one deterministic display name.
 8. Add provenance, evidence, and traceability without treating them as truth
    or authority.
 
-No intrinsic-dimension value is inferred from another. Classification never derives
-meaning from a filename, workflow, host, tool, or next action. DSET does not
-force every matrix cell to contain a Type.
+No routing-field value is inferred from another. Routing never derives meaning
+from a filename, display name, workflow, host, tool, or next action. DSET does
+not require every route combination to be used.
 
 ## Matrix rendering
 
 Each `scope_path` selects one structural slice of the shared two-dimensional
 matrix. The slice uses Revision Mode as rows and Content Role as columns.
 Views may qualify occupants by artifact Governance Origin. Relational views
-also show Types with their required endpoint roles and endpoint-origin
-combinations.
-
-The current cut finalizes the classification dimensions, structural
-coordinate, and qualifiers only. Concrete Type names, direct subtype
-definitions, and cell occupancy require a separate accepted authority set
-before they become canonical.
+also show artifacts with their required Relation Kind, endpoint roles, and
+endpoint-origin combinations.
