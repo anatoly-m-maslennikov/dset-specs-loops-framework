@@ -24,6 +24,7 @@ private_memory_dependency = "prohibited"
 format = "yaml"
 format_authority = "external-host-standard"
 required_fields = ["name", "description"]
+required_fields_use_single_line_scalars = true
 name_matches_directory = true
 name_pattern = "lowercase-kebab-case"
 name_max_characters = 64
@@ -105,7 +106,7 @@ failed_cases_preserved = true
 automated_judgment_calibrated = true
 
 [verification]
-audit_command = "python -m dset_toolchain skill-profile audit skills"
+audit_command = "python -m dset_toolchain skills audit --source skills"
 agent_skills_spec_validation = true
 host_metadata_validation = true
 changed_script_static_validation = true

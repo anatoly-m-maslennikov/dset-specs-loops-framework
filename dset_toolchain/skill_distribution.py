@@ -20,6 +20,7 @@ from . import __version__
 from .bootstrap import distribution_source
 from .skill_catalog import PUBLIC_SKILL_WORKFLOWS, SKILL_INVOCATION_MARKERS
 from .skill_context import resolve_skill_context
+from .skill_quality import SkillProfileError, audit_skill_catalog, audit_skill_package
 from .temp_paths import temporary_directory
 
 # SKILL_WORKFLOWS defines skill workflows; this module owns the default.
@@ -28,7 +29,7 @@ SKILL_WORKFLOWS = PUBLIC_SKILL_WORKFLOWS
 HOSTS = {"claude", "codex"}
 # RECEIPT_SCHEMA_VERSION defines receipt schema version; this module owns the default.
 RECEIPT_SCHEMA_VERSION = "1.1"
-# RUNTIME_PACKAGE_SCHEMA_VERSION defines runtime package schema version; this module owns the default.
+# RUNTIME_PACKAGE_SCHEMA_VERSION defines the installed runtime package schema.
 RUNTIME_PACKAGE_SCHEMA_VERSION = "2.0"
 # RECEIPT_FIELDS defines receipt fields; this module owns the default.
 RECEIPT_FIELDS = {
@@ -1018,6 +1019,10 @@ def _validate_source_surface(skills_root: Path) -> None:
             "source must contain exactly the public DSET skill catalog: "
             f"expected={sorted(expected)}, actual={sorted(actual)}"
         )
+    try:
+        audit_skill_catalog(skills_root, expected_skills=expected)
+    except SkillProfileError as error:
+        raise SkillDistributionError(str(error)) from error
 
 
 def _validate_skill_shape(skill: Path, host: str) -> None:
@@ -1026,6 +1031,12 @@ def _validate_skill_shape(skill: Path, host: str) -> None:
     skill_file = skill / "SKILL.md"
     if not skill_file.is_file():
         raise SkillDistributionError(f"SKILL.md is missing: {skill_file}")
+    profile_issues = audit_skill_package(skill)
+    if profile_issues:
+        raise SkillDistributionError(
+            "agent-skills-v1 failed for installed skill:\n- "
+            + "\n- ".join(profile_issues)
+        )
     text = skill_file.read_text(encoding="utf-8")
     name = skill.name
     if f"\nname: {name}\n" not in text or "\ndescription: " not in text:
@@ -1058,6 +1069,9 @@ def _parser() -> argparse.ArgumentParser:
     """Handle parser using the declared repository contract."""
     parser = argparse.ArgumentParser(description="Install and verify DSET skills")
     subparsers = parser.add_subparsers(dest="command", required=True)
+    audit = subparsers.add_parser("audit")
+    audit.add_argument("--source", type=Path, default=Path("skills"))
+    audit.add_argument("--cases", type=Path)
     for command in ("install", "verify", "receipt-template", "verify-invocation"):
         item = subparsers.add_parser(command)
         item.add_argument("--host", choices=sorted(HOSTS), required=True)
@@ -1089,6 +1103,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     """Run the command-line interface and return its exit status."""
     arguments = _parser().parse_args(argv)
     try:
+        if arguments.command == "audit":
+            return _run_audit_command(arguments)
         if arguments.command == "context":
             context_result = resolve_skill_context(
                 Path(arguments.target),
@@ -1191,7 +1207,12 @@ def main(argv: Sequence[str] | None = None) -> int:
                 destination,
                 package_destination,
             )
-    except (OSError, json.JSONDecodeError, SkillDistributionError) as error:
+    except (
+        OSError,
+        json.JSONDecodeError,
+        SkillDistributionError,
+        SkillProfileError,
+    ) as error:
         print(json.dumps({"status": "error", "message": str(error)}), file=sys.stderr)
         return 2
     print(json.dumps(result, indent=2, sort_keys=True))
@@ -1200,6 +1221,36 @@ def main(argv: Sequence[str] | None = None) -> int:
         if runtime_action is not None and runtime_action.status == "conflict":
             has_conflict = True
         return 2 if has_conflict else 0
+    return 0
+
+
+def _default_case_catalog(source: Path) -> Path:
+    """Resolve the repository-owned trigger case definition for source skills."""
+    root = source.parent if source.name == "skills" else source
+    return (
+        root
+        / "15_layer_implementation"
+        / "120_evaluations"
+        / "030_dset-implementation-evaluations-skill-cases.toml"
+    )
+
+
+def _run_audit_command(arguments: argparse.Namespace) -> int:
+    """Run the read-only Agent Skills profile source gate."""
+    audit_source = Path(arguments.source)
+    case_catalog = (
+        Path(arguments.cases)
+        if arguments.cases is not None
+        else _default_case_catalog(audit_source)
+    )
+    result = asdict(
+        audit_skill_catalog(
+            _skills_root(audit_source),
+            expected_skills=set(SKILL_WORKFLOWS),
+            case_catalog=case_catalog,
+        )
+    )
+    print(json.dumps(result, indent=2, sort_keys=True))
     return 0
 
 

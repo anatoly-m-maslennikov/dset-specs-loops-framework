@@ -18,6 +18,8 @@ canonical workflow instructions and cannot redefine DSET semantics.
 
 1. A skill directory contains `SKILL.md` with externally mandated YAML
    frontmatter. `name` and `description` are required.
+   DSET-owned packages keep those required fields as one-line scalar values so
+   dependency-free deterministic validation can read them consistently.
 2. The name is lowercase kebab-case, matches the directory, and is no longer
    than 64 characters. Use a concrete activity or capability name; avoid vague
    names such as `helper`, `utils`, or `tools`.
@@ -110,6 +112,10 @@ claims. Record exact versions and effective configuration. A pass on one model
 does not prove another. Preserve failed cases, calibrate automated judgment
 against reviewed examples, and rerun the full affected matrix before promoting
 a skill version.
+
+The deterministic source gate is:
+
+`python -m dset_toolchain skills audit --source skills`
 
 ## Sources
 
