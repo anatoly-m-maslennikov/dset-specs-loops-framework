@@ -6,6 +6,9 @@ import unittest
 
 from dset_toolchain.artifact_routing import (
     CONTENT_ROLES,
+    GOVERNANCE_ORIGINS,
+    RELATION_SHAPES,
+    REVISION_MODES,
     ArtifactRoute,
     parse_artifact_route,
     route_issues,
@@ -54,6 +57,45 @@ class ArtifactRoutingTests(unittest.TestCase):
             parse_artifact_route(external).name,
             "External Atomic Definition Artifact",
         )
+
+    def test_each_internal_and_external_route_has_one_unique_name(self) -> None:
+        names: set[str] = set()
+        for revision_mode in REVISION_MODES:
+            for content_role in CONTENT_ROLES:
+                for governance_origin in GOVERNANCE_ORIGINS:
+                    for relation_shape in RELATION_SHAPES:
+                        candidate = {
+                            "revision_mode": revision_mode,
+                            "content_role": content_role,
+                            "governance_origin": governance_origin,
+                            "relation_shape": relation_shape,
+                            "scope_path": ["project:dset"],
+                        }
+                        if relation_shape == "relational":
+                            candidate.update(
+                                {
+                                    "relation_kind": "connects",
+                                    "endpoints": [
+                                        {
+                                            "role": "source",
+                                            "target": "A",
+                                            "origin": "internal",
+                                        },
+                                        {
+                                            "role": "target",
+                                            "target": "B",
+                                            "origin": "external",
+                                        },
+                                    ],
+                                }
+                            )
+                        route = parse_artifact_route(candidate)
+                        self.assertNotIn(route.name, names)
+                        names.add(route.name)
+                        self.assertTrue(
+                            route.name.startswith(governance_origin.title())
+                        )
+        self.assertEqual(len(names), 72)
 
     def test_relational_route_requires_kind_and_endpoints(self) -> None:
         candidate = self.standalone()

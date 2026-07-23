@@ -20,51 +20,11 @@ schema_version = "1.5"
 canonical_command = "python -m dset_toolchain verify ."
 
 [artifacts]
-# Select the visible classification and project-wide numbering axis for
-# governed artifacts.
-#
-# Accepted:
-# - false (default): type-only structural name and one sequence per Type.
-#   Example: DSET-VERSION-001-0-4-core.md
-#   Inside the artifact: artifact_type = "version" and
-#   artifact_subtype = "version_scope".
-# - true: expose the direct subtype and use one sequence per subtype.
-#   Example: DSET-VERSION-VERSION-SCOPE-001-0-4-core.md
-#   Atomic records use the semantic subtype kind directly, such as
-#   DSET-REQUIREMENT-GOV-054-readable-summary.md. Empty-subtype atoms continue to use
-#   their Type kind, such as DSET-DECISION-GOV-033-readable-summary.md.
-#
-# Changing this value requires a complete governed migration of current and
-# historical IDs, filenames, relations, lifecycle targets, compiled documents,
-# settings, implementations, proof references, and generated views. Layers,
-# features, feature groups, folders, and lifecycle state never restart a
-# sequence. The repository never retains two accepted naming vocabularies.
-# This migrates identity and carrier-representation fields only. Atomic claims,
-# rationale, provenance, scope/relation meaning, and QA criteria remain
-# immutable; changing them requires a successor atom.
-#
-# Registered artifact subtype examples:
-# - analysis_report: solution_landscape, root_cause_analysis, proposal,
-#   technical_investigation, external_audit_analysis
-# - specification: domain_model, behavior, architecture, design, governance
-# - procedure: playbook, runbook
-# - plan: implementation_plan, test_plan, evaluation_plan
-# - version: roadmap, version_scope, change, release_plan, readiness_record,
-#   release_record
-# - implementation: source_code, documentation, configuration, migration,
-#   test_implementation, evaluation_implementation
-# - evidence_record: test_result, evaluation_result, review_report, run_record
-# - derived_view: project_overview, health_dashboard, traceability_index,
-#   changelog
-# - navigation: readme, hub, index
-# atomic_record and verification currently have no artifact subtypes.
-subtype_in_names = true
-
 # Set the gate used before a new immutable atomic artifact is emitted.
 #
 # Accepted:
 # - "medium" (default): require clear authority, one primary claim, semantic
-#   Type, owning scope, provenance, material links, priority, and acceptance.
+#   route, owning scope, provenance, material links, priority, and acceptance.
 #   Optional non-authoritative context may remain explicitly unknown.
 # - "high": also require every material boundary, lineage, conflict, and proof
 #   question to be precise. DSET asks focused questions or stops without writing
@@ -73,6 +33,23 @@ subtype_in_names = true
 # Both values check whether the claim may belong one enabled scope higher and
 # propose eligible promotion. Promotion always requires operator acceptance.
 creation_strictness = "medium"
+
+[routing]
+# These four independent axes are the complete routing vocabulary. They are
+# not a Type/subtype catalog and projects cannot add aliases. `scope_path`
+# remains an extensible per-artifact structural coordinate.
+revision_modes = ["atomic", "evergreen", "maintained"]
+content_roles = ["inquiry", "definition", "rationale", "method", "implementation", "observation"]
+governance_origins = ["internal", "external"]
+relation_shapes = ["standalone", "relational"]
+
+# Every complete route has exactly one deterministic name:
+# "<Internal|External> <Atomic|Evergreen|Maintained>
+#  <Inquiry|Definition|Rationale|Method|Implementation|Observation>
+#  <Artifact|Relation>".
+# Examples:
+# - Internal Atomic Definition Artifact
+# - External Maintained Method Relation
 
 [workflows.implement]
 # Choose what dset-implement may do before implementation begins.

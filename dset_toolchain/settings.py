@@ -6,6 +6,12 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from .artifact_routing import (
+    CONTENT_ROLES,
+    GOVERNANCE_ORIGINS,
+    RELATION_SHAPES,
+    REVISION_MODES,
+)
 from .toml_codec import TomlCodecError
 from .toml_codec import load as load_toml
 
@@ -64,6 +70,10 @@ class ProjectSettings:
     priority_scale: tuple[str, ...] = DEFAULT_PRIORITY_SCALE
     default_priority: str = "medium"
     conflict_resolution_mode: str = "ask_always"
+    routing_revision_modes: tuple[str, ...] = REVISION_MODES
+    routing_content_roles: tuple[str, ...] = CONTENT_ROLES
+    routing_governance_origins: tuple[str, ...] = GOVERNANCE_ORIGINS
+    routing_relation_shapes: tuple[str, ...] = RELATION_SHAPES
 
 
 def selected_settings_path(root: Path) -> Path:
@@ -133,11 +143,13 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
     subtype_key = "artifact_subtype_in_names" if legacy else "subtype_in_names"
     strictness_key = "artifact_creation_strictness" if legacy else "creation_strictness"
 
-    include_subtype = _boolean(
-        artifacts.get(subtype_key, False),
-        f"{artifacts_name}.{subtype_key}",
-        issues,
-    )
+    include_subtype = False
+    if schema_version != SETTINGS_SCHEMA_VERSION:
+        include_subtype = _boolean(
+            artifacts.get(subtype_key, False),
+            f"{artifacts_name}.{subtype_key}",
+            issues,
+        )
     strictness = _string(
         artifacts.get(strictness_key, "medium"),
         f"{artifacts_name}.{strictness_key}",
@@ -226,6 +238,32 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
         )
         conflict_resolution_mode = "ask_always"
 
+    routing = _table(raw.get("routing"), "routing", issues)
+    routing_revision_modes = _route_axis(
+        routing.get("revision_modes", REVISION_MODES),
+        "routing.revision_modes",
+        REVISION_MODES,
+        issues,
+    )
+    routing_content_roles = _route_axis(
+        routing.get("content_roles", CONTENT_ROLES),
+        "routing.content_roles",
+        CONTENT_ROLES,
+        issues,
+    )
+    routing_governance_origins = _route_axis(
+        routing.get("governance_origins", GOVERNANCE_ORIGINS),
+        "routing.governance_origins",
+        GOVERNANCE_ORIGINS,
+        issues,
+    )
+    routing_relation_shapes = _route_axis(
+        routing.get("relation_shapes", RELATION_SHAPES),
+        "routing.relation_shapes",
+        RELATION_SHAPES,
+        issues,
+    )
+
     return (
         ProjectSettings(
             schema_version=(
@@ -242,6 +280,10 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
             priority_scale=priority_scale,
             default_priority=default_priority,
             conflict_resolution_mode=conflict_resolution_mode,
+            routing_revision_modes=routing_revision_modes,
+            routing_content_roles=routing_content_roles,
+            routing_governance_origins=routing_governance_origins,
+            routing_relation_shapes=routing_relation_shapes,
         ),
         tuple(issues),
     )
@@ -289,6 +331,7 @@ def _validate_known_keys(
                 "version_registry",
                 "package_catalog",
                 "conflict_resolution",
+                "routing",
             }
         )
     _unknown_keys(raw, allowed_top, "settings", issues)
@@ -296,12 +339,16 @@ def _validate_known_keys(
     artifacts_name = "optional_capabilities" if legacy else "artifacts"
     artifacts = raw.get(artifacts_name)
     if isinstance(artifacts, dict):
+        artifact_keys = {
+            ("artifact_creation_strictness" if legacy else "creation_strictness"),
+        }
+        if schema_version != SETTINGS_SCHEMA_VERSION:
+            artifact_keys.add(
+                "artifact_subtype_in_names" if legacy else "subtype_in_names"
+            )
         _unknown_keys(
             artifacts,
-            {
-                "artifact_subtype_in_names" if legacy else "subtype_in_names",
-                ("artifact_creation_strictness" if legacy else "creation_strictness"),
-            },
+            artifact_keys,
             artifacts_name,
             issues,
         )
@@ -379,6 +426,19 @@ def _validate_known_keys(
             "conflict_resolution",
             issues,
         )
+    routing = raw.get("routing")
+    if isinstance(routing, dict):
+        _unknown_keys(
+            routing,
+            {
+                "revision_modes",
+                "content_roles",
+                "governance_origins",
+                "relation_shapes",
+            },
+            "routing",
+            issues,
+        )
 
 
 def _unknown_keys(
@@ -410,6 +470,25 @@ def _boolean(value: object, name: str, issues: list[str]) -> bool:
         return value
     issues.append(f"{name} must be true or false")
     return False
+
+
+def _route_axis(
+    value: object,
+    name: str,
+    canonical: tuple[str, ...],
+    issues: list[str],
+) -> tuple[str, ...]:
+    """Require the complete ordered routing vocabulary for one axis."""
+    if not isinstance(value, (list, tuple)) or not all(
+        isinstance(item, str) for item in value
+    ):
+        issues.append(f"{name} must be a TOML array of strings")
+        return canonical
+    selected = tuple(value)
+    if selected != canonical:
+        issues.append(f"{name} must be: {', '.join(canonical)}")
+        return canonical
+    return selected
 
 
 def _priority_scale(
