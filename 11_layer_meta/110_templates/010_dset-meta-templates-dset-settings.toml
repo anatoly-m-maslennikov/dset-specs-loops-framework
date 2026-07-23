@@ -121,22 +121,51 @@ default_workspace = "integration-branch"
 budget_profile = "medium"
 
 [priority]
-# Define the project-wide priority vocabulary from highest to lowest.
+# Compatibility vocabulary accepted when reading current and immutable legacy
+# artifacts. New writers use only priority.assignable_scale.
 #
-# Accepted: a TOML array containing at least two unique strings.
-# Default: the five values below. Array position is precedence: critical
-# outranks high, and deferred ranks last.
-#
-# Priority is available to every governed artifact. It orders current attention
-# but does not override external authority, lifecycle state, proof quality,
-# dependencies, or authorization gates.
+# `critical` and `deferred` are legacy read values normalized below. `highest`
+# is intentionally absent because it exists only during comparison.
 scale = ["critical", "high", "medium", "low", "deferred"]
+assignable_scale = ["high", "medium", "low"]
+effective_scale = ["highest", "high", "medium", "low"]
+virtual_only = ["highest"]
+legacy_aliases = { critical = "high", deferred = "low" }
 
 # Priority assigned when a governed artifact has neither a direct value nor an
 # inherited value from its canonical owner.
 #
 # Accepted: one value present in priority.scale. Default: "medium".
 default = "medium"
+
+[priority.creation_defaults]
+constraint = "high"
+contract = "medium"
+requirement = "medium"
+decision = "medium"
+implementation = "low"
+other = "medium"
+
+[priority.comparison]
+# Add each bonus once when comparing two applicable artifacts; never multiply
+# by the number of skipped structural levels or layers.
+strict_scope_ancestor_steps = 1
+earlier_layer_steps = 1
+bonuses_are_additive = true
+cap = "highest"
+layer_order = ["meta", "gov", "tool", "skill", "implementation", "ops"]
+peer_features_are_ordered = false
+unrelated_scopes_receive_bonus = false
+
+[conflict_resolution]
+# Accepted: "ask_always" or "auto_by_effective_priority".
+# Default: "ask_always".
+mode = "ask_always"
+allowed_modes = ["ask_always", "auto_by_effective_priority"]
+automatic_requires_unique_winner = true
+tie_or_same_level = "ask"
+unknown_uncertain_or_incomparable = "ask"
+unsatisfiable_external_obligations = "stop"
 
 # Implementation Profiles are peer features in the IMPL layer. A project may
 # select more than one and assign each to explicit work-area IDs. Selection is

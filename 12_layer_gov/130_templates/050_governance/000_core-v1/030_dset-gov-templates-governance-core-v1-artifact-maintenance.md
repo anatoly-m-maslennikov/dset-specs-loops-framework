@@ -294,23 +294,31 @@ Actionable work uses priority as one execution-order input; dependencies,
 authorization, gates, and resources may still determine the next action.
 Impact, severity, likelihood, expected value, obligations, and Outcome value
 stay in their owning semantics as priority evidence, not a second universal
-rank. The selected project profile owns one bounded scale, legend, inheritance,
-override, and escalation rules. `core-v1` orders `critical`, `high`, `medium`,
-`low`, then `deferred`; lower list position means lower current execution
-priority. `.dset/dset_settings.toml` publishes the ordered scale and its default. An
-artifact without a direct priority inherits through its owning atom or Change,
-then the project default. An explicit historical `unknown` remains unknown
-until an append-only priority event supplies a value; it never silently falls
-back.
+rank. New writers use the stored scale `high`, `medium`, `low`. Creation
+defaults are Constraint `high`; Contract, Requirement, and Decision `medium`;
+and implementation carrier `low`. Other roles inherit through their owning
+atom or Change, then use the project `medium` default. `highest` is
+virtual-only. Immutable legacy `critical` and `deferred` values normalize to
+`high` and `low` for comparison without rewriting their atoms.
+
+For an eligible comparison, add one effective-priority step to a strict
+structural-scope ancestor and one step to an earlier owning layer. Apply each
+axis once, add the bonuses, and cap at `highest` on
+`low → medium → high → highest`. A project Contract therefore outranks an
+otherwise-equal child Requirement; an earlier-layer artifact outranks an
+otherwise-equal later-layer artifact. Peer features, same-level artifacts, and
+unrelated scopes receive no bonus.
 
 Classify each conflict before resolving it. Immutable external authority wins
 over mutable project truth. If two immutable obligations cannot both be
 satisfied, priority orders remediation or escalation but cannot claim
 compliance; stop for an exception, boundary change, or external resolution.
 For a declared comparable and resolvable policy conflict, apply explicit
-specific precedence first; otherwise, higher effective priority wins the
-conflicting claim. Equal, unknown, cyclically inherited, or incomparable
-priority stops for a Decision or explicit precedence.
+applicable lifecycle and override relations first. The default `ask_always`
+mode explains the result and asks before claim selection. Opt-in
+`auto_by_effective_priority` selects only one unique higher effective priority;
+equal, same-level, unknown, cyclically inherited, uncertain, or incomparable
+results ask.
 
 The resolver accepts every governed artifact pairing and uses artifact role
 before priority:
@@ -329,10 +337,11 @@ before priority:
   owner or applicable rule exists.
 
 Priority orders remediation for every conflict class, but selects a normative
-claim only where the governing profile permits selection. Record both artifact
-IDs, roles, effective priority values and sources, conflict class, context,
-disposition or selected claim, and profile edition. Never infer resolution from
-filename, list order, or age. Reprioritization invalidates affected derived
+claim only where the governing profile and selected mode permit it. Record both
+artifact IDs, roles, stored priorities, applied scope/layer bonuses, effective
+priorities and sources, conflict class, context, mode, disposition or selected
+claim, and profile edition. Never infer resolution from filename, list order,
+age, or layer distance. Reprioritization invalidates affected derived
 resolutions. Conflict handling never edits an atom; recompilation updates only
 the declared evergreen projection.
 

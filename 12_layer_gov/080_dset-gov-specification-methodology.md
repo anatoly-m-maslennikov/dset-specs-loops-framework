@@ -21,7 +21,8 @@ presentation.
 | `DSET-DECISION-GOV-002` | Use one constitutional governance root; separate dependency from precedence and authority from assurance |
 | `DSET-DECISION-GOV-003` | Keep semantic atoms immutable and resolve conflicts by role and lifecycle before priority |
 | `DSET-DECISION-GOV-032` | Use peer Requirement and Decision Types: required obligations are Requirements; material selected approaches are Decisions |
-| `DSET-DECISION-GOV-010` | Use the bounded `critical`, `high`, `medium`, `low`, `deferred` priority profile with `medium` as default |
+| `DSET-REQ-GOV-058` | Assign `high`, `medium`, or `low` base priority and derive capped virtual priority from scope and upstream-layer bonuses during comparison |
+| `DSET-REQ-GOV-059` | Default conflict selection to `ask_always`; permit opt-in automatic selection only for one unique effective-priority winner |
 | `DSET-DECISION-GOV-019` | Use Version as the shared primary artifact type for six flat release-lifecycle roles |
 | `DSET-DECISION-GOV-013` | Use ten typed forward artifact relations, derived inverses, and range-based evergreen projection frontiers |
 | `DSET-DECISION-GOV-014` | Normalize explicit null to omission only for governed optional-unset TOML fields; block every other null |
@@ -472,28 +473,35 @@ or inherits it through one visible canonical relation.
 Implementation files may inherit from their owning Decision or QA atom, or an
 optional Change, instead of carrying duplicated inline metadata.
 
-Problems, Questions and their direct subtypes, optional Changes, and tasks use priority as one
-input to execution order. Dependencies, authorization boundaries, release
-gates, and resource constraints may still require a different next action.
-Impact, severity, likelihood, expected value, Decision/Contract obligations, Outcome
-value, and gate status remain evidence that explains priority rather than
-separate universal ranking fields.
+New writers store only `high`, `medium`, or `low`. Creation defaults are `high`
+for Constraints, `medium` for Contracts, Requirements, and empty-subtype
+Decisions, and `low` for implementation carriers. Other roles inherit from a
+canonical owner or default to `medium`. `highest` is virtual-only and cannot be
+emitted. Immutable legacy `critical` and `deferred` values remain readable as
+`high` and `low` respectively; new writers never emit them.
 
-Priority is also the default deterministic tie-breaker for declared resolvable
-policy conflicts. The resolver first classifies the conflict. Immutable
-external authority wins over mutable project truth. If two immutable
-obligations cannot both be satisfied, priority may order remediation or
-escalation but cannot report the lower-priority obligation as satisfied; the
-conflict stops for an exception, boundary change, or external resolution.
+For one eligible comparison, start from current stored priority. Add one step
+when one artifact's applicable structural scope is a strict ancestor of the
+other's: a project artifact therefore gains one step over a feature group,
+feature, or layer artifact. Add one further step when its owning layer is
+earlier in `META → GOV → TOOL → SKILL → IMPL → OPS`. Bonuses are additive,
+apply once per axis rather than once per distance, and cap on
+`low → medium → high → highest`. Peer features and unrelated scopes receive no
+bonus.
 
-For a comparable conflict whose governing profile permits selection, the
-resolver applies any explicit specific precedence relation, then the higher
-effective priority. The selected artifact governs only the conflicting claim
-in the declared context; the other artifact remains valid elsewhere. Equal,
-unknown, cyclically inherited, or incomparable priorities stop with the
-unresolved artifacts and require a Decision or explicit precedence. Every
-automatic resolution records the artifact IDs, effective priorities, priority
-sources, conflict class, context, selected claim, and governing profile edition.
+The resolver applies lifecycle, absorption, explicit applicable override,
+authority, applicability, and conflict class before this calculation. Two
+immutable external obligations that cannot both be satisfied stop; priority
+may order remediation but cannot claim compliance.
+
+Projects select `ask_always` or `auto_by_effective_priority` in
+`.dset/dset_settings.toml`. `ask_always` is the default: DSET explains the
+comparison and requests operator selection. Automatic mode may select only one
+unique winner in a selectable normative conflict. Equal effective priority,
+the same structural level, unknown or incomparable scope, cyclic inheritance,
+uncertainty, or multiple winners asks the operator. Every resolution records
+the artifact IDs, stored and effective priorities, applied bonuses, sources,
+conflict class, context, mode, selected claim, and governing profile edition.
 
 Every governed artifact pair is classifiable even when it is not a selectable
 normative conflict. An accepted, active, applicable atomic source governs over
@@ -508,25 +516,21 @@ follows its traceable owner or stops when no owner or applicable rule exists.
 Priority orders remediation across these classes but selects a normative claim
 only when the profile permits selection.
 
-The selected project governance profile owns one bounded priority scale, its
-legend, inheritance rules, override rules, and escalation behavior and exposes
-them to generated views. Missing effective priority remains `unknown` and is a
-visible governance gap; type, file order, age, or a dashboard score must not
-infer it. Reprioritization may change future conflict or queue outcomes, so it
-records provenance and invalidates affected derived resolutions, but it does
-not silently rewrite accepted artifacts.
+The selected project governance profile owns its assignment scale, creation
+defaults, virtual ladder, comparison bonuses, legacy normalization, and
+conflict-selection mode and exposes them to generated views. Missing stored
+priority remains `unknown` and is a visible governance gap. Reprioritization may
+change future conflict or queue outcomes, so it records provenance and
+invalidates affected derived resolutions without editing an atom.
 
-**Scenario DSET-SCENARIO-GOV-027:** A project-owned output Contract permits one
-of two formats and has higher priority than a preferred-format Requirement. The
-Contract wins the declared field automatically and both artifacts remain valid
-outside that conflict. Two immutable customer Contracts demanding mutually
-exclusive values stop as unsatisfiable; priority orders remediation but does
-not falsely mark either Contract satisfied. An active Decision that differs
-from its compiled evergreen spec wins and makes that projection stale; a
-failing Test changes assurance instead of competing by priority. An absorbing
-Decision wins over its absorbed predecessor by explicit lifecycle relation,
-not because it is newer. Equal selectable priorities stop for a Decision; no
-outcome is inferred from document order.
+**Scenario DSET-SCENARIO-GOV-027:** A project Contract and feature Requirement
+both start at `medium`; the Contract's strict-ancestor scope step makes it
+effectively `high`. Under `ask_always`, DSET explains that result and asks.
+Under `auto_by_effective_priority`, the Contract wins the eligible conflicting
+claim. Two feature Requirements in the same layer remain tied and ask. A
+project META Constraint starts `high`, gains scope and earlier-layer steps, and
+caps at virtual `highest`. Unsatisfiable external Contracts still stop instead
+of reporting false compliance.
 
 ## DSET-REQUIREMENT-GOV-027 — Four Types use one flat subtype level
 

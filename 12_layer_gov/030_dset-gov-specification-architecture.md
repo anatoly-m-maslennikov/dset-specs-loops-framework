@@ -172,6 +172,13 @@ influence on the immediately following layer is preferred because it keeps
 boundaries local and legible. An explicit longer forward jump is valid when an
 intermediate layer has no meaningful ownership to add.
 
+When an otherwise eligible normative conflict reaches priority comparison, the
+artifact owned by the earlier layer receives one virtual effective-priority
+step over the later-layer artifact. The bonus applies once regardless of layer
+distance and never changes stored priority. It is a comparison consequence of
+the forward-only authority chain, not a new backward dependency or a permanent
+precedence relation.
+
 A downstream artifact may cite, depend on, implement, check, or provide
 evidence for upstream authority. Those relations consume earlier authority;
 they do not reverse it. In the rule registry, a rule may depend only on a rule
@@ -192,6 +199,12 @@ ancestor that contains all affected owners and subjects. A concern spanning
 features inside one feature group belongs to that group; a concern spanning
 groups or layers belongs to the project. Abstract, important, or reusable does
 not by itself mean project-level.
+
+During an eligible conflict comparison, a strict structural-scope ancestor
+receives one virtual effective-priority step over its applicable descendant.
+Thus a project Contract gains one step over a conflicting feature, group, or
+layer Requirement. Peer features and unrelated scopes gain no structural
+bonus, and the comparison never changes either artifact's canonical owner.
 
 The project-level set owns genuinely project-wide outcomes, user journeys, and
 requirements; cross-child Contracts and dependency rules; shared API, data,
