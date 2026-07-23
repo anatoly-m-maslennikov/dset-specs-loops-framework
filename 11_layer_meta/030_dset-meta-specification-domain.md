@@ -26,7 +26,7 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 | **Contract** | The registered name for an atomic relational Definition that binds explicit participants across an internal or external boundary |
 | **Implementation Decision** | The registered name for an internal atomic Method that selects a material architecture, design, algorithm, data, tooling, or operating approach |
 | **Work Area** | A declared repository-relative folder that bounds DSET scope without implying code, deployability, or a particular architecture; it may contain local tools, deployable services, libraries, documentation, methodology, data, or mixed content |
-| **Analysis Mode** | A session workflow state that permits exploration without governed artifact creation until explicit operator acceptance |
+| **Exploration Mode** | A session workflow state that permits brainstorming, discussion, research, analysis, comparison, and structural modeling without governed artifact creation until explicit operator acceptance |
 | **Evergreen document** | A thin, reasoned, mutable semantic view that makes the current domain or plan readable while linking every summarized claim directly to authoritative atomic records |
 
 ## Invariants
@@ -47,7 +47,7 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 - **DSET-INVARIANT-META-014:** A Contract is an atomic relational Definition. Complete replacement requires an operator-accepted successor with `replacement_of`, followed by archive relocation of the predecessor. Implementation cannot rewrite it.
 - **DSET-INVARIANT-META-015:** A Work Area declaration owns a scope boundary; session continuity may reference it but cannot define, modify, or replace it. Neither repository-level scope nor a Work Area implies code, a deployment unit, a service, a feature, or a module.
 - **DSET-INVARIANT-META-016:** Authority, provenance, priority, lifecycle state, and applicability remain explicit metadata. None is inferred from an artifact route.
-- **DSET-INVARIANT-META-017:** Analysis Mode creates no governed artifacts or governance commits. Only explicit operator acceptance closes it and authorizes durable emission.
+- **DSET-INVARIANT-META-017:** Exploration Mode creates no governed artifacts or governance commits. Only explicit operator acceptance closes it and authorizes durable emission.
 - **DSET-INVARIANT-META-018:** Evergreen documents are thin semantic views, not compiled restatements. Atomic records remain the semantic authority.
 - **DSET-INVARIANT-META-019:** A domain entity is defined only with entities already defined above it. References to later entities are connections recorded outside the definition.
 - **DSET-INVARIANT-META-020:** Every stateful domain entity declares identity, invariants, status meanings, entry and exit criteria, transition authority, allowed transitions, required evidence, and applicable failure/recovery behavior.

@@ -232,19 +232,20 @@ Therefore the axes classify one artifact's current governance role, registered
 names remain sparse interface vocabulary, and relational participants remain
 explicit rather than encoded in names.
 
-## DSET-REQUIREMENT-META-019 — Analysis Mode defers artifact creation
+## DSET-REQUIREMENT-META-021 — Exploration Mode defers artifact creation
 
-Atomic source: `DSET-REQUIREMENT-META-019`.
+Atomic source: `DSET-REQUIREMENT-META-021`.
 
-Analysis Mode sits outside the artifact-routing matrix. It permits research,
-brainstorming, comparison, and read-only inspection, but creates no governed
-artifacts or governance commits. Explicit operator acceptance is the only exit
-that authorizes durable emission.
+Exploration Mode sits outside the artifact-routing matrix. It permits
+brainstorming, discussion, research, analysis, comparison, terminology work,
+scope and axis design, structural modeling, and read-only inspection, but
+creates no governed artifacts or governance commits. Explicit operator
+acceptance is the only exit that authorizes durable emission.
 
 | Status | Entry criteria | Exit criteria | Allowed next status | Required evidence | Atomic sources |
 |---|---|---|---|---|---|
-| Inactive | No active analysis request | Clear brainstorming or explicit analysis request | Active | Operator/session instruction | `DSET-REQUIREMENT-META-019` |
-| Active | Analysis intent is established | Explicit accept, finalize, apply, or end-analysis instruction | Inactive | Operator acceptance instruction | `DSET-REQUIREMENT-META-019` |
+| Inactive | No active exploration request | Clear exploratory intent or explicit Exploration Mode request | Active | Operator/session instruction | `DSET-REQUIREMENT-META-021` |
+| Active | Exploratory intent is established | Explicit accept, finalize, apply, or end-exploration instruction | Inactive | Operator acceptance instruction | `DSET-REQUIREMENT-META-021` |
 
 ## DSET-REQUIREMENT-META-020 — Evergreen documents are thin semantic views
 
@@ -252,14 +253,14 @@ Atomic source: `DSET-REQUIREMENT-META-020`.
 
 ```mermaid
 flowchart LR
-    ANALYSIS["Analysis Mode<br/>DSET-REQUIREMENT-META-019"]
-    ACCEPT["Explicit acceptance<br/>DSET-REQUIREMENT-META-019"]
+    EXPLORE["Exploration Mode<br/>DSET-REQUIREMENT-META-021"]
+    ACCEPT["Explicit acceptance<br/>DSET-REQUIREMENT-META-021"]
     ATOMS["Atomic records<br/>DSET-REQUIREMENT-META-020"]
     REFACTOR["Optional atomic refactoring<br/>DSET-REQUIREMENT-META-020"]
     VIEW["Thin evergreen view<br/>DSET-REQUIREMENT-META-020"]
     GATE["Downstream gate<br/>DSET-REQUIREMENT-META-020"]
 
-    ANALYSIS --> ACCEPT
+    EXPLORE --> ACCEPT
     ACCEPT --> ATOMS
     ATOMS --> REFACTOR
     REFACTOR --> VIEW
