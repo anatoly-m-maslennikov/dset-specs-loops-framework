@@ -291,3 +291,138 @@ behavior.
 
 Semantic links target atomic records only. Links to hubs or other evergreen
 documents are navigation and carry no semantic authority.
+
+## DSET-REQUIREMENT-META-022 — META eligibility rule
+
+Atomic source: `DSET-REQUIREMENT-META-022`.
+
+A rule belongs in META only when it remains technology-independent, governs
+multiple layers or a layer boundary, and can be stated without downstream
+implementation vocabulary. Otherwise, its invariant and mechanism are split
+and the mechanism moves to the earliest complete downstream owner.
+
+## DSET-REQUIREMENT-META-023 — Canonical layer definitions
+
+Atomic source: `DSET-REQUIREMENT-META-023`.
+
+```mermaid
+flowchart LR
+    META["META<br/>semantics and invariants"]
+    GOV["GOV<br/>governed carriers"]
+    TOOL["TOOL<br/>executable enforcement"]
+    SKILL["SKILL<br/>thin orchestration"]
+    IMPL["IMPL<br/>development realization"]
+    OPS["OPS<br/>delivery and operation"]
+
+    META --> GOV --> TOOL --> SKILL --> IMPL --> OPS
+```
+
+| Layer | Canonical responsibility |
+|---|---|
+| META | Meanings, routing axes, universal invariants, layer topology, and inter-layer semantics |
+| GOV | Identity, settings, provenance, lifecycle, applicability, scope, carriers, and conflict governance |
+| TOOL | Executable capability, validation, resolution, diagnostics, generation, and repository mechanics |
+| SKILL | Provider-neutral orchestration, entry gates, workflow chaining, and session continuity |
+| IMPL | Development environment, profiles, code, Test and Evaluation implementations, and code-quality gates |
+| OPS | Post-implementation delivery, release, publication, runtime supportability, investigation, recovery, and hosted evidence |
+
+## DSET-REQUIREMENT-META-024 — Layer handoffs
+
+Atomic source: `DSET-REQUIREMENT-META-024`.
+
+| Boundary | Input | Output |
+|---|---|---|
+| META → GOV | Semantic invariants | Governable carriers and policies |
+| GOV → TOOL | Executable obligations | Callable enforcement and diagnostics |
+| TOOL → SKILL | Capabilities and diagnostics | Thin orchestration and entry gates |
+| SKILL → IMPL | Accepted context and satisfied gates | Governed implementation work |
+| IMPL → OPS | Verified supportable implementation | Deliverable and operable output |
+
+Every boundary declares entry criteria, exit criteria, and blocker behavior.
+Adjacent handoffs are preferred; a skip is valid only when intermediate layers
+have no meaningful transformation or ownership.
+
+## DSET-REQUIREMENT-META-025 — Acyclic layer dependencies
+
+Atomic source: `DSET-REQUIREMENT-META-025`.
+
+Authority and refinement flow forward. Dependency consumption points from a
+later layer to its own or an earlier layer. Feedback may return to Exploration
+Mode, but accepted feedback re-enters at its proper owner and creates no
+backward-governance edge. Dependency, scope specialization, and horizontal
+feature Contracts remain distinct relations.
+
+## DSET-REQUIREMENT-META-026 — Single-owner placement
+
+Atomic source: `DSET-REQUIREMENT-META-026`.
+
+Each claim has one authority at the earliest layer that can define it
+completely. A downstream layer may reference, refine, realize, check, or
+observe upstream authority. It cannot duplicate it. If an upstream statement
+needs downstream entities to be defined, split the stable invariant from its
+mechanism or move the statement downstream.
+
+## DSET-REQUIREMENT-META-027 — Forward change propagation
+
+Atomic source: `DSET-REQUIREMENT-META-027`.
+
+```mermaid
+flowchart LR
+    CHANGE["Accepted upstream change"]
+    STALE["Affected downstream state<br/>potentially stale"]
+    REPLAY["Forward realization"]
+    ASSURE["Restored assurance"]
+
+    CHANGE --> STALE --> REPLAY --> ASSURE
+```
+
+Propagation preserves historical atoms, identifies affected views, Methods,
+Implementations, Observations, and assurance, then restores currentness through
+their owning gates. Refreshing an evergreen view does not by itself complete
+the forward pass.
+
+## DSET-REQUIREMENT-META-028 — Authority and assurance
+
+Atomic source: `DSET-REQUIREMENT-META-028`.
+
+Definitions and accepted Methods may own semantic authority. Implementations
+realize it. Tests and Evaluations check it. Observations and Evidence report
+what happened. Verification judges sufficiency and currentness. Assurance may
+support or challenge reliance but cannot establish or override authority.
+
+## DSET-REQUIREMENT-META-029 — Profiles and applicability
+
+Atomic source: `DSET-REQUIREMENT-META-029`.
+
+Profiles specialize downstream realization for an explicit scope. They cannot
+weaken META invariants, redefine routing or layer meanings, or require
+placeholders for non-applicable concerns. Non-applicability is explicit and
+reasoned.
+
+## DSET-REQUIREMENT-META-030 — Layer extension gate
+
+Atomic source: `DSET-REQUIREMENT-META-030`.
+
+A candidate layer must add one non-overlapping responsibility, declare its
+predecessor and successor handoffs, and preserve the dependency DAG. If a
+feature, profile, Work Area, or ordinary scope can own the concern, DSET does
+not add a layer.
+
+## DSET-REQUIREMENT-META-031 — Bounded recursive self-hosting
+
+Atomic source: `DSET-REQUIREMENT-META-031`.
+
+DSET applies the same constitution to itself while keeping reusable
+methodology, installed methodology, applied authority, implementations,
+runtime state, and generated views distinct. Self-hosting terminates at a
+declared fixed point; skills and tools resolve current project-local governance
+instead of treating embedded wrapper knowledge as authority.
+
+## DSET-REQUIREMENT-META-032 — Durable control-plane safety
+
+Atomic source: `DSET-REQUIREMENT-META-032`.
+
+The durable control plane contains accepted current project truth only. It
+stores no secrets, remains LLM-provider agnostic, keeps future intentions in
+Version Roadmaps, and excludes unaccepted Exploration. Downstream layers own
+concrete storage, adapter, lookup, redaction, and enforcement mechanisms.
