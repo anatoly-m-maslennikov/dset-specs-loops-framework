@@ -37,6 +37,39 @@ where relevant, and authority or override boundary. Profile thresholds,
 including the exclusive 40-line function limit, remain explicit profile TOML
 settings rather than hidden checker literals.
 
+## DSET-REQ-IMPL-005 — Apply the Agent Skills profile
+
+Every created or updated reusable agent skill must pass
+`agent-skills-v1` before acceptance, installation, distribution, or use as
+current DSET methodology. The provider-neutral skill core owns routing,
+judgment, workflow, authorization, safety, verification, and stop behavior.
+Deterministic mechanics move to portable scripts; static bulk moves to focused
+on-demand resources; host-specific discovery and metadata remain explicit
+adapters.
+
+Each changed skill retains its load-bearing behavior and has representative
+trigger, non-trigger, and ambiguous-routing cases plus applicable isolation,
+coexistence, instruction-following, stop, and output-quality coverage. A claim
+for one provider, host, or model requires evidence for that exact matrix cell
+and never implies compatibility with another.
+
+## DSET-REQ-IMPL-006 — Apply the LLM Evaluations profile
+
+Every created or updated Evaluation definition, case set, prompt, harness,
+grader, reconciliation procedure, and result carrier must pass
+`llm-evaluations-v1`. The definition names its governed claims, why a
+deterministic Test is insufficient, exact subject and revision, bounded inputs,
+case distribution, rubric, threshold, grading and calibration method, tools,
+budget, evidence schema, and freshness rule before execution.
+
+Deterministic facts remain Tests or code graders. Judgment-based grading uses
+anchored criteria and calibrated human or model review. Definitions,
+execution, result evidence, and Verification remain distinct. Reconciliation
+compares only matching Evaluation versions and configurations, preserves
+per-case findings and failures, and treats unresolved material disagreement as
+inconclusive. Provider/model/host identity is run configuration, not hidden
+Evaluation semantics.
+
 ## DSET-DECISION-IMPL-002 — Canonical project-health path ordering
 
 Derived project-health source digests order included files by case-sensitive

@@ -21,6 +21,18 @@ owning only the additional constraints. For example, a future Obsidian plugin
 profile may extend an Electron/TypeScript application profile without copying
 its baseline rules.
 
+An artifact-specific profile may also be mandatory by accepted Requirement.
+When work creates or updates an artifact in that profile's declared scope, the
+profile applies even if a caller did not remember to select it interactively.
+Project settings declare the work areas that currently realize the profile;
+the accepted Requirement owns the create/update gate.
+
+Canonical profile rules are provider neutral. Provider, model, host, operating
+system, and installation differences belong in explicit adapters and claimed
+compatibility matrices. One passing adapter never proves another, and a
+missing adapter narrows the supported matrix rather than changing the profile
+semantics.
+
 ## Profile contents
 
 Every profile defines:
@@ -31,6 +43,10 @@ Every profile defines:
   are implementable within its scope;
 - compatibility or extension relationships with other profiles; and
 - the conditions under which a project must select a different profile.
+
+Profiles for agent-authored behavior additionally define trigger/isolation
+assurance, provider/host/model evidence boundaries, and deterministic gates
+that run whenever the governed artifact is created or updated.
 
 The prose specification explains intent and edge cases. Its TOML carrier owns
 the selected machine values. Neither may silently broaden the profile beyond

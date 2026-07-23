@@ -1,0 +1,132 @@
+schema_version = "1.0"
+profile_id = "agent-skills-v1"
+profile_name = "Agent Skills"
+status = "active"
+layer = "implementation"
+layer_token = "IMPL"
+feature_id = "agent-skills"
+applies_to = ["agent-skill-package", "skill-creation", "skill-update", "skill-refactor"]
+does_not_apply_to = ["one-off-prompt", "provider-host-adapter-without-a-skill-core", "substantive-domain-governance"]
+
+[authority]
+requirement = "DSET-REQ-IMPL-005"
+provider_neutral_requirement = "DSET-REQ-001"
+mandatory_on_create_or_update = true
+substantive_rules_owner = "project-local-governance"
+
+[package]
+required_entrypoint = "SKILL.md"
+optional_directories = ["scripts", "references", "assets", "agents"]
+machine_local_state_in_package = "prohibited"
+private_memory_dependency = "prohibited"
+
+[frontmatter]
+format = "yaml"
+format_authority = "external-host-standard"
+required_fields = ["name", "description"]
+name_matches_directory = true
+name_pattern = "lowercase-kebab-case"
+name_max_characters = 64
+description_max_characters = 1024
+description_states_what_and_when = true
+frontload_trigger_terms = true
+state_non_trigger_boundary_when_competing = true
+
+[progressive_disclosure]
+skill_body_max_lines = 500
+target_materially_below_limit = true
+skill_body_owns = ["routing", "judgment", "workflow", "authorization", "safety", "verification", "stop-conditions"]
+deterministic_mechanics_owner = "scripts"
+static_bulk_owners = ["references", "assets"]
+reference_depth_from_skill_md = 1
+deep_reference_chains = "prohibited"
+duplicate_instructions = "prohibited"
+
+[freedom]
+contextual_judgment = "prose"
+preferred_pattern_with_variation = "parameterized-helper"
+fragile_consistency_critical_operation = "exact-script"
+
+[scripts]
+default_language = "portable-python"
+dependency_policy = "standard-library-preferred"
+self_documented = true
+helpful_errors = true
+edge_cases_handled = true
+dangerous_writes_default = "dry-run-or-read-only"
+explicit_apply_authority_required = true
+
+[portability]
+supported_platforms = ["linux", "macos", "windows", "wsl"]
+portable_copy_install_required = true
+symlink_only_install = "prohibited"
+absolute_machine_paths = "prohibited"
+posix_shell_core_dependency = "prohibited"
+gnu_only_core_dependency = "prohibited"
+platform_native_paths_and_temp = true
+utf8_explicit = true
+crlf_safe = true
+case_sensitive_filesystem_dependency = "prohibited-unless-external-constraint"
+
+[provider_neutrality]
+canonical_instructions = "provider-neutral"
+provider_semantics_in_core = "prohibited"
+host_differences = "explicit-adapters"
+claimed_support_requires_adapter_and_evaluation = true
+unsupported_capability_behavior = "report-honestly"
+
+[security]
+treat_as_executable_software = true
+inventory_commands_tools_and_side_effects = true
+hardcoded_credentials = "prohibited"
+hidden_actions = "prohibited"
+safety_bypass = "prohibited"
+undeclared_network_write = "prohibited"
+sensitive_data_exfiltration = "prohibited"
+
+[workflow]
+audit_before_edit = true
+inventory_load_bearing_behavior = true
+preserve_behavior_by_default = true
+separate_redesign_from_refactor = true
+audit_after_edit = true
+host_validation_required = true
+script_validation_required = true
+evaluation_required = true
+failed_gate_blocks_acceptance_install_distribution_and_publication = true
+
+[evaluations]
+minimum_cases_per_skill = 3
+required_case_kinds = ["should-trigger", "should-not-trigger", "ambiguous-routing"]
+required_dimensions = ["triggering", "isolation", "coexistence", "instruction-following", "stop-behavior", "output-quality"]
+claimed_provider_host_model_matrix_only = true
+cross_model_inference = "prohibited"
+failed_cases_preserved = true
+automated_judgment_calibrated = true
+
+[verification]
+audit_command = "python -m dset_toolchain skill-profile audit skills"
+agent_skills_spec_validation = true
+host_metadata_validation = true
+changed_script_static_validation = true
+git_diff_check = true
+
+[[sources]]
+name = "Open Agent Skills specification"
+url = "https://agentskills.io/specification"
+
+[[sources]]
+name = "Agent Skills authoring best practices"
+url = "https://agentskills.io/skill-creation/best-practices"
+
+[[sources]]
+name = "OpenAI Build skills"
+url = "https://developers.openai.com/codex/build-skills"
+
+[[sources]]
+name = "Anthropic Skill authoring best practices"
+url = "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices"
+
+[[sources]]
+name = "Anthropic Skills for enterprise"
+url = "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/enterprise"

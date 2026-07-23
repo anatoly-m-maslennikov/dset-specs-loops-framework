@@ -1,0 +1,93 @@
+schema_version = "1.0"
+profile_id = "llm-evaluations-v1"
+profile_name = "LLM Evaluations"
+status = "active"
+layer = "implementation"
+layer_token = "IMPL"
+feature_id = "llm-evaluations"
+applies_to = ["evaluation-definition", "evaluation-case-set", "evaluation-prompt", "evaluation-harness", "grader", "reconciliation", "evaluation-result"]
+does_not_apply_to = ["deterministic-test", "unstructured-opinion", "verification-authority"]
+
+[authority]
+requirement = "DSET-REQ-IMPL-006"
+provider_neutral_requirement = "DSET-REQ-001"
+mandatory_on_create_or_update = true
+
+[definition]
+required_fields = ["evaluation-id", "governed-claims", "objective", "target-revision", "bounded-inputs", "exclusions", "case-set", "rubric", "threshold", "grading-method", "reconciliation", "tools-and-writes", "budget", "evidence-schema", "freshness"]
+why_test_is_insufficient_required = true
+multi_criterion_claims_split = true
+result_is_authority = false
+
+[cases]
+representative_task_distribution = true
+applicable_case_kinds = ["normal", "edge", "adversarial", "failure", "ambiguous"]
+production_derived_cases = "bounded-redacted-versioned"
+held_out_cases_separate_from_tuning = true
+failures_added_to_regression_set = true
+
+[grading]
+deterministic_facts = "code-or-test"
+judgment_only_when_required = true
+preferred_model_tasks = ["classification", "pairwise-comparison", "criterion-scoring"]
+rubric_requires_observable_anchors = true
+automatic_fail_conditions_supported = true
+aggregate_preserves_criterion_findings = true
+model_grader_requires_calibration = true
+calibration_uses_independently_reviewed_examples = true
+
+[execution]
+exact_target_revision_required = true
+prompt_rubric_case_set_identity_required = true
+effective_provider_model_parameters_required = true
+tools_permissions_budget_required = true
+evaluator_identity_required = true
+independent_runs_share_prior_outputs = false
+randomness_retries_sample_count_explicit = true
+variance_reported_when_material = true
+
+[evidence]
+per_case_findings_required = true
+failures_and_errors_preserved = true
+exclusions_uncertainty_and_defeaters_required = true
+latency_usage_and_cost_when_applicable = true
+definitions_execution_results_and_verification_separate = true
+bounded_redacted_logs = true
+
+[reconciliation]
+same_evaluation_target_cases_rubric_threshold_required = true
+mismatched_runs_excluded_explicitly = true
+separate_disagreement_error_missing_evidence_ambiguity_and_failure = true
+unauthorized_majority_vote = "prohibited"
+incompatible_finding_averaging = "prohibited"
+material_unresolved_disagreement = "inconclusive"
+correct_earliest_ambiguous_owner = true
+rerun_after_correction = true
+
+[provider_neutrality]
+definition_language = "provider-neutral"
+provider_model_host_are_run_configuration = true
+claimed_matrix_only = true
+cross_provider_inference = "prohibited"
+unsupported_capability_behavior = "report-honestly"
+
+[lifecycle]
+evaluate_early_and_after_relevant_changes = true
+continuous_regression_set_growth = true
+grader_recalibration_triggers = ["grader-change", "rubric-change", "task-distribution-change", "relevant-model-change"]
+
+[[sources]]
+name = "OpenAI Evaluation best practices"
+url = "https://developers.openai.com/api/docs/guides/evaluation-best-practices"
+
+[[sources]]
+name = "OpenAI Working with evals"
+url = "https://developers.openai.com/api/docs/guides/evals"
+
+[[sources]]
+name = "Anthropic Define success criteria and build evaluations"
+url = "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+
+[[sources]]
+name = "Anthropic Skills for enterprise"
+url = "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/enterprise"

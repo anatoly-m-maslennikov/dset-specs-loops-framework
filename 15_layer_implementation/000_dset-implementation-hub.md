@@ -19,6 +19,10 @@ operation, investigation, recovery, and publication evidence.
 
 - `local-python-tools-v1` — small local Python command-line tools, scheduled
   utilities, repository automation, and single-host workers.
+- `agent-skills-v1` — provider-neutral, progressively disclosed Agent Skills
+  packages with explicit host adapters and mandatory create/update assurance.
+- `llm-evaluations-v1` — provider-neutral definitions, case sets, graders,
+  execution records, and reconciliation for qualitative or probabilistic proof.
 
 ## Boundaries
 
@@ -38,6 +42,8 @@ delivery/runtime configuration stays in OPS.
 - `010_dset-implementation-specification-profiles.md`
 - `030_dset-implementation-specification-methodology.md`
 - `000_dset-implementation-local-python-tools-hub.md`
+- `000_dset-implementation-agent-skills-hub.md`
+- `000_dset-implementation-llm-evaluations-hub.md`
 - `000_dset-implementation-python-hub.md`
 - `000_dset-implementation-tests-hub.md`
 - `000_dset-implementation-evaluations-hub.md`

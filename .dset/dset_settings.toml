@@ -184,6 +184,20 @@ id = "local-python-tools-v1"
 version = "1.0"
 work_areas = ["toolchain", "tests", "scripts"]
 
+[[profiles.implementation]]
+# Mandatory for every reusable skill created or updated in this work area.
+# The shared skill core remains provider neutral; host metadata is an adapter.
+id = "agent-skills-v1"
+version = "1.0"
+work_areas = ["skills"]
+
+[[profiles.implementation]]
+# Applies to qualitative/probabilistic Evaluation definitions and
+# implementations. Deterministic assertions remain under Test profiles.
+id = "llm-evaluations-v1"
+version = "1.0"
+work_areas = ["evaluations"]
+
 [change_contract]
 change_id_format = "project-type-layer-sequence"
 change_slug_format = "kebab-case"
@@ -296,6 +310,10 @@ path = "dset_toolchain"
 [[work_areas]]
 id = "skills"
 path = "skills"
+
+[[work_areas]]
+id = "evaluations"
+path = "15_layer_implementation/120_evaluations"
 
 [[work_areas]]
 id = "tests"
