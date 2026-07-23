@@ -2,91 +2,152 @@
 
 **Rule ID:** `DSET-RULE-ARTIFACT-CLASSIFICATION`
 
-## Two independent axes
+## Purpose
 
-Every governed artifact has exactly one primary `artifact_type` and at most one
-allowed direct `artifact_subtype`. Atomic records separately use semantic
-`type` and `subtype`. Artifact classification never creates a fifth semantic
-Type or derives semantic meaning from a filename, folder, workflow, or tool.
+DSET classifies every governed artifact through independent axes. The axes
+describe how an artifact changes, what it contributes, whether its primary
+meaning is relational, who governs its current content, and where it belongs
+structurally.
 
-The project-local `artifact_catalog` section in
-`.dset/dset_settings.toml` owns the machine-readable artifact vocabulary for
-schema 1.4 and later. Older standalone registries remain compatibility or
-archival inputs only. The selected artifact profile must validate the catalog
-before relying on classification.
+Concrete Type and subtype definitions are governed separately. A Type occupies
+an eligible combination of these axes; the axes are not themselves Types.
+
+## Revision mode
+
+`revision_mode` declares how the artifact changes:
+
+| Value | Definition |
+|---|---|
+| `atomic` | Immutable identified record or native immutable snapshot; correction or changed meaning creates another artifact |
+| `evergreen` | Mutable current projection derived, compiled, generated, or synchronized from declared governed inputs and rebuildable from them |
+| `maintained` | Mutable primary artifact edited or operated directly by its governing owner |
+
+The boundary between Evergreen and Maintained is derived and rebuildable versus
+directly maintained. Mutable alone does not mean Evergreen. An external
+artifact is not Evergreen merely because it changes upstream.
+
+## Content role
+
+`content_role` declares the artifact's one primary contribution:
+
+| Value | Definition |
+|---|---|
+| `definition` | States intended, required, selected, or accepted conditions |
+| `rationale` | Explains why another claim, selection, or interpretation is justified |
+| `method` | Describes a reusable way, mechanism, procedure, or check |
+| `implementation` | Is an operative realization or asset |
+| `observation` | Records or reports what was observed, found, or produced |
+
+File format, executability, folder, layer, workflow stage, and carrier kind do
+not select the role.
+
+Tests and Evaluations are Method when they define reusable checks. A dated
+execution is a work occurrence rather than another content role. Its persisted
+result is Observation.
+
+## Relation shape
+
+`relation_shape` declares the artifact's inherent semantic arity:
+
+| Value | Definition |
+|---|---|
+| `standalone` | Primary meaning does not require multiple typed endpoints |
+| `relational` | Primary meaning requires at least two typed, directed endpoints |
+
+An ordinary citation, provenance field, or traceability link does not make an
+artifact Relational. A Relational artifact declares its relation kind,
+endpoint roles, direction, and endpoint origins.
+
+Relational and Standalone artifacts use the same Revision Mode and Content Role
+axes. Separate matrix renderings may improve readability, but they do not
+create different classification systems.
+
+## Governance origin
+
+A Standalone artifact declares:
+
+```toml
+governance_origin = "internal" # internal | external
+```
+
+Governance origin identifies who controls the artifact's semantic content and
+currentness. It does not establish truth, project authority, authorship,
+storage location, or provenance.
+
+A Relational artifact has no single governance origin. Each endpoint declares
+its own `origin = "internal"` or `origin = "external"`.
+
+Origin qualifies a Type; it does not create a second canonical Type. A UI may
+show an origin-qualified label for readability without changing catalog
+identity.
+
+## Structural scope
+
+`scope_path` is an extensible structural address composed from enabled project,
+feature-group, feature, layer, and future scope dimensions. It is independent
+from classification and never determines Revision Mode, Content Role, Relation
+Shape, Governance Origin, Type, or subtype.
+
+OPS is a layer in `scope_path`, not a Content Role:
+
+| OPS concern | Content role |
+|---|---|
+| Deployment, release, readiness, or SLO condition | `definition` |
+| Reason for a deployment or recovery choice | `rationale` |
+| Deployment, rollback, runbook, Test, or Evaluation procedure | `method` |
+| CI/CD code, IaC, manifest, configuration, or instrumentation | `implementation` |
+| Deployment result, log, metric, incident, or support evidence | `observation` |
+
+A deployment procedure is Method, a deployment run is a dated work occurrence,
+and the persisted result is Observation.
+
+## Pull-request direction
+
+A pull request demonstrates the Relational boundary:
+
+```toml
+revision_mode = "maintained"
+content_role = "method"
+relation_shape = "relational"
+```
+
+It has `source` and `target` endpoints:
+
+| Direction | Source origin | Target origin |
+|---|---|---|
+| Project PR | internal | internal |
+| Inbound contribution | external | internal |
+| Upstream contribution | internal | external |
+| External PR reference | external | external |
+
+The merge or squash commit is a separate Atomic Implementation. Immutable
+proof of final PR state, when required, is a separate Atomic Observation.
 
 ## Classification order
 
-1. Identify the carrier's one primary owning question.
-2. Select the registered `artifact_type` that owns that question.
-3. Select at most one allowed direct `artifact_subtype`; omit it when the type's
-   general form is the honest classification.
-4. Record classification directly on an editable carrier or resolve it through
-   exactly one registered path rule.
-5. Stop on unknown types, mismatched subtypes, nested subtypes, missing
-   classification, or multiple applicable path rules.
+1. Recover the EntityOfConcern and one primary artifact job. Split a
+   multi-head artifact.
+2. Assign `scope_path`.
+3. Select `relation_shape`. For a Relational artifact, recover the relation
+   kind, endpoint roles, direction, and endpoint origins.
+4. Select `content_role` from the primary contribution.
+5. Select `revision_mode` from the change semantics.
+6. For a Standalone artifact, select `governance_origin`.
+7. Select one admitted concrete Type and at most one direct subtype.
+8. Add provenance, evidence, and traceability without treating them as truth
+   or authority.
 
-Direct metadata uses `artifact_type` and `artifact_subtype`. The fields `type`
-and `subtype` remain reserved for semantic atom classification. Existing
-immutable atoms are classified externally; classification never edits their
-emitted content.
+No axis value is inferred from another. Classification never derives meaning
+from a filename, path, workflow, host, tool, or next action. DSET does not force
+every Cartesian cell to contain a Type.
 
-## Naming
+## Matrix rendering
 
-The base naming convention uses the primary artifact Type token and one
-project-wide sequence per Type. Optional artifact subtypes live in direct
-metadata and do not enter the structural name. For example, a Version Scope is
-`DSET-VERSION-001-0-4-core.md` with `artifact_subtype: version_scope`; a
-Roadmap uses the same `VERSION` sequence with `artifact_subtype: roadmap`.
+The primary matrix uses Revision Mode as rows and Content Role as columns.
+Standalone views may show Internal and External occupants inside each cell.
+Relational views show Types together with their required endpoint roles and
+origin combinations.
 
-Projects may opt into subtype tokens for newly emitted artifacts with
-`artifacts.subtype_in_names = true` in `.dset/dset_settings.toml`.
-Each subtype then owns one project-wide sequence. Atomic records use their
-semantic subtype kind directly (`REQUIREMENT`, `CONSTRAINT`, `CONTRACT`, `IMPL`, and the
-other registered subtype kinds); an empty-subtype atom uses its Type kind and
-that Type's empty-subtype sequence. Layers, features, feature groups, folders,
-and lifecycle state never restart numbering.
-This is an independent optional capability, not a bundled “advanced mode.” A
-naming-policy change requires one complete governed historical migration; a
-repository never retains two canonical identity vocabularies.
-
-## Role boundaries
-
-- Analysis Report interprets information; Evidence Record records an
-  observation.
-- Specification compiles current or required truth; Plan describes intended
-  work.
-- Procedure describes a reusable method; Plan describes one intended
-  enactment.
-- Version owns bounded version intent, transaction, gate, and publication
-  records; Plan owns intended implementation or proof work.
-- Implementation realizes accepted truth or QA definitions; Verification
-  assesses what evidence supports.
-- Readiness Record contains the explicit release gate disposition; green checks
-  alone do not authorize release.
-- Release Record immutably records the publication occurrence.
-- Derived View and Navigation never become authority.
-
-An accepted analysis conclusion becomes a separate Decision, Question,
-Problem, or QA atom. A proposed Design is an Analysis Report/Proposal; accepted
-current Design is a Specification/Design. An external audit is evidence;
-External Audit Analysis is the project's interpretation and triage of it.
-
-## Release lifecycle
-
-Release lifecycle artifacts remain flat peers under one primary `version`
-type. Its direct subtypes are `roadmap`, `version_scope`, `change`,
-`release_plan`, `readiness_record`, and `release_record`. In type-only naming
-they share one project-wide `VERSION` identity sequence. In subtype-bearing
-naming each Version subtype owns its own project-wide sequence. Milestones are
-Roadmap entries.
-Release Notes and changelogs are rendered or derived from immutable Release
-Records.
-
-## Scope
-
-The catalog covers development and release handoff. Sales, customer-success
-management, performed production support, and operation of deployment
-infrastructure are outside it. External work may supply operator input or
-evidence. Developing required supportability behavior or documentation remains
-Implementation.
+The current cut finalizes the axes only. Concrete Type names, direct subtype
+definitions, and cell occupancy require a separate accepted authority set
+before they become canonical.
