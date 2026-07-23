@@ -52,18 +52,22 @@ transactional context route work or support those sources but do not become
 authority merely by existing. Closing a transactional artifact without
 compiling its accepted normative consequences leaves the work incomplete.
 
-Atomic artifacts are immutable in their semantic records. Editable drafts are working documents,
-not atoms. Emitting an atom fixes its ID, semantic payload, provenance,
-creation status, and links. Later semantic or lifecycle change is a new
-append-only event or successor atom; current status is derived.
+Atomic artifacts are immutable in governed meaning. Editable drafts are working
+documents, not atoms. Emission fixes the primary claim or proof intent,
+rationale, accepted authority and creation state, provenance, scope, priority
+at creation, and relation meanings; a QA atom also fixes its conditions,
+criteria, thresholds, and expected disposition. Later semantic or lifecycle
+change is a new append-only event or successor atom; current state is derived.
 
-Atomic semantic content never changes. A directory move preserves the carrier
-name and bytes; identity-based discovery therefore needs no durable path
-mapping or relocation ledger. A carrier-name or representation migration emits
-one immutable transition record containing the old and new unique carrier
-names, digests, semantic-equivalence proof, and Git return identity. A semantic
-change requires a successor atom. Aggregate path-transition ledgers and direct
-resealing are invalid.
+An ID, filename, path, classification-label spelling, heading label, carrier
+encoding, seal, or reference spelling is representation, not the atom's
+governed meaning. A governed migration may change those fields only through a
+complete collision-free mapping that preserves the referenced artifacts and
+relation/lifecycle semantics, records equivalence and Git return evidence, and
+removes retired aliases from accepted lookup after cutover. A claim, rationale,
+authority, provenance fact, scope meaning, relation meaning, or QA-criterion
+change requires a successor atom. Aggregate mutable transition ledgers and
+unproved resealing are invalid.
 
 A successor atom declares `replacement_of` relations to older atoms. Matching
 append-only lifecycle events mark the predecessors `absorbed`. Replacement is
