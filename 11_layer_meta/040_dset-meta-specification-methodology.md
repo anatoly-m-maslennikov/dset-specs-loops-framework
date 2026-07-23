@@ -61,8 +61,10 @@ routes to a Question; incompatible active authority becomes Question/Conflict;
 observed nonconformance becomes Problem/Defect. A general or unrelated Decision
 does not silently override a Contract; change requires explicit precedence or
 an operator-accepted absorbing Contract. A mandated dependency is
-Decision/Constraint when it restricts the solution space and Decision/Contract
-when a boundary participant relies on it.
+Decision/Constraint when an external authority imposes it and Decision/Contract
+when a boundary participant relies on it. A project-selected dependency rule is
+a Requirement; selecting a material implementation approach is an
+Implementation Decision.
 
 **Scenario DSET-SCENARIO-META-009:** The operator accepts host, platform,
 dependency, and GitHub Actions boundaries as Contract Decisions. Descriptive

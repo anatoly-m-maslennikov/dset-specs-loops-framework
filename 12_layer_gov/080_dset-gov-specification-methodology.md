@@ -549,12 +549,13 @@ Decision content and its carrier. QA atoms define checks; Test/Evaluation
 execution is work; results and logs are evidence; gate decisions and
 Verification are derived.
 
-Requirement owns required observable results. Constraint narrows otherwise
-acceptable solutions. Contract owns named boundary obligations. Implementation
-Decision owns material selected architecture, design, algorithm, data, tooling,
-or operating approaches. User Story, Outcome, Scenario, and Invariant may
-structure Requirement prose or compatibility history but are not current
-semantic subtypes.
+Requirement owns project- or operator-selected required observable results.
+Constraint owns externally imposed limitations that narrow otherwise acceptable
+solutions. Contract owns named boundary obligations. Implementation Decision
+owns material selected architecture, design, algorithm, data, tooling, or
+operating approaches. User Story, Outcome, Scenario, and Invariant may structure
+Requirement prose or compatibility history but are not current semantic
+subtypes.
 
 Problem means presently true insufficiency. Wrong now is Defect; missing now is
 Gap; a working known compromise with continuing cost is Debt. Question means

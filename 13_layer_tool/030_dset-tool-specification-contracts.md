@@ -45,8 +45,8 @@ non-contractual examples may improve compatibly.
 | Compatibility | Every selected dependency is allowed and source-constrained; denied or expired-exception dependencies fail release |
 | Lifecycle | `active` |
 
-A mandated library is a Decision/Constraint when it restricts acceptable
-implementation choices and a Decision/Contract when a boundary participant
-relies on it. A consequential selection among allowed alternatives is a general
-Decision. These are direct sibling subtypes; no Contract/Constraint nesting is
-permitted.
+A mandated library is a Decision/Constraint when an external authority imposes
+it and a Decision/Contract when a boundary participant relies on it. A
+project-selected library rule is a Requirement; a material selection among
+allowed implementation alternatives is an Implementation Decision. These are
+direct sibling subtypes; no Contract/Constraint nesting is permitted.

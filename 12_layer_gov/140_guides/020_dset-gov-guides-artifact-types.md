@@ -63,7 +63,7 @@ database, or hosted record is only its carrier or representation.
 | Decision subtype | Canonical definition | New kind |
 |---|---|---|
 | `requirement` | Required observable result, behavior, capability, quality, prevention condition, or obligation | `REQ` |
-| `constraint` | Restriction on acceptable technologies, dependencies, environments, resources, formats, or operating limits | `CONSTR` |
+| `constraint` | Externally imposed limitation on acceptable technologies, dependencies, environments, resources, formats, or operating limits | `CONSTR` |
 | `contract` | Provider/consumer and compatibility obligation across a boundary | `CONTR` |
 | `implementation_decision` | Material selected architecture, design, algorithm, data, tooling, or operating approach | `IMPDEC` |
 

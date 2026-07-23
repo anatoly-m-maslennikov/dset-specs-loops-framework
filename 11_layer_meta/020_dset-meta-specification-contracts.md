@@ -33,9 +33,10 @@
 
 Decision is the only authority Type. Its direct subtypes are Requirement,
 Constraint, Contract, and Implementation Decision. Requirement owns required
-observable results; Constraint narrows acceptable solutions; Contract owns
-boundary obligations; Implementation Decision owns material selected
-architecture, design, algorithm, data, tooling, or operating approaches.
+observable results selected by the project or operator; Constraint records an
+externally imposed limitation the project must obey; Contract owns boundary
+obligations; Implementation Decision owns material selected architecture,
+design, algorithm, data, tooling, or operating approaches.
 
 User Stories, Outcomes, Scenarios, and Invariants may structure Requirement
 prose, analysis, or compatibility history. They do not create more semantic

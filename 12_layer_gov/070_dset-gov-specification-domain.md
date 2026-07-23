@@ -28,7 +28,7 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 | **Governance registry** | Repository-local machine-readable mapping from workflow and normative rule IDs to their editable governing documents, dependencies, applicability, and profile/customization identity; it points to rules without restating them |
 | **Governing document** | The single editable repository-local owner of one or more normative rule IDs selected by the governance registry |
 | **Requirement** | A direct Decision subtype stating a required observable result, behavior, capability, quality, prevention condition, or obligation |
-| **Constraint** | A direct Decision subtype restricting acceptable technologies, dependencies, environments, resources, formats, or operating limits when no boundary participant relies on the restriction as a Contract |
+| **Constraint** | A direct Decision subtype for an externally imposed limitation on acceptable technologies, dependencies, environments, resources, formats, or operating limits when no boundary participant relies on the restriction as a Contract |
 | **Contract** | A direct Decision subtype defining provider/consumer, interface, compatibility, and failure obligations across a project boundary |
 | **Decision** | An immutable directive accepted as project authority; its empty subtype is the general fallback |
 | **Implementation Decision** | A direct Decision subtype for a material selected architecture, design, algorithm, data, tooling, or operating approach |

@@ -75,9 +75,9 @@ projection is stale.
 
 - A **Requirement** states a required observable result, behavior, capability,
   quality, prevention condition, or obligation.
-- A **Constraint** restricts acceptable technologies, dependencies,
-  environments, resources, formats, or operating limits when no boundary
-  participant relies on the restriction as a Contract.
+- A **Constraint** records an externally imposed limitation on acceptable
+  technologies, dependencies, environments, resources, formats, or operating
+  limits when no boundary participant relies on the restriction as a Contract.
 - A **Contract** states provider, consumer, interface, schema, protocol,
   compatibility, or failure obligations across a boundary.
 - An **Implementation Decision** records a material selected architecture,
