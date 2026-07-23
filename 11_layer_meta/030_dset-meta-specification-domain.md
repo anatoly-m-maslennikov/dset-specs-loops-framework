@@ -7,6 +7,11 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 | Entity | Definition |
 |---|---|
 | **Project truth** | Active authoritative atomic records, their current thin evergreen semantic views, and applicable maintained project artifacts |
+| **Constitutional invariant** | A technology-independent rule that governs multiple DSET layers or defines a boundary between them |
+| **DSET layer** | One ordered responsibility boundary that owns a distinct class of project concerns |
+| **Layer authority flow** | The forward `META → GOV → TOOL → SKILL → IMPL → OPS` order in which earlier layers constrain or refine later layers |
+| **Layer dependency** | A consumption edge from a later DSET layer to its own or an earlier layer; the dependency graph is acyclic |
+| **Layer handoff** | The declared input, output, entry criteria, exit criteria, and failure behavior between adjacent DSET layers |
 | **Artifact route** | The independent `revision_mode`, `content_role`, and `governance_locus` values assigned to one governed artifact |
 | **Revision mode** | How an artifact may change: `atomic` is an immutable accepted record; `evergreen` is a mutable thin current view; `maintained` is a mutable operative artifact |
 | **Content role** | What the artifact contributes to the development cycle: `inquiry`, `definition`, `rationale`, `method`, `implementation`, or `observation` |
@@ -28,6 +33,17 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 | **Work Area** | A declared repository-relative folder that bounds DSET scope without implying code, deployability, or a particular architecture; it may contain local tools, deployable services, libraries, documentation, methodology, data, or mixed content |
 | **Exploration Mode** | A session workflow state that permits brainstorming, discussion, research, analysis, comparison, and structural modeling without governed artifact creation until explicit operator acceptance |
 | **Evergreen document** | A thin, reasoned, mutable semantic view that makes the current domain or plan readable while linking every summarized claim directly to authoritative atomic records |
+
+## Canonical layer responsibilities
+
+| Layer | Responsibility | Atomic source |
+|---|---|---|
+| **META** | Meanings, routing axes, universal invariants, layer topology, and inter-layer semantics | `DSET-REQUIREMENT-META-023` |
+| **GOV** | Governed carriers, identity, settings, provenance, lifecycle, applicability, scope, and conflict governance | `DSET-REQUIREMENT-META-023` |
+| **TOOL** | Executable capabilities, validation, resolution, diagnostics, generation, and repository mechanics | `DSET-REQUIREMENT-META-023` |
+| **SKILL** | Thin provider-neutral orchestration, gates, workflow chaining, and session continuity | `DSET-REQUIREMENT-META-023` |
+| **IMPL** | Development environments, implementation profiles, code, Test implementations, Evaluation implementations, and code-quality gates | `DSET-REQUIREMENT-META-023` |
+| **OPS** | Post-implementation delivery, release, publication, runtime supportability, investigation, recovery, and hosted evidence | `DSET-REQUIREMENT-META-023` |
 
 ## Invariants
 
@@ -52,3 +68,14 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 - **DSET-INVARIANT-META-019:** A domain entity is defined only with entities already defined above it. References to later entities are connections recorded outside the definition.
 - **DSET-INVARIANT-META-020:** Every stateful domain entity declares identity, invariants, status meanings, entry and exit criteria, transition authority, allowed transitions, required evidence, and applicable failure/recovery behavior.
 - **DSET-INVARIANT-META-021:** Semantic provenance inside an evergreen document targets atomic records only. Links to evergreen documents or hubs are navigation only.
+- **DSET-INVARIANT-META-022:** META admits only technology-independent rules that govern multiple layers or a layer boundary; downstream mechanisms remain with the earliest complete downstream owner. Source: `DSET-REQUIREMENT-META-022`.
+- **DSET-INVARIANT-META-023:** DSET uses the canonical, non-overlapping `META → GOV → TOOL → SKILL → IMPL → OPS` layer responsibilities. Source: `DSET-REQUIREMENT-META-023`.
+- **DSET-INVARIANT-META-024:** Every adjacent layer boundary declares its input, output, entry criteria, exit criteria, and failure behavior. Source: `DSET-REQUIREMENT-META-024`.
+- **DSET-INVARIANT-META-025:** Layer dependencies form a DAG; authority flows forward, later layers consume earlier authority, and feedback creates no backward governance. Source: `DSET-REQUIREMENT-META-025`.
+- **DSET-INVARIANT-META-026:** Each governed claim has one authoritative owner at the earliest layer that can define it completely. Source: `DSET-REQUIREMENT-META-026`.
+- **DSET-INVARIANT-META-027:** Accepted upstream change preserves historical atoms and propagates potential staleness forward through affected views, methods, implementations, and assurance. Source: `DSET-REQUIREMENT-META-027`.
+- **DSET-INVARIANT-META-028:** Authority, checking methods, implementations, observations, evidence, and Verification remain distinct; assurance cannot establish or override authority. Source: `DSET-REQUIREMENT-META-028`.
+- **DSET-INVARIANT-META-029:** Profiles specialize applicable downstream realization without weakening META invariants or requiring non-applicable placeholders. Source: `DSET-REQUIREMENT-META-029`.
+- **DSET-INVARIANT-META-030:** A new layer requires a unique responsibility, explicit handoffs, and an acyclic extension; otherwise use a feature, profile, Work Area, or other scope. Source: `DSET-REQUIREMENT-META-030`.
+- **DSET-INVARIANT-META-031:** Recursive self-hosting uses the same constitution, keeps reusable and applied owners distinct, and terminates at a declared fixed point. Source: `DSET-REQUIREMENT-META-031`.
+- **DSET-INVARIANT-META-032:** The durable control plane contains accepted current, secret-free, provider-neutral truth; future intentions and unaccepted exploration remain outside current authority. Source: `DSET-REQUIREMENT-META-032`.
