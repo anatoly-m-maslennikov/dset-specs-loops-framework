@@ -5,10 +5,9 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from .artifact_records import build_atomic_artifact_route_index
 from .layout import discover_layout
 from .lineage import build_relation_index
-from .semantic_atoms import build_semantic_atom_index
-from .semantic_types import build_semantic_classification_index
 from .structured_data import dump, load
 
 
@@ -21,11 +20,10 @@ def build_traceability(root: Path) -> dict[str, Any]:
     changes = [item for item in changes if item is not None]
     changes.sort(key=lambda item: item["id"])
     return {
-        "schema_version": "1.3" if layout.layered else 1.1,
+        "schema_version": "1.4" if layout.layered else 1.2,
         "repository": history["repository"],
         "changes": changes,
-        "semantic_classifications": build_semantic_classification_index(root),
-        "semantic_atoms": build_semantic_atom_index(root),
+        "artifact_routes": build_atomic_artifact_route_index(root),
         "relations": build_relation_index(root),
     }
 
