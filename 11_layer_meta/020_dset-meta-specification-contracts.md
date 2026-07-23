@@ -57,6 +57,25 @@ User Stories, Outcomes, Scenarios, and Invariants may structure artifact prose,
 analysis, or compatibility history. Independently enforceable claims remain
 separate atomic records.
 
+## Layer constitution boundary
+
+DSET exposes one ordered layer constitution:
+`META → GOV → TOOL → SKILL → IMPL → OPS`.
+
+META owns technology-independent invariants and inter-layer semantics. GOV
+owns governed carriers. TOOL owns executable enforcement. SKILL owns thin
+provider-neutral orchestration. IMPL owns development realization. OPS owns
+post-implementation delivery and operation.
+
+Authority and refinement flow forward; later layers consume earlier authority.
+Every adjacent handoff declares inputs, outputs, entry criteria, exit criteria,
+and blocker behavior. Feedback may create a new Inquiry through Exploration
+Mode, but it cannot govern an earlier layer.
+
+Atomic sources: `DSET-REQUIREMENT-META-022`,
+`DSET-REQUIREMENT-META-023`, `DSET-REQUIREMENT-META-024`, and
+`DSET-REQUIREMENT-META-025`.
+
 ## Evergreen document boundary
 
 Evergreen documents are reasoned current views rather than compiled
