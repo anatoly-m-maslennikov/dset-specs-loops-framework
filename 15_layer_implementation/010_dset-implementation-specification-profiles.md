@@ -39,8 +39,14 @@ Every profile defines:
 
 - its stable ID, version, implementation family, scope, and exclusions;
 - machine-readable code thresholds, switches, and verification rule identities;
+- explicit heuristics for keeping implementation invariants in code and moving
+  operator-controlled or environment-varying values to a typed settings
+  carrier;
 - layout, boundary, portability, failure, and supportability expectations that
   are implementable within its scope;
+- a secret boundary that excludes secret values from DSET and durable or shared
+  implementation surfaces, defines local-development and production injection,
+  and covers scanning, redaction, least privilege, and exposure response;
 - compatibility or extension relationships with other profiles; and
 - the conditions under which a project must select a different profile.
 
@@ -51,6 +57,13 @@ that run whenever the governed artifact is created or updated.
 The prose specification explains intent and edge cases. Its TOML carrier owns
 the selected machine values. Neither may silently broaden the profile beyond
 its declared scope.
+
+A profile treats non-secret runtime configuration and secret material as
+different classes. A checked or generated `settings.toml` may own validated
+non-secret controls. Local secrets enter only through an ignored `.env` at the
+runtime boundary; production and shared automation use platform injection or a
+dedicated secret manager. Neither carrier authorizes copying secret values into
+DSET, source, assurance artifacts, diagnostics, or build metadata.
 
 ## Layer boundary
 

@@ -37,6 +37,43 @@ where relevant, and authority or override boundary. Profile thresholds,
 including the exclusive 40-line function limit, remain explicit profile TOML
 settings rather than hidden checker literals.
 
+## DSET-REQ-IMPL-007 — Promote runtime configuration deliberately
+
+Every Implementation Profile defines explicit heuristics for keeping invariants
+as code constants and promoting runtime policy to a typed settings carrier.
+Keep a value in code when it is universal across supported environments,
+changes only with the implementation, and expresses an algorithm, schema,
+protocol, or safety invariant. Promote it when an operator must change it
+without a code release, it varies by host or integration, multiple consumers
+share it as runtime policy, or it needs typed validation, documented precedence,
+or an auditable override boundary. A Test variant alone does not justify a
+settings file, and a settings file is not a dumping ground for literals.
+
+## DSET-REQ-IMPL-008 — Implement project-wide secret exclusion
+
+Every applicable Implementation Profile excludes secret values from DSET,
+source, non-secret settings, command lines, builds, logs, diagnostics, Tests,
+Evaluations, prompts, evidence, and generated files. Local development injects
+secrets from an ignored `.env` outside `.dset`; CI and production use platform
+or dedicated secret injection. Implementations validate at the outer boundary,
+redact before serialization or agent ingestion, scan shared surfaces, use
+least-privileged and preferably short-lived credentials, fail closed without
+printing a value, and revoke or rotate immediately after suspected exposure.
+
+Email addresses, usernames, and account IDs are not authenticators. They may
+appear in DSET when necessary and authorized, but remain minimized personal
+data and are sourced from the environment when used as mutable runtime values.
+
+## DSET-REQ-IMPL-009 — Resolve runtime identities and secrets by key
+
+Source code and DSET store only stable environment-variable key names for
+runtime logins, emails, account IDs, API keys, passwords, tokens, and other
+secrets. Scripts resolve and validate the corresponding values at their outer
+runtime boundary, then inject them into the smallest consumer scope. Local
+development backs the keys with ignored `.env`; managed hosts may supply the
+same keys through environment or secret injection. Help, diagnostics, logs,
+prompts, evidence, and errors never render resolved values.
+
 ## DSET-REQ-IMPL-005 — Apply the Agent Skills profile
 
 Every created or updated reusable agent skill must pass

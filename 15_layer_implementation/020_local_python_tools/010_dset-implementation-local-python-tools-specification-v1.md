@@ -79,34 +79,92 @@ and [entry-point specification](https://packaging.python.org/en/latest/specifica
    workflow and I/O implementation. Each serialized shape has one authoritative
    definition. Generated JSON Schema may be published as a separate derived
    file, but it must not become a second hand-edited owner.
-4. A separate settings file is optional. When operator-tunable or
-   environment-specific values justify one, runtime settings live in a typed
-   settings model with a declared TOML carrier, are loaded at the invocation
-   boundary, and are injected into owned logic. A scheduled loop may reread
-   settings at its declared tick boundary; a single run otherwise keeps one
-   stable settings snapshot.
-5. Every Python module groups its module-level settings, defaults, thresholds,
+4. A separate `settings.toml` is optional. Create it when at least one supported
+   value must vary by operator, host, workspace, deployment, or external
+   integration without a code edit and release; when multiple entrypoints or
+   modules share one coherent runtime policy; or when a runtime control needs
+   typed validation, compatibility handling, documented precedence, or an
+   auditable override boundary.
+5. Paths, endpoints, resource limits, timeouts, retry policies, logging levels,
+   and feature switches normally move to `settings.toml` when they are expected
+   to vary. Keep mathematical values, schema and protocol discriminators,
+   algorithm parameters fixed by the implementation, and safety invariants in
+   code when they are universal across every supported environment.
+6. Do not create `settings.toml` merely to collect literals or internal
+   constants. Test variation alone does not justify external configuration when
+   parameters, injected dependencies, or fixtures state the variant more
+   clearly. A safe code default may remain beside a typed field, but there is
+   only one documented precedence chain.
+7. Runtime settings live in a typed model, reject unknown fields by default,
+   document defaults, units, ranges, and override authority, are loaded at the
+   invocation boundary, and are injected into owned logic. A scheduled loop may
+   reread settings at its declared tick boundary; a single run otherwise keeps
+   one stable settings snapshot.
+8. Every Python module groups its module-level settings, defaults, thresholds,
    and constants immediately after the module docstring and imports and before
    classes, functions, or runtime statements. This placement is mandatory even
    when the module also loads a separate settings file.
-6. Every constant is self-documented at its declaration: state what it controls
+9. Every constant is self-documented at its declaration: state what it controls
    or is responsible for, its unit or interpretation when relevant, and its
    override or authority boundary. Descriptive naming does not replace this
    explanation.
-7. Tunable values, limits, paths, timeouts, retry counts, format versions, and
+10. Tunable values, limits, paths, timeouts, retry counts, format versions, and
    behavior switches are named settings or constants. The exclusive 40-line
    function limit is explicitly owned by the profile TOML and is never a hidden
    checker literal. Secrets are credentials, not settings or constants, and
    never enter source, logs, fixtures, or durable artifacts.
-8. Use descriptive `snake_case` names for modules, functions, variables, and
+11. Use descriptive `snake_case` names for modules, functions, variables, and
    fields; `CapWords` for classes; and `UPPER_SNAKE_CASE` for constants. Prefer a
    longer precise name to a short ambiguous abbreviation.
 
 Pydantic models are appropriate at validation and serialization boundaries;
 dataclasses generate common data-object methods without handwritten boilerplate.
 See the [Pydantic model guidance](https://pydantic.dev/docs/validation/latest/concepts/models/),
+the [Pydantic Settings guidance](https://pydantic.dev/docs/validation/latest/concepts/pydantic_settings/),
 the [Python dataclasses documentation](https://docs.python.org/3/library/dataclasses.html),
 and [mypy strict-mode guidance](https://mypy.readthedocs.io/en/stable/existing_code.html).
+
+## Secrets and runtime identifiers
+
+1. Passwords, API keys, access and refresh tokens, session cookies, private
+   keys, signing or encryption keys, authentication certificates, recovery
+   codes, and credential-bearing connection strings or URLs are secrets. They
+   never enter `.dset`, source, `settings.toml`, command-line arguments, process
+   titles, build arguments, image layers, caches, logs, tracebacks, debug output,
+   fixtures, snapshots, prompts, evidence, or generated artifacts.
+2. Source code and DSET contain only stable environment-variable key names for
+   runtime logins, email addresses, account IDs, API keys, passwords, tokens,
+   and other secrets. Local development resolves the values for those keys from
+   a repository-root `.env` through a typed settings boundary. `.env` and its
+   real variants are always ignored by Git and excluded from DSET discovery. A
+   tracked `.env.example` contains key names and unmistakable dummy placeholders
+   only.
+3. CI and production use the host's secret injection, mounted secret, workload
+   identity, or a dedicated secret manager. Do not bake environment variables
+   or secret files into an image. Credentials are least-privileged, attributable,
+   revocable, and short-lived where the provider supports it.
+4. Resolve each required identity or secret by its stable key at the outer
+   runtime boundary, validate its presence without displaying it, and pass it
+   only to the consumer that needs it. A missing or invalid value fails closed
+   with the variable or capability name and a safe remediation, never the
+   value.
+5. Redaction happens before serialization, logging, exception rendering, or
+   agent ingestion. The canonical check scans tracked and publishable surfaces
+   for provider-known and project-specific secret patterns.
+6. Email addresses, usernames, and account IDs may be described in DSET when
+   necessary and authorized because they are identifiers, not authenticators.
+   A script nevertheless obtains their runtime values only by environment key.
+   They are minimized as potentially personal data and normally masked in logs.
+7. Suspected exposure stops further copying. Revoke or rotate first, then clean
+   affected carriers and, when necessary, coordinate history repair. Removing
+   the current file alone does not remove a secret from Git history or replicas.
+
+This boundary follows the
+[Twelve-Factor config distinction](https://12factor.net/config), the
+[OWASP Secrets Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html),
+[OWASP logging exclusions](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html),
+[GitHub secret-scanning and remediation guidance](https://docs.github.com/en/code-security/concepts/secret-security/secret-scanning),
+and [Docker's build-secret guidance](https://docs.docker.com/reference/build-checks/secrets-used-in-arg-or-env/).
 
 ## Documentation and failures
 
