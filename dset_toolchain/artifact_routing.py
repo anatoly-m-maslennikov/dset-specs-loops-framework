@@ -132,8 +132,13 @@ def route_issues(metadata: Mapping[str, Any]) -> list[str]:
     _allowed(metadata, "relation_shape", RELATION_SHAPES, issues)
     _scope_issues(metadata.get("scope_path"), issues)
     _relation_issues(metadata, issues)
-    if "type" in metadata or "subtype" in metadata:
-        issues.append("type and subtype are not routing fields")
+    retired = sorted(
+        {"artifact_type", "artifact_subtype", "type", "subtype"}.intersection(metadata)
+    )
+    if retired:
+        issues.append(
+            "Type/subtype metadata is not part of routing: " + ", ".join(retired)
+        )
     return issues
 
 

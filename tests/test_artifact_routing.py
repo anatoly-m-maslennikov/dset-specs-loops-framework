@@ -133,7 +133,10 @@ class ArtifactRoutingTests(unittest.TestCase):
         candidate = self.standalone()
         candidate["type"] = "decision"
 
-        self.assertIn("type and subtype are not routing fields", route_issues(candidate))
+        self.assertIn(
+            "Type/subtype metadata is not part of routing: type",
+            route_issues(candidate),
+        )
 
     def test_scope_path_is_extensible_but_structured(self) -> None:
         candidate = self.standalone()
