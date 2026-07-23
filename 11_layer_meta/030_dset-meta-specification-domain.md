@@ -6,26 +6,42 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 
 | Entity | Definition |
 |---|---|
-| **Project truth** | Active Decision atoms and their mutable evergreen projections plus applicable QA definitions owned by one adopting project under `dset/` |
-| **Requirement** | A direct Decision subtype for a required observable, verifiable behavior, result, capability, quality, prevention condition, or obligation |
-| **Constraint** | A direct Decision subtype for an externally imposed limitation on acceptable technologies, dependencies, environments, resources, formats, or operating limits when no boundary participant relies on it as a Contract |
+| **Project truth** | Active authoritative atomic records, their current evergreen projections, and applicable maintained project artifacts |
+| **Artifact route** | The independent `revision_mode`, `content_role`, and `governance_locus` values assigned to one governed artifact |
+| **Revision mode** | How an artifact may change: `atomic` is an immutable accepted record; `evergreen` is a mutable compiled current view; `maintained` is a mutable operative artifact |
+| **Content role** | What the artifact contributes to the development cycle: `inquiry`, `definition`, `rationale`, `method`, `implementation`, or `observation` |
+| **Governance locus** | What the artifact primarily governs: an `internal` project-owned non-relational subject, an `external` outside-owned non-relational subject, or a `relation` among explicit endpoints; it classifies the subject, not the project-owned carrier |
+| **Scope path** | The independently resolved structural coordinate of an artifact, such as project, layer, feature, feature group, or a configured composition of them |
+| **Registered name** | The optional human-facing name assigned one-to-one to an occupied route; it does not define the route or create a semantic name hierarchy |
+| **Relation record** | An artifact whose governance locus is `relation` and whose primary subject is a typed relation among two or more explicit endpoints |
+| **Relation endpoint** | A referenced participant in a Relation record, including its role and independently declared `internal` or `external` origin |
+| **Requirement** | The registered name for an internal atomic Definition that states a required observable, verifiable result, capability, quality, prevention condition, or obligation |
+| **Constraint** | The registered name for an external atomic Definition that records an imposed limitation on acceptable technologies, dependencies, environments, resources, formats, or operating limits |
 | **Design** | The internal structure and logic chosen to satisfy accepted Requirements, Scenarios, and Contracts |
 | **Implementation plan** | The ordered build and rollout sequence for realizing accepted truth and Design |
 | **Test plan** | Evergreen projection that organizes QA/Test atoms and their deterministic implementation/evidence obligations |
 | **Evaluation plan** | Evergreen projection that organizes QA/Evaluation atoms and their qualitative, probabilistic, statistical, or model-judged implementation/evidence obligations |
 | **Runtime risk profile** | Selection of recovery and operational semantics triggered by persistence, retry, concurrency, or external effects |
 | **Durability topology** | Selection of authoritative files, a local database, or external backing services based on deployment, write volume, and concurrency |
-| **Contract** | A direct Decision subtype for an operator-accepted obligation across an external or internal project boundary, such as a DDL, CSV/XLSX schema, OpenAPI/message/protocol, host package format, platform matrix, hosted-CI interface, or dependency policy |
-| **Implementation Decision** | A direct Decision subtype for a material selected architecture, design, algorithm, data, tooling, or operating approach |
+| **Contract** | The registered name for an atomic relational Definition that binds explicit participants across an internal or external boundary |
+| **Implementation Decision** | The registered name for an internal atomic Method that selects a material architecture, design, algorithm, data, tooling, or operating approach |
 | **Work Area** | A declared repository-relative folder that bounds DSET scope without implying code, deployability, or a particular architecture; it may contain local tools, deployable services, libraries, documentation, methodology, data, or mixed content |
 
 ## Invariants
 
-- **DSET-INVARIANT-META-001:** QA/Test and QA/Evaluation remain separate direct subtypes, implementations, and evidence streams.
+- **DSET-INVARIANT-META-001:** Test and Evaluation remain separate registered Methods, implementations, and Observation streams.
 - **DSET-INVARIANT-META-002:** Runtime risk, durability topology, effect safety, language enforcement, and artifact governance are selected explicitly rather than inherited from one universal tool class.
 - **DSET-INVARIANT-META-003:** Each durable concern has one authoritative owner; process memory and derived views are not independent truth.
 - **DSET-INVARIANT-META-004:** Exact governance and recursion behavior remains deterministic test proof; agent interpretation, rule-following, navigation, and diagnostic usefulness remain separate eval proof.
-- **DSET-INVARIANT-META-005:** Contract is a direct Decision subtype. An emitted Contract atom is immutable and remains authoritative while active; a successor or retirement requires operator-accepted authority plus an explicit append-only lifecycle relation. Implementation cannot rewrite it. Ambiguity becomes a Question, incompatible active authority becomes a Question/Conflict, and observed nonconformance becomes a Problem.
-- **DSET-INVARIANT-META-006:** Requirement, Constraint, Contract, and Implementation Decision are the only direct Decision subtypes. They own project-selected required results, externally imposed limitations, boundary obligations, and durable selected approaches respectively. User Story, Outcome, Scenario, and Invariant may structure Requirement prose or compatibility history but are not current semantic subtypes.
-- **DSET-INVARIANT-META-007:** Outcome framing may describe intended measurable state change inside a Requirement or Evaluation, but an observed outcome is evidence and Outcome is not a current semantic subtype.
-- **DSET-INVARIANT-META-008:** Every scope-dependent DSET artifact or run resolves against the repository-level scope or one or more declared Work Areas. A Work Area declaration owns that scope boundary; session continuity may reference it but cannot define, modify, or replace it. Neither repository-level scope nor a Work Area implies code, a deployment unit, a service, a feature, or a module.
+- **DSET-INVARIANT-META-005:** Every governed artifact has exactly one value on each routing axis. Names, folders, filename tokens, and workflow position cannot infer or override that route.
+- **DSET-INVARIANT-META-006:** The routing matrix is sparse. A route has zero or one registered name, and an empty cell is valid; DSET does not create placeholders to complete a Cartesian product.
+- **DSET-INVARIANT-META-007:** `internal` governance is mandatory. A project may enable `external` and `relation` governance independently when its boundaries require them.
+- **DSET-INVARIANT-META-008:** A Relation record declares a relation kind and at least two role-bearing endpoints. Each endpoint independently declares internal or external origin; endpoint origin is not another artifact-routing axis.
+- **DSET-INVARIANT-META-009:** Scope path is structural context, not a fourth semantic routing axis. Every scope-dependent DSET artifact or run resolves against the repository-level scope or one or more declared Work Areas.
+- **DSET-INVARIANT-META-010:** Registered names are interface vocabulary for valid routes, not ontological parents or children. Requirement, Constraint, Contract, and Implementation Decision therefore do not require a Decision-centered name hierarchy.
+- **DSET-INVARIANT-META-011:** The development feedback cycle is Inquiry → Definition → Rationale → Method → Implementation → Observation → Inquiry. A record may enter at any justified role; the flow does not determine its identity.
+- **DSET-INVARIANT-META-012:** Generated Code is an internal evergreen Implementation only when it is a reproducible current projection with generator and source provenance. Hand-maintained executable truth is an internal maintained Implementation.
+- **DSET-INVARIANT-META-013:** Outcome framing may describe an intended measurable state inside a Definition or Method, while an observed outcome is an Observation. Outcome is not a routing axis or mandatory registered name.
+- **DSET-INVARIANT-META-014:** A Contract is an atomic relational Definition. Complete replacement requires an operator-accepted successor with `replacement_of`, followed by archive relocation of the predecessor. Implementation cannot rewrite it.
+- **DSET-INVARIANT-META-015:** A Work Area declaration owns a scope boundary; session continuity may reference it but cannot define, modify, or replace it. Neither repository-level scope nor a Work Area implies code, a deployment unit, a service, a feature, or a module.
+- **DSET-INVARIANT-META-016:** Authority, provenance, priority, lifecycle state, and applicability remain explicit metadata. None is inferred from an artifact route.

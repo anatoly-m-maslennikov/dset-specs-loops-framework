@@ -14,51 +14,11 @@
 # configuration carriers fail closed.
 #
 # Settings schema implemented by this file.
-# Accepted for new writers: "1.5".
-schema_version = "1.5"
+# Accepted for new writers: "1.6".
+schema_version = "1.6"
 canonical_command = "python -m dset_toolchain verify ."
 
 [artifacts]
-# Select the visible classification and project-wide numbering axis for
-# governed artifacts.
-#
-# Accepted:
-# - false (default): type-only structural name and one sequence per Type.
-#   Example: DSET-VERSION-001-0-4-core.md
-#   Inside the artifact: artifact_type = "version" and
-#   artifact_subtype = "version_scope".
-# - true: expose the direct subtype and use one sequence per subtype.
-#   Example: DSET-VERSION-VERSION-SCOPE-001-0-4-core.md
-#   Atomic records use the semantic subtype kind directly, such as
-#   APP-REQUIREMENT-GOV-001-readable-summary.md. Empty-subtype atoms continue to use
-#   their Type kind, such as APP-DECISION-GOV-001-readable-summary.md.
-#
-# Changing this value requires a complete governed migration of current and
-# historical IDs, filenames, relations, lifecycle targets, compiled documents,
-# settings, implementations, proof references, and generated views. Layers,
-# features, feature groups, folders, and lifecycle state never restart a
-# sequence. The repository never retains two accepted naming vocabularies.
-# This migrates identity and carrier-representation fields only. Atomic claims,
-# rationale, provenance, scope/relation meaning, and QA criteria remain
-# immutable; changing them requires a successor atom.
-#
-# Registered artifact subtype examples:
-# - analysis_report: solution_landscape, root_cause_analysis, proposal,
-#   technical_investigation, external_audit_analysis
-# - specification: domain_model, behavior, architecture, design, governance
-# - procedure: playbook, runbook
-# - plan: implementation_plan, test_plan, evaluation_plan
-# - version: roadmap, version_scope, change, release_plan, readiness_record,
-#   release_record
-# - implementation: source_code, documentation, configuration, migration,
-#   test_implementation, evaluation_implementation
-# - evidence_record: test_result, evaluation_result, review_report, run_record
-# - derived_view: project_overview, health_dashboard, traceability_index,
-#   changelog
-# - navigation: readme, hub, index
-# atomic_record and verification currently have no artifact subtypes.
-subtype_in_names = false
-
 # Set the gate used before a new immutable atomic artifact is emitted.
 #
 # Accepted:
@@ -72,6 +32,25 @@ subtype_in_names = false
 # Both values check whether the claim may belong one enabled scope higher and
 # propose eligible promotion. Promotion always requires operator acceptance.
 creation_strictness = "medium"
+
+[artifacts.routing]
+# Enable the three independent META routing axes.
+#
+# Keep every revision mode and content role. `internal` is mandatory.
+# Add `external` when the project governs outside-owned inputs or constraints.
+# Add `relation` when the project governs explicit boundaries or interactions.
+# Empty matrix cells are valid; these lists do not require placeholder names or
+# artifacts.
+revision_modes = ["atomic", "evergreen", "maintained"]
+content_roles = [
+  "inquiry",
+  "definition",
+  "rationale",
+  "method",
+  "implementation",
+  "observation",
+]
+governance_loci = ["internal"]
 
 [workflows.implement]
 # Choose what dset-implement may do before implementation begins.

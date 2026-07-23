@@ -1,14 +1,21 @@
 # Methodology META specification
 
-## DSET-REQUIREMENT-META-001 — One governed pipeline
+## DSET-REQUIREMENT-META-001 — One governed feedback cycle
 
-The methodology must define one five-stage pipeline: spec; test plan plus eval plan; implementation plan; code under general rules; and executable enforcement.
+The methodology must define one six-role feedback cycle: Inquiry; Definition;
+Rationale; Method; Implementation; and Observation. Test plans, evaluation
+plans, and implementation plans are Methods. Code and generated operative
+outputs are Implementations. Test and evaluation results are Observations.
 
-**Scenario DSET-SCENARIO-META-001:** Given a contributor deciding where a rule belongs, the document map identifies exactly one owning stage document and treats cross-links as pointers rather than duplicate ownership.
+**Scenario DSET-SCENARIO-META-001:** Given a contributor deciding what an
+artifact contributes, its primary content maps to exactly one role while links
+connect it to the other roles without duplicating ownership.
 
 ## DSET-REQUIREMENT-META-002 — Tests and evals remain distinct
 
-The methodology must keep deterministic tests in `test-plan.md` and probabilistic or qualitative evaluation in `eval-plan.md`.
+The methodology must keep deterministic tests in `test-plan.md` and
+probabilistic or qualitative evaluation in `eval-plan.md`. Both are Methods;
+their execution results remain distinct Observations.
 
 **Scenario DSET-SCENARIO-META-002:** Given behavior with one exact expected output, it is routed to the test plan even when the check is automated. Given multiple acceptable outputs judged by criteria or a rubric, it is routed to the eval plan.
 
@@ -38,56 +45,57 @@ DSET must select implementation-language enforcement and artifact-governance enf
 
 **Scenario DSET-SCENARIO-META-007:** A Python repository selects `python-v1` and `documentation-v1` together; a documentation-only repository selects `documentation-v1` without inheriting Python tools; a future TypeScript repository combines its own language profile with the same artifact profile.
 
-## DSET-REQUIREMENT-META-007 — DSET 0.3 proof categories remain separate
+## DSET-REQUIREMENT-META-007 — Proof categories remain separate
 
 Exact resolver, ownership, path, identity, wrapper, and recursion behavior must be proven by deterministic tests. Agent interpretation, rule-following, navigation, and diagnostic usefulness must be proven by separate qualitative or probabilistic evals. Automation does not change the proof category.
 
 **Scenario DSET-SCENARIO-META-008:** A scripted assertion that a cycle emits one stable code remains a test; an automated agent run measuring whether the diagnostic enables a safe correction remains an eval.
 
-## DSET-REQUIREMENT-META-008 — Contract Decisions preserve boundaries
+## DSET-REQUIREMENT-META-008 — Contracts preserve boundaries
 
 When the operator supplies or accepts a DDL, CSV/XLSX schema,
 OpenAPI/message/protocol, host-native package format, supported-platform
 interface, hosted-CI interface, dependency boundary, or comparable obligation,
-DSET must represent it as `type: decision`, `subtype: contract`. A Contract uses
-a stable `CONTRACT` ID. Each immutable atom names the accepted source,
-direction, provider, consumer, conformance rule, compatibility rule, priority,
-creation state, and any older Contract atoms it absorbs. External formats are
-pinned by version or digest in applicable evidence.
+DSET must represent it as an atomic relational Definition named Contract. A
+Contract uses a stable `CONTRACT` ID. Each immutable record names the accepted
+source, relation kind, role-bearing endpoints, direction, conformance rule,
+compatibility rule, priority, creation state, and any older Contract records it
+replaces. Each endpoint independently declares internal or external origin.
+External formats are pinned by version or digest in applicable evidence.
 
-Contract lifecycle is derived from append-only events. Implementation conforms
-to every applicable active Contract and cannot rewrite the boundary. Ambiguity
-routes to a Question; incompatible active authority becomes Question/Conflict;
-observed nonconformance becomes Problem/Defect. A general or unrelated Decision
-does not silently override a Contract; change requires explicit precedence or
-an operator-accepted absorbing Contract. A mandated dependency is
-Decision/Constraint when an external authority imposes it and Decision/Contract
-when a boundary participant relies on it. A project-selected dependency rule is
-a Requirement; selecting a material implementation approach is an
-Implementation Decision.
+Implementation conforms to every applicable active Contract and cannot rewrite
+the boundary. Ambiguity routes to an Inquiry; incompatible active authority
+becomes a Conflict; observed nonconformance becomes a Problem. An unrelated
+artifact does not silently override a Contract; change requires explicit
+precedence or an operator-accepted replacement Contract. A mandated dependency
+is a Constraint when an external authority imposes it and a Contract when a
+boundary participant relies on it. A project-selected dependency rule is a
+Requirement; selecting a material implementation approach is an Implementation
+Decision.
 
 **Scenario DSET-SCENARIO-META-009:** The operator accepts host, platform,
-dependency, and GitHub Actions boundaries as Contract Decisions. Descriptive
-Markdown or local scripts alone cannot satisfy them. An unclear host format is
-a Question, incompatible active formats are a Question/Conflict, and a failing
-platform or disallowed dependency is a Problem with the applicable subtype.
+dependency, and GitHub Actions boundaries as Contracts. Descriptive Markdown or
+local scripts alone cannot satisfy them. An unclear host format is an Inquiry,
+incompatible active formats form a Conflict, and a failing platform or
+disallowed dependency is a Problem.
 
 ## DSET-REQUIREMENT-META-009 — User Stories remain Requirement forms
 
 When actor, capability, and value framing is useful, it belongs inside or links
-to a Decision/Requirement atom. User Story is not a semantic subtype. Split
-independently enforceable acceptance criteria into sibling Requirement atoms.
+to a Requirement. User Story is not a routing axis or required registered name.
+Split independently enforceable acceptance criteria into sibling atomic
+Definitions.
 
 **Scenario DSET-SCENARIO-META-010:** A contributor story explains why a host
-integration matters, while separate Requirement and QA atoms own the behavior
-and proof without nested subtype paths.
+integration matters, while separate Requirement, Test Plan, and Evaluation Plan
+artifacts own the behavior and proof.
 
-## DSET-REQUIREMENT-META-010 — Outcomes remain requirement or evaluation content
+## DSET-REQUIREMENT-META-010 — Outcomes remain definition, method, or observation content
 
-An intended measurable state change belongs in a Decision/Requirement when it
-is required, or in QA/Evaluation when it defines assessment. An observed result
-is evidence. Outcome is not a semantic subtype, and shipping an output alone
-does not prove an intended state change.
+An intended measurable state change belongs in a Definition when it is required
+or in a Method when it defines assessment. An observed result is an
+Observation. Outcome is not a routing axis or mandatory registered name, and
+shipping an output alone does not prove an intended state change.
 
 **Scenario DSET-SCENARIO-META-011:** A Requirement defines the release behavior;
 a linked Evaluation defines how time-to-diagnose improvement is assessed; the
@@ -115,3 +123,111 @@ data/tooling folder as separate Work Areas. Another repository declares only
 its root. DSET scopes both projects without inventing services, modules,
 features, or deployment semantics, and a resumed session follows the current
 declaration rather than a stale checkpoint hint.
+
+## DSET-REQUIREMENT-META-012 — Three independent axes route every artifact
+
+Every governed artifact must declare exactly one `revision_mode`, one
+`content_role`, and one `governance_locus`.
+
+| Axis | Values | Question answered |
+|---|---|---|
+| Revision mode | `atomic`, `evergreen`, `maintained` | How may it change? |
+| Content role | `inquiry`, `definition`, `rationale`, `method`, `implementation`, `observation` | What does it contribute? |
+| Governance locus | `internal`, `external`, `relation` | What does it primarily govern? |
+
+The route is explicit metadata. Names, folders, suffixes, workflow steps, and
+scope paths must not infer or override it. Authority, provenance, priority,
+lifecycle state, and applicability remain explicit metadata outside the route.
+
+**Scenario DSET-SCENARIO-META-013:** Requirement routes to
+atomic/definition/internal, Constraint to atomic/definition/external, Contract
+to atomic/definition/relation, and Implementation Decision to
+atomic/method/internal without placing any of them under a Decision-centered
+name hierarchy.
+
+## DSET-REQUIREMENT-META-013 — The routing matrix remains sparse
+
+The routing space is the matrix below. Every cell may contain zero or one
+registered name at each enabled governance locus. An empty cell is valid.
+
+| Revision mode \ Content role | Inquiry | Definition | Rationale | Method | Implementation | Observation |
+|---|---|---|---|---|---|---|
+| Atomic | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R |
+| Evergreen | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R |
+| Maintained | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R |
+
+`I`, `E`, and `R` mean internal, external, and relation. They mark available
+coordinates, not required artifacts. Internal governance is always enabled;
+external and relation governance are enabled independently by project settings.
+
+**Scenario DSET-SCENARIO-META-014:** A small internal-only project creates no
+external or relational placeholders. A project with an OpenAPI boundary enables
+relations and registers only the names it actually needs.
+
+## DSET-REQUIREMENT-META-014 — Relations remain first-class and endpoint-explicit
+
+An artifact routed to `governance_locus = "relation"` must declare a stable
+relation kind and at least two role-bearing endpoints. Each endpoint declares
+its own internal or external origin. Endpoint origin does not add another
+routing axis, and a relational name or suffix cannot replace the endpoint
+record.
+
+**Scenario DSET-SCENARIO-META-015:** A Contract identifies provider and consumer;
+a Pull Request identifies source and target; a Merge Commit records the merged
+parents. Each remains one relational artifact with explicit participants.
+
+## DSET-REQUIREMENT-META-015 — Scope path remains structural
+
+Project, layer, feature, feature group, and configured compositions of them form
+the artifact's `scope_path`. Scope path may affect inheritance, applicability,
+and identity, but it does not alter the three-axis semantic route.
+
+**Scenario DSET-SCENARIO-META-016:** A feature-layer Requirement and a
+project-level Requirement share atomic/definition/internal while retaining
+different scope paths.
+
+## DSET-REQUIREMENT-META-016 — Content roles form a feedback cycle
+
+DSET uses this development cycle:
+
+```mermaid
+flowchart LR
+    INQ["Inquiry"] --> DEF["Definition"]
+    DEF --> RAT["Rationale"]
+    RAT --> METHOD["Method"]
+    METHOD --> IMPL["Implementation"]
+    IMPL --> OBS["Observation"]
+    OBS --> INQ
+```
+
+The flow helps navigation and entry-gate selection. It does not determine
+artifact identity, revision mode, governance locus, or authority.
+
+**Scenario DSET-SCENARIO-META-017:** A production observation raises a new
+Question; its route is selected from its own semantics, not copied from the
+preceding implementation.
+
+## DSET-REQUIREMENT-META-017 — Generated and maintained implementations remain distinct
+
+Generated Code is an internal evergreen Implementation when it is a reproducible
+current projection with generator and source provenance. Hand-maintained
+executable truth is an internal maintained Implementation. A Commit is an
+atomic Implementation; a Merge Commit is an atomic relational Implementation.
+
+**Scenario DSET-SCENARIO-META-018:** Regenerating a dashboard updates one
+evergreen Implementation, while editing a source module updates one maintained
+Implementation and committing that edit creates a separate atomic
+Implementation record.
+
+## FPF alignment
+
+This routing model adapts three FPF constraints:
+
+- E.24: names and local use frames must not create a shadow ontology;
+- A.6.P: a relation must expose its kind, participants, and qualifiers;
+- A.02.01: contextual roles require holders and context, and optional slots do
+  not justify dummy entities.
+
+Therefore the axes classify one artifact's current governance role, registered
+names remain sparse interface vocabulary, and relational participants remain
+explicit rather than encoded in names.

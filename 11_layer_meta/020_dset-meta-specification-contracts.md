@@ -14,7 +14,7 @@
 - One project-local installed methodology under
   `.dset/000_dset_methodology/`, distinct from applied artifacts.
 - Independently selected implementation-language and artifact-governance
-  profiles, including the `documentation-v1` catalog in
+  profiles, including project-selected artifact-routing loci in
   `.dset/dset_settings.toml`.
 - Applied project-wide truth under `.dset/100_project/`, applied layer truth
   under `.dset/101_layer_meta/` through `.dset/106_layer_ops/`, and Version
@@ -31,16 +31,28 @@
 
 ## Specification boundary surface
 
-Decision is the only authority Type. Its direct subtypes are Requirement,
-Constraint, Contract, and Implementation Decision. Requirement owns required
-observable results selected by the project or operator; Constraint records an
-externally imposed limitation the project must obey; Contract owns boundary
-obligations; Implementation Decision owns material selected architecture,
-design, algorithm, data, tooling, or operating approaches.
+DSET routes every governed artifact through three independent axes:
+`revision_mode`, `content_role`, and `governance_locus`. The complete values are:
 
-User Stories, Outcomes, Scenarios, and Invariants may structure Requirement
-prose, analysis, or compatibility history. They do not create more semantic
-subtypes. Independently enforceable claims are separate Requirement atoms.
+- `revision_mode`: `atomic`, `evergreen`, or `maintained`;
+- `content_role`: `inquiry`, `definition`, `rationale`, `method`,
+  `implementation`, or `observation`;
+- `governance_locus`: `internal`, `external`, or `relation`.
+
+Internal governance is mandatory. External and relational governance are
+independently optional. Scope path remains structural context outside this
+semantic matrix.
+
+Each occupied route has at most one registered human-facing name, and each name
+maps to exactly one route. The name does not establish an ontology, infer a
+route, or create a semantic name hierarchy.
+Requirement maps to atomic Definition/internal, Constraint to atomic
+Definition/external, Contract to atomic Definition/relation, and Implementation
+Decision to atomic Method/internal.
+
+User Stories, Outcomes, Scenarios, and Invariants may structure artifact prose,
+analysis, or compatibility history. Independently enforceable claims remain
+separate atomic records.
 
 ## Non-contractual surfaces
 
@@ -48,13 +60,14 @@ Examples, diagrams, and cited candidates may evolve without compatibility guaran
 
 ## Authoritative boundary contracts
 
-A Contract is a direct Decision subtype, not implementation advice. Every
-immutable Contract atom names its operator-accepted source, version or digest,
-direction, provider, consumer, conformance, compatibility, priority, creation
-state, and absorbed predecessors. Implementation cannot rewrite it. Ambiguity
-creates a Question, incompatible active authority creates Question/Conflict,
-and observed nonconformance creates Problem/Defect. Change requires explicit
-precedence or an operator-accepted absorbing Contract.
+A Contract is an atomic relational Definition, not implementation advice. Every
+Contract names its operator-accepted source, version or digest, relation kind,
+role-bearing endpoints, direction, conformance, compatibility, priority,
+creation state, and archived predecessors. Each endpoint independently declares
+internal or external origin. Implementation cannot rewrite the Contract.
+Ambiguity creates an Inquiry, incompatible active authority creates a Conflict,
+and observed nonconformance creates a Problem. Change requires explicit
+precedence or an operator-accepted replacement Contract.
 
 ## DSET-CONTRACT-META-001 — Repository Work Area declaration
 
