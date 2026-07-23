@@ -2,8 +2,8 @@
 
 ## Purpose
 
-Provide reusable prompt implementations for independent qualitative DSET
-Evaluation and explicit result reconciliation.
+Provide provider-neutral prompt implementations for independent qualitative
+DSET Evaluation, explicit result reconciliation, and versioned case sets.
 
 ## Boundaries
 
@@ -17,3 +17,8 @@ evidence and Verification remain with the applicable project scope.
   one isolated reviewer.
 - `020_dset-implementation-evaluations-result-reconciliation.md` — reconcile independent
   results without averaging disagreement away.
+- `030_dset-implementation-evaluations-skill-cases.toml` — minimum trigger,
+  non-trigger, and ambiguous-routing definitions for every public DSET skill.
+
+Apply `llm-evaluations-v1` to every created or updated definition, prompt,
+harness, grader, case set, reconciliation procedure, and result carrier.

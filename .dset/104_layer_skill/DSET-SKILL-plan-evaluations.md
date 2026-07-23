@@ -15,9 +15,21 @@ Applicable qualitative and probabilistic proof is layer-owned. The representativ
 | **DSET-EVALUATION-SKILL-012** | Implementation-mode clarity | Given partially prepared and fully prepared requests, operators understand that lazy is the self-preparing default and strict is implementation-only, select the intended project setting without learning skill choreography, preserve all authority/provenance/authorization/Verification/release boundaries, and never treat lazy as permission to invent acceptance or strict as a weaker safety mode |
 | **DSET-EVAL-SKILL-011** | Shared-runtime transparency | Operators using supported hosts can identify the selected project, Work Area, workflow, local rule owners, runtime version, session handoff, and stop reason from one invocation without understanding host package internals or manually locating governance files |
 
+Cross-layer `DSET-EVALUATION-IMPL-001` owns the provider-neutral Agent Skills
+profile matrix for all 18 public wrappers. Its 54-case minimum set checks
+triggering, non-triggering, and ambiguous routing; applicable runs also cover
+isolation, coexistence, instruction following, authorization and stop behavior,
+and output usefulness. Static source conformance remains deterministic Test
+work and does not substitute for those model/host runs.
+
 ## Calibration and evidence
 
 Use at least two independent reviewers for a baseline where interpretation matters. Record disagreements by case and criterion, and correct the earliest ambiguous owner rather than averaging incompatible results.
+
+Every run records exact Evaluation, target, skill tree, case-set, rubric,
+provider, host, model, effective-configuration, and evaluator identities.
+Unsupported matrix cells remain unsupported, and unresolved material
+disagreement remains inconclusive.
 
 `DSET-EVAL-SKILL-010` is absorbed by `DSET-EVALUATION-SKILL-012` and remains
 immutable history.

@@ -8,6 +8,13 @@ This is the hub for thin DSET workflow wrappers. These repository-native sources
 
 Skills own discovery, workflow identity, resolver invocation, rule-set reporting, authorization handoff, and fail-closed behavior. Repository-local governing documents own the substantive procedure and project rules. A skill never falls back to embedded prose or remote framework text.
 
+The reusable `SKILL.md` core is LLM-provider agnostic. Codex metadata,
+host-native discovery, installation, and invocation are adapters with separate
+compatibility claims. The current distribution implements Codex and Claude
+adapters only; Grok, Chinese model providers, and other hosts are neither
+excluded by the core nor claimed without their own adapter and Evaluation
+evidence.
+
 The same installed skill packages serve every DSET project. Each invocation
 starts from its explicit target, discovers exactly one owning DSET root, and
 resolves that project's local governance layer. Moving to another project
@@ -57,6 +64,18 @@ Governed wrappers resolve their registered workflow before acting; the two
 exceptions use only their declared bootstrap/diagnostic transaction. No skill
 depends on private memory, machine-specific paths, shell-only behavior, or a
 parallel specification format.
+
+Every created or updated skill must pass `agent-skills-v1` before installation
+or distribution:
+
+```text
+python -m dset_toolchain skills audit --source skills
+```
+
+The gate validates all 18 package shapes and the 54-case minimum trigger,
+non-trigger, and ambiguous-routing catalog. Provider/host/model execution
+remains a separate qualitative Evaluation; a clean static audit is not host
+invocation proof.
 
 Use the [host-distribution workflow](host-distribution.md) to preview or apply
 copy-based Codex and Claude installations. One transaction installs all thin

@@ -1,9 +1,20 @@
 # DSET skill host distribution
 
-The 17 folders listed in the [skills hub](README.md) and the repository's
+The 18 folders listed in the [skills hub](README.md) and the repository's
 `dset_toolchain` package are canonical source artifacts. A host installation
 copies the thin wrappers and one shared runtime package. Installed copies do
 not become editable rule owners.
+
+Run the provider-neutral source gate before previewing installation:
+
+```text
+python -m dset_toolchain skills audit --source skills
+```
+
+The shared skill core is not tied to Codex or Claude. This distribution
+currently implements and verifies only those two host adapters. Other providers
+or hosts require an explicit adapter plus their own installation, invocation,
+and Evaluation evidence before they enter the supported matrix.
 
 ## Install
 
@@ -52,11 +63,11 @@ wrapper therefore does not depend on a global `dset` command or a mutable
 the planned digest and stops an unreviewed replacement.
 
 The installer rejects symlinked source content and creates real copied skill
-folders. It requires the exact 17-skill catalog: `dset`, `dset-init`,
+folders. It requires the exact 18-skill catalog: `dset`, `dset-init`,
 `dset-repair-governance`, `dset-decompose`, `dset-diagnose`, `dset-clarify`,
 `dset-landscape`, `dset-prototype`, `dset-decisions`, `dset-plan-proof`,
-`dset-plan-implementation`, `dset-implement`, `dset-verify`, `dset-overview`,
-`dset-triage`, `dset-release`, and `dset-complete`.
+`dset-compile`, `dset-plan-implementation`, `dset-implement`, `dset-verify`,
+`dset-overview`, `dset-triage`, `dset-release`, and `dset-complete`.
 
 ## Verify discovery
 
