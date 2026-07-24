@@ -38,7 +38,7 @@ declared separately below.
 | **Layer authority flow** | The forward order in which an earlier DSET layer constrains or refines a later DSET layer | `DSET-REQUIREMENT-META-023`, `DSET-REQUIREMENT-META-025` |
 | **Layer dependency** | A consumption edge from one DSET layer to itself or an earlier DSET layer | `DSET-REQUIREMENT-META-025` |
 | **Layer handoff** | The declared input, output, entry criteria, exit criteria, and failure behavior between two adjacent DSET layers | `DSET-REQUIREMENT-META-024` |
-| **Work Area** | A declared repository-relative folder that bounds Scope path resolution without implying code, deployability, or a particular architecture | `DSET-REQUIREMENT-META-011` |
+| **Work Area** | A declared repository-relative folder that bounds Scope path resolution without implying code, deployability, or a particular architecture | `DSET-REQUIREMENT-META-011`, `DSET-CONTRACT-META-001` |
 | **Maintained semantic view** | A thin, reasoned, maintained Governed artifact that presents current meaning while returning every summarized claim directly to Atomic records | `DSET-REQUIREMENT-META-042` |
 | **Governance surface** | A named optional maintained Governed artifact whose activation creates currentness or gate obligations | `DSET-REQUIREMENT-META-033`, `DSET-REQUIREMENT-META-041` |
 | **Project truth** | Active authoritative Atomic records plus applicable maintained Methods, Implementations, and other operative owners; a Maintained semantic view presents but does not override atomic authority | `DSET-REQUIREMENT-META-042`, `DSET-REQUIREMENT-META-026`, `DSET-REQUIREMENT-META-028`, `DSET-REQUIREMENT-META-033` |
@@ -59,7 +59,7 @@ declared separately below.
 | `orders` | Layer authority flow | DSET layer | `DSET-REQUIREMENT-META-023`, `DSET-REQUIREMENT-META-025` |
 | `consumes` | Layer dependency | DSET layer | `DSET-REQUIREMENT-META-025` |
 | `connects` | Layer handoff | DSET layer | `DSET-REQUIREMENT-META-024` |
-| `scopes` | Work Area | Governed artifact | `DSET-REQUIREMENT-META-011` |
+| `scopes` | Work Area | Governed artifact | `DSET-REQUIREMENT-META-011`, `DSET-CONTRACT-META-001` |
 | `summarizes` | Maintained semantic view | Atomic record | `DSET-REQUIREMENT-META-042` |
 | `constrains` | Contract | Design | `DSET-REQUIREMENT-META-008` |
 | `plans_realization_of` | Implementation plan | Design | `DSET-REQUIREMENT-META-001`, `DSET-REQUIREMENT-META-028` |
@@ -147,7 +147,7 @@ Exploration failure or abandonment leaves governed truth unchanged.
 - **DSET-INVARIANT-META-006:** The routing matrix is sparse. Empty routes are valid and create no placeholder obligation. Each registered type/subtype resolves one route, while several semantically distinct names may share that route. Sources: `DSET-REQUIREMENT-META-035` and `DSET-REQUIREMENT-META-043`.
 - **DSET-INVARIANT-META-007:** `internal` governance is mandatory. A project may enable `external` and `relation` governance independently when its boundaries require them. Source: `DSET-REQUIREMENT-META-035`.
 - **DSET-INVARIANT-META-008:** A Relation record declares a relation kind and at least two role-bearing endpoints. Each endpoint independently declares internal or external origin; endpoint origin is not another artifact-routing axis. Source: `DSET-REQUIREMENT-META-014`.
-- **DSET-INVARIANT-META-009:** Scope path is project-relative structural context, not a fourth semantic routing axis. The current project is ambient and never repeated inside the path; every scope-dependent DSET artifact or run resolves against the repository-level scope or one or more declared Work Areas. Sources: `DSET-REQUIREMENT-META-011` and `DSET-REQUIREMENT-META-015`.
+- **DSET-INVARIANT-META-009:** Scope path is project-relative structural context, not a fourth semantic routing axis. The current project is ambient and never repeated inside the path; every scope-dependent DSET artifact or run resolves against the repository-level scope or one or more declared Work Areas. Sources: `DSET-REQUIREMENT-META-011`, `DSET-REQUIREMENT-META-015`, and `DSET-CONTRACT-META-001`.
 - **DSET-INVARIANT-META-010:** Artifact types are interface vocabulary for valid routes, not ontological parents or children. Requirement, Constraint, Contract, and Implementation Decision therefore do not require a Decision-centered name hierarchy. Sources: `DSET-REQUIREMENT-META-008`, `DSET-REQUIREMENT-META-009`, and `DSET-REQUIREMENT-META-035`.
 - **DSET-INVARIANT-META-011:** The development feedback cycle is Inquiry → Definition → Rationale → Method → Implementation → Observation → Inquiry. A record may enter at any justified role; the flow does not determine its identity. Sources: `DSET-REQUIREMENT-META-001` and `DSET-REQUIREMENT-META-016`.
 - **DSET-INVARIANT-META-012:** Generated Code and hand-maintained executable truth are maintained Implementations with different update procedures; generated output additionally declares generator and source provenance. A Git commit is a separate atomic Implementation record. Source: `DSET-REQUIREMENT-META-041`.

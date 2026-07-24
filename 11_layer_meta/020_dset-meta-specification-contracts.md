@@ -136,10 +136,12 @@ precedence or an operator-accepted replacement Contract.
 
 ## DSET-CONTRACT-META-001 — Repository Work Area declaration
 
+Atomic source: `DSET-CONTRACT-META-001`.
+
 | Field | Contract value |
 |---|---|
-| Authority | Accepted DSET methodology META package; each adopting repository owner supplies that repository's conforming declaration |
-| Source | `DSET-REQUIREMENT-META-011` and this Contract record |
+| Authority | `DSET-CONTRACT-META-001`; each adopting repository owner supplies that repository's conforming declaration |
+| Source | `DSET-REQUIREMENT-META-011` and `DSET-CONTRACT-META-001` |
 | Record version | `1.0` |
 | Direction | Repository scope declaration → DSET artifacts, workflows, proof, runs, and handoffs |
 | Producer | Adopting repository owner or authorized project governance writer |
