@@ -442,13 +442,16 @@ def _validate_project_manifest(
             _diag("DSET-E115", path, "package IDs must be non-empty and unique")
         )
     manifest_schema = str(data.get("schema_version"))
-    if manifest_schema in {"1.2", "1.3", "1.4", "1.5"}:
+    if manifest_schema in {"1.2", "1.3", "1.4", "1.5", "1.6", "1.7", "1.8"}:
         structure = data.get("structure")
         expected_layouts = {
             "1.2": {"layered-v1"},
             "1.3": {"slim-v1", "numbered-layers-v1"},
             "1.4": {"recursive-framework-v1"},
             "1.5": {"separated-methodology-v1"},
+            "1.6": {"separated-methodology-v1"},
+            "1.7": {"separated-methodology-v1"},
+            "1.8": {"separated-methodology-v1"},
         }[manifest_schema]
         valid_structure = (
             isinstance(structure, dict)
@@ -539,7 +542,7 @@ def _validate_project_manifest(
                 )
             )
         return diagnostics
-    if manifest_schema in {"1.4", "1.5"}:
+    if manifest_schema in {"1.4", "1.5", "1.6", "1.7", "1.8"}:
         return diagnostics
     contracts = data.get("contracts")
     if not isinstance(project_key, str):

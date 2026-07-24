@@ -141,7 +141,7 @@ def _remove_source_less_carriers(root: Path, target: Path) -> None:
 def _installed_root(root: Path) -> Path:
     layout = discover_layout(root)
     if not layout.separated:
-        raise ValueError("methodology synchronization requires schema 1.5")
+        raise ValueError("methodology synchronization requires a separated layout")
     return layout.dset_root / METHODOLOGY_ROOT
 
 
@@ -160,6 +160,7 @@ def _files(
             path.name.startswith(".")
             or path.suffix == ".pyc"
             or "__pycache__" in relative.parts
+            or "_obsolete" in relative.parts
             or any(relative.is_relative_to(prefix) for prefix in excluded)
         ):
             continue
