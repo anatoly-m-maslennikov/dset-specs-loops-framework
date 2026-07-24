@@ -52,6 +52,15 @@ DELEGATION_BUDGET_PROFILES = frozenset({"low", "medium", "high"})
 SEMANTIC_COMPILATION_MODES = frozenset({"on_demand", "eager"})
 # CONFLICT_RESOLUTION_MODES defines conflict selection modes.
 CONFLICT_RESOLUTION_MODES = frozenset({"ask_always", "auto_by_effective_priority"})
+# GOVERNANCE_SURFACE_KEYS defines optional governed project surfaces.
+GOVERNANCE_SURFACE_KEYS = (
+    "evergreen_specification",
+    "test_plan",
+    "evaluation_plan",
+    "implementation_plan",
+    "project_overview",
+    "architecture_view",
+)
 # DEFAULT_PRIORITY_SCALE defines default priority scale; this module owns the default.
 DEFAULT_PRIORITY_SCALE = ("high", "medium", "low")
 
@@ -70,6 +79,7 @@ class ProjectSettings:
     priority_scale: tuple[str, ...] = DEFAULT_PRIORITY_SCALE
     default_priority: str = "medium"
     conflict_resolution_mode: str = "ask_always"
+    active_governance_surfaces: tuple[str, ...] = ()
     routing_revision_modes: tuple[str, ...] = REVISION_MODES
     routing_content_roles: tuple[str, ...] = CONTENT_ROLES
     routing_governance_origins: tuple[str, ...] = GOVERNANCE_ORIGINS
@@ -238,6 +248,21 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
         )
         conflict_resolution_mode = "ask_always"
 
+    governance_surfaces = _table(
+        raw.get("governance_surfaces"),
+        "governance_surfaces",
+        issues,
+    )
+    active_governance_surfaces = tuple(
+        key
+        for key in GOVERNANCE_SURFACE_KEYS
+        if _boolean(
+            governance_surfaces.get(key, False),
+            f"governance_surfaces.{key}",
+            issues,
+        )
+    )
+
     routing = _table(raw.get("routing"), "routing", issues)
     routing_revision_modes = _route_axis(
         routing.get("revision_modes", REVISION_MODES),
@@ -280,6 +305,7 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
             priority_scale=priority_scale,
             default_priority=default_priority,
             conflict_resolution_mode=conflict_resolution_mode,
+            active_governance_surfaces=active_governance_surfaces,
             routing_revision_modes=routing_revision_modes,
             routing_content_roles=routing_content_roles,
             routing_governance_origins=routing_governance_origins,
@@ -331,6 +357,7 @@ def _validate_known_keys(
                 "version_registry",
                 "package_catalog",
                 "conflict_resolution",
+                "governance_surfaces",
                 "routing",
             }
         )
@@ -424,6 +451,14 @@ def _validate_known_keys(
                 "unsatisfiable_external_obligations",
             },
             "conflict_resolution",
+            issues,
+        )
+    governance_surfaces = raw.get("governance_surfaces")
+    if isinstance(governance_surfaces, dict):
+        _unknown_keys(
+            governance_surfaces,
+            set(GOVERNANCE_SURFACE_KEYS),
+            "governance_surfaces",
             issues,
         )
     routing = raw.get("routing")
