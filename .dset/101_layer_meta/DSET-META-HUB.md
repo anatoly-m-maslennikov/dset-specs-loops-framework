@@ -18,7 +18,8 @@ Installed methodology is a separate materialized owner. Applied atomic records
 remain semantic authority. Maintained plans organize active atomic plans only
 and cannot replace or establish them.
 
-The layer constitution is `META → GOV → TOOL → SKILL → IMPL → OPS`.
+The layer constitution is
+`META → GOV → SPEC → PROFILES → IMPL → OPS`.
 
 ## Start here
 
