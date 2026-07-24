@@ -1,3 +1,11 @@
+---
+artifact_type: procedure
+artifact_subtype: playbook
+scope_path:
+  - layer:gov
+priority: medium
+---
+
 # Artifact authoring rules
 
 ## Universal rules
@@ -118,9 +126,10 @@ When two entities are mutually related, define each independently first using sh
 - A Decision records a material selected implementation, architecture,
   governance, or operating approach and has no subtype. Rationale is strongly
   recommended but remains optional in validation.
-- Never edit an emitted Decision atom. Record later state in an append-only
-  lifecycle event or emit an explicit absorbing successor while preserving the
-  predecessor and both directions.
+- Never edit an emitted Decision atom. Emit an explicit successor with
+  `replacement_of` for complete replacement, then archive the predecessor.
+  Resolution uses `resolution_of`; recurrence creates a new Question or Problem
+  with `recurrence_of`. Reopening is forbidden.
 - Every active applicable Decision is an atomic
   authority source. Compile its consequences into the owning evergreen spec or
   plan; when they differ, the Decision wins and the projection is stale until

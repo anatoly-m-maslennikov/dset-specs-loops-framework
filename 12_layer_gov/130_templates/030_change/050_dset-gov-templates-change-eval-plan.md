@@ -1,3 +1,10 @@
+---
+artifact_type: plan
+scope_path: []
+priority: medium
+artifact_subtype: evaluation_plan
+---
+
 # Eval plan — {{title}}
 
 ## Applicability

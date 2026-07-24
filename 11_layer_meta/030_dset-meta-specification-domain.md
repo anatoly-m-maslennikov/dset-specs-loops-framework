@@ -1,3 +1,11 @@
+---
+artifact_type: specification
+artifact_subtype: domain_model
+scope_path:
+  - layer:meta
+priority: high
+---
+
 # Methodology META domain
 
 This is one layer-owned fragment of the logical methodology package. Use the sibling layer hubs for connected definitions; this file owns only the entities and invariants below.

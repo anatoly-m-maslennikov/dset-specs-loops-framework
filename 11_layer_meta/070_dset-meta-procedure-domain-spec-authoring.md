@@ -1,3 +1,11 @@
+---
+artifact_type: procedure
+artifact_subtype: playbook
+scope_path:
+  - layer:meta
+priority: medium
+---
+
 # Domain and specification authoring
 
 **Rule ID:** `DSET-RULE-DOMAIN-SPEC`

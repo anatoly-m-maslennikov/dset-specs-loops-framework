@@ -1,3 +1,11 @@
+---
+artifact_type: procedure
+artifact_subtype: playbook
+scope_path:
+  - layer:gov
+priority: medium
+---
+
 # Semantic Types, subtypes, and artifact types
 
 ## Authority
@@ -53,14 +61,14 @@ metadata. The canonical vocabulary is applied through a complete repository
 migration; short identity aliases are rejected rather than retained as a
 second live naming scheme. The migration changes how an immutable atom is
 addressed; it does not rewrite the atom's claim, rationale, provenance, or
-lifecycle meaning.
+relation meaning.
 
 ## Decision
 
 **Definition:** An immutable directive that the operator has explicitly
 accepted as project authority.
 
-The operator's acceptance is an act or append-only lifecycle event that grants
+The operator's acceptance is an act that grants
 authority to the directive; it is not the directive itself. A Markdown, TOML,
 database, or hosted record is only its carrier or representation.
 
@@ -82,8 +90,8 @@ choice. A Question does not authorize implementation merely by existing.
 
 An empty subtype means a general uncertainty that is not more precisely a
 Conflict, Risk, or Opportunity. Evidence may answer a factual Question; an
-authoritative choice is resolved through a Decision. Resolution is an
-append-only lifecycle event linked to the immutable Question atom.
+authoritative choice is resolved through a Decision using `resolution_of`;
+the immutable Question then moves to its Type-local archive.
 
 | Subtype | Canonical definition | Classification test | Must not represent |
 |---|---|---|---|
@@ -238,14 +246,16 @@ implementation when an active Decision already defines the correction. If the
 correction requires missing knowledge or a new choice, it raises a Question;
 the operator's answer becomes a Decision and recompiles evergreen truth.
 
-All emitted Type atoms are immutable. Acceptance, resolution, replacement,
-absorption, retirement, and other later state changes use new linked atoms or
-append-only lifecycle events. Evergreen projections remain editable and must
-be recompiled when active authority changes.
+All emitted Type atoms are immutable. Resolution and complete replacement use
+typed relations and Type-local archive placement. Withdrawal archives the atom
+and routes future intent to a Version Roadmap. Reopening is forbidden; a
+recurring Question or Problem is a new atom with `recurrence_of`. Evergreen
+projections remain editable and must be recompiled when active authority
+changes.
 
 ## Rationale
 
 Every Decision representation should prompt for concise rationale. Any other
 atomic Type may carry rationale when it helps review, investigation,
-prioritization, absorption, or replacement. Rationale remains optional and
-cannot hide authority, lifecycle state, or evidence owned elsewhere.
+prioritization, recurrence, or replacement. Rationale remains optional and
+cannot hide authority, archive state, or evidence owned elsewhere.

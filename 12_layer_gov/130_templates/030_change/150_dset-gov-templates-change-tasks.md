@@ -1,3 +1,10 @@
+---
+artifact_type: plan
+scope_path: []
+priority: medium
+artifact_subtype: implementation_plan
+---
+
 # Tasks — {{title}}
 
 - [ ] **{{project_key}}-TASK{{id_layer}}-001:** Link the draft PR and finalize readiness artifacts.

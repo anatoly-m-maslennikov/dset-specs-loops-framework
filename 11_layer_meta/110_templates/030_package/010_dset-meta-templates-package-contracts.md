@@ -1,3 +1,10 @@
+---
+artifact_type: specification
+scope_path: []
+priority: medium
+artifact_subtype: behavior
+---
+
 # {{title}} public contract
 
 ## {{project_key}}-CONTRACT{{id_layer}}-001 — Contract title
@@ -7,7 +14,7 @@ OpenAPI, message schema, or another concrete interface. Record inputs, outputs,
 compatibility, error behavior, authority, and lifecycle rules. Implementation
 conforms to this immutable Contract atom and cannot rewrite it. Record
 `priority`, creation state, and `absorbs`. Only the named authority may emit an
-absorbing successor or append-only retirement event; current state and reverse
+replacement successor plus archive relocation; current state and reverse
 links are derived. A concise rationale for the boundary is recommended but
 optional; it must not replace the authoritative interface definition.
 

@@ -1,3 +1,11 @@
+---
+artifact_type: procedure
+artifact_subtype: playbook
+scope_path:
+  - layer:meta
+priority: medium
+---
+
 # Deterministic test planning
 
 **Rule ID:** `DSET-RULE-TEST-PLAN`

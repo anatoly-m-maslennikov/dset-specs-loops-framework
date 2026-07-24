@@ -1,3 +1,11 @@
+---
+artifact_type: specification
+artifact_subtype: architecture
+scope_path:
+  - layer:gov
+priority: high
+---
+
 # Governance architecture and bootstrap
 
 **Rule ID:** `DSET-RULE-ARCHITECTURE`
@@ -58,7 +66,9 @@ not the pre-root bootstrap command.
 
 1. Walk upward from the working location until exactly one project containing the unique settings carrier `dset_settings.toml` inside `.dset` is found. Nested competing project roots fail closed.
 2. Read the selected `repository_governance` profile.
-3. Search only the selected `.dset` for settings, governing documents, atoms, evergreen artifacts, and lifecycle events; resolve each carrier by stable ID or globally unique name.
+3. Search only the selected `.dset` for settings, governing documents, atoms,
+   evergreen artifacts, evidence, and Version records; resolve each carrier by
+   stable ID or globally unique name.
 4. Validate local ownership, dependencies, documents, applicability, customization, and wrapper identity.
 5. Resolve the requested workflow in registry order.
 6. Stop before governed work when any selected owner is unresolved or incompatible.
@@ -101,17 +111,17 @@ DSET separates four artifact roles from the four semantic Types—Decision,
 Question, Problem, and QA:
 
 - **Atomic authority sources** are accepted, active, applicable Decisions.
-  Atoms are
-  immutable. Later state is an append-only lifecycle event; replacement is a
-  successor atom with an explicit acyclic `absorbs` relation.
+  Atoms are immutable. Complete replacement is a successor atom with an
+  explicit acyclic `replacement_of` relation, followed by byte-stable archive
+  relocation of the predecessor.
 - **Evergreen compiled projections** are updatable current views such as specs,
   implementation plans, deterministic test plans, eval plans, architecture,
   runbooks, and governing rules. They are compiled from active source atoms and
   become stale when they disagree with one.
 - **Transactional context and evidence** record Questions and their Conflict,
   Risk, and Opportunity subtypes; Problems and their Defect, Gap, and Debt
-  subtypes; QA executions and results; proofs; sessions/runs; acceptance and
-  other lifecycle events; and optional delivery records.
+  subtypes; QA executions and results; proofs; sessions/runs; and optional
+  Version records.
   They route work or assess claims without becoming normative authority merely
   by existing.
 - **Implementation artifacts** are code, Test code, Evaluation prompts or
@@ -119,12 +129,12 @@ Question, Problem, and QA:
   workflows, scripts, generated runtime assets, and configuration examples.
   They implement atomic sources through their compiled projections.
 
-An active atom wins over a stale compiled projection. An absorbing successor
-wins over absorbed predecessors by explicit lifecycle relation, never by age.
-A fully retired atom may move to its type's `archive/` subfolder only through a
-lossless carrier transition that keeps its semantic ID, original seal, current
-digest, source-return address, and lookup. Generated views may summarize these
-relationships but never become authority.
+An active atom wins over a stale compiled projection. A replacement successor
+wins over its archived predecessor by explicit `replacement_of`, never by age.
+Resolution uses `resolution_of`; a repeated archived Question or Problem uses
+`recurrence_of`; reopening is forbidden. Archive relocation keeps semantic ID,
+bytes, original seal, source-return identity, and lookup. Generated views may
+summarize these relationships but never become authority.
 
 ## Public workflow contract
 
@@ -219,7 +229,7 @@ artifacts link child-owned detail and never duplicate it as parallel truth.
 New artifacts store consequential forward edges in `relations` using exactly
 one of `child_of`, `analysis_of`, `projection_of`, `implementation_of`,
 `check_of`, `evidence_for`, `resolution_of`, `override_of`,
-`replacement_of`, or `relates_to`. Reverse edges are derived and never
+`replacement_of`, `recurrence_of`, or `relates_to`. Reverse edges are derived and never
 authored. One source-target pair has one primary relation.
 
 `child_of` narrows or decomposes a claim and keeps both active. `analysis_of`
@@ -227,8 +237,10 @@ owns investigation. `implementation_of` owns realization. `check_of` owns a
 Test Plan or Evaluation Plan definition. `evidence_for` owns observed support.
 `resolution_of` closes a Question, Conflict, or Problem. `override_of` changes
 authority only in a narrower scope. `replacement_of` completely replaces an
-atom and requires append-only absorption. These three structural or
-replacement meanings never overlap for one pair.
+atom and requires the predecessor to be archived. `recurrence_of` links a new
+Question or Problem to an archived predecessor of the same Type without
+reactivating it. These structural, replacement, and recurrence meanings never
+overlap for one pair.
 
 `relates_to` is a symmetric trace fallback only. It carries no authority,
 dependency, assurance, precedence, or lifecycle meaning and satisfies no
@@ -238,7 +250,7 @@ rule-registry controls rather than general artifact relations.
 
 `projection_of` normally stores a range with one semantic Type, one exact
 structural scope, and a `through` boundary naming the latest included globally
-ordered `ATOMIC-RECORD`. Lifecycle resolution selects applicable active atoms
+ordered `ATOMIC-RECORD`. Archive placement selects applicable active atoms
 through that frontier. A newer applicable atom makes the projection stale;
 individual targets are for explicit exceptions only.
 

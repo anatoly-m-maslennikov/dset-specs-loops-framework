@@ -1,3 +1,10 @@
+---
+artifact_type: specification
+scope_path: []
+priority: medium
+artifact_subtype: governance
+---
+
 # Artifact classification rules
 
 **Rule ID:** `DSET-RULE-ARTIFACT-CLASSIFICATION`

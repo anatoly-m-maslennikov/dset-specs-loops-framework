@@ -1,3 +1,10 @@
+---
+artifact_type: plan
+scope_path: []
+priority: medium
+artifact_subtype: implementation_plan
+---
+
 # Implementation plan — {{title}}
 
 - **Implementing PR:** pending

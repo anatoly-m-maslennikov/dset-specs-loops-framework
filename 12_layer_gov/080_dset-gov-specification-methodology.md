@@ -1,3 +1,11 @@
+---
+artifact_type: specification
+artifact_subtype: governance
+scope_path:
+  - layer:gov
+priority: high
+---
+
 # Methodology GOV specification
 
 ## Active Decision source compilation
@@ -37,8 +45,8 @@ presentation.
 | `DSET-DECISION-GOV-029` | Keep repository legal files outside `.dset` and resolve their unique names only within the root legal distribution surface |
 | `DSET-DECISION-GOV-031` | Keep executable product contracts in TOOL, development realization and executable QA under IMPL, and post-implementation delivery and operation under OPS |
 
-Absorbed predecessors remain immutable history and are excluded from the active
-compilation set by append-only lifecycle events.
+Replaced predecessors remain immutable history in Type-local `archive/`
+folders and are excluded from the active compilation set by storage state.
 
 ## DSET-REQUIREMENT-GOV-001 — Enforcement is language-neutral and profile-applied
 
@@ -82,7 +90,7 @@ does not mistake root framework source for project-local authority.
 
 Every skill first selects exactly one project control plane and searches only
 that project's `.dset` tree for settings, installed methodology, evergreen
-artifacts, atoms, and lifecycle events. Durable references store a stable ID or
+artifacts, atoms, evidence, and Version records. Durable references store a stable ID or
 globally unique carrier name, never a physical path. Zero or multiple matches
 fail closed. Resolved filesystem locations exist only in memory while the
 selected carrier is being used.
@@ -295,8 +303,8 @@ evidence, gate disposition, or derived Verification. Accepted,
 active, applicable Decision atoms and their direct subtypes are authority
 sources. Evergreen specs, implementation plans, Test plans, Evaluation plans,
 runbooks, and governing rules are updatable projections compiled from those
-sources. Problems, Questions and their direct subtypes, acceptance and other
-lifecycle events, QA executions/results, proofs, optional Changes/releases,
+sources. Problems, Questions and their direct subtypes, QA executions/results,
+proofs, optional Changes/releases,
 sessions, and runs preserve work history or evidence
 without becoming authority merely by existing. Implementation artifacts are
 code, Test code, Evaluation prompts/datasets, CI workflows, scripts, generated
@@ -335,25 +343,25 @@ fixes the atom's governed meaning: its primary claim or proof intent, rationale,
 accepted authority and creation state, provenance, scope, priority at creation,
 and the meanings of its relations. For a QA atom, conditions, criteria,
 thresholds, and expected disposition are part of that immutable meaning.
-Acceptance, rejection, reopening, correction, withdrawal, reprioritization, or
-any later semantic change is a new append-only lifecycle event or successor
-atom.
+Any later semantic change requires a successor atom. Resolution, replacement,
+withdrawal, and recurrence use typed successor relations plus Type-local
+archive placement; reopening is forbidden.
 
 The canonical ID is the atom's governed address, not its semantic content. A
 governed identity or representation migration may change an ID token, a
 one-to-one classification label, carrier filename or path, heading label,
 carrier encoding, seal, and stored reference spelling only when the referenced
-atom and every relation or lifecycle meaning remain the same. The migration
+atom and every relation meaning remain the same. The migration
 uses a complete collision-free old-to-new map, updates the whole current and
 historical reference graph, records semantic-equivalence and Git return
 evidence, and leaves no retired alias accepted after cutover. Changing a claim,
 rationale, authority, provenance fact, scope meaning, relation meaning, or QA
-criterion is not migration; it requires a successor atom and lifecycle event.
+criterion is not migration; it requires a successor atom.
 
 | Boundary | Governed rule |
 | --- | --- |
 | Immutable atom | Primary claim, question, problem, or proof intent; rationale; authority and creation state; provenance and creation-session facts; scope and applicability meaning; creation priority; relation meaning and connected artifact; and QA conditions, criteria, thresholds, and expected disposition |
-| Derived later state | Lifecycle status, effective priority, verification state, and active compilation membership are append-only or derived; they never rewrite the atom |
+| Derived later state | Active versus archived storage, effective priority, verification state, and active compilation membership are derived; they never rewrite the atom |
 | Migratable address or representation | Canonical ID, classification-label spelling, filename or path, heading label, carrier encoding, seal, and stored ID references may be recoded only by the governed one-to-one migration above |
 
 ## DSET-REQUIREMENT-GOV-060 — Identity migration preserves atomic content
@@ -361,12 +369,12 @@ criterion is not migration; it requires a successor atom and lifecycle event.
 Atomic immutability protects governed meaning rather than a particular ID
 spelling, filename, path, frontmatter syntax, or carrier encoding. Historical
 terminology that forms part of an older atom's claim remains unchanged. Current
-execution follows active successor and lifecycle authority instead of rewriting
+execution follows active successors and archive state instead of rewriting
 a predecessor to make it look current.
 
 **Scenario DSET-SCENARIO-GOV-045:** A repository replaces `REQ` with
-`REQUIREMENT`. The migration renames the carrier and ID, rewrites relation and
-lifecycle targets, and updates derived references. A normalized comparison
+`REQUIREMENT`. The migration renames the carrier and ID, rewrites relation
+targets, and updates derived references. A normalized comparison
 proves the claim, rationale, provenance, scope, priority, and relation meanings
 unchanged; the runtime rejects the retired `REQ` address after cutover.
 
@@ -375,29 +383,30 @@ Dedicated legacy Decision carriers are sealed by whole-file digest; Decision
 identifiers held in shared package registries are sealed as independent
 selector fragments so unrelated registry additions remain possible. A missing
 or changed sealed fragment fails validation. New or replacement authority must
-use a native atom and append-only lifecycle transition rather than refreshing
+use a native atom and a typed successor relation rather than refreshing
 the legacy ledger.
 
-A replacement is a new atom with an explicit `absorbs` relation to older atoms.
-Absorption is acyclic, validated, never inferred from time or numbering, and
-removes the older atoms from the active authority set without deleting or
-editing their history. The absorbing atom must carry forward or explicitly
+A replacement is a new atom with an explicit `replacement_of` relation to
+older atoms. Replacement is acyclic, validated, never inferred from time or
+numbering, and requires the older atoms to move byte-for-byte to their
+Type-local archives. The replacement atom must carry forward or explicitly
 replace every still-applicable consequence. Partial replacement leaves
-unaffected older claims active and does not absorb the whole atom. Reverse
-links and the active compilation set are derived views.
+unaffected older claims active and does not replace the whole atom. Reverse
+`replaced_by` links and the active compilation set are derived views.
 
-An atom with no active claims, open reliance, or unresolved lifecycle work is
-fully retired and may move into its artifact type's `archive/` subfolder
-through a registered carrier transition. Its semantic ID and payload remain
+An atom may move into its artifact type's `archive/` subfolder through a
+registered byte-stable carrier transition when it has no active structural
+dependants. Its semantic ID and payload remain
 unchanged unless a complete governed identity migration recodes the ID without
 changing the payload. Original and current carrier digests remain linked, and
-the canonical ID registry updates its address and location. Partial absorption does not
-qualify. Archived atoms remain immutable history and are not deleted.
+the canonical ID registry updates its address and location. A partial change
+does not qualify as `replacement_of`. Archived atoms remain immutable history
+and are not deleted.
 
 **Scenario DSET-SCENARIO-GOV-022:** A resolved Question produces a Decision, the
 Decision compiles into the relevant spec and proof plans, and review rejects a
 code-only change that leaves the evergreen projection stale. A later Decision
-absorbs the earlier one explicitly; the original remains immutable provenance,
+replaces the earlier one explicitly; the original remains immutable provenance,
 while only the successor participates in the active compilation set. After all
 reliance closes, the original moves to `archive/` through a lossless registered
 carrier transition and remains resolvable by ID and source return address.
@@ -407,8 +416,8 @@ carrier transition and remains resolvable by ID and source return address.
 Every commit that changes an evergreen projection or implementation artifact
 must name the Decision or Decisions it implements in its commit message body.
 A linked Problem may explain the need for correction, but does not replace
-Decision authority. Each newly emitted atomic artifact or append-only lifecycle
-event has an explicit session-provenance field: unique stable host-prefixed
+Decision authority. Each newly emitted atomic artifact has an explicit
+session-provenance field: unique stable host-prefixed
 `llm_session_ids` when an LLM helped produce it, or an explicit empty
 list/`none` for human-only work. Missing provenance is invalid. A review,
 correction, or status change emits another linked record rather than revising
@@ -532,7 +541,7 @@ apply once per axis rather than once per distance, and cap on
 `low → medium → high → highest`. Peer features and unrelated scopes receive no
 bonus.
 
-The resolver applies lifecycle, absorption, explicit applicable override,
+The resolver applies archive state, replacement, explicit applicable override,
 authority, applicability, and conflict class before this calculation. Two
 immutable external obligations that cannot both be satisfied stop; priority
 may order remediation but cannot claim compliance.
@@ -548,8 +557,9 @@ conflict class, context, mode, selected claim, and governing profile edition.
 
 Every governed artifact pair is classifiable even when it is not a selectable
 normative conflict. An accepted, active, applicable atomic source governs over
-its stale evergreen projection and routes recompilation. An explicit absorption
-relation selects the absorbing atom over absorbed predecessors before priority.
+its stale evergreen projection and routes recompilation. An explicit
+`replacement_of` relation selects the replacement atom over archived
+predecessors before priority.
 QA/Test, QA/Evaluation, review, and proof evidence change assurance and the relying gate instead
 of overriding authority. Implementation that contradicts authority creates a
 conformance Problem. Conflicting evidence follows its registered proof plan and
@@ -591,7 +601,7 @@ content, never workflow, queue, skill, tool, host, filename, path, or next
 action. Changed semantics require a new linked atom. All emitted atoms are
 immutable.
 
-The operator's acceptance is an act or lifecycle event distinct from accepted
+The operator's acceptance is an act distinct from accepted
 Decision content and its carrier. QA atoms define Test Plans or Evaluation
 Plans; Test/Evaluation execution is work; results and logs are evidence; gate
 decisions and Verification are derived.
@@ -619,13 +629,13 @@ applicable.
 Every Decision representation must prompt for a concise rationale explaining
 why its option was selected. Every other atomic artifact representation must
 permit rationale when it helps review, production investigation, priority or
-scope interpretation, absorption, replacement, or conflict resolution.
+scope interpretation, replacement, recurrence, or conflict resolution.
 Rationale remains optional for every atomic type: omission alone must never
 invalidate an artifact or block a proof or release gate.
 
 When a structured rationale is supplied, its schema must require a non-empty,
 bounded value. Rationale is explanatory context, not an alternate authority;
-it cannot hide a Decision or direct subtype, lifecycle transition, or evidence claim
+it cannot hide a Decision or direct subtype, state transition, or evidence claim
 that is absent from the canonical owner for that concern. Templates should
 prompt useful reasoning without encouraging placeholder prose. Evergreen
 implementation references remain focused on current executable truth and link
@@ -688,7 +698,7 @@ Roadmap uses the same `VERSION` sequence with `artifact_subtype: roadmap`. An
 adopter that explicitly enables subtype-bearing names migrates all governed
 artifact identities and references as one validated transaction.
 
-`DSET-REQUIREMENT-GOV-030` is absorbed by
+`DSET-REQUIREMENT-GOV-030` is replaced and archived by
 `DSET-REQUIREMENT-GOV-038` and remains immutable history.
 
 ## DSET-REQUIREMENT-GOV-031 — Architecture views descend one level
@@ -739,7 +749,8 @@ with that feature despite its abstraction.
 
 Every authored artifact relation uses exactly one of `child_of`, `analysis_of`,
 `projection_of`, `implementation_of`, `check_of`, `evidence_for`,
-`resolution_of`, `override_of`, `replacement_of`, or `relates_to`. The source
+`resolution_of`, `override_of`, `replacement_of`, `recurrence_of`, or
+`relates_to`. The source
 stores one forward `type` and canonical `target`; reverse relations are derived
 and never authored. A source-target pair has one primary relation.
 
@@ -750,14 +761,16 @@ realization by code, configuration, documentation, migration, or commit.
 support for an explicit result, finding, or Verification. `resolution_of`
 closes a Question, Conflict, or Problem. `override_of` changes inherited
 authority only inside a narrower declared scope. `replacement_of` completely
-replaces an older atom and requires append-only absorption. `relates_to` is a
+replaces an older atom and requires the predecessor to be archived.
+`recurrence_of` links a new Question or Problem to an archived predecessor of
+the same Type without reactivating it. `relates_to` is a
 symmetric fallback with no authority, assurance, dependency, precedence, or
 lifecycle meaning and satisfies no implementation or QA coverage.
 
 `projection_of` normally stores a range containing one semantic Type, one
 exact structural scope, and a `through` boundary naming a globally ordered
 immutable `ATOMIC-RECORD` carrier. The range includes all applicable active
-atoms of that Type and scope through the boundary after lifecycle resolution.
+atoms of that Type and scope through the boundary after archive filtering.
 A newer applicable atom makes the projection stale. Individual targets are
 valid only for explicit exceptions.
 
@@ -779,7 +792,7 @@ the implementation commit produces `implementation_of` edges. No reverse edge
 is stored.
 
 `DSET-REQUIREMENT-GOV-033` remains a sealed package-registry compatibility ID.
-Its authority is absorbed and fully replaced by `DSET-DECISION-GOV-013`; it is
+Its authority is replaced by `DSET-DECISION-GOV-013`; it is archived and
 not part of the active compilation set.
 
 ## DSET-REQUIREMENT-GOV-039 — Atom creation has configurable strictness
@@ -815,17 +828,17 @@ the exception. Once precise, DSET notices that the claim applies unchanged to
 every feature in its group and proposes one feature-to-group promotion; it
 does not write at group scope or jump to project scope without acceptance.
 
-`DSET-REQUIREMENT-GOV-035` is absorbed by
+`DSET-REQUIREMENT-GOV-035` is replaced and archived by
 `DSET-REQUIREMENT-GOV-039` and remains immutable history.
 
-## DSET-REQUIREMENT-GOV-040 — Project settings are verbose and all DSET artifacts use TOML
+## DSET-REQUIREMENT-GOV-040 — Project settings are verbose
 
 The canonical settings and project-manifest carrier is
-`.dset/dset_settings.toml`. It must explain its boundary with governing documents, every setting,
-every accepted value, the behavior each value selects, the default, and
-practical examples. New writers and bootstraps emit only this path. Retired
-root settings and split manifests are read-only migration inputs; if competing
-carriers exist, validation stops.
+`.dset/dset_settings.toml`. It must explain its boundary with governing
+documents, every setting, every accepted value, the behavior each value
+selects, the default, and practical examples. New writers and bootstraps emit
+only this path. Retired root settings and split manifests are read-only
+migration inputs; if competing carriers exist, validation stops.
 
 Settings own operator-selectable behavior: artifact subtype naming,
 medium/high artifact-creation strictness, lazy/strict implementation
@@ -836,42 +849,49 @@ runtime-risk and durability topology, external contracts, release targets,
 verification commands, and commit-provenance boundaries. Governing documents
 own definitions and policy; settings select registered behavior only.
 
-DSET-owned structured artifact files and DSET Markdown frontmatter must use
-TOML. One canonical source must not coexist with an editable YAML or JSON copy.
-Previously sealed atomic carriers, promoted evidence, legacy Decision
-carriers, and historical structured editions migrate through the authorized
-lossless carrier-transition protocol; they are not format exceptions.
-
-Externally prescribed carriers may retain their required format: host skill
-metadata, GitHub Actions, ecosystem manifests and lockfiles, wire/CLI output,
-machine-local runtime journals, and standards-compliant JSON Schema files.
-
-Migration must inventory every source and reference, preview without writing,
-preserve normalized values, stable IDs, provenance, relations, selector
-fragments, and Markdown bodies, emit old/new and semantic digests plus Git
-source-return addresses, refuse collisions and unsupported values, rewrite
-repository references, update current-carrier seals transactionally, validate
-the complete migrated tree before cutover, and leave no DSET-owned YAML
-artifact or Markdown YAML frontmatter. Any adopter compatibility reader is
-explicit, finite, and never a legacy write path.
-
 **Scenario DSET-SCENARIO-GOV-037:** A cold reader opens
 `.dset/dset_settings.toml`, finds every operator choice and predicts its effect,
 and reads the same carrier for runtime topology and release truth. Bootstrap
-emits only the canonical path; a repository containing competing carriers
-fails.
+emits only the canonical path; a repository containing competing settings
+carriers fails.
 
-**Scenario DSET-SCENARIO-GOV-038:** A dry run reports every DSET-owned YAML
-source, TOML destination, reference rewrite, carrier transition, source-return
-address, and semantic digest. Apply produces a valid repository with no DSET
-YAML artifact or Markdown YAML frontmatter; a second apply is a no-op, and JSON
-Schema remains standard canonical JSON without an editable TOML duplicate.
+## DSET-REQUIREMENT-GOV-097 — Select artifact carriers by their actual job
 
-`DSET-REQUIREMENT-GOV-036` and `DSET-REQUIREMENT-GOV-037` remain historical
-compatibility IDs. Their authority is absorbed and fully replaced by
-`DSET-REQUIREMENT-GOV-040`; neither is part of the active compilation set.
+One concern has one canonical carrier selected by its job:
 
-## DSET-DECISION-GOV-014 — TOML null normalization is allowlisted
+| Carrier | Canonical use |
+|---|---|
+| Markdown with YAML frontmatter | Human-governed artifacts with narrative meaning |
+| TOML | Human-edited configuration executed directly by tools |
+| JSON | External contracts, standardized schemas, wire data, and generated machine data |
+| JSONL/NDJSON | Append-only runtime logs and event streams |
+| Native format | Source code, CI workflows, lockfiles, and host manifests |
+
+Markdown with restricted, GitHub-compatible YAML frontmatter is the default for
+atomic, evergreen, analysis, evidence, verification, navigation, plan, and
+other human-governed narrative artifacts. TOML is not a generic structured-data
+default; it owns settings and configuration that tools execute directly.
+Standards-compliant JSON Schema remains canonical JSON. JSONL/NDJSON is reserved
+for append-only runtime records, and implementation ecosystems retain their
+native formats.
+
+Migration inventories and validates every source before writing, refuses
+unknown structures and collisions, preserves semantic values and narrative
+bodies, stages outputs outside the repository, checks exact preimages, rewrites
+in-scope references, validates the complete bounded result, and rolls back every
+touched file on failure. A second run is a no-op.
+
+**Scenario DSET-SCENARIO-GOV-038:** A dry run classifies every in-scope carrier
+and reports its exact operation. Apply leaves every narrative Markdown artifact
+with YAML frontmatter, every JSON Schema as JSON, every executable human-edited
+configuration as TOML, and no competing editable representation of one concern.
+
+`DSET-REQUIREMENT-GOV-036` and the universal-TOML clause formerly compiled
+under `DSET-REQUIREMENT-GOV-040` are historical. The verbose-settings clause of
+`DSET-REQUIREMENT-GOV-040` remains active; carrier selection is governed by
+`DSET-REQUIREMENT-GOV-097`.
+
+## Historical DSET-DECISION-GOV-014 — TOML null normalization is allowlisted
 
 TOML migration preserves governed semantic values. Because TOML has no null,
 an explicit null may become an omitted field only when the owning schema and
@@ -904,8 +924,8 @@ historical fragments, so the two carriers never become competing writable
 owners. Readiness binds the preserved YAML digest and exact successor output;
 missing, changed, incomplete, ambiguous, or competing successors stop cutover.
 
-This Decision is absorbed by `DSET-DECISION-GOV-018`; retained YAML is no
-longer active policy.
+This Decision is replaced and archived by `DSET-DECISION-GOV-018`; retained
+YAML is no longer active policy.
 
 ## Historical DSET-DECISION-GOV-017 — Legacy structured snapshots preserve history only
 
@@ -921,8 +941,8 @@ the owner and registration transactionally, rewrites only mutable references,
 keeps historical links physically navigable on GitHub, and becomes a no-op on
 a second run.
 
-This Decision is absorbed by `DSET-DECISION-GOV-018`; retained YAML is no
-longer active policy.
+This Decision is replaced and archived by `DSET-DECISION-GOV-018`; retained
+YAML is no longer active policy.
 
 ## Historical DSET-DECISION-GOV-018 — Immutable semantics permitted aggregate carrier transitions
 
@@ -948,14 +968,15 @@ files and no Markdown YAML frontmatter. JSON Schema and other externally
 prescribed formats remain governed by `DSET-DECISION-GOV-015` and their owning
 host or ecosystem contracts.
 
-This Decision is absorbed by `DSET-DECISION-GOV-027`; representation migration
-remains governed, but each transition is now an immutable atomic record keyed
-by carrier names and digests rather than an aggregate path ledger.
+This Decision is replaced and archived by `DSET-DECISION-GOV-027`;
+representation migration remains governed, but each transition is now an
+immutable atomic record keyed by carrier names and digests rather than an
+aggregate path ledger.
 
 This Decision replaces `DSET-DECISION-GOV-003`, `016`, and `017` while carrying
-forward semantic immutability, append-only lifecycle, explicit acyclic
-replacement and absorption, role-before-priority conflict handling, universal
-priority, retirement, and stable lookup.
+forward semantic immutability, explicit acyclic replacement, role-before-
+priority conflict handling, universal priority, archive state, and stable
+lookup.
 
 ## DSET-REQUIREMENT-GOV-043 — Separate control, runtime, and scratch state
 

@@ -1,3 +1,11 @@
+---
+artifact_type: specification
+artifact_subtype: governance
+scope_path:
+  - layer:gov
+priority: high
+---
+
 # Artifact maintenance
 
 **Rule ID:** `DSET-RULE-ARTIFACT-MAINTENANCE`
@@ -11,13 +19,13 @@ Every normative rule ID has one editable governing document. Hubs navigate, wrap
 - Treat every operator input in a governed project as intake. Classify and emit
   one or more immutable semantic atoms before implementing its consequences;
   split independent claims and never derive Type from the workflow.
-- Use TOML for DSET-owned structured artifacts and TOML frontmatter for DSET
-  Markdown. Keep host/ecosystem/wire/runtime formats and generated compatibility
-  adapters explicit and non-authoritative. Never keep editable YAML/JSON and
-  TOML copies of the same claim.
-- Keep standards-compliant JSON Schema files as canonical external contract
-  carriers. Validate and retain them as JSON; do not create an editable TOML
-  duplicate or call them generated without a governed source and freshness map.
+- Select one canonical carrier by job: Markdown with YAML frontmatter for
+  human-governed narrative artifacts; TOML for directly executed human-edited
+  configuration; JSON for external contracts, standardized schemas, wire data,
+  and generated machine data; JSONL/NDJSON for append-only runtime records; and
+  native formats for source code, CI, lockfiles, and host manifests.
+- Keep standards-compliant JSON Schema files as canonical JSON. Never keep
+  competing editable representations of one concern.
 - Confirm authorization before editing existing project artifacts.
 - Write each conclusion to its owning accepted package, active change, decision, runbook, proof plan, or evidence artifact.
 - Keep deterministic tests and qualitative/probabilistic evals separate.
@@ -39,8 +47,9 @@ A resolved consequential Question produces a Decision. Every accepted, active,
 applicable Decision—including any direct subtype—is an atomic authority source,
 not a parallel evergreen specification. Compile its normative consequences
 into the owning evergreen specifications, Design, proof plans, or operating
-rules; emit a lifecycle event linking those projections and the resolved
-Question to the Decision. Keep the Decision as durable authority plus its
+rules. Link the Decision to the resolved Question with `resolution_of`; move
+the Question to its Type-local `archive/` after resolution. Keep the Decision
+as durable authority plus its
 linked context, alternatives, rationale, trade-offs, and consequences where
 applicable.
 If the Decision and compiled projection differ, the Decision wins, the
@@ -57,46 +66,45 @@ documents, not atoms. Emission fixes the primary claim or proof intent,
 rationale, accepted authority and creation state, provenance, scope, priority
 at creation, and relation meanings; a QA atom also fixes its conditions,
 criteria, thresholds, and expected disposition. Later semantic or lifecycle
-change is a new append-only event or successor atom; current state is derived.
+change requires a successor atom. Storage state is only active or archived.
 
 An ID, filename, path, classification-label spelling, heading label, carrier
 encoding, seal, or reference spelling is representation, not the atom's
 governed meaning. A governed migration may change those fields only through a
 complete collision-free mapping that preserves the referenced artifacts and
-relation/lifecycle semantics, records equivalence and Git return evidence, and
-removes retired aliases from accepted lookup after cutover. A claim, rationale,
+relation semantics, records equivalence and Git return evidence, and removes
+old aliases from accepted lookup after cutover. A claim, rationale,
 authority, provenance fact, scope meaning, relation meaning, or QA-criterion
 change requires a successor atom. Aggregate mutable transition ledgers and
 unproved resealing are invalid.
 
-A successor atom declares `replacement_of` relations to older atoms. Matching
-append-only lifecycle events mark the predecessors `absorbed`. Replacement is
-explicit, acyclic, validated, and never inferred from a timestamp, ID, or file
-order. Absorption removes the older atom from the active compilation set without
-editing or deleting it. The successor carries forward or explicitly replaces
-every still-applicable consequence. A partial replacement links the affected
-claims and leaves all other older claims active; it does not absorb the entire
-atom. Reverse `absorbed_by` links, current status, confirmation/violation state,
-and the active compilation set are derived views, never edits to an atom.
+A successor atom declares `replacement_of` relations to completely replaced
+older atoms. Replacement is explicit, acyclic, validated, and never inferred
+from a timestamp, ID, or file order. Each predecessor has at most one complete
+replacement successor. The successor carries forward or explicitly replaces
+every still-applicable consequence, and each replaced predecessor moves
+byte-for-byte to its Type-local `archive/`. A partial change uses narrower
+linked claims and leaves the older atom active; it is not `replacement_of`.
+Reverse `replaced_by` links and the active compilation set are derived views.
 
-When an atom has no active claims, open reliance, or unresolved lifecycle work,
-it is fully retired and may move into its artifact type's `archive` subfolder.
-The move preserves bytes, carrier name, semantic identity, and stable
-identity-based lookup.
-Partial absorption never qualifies. Archived atoms remain immutable history
-and are never deleted merely because they are inactive.
+Resolution uses `resolution_of` from the resolving Decision or outcome to the
+Question, Conflict, or Problem, then archives the resolved atom. Withdrawal
+archives the atom without a semantic successor; any future intent belongs in a
+Version Roadmap. Reopening is forbidden. A new Question or Problem that repeats
+an archived concern is a new atom with `recurrence_of` to the archived
+predecessor. `recurrence_of` requires the same semantic Type and never
+reactivates the predecessor.
 
-Lifecycle absorption is also the repair mechanism when a sealed atom contains
-an invalid relationship that cannot be edited. The absorbing successor must
-pass the complete current-lineage gate. The inactive predecessor retains its
-authored relationship as historical data, but that relationship no longer
-participates in active unresolved-parent, self-link, or cycle gates.
+Archive relocation is the only atom state transition. It preserves bytes,
+carrier name, semantic identity, and stable identity-based lookup. An atom with
+an active `child_of` or `override_of` dependant cannot be archived. Archived
+atoms remain immutable history and do not participate in active compilation,
+unresolved-parent, self-link, or cycle gates.
 
 The executable boundary is explicit:
 
 ```text
 dset atom seal ROOT --file ATOM.md
-dset atom event ROOT --candidate EVENT.json
 dset atom archive ROOT --id SEMANTIC-ID
 dset conflict ROOT --candidate CONFLICT.json --emit CONFLICT.md
 dset conflict ROOT --candidate CONFLICT.json --check-result RESULT.json
@@ -105,19 +113,21 @@ dset compile ROOT --write
 
 Sealing refuses an already registered semantic ID and records the carrier's
 content digest. Validation fails after content, semantic classification, or
-registered location drift. Lifecycle writes append unique events and reject
-unresolved targets or absorption cycles. Conflict resolution classifies role
+registered location drift. Relation validation rejects unresolved targets,
+replacement or recurrence cycles, multiple replacement successors, active
+replacement predecessors, and invalid recurrence Types. Conflict resolution
+classifies role
 and applicability before consulting explicit precedence or effective priority;
-it reports whether a first-class open Conflict atom and later resolution event
+it reports whether a first-class open Conflict atom and later resolution artifact
 are required, but never edits an atom. Explicit emission creates and seals one
 `question/conflict` atom whose `relates_to` edges name both incompatible
-parties; the Conflict claim owns the incompatibility semantics. A separate
-append-only lifecycle event records its later resolution.
+parties; the Conflict claim owns the incompatibility semantics. A resolving
+artifact uses `resolution_of`, then the Conflict moves to `archive/`.
 Recorded dispositions bind the effective priority values and sources, context,
 precedence, and profile scale; check mode rejects them when that basis changes.
-An explicitly retired atom with no active child reliance may move to its
-adjacent `archive/` folder only through a lossless carrier transition while the
-canonical registry updates current lookup and retains the original seal.
+An active atom with no structural dependant may move to its adjacent `archive/`
+folder through a lossless carrier transition while canonical lookup retains its
+identity and original seal.
 
 Compilation generates a digest-bound index from every active authority source
 to one or more explicit evergreen claim fragments. A fragment must be a
@@ -135,12 +145,12 @@ compilation, not another authority source.
 Every Decision should record a concise rationale for its selected option.
 Rationale is also recommended for another atomic artifact when it explains why
 the atom was emitted, interpreted, prioritized, related, or scoped as written
-and that explanation will help review, support, absorption, replacement, or
+and that explanation will help review, support, replacement, or
 conflict resolution. It remains optional: absence alone never invalidates an
 atom or blocks a gate.
 
 When present, rationale is explanatory context, not hidden authority. It must
-not carry a Decision or subtype, lifecycle transition, or evidence claim that
+not carry a Decision or subtype, state transition, or evidence claim that
 is absent from that concern's canonical owner. Keep a short rationale in the
 atom or link a separate rationale artifact; keep evergreen implementation
 references focused on current executable truth. Templates prompt for rationale,
@@ -220,8 +230,8 @@ Session ID, and a rationale. The original must be invalid, the corrected view
 must pass the same rules as a current commit, and correction entries are unique
 and append-only.
 
-Every newly emitted atomic artifact or append-only lifecycle event has explicit
-LLM session provenance. Use unique `llm_session_ids` with stable host-prefixed
+Every newly emitted atomic artifact has explicit LLM session provenance. Use
+unique `llm_session_ids` with stable host-prefixed
 IDs such as `codex:<session-id>` when an LLM produced the record; use an
 explicit empty list or `none` for human-only work. A review or correction emits
 another linked record rather than revising the original provenance. Missing
@@ -331,8 +341,8 @@ before priority:
 
 - an active atomic authority source versus its evergreen projection selects the
   atomic source, marks the projection stale, and routes recompilation;
-- an absorbed atom is inactive where the absorption applies; the explicit
-  absorbing successor wins without consulting age or priority;
+- an archived predecessor is inactive; its explicit replacement successor wins
+  without consulting age or priority;
 - authority versus QA/Test, QA/Evaluation, review, or proof updates assurance and the
   relying gate; evidence never rewrites authority;
 - implementation versus authority creates a conformance Problem;

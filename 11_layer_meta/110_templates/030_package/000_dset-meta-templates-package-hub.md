@@ -1,3 +1,10 @@
+---
+artifact_type: navigation
+artifact_subtype: hub
+scope_path: []
+priority: medium
+---
+
 # {{title}} package
 
 **Package ID:** `{{package_id}}`

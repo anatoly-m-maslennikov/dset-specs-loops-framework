@@ -1,3 +1,10 @@
+---
+artifact_type: specification
+scope_path: []
+priority: medium
+artifact_subtype: behavior
+---
+
 # {{title}} user stories
 
 User Stories are optional. Add one only when a meaningful actor or stakeholder

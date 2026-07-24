@@ -1,10 +1,18 @@
+---
+artifact_type: implementation_decision
+scope_path: []
+priority: medium
+artifact_id: "{{semantic_artifact_id}}"
+llm_session_ids: []
+---
+
 # Adoption Decision — {{title}}
 
 - **Decision ID:** `{{project_key}}-DECISION{{id_layer}}-001`
 - **Status:** proposed
 - **Decision date:** pending
 - **Resolves Question:** pending
-- **Absorbs:** none
+- **Replacement of:** none
 - **Replaces claims:** none
 - **Priority:** unknown
 - **Selected candidate/version:** pending
@@ -32,10 +40,10 @@ and proof plans; link those projections and the resolved Question here. The
 accepted active Decision remains the atomic authority source and wins if a
 projection is stale.
 
-The emitted Decision is immutable. Counter-evidence, acceptance, reopening,
-withdrawal, and retirement are append-only lifecycle events. A successor points
-backward with `Absorbs`; reverse links and current state are derived. A fully
-retired Decision may move byte-for-byte to `archive/` with stable ID, digest,
-and lookup. This adoption specialization uses the same lifecycle as the neutral
-`decision.md` template; it adds candidate version, license,
+The emitted Decision is immutable. Semantic change requires a successor. A
+complete successor points backward with `replacement_of`; reverse
+`replaced_by` links are derived, and the predecessor moves byte-for-byte to
+`archive/`. Withdrawal archives the atom and routes future intent to a Version
+Roadmap. Reopening is forbidden. This adoption specialization uses the same
+atom-state rules as the neutral Decision template; it adds candidate version, license,
 lock-in, replacement, and upgrade concerns.

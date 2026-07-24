@@ -1,3 +1,11 @@
+---
+artifact_type: navigation
+artifact_subtype: index
+scope_path:
+  - layer:meta
+priority: medium
+---
+
 # Methodology META package fragment
 
 ## Purpose

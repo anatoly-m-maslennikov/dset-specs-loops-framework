@@ -1,3 +1,11 @@
+---
+artifact_type: navigation
+artifact_subtype: index
+scope_path:
+  - layer:gov
+priority: medium
+---
+
 # Methodology GOV package fragment
 
 ## Purpose

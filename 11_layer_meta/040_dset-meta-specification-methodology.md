@@ -1,3 +1,11 @@
+---
+artifact_type: specification
+artifact_subtype: governance
+scope_path:
+  - layer:meta
+priority: high
+---
+
 # Methodology META specification
 
 ## DSET-REQUIREMENT-META-001 — One governed feedback cycle

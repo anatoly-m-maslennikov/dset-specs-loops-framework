@@ -1,9 +1,9 @@
-+++
-artifact_type = "specification"
-artifact_subtype = "architecture"
-artifact_id = "{{project_key}}-SPECIFICATION-{{sequence}}"
-llm_session_ids = []
-+++
+---
+artifact_type: specification
+artifact_subtype: architecture
+artifact_id: "{{project_key}}-SPECIFICATION-{{sequence}}"
+llm_session_ids: []
+---
 
 # Project architecture — {{project_name}}
 

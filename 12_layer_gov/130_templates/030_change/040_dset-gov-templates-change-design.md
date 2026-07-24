@@ -1,3 +1,10 @@
+---
+artifact_type: specification
+scope_path: []
+priority: medium
+artifact_subtype: design
+---
+
 # Design — {{title}}
 
 ## Boundaries

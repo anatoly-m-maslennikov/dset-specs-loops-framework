@@ -1,3 +1,11 @@
+---
+artifact_type: procedure
+artifact_subtype: playbook
+scope_path:
+  - layer:gov
+priority: medium
+---
+
 # Artifact architecture
 
 ## Rule
@@ -110,9 +118,9 @@ support current truth, but it is not another authority for that truth.
 1. Classify the intended artifact by its owning question.
 2. Locate the existing owner and area hub before writing.
 3. Use a bounded DSET change when authority, public behavior, structure, or reusable rules change.
-4. Recompile affected evergreen projections. Emit a new source atom,
-   append-only lifecycle event, or explicit absorbing successor when atomic
-   authority changes; never edit an emitted atom.
+4. Recompile affected evergreen projections. Emit a successor with
+   `replacement_of` when atomic authority changes completely, then archive the
+   predecessor; never edit an emitted atom.
 5. Validate configuration, hierarchy, hubs, links, and applicable semantic evals.
 6. Reconcile accepted truth and archive through the implementing PR.
 

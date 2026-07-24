@@ -1,3 +1,11 @@
+---
+artifact_type: specification
+artifact_subtype: behavior
+scope_path:
+  - layer:gov
+priority: high
+---
+
 # Methodology GOV public contract
 
 ## Stable document map

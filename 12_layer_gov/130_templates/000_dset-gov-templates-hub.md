@@ -1,3 +1,10 @@
+---
+artifact_type: navigation
+artifact_subtype: hub
+scope_path: []
+priority: medium
+---
+
 # GOV templates
 
 - Architecture-view templates

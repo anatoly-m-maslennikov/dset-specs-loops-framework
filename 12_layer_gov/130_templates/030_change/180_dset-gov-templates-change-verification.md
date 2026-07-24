@@ -1,3 +1,9 @@
+---
+artifact_type: verification
+scope_path: []
+priority: medium
+---
+
 # Verification — {{title}}
 
 - **Implementing PR:** pending

@@ -1,3 +1,11 @@
+---
+artifact_type: specification
+artifact_subtype: governance
+scope_path:
+  - layer:gov
+priority: high
+---
+
 # Semantic Type and routing rules
 
 **Rule ID:** `DSET-RULE-WORK-ITEMS`
@@ -28,7 +36,7 @@ uses the Type token while keeping the subtype in atom metadata.
 
 All current and historical project identities use the same canonical
 vocabulary. A naming change is a complete governed migration of IDs, carrier
-names, relations, lifecycle targets, compiled projections, settings, code,
+names, relations, compiled projections, settings, code,
 proof references, and generated views. Short aliases are rejected after the
 migration; they do not remain as a second compatibility vocabulary. One
 recognized ID-kind token and the carrier's semantic role must agree on one
@@ -36,8 +44,8 @@ Type and at most one direct subtype.
 
 `dset check` fails with `DSET-E166` when an ID kind and carrier classification
 disagree or a carrier cannot resolve to the flat model. Traceability publishes
-the canonical ID, normalized Type/subtype, carrier paths, and lifecycle event
-IDs. Project health reports the same population by Type and subtype. Skill
+the canonical ID, normalized Type/subtype, carrier identity, relations, and
+active/archive state. Project health reports the same population by Type and subtype. Skill
 context exposes the four-Type routing identity and
 counts from the current repository; wrappers never infer a Type from the skill
 that happened to run.
@@ -104,8 +112,8 @@ nonconformance, and contradictory evidence are not automatically Conflicts.
 Identify the exact incompatible authority claims before using that subtype.
 
 Evidence may answer a factual Question. A consequential choice resolves
-through a Decision. Resolution emits an append-only lifecycle
-event linking the answer; it never edits the Question atom. An accepted
+through a Decision with `resolution_of`; the resolved Question moves
+byte-for-byte to its Type-local `archive/`. An accepted
 Opportunity becomes authority only through a new Decision.
 
 ## Problem routing
@@ -151,12 +159,14 @@ QA atoms define Test Plans or Evaluation Plans. Test code, Evaluation prompts,
 datasets, fixtures, and harnesses are implementation artifacts. Execution results are evidence for
 derived Verification and never rewrite Requirements or Decisions.
 
-## Lifecycle and authority
+## Atom state and authority
 
-All emitted Decision, Question, Problem, and QA atoms are
-immutable. Editable drafts are not atoms. Later acceptance, answer, correction,
-replacement,
-absorption, or retirement is a new linked atom or append-only lifecycle event.
+All emitted Decision, Question, Problem, and QA atoms are immutable. Editable
+drafts are not atoms. Later semantic correction requires a successor atom.
+Complete replacement uses `replacement_of`; resolution uses `resolution_of`;
+withdrawal archives the atom and routes future intent to a Version Roadmap.
+Reopening is forbidden. A repeated Question or Problem is a new atom using
+`recurrence_of` to its archived predecessor.
 
 Problems and Questions route work but do not authorize implementation. Active
 Decisions own authority. QA owns assurance definitions.
@@ -175,7 +185,7 @@ another semantic Type.
 
 Payloads and provenance remain attributable, but a naming-policy change
 migrates the complete current and historical identity graph in one governed
-transaction. IDs, carrier names, relations, lifecycle targets, compiled
+transaction. IDs, carrier names, relations, compiled
 projections, settings, implementations, proof references, and generated views
 must agree before the migration is accepted. Short aliases are rejected after
 cutover rather than retained as compatibility identities.

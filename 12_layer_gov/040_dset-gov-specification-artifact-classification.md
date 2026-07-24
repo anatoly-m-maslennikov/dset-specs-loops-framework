@@ -1,3 +1,11 @@
+---
+artifact_type: specification
+artifact_subtype: governance
+scope_path:
+  - layer:gov
+priority: high
+---
+
 # Artifact routing rules
 
 **Rule ID:** `DSET-RULE-ARTIFACT-CLASSIFICATION`
@@ -21,7 +29,7 @@ project is ambient, so project identity never appears in the path.
 ## Base atomic type routes
 
 The executable registry is the `x-dset-type-routes` table in
-`010_dset-gov-schemas-atom.schema.toml`.
+`010_dset-gov-schemas-atom.schema.json`.
 
 | Artifact type | Optional direct subtypes | Derived route |
 |---|---|---|

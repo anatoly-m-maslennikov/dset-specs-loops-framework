@@ -1,10 +1,18 @@
+---
+artifact_type: implementation_decision
+scope_path: []
+priority: medium
+artifact_id: "{{semantic_artifact_id}}"
+llm_session_ids: []
+---
+
 # Decision — {{title}}
 
 - **Decision ID:** `{{project_key}}-DECISION{{id_layer}}-001`
 - **Status:** proposed
 - **Decision date:** pending
 - **Resolves Question:** pending
-- **Absorbs:** none
+- **Replacement of:** none
 - **Replaces claims:** none
 - **Priority:** unknown
 - **Selected option:** pending
@@ -40,17 +48,16 @@ Name the evergreen projections compiled from this Decision. The accepted,
 active Decision remains the atomic authority source; a projection that differs
 from it is stale.
 
-## Lifecycle policy at emission
+## Successor and archive policy
 
 - **Expected confirmation evidence:** pending
 - **Known counter-evidence:** none observed
-- **Reopen when:** pending
-- **If reopened, retain:** prior evidence, rationale, and still-valid constraints
-- **If reopened, withdraw:** invalid assumptions and authority that depended on them
-- **Retirement condition:** pending
+- **Replacement trigger:** pending
+- **Archive condition:** resolved, replaced, or withdrawn with no active
+  structural dependant
 
-This emitted Decision atom is immutable. Later acceptance, rejection,
-confirmation, counter-evidence, reopening, withdrawal, or retirement is a new
-append-only lifecycle event. A replacement Decision points backward with
-`Absorbs`; reverse links and current status are derived. A fully retired
-Decision may move byte-for-byte to `archive/` with stable ID, digest, and lookup.
+This emitted Decision atom is immutable. Semantic change requires a successor.
+A complete successor points backward with `replacement_of`; reverse
+`replaced_by` links are derived, and the predecessor moves byte-for-byte to
+`archive/`. Withdrawal archives the atom and routes future intent to a Version
+Roadmap. Reopening is forbidden.

@@ -1,3 +1,11 @@
+---
+artifact_type: procedure
+artifact_subtype: playbook
+scope_path:
+  - layer:meta
+priority: medium
+---
+
 # 02_Test and Eval Plan Patterns — Proof Artifact Conventions
 
 **Thesis:** Stage 2 produces two authored artifacts, not one blended plan: `test-plan.md` defines deterministic proof, while `eval-plan.md` defines probabilistic or qualitative proof. They are written **with the spec, before code** (`00_Tool Development Playbook.md`), so proof pins the *intent* rather than whatever the first implementation happened to do. A project with no probabilistic behavior may mark the eval plan not applicable with a reason; it must not rename deterministic tests as evals. The catalog is §1; the load-bearing five §2; the artifact contract and checklist are §3. The day-to-day enforcement practice is `05_Layered Build Standard — DDD, TDD, Small Functions, Typed Gates.md` §3.

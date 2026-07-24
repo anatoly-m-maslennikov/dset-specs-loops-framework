@@ -1,3 +1,11 @@
+---
+artifact_type: navigation
+artifact_subtype: hub
+scope_path:
+  - layer:gov
+priority: medium
+---
+
 # GOV scope
 
 ## Purpose

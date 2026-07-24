@@ -1,3 +1,10 @@
+---
+artifact_type: plan
+scope_path: []
+priority: medium
+artifact_subtype: test_plan
+---
+
 # Test plan — {{title}}
 
 Deterministic tests prove exact behavior. Probabilistic or qualitative proof belongs in `eval-plan.md`.

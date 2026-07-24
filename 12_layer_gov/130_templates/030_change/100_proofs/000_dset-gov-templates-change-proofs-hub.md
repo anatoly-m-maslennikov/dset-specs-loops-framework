@@ -1,3 +1,10 @@
+---
+artifact_type: navigation
+artifact_subtype: hub
+scope_path: []
+priority: medium
+---
+
 # Proof evidence — {{title}}
 
 Store bounded, redacted evidence and disposable proof-of-fit outputs here. Each

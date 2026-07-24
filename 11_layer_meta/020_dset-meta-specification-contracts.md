@@ -1,3 +1,11 @@
+---
+artifact_type: specification
+artifact_subtype: behavior
+scope_path:
+  - layer:meta
+priority: high
+---
+
 # Methodology META public contract
 
 ## Inputs

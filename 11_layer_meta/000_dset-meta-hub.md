@@ -1,3 +1,11 @@
+---
+artifact_type: navigation
+artifact_subtype: hub
+scope_path:
+  - layer:meta
+priority: medium
+---
+
 # META scope
 
 ## Purpose

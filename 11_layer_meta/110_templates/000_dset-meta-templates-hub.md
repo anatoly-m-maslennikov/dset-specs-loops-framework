@@ -1,3 +1,10 @@
+---
+artifact_type: navigation
+artifact_subtype: hub
+scope_path: []
+priority: medium
+---
+
 # META templates
 
 Package and specification-governance templates owned by META.
