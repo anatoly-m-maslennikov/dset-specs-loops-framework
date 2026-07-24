@@ -1,30 +1,43 @@
 # DSET project settings and manifest.
 #
-# This is the sole canonical DSET project configuration. It combines
-# project identity and topology with operator-controlled behavior so
-# discovery never has to reconcile two competing configuration owners.
-# Repository-local governing documents still define the policies and
-# values that these settings are allowed to select.
+# This is the sole canonical DSET project configuration. It combines project
+# identity and topology with operator-controlled behavior. Repository-local
+# governing documents define the policies and values these settings may select.
 #
 # All settings below are optional at read time and show their executable
 # defaults explicitly. Keep the explicit values when copying this file so a
 # reviewer does not need to know parser fallbacks. Unknown settings fail
 # validation, which catches misspellings instead of silently ignoring them.
 #
-# New DSET writers use only the unique `dset_settings.toml` carrier inside
-# `.dset`. Competing settings carriers or nested project roots fail closed.
+# New DSET writers use only this path: .dset/dset_settings.toml. Retired root
+# settings and split manifest paths are read-only migration inputs. Competing
+# configuration carriers fail closed.
 #
 # Settings schema implemented by this file.
-# Accepted for new writers: "1.5".
-schema_version = "1.5"
+# Accepted for new writers: "1.8".
+schema_version = "1.8"
 canonical_command = "python -m dset_toolchain verify ."
+
+[paths]
+# Canonical project-local roots.
+control_root = ".dset"
+journal_root = ".dset_journal"
+runtime_root = ".dset_runtime"
+
+[git]
+# Every DSET-managed project uses Git. Initialization may create a repository
+# only when no enclosing repository exists.
+required = true
+initialize_if_missing = true
+commit_each_governed_change = true
 
 [artifacts]
 # Set the gate used before a new immutable atomic artifact is emitted.
 #
 # Accepted:
-# - "medium" (default): require clear authority, one primary claim, semantic
-#   route, owning scope, provenance, material links, priority, and acceptance.
+# - "medium" (default): require clear authority, one primary claim, registered
+#   type/subtype, owning scope, provenance, material links, priority, and
+#   acceptance.
 #   Optional non-authoritative context may remain explicitly unknown.
 # - "high": also require every material boundary, lineage, conflict, and proof
 #   question to be precise. DSET asks focused questions or stops without writing
@@ -34,49 +47,134 @@ canonical_command = "python -m dset_toolchain verify ."
 # propose eligible promotion. Promotion always requires operator acceptance.
 creation_strictness = "medium"
 
-[routing]
-# These four independent axes are the complete routing vocabulary. They are
-# not a Type/subtype catalog and projects cannot add aliases. `scope_path`
-# remains an extensible per-artifact structural coordinate.
-revision_modes = ["atomic", "evergreen", "maintained"]
-content_roles = ["inquiry", "definition", "rationale", "method", "implementation", "observation"]
-governance_origins = ["internal", "external"]
-relation_shapes = ["standalone", "relational"]
+# Enable only catalog entries used by this project. Unknown or disabled types
+# and subtypes fail closed. External and relational types additionally require
+# their Governance locus below.
+enabled_types = [
+  "requirement",
+  "constraint",
+  "contract",
+  "implementation_decision",
+  "question",
+  "problem",
+  "test_plan",
+  "evaluation_plan",
+  "rationale",
+  "analysis_report",
+  "evidence_record",
+  "verification",
+  "specification",
+  "release_plan",
+  "procedure",
+  "plan",
+  "navigation",
+  "git_commit",
+  "external_git_commit",
+  "pull_request",
+  "runtime_log",
+  "toon_log_view",
+]
+enabled_subtypes = [
+  "question:risk",
+  "question:opportunity",
+  "question:conflict",
+  "problem:defect",
+  "problem:gap",
+  "problem:debt",
+  "analysis_report:solution_landscape",
+  "analysis_report:root_cause_analysis",
+  "analysis_report:proposal",
+  "analysis_report:technical_investigation",
+  "analysis_report:external_audit_analysis",
+  "evidence_record:test_result",
+  "evidence_record:evaluation_result",
+  "evidence_record:review_report",
+  "evidence_record:run_record",
+  "specification:domain_model",
+  "specification:behavior",
+  "specification:architecture",
+  "specification:design",
+  "specification:governance",
+  "procedure:playbook",
+  "procedure:runbook",
+  "plan:implementation_plan",
+  "plan:test_plan",
+  "plan:evaluation_plan",
+  "navigation:readme",
+  "navigation:hub",
+  "navigation:index",
+]
 
-# Every complete route has exactly one deterministic name:
-# "<Internal|External> <Atomic|Evergreen|Maintained>
-#  <Inquiry|Definition|Rationale|Method|Implementation|Observation>
-#  <Artifact|Relation>".
-# Examples:
-# - Internal Atomic Definition Artifact
-# - External Maintained Method Relation
+[artifacts.identity]
+# Project prefixes are optional. Disable for one small isolated namespace;
+# enable for monorepos, multiple DSET projects, or shared artifact namespaces.
+project_prefix_enabled = true
+project_prefix = "DSET"
+scope_path_in_ids = true
+subtype_in_names = false
+
+[artifacts.routing]
+# Enable the three independent META routing axes.
+#
+# The framework catalog defines every route. These lists select which registered
+# routes a project may use. `internal` is mandatory. Add `external` when the
+# project governs outside-owned inputs or constraints. Add `relation` when the
+# project governs explicit boundaries or interactions.
+revision_modes = ["atomic", "append_only", "maintained"]
+content_roles = [
+  "inquiry",
+  "analysis",
+  "definition",
+  "method",
+  "implementation",
+  "observation",
+]
+governance_loci = ["internal", "external", "relation"]
+
+[workflows]
+# Development is the ordinary loop. Release readiness is mandatory before a
+# Version may be declared ready.
+default_mode = "development"
+release_mode = "release_readiness"
 
 [workflows.implement]
 # Choose what dset-implement may do before implementation begins.
 #
 # Accepted:
-# - "lazy" (default): reconcile missing session Decisions, then create or update
-#   separate Test/Evaluation plans and the implementation plan as needed before
-#   implementing. Completed prerequisites are skipped.
+# - "lazy" (default): reconcile missing accepted authority from the session,
+#   then create or update separate Test/Evaluation plans and the implementation
+#   plan as needed before implementing. Completed prerequisites are skipped.
 # - "strict": perform implementation only from already sufficient accepted
 #   artifacts. Missing or ambiguous inputs stop; DSET does not create or repair
-#   Decisions or plans and never falls back to lazy mode.
+#   authority artifacts or plans and never falls back to lazy mode.
 #
 # Example lazy chain:
-# decisions -> compile when required -> plan-proof -> plan-implementation -> implement
+# authority -> refresh views when required -> plan-proof -> plan-implementation -> implement
 mode = "lazy"
 
-[compilation]
-# Semantic compilation is performed by dset-compile only when requested
-# or required by a downstream entry gate. New atoms do not force it.
-mode = "on_demand"
-skill = "dset-compile"
-runtime_output = ".dset_runtime/generated"
+[interaction]
+# "silent" reports durable changes, blockers, approvals, and material
+# deviations. "verbose" additionally reports mode selection, skill chains, and
+# gate transitions. Presentation never changes authorization or validation.
+reporting_mode = "silent"
+
+[maintained_views]
+# Refresh thin maintained semantic views only on explicit request or when a
+# downstream entry gate requires a current view. Refresh is reasoned synthesis,
+# not concatenation or mechanical compilation.
+refresh_mode = "on_demand"
+skill = "dset-refresh"
 
 [governance_surfaces]
-# This established self-hosting project already uses all registered surfaces.
-# New projects receive the template defaults, where every value is false.
-evergreen_specification = true
+# DSET starts atomic-first. These named, optional surfaces become governed only
+# when explicitly activated. Activation adds currentness and entry-gate
+# obligations for that surface; deactivation preserves its carrier and Git
+# history but removes those obligations.
+#
+# Use `dset configure ROOT status` to inspect the effective state.
+# Use `dset configure ROOT activate SURFACE` or `deactivate SURFACE` to preview
+# a change; append `--execute` only after accepting the preview.
+maintained_specification = true
 test_plan = true
 evaluation_plan = true
 implementation_plan = true
@@ -385,7 +483,7 @@ id = "dset-gov"
 hub = "DSET-GOV-HUB.md"
 parent = "project-control"
 owner = "gov"
-purpose = "Project governance decisions, questions, problems, and lifecycle events"
+purpose = "Project governance atoms, maintained views, evidence, and archive state"
 
 [[artifact_structure.areas]]
 id = "dset-tool"
@@ -928,7 +1026,7 @@ source = "FPF-Spec/A_Kernel Architecture Cluster/16_Language-State Move Coordina
 source_lines = "42-80,163-183"
 dset_surface = "020_dset-gov-templates-change-decision.md"
 disposition = "adapted"
-adaptation_scope = "Reopen, supersession, retained evidence, withdrawn authority, and successor or retirement lifecycle shape"
+adaptation_scope = "Recurrence, replacement, retained evidence, withdrawn authority, and active or archived storage shape"
 exclusions = ["FPF move and state ontology", "FPF canonical identifiers and notation"]
 
 [[source_provenance.sources.mappings]]
@@ -1024,126 +1122,3 @@ command = "python -m dset_toolchain check"
 manifest = "dset_settings.toml"
 governance_registry = "dset_settings.toml"
 precedence = "project-local-rule-then-selected-local-profile-then-failure"
-
-# Migrated canonical settings; this section is not an artifact ledger.
-[package_catalog]
-
-[[package_catalog.packages]]
-schema_version = "1.2"
-package_id = "methodology"
-layer = "meta"
-requirements = ["DSET-REQUIREMENT-META-001", "DSET-REQUIREMENT-META-002", "DSET-REQUIREMENT-META-003", "DSET-REQUIREMENT-META-004", "DSET-REQUIREMENT-META-005", "DSET-REQUIREMENT-META-006", "DSET-REQUIREMENT-META-007", "DSET-REQUIREMENT-META-008", "DSET-REQUIREMENT-META-009", "DSET-REQUIREMENT-META-010", "DSET-REQUIREMENT-META-011"]
-tests = ["DSET-TEST-PLAN-META-001", "DSET-TEST-PLAN-META-002", "DSET-TEST-PLAN-META-003", "DSET-TEST-PLAN-META-004", "DSET-TEST-PLAN-META-005", "DSET-TEST-PLAN-META-006", "DSET-TEST-PLAN-META-007", "DSET-TEST-PLAN-META-008", "DSET-TEST-PLAN-META-009", "DSET-TEST-PLAN-META-010", "DSET-TEST-PLAN-META-011"]
-evals = ["DSET-EVAL-PLAN-META-001", "DSET-EVAL-PLAN-META-002", "DSET-EVAL-PLAN-META-003", "DSET-EVAL-PLAN-META-004", "DSET-EVAL-PLAN-META-005", "DSET-EVAL-PLAN-META-006", "DSET-EVAL-PLAN-META-007", "DSET-EVAL-PLAN-META-008", "DSET-EVAL-PLAN-META-009"]
-contracts = ["DSET-CONTRACT-META-001"]
-stories = []
-outcomes = []
-
-[package_catalog.packages.artifacts]
-hub = "DSET-META-HUB.md"
-domain = "DSET-META-REFERENCE-specification-domain.toml"
-spec = "DSET-META-REFERENCE-specification-methodology.toml"
-contracts = "DSET-META-REFERENCE-specification-contracts.toml"
-stories = "DSET-META-REFERENCE-specification-user-stories.toml"
-outcomes = "DSET-META-REFERENCE-specification-outcomes.toml"
-test_plan = "DSET-META-plan-tests.md"
-eval_plan = "DSET-META-plan-evaluations.md"
-
-[[package_catalog.packages]]
-schema_version = "1.2"
-package_id = "methodology"
-layer = "gov"
-requirements = ["DSET-REQUIREMENT-GOV-001", "DSET-REQUIREMENT-GOV-002", "DSET-REQUIREMENT-GOV-003", "DSET-REQUIREMENT-GOV-004", "DSET-REQUIREMENT-GOV-005", "DSET-REQUIREMENT-GOV-006", "DSET-REQUIREMENT-GOV-007", "DSET-REQUIREMENT-GOV-008", "DSET-REQUIREMENT-GOV-009", "DSET-REQUIREMENT-GOV-010", "DSET-REQUIREMENT-GOV-011", "DSET-REQUIREMENT-GOV-012", "DSET-REQUIREMENT-GOV-013", "DSET-REQUIREMENT-GOV-014", "DSET-REQUIREMENT-GOV-015", "DSET-REQUIREMENT-GOV-016", "DSET-REQUIREMENT-GOV-017", "DSET-REQUIREMENT-GOV-018", "DSET-REQUIREMENT-GOV-019", "DSET-REQUIREMENT-GOV-020", "DSET-REQUIREMENT-GOV-021", "DSET-REQUIREMENT-GOV-022", "DSET-REQUIREMENT-GOV-023", "DSET-REQUIREMENT-GOV-024", "DSET-REQUIREMENT-GOV-025", "DSET-REQUIREMENT-GOV-026", "DSET-REQUIREMENT-GOV-027", "DSET-REQUIREMENT-GOV-028", "DSET-REQUIREMENT-GOV-029", "DSET-REQUIREMENT-GOV-031", "DSET-REQUIREMENT-GOV-032", "DSET-REQUIREMENT-GOV-038", "DSET-REQUIREMENT-GOV-039", "DSET-REQUIREMENT-GOV-040", "DSET-REQUIREMENT-GOV-043", "DSET-REQUIREMENT-GOV-044", "DSET-REQUIREMENT-GOV-045", "DSET-REQUIREMENT-GOV-060", "DSET-REQUIREMENT-GOV-061", "DSET-REQUIREMENT-GOV-062", "DSET-REQUIREMENT-GOV-063"]
-tests = ["DSET-TEST-PLAN-GOV-001", "DSET-TEST-PLAN-GOV-002", "DSET-TEST-PLAN-GOV-003", "DSET-TEST-PLAN-GOV-004", "DSET-TEST-PLAN-GOV-005", "DSET-TEST-PLAN-GOV-006", "DSET-TEST-PLAN-GOV-007", "DSET-TEST-PLAN-GOV-008", "DSET-TEST-PLAN-GOV-009", "DSET-TEST-PLAN-GOV-010", "DSET-TEST-PLAN-GOV-011", "DSET-TEST-PLAN-GOV-012", "DSET-TEST-PLAN-GOV-013", "DSET-TEST-PLAN-GOV-014", "DSET-TEST-PLAN-GOV-015", "DSET-TEST-PLAN-GOV-016", "DSET-TEST-PLAN-GOV-017", "DSET-TEST-PLAN-GOV-018", "DSET-TEST-PLAN-GOV-019", "DSET-TEST-PLAN-GOV-020", "DSET-TEST-PLAN-GOV-021", "DSET-TEST-PLAN-GOV-022", "DSET-TEST-PLAN-GOV-023", "DSET-TEST-PLAN-GOV-024", "DSET-TEST-PLAN-GOV-025", "DSET-TEST-PLAN-GOV-026", "DSET-TEST-PLAN-GOV-027", "DSET-TEST-PLAN-GOV-028", "DSET-TEST-PLAN-GOV-030", "DSET-TEST-PLAN-GOV-031", "DSET-TEST-PLAN-GOV-032", "DSET-TEST-PLAN-GOV-033", "DSET-TEST-PLAN-GOV-036", "DSET-TEST-PLAN-GOV-039", "DSET-TEST-PLAN-GOV-042", "DSET-TEST-PLAN-GOV-043", "DSET-TEST-PLAN-GOV-044", "DSET-TEST-PLAN-GOV-048", "DSET-TEST-PLAN-GOV-049", "DSET-TEST-PLAN-GOV-050", "DSET-TEST-PLAN-GOV-051", "DSET-TEST-PLAN-GOV-052", "DSET-TEST-PLAN-GOV-053"]
-evals = ["DSET-EVAL-PLAN-GOV-001", "DSET-EVAL-PLAN-GOV-002", "DSET-EVAL-PLAN-GOV-003", "DSET-EVAL-PLAN-GOV-004", "DSET-EVAL-PLAN-GOV-005", "DSET-EVAL-PLAN-GOV-006", "DSET-EVAL-PLAN-GOV-007", "DSET-EVAL-PLAN-GOV-008", "DSET-EVAL-PLAN-GOV-009", "DSET-EVAL-PLAN-GOV-010", "DSET-EVAL-PLAN-GOV-011", "DSET-EVAL-PLAN-GOV-012", "DSET-EVAL-PLAN-GOV-013", "DSET-EVAL-PLAN-GOV-014", "DSET-EVAL-PLAN-GOV-015", "DSET-EVAL-PLAN-GOV-016", "DSET-EVAL-PLAN-GOV-017", "DSET-EVAL-PLAN-GOV-018", "DSET-EVAL-PLAN-GOV-020", "DSET-EVAL-PLAN-GOV-021", "DSET-EVAL-PLAN-GOV-022", "DSET-EVAL-PLAN-GOV-023", "DSET-EVAL-PLAN-GOV-026", "DSET-EVAL-PLAN-GOV-028", "DSET-EVAL-PLAN-GOV-029", "DSET-EVAL-PLAN-GOV-032", "DSET-EVAL-PLAN-GOV-033", "DSET-EVAL-PLAN-GOV-034"]
-contracts = []
-stories = []
-outcomes = []
-
-[package_catalog.packages.artifacts]
-hub = "DSET-GOV-HUB.md"
-domain = "DSET-GOV-REFERENCE-specification-domain.toml"
-spec = "DSET-GOV-REFERENCE-specification-methodology.toml"
-contracts = "DSET-GOV-REFERENCE-specification-contracts.toml"
-stories = "DSET-GOV-REFERENCE-specification-user-stories.toml"
-outcomes = "DSET-GOV-REFERENCE-specification-outcomes.toml"
-test_plan = "DSET-GOV-plan-tests.md"
-eval_plan = "DSET-GOV-plan-evaluations.md"
-
-[[package_catalog.packages]]
-schema_version = "1.2"
-package_id = "methodology"
-layer = "tool"
-requirements = ["DSET-REQUIREMENT-TOOL-001", "DSET-REQUIREMENT-TOOL-002", "DSET-REQUIREMENT-TOOL-003", "DSET-REQUIREMENT-TOOL-004", "DSET-REQUIREMENT-TOOL-018", "DSET-REQUIREMENT-TOOL-019", "DSET-REQUIREMENT-TOOL-021", "DSET-REQUIREMENT-TOOL-022"]
-tests = ["DSET-TEST-PLAN-TOOL-001", "DSET-TEST-PLAN-TOOL-002", "DSET-TEST-PLAN-TOOL-003", "DSET-TEST-PLAN-TOOL-004", "DSET-TEST-PLAN-TOOL-005", "DSET-TEST-PLAN-TOOL-018", "DSET-TEST-PLAN-TOOL-019", "DSET-TEST-PLAN-TOOL-021", "DSET-TEST-PLAN-TOOL-022"]
-evals = ["DSET-EVAL-PLAN-TOOL-001", "DSET-EVAL-PLAN-TOOL-003", "DSET-EVAL-PLAN-TOOL-004"]
-contracts = ["DSET-CONTRACT-TOOL-001", "DSET-CONTRACT-TOOL-002"]
-stories = []
-outcomes = []
-
-[package_catalog.packages.artifacts]
-hub = "DSET-TOOL-HUB.md"
-domain = "DSET-TOOL-REFERENCE-specification-domain.toml"
-spec = "DSET-TOOL-REFERENCE-specification-methodology.toml"
-contracts = "DSET-TOOL-REFERENCE-specification-contracts.toml"
-stories = "DSET-TOOL-REFERENCE-specification-user-stories.toml"
-outcomes = "DSET-TOOL-REFERENCE-specification-outcomes.toml"
-test_plan = "DSET-TOOL-plan-tests.md"
-eval_plan = "DSET-TOOL-plan-evaluations.md"
-
-[[package_catalog.packages]]
-schema_version = "1.2"
-package_id = "methodology"
-layer = "skill"
-requirements = ["DSET-REQUIREMENT-SKILL-001", "DSET-REQUIREMENT-SKILL-002", "DSET-REQUIREMENT-SKILL-003", "DSET-REQUIREMENT-SKILL-004", "DSET-REQUIREMENT-SKILL-005", "DSET-REQUIREMENT-SKILL-006", "DSET-REQUIREMENT-SKILL-007", "DSET-REQUIREMENT-SKILL-008", "DSET-REQUIREMENT-SKILL-009", "DSET-REQUIREMENT-SKILL-011", "DSET-REQUIREMENT-SKILL-013"]
-tests = ["DSET-TEST-PLAN-SKILL-001", "DSET-TEST-PLAN-SKILL-002", "DSET-TEST-PLAN-SKILL-003", "DSET-TEST-PLAN-SKILL-005", "DSET-TEST-PLAN-SKILL-006", "DSET-TEST-PLAN-SKILL-007", "DSET-TEST-PLAN-SKILL-008", "DSET-TEST-PLAN-SKILL-009", "DSET-TEST-PLAN-SKILL-010", "DSET-TEST-PLAN-SKILL-014", "DSET-TEST-PLAN-SKILL-015", "DSET-TEST-PLAN-SKILL-016", "DSET-TEST-PLAN-SKILL-017", "DSET-TEST-PLAN-SKILL-018"]
-evals = ["DSET-EVAL-PLAN-SKILL-001", "DSET-EVAL-PLAN-SKILL-002", "DSET-EVAL-PLAN-SKILL-003", "DSET-EVAL-PLAN-SKILL-004", "DSET-EVAL-PLAN-SKILL-005", "DSET-EVAL-PLAN-SKILL-006", "DSET-EVAL-PLAN-SKILL-007", "DSET-EVAL-PLAN-SKILL-008", "DSET-EVAL-PLAN-SKILL-012"]
-contracts = ["DSET-CONTRACT-SKILL-001", "DSET-CONTRACT-SKILL-002"]
-stories = []
-outcomes = []
-
-[package_catalog.packages.artifacts]
-hub = "DSET-SKILL-HUB.md"
-domain = "DSET-SKILL-REFERENCE-specification-domain.toml"
-spec = "DSET-SKILL-REFERENCE-specification-methodology.toml"
-contracts = "DSET-SKILL-REFERENCE-specification-contracts.toml"
-stories = "DSET-SKILL-REFERENCE-specification-user-stories.toml"
-outcomes = "DSET-SKILL-REFERENCE-specification-outcomes.toml"
-test_plan = "DSET-SKILL-plan-tests.md"
-eval_plan = "DSET-SKILL-plan-evaluations.md"
-
-[[package_catalog.packages]]
-schema_version = "1.2"
-package_id = "methodology"
-layer = "implementation"
-requirements = ["DSET-REQUIREMENT-IMPL-001", "DSET-REQUIREMENT-IMPL-002", "DSET-REQUIREMENT-IMPL-003", "DSET-REQUIREMENT-IMPL-004", "DSET-REQUIREMENT-IMPL-005", "DSET-REQUIREMENT-IMPL-006"]
-tests = []
-evals = ["DSET-EVAL-PLAN-IMPL-001"]
-contracts = []
-stories = []
-outcomes = []
-
-[package_catalog.packages.artifacts]
-hub = "DSET-IMPL-HUB.md"
-spec = "DSET-IMPL-REFERENCE-profile-local-python-tools.toml"
-
-[[package_catalog.packages]]
-schema_version = "1.2"
-package_id = "methodology"
-layer = "ops"
-requirements = ["DSET-REQUIREMENT-OPS-001", "DSET-REQUIREMENT-OPS-002", "DSET-REQUIREMENT-OPS-003", "DSET-REQUIREMENT-OPS-004", "DSET-REQUIREMENT-OPS-005", "DSET-REQUIREMENT-OPS-006", "DSET-REQUIREMENT-OPS-007", "DSET-REQUIREMENT-OPS-013"]
-tests = ["DSET-TEST-PLAN-OPS-001", "DSET-TEST-PLAN-OPS-002", "DSET-TEST-PLAN-OPS-003", "DSET-TEST-PLAN-OPS-004", "DSET-TEST-PLAN-OPS-005", "DSET-TEST-PLAN-OPS-006", "DSET-TEST-PLAN-OPS-007", "DSET-TEST-PLAN-OPS-017", "DSET-TEST-PLAN-OPS-018", "DSET-TEST-PLAN-OPS-019", "DSET-TEST-PLAN-OPS-020", "DSET-TEST-PLAN-OPS-021"]
-evals = ["DSET-EVAL-PLAN-OPS-001", "DSET-EVAL-PLAN-OPS-002", "DSET-EVAL-PLAN-OPS-003"]
-contracts = ["DSET-CONTRACT-OPS-001"]
-stories = []
-outcomes = []
-
-[package_catalog.packages.artifacts]
-hub = "DSET-OPS-HUB.md"
-domain = "DSET-OPS-REFERENCE-specification-domain.toml"
-spec = "DSET-OPS-REFERENCE-specification-methodology.toml"
-contracts = "DSET-OPS-REFERENCE-specification-contracts.toml"
-stories = "DSET-OPS-REFERENCE-specification-user-stories.toml"
-outcomes = "DSET-OPS-REFERENCE-specification-outcomes.toml"
-test_plan = "DSET-OPS-plan-tests.md"
-eval_plan = "DSET-OPS-plan-evaluations.md"
