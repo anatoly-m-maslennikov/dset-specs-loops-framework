@@ -84,6 +84,11 @@ Evergreen-to-evergreen and hub links are navigation and cannot establish
 semantic provenance. Refresh occurs on demand after accepted atomic change and
 before a downstream gate requires a current view.
 
+Evergreen and maintained governance surfaces are inactive by default.
+Activation is explicit and adds only the selected surface's currentness and
+gate obligations. Deactivation preserves its carrier and history and never
+changes atomic authority. Atomic source: `DSET-REQUIREMENT-META-033`.
+
 ## Non-contractual surfaces
 
 Examples, diagrams, and cited candidates may evolve without compatibility guarantees when they do not change a requirement, invariant, artifact shape, or ownership boundary.

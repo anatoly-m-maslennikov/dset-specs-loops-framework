@@ -79,3 +79,4 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 - **DSET-INVARIANT-META-030:** A new layer requires a unique responsibility, explicit handoffs, and an acyclic extension; otherwise use a feature, profile, Work Area, or other scope. Source: `DSET-REQUIREMENT-META-030`.
 - **DSET-INVARIANT-META-031:** Recursive self-hosting uses the same constitution, keeps reusable and applied owners distinct, and terminates at a declared fixed point. Source: `DSET-REQUIREMENT-META-031`.
 - **DSET-INVARIANT-META-032:** The durable control plane contains accepted current, secret-free, provider-neutral truth; future intentions and unaccepted exploration remain outside current authority. Source: `DSET-REQUIREMENT-META-032`.
+- **DSET-INVARIANT-META-033:** DSET starts atomic-first; named evergreen or maintained governance surfaces are optional and may be activated or deactivated without changing atomic authority. Source: `DSET-REQUIREMENT-META-033`.

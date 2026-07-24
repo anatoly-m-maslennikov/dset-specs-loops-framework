@@ -426,3 +426,21 @@ The durable control plane contains accepted current project truth only. It
 stores no secrets, remains LLM-provider agnostic, keeps future intentions in
 Version Roadmaps, and excludes unaccepted Exploration. Downstream layers own
 concrete storage, adapter, lookup, redaction, and enforcement mechanisms.
+
+## DSET-REQUIREMENT-META-033 — Progressive governance surfaces
+
+Atomic source: `DSET-REQUIREMENT-META-033`.
+
+DSET begins with atomic authority and requires no evergreen or maintained
+governance surface merely because the project is initialized. Requirements
+carry clear accepted obligations; Questions and Problems remain available when
+uncertainty or discrepancy exists.
+
+A named surface may be activated when its coordination value becomes useful.
+Activation adds that surface's currentness and gate obligations. Deactivation
+removes those obligations while preserving its carrier and Git history. A
+later reactivation reconciles the retained surface against current atoms before
+calling it current.
+
+Activation applies to named governance surfaces, not globally to the
+`evergreen` or `maintained` revision modes.
