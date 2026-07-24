@@ -43,9 +43,11 @@ Internal governance is mandatory. External and relational governance are
 independently optional. Scope path remains structural context outside this
 semantic matrix.
 
-Each occupied route has at most one registered human-facing name, and each name
-maps to exactly one route. The name does not establish an ontology, infer a
-route, or create a semantic name hierarchy.
+Each registered `artifact_type` plus optional direct `artifact_subtype` maps to
+exactly one route. Carriers store that type pair and derive the route; they do
+not repeat the three route coordinates. Unknown, disabled, or ambiguous
+mappings fail closed.
+
 Requirement maps to atomic Definition/internal, Constraint to atomic
 Definition/external, Contract to atomic Definition/relation, and Implementation
 Decision to atomic Method/internal.

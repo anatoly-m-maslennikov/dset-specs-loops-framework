@@ -146,13 +146,13 @@ its root. DSET scopes both projects without inventing services, modules,
 features, or deployment semantics, and a resumed session follows the current
 declaration rather than a stale checkpoint hint.
 
-## DSET-REQUIREMENT-META-012 — Three independent axes route every artifact
+## DSET-REQUIREMENT-META-035 — Registered types derive artifact routes
 
-Atomic sources: `DSET-REQUIREMENT-META-012` and its routing foundation
-`DSET-REQUIREMENT-META-018`.
+Atomic source: `DSET-REQUIREMENT-META-035`.
 
-Every governed artifact must declare exactly one `revision_mode`, one
-`content_role`, and one `governance_locus`.
+Every governed artifact declares one registered `artifact_type` and, when
+needed, one direct `artifact_subtype`. The registered pair resolves exactly one
+`revision_mode`, one `content_role`, and one `governance_locus`.
 
 | Axis | Values | Question answered |
 |---|---|---|
@@ -160,15 +160,17 @@ Every governed artifact must declare exactly one `revision_mode`, one
 | Content role | `inquiry`, `definition`, `rationale`, `method`, `implementation`, `observation` | What does it contribute? |
 | Governance locus | `internal`, `external`, `relation` | What does it primarily govern? |
 
-The route is explicit metadata. Names, folders, suffixes, workflow steps, and
-scope paths must not infer or override it. Authority, provenance, priority,
-lifecycle state, and applicability remain explicit metadata outside the route.
+The carrier stores the type pair and does not repeat the derived route fields.
+Unknown, disabled, or ambiguous mappings fail closed. Scope path remains
+explicit structural context. Non-derived provenance, priority, applicability,
+relation endpoints, and type-specific facts remain explicit outside the route.
+Acceptance is inherent to emitted atoms, while active versus archived state is
+derived from repository placement.
 
-**Scenario DSET-SCENARIO-META-013:** Requirement routes to
+**Scenario DSET-SCENARIO-META-013:** The registered Requirement type resolves to
 atomic/definition/internal, Constraint to atomic/definition/external, Contract
 to atomic/definition/relation, and Implementation Decision to
-atomic/method/internal without placing any of them under a Decision-centered
-name hierarchy.
+atomic/method/internal. None of their carriers repeats those coordinates.
 
 ## DSET-REQUIREMENT-META-013 — The routing matrix remains sparse
 
