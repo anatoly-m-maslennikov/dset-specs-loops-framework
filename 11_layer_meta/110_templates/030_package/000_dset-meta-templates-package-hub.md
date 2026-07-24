@@ -11,5 +11,5 @@ priority: medium
 
 Describe purpose, owner, boundary, dependencies, implementation surface, and supportability responsibility. Link rather than copy global or neighboring package truth.
 
-- `stories.md` record optional actor/stakeholder intent and value.
-- `outcomes.md` record optional measurable state changes.
+Link optional User Story or Outcome material only when the package owns
+concrete content. Do not create empty files for disabled or unused surfaces.

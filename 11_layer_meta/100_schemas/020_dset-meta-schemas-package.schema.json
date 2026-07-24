@@ -48,13 +48,6 @@
     },
     "artifacts": {
       "type": "object",
-      "required": [
-        "domain",
-        "spec",
-        "contracts",
-        "test_plan",
-        "eval_plan"
-      ],
       "additionalProperties": false,
       "properties": {
         "domain": {

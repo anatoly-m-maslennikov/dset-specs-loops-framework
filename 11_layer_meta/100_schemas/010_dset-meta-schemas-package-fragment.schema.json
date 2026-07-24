@@ -11,8 +11,6 @@
     "tests",
     "evals",
     "contracts",
-    "stories",
-    "outcomes",
     "artifacts"
   ],
   "additionalProperties": false,
@@ -48,14 +46,7 @@
     "artifacts": {
       "type": "object",
       "required": [
-        "hub",
-        "domain",
-        "spec",
-        "contracts",
-        "stories",
-        "outcomes",
-        "test_plan",
-        "eval_plan"
+        "hub"
       ],
       "additionalProperties": false,
       "properties": {
@@ -93,6 +84,7 @@
         "gov",
         "tool",
         "skill",
+        "implementation",
         "ops"
       ]
     },
