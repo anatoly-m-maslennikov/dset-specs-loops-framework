@@ -209,14 +209,14 @@ atomic/definition/internal, Constraint to atomic/definition/external, Contract
 to atomic/definition/relation, and Implementation Decision to
 atomic/method/internal. None of their carriers repeats those coordinates.
 
-## DSET-REQUIREMENT-META-043 — Sparse routing without inverse uniqueness
+## DSET-REQUIREMENT-META-045 — One type per semantic route
 
-Atomic source: `DSET-REQUIREMENT-META-043`.
+Atomic source: `DSET-REQUIREMENT-META-045`.
 
-The routing space is the matrix below. Every registered type/subtype occupies
-exactly one coordinate. A coordinate may contain several semantically distinct
-registered names, and an empty coordinate is valid. Routes select dispatch and
-policy; they do not replace artifact identity.
+Every registered artifact type occupies exactly one coordinate in the routing
+matrix, and every coordinate identifies exactly one canonical artifact type.
+Finer meanings are direct subtypes of that type. A subtype inherits all three
+route coordinates and cannot override one.
 
 | Revision mode \ Content role | Inquiry | Definition | Rationale | Method | Implementation | Observation |
 |---|---|---|---|---|---|---|
@@ -224,14 +224,28 @@ policy; they do not replace artifact identity.
 | Append-only | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R |
 | Maintained | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R |
 
-`I`, `E`, and `R` mean internal, external, and relation. They mark available
-coordinates, not required artifacts. Internal governance is always enabled;
-external and relation governance are enabled independently by project settings.
+`I`, `E`, and `R` mean internal, external, and relation.
 
-**Scenario DSET-SCENARIO-META-014:** A small internal-only project creates no
-external or relational placeholders. Problem, Evidence Record, and
-Verification may share atomic/observation/internal while retaining distinct
-meanings and identities.
+**Scenario DSET-SCENARIO-META-014:** Meanings that would otherwise compete for
+atomic/observation/internal become direct subtypes of that route's single
+canonical type.
+
+## DSET-REQUIREMENT-META-046 — Complete semantic-route coverage
+
+Atomic source: `DSET-REQUIREMENT-META-046`.
+
+Every coordinate in the routing matrix is occupied. The three Revision modes,
+six Content roles, and three Governance loci therefore require exactly 54
+canonical top-level artifact types. Empty coordinates are invalid.
+
+Project settings may disable the use of external or relational types, but the
+framework catalog still defines their routes and canonical types. Disabled use
+does not make a route undefined.
+
+**Scenario DSET-SCENARIO-META-019:** A small internal-only project enables only
+its internal vocabulary. Its framework catalog still contains the canonical
+external and relation types for all Revision-mode and Content-role
+combinations.
 
 ## DSET-REQUIREMENT-META-014 — Relations remain first-class and endpoint-explicit
 
@@ -295,8 +309,9 @@ This routing model adapts three FPF constraints:
   not justify dummy entities.
 
 Therefore the axes classify one artifact's current governance role, registered
-names remain sparse interface vocabulary, and relational participants remain
-explicit rather than encoded in names.
+types form a total one-to-one route vocabulary, direct subtypes refine meaning
+without changing routes, and relational participants remain explicit rather
+than encoded in names.
 
 ## DSET-REQUIREMENT-META-021 — Exploration Mode defers artifact creation
 

@@ -54,19 +54,23 @@ semantic matrix.
 Each registered `artifact_type` plus optional direct `artifact_subtype` maps to
 exactly one route. Carriers store that type pair and derive the route; they do
 not repeat the three route coordinates. Unknown, disabled, or ambiguous
-mappings fail closed. Several semantically distinct registered names may share
-one route; the route supports dispatch but does not determine identity.
+mappings fail closed. Every route has exactly one canonical `artifact_type`;
+empty routes and multiple types on one route are forbidden. Finer meanings are
+direct subtypes that inherit the complete route and cannot override it.
 
 `atomic` artifacts are independently governed immutable units. `append_only`
 artifacts preserve accepted records and permit only complete new records.
 `maintained` artifacts may revise existing content through their applicable
 update procedure. DSET defines no additional currentness or freshness class.
 Atomic source: `DSET-REQUIREMENT-META-041`.
-Sparse-routing source: `DSET-REQUIREMENT-META-043`.
+Route-uniqueness sources: `DSET-REQUIREMENT-META-045` and
+`DSET-REQUIREMENT-META-046`.
 
-Requirement maps to atomic Definition/internal, Constraint to atomic
-Definition/external, Contract to atomic Definition/relation, and Implementation
-Decision to atomic Method/internal.
+The framework catalog contains all 54 routes formed by the three Revision
+modes, six Content roles, and three Governance loci. A project may disable use
+of external or relational types, but their framework routes remain defined.
+Canonical type names and their direct subtype vocabulary are governed
+separately from this route invariant.
 
 User Stories, Outcomes, Scenarios, and Invariants may structure artifact prose,
 analysis, or compatibility history. Independently enforceable claims remain
