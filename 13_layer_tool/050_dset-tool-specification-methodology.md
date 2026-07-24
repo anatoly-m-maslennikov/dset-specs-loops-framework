@@ -1,0 +1,186 @@
+# Methodology TOOL specification
+
+## DSET-DECISION-TOOL-001 — Portable text-byte policy
+
+The repository pins Git-controlled text worktree content to LF with the root
+policy `* text=auto eol=lf`. The checkout boundary therefore preserves the
+byte identity of immutable carriers on Linux, macOS, native Windows, and WSL
+without weakening carrier-digest validation. Content detected as binary is not
+line-ending normalized.
+
+This Decision replaces `DSET-DECISION-OPS-008`. Repository byte normalization
+is TOOL configuration; concrete byte-sensitive Test implementation belongs to
+IMPL, and hosted cross-platform execution evidence belongs to OPS.
+
+## DSET-REQUIREMENT-TOOL-001 — The canonical workflow is executable
+
+The framework must provide one cross-platform CLI with `new`, `check`, `verify`, `trace`, and guarded `archive` commands. `check` is dependency-light and read-only; every write is explicit and refuses an existing destination.
+
+**Scenario DSET-SCENARIO-TOOL-001:** A contributor can run `python -m dset_toolchain check .` without installing OpenSpec or a second methodology and receives stable diagnostic codes for malformed artifacts.
+
+## DSET-REQUIREMENT-TOOL-002 — Traceability is generated from durable identities
+
+`.dset_runtime/generated/traceability.toml` must be generated in stable order from committed change manifests and repository-qualified PR references. It may cache evidence relationships but must not replace GitHub as owner of PR state, checks, diffs, or merge results.
+
+**Scenario DSET-SCENARIO-TOOL-002:** Regeneration without source changes produces no diff, and every archived change resolves to the PR that owns its implementation history.
+
+## DSET-REQUIREMENT-TOOL-003 — Archive writes are guarded
+
+Archive execution must require complete profile artifacts, fresh verification, accepted-truth reconciliation, an archive-ready status, a real PR identity, and a free dated destination. Dry-run is the default.
+
+**Scenario DSET-SCENARIO-TOOL-003:** A proposed, failed, incomplete, PR-less, or colliding change remains active and no archive path is overwritten.
+
+## DSET-REQUIREMENT-TOOL-004 — DSET 0.3 self-hosting is bounded
+
+The DSET 0.3 self-hosting gate must have exactly three bounded levels: the last
+released validator checks the candidate change; the candidate checks this
+repository; and the candidate materializes and checks one temporary adopter.
+During a declared bootstrap transition, an incompatible pre-transition
+validator records its exact rejection as degraded assurance rather than a pass;
+the candidate and temporary adopter still must pass. The temporary adopter must
+not create another adopter or traverse unrelated nested DSET roots.
+
+**Scenario DSET-SCENARIO-TOOL-004:** One release run records released-to-candidate
+as pass or an explicitly declared bootstrap-transition rejection, requires
+candidate-to-repository and candidate-to-temporary-adopter to pass, then
+terminates at the declared fixed point.
+
+## DSET-REQUIREMENT-TOOL-018 — Project health has a portable deterministic renderer
+
+The toolchain must compute the project-health model from discovered canonical
+artifacts, registry ownership, traceability, Git identities, and current proof
+metadata, then render a GitHub-portable Markdown view. Default inspection is
+read-only; an explicit write refreshes only the declared generated destination
+and a check mode detects staleness. Repository, layer, package, and Work Area
+drill-downs use the same source model. A later local or hosted dashboard may
+render that model but cannot introduce private health state or new authority.
+
+**Scenario DSET-SCENARIO-TOOL-018:** Two runs over unchanged inputs produce the
+same Markdown bytes. A changed Requirement makes check mode report the view
+stale, explicit refresh updates only the generated health destination, and
+every row links back to a canonical artifact or an explicit unknown.
+
+## DSET-REQUIREMENT-TOOL-019 — Priority conflict resolution is deterministic
+
+The toolchain must evaluate candidate incompatibilities between any governed
+artifacts. It first resolves each atom's semantic Type and direct subtype plus
+each document's role independently from the workflow that discovered it, then distinguishes genuine
+Conflicts from drift, assurance changes, nonconformance, and evidence
+adjudication. Only verified incompatible applicable claims over the same scope,
+concern, and effective time emit a first-class immutable Conflict atom.
+Immutable external authority wins over mutable project truth. Mutually
+unsatisfiable immutable obligations stop with an explicit non-compliance state;
+priority may order remediation but cannot make either obligation satisfied.
+
+For a comparable policy conflict whose governing profile permits selection,
+the resolver applies explicit artifact-specific precedence, then the selected
+profile's effective priority order. A strictly higher comparable priority
+selects the effective conflicting claim without invalidating the other artifact
+outside that context.
+
+Other classes produce deterministic dispositions rather than artificial
+winners: an active atomic source beats its stale compiled projection and routes
+recompilation; an absorbing atom beats absorbed predecessors; authority/
+evidence conflicts update assurance and affected gates; implementation/
+authority conflicts create a conformance Problem; evidence/evidence conflicts
+apply the registered proof plan and quality/freshness rules or stop for
+adjudication; generated/canonical conflicts mark generated output stale; and
+implementation conflicts follow the traceable owner or stop when ownership is
+missing. Priority orders handling for every class but cannot convert evidence
+into authority or a failing obligation into compliance.
+
+An archive relocation is valid only for a fully retired atom with no active
+claim, reliance, or unresolved lifecycle work. The toolchain verifies the
+content digest is unchanged, moves it only to the artifact type's `archive/`
+subfolder, updates canonical ID lookup, and rejects partial-absorption moves,
+content edits, broken references, or deletion.
+
+Every emitted Conflict begins open. A deterministic disposition appends a
+lifecycle event linking its resolution record and durable resolving artifacts;
+an unresolved or unsatisfiable Conflict remains open and blocking. Neither the
+Conflict nor its source claims are edited. Non-Conflict dispositions keep their
+own typed evidence or Problem/Question paths and do not emit a false Conflict.
+
+Equal, unknown, cyclically inherited, or incomparable priorities must stop with
+the artifact IDs, values, sources, context, and safe next action. Every automatic
+resolution is a derived transactional record and Conflict lifecycle event
+containing those same inputs, both artifact roles, the conflict class,
+disposition or selected claim, governing profile edition, and invalidation
+trigger. Atomic sources are never rewritten;
+an authorized compiler may update only declared evergreen projections.
+Reprioritization or input changes invalidate the affected resolution and health
+projection.
+
+**Scenario DSET-SCENARIO-TOOL-019:** A Requirement and project-owned Contract
+conflict over one selectable output field. With no explicit-precedence result,
+the higher-priority Contract governs that field and a resolution record is
+emitted. Changing either priority makes check mode mark the record stale; equal
+priority stops for a Decision instead of choosing by scan order. A fixture with
+two incompatible immutable Contracts stops as unsatisfiable regardless of
+priority. An active Decision/spec fixture selects the Decision and emits a
+stale-projection/recompile disposition; a Test/spec fixture emits an
+assurance-change disposition rather than selecting the Test. A successor atom
+beats an absorbed predecessor by lifecycle relation rather than age.
+
+## DSET-REQUIREMENT-TOOL-021 — TypeScript enforcement starts as an evidence-derived candidate
+
+DSET must distribute an executable `typescript-v1-candidate` profile derived
+from an exact owned Your Harness revision. It maps all six language-neutral
+gate categories to observed TypeScript-native commands, scopes, thresholds,
+layer rules, outputs, lockfile policy, secret hygiene, and test/source
+boundaries. Hard failures remain failures. Only advisory warnings may enter a
+revision-bound non-growing baseline.
+
+The profile must record exact repository, revision, upstream revision, license,
+tool and script identities, file populations, exclusions, known blockers, and
+promotion criteria. It remains candidate until the owned pilot passes its
+complete local and required hosted proof. Product-specific behavior and
+governance never become language defaults.
+
+**Scenario DSET-SCENARIO-TOOL-021:** The pinned pilot has known lint and typing
+failures plus advisory complexity warnings. Target inspection reports the hard
+failures as blockers, accepts only the warning counts as a shrink-only ratchet,
+and rejects promotion to `typescript-v1` until the pilot is green.
+
+## DSET-REQUIREMENT-TOOL-022 — Profile references and applied instances are distinct
+
+The framework's evidence-derived candidate is a `reference`: it preserves the
+pinned pilot and six neutral gate categories for comparison but is not adopter
+authority. Every adopter that selects the candidate must own an `applied`
+instance under its local TOOL profile root, declare `derived_from`, and supply
+its own commands, paths, thresholds, counts, debt, blockers, promotion gates,
+and evidence revisions.
+
+Resolution prefers the local applied instance. An adopter with only the
+distributed reference fails closed; the framework source may resolve the
+reference for read-only comparison. Concrete OYOHA product, Obsidian, delivery,
+supportability, and debt fields never become TypeScript defaults.
+
+**Scenario DSET-SCENARIO-TOOL-022:** A clean adopter receives the framework
+bundle but has not materialized a local TypeScript profile. Profile resolution
+stops and names the missing project-owned instance. After the adopter writes an
+applied instance with its reference origin, the same profile ID resolves
+locally and inspection reports `profile_role: applied`.
+
+## DSET-REQUIREMENT-TOOL-023 — Configure governance surfaces
+
+Atomic source: `DSET-REQUIREMENT-TOOL-023`.
+
+The deterministic CLI exposes:
+
+```text
+dset configure ROOT status
+dset configure ROOT activate SURFACE
+dset configure ROOT deactivate SURFACE
+dset configure ROOT recommend
+```
+
+`status` and `recommend` are read-only. Activation and deactivation preview by
+default and write only with explicit `--execute`. The writer preserves
+unrelated TOML values and comments, materializes missing registered defaults,
+and fails closed on unknown or non-Boolean surface state.
+
+Recommendations are conservative and advisory. They may propose reactivation
+only when they cite a retained project-owned carrier; external methodology
+carriers never count as project-surface evidence. A recommendation never
+changes configuration.

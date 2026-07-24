@@ -1,3 +1,5 @@
+"""Provide DSET governance behavior."""
+
 from __future__ import annotations
 
 import difflib
@@ -9,18 +11,56 @@ from typing import Any, cast
 
 from .diagnostics import Diagnostic
 from .errors import DsetCommandError
-from .layout import LAYERS, discover_layout, has_manifest
-from .yaml_subset import YamlSubsetError, dump, load
+from .identity import find_unique_name
+from .layout import (
+    LAYER_DIRECTORIES,
+    LAYER_ID_TOKENS,
+    LAYERS,
+    discover_layout,
+    has_manifest,
+    layer_key_from_id_token,
+)
+from .project_data import project_section, write_project_section
+from .structured_data import StructuredDataError, dump, load
 
+# RULE_PATTERN validates rule pattern; this module owns the accepted syntax.
 RULE_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
+# WORKFLOW_PATTERN validates workflow pattern; this module owns the accepted syntax.
 WORKFLOW_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+# SHA256_PATTERN validates sha256 pattern; this module owns the accepted syntax.
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
+# CUSTOMIZATION defines customization; this module owns the default.
 CUSTOMIZATION = {"unmodified", "custom"}
+# APPLICABILITY defines applicability; this module owns the default.
 APPLICABILITY = {"applicable", "not-applicable"}
-RULE_LAYERS = {layer.upper() for layer in LAYERS}
+# RULE_LAYERS defines rule layers; this module owns the default.
+RULE_LAYERS = set(LAYER_ID_TOKENS.values())
+# RULE_LAYER_RANK defines rule layer rank; this module owns the default.
+RULE_LAYER_RANK = {LAYER_ID_TOKENS[layer]: index for index, layer in enumerate(LAYERS)}
+# GOVERNANCE_SCHEMA_VERSION defines governance schema version; this module owns the default.
+GOVERNANCE_SCHEMA_VERSION = 1.1
+# SLIM_RULE_TARGETS defines slim rule targets; this module owns the default.
+SLIM_RULE_TARGETS = {
+    "architecture.md": "specification-architecture.md",
+    "build-rules.md": "specification-build-rules.md",
+    "domain-spec-authoring.md": "procedure-domain-spec-authoring.md",
+    "test-planning.md": "procedure-test-planning.md",
+    "eval-planning.md": "procedure-evaluation-planning.md",
+    "supportability.md": "specification-supportability.md",
+    "artifact-maintenance.md": "specification-artifact-maintenance.md",
+    "work-items.md": "specification-work-items.md",
+    "artifact-classification.md": "specification-artifact-classification.md",
+    "delegation-budget.md": "procedure-delegation-budget.md",
+    "skill-runs.md": "procedure-skill-runs.md",
+    "release.md": "procedure-release.md",
+    "lifecycle-orchestration.md": "procedure-lifecycle-orchestration.md",
+    "diagnosis.md": "procedure-diagnosis.md",
+    "prototyping.md": "procedure-prototyping.md",
+}
 
 
 def find_repository(start: Path) -> Path:
+    """Find repository using the declared repository contract."""
     current = start.resolve()
     if current.is_file():
         current = current.parent
@@ -33,13 +73,14 @@ def find_repository(start: Path) -> Path:
 def validate_governance(
     root: Path, expected_profile: str | None = None
 ) -> list[Diagnostic]:
+    """Validate governance using the declared repository contract."""
     root = root.resolve()
     layout = discover_layout(root)
     manifest_path = layout.manifest_path
     if expected_profile is None:
         try:
             manifest = load(manifest_path)
-        except (OSError, YamlSubsetError):
+        except (OSError, StructuredDataError):
             manifest = {}
         profiles = manifest.get("profiles", {}) if isinstance(manifest, dict) else {}
         if isinstance(profiles, dict):
@@ -57,8 +98,8 @@ def validate_governance(
     if not registry_path.is_file():
         return [_diag("DSET-E130", registry_path, "governance registry is missing")]
     try:
-        data = load(registry_path)
-    except (OSError, YamlSubsetError) as error:
+        data = project_section(root, "governance_registry")
+    except (OSError, ValueError, StructuredDataError) as error:
         return [_diag("DSET-E131", registry_path, str(error))]
     if not isinstance(data, dict):
         return [_diag("DSET-E131", registry_path, "registry must be a mapping")]
@@ -71,9 +112,18 @@ def validate_governance_registry(
     data: dict[str, Any],
     expected_profile: str,
 ) -> list[Diagnostic]:
+    """Validate governance registry using the declared repository contract."""
     root = root.resolve()
     layout = discover_layout(root)
     diagnostics: list[Diagnostic] = []
+    if data.get("schema_version") != GOVERNANCE_SCHEMA_VERSION:
+        diagnostics.append(
+            _diag(
+                "DSET-E131",
+                registry_path,
+                "unsupported governance registry schema version",
+            )
+        )
     profile = data.get("profile")
     if not isinstance(profile, dict):
         return [_diag("DSET-E137", registry_path, "profile must be a mapping")]
@@ -148,11 +198,13 @@ def validate_governance_registry(
                     f"not-applicable rule requires a reason: {rule_id}",
                 )
             )
-        local = _local_path(root, rule.get("path"))
+        local = _rule_carrier(root, rule)
         if local is None:
             diagnostics.append(
                 _diag(
-                    "DSET-E134", registry_path, f"rule path is outside root: {rule_id}"
+                    "DSET-E134",
+                    registry_path,
+                    f"rule document identity is missing or ambiguous: {rule_id}",
                 )
             )
             continue
@@ -162,10 +214,14 @@ def validate_governance_registry(
             )
             continue
         if layout.layered and layer in RULE_LAYERS:
-            expected_root = layout.layer_root(str(layer).lower()) / "governance"
-            try:
-                local.relative_to(expected_root)
-            except ValueError:
+            expected_root = (
+                layout.framework_layer_root(layer_key_from_id_token(str(layer)))
+                if layout.recursive or layout.separated
+                else layout.layer_root(layer_key_from_id_token(str(layer)))
+            )
+            if not layout.slim:
+                expected_root /= "governance"
+            if not _is_within(local, expected_root):
                 diagnostics.append(
                     _diag(
                         "DSET-E134",
@@ -204,6 +260,7 @@ def validate_governance_registry(
         )
 
     diagnostics.extend(_validate_dependencies(registry_path, by_id))
+    diagnostics.extend(_validate_precedence(registry_path, by_id))
     workflows = data.get("workflows")
     workflow_items = workflows if isinstance(workflows, list) else []
     if not workflow_items:
@@ -276,12 +333,13 @@ def validate_governance_registry(
 def resolve_workflow(
     root: Path, workflow_id: str
 ) -> tuple[dict[str, Any] | None, list[Diagnostic]]:
+    """Resolve workflow using the declared repository contract."""
     root = root.resolve()
     diagnostics = validate_governance(root)
     if diagnostics:
         return None, diagnostics
     path = discover_layout(root).governance_path
-    data = cast(dict[str, Any], load(path))
+    data = project_section(root, "governance_registry")
     workflow = next(
         (
             item
@@ -305,14 +363,23 @@ def resolve_workflow(
     for rule_id in workflow["rules"]:
         rule = by_id[rule_id]
         source = rule["source"]
-        local = root / rule["path"]
+        local = _rule_carrier(root, rule)
+        if local is None:
+            return None, [
+                _diag(
+                    "DSET-E134",
+                    path,
+                    f"rule document identity is missing or ambiguous: {rule_id}",
+                )
+            ]
         rules.append(
             {
                 "id": rule_id,
                 "layer": rule["layer"],
-                "path": rule["path"],
+                "document": rule.get("document", local.name),
                 "owner": rule["owner"],
                 "applicability": rule["applicability"],
+                "precedence_over": list(rule["precedence_over"]),
                 "customization": rule["customization"],
                 "source_profile": source["profile"],
                 "source_version": source["version"],
@@ -329,6 +396,11 @@ def resolve_workflow(
             "rules": rules,
             "wrapper": wrapper,
             "conflicts": [],
+            "conflict_resolution": {
+                "status": "unavailable",
+                "coverage": [],
+                "reason_code": "DSET-CONFLICT-RESOLUTION-UNAVAILABLE",
+            },
         },
         [],
     )
@@ -341,6 +413,7 @@ def materialize_governance(
     *,
     install_wrappers: bool = False,
 ) -> Path:
+    """Handle governance using the declared repository contract."""
     source_root = source_root.resolve()
     target_root = target_root.resolve()
     source_layout = discover_layout(source_root)
@@ -348,6 +421,12 @@ def materialize_governance(
     manifest = target_layout.manifest_path
     if not manifest.is_file():
         raise DsetCommandError("DSET-E001", manifest, "project manifest is missing")
+    if target_layout.separated:
+        raise DsetCommandError(
+            "DSET-E140",
+            manifest,
+            "schema 1.5 installs methodology as one edition; use methodology sync",
+        )
     try:
         profile_path = source_layout.find_template(
             Path("governance") / profile_id / "profile.yaml"
@@ -376,6 +455,7 @@ def materialize_governance(
     profile_relative = Path("governance") / profile_id
 
     def source_template(relative: Path) -> Path:
+        """Handle template using the declared repository contract."""
         try:
             return source_layout.find_template(relative)
         except (FileNotFoundError, ValueError) as error:
@@ -397,18 +477,44 @@ def materialize_governance(
         templates[rule_id] = source_template(profile_relative / str(item["template"]))
         destination = target_layout.governance_root
         if target_layout.layered:
-            destination = target_layout.layer_root(str(layer).lower()) / "governance"
+            destination = (
+                target_layout.framework_layer_root(layer_key_from_id_token(str(layer)))
+                if target_layout.recursive or target_layout.separated
+                else target_layout.layer_root(layer_key_from_id_token(str(layer)))
+            )
+            if not target_layout.slim:
+                destination /= "governance"
             governance_roots.add(destination)
-        targets[rule_id] = destination / str(item["target"])
-    existing = [path for path in governance_roots if path.exists()]
-    if registry_path.exists() or existing:
-        occupied = registry_path if registry_path.exists() else sorted(existing)[0]
+        target_name = str(item["target"])
+        if target_layout.slim:
+            target_name = SLIM_RULE_TARGETS.get(target_name, target_name)
+        targets[rule_id] = destination / target_name
+    hub_path = target_layout.governance_root / (
+        "navigation-governance.md" if target_layout.slim else "README.md"
+    )
+    existing = [path for path in targets.values() if path.exists()]
+    if hub_path.exists():
+        existing.append(hub_path)
+    registry_exists = False
+    if registry_path.is_file():
+        try:
+            registry_exists = bool(project_section(target_root, "governance_registry"))
+        except ValueError:
+            registry_exists = False
+    if registry_exists or existing:
+        occupied = registry_path if registry_exists else sorted(existing)[0]
         raise FileExistsError(f"governance destination already exists: {occupied}")
     copied_wrappers: list[Path] = []
     for destination in sorted(governance_roots):
-        destination.mkdir(parents=True)
+        destination.mkdir(parents=True, exist_ok=target_layout.slim)
     try:
-        shutil.copyfile(readme_template, target_layout.governance_root / "README.md")
+        _write_governance_hub(
+            readme_template,
+            hub_path,
+            layered=target_layout.layered,
+            slim=target_layout.slim,
+            separated=target_layout.separated,
+        )
         rendered_rules: list[dict[str, Any]] = []
         for item in rules:
             rule_id = str(item["id"])
@@ -432,35 +538,43 @@ def materialize_governance(
                 {
                     "id": rule_id,
                     "layer": item["layer"],
-                    "path": target.relative_to(target_root).as_posix(),
+                    "document": target.name,
                     "owner": "project",
                     "applicability": applicability,
                     "reason": reason,
                     "depends_on": dependencies,
+                    "precedence_over": list(item.get("precedence_over", [])),
                     "customization": "unmodified",
                     "source": {
                         "profile": profile_id,
                         "version": str(profile["version"]),
-                        "template": template.relative_to(source_root).as_posix(),
+                        "template": template.name,
                         "sha256": _sha256(template),
                     },
                 }
             )
         wrappers: list[dict[str, Any]] = []
         for item in cast(list[dict[str, Any]], profile.get("wrappers", [])):
-            source = source_root / str(item["path"])
-            target = target_root / str(item["path"])
+            if release_not_applicable and item.get("workflow") == "release":
+                continue
+            skill = str(item["skill"])
+            source = _wrapper_carrier(source_root, item)
+            wrapper_target = _wrapper_carrier(target_root, item)
+            if source is None:
+                raise FileNotFoundError(f"source skill wrapper is missing: {skill}")
+            if wrapper_target is None:
+                wrapper_target = target_root / "skills" / skill / "SKILL.md"
             if source_root != target_root and install_wrappers:
-                folder = target.parent
+                folder = wrapper_target.parent
                 if folder.exists():
                     raise FileExistsError(f"wrapper destination exists: {folder}")
                 shutil.copytree(source.parent, folder)
                 copied_wrappers.append(folder)
-            if target.is_file():
+            if wrapper_target.is_file():
                 wrappers.append(
                     {
                         "workflow": item["workflow"],
-                        "path": target.relative_to(target_root).as_posix(),
+                        "skill": skill,
                         "sha256": _sha256(source),
                     }
                 )
@@ -477,7 +591,7 @@ def materialize_governance(
                 ]
             rendered_workflows.append(rendered)
         registry = {
-            "schema_version": 1.0,
+            "schema_version": profile.get("schema_version", GOVERNANCE_SCHEMA_VERSION),
             "profile": {
                 "id": profile_id,
                 "version": str(profile["version"]),
@@ -487,13 +601,22 @@ def materialize_governance(
             "workflows": rendered_workflows,
             "wrappers": wrappers,
         }
-        registry_path.write_text(dump(registry), encoding="utf-8")
+        if target_layout.recursive or target_layout.separated:
+            write_project_section(target_root, "governance_registry", registry)
+        else:
+            registry_path.write_text(dump(registry, registry_path), encoding="utf-8")
     except Exception:
-        if registry_path.exists():
+        if registry_path.exists() and not (
+            target_layout.recursive or target_layout.separated
+        ):
             registry_path.unlink()
-        for destination in sorted(governance_roots, reverse=True):
-            if destination.exists():
-                shutil.rmtree(destination)
+        hub_path.unlink(missing_ok=True)
+        for target in targets.values():
+            target.unlink(missing_ok=True)
+        if not target_layout.slim:
+            for destination in sorted(governance_roots, reverse=True):
+                if destination.exists():
+                    shutil.rmtree(destination)
         for wrapper in copied_wrappers:
             if wrapper.exists():
                 shutil.rmtree(wrapper)
@@ -501,13 +624,85 @@ def materialize_governance(
     return registry_path
 
 
+def _write_governance_hub(
+    source: Path,
+    target: Path,
+    *,
+    layered: bool,
+    slim: bool = False,
+    separated: bool = False,
+) -> None:
+    """Write governance hub using the declared repository contract."""
+    content = source.read_text(encoding="utf-8")
+    if layered:
+        for layer in ("meta", "tool", "skill", "implementation", "ops"):
+            for source_directory in (layer, LAYER_DIRECTORIES[layer]):
+                content = content.replace(
+                    f"../../../../{source_directory}/templates/governance/core-v1/",
+                    f"../../{layer}/governance/",
+                )
+    if slim:
+        layer_names = {
+            "meta": "01_meta" if separated else "01_layer_meta",
+            "tool": "03_tool" if separated else "03_layer_tool",
+            "skill": "04_skill" if separated else "04_layer_skill",
+            "implementation": (
+                "05_implementation" if separated else "05_layer_implementation"
+            ),
+            "ops": "06_ops" if separated else "06_layer_ops",
+        }
+        replacements = {
+            "architecture.md": "specification-architecture.md",
+            (
+                "../../tool/governance/build-rules.md"
+            ): f"../{layer_names['tool']}/specification-build-rules.md",
+            (
+                "../../meta/governance/domain-spec-authoring.md"
+            ): f"../{layer_names['meta']}/procedure-domain-spec-authoring.md",
+            (
+                "../../meta/governance/test-planning.md"
+            ): f"../{layer_names['meta']}/procedure-test-planning.md",
+            (
+                "../../meta/governance/eval-planning.md"
+            ): f"../{layer_names['meta']}/procedure-evaluation-planning.md",
+            (
+                "../../skill/governance/diagnosis.md"
+            ): f"../{layer_names['skill']}/procedure-diagnosis.md",
+            (
+                "../../skill/governance/prototyping.md"
+            ): f"../{layer_names['skill']}/procedure-prototyping.md",
+            (
+                "../../ops/governance/supportability.md"
+            ): f"../{layer_names['ops']}/specification-supportability.md",
+            "artifact-maintenance.md": "specification-artifact-maintenance.md",
+            "artifact-classification.md": "specification-artifact-classification.md",
+            (
+                "../../skill/governance/lifecycle-orchestration.md"
+            ): f"../{layer_names['skill']}/procedure-lifecycle-orchestration.md",
+            (
+                "../../skill/governance/skill-runs.md"
+            ): f"../{layer_names['skill']}/procedure-skill-runs.md",
+            (
+                "../../skill/governance/delegation-budget.md"
+            ): f"../{layer_names['skill']}/procedure-delegation-budget.md",
+            (
+                "../../ops/governance/release.md"
+            ): f"../{layer_names['ops']}/procedure-release.md",
+            "work-items.md": "specification-work-items.md",
+        }
+        for old, new in replacements.items():
+            content = content.replace(old, new)
+    target.write_text(content, encoding="utf-8")
+
+
 def refresh_customization(root: Path) -> Path:
+    """Handle customization using the declared repository contract."""
     root = root.resolve()
     path = discover_layout(root).governance_path
-    data = cast(dict[str, Any], load(path))
+    data = project_section(root, "governance_registry")
     custom = False
     for rule in cast(list[dict[str, Any]], data.get("rules", [])):
-        local = _local_path(root, rule.get("path"))
+        local = _rule_carrier(root, rule)
         source = rule.get("source")
         source_sha = source.get("sha256") if isinstance(source, dict) else None
         if local is None or not local.is_file() or not isinstance(source_sha, str):
@@ -518,27 +713,28 @@ def refresh_customization(root: Path) -> Path:
     cast(dict[str, Any], data["profile"])["customization"] = (
         "custom" if custom else "unmodified"
     )
-    path.write_text(dump(data), encoding="utf-8")
+    write_project_section(root, "governance_registry", data)
     return path
 
 
 def diff_governance(root: Path, source_root: Path) -> str:
+    """Handle governance using the declared repository contract."""
     root = root.resolve()
     source_root = source_root.resolve()
-    data = cast(dict[str, Any], load(discover_layout(root).governance_path))
+    data = project_section(root, "governance_registry")
     output: list[str] = []
     for rule in cast(list[dict[str, Any]], data.get("rules", [])):
         source = cast(dict[str, Any], rule["source"])
-        template = source_root / str(source["template"])
-        local = root / str(rule["path"])
-        if not template.is_file() or not local.is_file():
+        template = _unique_named_file(source_root / ".dset", source.get("template"))
+        local = _rule_carrier(root, rule)
+        if template is None or local is None:
             continue
         output.extend(
             difflib.unified_diff(
                 template.read_text(encoding="utf-8").splitlines(keepends=True),
                 local.read_text(encoding="utf-8").splitlines(keepends=True),
-                fromfile=template.relative_to(source_root).as_posix(),
-                tofile=local.relative_to(root).as_posix(),
+                fromfile=template.name,
+                tofile=local.name,
             )
         )
     return "".join(output) or "No local governance differences.\n"
@@ -547,6 +743,7 @@ def diff_governance(root: Path, source_root: Path) -> str:
 def _validate_dependencies(
     path: Path, by_id: dict[str, dict[str, Any]]
 ) -> list[Diagnostic]:
+    """Validate dependencies using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     for rule_id, rule in by_id.items():
         dependencies = rule.get("depends_on", [])
@@ -564,10 +761,30 @@ def _validate_dependencies(
                         f"dependency has no rule owner: {rule_id}/{dependency}",
                     )
                 )
+                continue
+            source_layer = rule.get("layer")
+            dependency_layer = by_id[dependency].get("layer")
+            if (
+                source_layer in RULE_LAYER_RANK
+                and dependency_layer in RULE_LAYER_RANK
+                and RULE_LAYER_RANK[str(dependency_layer)]
+                > RULE_LAYER_RANK[str(source_layer)]
+            ):
+                diagnostics.append(
+                    _diag(
+                        "DSET-E151",
+                        path,
+                        "rule dependency creates backward layer authority: "
+                        f"{rule_id}/{dependency}; resolve or re-home it, or "
+                        "propose converting irreducible peer layers to features "
+                        "with horizontal Contracts",
+                    )
+                )
     visiting: set[str] = set()
     visited: set[str] = set()
 
     def visit(rule_id: str) -> None:
+        """Handle visit using the declared repository contract."""
         if rule_id in visiting:
             diagnostics.append(
                 _diag("DSET-E135", path, f"rule dependency cycle includes: {rule_id}")
@@ -589,12 +806,97 @@ def _validate_dependencies(
     return diagnostics
 
 
+def _validate_precedence(
+    path: Path, by_id: dict[str, dict[str, Any]]
+) -> list[Diagnostic]:
+    """Validate precedence using the declared repository contract."""
+    diagnostics: list[Diagnostic] = []
+    graph: dict[str, list[str]] = {}
+    for rule_id, rule in by_id.items():
+        precedence = rule.get("precedence_over")
+        if not isinstance(precedence, list):
+            diagnostics.append(
+                _diag(
+                    "DSET-E150",
+                    path,
+                    f"precedence_over must be a list: {rule_id}",
+                )
+            )
+            graph[rule_id] = []
+            continue
+        if len(precedence) != len(set(map(str, precedence))):
+            diagnostics.append(
+                _diag(
+                    "DSET-E150",
+                    path,
+                    f"precedence targets must be unique: {rule_id}",
+                )
+            )
+        graph[rule_id] = []
+        for target in precedence:
+            if not isinstance(target, str) or target not in by_id:
+                diagnostics.append(
+                    _diag(
+                        "DSET-E150",
+                        path,
+                        f"precedence target has no rule owner: {rule_id}/{target}",
+                    )
+                )
+                continue
+            source_layer = rule.get("layer")
+            target_layer = by_id[target].get("layer")
+            if (
+                source_layer in RULE_LAYER_RANK
+                and target_layer in RULE_LAYER_RANK
+                and RULE_LAYER_RANK[str(source_layer)]
+                > RULE_LAYER_RANK[str(target_layer)]
+            ):
+                diagnostics.append(
+                    _diag(
+                        "DSET-E151",
+                        path,
+                        "rule precedence creates backward layer authority: "
+                        f"{rule_id}/{target}; resolve or re-home it, or propose "
+                        "converting irreducible peer layers to features with "
+                        "horizontal Contracts",
+                    )
+                )
+            graph[rule_id].append(target)
+
+    visiting: set[str] = set()
+    visited: set[str] = set()
+
+    def visit(rule_id: str) -> None:
+        """Handle visit using the declared repository contract."""
+        if rule_id in visiting:
+            diagnostics.append(
+                _diag(
+                    "DSET-E150",
+                    path,
+                    f"rule precedence cycle includes: {rule_id}",
+                )
+            )
+            return
+        if rule_id in visited:
+            return
+        visiting.add(rule_id)
+        for target in graph.get(rule_id, []):
+            visit(target)
+        visiting.remove(rule_id)
+        visited.add(rule_id)
+
+    for rule_id in by_id:
+        visit(rule_id)
+    return diagnostics
+
+
 def _validate_wrappers(
     root: Path,
     registry_path: Path,
     raw: Any,
     workflow_ids: set[str],
 ) -> list[Diagnostic]:
+    """Validate wrappers using the declared repository contract."""
     diagnostics: list[Diagnostic] = []
     wrappers = raw if isinstance(raw, list) else []
     seen: set[str] = set()
@@ -617,7 +919,7 @@ def _validate_wrappers(
                 _diag("DSET-E138", registry_path, f"duplicate wrapper: {workflow}")
             )
         seen.add(workflow)
-        path = _local_path(root, wrapper.get("path"))
+        path = _wrapper_carrier(root, wrapper)
         expected = wrapper.get("sha256")
         if path is None or not path.is_file():
             diagnostics.append(
@@ -631,6 +933,7 @@ def _validate_wrappers(
 
 
 def _local_path(root: Path, raw: Any) -> Path | None:
+    """Handle path using the declared repository contract."""
     if not isinstance(raw, str) or not raw or Path(raw).is_absolute():
         return None
     path = (root / raw).resolve()
@@ -639,6 +942,45 @@ def _local_path(root: Path, raw: Any) -> Path | None:
     except ValueError:
         return None
     return path
+
+
+def _unique_named_file(control_root: Path, raw: Any) -> Path | None:
+    """Handle named file using the declared repository contract."""
+    if not isinstance(raw, str):
+        return None
+    try:
+        root = control_root.parent if control_root.name == ".dset" else control_root
+        return find_unique_name(root, raw)
+    except (FileNotFoundError, ValueError):
+        return None
+
+
+def _wrapper_carrier(root: Path, wrapper: dict[str, Any]) -> Path | None:
+    """Handle carrier using the declared repository contract."""
+    skill = wrapper.get("skill")
+    if isinstance(skill, str) and skill and Path(skill).name == skill:
+        path = (root / "skills" / skill / "SKILL.md").resolve()
+        try:
+            path.relative_to(root.resolve())
+        except ValueError:
+            return None
+        return path
+    return _local_path(root, wrapper.get("path"))
+
+
+def _rule_carrier(root: Path, rule: dict[str, Any]) -> Path | None:
+    document = rule.get("document")
+    if document is not None:
+        return _unique_named_file(root / ".dset", document)
+    return _local_path(root, rule.get("path"))
+
+
+def _is_within(path: Path, parent: Path) -> bool:
+    try:
+        path.resolve().relative_to(parent.resolve())
+    except ValueError:
+        return False
+    return True
 
 
 def _sha256(path: Path) -> str:

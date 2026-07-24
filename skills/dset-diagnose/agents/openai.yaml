@@ -1,4 +1,4 @@
 interface:
   display_name: "DSET Diagnose"
-  short_description: "Trace defects to evidence and first cause"
-  default_prompt: "Use $dset-diagnose to investigate this failure without implementing a fix."
+  short_description: "Diagnose failures without fixing them"
+  default_prompt: "Use $dset-diagnose to investigate this failure, report evidence and repair options, and stop before implementing a fix."

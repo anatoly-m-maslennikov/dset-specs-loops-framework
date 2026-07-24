@@ -1,7 +1,13 @@
+"""Verify DSET scaffold archive behavior.
+
+Assurance scope: deterministic behavior owned by this module.
+Non-obvious fixtures: documented by the fixture that owns them.
+Host requirements: an isolated supported Python environment.
+"""
+
 from __future__ import annotations
 
 import shutil
-import tempfile
 import unittest
 from datetime import date
 from pathlib import Path
@@ -10,16 +16,22 @@ from dset_toolchain.adopter import create_adopter
 from dset_toolchain.archive import archive_plan, execute_archive
 from dset_toolchain.layout import discover_layout
 from dset_toolchain.scaffold import create_change
-from dset_toolchain.yaml_subset import dump, load
+from dset_toolchain.temp_paths import temporary_directory
+from dset_toolchain.structured_data import dump, load
+from tests import repository_root
 
-ROOT = Path(__file__).resolve().parents[1]
+# ROOT locates the repository fixture; repository layout is authoritative.
+ROOT = repository_root(Path(__file__))
+# FIXTURES defines fixtures; this module owns the default.
 FIXTURES = discover_layout(ROOT).fixtures_root
 
 
 class ScaffoldArchiveTests(unittest.TestCase):
+    """Verify scaffold archive behavior."""
+
     def test_new_creates_profile_without_overwrite(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
-            target = Path(raw) / "adopter"
+        with temporary_directory() as raw:
+            target = (Path(raw) / "adopter").resolve()
             self._copy_support(target)
             change = create_change(
                 target, "add-login", "accounts", "small", "Add login"
@@ -27,23 +39,30 @@ class ScaffoldArchiveTests(unittest.TestCase):
             self.assertTrue((change / "test-plan.md").is_file())
             self.assertTrue((change / "eval-plan.md").is_file())
             self.assertFalse((change / "design.md").exists())
-            manifest = (change / "change.yaml").read_text(encoding="utf-8")
+            manifest_path = discover_layout(target).structured_file(
+                change, "change.toml"
+            )
+            manifest = manifest_path.read_text(encoding="utf-8")
             self.assertNotIn("{{", manifest)
             self.assertIn("DSET-REQUIREMENT-001", manifest)
             self.assertIn("DSET-CONTRACT-001", manifest)
-            self.assertIn("stories: []", manifest)
-            self.assertIn("outcomes: []", manifest)
+            self.assertEqual(load(manifest_path)["stories"], [])
+            self.assertEqual(load(manifest_path)["outcomes"], [])
             with self.assertRaises(FileExistsError):
                 create_change(target, "add-login", "accounts", "small")
 
     def test_new_uses_only_registered_optional_layers(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
-            target = Path(raw) / "adopter"
+        with temporary_directory() as raw:
+            target = (Path(raw) / "adopter").resolve()
             self._copy_support(target)
             change = create_change(
                 target, "govern-login", "accounts", "small", layer="GOV"
             )
-            manifest = (change / "change.yaml").read_text(encoding="utf-8")
+            manifest = (
+                discover_layout(target)
+                .structured_file(change, "change.toml")
+                .read_text(encoding="utf-8")
+            )
             self.assertIn("DSET-REQUIREMENT-GOV-001", manifest)
             self.assertIn("DSET-CONTRACT-GOV-001", manifest)
             with self.assertRaisesRegex(ValueError, "unknown ID layer"):
@@ -60,17 +79,21 @@ class ScaffoldArchiveTests(unittest.TestCase):
                 )
 
     def test_new_uses_a_generic_project_prefix(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
-            target = Path(raw) / "adopter"
+        with temporary_directory() as raw:
+            target = (Path(raw) / "adopter").resolve()
             self._copy_support(target)
-            manifest_path = target / "dset" / "dset.yaml"
+            manifest_path = discover_layout(target).manifest_path
             manifest = load(manifest_path)
             manifest["project"]["key"] = "ACME"
-            manifest_path.write_text(dump(manifest), encoding="utf-8")
+            manifest_path.write_text(dump(manifest, manifest_path), encoding="utf-8")
             change = create_change(
                 target, "govern-login", "accounts", "small", layer="GOV"
             )
-            rendered = (change / "change.yaml").read_text(encoding="utf-8")
+            rendered = (
+                discover_layout(target)
+                .structured_file(change, "change.toml")
+                .read_text(encoding="utf-8")
+            )
             self.assertIn("ACME-REQUIREMENT-GOV-001", rendered)
             self.assertIn("ACME-CONTRACT-GOV-001", rendered)
             specification = (change / "specs" / "accounts.md").read_text(
@@ -80,16 +103,19 @@ class ScaffoldArchiveTests(unittest.TestCase):
             self.assertIn("ACME-OUTCOME-GOV-001", specification)
 
     def test_archive_is_dry_run_then_guarded_move(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
-            target = Path(raw) / "adopter"
+        with temporary_directory() as raw:
+            target = (Path(raw) / "adopter").resolve()
             self._copy_support(target)
             source = target / "dset" / "changes" / "fixture-standard"
             shutil.copytree(FIXTURES / "bases" / "standard", source)
-            data = load(source / "change.yaml")
+            manifest_path = discover_layout(target).structured_file(
+                source, "change.yaml"
+            )
+            data = load(manifest_path)
             data["status"] = "archive-ready"
             data["pull_request"]["number"] = 42
             data["pull_request"]["url"] = "https://github.com/example/project/pull/42"
-            (source / "change.yaml").write_text(dump(data), encoding="utf-8")
+            manifest_path.write_text(dump(data, manifest_path), encoding="utf-8")
             with (source / "verification.md").open("a", encoding="utf-8") as file:
                 file.write("\nAccepted-truth reconciliation: Pass\n")
             source_path, destination = archive_plan(
@@ -100,7 +126,9 @@ class ScaffoldArchiveTests(unittest.TestCase):
             result = execute_archive(target, "fixture-standard", date(2026, 7, 14))
             self.assertTrue(result.is_dir())
             self.assertFalse(source.exists())
-            archived = load(result / "change.yaml")
+            archived = load(
+                discover_layout(target).structured_file(result, "change.yaml")
+            )
             self.assertEqual(archived["status"], "archived")
 
     def _copy_support(self, target: Path) -> None:

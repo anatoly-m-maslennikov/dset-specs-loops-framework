@@ -5,16 +5,15 @@ description: Run a bounded disposable experiment to answer a specific design, fr
 
 # DSET Prototype
 
-This is the thin wrapper for the registered `prototyping` workflow. Repository-local governing documents own every substantive experiment, evidence, licensing, disposal, and promotion rule.
+This is the thin wrapper for `prototyping`; resolved repository-local documents own substantive behavior.
 
-## Bootstrap and invocation
+## Resolve
 
-1. Locate the repository root by walking upward to `dset/scopes/meta/dset.yaml` for schema 1.2 or legacy `dset/dset.yaml` for schema 1.0/1.1; stop if both authorities exist.
-2. Run `dset rules resolve prototyping --format json` or `python -m dset_toolchain rules resolve prototyping --format json`.
-3. Stop on any nonzero result. Never fall back to this wrapper, agent memory, an installed template, or remote framework prose.
-4. Before governed work, report the resolved workflow ID, profile/version, customization identity, ordered rule IDs and paths, wrapper identity, and conflicts.
-5. Read and apply the resolved governing documents in their returned order.
+1. Invoke the installed shared runtime exactly once with `dset skills context --skill dset-prototype --target TARGET --objective OBJECTIVE --llm-session-id LLM_SESSION_ID [--session-id SESSION_ID]`. Replace the host-session placeholder; reuse the explicit DSET `SESSION_ID` from a prior handoff and omit it only on initial DSET entry. Stop when the ID, launcher, or command is unavailable, and never select an alternate runtime.
+2. Verify and report the returned repository/Work Area, skill/workflow/mode, wrapper, ordered rule identities and digests, ruleset identity, conflict coverage, and run/session identity.
+3. Read the returned project-owned rule documents in order. Stop on an identity mismatch, unresolved conflict, required unavailable conflict coverage, or any returned stop status.
+4. Retain `run_id`, `session_id`, and `repository_root`. For an active specialist transition, invoke `dset runtime handoff RUN_ID REPOSITORY_ROOT --next-signal WORKFLOW`, return the same `session_id`, and require the next context call to pass it. Only a true session completion or stop invokes `dset runtime finish RUN_ID REPOSITORY_ROOT --status TERMINAL_STATUS`; report command failure.
 
 ## Handoff
 
-Apply only the authorization and output boundaries resolved from the repository. Return evidence and decisions to the resolved owning artifacts. Never treat disposable runtime work as accepted design or production implementation.
+Return comparable disposable evidence. Route any authorized write through the resolved artifact owner and maintenance disposition; never edit an emitted atomic artifact. Return available session identity and the next handoff; never treat prototype work as accepted design or production implementation, and stop before adoption or promotion.

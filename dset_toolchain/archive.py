@@ -1,3 +1,5 @@
+"""Provide DSET archive behavior."""
+
 from __future__ import annotations
 
 import re
@@ -6,10 +8,11 @@ from pathlib import Path
 
 from .layout import discover_layout
 from .validation import validate_change
-from .yaml_subset import dump, load
+from .structured_data import dump, load
 
 
 def archive_plan(root: Path, change_id: str, archive_date: date) -> tuple[Path, Path]:
+    """Archive plan using the declared repository contract."""
     layout = discover_layout(root)
     source = layout.find_change(change_id)
     layer = layout.change_layer(source)
@@ -18,7 +21,7 @@ def archive_plan(root: Path, change_id: str, archive_date: date) -> tuple[Path, 
     )
     if destination.exists():
         raise FileExistsError(f"archive destination exists: {destination}")
-    data = load(source / "change.yaml")
+    data = load(discover_layout(root).structured_file(source, "change.yaml"))
     if data.get("status") != "archive-ready":
         raise ValueError("change status must be archive-ready")
     pr = data.get("pull_request", {})
@@ -42,8 +45,10 @@ def archive_plan(root: Path, change_id: str, archive_date: date) -> tuple[Path, 
 
 
 def execute_archive(root: Path, change_id: str, archive_date: date) -> Path:
+    """Handle archive using the declared repository contract."""
+    root = discover_layout(root).root
     source, destination = archive_plan(root, change_id, archive_date)
-    manifest_path = source / "change.yaml"
+    manifest_path = discover_layout(root).structured_file(source, "change.yaml")
     original = manifest_path.read_text(encoding="utf-8")
     data = load(manifest_path)
     data["status"] = "archived"
@@ -51,8 +56,8 @@ def execute_archive(root: Path, change_id: str, archive_date: date) -> Path:
         "date": archive_date.isoformat(),
         "path": destination.relative_to(root).as_posix(),
     }
-    temporary = manifest_path.with_suffix(".yaml.tmp")
-    temporary.write_text(dump(data), encoding="utf-8")
+    temporary = manifest_path.with_suffix(manifest_path.suffix + ".tmp")
+    temporary.write_text(dump(data, manifest_path), encoding="utf-8")
     temporary.replace(manifest_path)
     try:
         source.replace(destination)

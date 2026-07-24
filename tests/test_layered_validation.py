@@ -1,3 +1,10 @@
+"""Verify DSET layered validation behavior.
+
+Assurance scope: deterministic behavior owned by this module.
+Non-obvious fixtures: documented by the fixture that owns them.
+Host requirements: an isolated supported Python environment.
+"""
+
 from __future__ import annotations
 
 import contextlib
@@ -5,7 +12,6 @@ import io
 import json
 import re
 import shutil
-import tempfile
 import unittest
 from pathlib import Path
 from typing import Any
@@ -13,17 +19,23 @@ from typing import Any
 from dset_toolchain.cli import main
 from dset_toolchain.layout import LAYERS, discover_layout
 from dset_toolchain.scaffold import create_change
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.traceability import build_traceability
 from dset_toolchain.validation import validate_change, validate_repository
-from dset_toolchain.yaml_subset import dump, load
+from dset_toolchain.structured_data import dump, load
+from tests import repository_root
 
-ROOT = Path(__file__).resolve().parents[1]
+# ROOT locates the repository fixture; repository layout is authoritative.
+ROOT = repository_root(Path(__file__))
 
 
 class LayeredValidationTests(unittest.TestCase):
+    """Verify layered validation behavior."""
+
     def setUp(self) -> None:
-        self.temporary = tempfile.TemporaryDirectory()
-        self.root = Path(self.temporary.name)
+        """Handle set up using the declared repository contract."""
+        self.temporary = temporary_directory()
+        self.root = Path(self.temporary.name).resolve()
         self.scopes = self.root / "dset" / "scopes"
         for layer in LAYERS:
             (self.scopes / layer).mkdir(parents=True)
@@ -31,14 +43,43 @@ class LayeredValidationTests(unittest.TestCase):
             (self.root / "src" / work_area).mkdir(parents=True)
         self._write_project()
         self._write_control_files()
-        self._write_fragment("meta", "DSET-REQUIREMENT-001", "DSET-TEST-001")
-        self._write_fragment("tool", "DSET-REQUIREMENT-TOOL-001", "DSET-TEST-TOOL-001")
+        self._write_fragment("meta", "DSET-REQUIREMENT-001", "DSET-TEST-PLAN-001")
+        self._write_fragment("tool", "DSET-REQUIREMENT-TOOL-001", "DSET-TEST-PLAN-TOOL-001")
 
     def tearDown(self) -> None:
+        """Handle tear down using the declared repository contract."""
         self.temporary.cleanup()
 
     def test_valid_layered_repository(self) -> None:
         self.assertEqual(validate_repository(self.root), [])
+
+    def test_change_ids_may_be_owned_by_native_atomic_records(self) -> None:
+        change = self._write_change("tool", "native-atoms")
+        manifest_path = self._change_manifest(change)
+        manifest = load(manifest_path)
+        assert isinstance(manifest, dict)
+        native_ids = {
+            "requirements": "DSET-REQUIREMENT-TOOL-100",
+            "tests": "DSET-TEST-PLAN-TOOL-100",
+            "evals": "DSET-EVAL-PLAN-TOOL-100",
+        }
+        for sequence, (group, identifier) in enumerate(native_ids.items(), start=100):
+            values = manifest[group]
+            assert isinstance(values, list)
+            values.append(identifier)
+            carrier = change / f"DSET-ATOMIC-RECORD-{sequence}.md"
+            carrier.write_text(f"# Native atom\n\n{identifier}\n", encoding="utf-8")
+        manifest_path.write_text(dump(manifest), encoding="utf-8")
+
+        messages = [
+            diagnostic.message
+            for diagnostic in validate_change(self.root, change, archived=False)
+        ]
+
+        for identifier in native_ids.values():
+            self.assertNotIn(
+                f"{identifier} is not present in its owning artifact", messages
+            )
 
     def test_work_area_registry_requires_unique_safe_existing_directories(self) -> None:
         path = self.scopes / "meta" / "dset.yaml"
@@ -85,6 +126,7 @@ class LayeredValidationTests(unittest.TestCase):
             "statement": "Which bounded option applies?",
             "owner_change": "DSET-CHANGE-GOV-001",
             "decision": "pending",
+            "llm_session_ids": [],
             "external_refs": [],
         }
         baseline: dict[str, Any] = {"schema_version": "1.1", "items": [valid]}
@@ -114,9 +156,115 @@ class LayeredValidationTests(unittest.TestCase):
                     "DSET-E142", {item.code for item in validate_repository(self.root)}
                 )
 
+    def test_current_intake_uses_flat_question_and_problem_subtypes(self) -> None:
+        path = self.scopes / "gov" / "intake.yaml"
+        conflict: dict[str, Any] = {
+            "id": "DSET-CONFLICT-GOV-001",
+            "scope": "gov",
+            "type": "question",
+            "subtype": "conflict",
+            "status": "open",
+            "title": "Incompatible authority",
+            "statement": "Two applicable claims cannot both hold.",
+            "owner_change": "DSET-CHANGE-GOV-001",
+            "decision": "pending",
+            "llm_session_ids": [],
+            "external_refs": [],
+        }
+        path.write_text(
+            dump({"schema_version": "1.2", "items": [conflict]}), encoding="utf-8"
+        )
+
+        self.assertNotIn(
+            "DSET-E142", {item.code for item in validate_repository(self.root)}
+        )
+
+        conflict["type"] = "problem"
+        path.write_text(
+            dump({"schema_version": "1.2", "items": [conflict]}), encoding="utf-8"
+        )
+        codes = {item.code for item in validate_repository(self.root)}
+        self.assertIn("DSET-E142", codes)
+        self.assertIn("DSET-E166", codes)
+
+    def test_atomic_artifacts_require_explicit_session_provenance(self) -> None:
+        intake_path = self.scopes / "gov" / "intake.yaml"
+        item: dict[str, Any] = {
+            "id": "DSET-QUESTION-GOV-001",
+            "scope": "gov",
+            "type": "question",
+            "status": "open",
+            "title": "Choice",
+            "statement": "Which bounded option applies?",
+            "owner_change": "DSET-CHANGE-GOV-001",
+            "decision": "pending",
+            "external_refs": [],
+        }
+        intake_path.write_text(
+            dump({"schema_version": "1.1", "items": [item]}), encoding="utf-8"
+        )
+        self.assertIn(
+            "DSET-E155", {item.code for item in validate_repository(self.root)}
+        )
+        item["llm_session_ids"] = []
+        intake_path.write_text(
+            dump({"schema_version": "1.1", "items": [item]}), encoding="utf-8"
+        )
+
+        change = self._write_change("gov", "session-provenance", id_layer="GOV")
+        manifest_path = self._change_manifest(change)
+        manifest = load(manifest_path)
+        assert isinstance(manifest, dict)
+        manifest.pop("llm_session_ids")
+        manifest_path.write_text(dump(manifest), encoding="utf-8")
+        self.assertIn(
+            "DSET-E155",
+            {item.code for item in validate_change(self.root, change, archived=False)},
+        )
+        manifest["llm_session_ids"] = ["missing-host-prefix"]
+        manifest_path.write_text(dump(manifest), encoding="utf-8")
+        self.assertIn(
+            "DSET-E155",
+            {item.code for item in validate_change(self.root, change, archived=False)},
+        )
+        manifest["llm_session_ids"] = []
+        manifest_path.write_text(dump(manifest), encoding="utf-8")
+
+        decision = change / "decision-DSET-DECISION-GOV-099.md"
+        decision.write_text("# Decision\n", encoding="utf-8")
+        proof = change / "proofs" / "bounded-proof.md"
+        proof.parent.mkdir()
+        proof.write_text("# Proof\n", encoding="utf-8")
+        self.assertIn(
+            "DSET-E155",
+            {item.code for item in validate_change(self.root, change, archived=False)},
+        )
+        for path, title in ((decision, "Decision"), (proof, "Proof")):
+            path.write_text(
+                f"# {title}\n\n- **LLM session IDs:** none\n", encoding="utf-8"
+            )
+        self.assertNotIn(
+            "DSET-E155",
+            {item.code for item in validate_change(self.root, change, archived=False)},
+        )
+
+        proof.write_text(
+            "+++\n"
+            'artifact_type = "evidence_record"\n'
+            'artifact_id = "DSET-EVIDENCE-RECORD-099"\n'
+            'llm_session_ids = ["codex:session-099"]\n'
+            "+++\n\n"
+            "# Proof\n",
+            encoding="utf-8",
+        )
+        self.assertNotIn(
+            "DSET-E155",
+            {item.code for item in validate_change(self.root, change, archived=False)},
+        )
+
     def test_change_target_is_repository_or_declared_work_areas(self) -> None:
         change = self._write_change("tool", "targeted-change")
-        path = change / "change.yaml"
+        path = self._change_manifest(change)
         data = load(path)
         assert isinstance(data, dict)
         self.assertEqual(data["target"], {"repository": True, "work_areas": []})
@@ -124,7 +272,7 @@ class LayeredValidationTests(unittest.TestCase):
 
         valid_target = {"repository": False, "work_areas": ["api", "web"]}
         data["target"] = valid_target
-        path.write_text(dump(data), encoding="utf-8")
+        path.write_text(dump(data, path), encoding="utf-8")
         self.assertEqual(validate_change(self.root, change, archived=False), [])
 
         invalid_targets = (
@@ -138,7 +286,7 @@ class LayeredValidationTests(unittest.TestCase):
         for target in invalid_targets:
             with self.subTest(target=target):
                 data["target"] = target
-                path.write_text(dump(data), encoding="utf-8")
+                path.write_text(dump(data, path), encoding="utf-8")
                 self.assertIn(
                     "DSET-E148",
                     {
@@ -152,7 +300,7 @@ class LayeredValidationTests(unittest.TestCase):
         data = load(path)
         assert isinstance(data, dict)
         data["requirements"] = ["DSET-REQUIREMENT-001"]
-        path.write_text(dump(data), encoding="utf-8")
+        path.write_text(dump(data, path), encoding="utf-8")
         (path.parent / "spec.md").write_text(
             "# DSET-REQUIREMENT-001\n", encoding="utf-8"
         )
@@ -167,12 +315,12 @@ class LayeredValidationTests(unittest.TestCase):
         self.assertIn(
             "DSET-E144", {item.code for item in validate_repository(self.root)}
         )
-        self._write_fragment("tool", "DSET-REQUIREMENT-TOOL-001", "DSET-TEST-TOOL-001")
+        self._write_fragment("tool", "DSET-REQUIREMENT-TOOL-001", "DSET-TEST-PLAN-TOOL-001")
         path = self._fragment_path("tool")
         data = load(path)
         assert isinstance(data, dict)
         data["layer"] = "skill"
-        path.write_text(dump(data), encoding="utf-8")
+        path.write_text(dump(data, path), encoding="utf-8")
         self.assertIn(
             "DSET-E145", {item.code for item in validate_repository(self.root)}
         )
@@ -180,11 +328,12 @@ class LayeredValidationTests(unittest.TestCase):
     def test_change_layer_and_duplicate_change_ids_are_rejected(self) -> None:
         first = self._write_change("tool", "layered-change")
         self.assertEqual(validate_change(self.root, first, archived=False), [])
-        data = load(first / "change.yaml")
+        first_manifest = self._change_manifest(first)
+        data = load(first_manifest)
         assert isinstance(data, dict)
         data["primary_layer"] = "skill"
         data["affected_layers"] = ["skill"]
-        (first / "change.yaml").write_text(dump(data), encoding="utf-8")
+        first_manifest.write_text(dump(data, first_manifest), encoding="utf-8")
         self.assertIn(
             "DSET-E148",
             {item.code for item in validate_change(self.root, first, archived=False)},
@@ -201,21 +350,21 @@ class LayeredValidationTests(unittest.TestCase):
 
     def test_schema_1_2_shapes_are_explicit(self) -> None:
         project = json.loads(
-            (ROOT / "dset/scopes/meta/schemas/project.schema.json").read_text(
+            (ROOT / ".dset/01_layer_meta/schemas/project.schema.toml").read_text(
                 encoding="utf-8"
             )
         )
         fragment = json.loads(
-            (ROOT / "dset/scopes/meta/schemas/package-fragment.schema.json").read_text(
-                encoding="utf-8"
-            )
+            (
+                ROOT / ".dset/01_layer_meta/schemas/package-fragment.schema.toml"
+            ).read_text(encoding="utf-8")
         )
-        self.assertEqual(
-            project["$defs"]["layered_structure"]["properties"]["layout"]["const"],
+        self.assertIn(
             "layered-v1",
+            project["$defs"]["layered_structure"]["properties"]["layout"]["enum"],
         )
         change = json.loads(
-            (ROOT / "dset/scopes/gov/schemas/change.schema.json").read_text(
+            (ROOT / ".dset/02_layer_gov/schemas/change.schema.toml").read_text(
                 encoding="utf-8"
             )
         )
@@ -224,10 +373,15 @@ class LayeredValidationTests(unittest.TestCase):
             ["integration-branch", "branch-worktree"],
         )
         self.assertEqual(
-            change["$defs"]["layered_release_declaration"]["properties"]["policy"][
-                "const"
-            ],
-            "dset/scopes/ops/governance/release.md",
+            set(
+                change["$defs"]["layered_release_declaration"]["properties"]["policy"][
+                    "enum"
+                ]
+            ),
+            {
+                "dset/scopes/ops/governance/release.md",
+                ".dset/05_layer_ops/procedure-release.md",
+            },
         )
         forbidden = project["allOf"][0]["then"]["not"]["anyOf"]
         self.assertEqual(
@@ -255,7 +409,7 @@ class LayeredValidationTests(unittest.TestCase):
             "https://raw.githubusercontent.com/anatoly-m-maslennikov/"
             "dset-specs-loops-framework/main/"
         )
-        for path in sorted((ROOT / "dset/scopes").glob("*/schemas/*.json")):
+        for path in sorted((ROOT / ".dset").glob("*/schemas/*.json")):
             with self.subTest(schema=path.name):
                 schema = json.loads(path.read_text(encoding="utf-8"))
                 self.assertEqual(
@@ -264,17 +418,17 @@ class LayeredValidationTests(unittest.TestCase):
 
     def test_schema_1_2_work_area_contract_has_two_target_modes(self) -> None:
         project = json.loads(
-            (ROOT / "dset/scopes/meta/schemas/project.schema.json").read_text(
+            (ROOT / ".dset/01_layer_meta/schemas/project.schema.toml").read_text(
                 encoding="utf-8"
             )
         )
         change = json.loads(
-            (ROOT / "dset/scopes/gov/schemas/change.schema.json").read_text(
+            (ROOT / ".dset/02_layer_gov/schemas/change.schema.toml").read_text(
                 encoding="utf-8"
             )
         )
         traceability = json.loads(
-            (ROOT / "dset/scopes/tool/schemas/traceability.schema.json").read_text(
+            (ROOT / ".dset/03_layer_tool/schemas/traceability.schema.toml").read_text(
                 encoding="utf-8"
             )
         )
@@ -322,7 +476,7 @@ class LayeredValidationTests(unittest.TestCase):
 
         trace = build_traceability(self.root)
 
-        self.assertEqual(trace["schema_version"], "1.2")
+        self.assertEqual(trace["schema_version"], "1.3")
         self.assertEqual(trace["changes"][0]["primary_layer"], "tool")
         self.assertEqual(trace["changes"][0]["affected_layers"], ["tool"])
         self.assertEqual(trace["changes"][0]["slug"], "layered-change")
@@ -334,9 +488,35 @@ class LayeredValidationTests(unittest.TestCase):
             trace["changes"][0]["workspace"]["isolation"], "integration-branch"
         )
 
+    def test_native_atomic_record_can_own_a_change_decision(self) -> None:
+        change = self._write_change("tool", "native-decision")
+        manifest_path = self._change_manifest(change)
+        manifest = load(manifest_path)
+        assert isinstance(manifest, dict)
+        manifest["decisions"] = ["DSET-DECISION-TOOL-099"]
+        manifest_path.write_text(dump(manifest), encoding="utf-8")
+        atom = change / "DSET-ATOMIC-RECORD-099-native-decision.md"
+        atom.write_text(
+            "---\n"
+            "artifact_type: atomic_record\n"
+            "artifact_id: DSET-ATOMIC-RECORD-099\n"
+            "type: decision\n"
+            "semantic_id: DSET-DECISION-TOOL-099\n"
+            "status: accepted\n"
+            "priority: medium\n"
+            "llm_session_ids: []\n"
+            "---\n\n"
+            "# Decision\n",
+            encoding="utf-8",
+        )
+
+        diagnostics = validate_change(self.root, change, archived=False)
+
+        self.assertNotIn("DSET-E106", {item.code for item in diagnostics})
+
     def test_workspace_and_dependency_currentness_are_enforced(self) -> None:
         change = self._write_change("tool", "layered-change")
-        path = change / "change.yaml"
+        path = self._change_manifest(change)
         data = load(path)
         assert isinstance(data, dict)
         data["dependencies"] = [
@@ -357,7 +537,7 @@ class LayeredValidationTests(unittest.TestCase):
                 "status": "available",
             }
         ]
-        path.write_text(dump(data), encoding="utf-8")
+        path.write_text(dump(data, path), encoding="utf-8")
         self.assertIn(
             "DSET-E153",
             {item.code for item in validate_change(self.root, change, archived=False)},
@@ -368,12 +548,12 @@ class LayeredValidationTests(unittest.TestCase):
             "url": "https://github.com/example/project/pull/7",
         }
         data["dependencies"][0]["required_commit"] = "a" * 40
-        path.write_text(dump(data), encoding="utf-8")
+        path.write_text(dump(data, path), encoding="utf-8")
         self.assertEqual(validate_change(self.root, change, archived=False), [])
 
     def test_candidate_must_match_workspace_head_only_when_verified(self) -> None:
         change = self._write_change("tool", "candidate-change")
-        path = change / "change.yaml"
+        path = self._change_manifest(change)
         data = load(path)
         assert isinstance(data, dict)
         data["workspace"]["head_commit"] = "a" * 40
@@ -386,17 +566,17 @@ class LayeredValidationTests(unittest.TestCase):
                 "version": "0.3.0",
             },
             "target": "0.3.1",
-            "readiness": "verification.md",
+            "readiness": "TEST-READINESS-RECORD-001-release.md",
             "candidate_commit": "c" * 40,
         }
         data["status"] = "in-progress"
-        path.write_text(dump(data), encoding="utf-8")
+        path.write_text(dump(data, path), encoding="utf-8")
         self.assertNotIn(
             "DSET-E152",
             {item.code for item in validate_change(self.root, change, archived=False)},
         )
         data["status"] = "verified"
-        path.write_text(dump(data), encoding="utf-8")
+        path.write_text(dump(data, path), encoding="utf-8")
         self.assertIn(
             "DSET-E152",
             {item.code for item in validate_change(self.root, change, archived=False)},
@@ -412,8 +592,8 @@ class LayeredValidationTests(unittest.TestCase):
             self.root, "dependency-check", "sample", "small", layer="tool"
         )
 
-        first_data = load(first / "change.yaml")
-        second_data = load(second / "change.yaml")
+        first_data = load(self._change_manifest(first))
+        second_data = load(self._change_manifest(second))
         assert isinstance(first_data, dict)
         assert isinstance(second_data, dict)
         self.assertEqual(first_data["id"], "DSET-CHANGE-TOOL-001")
@@ -432,11 +612,37 @@ class LayeredValidationTests(unittest.TestCase):
             layer="tool",
             workspace_mode="branch-worktree",
         )
-        isolated_data = load(isolated / "change.yaml")
+        isolated_data = load(self._change_manifest(isolated))
         assert isinstance(isolated_data, dict)
         self.assertEqual(isolated_data["workspace"]["isolation"], "branch-worktree")
         self.assertEqual(isolated_data["workspace"]["branch"], "dset/isolated-change")
         self.assertEqual(isolated_data["workspace"]["base_ref"], "dev")
+
+        (self.root / "dset_settings.toml").write_text(
+            "\n".join(
+                (
+                    'schema_version = "1.2"',
+                    "[changes]",
+                    'default_workspace = "branch-worktree"',
+                    "",
+                )
+            ),
+            encoding="utf-8",
+        )
+        configured = create_change(
+            self.root,
+            "settings-isolated-change",
+            "sample",
+            "small",
+            layer="tool",
+        )
+        configured_data = load(self._change_manifest(configured))
+        assert isinstance(configured_data, dict)
+        self.assertEqual(configured_data["workspace"]["isolation"], "branch-worktree")
+        self.assertEqual(
+            configured_data["workspace"]["branch"],
+            "dset/settings-isolated-change",
+        )
 
         targeted = create_change(
             self.root,
@@ -446,7 +652,7 @@ class LayeredValidationTests(unittest.TestCase):
             layer="tool",
             work_areas=["web", "api"],
         )
-        targeted_data = load(targeted / "change.yaml")
+        targeted_data = load(self._change_manifest(targeted))
         assert isinstance(targeted_data, dict)
         self.assertEqual(
             targeted_data["target"],
@@ -497,7 +703,7 @@ class LayeredValidationTests(unittest.TestCase):
             )
         self.assertEqual(result, 0)
         change = self.scopes / "tool" / "changes" / "cli-targeted-change"
-        data = load(change / "change.yaml")
+        data = load(self._change_manifest(change))
         assert isinstance(data, dict)
         self.assertEqual(
             data["target"],
@@ -514,29 +720,32 @@ class LayeredValidationTests(unittest.TestCase):
             "tool", "second-change", stable_id="DSET-CHANGE-TOOL-102"
         )
         for change in (first, second):
-            data = load(change / "change.yaml")
+            manifest = self._change_manifest(change)
+            data = load(manifest)
             assert isinstance(data, dict)
             data["pull_request"] = {
                 "repository": "example/project",
                 "number": 13,
                 "url": "https://github.com/example/project/pull/13",
             }
-            (change / "change.yaml").write_text(dump(data), encoding="utf-8")
+            manifest.write_text(dump(data, manifest), encoding="utf-8")
         self.assertNotIn(
             "DSET-E154", {item.code for item in validate_repository(self.root)}
         )
-        first_data = load(first / "change.yaml")
-        second_data = load(second / "change.yaml")
+        first_manifest = self._change_manifest(first)
+        second_manifest = self._change_manifest(second)
+        first_data = load(first_manifest)
+        second_data = load(second_manifest)
         assert isinstance(first_data, dict)
         assert isinstance(second_data, dict)
         first_data["workspace"]["isolation"] = "branch-worktree"
         first_data["workspace"]["branch"] = "dset/first-change"
         first_data["workspace"]["base_ref"] = "dev"
-        (first / "change.yaml").write_text(dump(first_data), encoding="utf-8")
+        first_manifest.write_text(dump(first_data, first_manifest), encoding="utf-8")
         second_data["workspace"]["isolation"] = "branch-worktree"
         second_data["workspace"]["branch"] = "dset/first-change"
         second_data["workspace"]["base_ref"] = "dev"
-        (second / "change.yaml").write_text(dump(second_data), encoding="utf-8")
+        second_manifest.write_text(dump(second_data, second_manifest), encoding="utf-8")
         self.assertIn(
             "DSET-E154", {item.code for item in validate_repository(self.root)}
         )
@@ -548,6 +757,7 @@ class LayeredValidationTests(unittest.TestCase):
         )
 
     def _write_project(self) -> None:
+        """Write project using the declared repository contract."""
         manifest: dict[str, Any] = {
             "schema_version": "1.2",
             "project": {
@@ -584,16 +794,15 @@ class LayeredValidationTests(unittest.TestCase):
                 "runtime_risk": "low",
                 "durability_topology": "files",
                 "enforcement": "local",
-                "delegation_budget": "medium",
             },
             "change_contract": {
                 "change_id_format": "project-type-layer-sequence",
                 "change_slug_format": "kebab-case",
-                "workspace_default": "integration-branch",
                 "pull_request_required_before_archive": True,
                 "archive_requires_fresh_verification": True,
                 "keep_pull_request_draft_until_archive_ready": True,
             },
+            "commit_provenance": {"start_commit": "manifest-addition"},
             "verification": {"commands": ["python -m dset_toolchain check ."]},
             "canonical_command": "python -m dset_toolchain check .",
         }
@@ -602,6 +811,7 @@ class LayeredValidationTests(unittest.TestCase):
         )
 
     def _write_control_files(self) -> None:
+        """Write control files using the declared repository contract."""
         (self.scopes / "gov" / "intake.yaml").write_text(
             dump({"schema_version": "1.1", "items": []}),
             encoding="utf-8",
@@ -623,6 +833,7 @@ class LayeredValidationTests(unittest.TestCase):
         return self.scopes / layer / "specs/packages/sample/package.yaml"
 
     def _write_fragment(self, layer: str, requirement: str, test: str) -> None:
+        """Write fragment using the declared repository contract."""
         root = self._fragment_path(layer).parent
         root.mkdir(parents=True, exist_ok=True)
         artifacts = {
@@ -665,10 +876,11 @@ class LayeredValidationTests(unittest.TestCase):
         stable_id: str | None = None,
         target: dict[str, object] | None = None,
     ) -> Path:
+        """Write change using the declared repository contract."""
         root = self.scopes / layer / "changes" / change_slug
         (root / "specs").mkdir(parents=True)
         requirement = f"DSET-REQUIREMENT-{id_layer}-099"
-        test = f"DSET-TEST-{id_layer}-099"
+        test = f"DSET-TEST-PLAN-{id_layer}-099"
         data = {
             "schema_version": "1.2",
             "id": stable_id or f"DSET-CHANGE-{id_layer}-099",
@@ -686,6 +898,7 @@ class LayeredValidationTests(unittest.TestCase):
                 "head_commit": "pending",
             },
             "dependencies": [],
+            "llm_session_ids": [],
             "packages": ["sample"],
             "pull_request": {
                 "repository": "example/project",
@@ -718,7 +931,8 @@ class LayeredValidationTests(unittest.TestCase):
         shutil.copytree(source, target)
 
     def _archive_synthetic(self, change: Path, day: str, pr_number: int) -> None:
-        path = change / "change.yaml"
+        """Archive synthetic using the declared repository contract."""
+        path = self._change_manifest(change)
         data = load(path)
         assert isinstance(data, dict)
         layer = str(data["primary_layer"])
@@ -736,8 +950,11 @@ class LayeredValidationTests(unittest.TestCase):
             "date": day,
             "path": destination.relative_to(self.root).as_posix(),
         }
-        path.write_text(dump(data), encoding="utf-8")
+        path.write_text(dump(data, path), encoding="utf-8")
         change.replace(destination)
+
+    def _change_manifest(self, change: Path) -> Path:
+        return discover_layout(self.root).structured_file(change, "change.yaml")
 
 
 if __name__ == "__main__":

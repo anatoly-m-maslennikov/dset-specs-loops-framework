@@ -1,0 +1,4 @@
+interface:
+  display_name: "DSET Repair Governance"
+  short_description: "Diagnose invalid repository-local DSET governance"
+  default_prompt: "Use $dset-repair-governance to diagnose invalid DSET governance and return a bounded repair handoff."

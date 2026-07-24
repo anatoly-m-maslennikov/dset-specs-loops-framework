@@ -1,0 +1,292 @@
+schema_version = "1.0"
+profile_id = "local-python-tools-v1"
+profile_name = "Local Python Tools"
+status = "active"
+language = "python"
+layer = "implementation"
+layer_token = "IMPL"
+feature_id = "local-python-tools"
+applies_to = ["command-line-tool", "scheduled-utility", "repository-automation", "single-host-worker"]
+does_not_apply_to = ["network-service", "high-throughput-multi-writer-system", "public-library", "notebook", "gui-application"]
+
+[environment]
+project_metadata = "pyproject.toml"
+isolated_environment_required = true
+lockfile_required = true
+ambient_global_packages = "prohibited"
+runtime_and_development_dependencies_separate = true
+exact_dependency_policy_required = true
+canonical_local_and_ci_environment_match = true
+portable_between_supported_operating_systems = true
+os_specific_behavior_must_be_explicit = true
+
+[layout]
+new_package_import_root = "src"
+existing_dedicated_package_root_allowed = true
+test_root = "tests"
+root_python_files = "executable-entrypoints-only"
+prefer_project_script_entrypoints = true
+allow_single_file_tool = true
+split_single_file_when_reused = true
+
+[limits]
+function_line_limit_exclusive = 40
+module_line_limit = 400
+line_length = 100
+cyclomatic_complexity_limit = 10
+nesting_limit = 4
+count_blank_lines = false
+count_comment_only_lines = false
+count_leading_docstring = false
+count_decorators = false
+count_signature_lines = false
+measure_nested_functions_independently = true
+
+[reuse]
+copy_pasted_boilerplate = "prohibited"
+shared_entrypoint_logic = "extract-module"
+option-only-script_variants = "combine-as-parameterized-entrypoint"
+prefer_composition_for_replaceable_io = true
+inheritance_requires_stable_shared_contract = true
+
+[data_modeling]
+external_boundary_models = "pydantic"
+internal_trusted_records = "dataclasses"
+unexpected_external_fields = "forbid-unless-compatible-contract-requires"
+all_owned_functions_typed = true
+strict_static_typing = true
+
+[schemas]
+location = "dedicated-schema-files-or-modules"
+single_authoritative_definition = true
+generated_schema_is_derived = true
+duplicate_hand_edited_shapes = "prohibited"
+
+[settings_and_constants]
+separate_settings_file = "optional"
+settings_carrier_when_used = "settings.toml"
+typed_settings_model = true
+load_boundary = "once-per-invocation-or-declared-scheduler-tick"
+inject_into_owned_logic = true
+magic_behavior_values = "prohibited"
+secrets_are_settings = false
+promotion_rule = "move-when-any-promotion-trigger-applies"
+promotion_triggers = [
+  "operator-change-without-code-release",
+  "host-workspace-deployment-or-integration-variation",
+  "shared-runtime-policy-across-consumers",
+  "typed-validation-or-compatibility-required",
+  "documented-precedence-or-auditable-override-required",
+]
+normally_promoted_when_variable = ["paths", "endpoints", "resource-limits", "timeouts", "retry-policies", "logging-levels", "feature-switches"]
+keep_in_code_when_universal = ["mathematical-values", "schema-discriminators", "protocol-discriminators", "implementation-fixed-algorithm-parameters", "safety-invariants"]
+settings_file_as_literal_dump = "prohibited"
+test_variation_alone_requires_settings = false
+unknown_settings_fields = "reject-by-default"
+documented_setting_fields = ["default", "unit", "range-when-applicable", "override-authority"]
+one_documented_precedence_chain = true
+module_declaration_position = "after-module-docstring-and-imports"
+declarations_before = ["classes", "functions", "runtime-statements"]
+constant_documentation_required = true
+constant_documentation_fields = ["responsibility", "unit-or-interpretation-when-relevant", "authority-or-override-boundary"]
+profile_thresholds_must_not_be_hidden_checker_literals = true
+
+[secrets]
+dset_secret_values = "prohibited"
+local_development_carrier = ".env"
+local_carrier_location = "repository-root-outside-.dset"
+gitignore_patterns_required = [".env", ".env.*"]
+tracked_example_allowed = ".env.example"
+tracked_example_values = "dummy-placeholders-only"
+production_carrier = "platform-injection-or-dedicated-secret-manager"
+environment_or_secret_file_in_image = "prohibited"
+command_line_secret_values = "prohibited"
+build_argument_secret_values = "prohibited"
+least_privilege_required = true
+attribution_required = true
+short_lived_when_supported = true
+validate_at_outer_boundary = true
+fail_closed_without_value_disclosure = true
+redact_before_serialization_or_agent_ingestion = true
+scan_tracked_and_publishable_surfaces = true
+project_specific_patterns_supported = true
+first_exposure_response = "revoke-or-rotate"
+current_file_deletion_is_complete_remediation = false
+runtime_identifiers_from_environment = true
+source_and_dset_store_environment_key_names_only = true
+resolve_values_by_key_at_outer_runtime_boundary = true
+inject_values_into_smallest_consumer_scope = true
+key_names_are_safe_metadata = true
+identifiers_may_appear_in_dset_when_necessary = ["email", "username", "account-id"]
+identifiers_are_minimized_as_personal_data = true
+identifiers_masked_in_logs_by_default = true
+
+[names_and_docs]
+descriptive_names_required = true
+ambiguous_abbreviations = "prohibited"
+module_style = "snake_case"
+function_variable_field_style = "snake_case"
+class_style = "CapWords"
+constant_style = "UPPER_SNAKE_CASE"
+public_docstrings_required = true
+nontrivial_private_docstrings_required = true
+docstring_convention = "pep-257"
+module_docstring_required = true
+executable_docstring_fields = ["purpose", "invocation", "parameters", "inputs", "outputs", "mutable_effects", "exit_statuses", "environment"]
+test_module_docstring_fields = ["assurance_scope", "non_obvious_fixtures", "host_requirements"]
+
+[tests]
+claim_traceability_required = true
+use_case_traceability_required = true
+regression_test_per_fixed_defect = true
+branch_coverage_required = true
+line_coverage_minimum_percent = 90
+branch_coverage_minimum_percent = 85
+semantic_coverage_can_be_replaced_by_percentage = false
+test_layout = "separate-tests-directory"
+
+[evaluations]
+tests_and_evaluations_are_distinct = true
+implementation = "reusable-prompt-or-python-harness"
+evaluation_id_required = true
+exact_target_revision_required = true
+bounded_inputs_required = true
+output_schema_required = true
+independent_runs_share_prior_results = false
+reconciliation_preserves_disagreement = true
+evidence_separate_from_definition = true
+
+[verification]
+formatter = "ruff-format"
+linter = "ruff"
+type_checker = "mypy-strict"
+test_runner = "pytest-or-project-standard-library-runner"
+complexity_rule = "ruff-C901"
+statement_count_rule = "ruff-PLR0915"
+secret_scan_required = true
+canonical_check_required = true
+
+[errors_and_portability]
+typed_failures = true
+errors_as_empty_data = "prohibited"
+cli_errors_to_stderr = true
+nonzero_exit_on_failure = true
+filesystem_api = "pathlib"
+text_encoding = "utf-8"
+temporary_files = "platform-native"
+atomic_snapshot_replace = true
+supported_platforms = ["macos", "linux", "windows", "wsl"]
+posix_shell_dependency = "prohibited"
+subprocess_arguments = "direct-argument-vector"
+
+[execution_modes]
+dry_run_required = true
+dry_run_option = "--dry-run"
+dry_run_allows_mutation = false
+dry_run_reports_planned_effects = true
+read_only_tools_accept_dry_run = true
+debug_mode = "recommended-for-nontrivial-tools"
+debug_option = "--debug"
+debug_changes_business_behavior = false
+debug_bypasses_validation = false
+debug_output_must_be_redacted = true
+
+[errors]
+verbose_actionable_errors_required = true
+required_context = ["operation", "target", "cause"]
+safe_remediation_when_known = true
+preserve_underlying_cause = true
+secrets_in_errors = "prohibited"
+
+[local_logs]
+mode = "conditional"
+format = "ndjson"
+runtime_directory = ".dset_runtime/logs"
+required_triggers = ["multiple-operational-steps", "retries", "scheduled-runs", "external-effects", "production-investigation"]
+required_fields = ["schema_version", "timestamp_utc", "severity", "event", "run_id", "tool_version"]
+correlation_id_when_crossing_effect_boundary = true
+utf8 = true
+one_json_object_per_line = true
+redaction_required = true
+single_writer_per_file = true
+max_file_bytes = 10485760
+retained_files = 10
+runtime_retention_owner = "ops"
+business_state_authority = false
+wal_by_default = false
+
+[[sources]]
+name = "PEP 8"
+url = "https://peps.python.org/pep-0008/"
+
+[[sources]]
+name = "PEP 257"
+url = "https://peps.python.org/pep-0257/"
+
+[[sources]]
+name = "PyPA src layout"
+url = "https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/"
+
+[[sources]]
+name = "PyPA entry points"
+url = "https://packaging.python.org/en/latest/specifications/entry-points/"
+
+[[sources]]
+name = "Pydantic models"
+url = "https://pydantic.dev/docs/validation/latest/concepts/models/"
+
+[[sources]]
+name = "Pydantic settings"
+url = "https://pydantic.dev/docs/validation/latest/concepts/pydantic_settings/"
+
+[[sources]]
+name = "Python dataclasses"
+url = "https://docs.python.org/3/library/dataclasses.html"
+
+[[sources]]
+name = "mypy strict mode"
+url = "https://mypy.readthedocs.io/en/stable/existing_code.html"
+
+[[sources]]
+name = "Ruff complexity"
+url = "https://docs.astral.sh/ruff/rules/complex-structure/"
+
+[[sources]]
+name = "pytest good practices"
+url = "https://docs.pytest.org/en/stable/explanation/goodpractices.html"
+
+[[sources]]
+name = "coverage.py branch coverage"
+url = "https://coverage.readthedocs.io/en/latest/branch.html"
+
+[[sources]]
+name = "Python logging cookbook"
+url = "https://docs.python.org/3/howto/logging-cookbook.html"
+
+[[sources]]
+name = "NDJSON specification"
+url = "https://github.com/ndjson/ndjson-spec"
+
+[[sources]]
+name = "Twelve-Factor config"
+url = "https://12factor.net/config"
+
+[[sources]]
+name = "OWASP Secrets Management Cheat Sheet"
+url = "https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html"
+
+[[sources]]
+name = "OWASP Logging Cheat Sheet"
+url = "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html"
+
+[[sources]]
+name = "GitHub secret scanning"
+url = "https://docs.github.com/en/code-security/concepts/secret-security/secret-scanning"
+
+[[sources]]
+name = "GitHub sensitive-data removal"
+url = "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository"
+
+[[sources]]
+name = "Docker secret build check"
+url = "https://docs.docker.com/reference/build-checks/secrets-used-in-arg-or-env/"

@@ -1,0 +1,118 @@
+schema_version = "1.0"
+profile_id = "agent-skills-v1"
+case_set_id = "dset-public-skills-v1"
+status = "definition-only"
+
+[skills.dset]
+should_trigger = "I need to improve this project, but I do not know which DSET workflow should start."
+should_not_trigger = "Initialize DSET in this empty repository and show the dry-run first."
+ambiguous_routing = "We need to add a feature and probably update its specs and tests too."
+ambiguous_expected = "Use dset for uncertain multi-stage routing; hand off to dset-implement only after resolving the governed entrypoint."
+
+[skills."dset-init"]
+should_trigger = "Set up DSET in this existing repository without overwriting its current files."
+should_not_trigger = "The repository already has DSET, but its governance registry is invalid."
+ambiguous_routing = "This repository has a partial .dset folder; make DSET usable."
+ambiguous_expected = "Discover first; use dset-init only when no valid root exists, otherwise route invalid governance to dset-repair-governance."
+
+[skills."dset-repair-governance"]
+should_trigger = "DSET finds the project root, but reports an invalid governance registry digest."
+should_not_trigger = "There is no DSET root in this new repository."
+ambiguous_routing = "The DSET settings file exists but discovery fails after a manual edit."
+ambiguous_expected = "Use dset-repair-governance only after root discovery confirms invalid governance; otherwise stop for diagnosis or initialization."
+
+[skills."dset-decompose"]
+should_trigger = "Split this large monorepo into governed DSET Work Areas with clear ownership and proof boundaries."
+should_not_trigger = "Implement this already bounded one-file bug fix."
+ambiguous_routing = "Should frontend and backend be separate features, layers, or Work Areas?"
+ambiguous_expected = "Use dset-decompose because the structural ownership boundary is materially unclear; stop before specification or implementation."
+
+[skills."dset-diagnose"]
+should_trigger = "Investigate why this previously passing release gate now fails and identify the cause."
+should_not_trigger = "The cause and accepted fix are known; implement the patch."
+ambiguous_routing = "Fix this failing test; I do not know whether the test or implementation is wrong."
+ambiguous_expected = "Use dset-diagnose first because cause ownership is unknown; stop before applying a fix."
+
+[skills."dset-clarify"]
+should_trigger = "Clarify the actors, states, boundaries, and unknowns in this vague product request."
+should_not_trigger = "Compare three already understood queue libraries using current evidence."
+ambiguous_routing = "Choose a queue for the service, but retry semantics and ownership are still unclear."
+ambiguous_expected = "Use dset-clarify before landscape work because domain and boundary ambiguity prevents a sound comparison."
+
+[skills."dset-landscape"]
+should_trigger = "Compare eligible workflow engines and languages for this accepted capability before we choose one."
+should_not_trigger = "Run a disposable benchmark for the already selected two candidates."
+ambiguous_routing = "Should we adopt library A, library B, or build a small adapter ourselves?"
+ambiguous_expected = "Use dset-landscape when comparable eligible evidence is missing; use dset-prototype only for a specific remaining experiment."
+
+[skills."dset-prototype"]
+should_trigger = "Run a disposable experiment to measure whether this library preserves our required retry behavior."
+should_not_trigger = "Build the selected production integration and its tests."
+ambiguous_routing = "Make a quick spike comparing several databases so we can decide."
+ambiguous_expected = "Use dset-landscape first if candidates and criteria are not bounded; prototype only the precise uncertainty that remains."
+
+[skills."dset-decisions"]
+should_trigger = "Capture the accepted decisions and requirements from this session before implementation begins."
+should_not_trigger = "The product choice is still ambiguous and needs alternatives clarified."
+ambiguous_routing = "The session strongly implies a choice, but the operator never explicitly accepted it."
+ambiguous_expected = "Use dset-decisions to reconcile evidence, but stop and ask for acceptance rather than inventing authority."
+
+[skills."dset-compile"]
+should_trigger = "Compile the accepted atomic artifacts into the affected current specifications and plans."
+should_not_trigger = "A new atom was emitted, but no downstream gate requires current projections yet."
+ambiguous_routing = "Implementation is requested, but the evergreen specification is stale."
+ambiguous_expected = "Run dset-compile only when the implementation entry gate requires the affected projection to be current."
+
+[skills."dset-plan-proof"]
+should_trigger = "Create separate deterministic test and qualitative evaluation plans for these accepted requirements."
+should_not_trigger = "Execute the already accepted test and evaluation plans and record evidence."
+ambiguous_routing = "Implement the change, but its proof obligations are incomplete."
+ambiguous_expected = "Direct requests for proof design use dset-plan-proof; a lazy dset-implement chain may invoke it as a prerequisite."
+
+[skills."dset-plan-implementation"]
+should_trigger = "Turn the accepted specification and proof obligations into a dependency-ordered implementation plan."
+should_not_trigger = "Apply the already accepted implementation plan now."
+ambiguous_routing = "Plan and build the accepted feature end to end."
+ambiguous_expected = "Use dset-implement as the requested outcome entrypoint; it may chain dset-plan-implementation when the plan is missing."
+
+[skills."dset-implement"]
+should_trigger = "Implement this accepted behavior in code, tests, evaluation assets, and documentation."
+should_not_trigger = "Investigate the cause of this unexplained production regression without changing anything."
+ambiguous_routing = "Fix the failing test and verify the result."
+ambiguous_expected = "Diagnose first if cause is unknown; otherwise use dset-implement and leave the final conformance claim to dset-verify."
+
+[skills."dset-verify"]
+should_trigger = "Check the current implementation against accepted specifications, plans, tests, and evaluations."
+should_not_trigger = "Repair every failure you find and release the result."
+ambiguous_routing = "Make the tests pass and confirm the implementation is compliant."
+ambiguous_expected = "Implementation authority belongs to dset-implement; invoke dset-verify afterward as a distinct proof workflow."
+
+[skills."dset-configure"]
+should_trigger = "Show which optional DSET governance surfaces are active and preview enabling the project overview."
+should_not_trigger = "Summarize the current project health, coverage, and open obligations."
+ambiguous_routing = "We may need an architecture view now that the project is larger."
+ambiguous_expected = "Use dset-configure to inspect state and recommendations, preview activation, and require separate authorization before writing."
+
+[skills."dset-overview"]
+should_trigger = "Show project artifact counts, coverage, freshness, open Problems, and open Questions without changing anything."
+should_not_trigger = "Classify and prioritize these unowned Problems and Questions."
+ambiguous_routing = "What should we work on next based on current project health?"
+ambiguous_expected = "Use dset-overview for the read-only state first, then hand off classification or next-action routing to dset-triage or dset."
+
+[skills."dset-triage"]
+should_trigger = "Classify, prioritize, and route these open DSET Problems and Questions to their next governed workflow."
+should_not_trigger = "Find the root cause of this specific defect."
+ambiguous_routing = "Review all open Problems, decide which matter now, and start fixing the first one."
+ambiguous_expected = "Use dset-triage for classification and routing, then stop before diagnosis or implementation."
+
+[skills."dset-release"]
+should_trigger = "Prepare and verify the governed release transaction for this release-ready Change."
+should_not_trigger = "Check whether the implementation is conformant, but do not prepare a release."
+ambiguous_routing = "Ship the current version if everything is ready."
+ambiguous_expected = "Use dset-release to assess and prepare; publication still requires separate explicit authority and complete gates."
+
+[skills."dset-complete"]
+should_trigger = "Check whether this Change and DSET session are truly complete and report any residual obligations."
+should_not_trigger = "There is a known unimplemented requirement; continue building it."
+ambiguous_routing = "I think we are done; what remains before archive or release?"
+ambiguous_expected = "Use dset-complete for terminal-state assessment; route discovered work without inventing or performing it."

@@ -1,0 +1,30 @@
+schema_version = "1.0"
+transition_id = "DSET-CARRIER-TRANSITION-FE3ED2F97C161EDB"
+authority_decision = "DSET-DECISION-GOV-018"
+original_path = "dset/scopes/meta/specs/packages/methodology/package.yaml"
+original_format = "yaml"
+original_sha256 = "4fbb3bba040b5daf4440b65b4900c1e8ed7c2a637403086402853e4efa2490dc"
+semantic_sha256 = "537d31366e27c2049852de9b5541a53d0f86f12d77a8eff22f316877753a3bae"
+null_paths = []
+declared_loss = []
+
+[payload]
+schema_version = "1.2"
+package_id = "methodology"
+layer = "meta"
+requirements = ["DSET-REQUIREMENT-META-001", "DSET-REQUIREMENT-META-002", "DSET-REQUIREMENT-META-003", "DSET-REQUIREMENT-META-004", "DSET-REQUIREMENT-META-005", "DSET-REQUIREMENT-META-006", "DSET-REQUIREMENT-META-007", "DSET-REQUIREMENT-META-008", "DSET-REQUIREMENT-META-009", "DSET-REQUIREMENT-META-010", "DSET-REQUIREMENT-META-011"]
+tests = ["DSET-TEST-PLAN-META-001", "DSET-TEST-PLAN-META-002", "DSET-TEST-PLAN-META-003", "DSET-TEST-PLAN-META-004", "DSET-TEST-PLAN-META-005", "DSET-TEST-PLAN-META-006", "DSET-TEST-PLAN-META-007", "DSET-TEST-PLAN-META-008", "DSET-TEST-PLAN-META-009", "DSET-TEST-PLAN-META-010", "DSET-TEST-PLAN-META-011"]
+evals = ["DSET-EVAL-PLAN-META-001", "DSET-EVAL-PLAN-META-002", "DSET-EVAL-PLAN-META-003", "DSET-EVAL-PLAN-META-004", "DSET-EVAL-PLAN-META-005", "DSET-EVAL-PLAN-META-006", "DSET-EVAL-PLAN-META-007", "DSET-EVAL-PLAN-META-008", "DSET-EVAL-PLAN-META-009"]
+contracts = ["DSET-CONTRACT-META-001"]
+stories = []
+outcomes = []
+
+[payload.artifacts]
+hub = "README.md"
+domain = "domain.md"
+spec = "spec.md"
+contracts = "contracts.md"
+stories = "stories.md"
+outcomes = "outcomes.md"
+test_plan = "test-plan.md"
+eval_plan = "eval-plan.md"

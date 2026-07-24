@@ -1,0 +1,15 @@
+schema_version = "1.2"
+package_id = "{{package_id}}"
+layer = "{{layer}}"
+requirements = ["{{project_key}}-REQUIREMENT{{id_layer}}-001"]
+tests = ["{{project_key}}-TEST-PLAN{{id_layer}}-001"]
+evals = ["{{project_key}}-EVAL-PLAN{{id_layer}}-001"]
+contracts = ["{{project_key}}-CONTRACT{{id_layer}}-001"]
+
+[artifacts]
+hub = "README.md"
+domain = "domain.md"
+spec = "spec.md"
+contracts = "contracts.md"
+test_plan = "test-plan.md"
+eval_plan = "eval-plan.md"

@@ -1,0 +1,379 @@
+"$schema" = "https://json-schema.org/draft/2020-12/schema"
+"$id" = "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/.dset/000_dset_methodology/04_skill/schemas/session-checkpoint.schema.toml"
+title = "DSET local session checkpoint"
+type = "object"
+required = ["schema_version", "session_id", "llm_session_ids", "sequence", "updated_at", "status", "persistence", "public_entrypoint", "root_run_id", "latest_run_id", "active_run_ids", "scope", "objective", "ruleset_identity", "completed", "pending", "authorization", "touched_paths", "authority_snapshot", "closure", "next"]
+additionalProperties = false
+
+[properties]
+
+[properties.schema_version]
+const = "1.3"
+
+[properties.session_id]
+"$ref" = "#/$defs/id"
+
+[properties.llm_session_ids]
+type = "array"
+maxItems = 8
+uniqueItems = true
+
+[properties.llm_session_ids.items]
+"$ref" = "#/$defs/llm_session_id"
+
+[properties.rationale]
+"$ref" = "#/$defs/rationale"
+
+[properties.sequence]
+type = "integer"
+minimum = 0
+
+[properties.updated_at]
+type = "string"
+format = "date-time"
+maxLength = 40
+
+[properties.status]
+enum = ["active", "paused", "completed", "stopped"]
+
+[properties.persistence]
+enum = ["persisted", "unavailable"]
+
+[properties.public_entrypoint]
+enum = ["dset", "dset-init", "dset-repair-governance", "dset-decompose", "dset-diagnose", "dset-clarify", "dset-landscape", "dset-prototype", "dset-decisions", "dset-plan-proof", "dset-plan-implementation", "dset-implement", "dset-verify", "dset-overview", "dset-triage", "dset-release", "dset-complete"]
+
+[properties.root_run_id]
+"$ref" = "#/$defs/id"
+
+[properties.latest_run_id]
+"$ref" = "#/$defs/id"
+
+[properties.active_run_ids]
+type = "array"
+maxItems = 32
+uniqueItems = true
+
+[properties.active_run_ids.items]
+"$ref" = "#/$defs/id"
+
+[properties.scope]
+"$ref" = "#/$defs/scope"
+
+[properties.objective]
+type = "string"
+minLength = 1
+maxLength = 1024
+
+[properties.ruleset_identity]
+
+[[properties.ruleset_identity.oneOf]]
+"$ref" = "#/$defs/id"
+
+[[properties.ruleset_identity.oneOf]]
+type = "null"
+
+[properties.completed]
+type = "array"
+maxItems = 64
+
+[properties.completed.items]
+"$ref" = "#/$defs/work_pointer"
+
+[properties.pending]
+type = "array"
+maxItems = 32
+
+[properties.pending.items]
+"$ref" = "#/$defs/work_pointer"
+
+[properties.authorization]
+type = "object"
+required = ["class", "state"]
+additionalProperties = false
+
+[properties.authorization.properties]
+
+[properties.authorization.properties.class]
+enum = ["read-only", "repository-write", "external-write", "publication", "unknown"]
+
+[properties.authorization.properties.state]
+enum = ["granted", "not-granted", "consumed", "unknown"]
+
+[properties.touched_paths]
+type = "array"
+maxItems = 64
+uniqueItems = true
+
+[properties.touched_paths.items]
+"$ref" = "#/$defs/relative_path"
+
+[properties.authority_snapshot]
+type = "object"
+required = ["git_commit", "working_tree_digest", "change_manifest", "proof_ids", "hosted_refs"]
+additionalProperties = false
+
+[properties.authority_snapshot.properties]
+
+[properties.authority_snapshot.properties.git_commit]
+
+[[properties.authority_snapshot.properties.git_commit.oneOf]]
+type = "string"
+pattern = "^[0-9a-f]{40}$"
+
+[[properties.authority_snapshot.properties.git_commit.oneOf]]
+type = "null"
+
+[properties.authority_snapshot.properties.working_tree_digest]
+
+[[properties.authority_snapshot.properties.working_tree_digest.oneOf]]
+type = "string"
+pattern = "^[0-9a-f]{64}$"
+
+[[properties.authority_snapshot.properties.working_tree_digest.oneOf]]
+type = "null"
+
+[properties.authority_snapshot.properties.change_manifest]
+
+[[properties.authority_snapshot.properties.change_manifest.oneOf]]
+"$ref" = "#/$defs/relative_path"
+
+[[properties.authority_snapshot.properties.change_manifest.oneOf]]
+type = "null"
+
+[properties.authority_snapshot.properties.proof_ids]
+type = "array"
+maxItems = 32
+uniqueItems = true
+
+[properties.authority_snapshot.properties.proof_ids.items]
+"$ref" = "#/$defs/id"
+
+[properties.authority_snapshot.properties.hosted_refs]
+type = "array"
+maxItems = 16
+uniqueItems = true
+
+[properties.authority_snapshot.properties.hosted_refs.items]
+"$ref" = "#/$defs/id"
+
+[properties.closure]
+type = "object"
+required = ["schema_version", "requested_mode", "status", "criteria", "next_workflow", "reason_code", "history", "visited_states"]
+additionalProperties = false
+
+[properties.closure.properties]
+
+[properties.closure.properties.schema_version]
+const = "1.0"
+
+[properties.closure.properties.requested_mode]
+
+[[properties.closure.properties.requested_mode.oneOf]]
+"$ref" = "#/$defs/id"
+
+[[properties.closure.properties.requested_mode.oneOf]]
+type = "null"
+
+[properties.closure.properties.status]
+enum = ["direct", "active", "blocked", "authorization-required", "ready", "completed", "stopped"]
+
+[properties.closure.properties.criteria]
+type = "object"
+maxProperties = 16
+
+[properties.closure.properties.criteria.additionalProperties]
+type = ["boolean", "null"]
+
+[properties.closure.properties.next_workflow]
+
+[[properties.closure.properties.next_workflow.oneOf]]
+"$ref" = "#/$defs/id"
+
+[[properties.closure.properties.next_workflow.oneOf]]
+type = "null"
+
+[properties.closure.properties.reason_code]
+"$ref" = "#/$defs/id"
+
+[properties.closure.properties.history]
+type = "array"
+maxItems = 16
+
+[properties.closure.properties.history.items]
+type = "object"
+required = ["workflow_id", "status", "progress"]
+additionalProperties = false
+
+[properties.closure.properties.history.items.properties]
+
+[properties.closure.properties.history.items.properties.workflow_id]
+"$ref" = "#/$defs/id"
+
+[properties.closure.properties.history.items.properties.status]
+enum = ["succeeded", "failed", "stopped", "ambiguous"]
+
+[properties.closure.properties.history.items.properties.progress]
+type = "array"
+maxItems = 16
+uniqueItems = true
+
+[properties.closure.properties.history.items.properties.progress.items]
+"$ref" = "#/$defs/id"
+
+[properties.closure.properties.visited_states]
+type = "array"
+maxItems = 32
+uniqueItems = true
+
+[properties.closure.properties.visited_states.items]
+type = "string"
+pattern = "^state:[0-9a-f]{64}$"
+
+[properties.next]
+type = "object"
+required = ["mode", "reason_code", "requires_authorization"]
+additionalProperties = false
+
+[properties.next.properties]
+
+[properties.next.properties.mode]
+enum = ["initialize", "repair-governance", "decompose", "diagnose", "clarify", "landscape", "prototype", "decisions", "plan-proof", "plan-implementation", "implement", "verify", "overview", "triage-work", "release", "complete"]
+
+[properties.next.properties.reason_code]
+"$ref" = "#/$defs/id"
+
+[properties.next.properties.requires_authorization]
+enum = ["none", "repository-write", "external-write", "publication"]
+
+["$defs"]
+
+["$defs".id]
+type = "string"
+pattern = "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+
+["$defs".llm_session_id]
+type = "string"
+pattern = "^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$"
+maxLength = 160
+
+["$defs".rationale]
+type = "string"
+minLength = 1
+maxLength = 1024
+
+["$defs".nullable_scope]
+
+[["$defs".nullable_scope.oneOf]]
+type = "string"
+pattern = "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$"
+
+[["$defs".nullable_scope.oneOf]]
+type = "null"
+
+["$defs".relative_path]
+type = "string"
+maxLength = 512
+pattern = "^(?!/)(?!.*\\.\\./)[A-Za-z0-9._-]+(?:/[A-Za-z0-9._-]+)*$"
+
+["$defs".scope]
+type = "object"
+required = ["repository", "workspace", "project", "package", "change", "target"]
+additionalProperties = false
+
+["$defs".scope.properties]
+
+["$defs".scope.properties.repository]
+"$ref" = "#/$defs/nullable_scope"
+
+["$defs".scope.properties.workspace]
+"$ref" = "#/$defs/nullable_scope"
+
+["$defs".scope.properties.project]
+"$ref" = "#/$defs/nullable_scope"
+
+["$defs".scope.properties.package]
+"$ref" = "#/$defs/nullable_scope"
+
+["$defs".scope.properties.change]
+"$ref" = "#/$defs/nullable_scope"
+
+["$defs".scope.properties.target]
+"$ref" = "#/$defs/target"
+
+["$defs".target]
+type = "object"
+required = ["repository", "work_areas"]
+additionalProperties = false
+
+["$defs".target.properties]
+
+["$defs".target.properties.repository]
+type = "boolean"
+
+["$defs".target.properties.work_areas]
+type = "array"
+maxItems = 32
+uniqueItems = true
+
+["$defs".target.properties.work_areas.items]
+"$ref" = "#/$defs/id"
+
+[["$defs".target.oneOf]]
+
+["$defs".target.oneOf.properties]
+
+["$defs".target.oneOf.properties.repository]
+const = true
+
+["$defs".target.oneOf.properties.work_areas]
+maxItems = 0
+
+[["$defs".target.oneOf]]
+
+["$defs".target.oneOf.properties]
+
+["$defs".target.oneOf.properties.repository]
+const = false
+
+["$defs".target.oneOf.properties.work_areas]
+minItems = 1
+
+["$defs".work_pointer]
+type = "object"
+required = ["kind", "id", "path"]
+additionalProperties = false
+
+["$defs".work_pointer.properties]
+
+["$defs".work_pointer.properties.kind]
+enum = ["artifact", "workflow", "proof", "diagnostic", "handoff"]
+
+["$defs".work_pointer.properties.id]
+
+[["$defs".work_pointer.properties.id.oneOf]]
+"$ref" = "#/$defs/id"
+
+[["$defs".work_pointer.properties.id.oneOf]]
+type = "null"
+
+["$defs".work_pointer.properties.path]
+
+[["$defs".work_pointer.properties.path.oneOf]]
+"$ref" = "#/$defs/relative_path"
+
+[["$defs".work_pointer.properties.path.oneOf]]
+type = "null"
+
+[["$defs".work_pointer.anyOf]]
+
+["$defs".work_pointer.anyOf.properties]
+
+["$defs".work_pointer.anyOf.properties.id]
+"$ref" = "#/$defs/id"
+
+[["$defs".work_pointer.anyOf]]
+
+["$defs".work_pointer.anyOf.properties]
+
+["$defs".work_pointer.anyOf.properties.path]
+"$ref" = "#/$defs/relative_path"

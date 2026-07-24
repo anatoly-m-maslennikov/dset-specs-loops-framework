@@ -1,0 +1,4 @@
+interface:
+  display_name: "DSET Verify"
+  short_description: "Verify implementation against DSET truth"
+  default_prompt: "Use $dset-verify to resolve and run the repository-local verification workflow."

@@ -1,0 +1,30 @@
+schema_version = "1.0"
+transition_id = "DSET-CARRIER-TRANSITION-759BFF370D07CBD6"
+authority_decision = "DSET-DECISION-GOV-018"
+original_path = "dset/scopes/skill/specs/packages/methodology/package.yaml"
+original_format = "yaml"
+original_sha256 = "8d13339aed1d48b874618d2699b86adbfb25298e78836bf98db718ad5a0dbd5f"
+semantic_sha256 = "b5e06dd26da2b55c2bd57b35ad85f15571082f383c8e7a86a97616f940080358"
+null_paths = []
+declared_loss = []
+
+[payload]
+schema_version = "1.2"
+package_id = "methodology"
+layer = "skill"
+requirements = ["DSET-REQUIREMENT-SKILL-001", "DSET-REQUIREMENT-SKILL-002", "DSET-REQUIREMENT-SKILL-003", "DSET-REQUIREMENT-SKILL-004", "DSET-REQUIREMENT-SKILL-005", "DSET-REQUIREMENT-SKILL-006", "DSET-REQUIREMENT-SKILL-007", "DSET-REQUIREMENT-SKILL-008", "DSET-REQUIREMENT-SKILL-009", "DSET-REQUIREMENT-SKILL-010", "DSET-REQUIREMENT-SKILL-012"]
+tests = ["DSET-TEST-PLAN-SKILL-001", "DSET-TEST-PLAN-SKILL-002", "DSET-TEST-PLAN-SKILL-003", "DSET-TEST-PLAN-SKILL-004", "DSET-TEST-PLAN-SKILL-005", "DSET-TEST-PLAN-SKILL-006", "DSET-TEST-PLAN-SKILL-007", "DSET-TEST-PLAN-SKILL-008", "DSET-TEST-PLAN-SKILL-009", "DSET-TEST-PLAN-SKILL-010", "DSET-TEST-PLAN-SKILL-012", "DSET-TEST-PLAN-SKILL-014"]
+evals = ["DSET-EVAL-PLAN-SKILL-001", "DSET-EVAL-PLAN-SKILL-002", "DSET-EVAL-PLAN-SKILL-003", "DSET-EVAL-PLAN-SKILL-004", "DSET-EVAL-PLAN-SKILL-005", "DSET-EVAL-PLAN-SKILL-006", "DSET-EVAL-PLAN-SKILL-007", "DSET-EVAL-PLAN-SKILL-008", "DSET-EVAL-PLAN-SKILL-010", "DSET-EVAL-PLAN-SKILL-012"]
+contracts = ["DSET-CONTRACT-SKILL-001", "DSET-CONTRACT-SKILL-002"]
+stories = []
+outcomes = []
+
+[payload.artifacts]
+hub = "README.md"
+domain = "domain.md"
+spec = "spec.md"
+contracts = "contracts.md"
+stories = "stories.md"
+outcomes = "outcomes.md"
+test_plan = "test-plan.md"
+eval_plan = "eval-plan.md"

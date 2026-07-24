@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/12_layer_gov/120_schemas/010_dset-gov-schemas-atom.schema.json",
+  "title": "DSET atomic Markdown YAML property data",
+  "description": "Base schema for the YAML property block of a DSET atomic Markdown artifact. Registered type routes are derived and never repeated in the carrier.",
+  "type": "object",
+  "required": [
+    "artifact_type",
+    "artifact_id",
+    "scope_path",
+    "priority",
+    "llm_session_ids"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "revision_mode": false,
+    "content_role": false,
+    "governance_locus": false,
+    "governance_origin": false,
+    "relation_shape": false,
+    "semantic_id": false,
+    "status": false,
+    "authority": false,
+    "claim": false,
+    "worktree_state": false,
+    "artifact_type": {
+      "$ref": "#/$defs/type_name"
+    },
+    "artifact_subtype": {
+      "$ref": "#/$defs/type_name"
+    },
+    "artifact_id": {
+      "$ref": "#/$defs/id"
+    },
+    "scope_path": {
+      "type": "array",
+      "minItems": 0,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9][A-Za-z0-9._-]*$"
+      }
+    },
+    "priority": {
+      "enum": [
+        "high",
+        "medium",
+        "low"
+      ]
+    },
+    "llm_session_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$"
+      }
+    },
+    "relations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/relation"
+      }
+    },
+    "source_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"
+    },
+    "type_name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "relation_type": {
+      "enum": [
+        "child_of",
+        "analysis_of",
+        "projection_of",
+        "implementation_of",
+        "check_of",
+        "evidence_for",
+        "resolution_of",
+        "solution_for",
+        "override_of",
+        "replacement_of",
+        "recurrence_of",
+        "relates_to"
+      ]
+    },
+    "relation": {
+      "type": "object",
+      "required": [
+        "type",
+        "targets"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/relation_type"
+        },
+        "targets": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        }
+      }
+    }
+  }
+}

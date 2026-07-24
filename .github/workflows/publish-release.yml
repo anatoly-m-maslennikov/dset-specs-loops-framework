@@ -1,0 +1,161 @@
+name: Publish DSET release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .dset/versions/version.toml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-release-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish exact merge release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the protected merge commit
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.12"
+
+      - name: Check the committed release transaction
+        id: release
+        env:
+          EXPECTED_REF: refs/heads/main
+          MERGE_SHA: ${{ github.sha }}
+          RUNNER_TEMP: ${{ runner.temp }}
+        shell: bash
+        run: |
+          test "$GITHUB_REF" = "$EXPECTED_REF"
+          test "$(git rev-parse HEAD)" = "$MERGE_SHA"
+          python -m dset_toolchain release check . --format json > "$RUNNER_TEMP/release-plan.json"
+          if git show "$MERGE_SHA^1:.dset/versions/version.toml" > "$RUNNER_TEMP/prior-version.toml"; then
+            prior="$RUNNER_TEMP/prior-version.toml"
+          else
+            prior=""
+          fi
+          python - "$RUNNER_TEMP/release-plan.json" "$GITHUB_OUTPUT" "$prior" <<'PY'
+          import json
+          import pathlib
+          import sys
+
+          from dset_toolchain.yaml_subset import load
+
+          plan = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
+          if plan["publisher"] != "github" or plan["protected_branch"] != "main":
+              raise SystemExit("release publisher or protected branch mismatch")
+          version = plan["target"]
+          prior_version = None
+          if sys.argv[3]:
+              prior = load(pathlib.Path(sys.argv[3]))
+              prior_version = prior.get("framework", {}).get("version")
+          values = {
+              "tag": plan["tag"],
+              "version": version,
+              "prerelease": str("-rc." in version).lower(),
+              "publish": str(prior_version != version).lower(),
+          }
+          with pathlib.Path(sys.argv[2]).open("a", encoding="utf-8") as output:
+              for key, value in values.items():
+                  output.write(f"{key}={value}\n")
+          PY
+
+      - name: Create or verify the immutable tag
+        if: steps.release.outputs.publish == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MERGE_SHA: ${{ github.sha }}
+          TAG: ${{ steps.release.outputs.tag }}
+          RUNNER_TEMP: ${{ runner.temp }}
+        shell: bash
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/$TAG" > "$RUNNER_TEMP/tags.json"
+          read -r count object_type object_sha < <(
+            python - "$RUNNER_TEMP/tags.json" "$TAG" <<'PY'
+          import json
+          import pathlib
+          import sys
+
+          expected = f"refs/tags/{sys.argv[2]}"
+          matches = [item for item in json.loads(pathlib.Path(sys.argv[1]).read_text()) if item["ref"] == expected]
+          if not matches:
+              print("0 missing missing")
+          elif len(matches) == 1:
+              print("1", matches[0]["object"]["type"], matches[0]["object"]["sha"])
+          else:
+              print(len(matches), "ambiguous", "ambiguous")
+          PY
+          )
+          if [ "$count" = "0" ]; then
+            gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs" \
+              -f ref="refs/tags/$TAG" -f sha="$MERGE_SHA" > /dev/null
+          else
+            test "$count" = "1"
+            if [ "$object_type" = "tag" ]; then
+              gh api "repos/$GITHUB_REPOSITORY/git/tags/$object_sha" > "$RUNNER_TEMP/tag-object.json"
+              read -r object_type object_sha < <(
+                python - "$RUNNER_TEMP/tag-object.json" <<'PY'
+          import json
+          import pathlib
+          import sys
+
+          tag = json.loads(pathlib.Path(sys.argv[1]).read_text())
+          print(tag["object"]["type"], tag["object"]["sha"])
+          PY
+              )
+            fi
+            test "$object_type" = "commit"
+            test "$object_sha" = "$MERGE_SHA"
+          fi
+
+      - name: Create or verify the GitHub Release
+        if: steps.release.outputs.publish == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MERGE_SHA: ${{ github.sha }}
+          PRERELEASE: ${{ steps.release.outputs.prerelease }}
+          TAG: ${{ steps.release.outputs.tag }}
+          VERSION: ${{ steps.release.outputs.version }}
+          RUNNER_TEMP: ${{ runner.temp }}
+        shell: bash
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/releases?per_page=100" > "$RUNNER_TEMP/releases.json"
+          read -r count draft prerelease < <(
+            python - "$RUNNER_TEMP/releases.json" "$TAG" <<'PY'
+          import json
+          import pathlib
+          import sys
+
+          matches = [item for item in json.loads(pathlib.Path(sys.argv[1]).read_text()) if item["tag_name"] == sys.argv[2]]
+          if not matches:
+              print("0 false false")
+          elif len(matches) == 1:
+              print("1", str(matches[0]["draft"]).lower(), str(matches[0]["prerelease"]).lower())
+          else:
+              print(len(matches), "ambiguous", "ambiguous")
+          PY
+          )
+          if [ "$count" = "0" ]; then
+            gh api --method POST "repos/$GITHUB_REPOSITORY/releases" \
+              -f tag_name="$TAG" \
+              -f target_commitish="$MERGE_SHA" \
+              -f name="DSET $VERSION" \
+              -F draft=false \
+              -F prerelease="$PRERELEASE" \
+              -F generate_release_notes=true > /dev/null
+          else
+            test "$count" = "1"
+            test "$draft" = "false"
+            test "$prerelease" = "$PRERELEASE"
+          fi

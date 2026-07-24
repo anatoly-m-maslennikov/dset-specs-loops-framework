@@ -1,0 +1,1124 @@
+# DSET project settings and manifest.
+#
+# This is the sole canonical DSET project configuration. It combines project
+# identity and topology with operator-controlled behavior. Repository-local
+# governing documents define the policies and values these settings may select.
+#
+# All settings below are optional at read time and show their executable
+# defaults explicitly. Keep the explicit values when copying this file so a
+# reviewer does not need to know parser fallbacks. Unknown settings fail
+# validation, which catches misspellings instead of silently ignoring them.
+#
+# New DSET writers use only this path: .dset/dset_settings.toml. Retired root
+# settings and split manifest paths are read-only migration inputs. Competing
+# configuration carriers fail closed.
+#
+# Settings schema implemented by this file.
+# Accepted for new writers: "1.8".
+schema_version = "1.8"
+canonical_command = "python -m dset_toolchain verify ."
+
+[paths]
+# Canonical project-local roots.
+control_root = ".dset"
+journal_root = ".dset_journal"
+runtime_root = ".dset_runtime"
+
+[git]
+# Every DSET-managed project uses Git. Initialization may create a repository
+# only when no enclosing repository exists.
+required = true
+initialize_if_missing = true
+commit_each_governed_change = true
+
+[artifacts]
+# Set the gate used before a new immutable atomic artifact is emitted.
+#
+# Accepted:
+# - "medium" (default): require clear authority, one primary claim, registered
+#   type/subtype, owning scope, provenance, material links, priority, and
+#   acceptance.
+#   Optional non-authoritative context may remain explicitly unknown.
+# - "high": also require every material boundary, lineage, conflict, and proof
+#   question to be precise. DSET asks focused questions or stops without writing
+#   until the atom can safely remain immutable.
+#
+# Both values check whether the claim may belong one enabled scope higher and
+# propose eligible promotion. Promotion always requires operator acceptance.
+creation_strictness = "medium"
+
+# Enable only catalog entries used by this project. Unknown or disabled types
+# and subtypes fail closed. External and relational types additionally require
+# their Governance locus below.
+enabled_types = [
+  "requirement",
+  "constraint",
+  "contract",
+  "implementation_decision",
+  "question",
+  "problem",
+  "test_plan",
+  "evaluation_plan",
+  "rationale",
+  "analysis_report",
+  "evidence_record",
+  "verification",
+  "specification",
+  "release_plan",
+  "procedure",
+  "plan",
+  "navigation",
+  "git_commit",
+  "external_git_commit",
+  "pull_request",
+  "runtime_log",
+  "toon_log_view",
+]
+enabled_subtypes = [
+  "question:risk",
+  "question:opportunity",
+  "question:conflict",
+  "problem:defect",
+  "problem:gap",
+  "problem:debt",
+  "analysis_report:solution_landscape",
+  "analysis_report:root_cause_analysis",
+  "analysis_report:proposal",
+  "analysis_report:technical_investigation",
+  "analysis_report:external_audit_analysis",
+  "evidence_record:test_result",
+  "evidence_record:evaluation_result",
+  "evidence_record:review_report",
+  "evidence_record:run_record",
+  "specification:domain_model",
+  "specification:behavior",
+  "specification:architecture",
+  "specification:design",
+  "specification:governance",
+  "procedure:playbook",
+  "procedure:runbook",
+  "plan:implementation_plan",
+  "plan:test_plan",
+  "plan:evaluation_plan",
+  "navigation:readme",
+  "navigation:hub",
+  "navigation:index",
+]
+
+[artifacts.identity]
+# Project prefixes are optional. Disable for one small isolated namespace;
+# enable for monorepos, multiple DSET projects, or shared artifact namespaces.
+project_prefix_enabled = true
+project_prefix = "DSET"
+scope_path_in_ids = true
+subtype_in_names = false
+
+[artifacts.routing]
+# Enable the three independent META routing axes.
+#
+# The framework catalog defines every route. These lists select which registered
+# routes a project may use. `internal` is mandatory. Add `external` when the
+# project governs outside-owned inputs or constraints. Add `relation` when the
+# project governs explicit boundaries or interactions.
+revision_modes = ["atomic", "append_only", "maintained"]
+content_roles = [
+  "inquiry",
+  "analysis",
+  "definition",
+  "method",
+  "implementation",
+  "observation",
+]
+governance_loci = ["internal", "external", "relation"]
+
+[workflows]
+# Development is the ordinary loop. Release readiness is mandatory before a
+# Version may be declared ready.
+default_mode = "development"
+release_mode = "release_readiness"
+
+[workflows.implement]
+# Choose what dset-implement may do before implementation begins.
+#
+# Accepted:
+# - "lazy" (default): reconcile missing accepted authority from the session,
+#   then create or update separate Test/Evaluation plans and the implementation
+#   plan as needed before implementing. Completed prerequisites are skipped.
+# - "strict": perform implementation only from already sufficient accepted
+#   artifacts. Missing or ambiguous inputs stop; DSET does not create or repair
+#   authority artifacts or plans and never falls back to lazy mode.
+#
+# Example lazy chain:
+# authority -> refresh views when required -> plan-proof -> plan-implementation -> implement
+mode = "lazy"
+
+[interaction]
+# "silent" reports durable changes, blockers, approvals, and material
+# deviations. "verbose" additionally reports mode selection, skill chains, and
+# gate transitions. Presentation never changes authorization or validation.
+reporting_mode = "silent"
+
+[maintained_views]
+# Refresh thin maintained semantic views only on explicit request or when a
+# downstream entry gate requires a current view. Refresh is reasoned synthesis,
+# not concatenation or mechanical compilation.
+refresh_mode = "on_demand"
+skill = "dset-refresh"
+
+[governance_surfaces]
+# DSET starts atomic-first. These named, optional surfaces become governed only
+# when explicitly activated. Activation adds currentness and entry-gate
+# obligations for that surface; deactivation preserves its carrier and Git
+# history but removes those obligations.
+#
+# Use `dset configure ROOT status` to inspect the effective state.
+# Use `dset configure ROOT activate SURFACE` or `deactivate SURFACE` to preview
+# a change; append `--execute` only after accepting the preview.
+maintained_specification = true
+test_plan = true
+evaluation_plan = true
+implementation_plan = true
+project_overview = true
+architecture_view = true
+
+[changes]
+# Select the default Git workspace for a newly created Change when the caller
+# does not request a mode explicitly.
+#
+# Accepted:
+# - "integration-branch" (default): place the Change on the project's configured
+#   integration branch, normally dev. The protected branch, normally main,
+#   remains the base for delivery.
+# - "branch-worktree": create an isolated dset/<change-slug> branch/worktree
+#   based on the integration branch. This is useful for concurrent Changes.
+#
+# An explicit per-Change request overrides this default. The project manifest
+# still owns the actual integration and protected branch names.
+default_workspace = "integration-branch"
+
+[delegation]
+# Select the registered multi-agent breadth budget. The selected profile changes
+# exploration/review breadth, never the accepted scope, safety boundary, or
+# required Tests/Evaluations. Operator instructions override the profile.
+#
+# Accepted profiles are defined by
+# `010_dset-skill-budget.toml`:
+# - "low": 0-1 subagents, depth 1, one round.
+# - "medium" (default): target 2 and maximum 3 subagents, depth 1, two rounds.
+# - "high": 4-6 subagents, depth 2, three rounds.
+#
+# Subagents inherit the main session's model and reasoning effort by default.
+# A cheaper token price alone is not evidence of lower total task cost.
+budget_profile = "medium"
+
+[priority]
+# Complete stored priority vocabulary. `highest` is intentionally absent
+# because it exists only as a virtual comparison result.
+#
+# Future work is placed in a named Version Roadmap; it does not use a
+# `deferred` priority.
+scale = ["high", "medium", "low"]
+
+# Priority assigned when a governed artifact has neither a direct value nor an
+# inherited value from its canonical owner.
+#
+# Accepted: `high`, `medium`, or `low`. Default: "medium".
+default = "medium"
+
+[priority.creation_defaults]
+constraint = "high"
+contract = "medium"
+requirement = "medium"
+implementation_decision = "medium"
+implementation = "low"
+other = "medium"
+
+[priority.comparison]
+# Add each bonus once when comparing two applicable artifacts; never multiply
+# by the number of skipped structural levels or layers.
+strict_scope_ancestor_steps = 1
+earlier_layer_steps = 1
+bonuses_are_additive = true
+cap = "highest"
+layer_order = ["meta", "gov", "tool", "skill", "implementation", "ops"]
+peer_features_are_ordered = false
+unrelated_scopes_receive_bonus = false
+
+[conflict_resolution]
+# Accepted: "ask_always" or "auto_by_effective_priority".
+# Default: "ask_always".
+mode = "ask_always"
+allowed_modes = ["ask_always", "auto_by_effective_priority"]
+automatic_requires_unique_winner = true
+tie_or_same_level = "ask"
+unknown_uncertain_or_incomparable = "ask"
+unsatisfiable_external_obligations = "stop"
+
+# Project identity, topology, and executable repository boundaries.
+
+[project]
+key = "DSET"
+id = "dset-specs-loops-framework"
+name = "DSET Spec Loops"
+repository_slug = "dset-specs-loops-framework"
+repository_role = "framework-source-and-adopter"
+
+[supportability]
+status = "applicable"
+reason = "GitHub Actions and repository rules operate the production delivery path from dev to main"
+authority = "github"
+runbook = "000_dset-ops-supportability-delivery-runbook.md"
+
+[release]
+status = "applicable"
+integration_branch = "dev"
+protected_branch = "main"
+publisher = "github"
+tag_pattern = "v{product_version}"
+
+[work_items]
+atomic_scopes = ["project-control", "dset-meta", "dset-gov", "dset-tool", "dset-skill", "dset-implementation", "dset-ops"]
+
+[structure]
+layout = "separated-methodology-v1"
+
+[profiles]
+runtime_risk = "low-risk-hosted-automation"
+durability_topology = "external-platform"
+enforcement = "python-v1"
+artifact = "documentation-v1"
+repository_governance = "core-v1"
+
+# Select any number of compatible IMPL profile features. Each selection names
+# the work areas whose environment, source, Test, and Evaluation implementations
+# must follow that profile. Selection is authority; conformance is reported by
+# Tests, Evaluations, evidence, and Verification rather than a status flag here.
+[[profiles.implementation]]
+id = "local-python-tools-v1"
+version = "1.0"
+work_areas = ["toolchain", "tests", "scripts"]
+
+[[profiles.implementation]]
+# Mandatory for every reusable skill created or updated in this work area.
+# The shared skill core remains provider neutral; host metadata is an adapter.
+id = "agent-skills-v1"
+version = "1.0"
+work_areas = ["skills"]
+
+[[profiles.implementation]]
+# Applies to qualitative/probabilistic Evaluation definitions and
+# implementations. Deterministic assertions remain under Test profiles.
+id = "llm-evaluations-v1"
+version = "1.0"
+work_areas = ["evaluations"]
+
+[change_contract]
+change_id_format = "project-type-layer-sequence"
+change_slug_format = "kebab-case"
+pull_request_required_before_archive = true
+archive_requires_fresh_verification = true
+keep_pull_request_draft_until_archive_ready = true
+
+[commit_provenance]
+start_commit = "96800941678c9b665abac9d3838a8a4b36db02e2"
+
+[[commit_provenance.corrections]]
+commit = "00fb9c666efd9a40efd013a815c6eca7be2b6c90"
+original_message_sha256 = "e48025512aceb574b1145dda3d1d9e5986ac8680cb42a273427e239f66ff1aca"
+mode = "implementation"
+decision_ids = ["DSET-DECISION-GOV-015", "DSET-DECISION-GOV-017"]
+verifies = []
+resolves = ["DSET-DEFECT-TOOL-004"]
+session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+rationale = "Preserve the immutable commit while replacing its legacy Decision trailer with implementation provenance."
+
+[[commit_provenance.corrections]]
+commit = "4096ce125aed225b1a4d27fda2db8fa899b6a749"
+original_message_sha256 = "37f52517c358b1fb0c33083c79b1147731ad981f7bcacd3ba15ed39b48ee71d6"
+mode = "implementation"
+decision_ids = ["DSET-DECISION-GOV-017"]
+verifies = []
+resolves = []
+session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+rationale = "Preserve the immutable commit while removing a Test ID from implementation authority."
+
+[[commit_provenance.corrections]]
+commit = "f9bff423cbb4cc0a58518bfd174ed0cf892d7911"
+original_message_sha256 = "e99f33e601546052035242b0c97414440a98a0b02e4cb97f5873e3d5c69ce42c"
+mode = "implementation"
+decision_ids = ["DSET-DECISION-GOV-016"]
+verifies = []
+resolves = []
+session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+rationale = "Preserve the immutable commit while removing a Test ID from implementation authority."
+
+[[commit_provenance.corrections]]
+commit = "cee6f4322bbfe3f408f0f644d1abb99ded4c86a7"
+original_message_sha256 = "d9cee712ef5ad37bf6427df1a753103c794e83d15dd7f77bbc8d6b6a5eebea8d"
+mode = "implementation"
+decision_ids = ["DSET-REQUIREMENT-META-011", "DSET-REQUIREMENT-OPS-005"]
+verifies = []
+resolves = []
+session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+rationale = "Preserve the immutable commit while replacing its unaccepted Change-delta Requirement with active Work Area and release-configuration authority."
+
+[[commit_provenance.corrections]]
+commit = "6b60f0ce767c700e5e4221a5da8858c137ef4b92"
+original_message_sha256 = "fa73afb3e4f34731f3e1936188d3ea31b0a1b2ca6cae82d1982eea2e95729af0"
+mode = "implementation"
+decision_ids = ["DSET-REQUIREMENT-GOV-025"]
+verifies = []
+resolves = []
+session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+rationale = "Preserve the immutable packet commit while removing its accidental mixture of implementation and evidence provenance trailers."
+
+[[commit_provenance.corrections]]
+commit = "422ca999caef80ffb703ce7c1ffa0bb9d1bde15b"
+original_message_sha256 = "290abb36e62784fbeb42854cf3aaeaf5daae7a6a5d0b6cd684b13585d85726e3"
+mode = "implementation"
+decision_ids = ["DSET-DECISION-GOV-020"]
+verifies = []
+resolves = []
+session = "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+rationale = "Preserve the immutable generated-view commit while removing its accidental Test-evidence trailer from implementation provenance."
+
+[verification]
+commands = ["uv run ruff format --check dset_toolchain tests", "uv run ruff check dset_toolchain tests", "uv run mypy dset_toolchain tests", "{python} -m unittest discover -s tests -v", "git diff --check"]
+
+[[work_areas]]
+id = "framework-source-global"
+path = "10_project"
+
+[[work_areas]]
+id = "framework-source-meta"
+path = "11_layer_meta"
+
+[[work_areas]]
+id = "framework-source-gov"
+path = "12_layer_gov"
+
+[[work_areas]]
+id = "framework-source-tool"
+path = "13_layer_tool"
+
+[[work_areas]]
+id = "framework-source-skill"
+path = "14_layer_skill"
+
+[[work_areas]]
+id = "framework-source-implementation"
+path = "15_layer_implementation"
+
+[[work_areas]]
+id = "framework-source-ops"
+path = "16_layer_ops"
+
+[[work_areas]]
+id = "framework-source-versions"
+path = "50_versions"
+
+[[work_areas]]
+id = "toolchain"
+path = "dset_toolchain"
+
+[[work_areas]]
+id = "skills"
+path = "skills"
+
+[[work_areas]]
+id = "evaluations"
+path = "15_layer_implementation/120_evaluations"
+
+[[work_areas]]
+id = "tests"
+path = "tests"
+
+[[work_areas]]
+id = "scripts"
+path = "scripts"
+
+[[work_areas]]
+id = "delivery"
+path = ".github"
+
+[[packages]]
+id = "methodology"
+status = "active"
+layers = ["meta", "gov", "tool", "skill", "implementation", "ops"]
+
+# Migrated canonical settings; this section is not an artifact ledger.
+[artifact_structure]
+schema_version = 1.0
+profile = "documentation-v1"
+
+[artifact_structure.root]
+id = "framework-control"
+hub = "DSET-CONTROL-HUB.md"
+owner = "framework"
+purpose = "Project-local DSET settings, installed methodology, and applied artifacts"
+
+[[artifact_structure.areas]]
+id = "installed-methodology"
+hub = "000_dset-methodology-hub.md"
+parent = "framework-control"
+owner = "methodology"
+purpose = "Installed project-local DSET methodology used by governed workflows"
+
+[[artifact_structure.areas]]
+id = "project-control"
+hub = "DSET-PROJECT-HUB.md"
+parent = "framework-control"
+owner = "methodology"
+purpose = "Applied project-wide truth owned by this repository"
+
+[[artifact_structure.areas]]
+id = "dset-meta"
+hub = "DSET-META-HUB.md"
+parent = "project-control"
+owner = "meta"
+purpose = "Project identity and accepted behavioral truth"
+
+[[artifact_structure.areas]]
+id = "dset-gov"
+hub = "DSET-GOV-HUB.md"
+parent = "project-control"
+owner = "gov"
+purpose = "Project governance atoms, maintained views, evidence, and archive state"
+
+[[artifact_structure.areas]]
+id = "dset-tool"
+hub = "DSET-TOOL-HUB.md"
+parent = "project-control"
+owner = "tool"
+purpose = "Executable tooling, fixtures, and traceability contracts"
+
+[[artifact_structure.areas]]
+id = "dset-skill"
+hub = "DSET-SKILL-HUB.md"
+parent = "project-control"
+owner = "skill"
+purpose = "Agent workflow, delegation, and run-evidence contracts"
+
+[[artifact_structure.areas]]
+id = "dset-implementation"
+hub = "DSET-IMPL-HUB.md"
+parent = "project-control"
+owner = "implementation"
+purpose = "Selected development environments, code profiles, Tests, and Evaluations"
+
+[[artifact_structure.areas]]
+id = "dset-ops"
+hub = "DSET-OPS-HUB.md"
+parent = "project-control"
+owner = "ops"
+purpose = "Delivery, release, supportability, and hosted evidence"
+
+[[artifact_structure.areas]]
+id = "dset-versions"
+hub = "DSET-VERSIONS-HUB.md"
+parent = "project-control"
+owner = "ops"
+purpose = "Applied Version artifacts and release lifecycle records"
+
+# Migrated canonical settings; this section is not an artifact ledger.
+[governance_registry]
+schema_version = 1.1
+
+[governance_registry.profile]
+id = "core-v1"
+version = "0.3"
+customization = "custom"
+
+[[governance_registry.rules]]
+id = "DSET-RULE-ARCHITECTURE"
+layer = "GOV"
+document = "030_dset-gov-specification-architecture.md"
+owner = "project"
+applicability = "applicable"
+reason = "Every governed workflow requires explicit authority and bootstrap boundaries"
+depends_on = []
+precedence_over = []
+customization = "unmodified"
+
+[governance_registry.rules.source]
+profile = "core-v1"
+version = "0.3"
+template = "010_dset-gov-templates-governance-core-v1-architecture.md"
+sha256 = "b49097ac7ea15fd38eeadd458b2bcb53bb40e772e2662a9685c820b10d93a3d2"
+
+[[governance_registry.rules]]
+id = "DSET-RULE-BUILD"
+layer = "TOOL"
+document = "020_dset-tool-specification-build-rules.md"
+owner = "project"
+applicability = "applicable"
+reason = "Implementation work requires selected gates and safe change behavior"
+depends_on = ["DSET-RULE-ARCHITECTURE"]
+precedence_over = []
+customization = "unmodified"
+
+[governance_registry.rules.source]
+profile = "core-v1"
+version = "0.3"
+template = "000_dset-tool-templates-governance-core-v1-build-rules.md"
+sha256 = "1faf0275461d4c95c54f517cb75759292c8a42fd4134e44139b3e2c255b990cb"
+
+[[governance_registry.rules]]
+id = "DSET-RULE-DOMAIN-SPEC"
+layer = "META"
+document = "070_dset-meta-procedure-domain-spec-authoring.md"
+owner = "project"
+applicability = "applicable"
+reason = "Domain decisions must precede implementation planning"
+depends_on = []
+precedence_over = []
+customization = "unmodified"
+
+[governance_registry.rules.source]
+profile = "core-v1"
+version = "0.3"
+template = "000_dset-meta-templates-governance-core-v1-domain-spec-authoring.md"
+sha256 = "611fd77af03ead2d2e98343c6c09cbda8d3226b7de901aead1260fc59f650b5f"
+
+[[governance_registry.rules]]
+id = "DSET-RULE-TEST-PLAN"
+layer = "META"
+document = "090_dset-meta-procedure-test-planning.md"
+owner = "project"
+applicability = "applicable"
+reason = "Exact proof must be designed with requirements"
+depends_on = ["DSET-RULE-DOMAIN-SPEC"]
+precedence_over = []
+customization = "unmodified"
+
+[governance_registry.rules.source]
+profile = "core-v1"
+version = "0.3"
+template = "020_dset-meta-templates-governance-core-v1-test-planning.md"
+sha256 = "b6fad830d1672a6adbf8dbbff2c891ce2c578f453c0c959bf2bb5796f66fc61c"
+
+[[governance_registry.rules]]
+id = "DSET-RULE-EVAL-PLAN"
+layer = "META"
+document = "080_dset-meta-procedure-evaluation-planning.md"
+owner = "project"
+applicability = "applicable"
+reason = "Variable and qualitative proof requires an explicit owner"
+depends_on = ["DSET-RULE-DOMAIN-SPEC"]
+precedence_over = []
+customization = "unmodified"
+
+[governance_registry.rules.source]
+profile = "core-v1"
+version = "0.3"
+template = "010_dset-meta-templates-governance-core-v1-eval-planning.md"
+sha256 = "392785a8f42cb965784236e6e1b4c9e137cfad35bd0cf95c000d1fa583655fdf"
+
+[[governance_registry.rules]]
+id = "DSET-RULE-SUPPORTABILITY"
+layer = "OPS"
+document = "060_dset-ops-specification-supportability.md"
+owner = "project"
+applicability = "applicable"
+reason = "Production investigation and recovery must be profile-scaled"
+depends_on = ["DSET-RULE-ARCHITECTURE"]
+precedence_over = []
+customization = "unmodified"
+
+[governance_registry.rules.source]
+profile = "core-v1"
+version = "0.3"
+template = "010_dset-ops-templates-governance-core-v1-supportability.md"
+sha256 = "1f9c4f3822d1bab0aa255b3e9593e83485c4056c91e3befd04e575f219b35068"
+
+[[governance_registry.rules]]
+id = "DSET-RULE-ARTIFACT-MAINTENANCE"
+layer = "GOV"
+document = "050_dset-gov-specification-artifact-maintenance.md"
+owner = "project"
+applicability = "applicable"
+reason = "Durable conclusions require one writable owner and verified cutover"
+depends_on = ["DSET-RULE-ARCHITECTURE"]
+precedence_over = []
+customization = "custom"
+
+[governance_registry.rules.source]
+profile = "core-v1"
+version = "0.3"
+template = "030_dset-gov-templates-governance-core-v1-artifact-maintenance.md"
+sha256 = "42724342b00bb0067c62ed4a6161d20f9bef505f9c791bc372c40a9648d0828d"
+
+[[governance_registry.rules]]
+id = "DSET-RULE-WORK-ITEMS"
+layer = "GOV"
+document = "110_dset-gov-specification-work-items.md"
+owner = "project"
+applicability = "applicable"
+reason = "Semantic routing must apply the four canonical Types and their subtypes independently of workflow"
+depends_on = ["DSET-RULE-ARCHITECTURE"]
+precedence_over = []
+customization = "unmodified"
+
+[governance_registry.rules.source]
+profile = "core-v1"
+version = "0.3"
+template = "050_dset-gov-templates-governance-core-v1-work-items.md"
+sha256 = "356243bd3bbcc65e5ca64bb010910d2f2b89478ef6af574ce1045f6b970182b9"
+
+[[governance_registry.rules]]
+id = "DSET-RULE-ARTIFACT-CLASSIFICATION"
+layer = "GOV"
+document = "040_dset-gov-specification-artifact-classification.md"
+owner = "project"
+applicability = "applicable"
+reason = "Every governed carrier requires one MECE artifact classification independent from semantic Type"
+depends_on = ["DSET-RULE-ARCHITECTURE"]
+precedence_over = []
+customization = "custom"
+
+[governance_registry.rules.source]
+profile = "core-v1"
+version = "0.3"
+template = "020_dset-gov-templates-governance-core-v1-artifact-classification.md"
+sha256 = "1d9acb71e913c550c1676dc0d2232f487db9d7c7d4c1a765f10db9c25eee8074"
+
+[[governance_registry.rules]]
+id = "DSET-RULE-DELEGATION-BUDGET"
+layer = "SKILL"
+document = "070_dset-skill-procedure-delegation-budget.md"
+owner = "project"
+applicability = "applicable"
+reason = "Delegation requires inherited model/effort, bounded tree budgets, and a fixed quality floor"
+depends_on = ["DSET-RULE-ARCHITECTURE"]
+precedence_over = []
+customization = "unmodified"
+
+[governance_registry.rules.source]
+profile = "core-v1"
+version = "0.3"
+template = "000_dset-skill-templates-governance-core-v1-delegation-budget.md"
+sha256 = "82d2fa5d2a6e37edcfe731caf9c7f9256c5aadc5f2a16c72c9981197dd76e54a"
+
+[[governance_registry.rules]]
+id = "DSET-RULE-SKILL-RUNS"
+layer = "SKILL"
+document = "110_dset-skill-procedure-skill-runs.md"
+owner = "project"
+applicability = "applicable"
+reason = "Skill invocations require bounded redacted supportability evidence"
+depends_on = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-DELEGATION-BUDGET"]
+precedence_over = []
+customization = "unmodified"
+
+[governance_registry.rules.source]
+profile = "core-v1"
+version = "0.3"
+template = "040_dset-skill-templates-governance-core-v1-skill-runs.md"
+sha256 = "60639f92b0196a82d540e89d3d4e4a31db846f15127289b4eeb63dde0a5440a8"
+
+[[governance_registry.rules]]
+id = "DSET-RULE-RELEASE"
+layer = "OPS"
+document = "080_dset-ops-procedure-release.md"
+owner = "project"
+applicability = "applicable"
+reason = "Release preparation and protected publication require one deterministic transaction"
+depends_on = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-BUILD", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION"]
+precedence_over = []
+customization = "custom"
+
+[governance_registry.rules.source]
+profile = "core-v1"
+version = "0.3"
+template = "000_dset-ops-templates-governance-core-v1-release.md"
+sha256 = "079ab799a5713e66a7c14ef1003ae848eb87d917259b496b0634e7e3a045322a"
+
+[[governance_registry.rules]]
+id = "DSET-RULE-LIFECYCLE"
+layer = "SKILL"
+document = "090_dset-skill-procedure-lifecycle-orchestration.md"
+owner = "project"
+applicability = "applicable"
+reason = "The primary DSET entrypoint requires deterministic modes, precedence, authority, and stops"
+depends_on = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-SKILL-RUNS"]
+precedence_over = []
+customization = "unmodified"
+
+[governance_registry.rules.source]
+profile = "core-v1"
+version = "0.3"
+template = "020_dset-skill-templates-governance-core-v1-lifecycle-orchestration.md"
+sha256 = "dda6c2f127b501f4dd31588aa255165bc5bf0e7836d525a7eca46361c636f4af"
+
+[[governance_registry.rules]]
+id = "DSET-RULE-DIAGNOSIS"
+layer = "SKILL"
+document = "080_dset-skill-procedure-diagnosis.md"
+owner = "project"
+applicability = "applicable"
+reason = "Defect investigation requires evidence and authorization boundaries"
+depends_on = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION"]
+precedence_over = []
+customization = "unmodified"
+
+[governance_registry.rules.source]
+profile = "core-v1"
+version = "0.3"
+template = "010_dset-skill-templates-governance-core-v1-diagnosis.md"
+sha256 = "8f5e78a193298fb0e92b2a67891f005464a50760d84cf814dc3901ea30d122e2"
+
+[[governance_registry.rules]]
+id = "DSET-RULE-PROTOTYPING"
+layer = "SKILL"
+document = "100_dset-skill-procedure-prototyping.md"
+owner = "project"
+applicability = "applicable"
+reason = "Solution experiments require comparable disposable evidence"
+depends_on = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION"]
+precedence_over = []
+customization = "unmodified"
+
+[governance_registry.rules.source]
+profile = "core-v1"
+version = "0.3"
+template = "030_dset-skill-templates-governance-core-v1-prototyping.md"
+sha256 = "c3cb7059d131acb077a6fa82b0b3a51d84c4d59c4ae5b4eb3c4c4ba00e05c8aa"
+
+[[governance_registry.workflows]]
+id = "lifecycle-orchestration"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-BUILD", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-WORK-ITEMS", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-RELEASE", "DSET-RULE-LIFECYCLE"]
+
+[[governance_registry.workflows]]
+id = "domain-clarification"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-LIFECYCLE"]
+
+[[governance_registry.workflows]]
+id = "diagnosis"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-LIFECYCLE", "DSET-RULE-DIAGNOSIS"]
+
+[[governance_registry.workflows]]
+id = "prototyping"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-LIFECYCLE", "DSET-RULE-PROTOTYPING"]
+
+[[governance_registry.workflows]]
+id = "release"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-BUILD", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-RELEASE", "DSET-RULE-LIFECYCLE"]
+
+[[governance_registry.workflows]]
+id = "work-triage"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-WORK-ITEMS", "DSET-RULE-LIFECYCLE"]
+
+[[governance_registry.workflows]]
+id = "decompose"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-WORK-ITEMS", "DSET-RULE-LIFECYCLE"]
+
+[[governance_registry.workflows]]
+id = "landscape"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-LIFECYCLE"]
+
+[[governance_registry.workflows]]
+id = "decisions"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-WORK-ITEMS", "DSET-RULE-LIFECYCLE"]
+
+[[governance_registry.workflows]]
+id = "compile"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-LIFECYCLE"]
+
+[[governance_registry.workflows]]
+id = "plan-proof"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-LIFECYCLE"]
+
+[[governance_registry.workflows]]
+id = "plan-implementation"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-BUILD", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-LIFECYCLE"]
+
+[[governance_registry.workflows]]
+id = "implement"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-BUILD", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-WORK-ITEMS", "DSET-RULE-LIFECYCLE"]
+
+[[governance_registry.workflows]]
+id = "verify"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-BUILD", "DSET-RULE-DOMAIN-SPEC", "DSET-RULE-TEST-PLAN", "DSET-RULE-EVAL-PLAN", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-LIFECYCLE"]
+
+[[governance_registry.workflows]]
+id = "complete"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-WORK-ITEMS", "DSET-RULE-LIFECYCLE"]
+
+[[governance_registry.workflows]]
+id = "overview"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-WORK-ITEMS", "DSET-RULE-LIFECYCLE"]
+
+[[governance_registry.workflows]]
+id = "configure"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-LIFECYCLE"]
+
+[[governance_registry.wrappers]]
+workflow = "lifecycle-orchestration"
+skill = "dset"
+sha256 = "c368338f46adcd5686da5ac0ab0a0aba7db10fbc615957c063948b97b060085f"
+
+[[governance_registry.wrappers]]
+workflow = "domain-clarification"
+skill = "dset-clarify"
+sha256 = "90eb9032c2f8949e0bbbace9b0421e4ce98d9de828a651ca28c2d9b58710df93"
+
+[[governance_registry.wrappers]]
+workflow = "diagnosis"
+skill = "dset-diagnose"
+sha256 = "4559ed0086a06c8fe9011f80c32a4ba4373fd9798c4f6a7cd4e5d5240bbcb066"
+
+[[governance_registry.wrappers]]
+workflow = "prototyping"
+skill = "dset-prototype"
+sha256 = "631b1558abdf14c83419d79edcff04536cc7680b93198529dc39cf63ec0f036c"
+
+[[governance_registry.wrappers]]
+workflow = "release"
+skill = "dset-release"
+sha256 = "0bbe31a129bf31acf77b3e90e83888020af5e021bf2b993a2ab9391c51cbf655"
+
+[[governance_registry.wrappers]]
+workflow = "work-triage"
+skill = "dset-triage"
+sha256 = "fb945f0bc5d8dadb07b66b9747a2d2e29aae91f92af83b6533b1f8580051dc1a"
+
+[[governance_registry.wrappers]]
+workflow = "decompose"
+skill = "dset-decompose"
+sha256 = "1b78897b9ba7cf4f03efe7f871caed65a019710189515370c6fb7af720ac192b"
+
+[[governance_registry.wrappers]]
+workflow = "landscape"
+skill = "dset-landscape"
+sha256 = "218655d145691ce0300d85fa83fe152d004b589e265686684a788b07d53731ae"
+
+[[governance_registry.wrappers]]
+workflow = "decisions"
+skill = "dset-decisions"
+sha256 = "965a5b887badae8559f37396724cad1ea4ee6ee8694800f57811073928c8fbf2"
+
+[[governance_registry.wrappers]]
+workflow = "compile"
+skill = "dset-compile"
+sha256 = "02890fa6d0d6bb980d9a185a009a36262c5ff5710572ad06775c0a177b157aaf"
+
+[[governance_registry.wrappers]]
+workflow = "plan-proof"
+skill = "dset-plan-proof"
+sha256 = "278317696120827d375c1359ebad28d7a67bca02d1387cc4b85546491f67f0dd"
+
+[[governance_registry.wrappers]]
+workflow = "plan-implementation"
+skill = "dset-plan-implementation"
+sha256 = "3694ec6daa93473e544ac17b3bfe2b4a8a060c61545fcfd99ced6298be8846ab"
+
+[[governance_registry.wrappers]]
+workflow = "implement"
+skill = "dset-implement"
+sha256 = "6f451352db5d2d804c82862c8379bf64081326e658e6fb0293cffc82f82c4455"
+
+[[governance_registry.wrappers]]
+workflow = "verify"
+skill = "dset-verify"
+sha256 = "ec3c9643325090b24411016b4fc175f2c01f9ac7dfb24ea7bc444c35850fc117"
+
+[[governance_registry.wrappers]]
+workflow = "complete"
+skill = "dset-complete"
+sha256 = "bee23f861776c3da06a3f72db8074b951b9b8494fc51c3c8ed6f63e4e07c3992"
+
+[[governance_registry.wrappers]]
+workflow = "overview"
+skill = "dset-overview"
+sha256 = "ad3f814c61d51d5aaf3c7eda9b546f25333ddb498a9559d89848f4784a97ca1f"
+
+[[governance_registry.wrappers]]
+workflow = "configure"
+skill = "dset-configure"
+sha256 = "5d187009228f771d30858668e084bc59a936cdab0b589fb01c8bf6ae8215abab"
+
+# Migrated canonical settings; this section is not an artifact ledger.
+[source_provenance]
+schema_version = 1.0
+project_license = "Apache-2.0"
+
+[[source_provenance.sources]]
+id = "openspec"
+repository = "https://github.com/Fission-AI/OpenSpec"
+revision = "0a99f410457271aa773d8b106f03f637f7c6b3c0"
+license = "MIT"
+license_file = "020_dset-project-licenses-openspec-mit.txt"
+use = "independently-reexpressed-concepts"
+
+[[source_provenance.sources]]
+id = "mattpocock-skills"
+repository = "https://github.com/mattpocock/skills"
+revision = "66898f60e8c744e269f8ce06c2b2b99ce7660d5f"
+license = "MIT"
+license_file = "010_dset-project-licenses-mattpocock-skills-mit.txt"
+use = "independently-reexpressed-workflow-categories"
+
+[[source_provenance.sources]]
+id = "fpf"
+repository = "https://github.com/ailev/FPF"
+revision = "afa4936541774021c92adb97c3cbf787bf126062"
+license = "no-license-declared-at-reviewed-revision"
+license_file = "000_dset-project-licenses-fpf-no-license.txt"
+use = "independently-reexpressed-concepts-only"
+
+[[source_provenance.sources.mappings]]
+pattern = "FPF-A.07"
+source = "FPF-Spec/A_Kernel Architecture Cluster/07_Strict Distinction (Clarity Lattice)/00_A.07 - Strict Distinction (Clarity Lattice).md"
+source_lines = "25-41,47-51,66-73"
+dset_surface = "020_dset-gov-guides-artifact-types.md"
+disposition = "adapted"
+adaptation_scope = "Separation of governed subject, directive description, carrier, performed work, and evidence"
+exclusions = ["FPF EntityOfConcern, Episteme, Method, Capability, and Work ontology", "FPF canonical terminology, identifiers, and publication relations"]
+
+[[source_provenance.sources.mappings]]
+pattern = "FPF-A.11"
+source = "FPF-Spec/A_Kernel Architecture Cluster/11_Ontological Parsimony/00_A.11 - Ontological Parsimony.md"
+source_lines = "61-88,122-128"
+dset_surface = "020_dset-gov-guides-artifact-types.md"
+disposition = "adapted"
+adaptation_scope = "Four-Type parsimony, action-facing contribution, sharp recognition boundaries, and reopen-on-overlap discipline"
+exclusions = ["FPF U-kind admission ontology and records", "FPF conformance claims and canonical admission process"]
+
+[[source_provenance.sources.mappings]]
+pattern = "FPF-A.02.09"
+source = "FPF-Spec/A_Kernel Architecture Cluster/02_Role Taxonomy/09_A.02.09 - U.SpeechAct (Communicative Work Object).md"
+source_lines = "30-53,103-121"
+dset_surface = "020_dset-gov-guides-artifact-types.md"
+disposition = "adapted"
+adaptation_scope = "Operator acceptance or authorization act separated from directive content, carrier, and evidence"
+exclusions = ["FPF SpeechAct and Work ontology", "FPF communicative-act schema and institutional semantics"]
+
+[[source_provenance.sources.mappings]]
+pattern = "FPF-C.32.PAD"
+source = "FPF-Spec/C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/08_C.32.PAD - Project Architecture Decision After Candidate Synthesis.md"
+source_lines = "64-96"
+dset_surface = "020_dset-gov-guides-artifact-types.md"
+disposition = "adapted"
+adaptation_scope = "Decision directive or relation separated from its publication record and downstream work"
+exclusions = ["Architecture-specific decision slots and candidate-synthesis workflow", "FPF project-relation ontology and identifiers"]
+
+[[source_provenance.sources.mappings]]
+pattern = "FPF-E.17.AUD"
+source = "FPF-Spec/E_The FPF Constitution and Authoring Guides/16_17_Multi-View Publication Kit/06_AUD_PublicationUnit Stability Discipline - keep one publication unit stable enough to read honestly/00_E.17.AUD - PublicationUnit Stability Discipline - keep one publication unit stable enough to read honestly.md"
+source_lines = "47-60,71-85"
+dset_surface = "030_dset-gov-guides-authoring-rules.md"
+disposition = "adapted"
+adaptation_scope = "One primary claim per atom, honest split of mixed publication moves, and explicit outside work boundary"
+exclusions = ["FPF publication-unit ontology and repair dispositions", "FPF canonical publication forms, identifiers, and process"]
+
+[[source_provenance.sources.mappings]]
+pattern = "FPF-A.10"
+source = "FPF-Spec/A_Kernel Architecture Cluster/10_Evidence Graph Referring- Claim-Bound Evidence and Provenance Graph/00_A.10 - Evidence Graph Referring- Claim-Bound Evidence and Provenance Graph.md"
+source_lines = "32-44,77-101,117-138"
+dset_surface = "050_dset-gov-specification-artifact-maintenance.md"
+disposition = "adapted"
+adaptation_scope = "Claim-bound proof fields, currentness, defeaters, and risk-triggered reliance extensions"
+exclusions = ["FPF evidence ontology and graph types", "FPF canonical identifiers and publication formats"]
+
+[[source_provenance.sources.mappings]]
+pattern = "FPF-A.16.02"
+source = "FPF-Spec/A_Kernel Architecture Cluster/16_Language-State Move Coordination/03_A.16.02 - Reopen - SketchBackoff - Respecify.md"
+source_lines = "42-80,163-183"
+dset_surface = "020_dset-gov-templates-change-decision.md"
+disposition = "adapted"
+adaptation_scope = "Recurrence, replacement, retained evidence, withdrawn authority, and active or archived storage shape"
+exclusions = ["FPF move and state ontology", "FPF canonical identifiers and notation"]
+
+[[source_provenance.sources.mappings]]
+pattern = "FPF-A.19.CPM"
+source = "FPF-Spec/A_Kernel Architecture Cluster/19_CharacteristicSpace & Dynamics Hook (A.CHR-SPACE)/11_A.19.CPM - Unified Comparison Mechanism (CPM).md"
+source_lines = "43-57,71-96,109-121"
+dset_surface = "130_dset-gov-templates-change-solution-landscape.md"
+disposition = "adapted"
+adaptation_scope = "Explicit comparison frame, evidence eligibility, partial results, and selection separation"
+exclusions = ["FPF characteristic-space ontology", "FPF comparison algorithms and canonical result types"]
+
+[[source_provenance.sources.mappings]]
+pattern = "FPF-C.32.ADR"
+source = "FPF-Spec/C_Kernel Extension Specifications/20_32_Architecture Candidate Synthesis/09_C.32.ADR - Architecture Decision Record Projection.md"
+source_lines = "47-104,145-169"
+dset_surface = "020_dset-gov-templates-change-decision.md"
+disposition = "adapted"
+adaptation_scope = "General Decision publication, rationale discharge, lifecycle, and successor-link shape"
+exclusions = ["Architecture-only ADR semantics", "FPF Decision ontology and ADR terminology"]
+
+[[source_provenance.sources.mappings]]
+pattern = "FPF-E.3"
+source = "FPF-Spec/E_The FPF Constitution and Authoring Guides/02_03_Principle Taxonomy & Precedence Model/00_E.03 - Principle Taxonomy & Precedence Model.md"
+source_lines = "40-76,162-170"
+dset_surface = "030_dset-gov-specification-architecture.md"
+disposition = "adapted"
+adaptation_scope = "Separate dependency and conflict precedence relations, acyclic precedence, and deterministic fail-closed conflict handling"
+exclusions = ["FPF Pillar and principle class taxonomy", "FPF default class precedence stack", "FPF governance ontology and canonical identifiers"]
+
+[[source_provenance.sources.mappings]]
+pattern = "FPF-E.5.3"
+source = "FPF-Spec/E_The FPF Constitution and Authoring Guides/04_05_Four Guard-Rails of FPF/03_E.05.03 - Unidirectional Dependency.md"
+source_lines = "22-77"
+dset_surface = "030_dset-gov-specification-architecture.md"
+disposition = "adapted"
+adaptation_scope = "Acyclic dependency closure and explicit separation of dependency from other rule relations"
+exclusions = ["FPF Core, Tooling Reference, and Pedagogical Companion family order", "FPF imports relation and ecosystem-family semantics"]
+
+[[source_provenance.sources.mappings]]
+pattern = "FPF-E.9"
+source = "FPF-Spec/E_The FPF Constitution and Authoring Guides/08_09_Design-Rationale Record (DRR) Method/00_E.09 - Design-Rationale Record (DRR) Method.md"
+source_lines = "61-109,318-331"
+dset_surface = "050_dset-gov-specification-artifact-maintenance.md"
+disposition = "adapted"
+adaptation_scope = "Decision as temporary convergence record, evergreen discharge, and shadow-specification prevention"
+exclusions = ["FPF DRR publication format and content-block inventory", "FPF Core, Pillar, and pattern ontology"]
+
+[[source_provenance.sources.mappings]]
+pattern = "FPF-E.17"
+source = "FPF-Spec/E_The FPF Constitution and Authoring Guides/16_17_Multi-View Publication Kit/03_E.17 - Multi-View Publication Kit.md"
+source_lines = "29-39"
+dset_surface = "050_dset-gov-specification-artifact-maintenance.md"
+disposition = "adapted"
+adaptation_scope = "Transparent non-authoritative derived views with canonical return paths and currentness"
+exclusions = ["FPF publication-kit views and formats", "FPF ontology and canonical identifiers"]
+
+[[source_provenance.sources.mappings]]
+pattern = "FPF-E.19"
+source = "FPF-Spec/E_The FPF Constitution and Authoring Guides/18_19_Pattern Quality Gates- Review and Refresh Profiles/00_E.19 - Pattern Quality Gates- Review and Refresh Profiles.md"
+source_lines = "84-90,120-124,174-201"
+dset_surface = "020_dset-tool-specification-build-rules.md"
+disposition = "adapted"
+adaptation_scope = "Baseline gates with risk-triggered review depth generalized to DSET Changes"
+exclusions = ["FPF Pattern quality-result semantics", "Certification or semantic-equivalence claims"]
+
+# Migrated canonical settings; this section is not an artifact ledger.
+[version_registry]
+schema_version = "1.2"
+
+[version_registry.framework]
+version = "0.3.1"
+versioning = "coordinated-product-package"
+
+[version_registry.python_package]
+name = "dset-spec-loops"
+version = "0.3.1"
+versioning = "coordinated-product-package"
+
+[version_registry.schemas]
+version = "1.2"
+versioning = "independent"
+
+[version_registry.released_validator]
+identity = "0.3-layered-migration-baseline-not-release"
+commit = "0a5e6c91e3628582d0aad8ba307554b91b1ae802"
+command = "python -m dset_toolchain check"
+assurance = "bootstrap-transition"
+
+[version_registry.candidate_validator]
+command = "python -m dset_toolchain check"
+
+[version_registry.bootstrap]
+manifest = "dset_settings.toml"
+governance_registry = "dset_settings.toml"
+precedence = "project-local-rule-then-selected-local-profile-then-failure"

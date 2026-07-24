@@ -1,0 +1,4 @@
+interface:
+  display_name: "DSET Implement"
+  short_description: "Execute authorized DSET implementation work"
+  default_prompt: "Use $dset-implement to resolve and run the repository-local implementation workflow."

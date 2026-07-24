@@ -1,0 +1,4 @@
+interface:
+  display_name: "DSET Decompose"
+  short_description: "Decompose a repository into governed work areas"
+  default_prompt: "Use $dset-decompose to resolve and run the repository-local decomposition workflow."

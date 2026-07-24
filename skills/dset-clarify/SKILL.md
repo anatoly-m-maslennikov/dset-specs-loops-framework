@@ -1,20 +1,19 @@
 ---
 name: dset-clarify
-description: Turn ambiguous product or domain intent into explicit DSET vocabulary, boundaries, invariants, requirements, scenarios, proof obligations, and decision records. Use before specification acceptance when a feature request has unresolved branches, overloaded terms, hidden actors or states, unclear ownership, conflicting edge cases, or premature solution choices.
+description: Turn ambiguous product or domain intent into decision-ready DSET vocabulary, boundaries, invariants, requirements, scenarios, proof obligations, alternatives, and remaining unknowns. Use before specification acceptance when unresolved branches, overloaded terms, hidden actors or states, unclear ownership, conflicting edge cases, or premature solution choices block a decision; stop before selecting a consequential answer or implementing it.
 ---
 
 # DSET Clarify
 
-This is the thin wrapper for the registered `domain-clarification` workflow. Repository-local governing documents own every substantive rule.
+This is the thin wrapper for `domain-clarification`; resolved repository-local documents own substantive behavior.
 
-## Bootstrap and invocation
+## Resolve
 
-1. Locate the repository root by walking upward to `dset/scopes/meta/dset.yaml` for schema 1.2 or legacy `dset/dset.yaml` for schema 1.0/1.1; stop if both authorities exist.
-2. Run `dset rules resolve domain-clarification --format json` or `python -m dset_toolchain rules resolve domain-clarification --format json`.
-3. Stop on any nonzero result. Never fall back to this wrapper, agent memory, an installed template, or remote framework prose.
-4. Before governed work, report the resolved workflow ID, profile/version, customization identity, ordered rule IDs and paths, wrapper identity, and conflicts.
-5. Read and apply the resolved governing documents in their returned order.
+1. Invoke the installed shared runtime exactly once with `dset skills context --skill dset-clarify --target TARGET --objective OBJECTIVE --llm-session-id LLM_SESSION_ID [--session-id SESSION_ID]`. Replace the host-session placeholder; reuse the explicit DSET `SESSION_ID` from a prior handoff and omit it only on initial DSET entry. Stop when the ID, launcher, or command is unavailable, and never select an alternate runtime.
+2. Verify and report the returned repository/Work Area, skill/workflow/mode, wrapper, ordered rule identities and digests, ruleset identity, conflict coverage, and run/session identity.
+3. Read the returned project-owned rule documents in order. Stop on an identity mismatch, unresolved conflict, required unavailable conflict coverage, or any returned stop status.
+4. Retain `run_id`, `session_id`, and `repository_root`. For an active specialist transition, invoke `dset runtime handoff RUN_ID REPOSITORY_ROOT --next-signal WORKFLOW`, return the same `session_id`, and require the next context call to pass it. Only a true session completion or stop invokes `dset runtime finish RUN_ID REPOSITORY_ROOT --status TERMINAL_STATUS`; report command failure.
 
 ## Handoff
 
-Apply only the authorization and output boundaries resolved from the repository. Return durable conclusions to their owning project artifacts. Without write authorization, return a proposed update and leave the repository unchanged.
+Return decision-ready alternatives and remaining unknowns. Route any authorized write through the resolved artifact owner and maintenance disposition; never edit an emitted atomic artifact. Return the session identity when available, recommend the next handoff, and stop before consequential selection or implementation.

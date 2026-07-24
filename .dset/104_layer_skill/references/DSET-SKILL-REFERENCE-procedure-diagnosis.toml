@@ -1,0 +1,6 @@
+schema_version = "1.0"
+artifact_type = "reference"
+target = "080_dset-skill-procedure-diagnosis.md"
+expected_role = "specification"
+scope = "skill"
+reason = "Applied project truth currently equals the installed methodology edition."

@@ -1,0 +1,239 @@
+# DSET project settings and manifest.
+#
+# This is the sole canonical DSET project configuration. It combines project
+# identity and topology with operator-controlled behavior. Repository-local
+# governing documents define the policies and values these settings may select.
+#
+# All settings below are optional at read time and show their executable
+# defaults explicitly. Keep the explicit values when copying this file so a
+# reviewer does not need to know parser fallbacks. Unknown settings fail
+# validation, which catches misspellings instead of silently ignoring them.
+#
+# New DSET writers use only this path: .dset/dset_settings.toml. Retired root
+# settings and split manifest paths are read-only migration inputs. Competing
+# configuration carriers fail closed.
+#
+# Settings schema implemented by this file.
+# Accepted for new writers: "1.8".
+schema_version = "1.8"
+canonical_command = "python -m dset_toolchain verify ."
+
+[paths]
+# Canonical project-local roots.
+control_root = ".dset"
+journal_root = ".dset_journal"
+runtime_root = ".dset_runtime"
+
+[git]
+# Every DSET-managed project uses Git. Initialization may create a repository
+# only when no enclosing repository exists.
+required = true
+initialize_if_missing = true
+commit_each_governed_change = true
+
+[artifacts]
+# Set the gate used before a new immutable atomic artifact is emitted.
+#
+# Accepted:
+# - "medium" (default): require clear authority, one primary claim, registered
+#   type/subtype, owning scope, provenance, material links, priority, and
+#   acceptance.
+#   Optional non-authoritative context may remain explicitly unknown.
+# - "high": also require every material boundary, lineage, conflict, and proof
+#   question to be precise. DSET asks focused questions or stops without writing
+#   until the atom can safely remain immutable.
+#
+# Both values check whether the claim may belong one enabled scope higher and
+# propose eligible promotion. Promotion always requires operator acceptance.
+creation_strictness = "medium"
+
+# Enable only catalog entries used by this project. Unknown or disabled types
+# and subtypes fail closed. External and relational types additionally require
+# their Governance locus below.
+enabled_types = [
+  "requirement",
+  "implementation_decision",
+  "question",
+  "problem",
+  "test_plan",
+  "evaluation_plan",
+  "rationale",
+  "analysis_report",
+  "evidence_record",
+  "specification",
+  "procedure",
+  "navigation",
+  "verification",
+]
+enabled_subtypes = [
+  "question:risk",
+  "question:opportunity",
+  "problem:defect",
+  "problem:gap",
+  "problem:debt",
+]
+
+[artifacts.identity]
+# Project prefixes are optional. Disable for one small isolated namespace;
+# enable for monorepos, multiple DSET projects, or shared artifact namespaces.
+project_prefix_enabled = true
+project_prefix = "DSET"
+scope_path_in_ids = true
+subtype_in_names = false
+
+[artifacts.routing]
+# Enable the three independent META routing axes.
+#
+# The framework catalog defines every route. These lists select which registered
+# routes a project may use. `internal` is mandatory. Add `external` when the
+# project governs outside-owned inputs or constraints. Add `relation` when the
+# project governs explicit boundaries or interactions.
+revision_modes = ["atomic", "append_only", "maintained"]
+content_roles = [
+  "inquiry",
+  "analysis",
+  "definition",
+  "method",
+  "implementation",
+  "observation",
+]
+governance_loci = ["internal"]
+
+[workflows]
+# Development is the ordinary loop. Release readiness is mandatory before a
+# Version may be declared ready.
+default_mode = "development"
+release_mode = "release_readiness"
+
+[workflows.implement]
+# Choose what dset-implement may do before implementation begins.
+#
+# Accepted:
+# - "lazy" (default): reconcile missing accepted authority from the session,
+#   then create or update separate Test/Evaluation plans and the implementation
+#   plan as needed before implementing. Completed prerequisites are skipped.
+# - "strict": perform implementation only from already sufficient accepted
+#   artifacts. Missing or ambiguous inputs stop; DSET does not create or repair
+#   authority artifacts or plans and never falls back to lazy mode.
+#
+# Example lazy chain:
+# authority -> refresh views when required -> plan-proof -> plan-implementation -> implement
+mode = "lazy"
+
+[interaction]
+# "silent" reports durable changes, blockers, approvals, and material
+# deviations. "verbose" additionally reports mode selection, skill chains, and
+# gate transitions. Presentation never changes authorization or validation.
+reporting_mode = "silent"
+
+[maintained_views]
+# Refresh thin maintained semantic views only on explicit request or when a
+# downstream entry gate requires a current view. Refresh is reasoned synthesis,
+# not concatenation or mechanical compilation.
+refresh_mode = "on_demand"
+skill = "dset-refresh"
+
+[governance_surfaces]
+# DSET starts atomic-first. These named, optional surfaces become governed only
+# when explicitly activated. Activation adds currentness and entry-gate
+# obligations for that surface; deactivation preserves its carrier and Git
+# history but removes those obligations.
+#
+# Use `dset configure ROOT status` to inspect the effective state.
+# Use `dset configure ROOT activate SURFACE` or `deactivate SURFACE` to preview
+# a change; append `--execute` only after accepting the preview.
+maintained_specification = false
+test_plan = false
+evaluation_plan = false
+implementation_plan = false
+project_overview = false
+architecture_view = false
+
+[changes]
+# Select the default Git workspace for a newly created Change when the caller
+# does not request a mode explicitly.
+#
+# Accepted:
+# - "integration-branch" (default): place the Change on the project's configured
+#   integration branch, normally dev. The protected branch, normally main,
+#   remains the base for delivery.
+# - "branch-worktree": create an isolated dset/<change-slug> branch/worktree
+#   based on the integration branch. This is useful for concurrent Changes.
+#
+# An explicit per-Change request overrides this default. The project manifest
+# still owns the actual integration and protected branch names.
+default_workspace = "integration-branch"
+
+[delegation]
+# Select the registered multi-agent breadth budget. The selected profile changes
+# exploration/review breadth, never the accepted scope, safety boundary, or
+# required Tests/Evaluations. Operator instructions override the profile.
+#
+# Accepted profiles are defined by `010_dset-skill-budget.toml`:
+# - "low": 0-1 subagents, depth 1, one round.
+# - "medium" (default): target 2 and maximum 3 subagents, depth 1, two rounds.
+# - "high": 4-6 subagents, depth 2, three rounds.
+#
+# Subagents inherit the main session's model and reasoning effort by default.
+# A cheaper token price alone is not evidence of lower total task cost.
+budget_profile = "medium"
+
+[priority]
+# Complete stored priority vocabulary. `highest` is intentionally absent
+# because it exists only as a virtual comparison result.
+#
+# Future work is placed in a named Version Roadmap; it does not use a
+# `deferred` priority.
+scale = ["high", "medium", "low"]
+
+# Priority assigned when a governed artifact has neither a direct value nor an
+# inherited value from its canonical owner.
+#
+# Accepted: `high`, `medium`, or `low`. Default: "medium".
+default = "medium"
+
+[priority.creation_defaults]
+constraint = "high"
+contract = "medium"
+requirement = "medium"
+implementation_decision = "medium"
+implementation = "low"
+other = "medium"
+
+[priority.comparison]
+# Add each bonus once when comparing two applicable artifacts; never multiply
+# by the number of skipped structural levels or layers.
+strict_scope_ancestor_steps = 1
+earlier_layer_steps = 1
+bonuses_are_additive = true
+cap = "highest"
+layer_order = ["meta", "gov", "tool", "skill", "implementation", "ops"]
+peer_features_are_ordered = false
+unrelated_scopes_receive_bonus = false
+
+[conflict_resolution]
+# Accepted: "ask_always" or "auto_by_effective_priority".
+# Default: "ask_always".
+mode = "ask_always"
+allowed_modes = ["ask_always", "auto_by_effective_priority"]
+automatic_requires_unique_winner = true
+tie_or_same_level = "ask"
+unknown_uncertain_or_incomparable = "ask"
+unsatisfiable_external_obligations = "stop"
+
+# Implementation Profiles are peer features in the IMPL layer. A project may
+# select more than one and assign each to explicit work-area IDs. Selection is
+# authoritative; conformance lives in Test/Evaluation evidence and Verification.
+#
+# Example for a small Python repository:
+#
+# [[profiles.implementation]]
+# id = "local-python-tools-v1"
+# version = "1.0"
+# work_areas = ["cli", "tests", "scripts"]
+#
+# Other possible peer profiles include:
+# - long-running-python-tools-v1
+# - containerized-python-applications-v1
+# - electron-typescript-applications-v1
+# - obsidian-plugin-v1, extending the Electron/TypeScript baseline

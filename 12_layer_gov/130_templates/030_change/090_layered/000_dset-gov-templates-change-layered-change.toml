@@ -1,0 +1,47 @@
+schema_version = "1.2"
+id = "{{change_id}}"
+slug = "{{change_slug}}"
+profile = "{{profile}}"
+status = "proposed"
+priority = "medium"
+primary_layer = "{{layer}}"
+affected_layers = ["{{layer}}"]
+dependencies = []
+llm_session_ids = []
+packages = ["{{package_id}}"]
+intake = []
+requirements = ["{{project_key}}-REQUIREMENT{{id_layer}}-001"]
+tests = ["{{project_key}}-TEST-PLAN{{id_layer}}-001"]
+evals = ["{{project_key}}-EVAL-PLAN{{id_layer}}-001"]
+decisions = []
+contracts = ["{{project_key}}-CONTRACT{{id_layer}}-001"]
+stories = []
+outcomes = []
+
+[workspace]
+isolation = "integration-branch"
+branch = "pending"
+base_ref = "pending"
+base_commit = "pending"
+head_commit = "pending"
+
+[target]
+repository = true
+work_areas = []
+
+[pull_request]
+repository = "{{repository}}"
+number = "pending"
+url = "pending"
+
+[release]
+policy = "dset/scopes/ops/governance/release.md"
+class = "pending"
+target = "pending"
+readiness = "pending"
+candidate_commit = "pending"
+
+[release.base]
+ref = "pending"
+commit = "pending"
+version = "pending"

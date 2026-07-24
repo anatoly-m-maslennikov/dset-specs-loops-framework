@@ -1,14 +1,23 @@
+"""Provide DSET scaffold behavior."""
+
 from __future__ import annotations
 
 import re
 from collections.abc import Sequence
 from pathlib import Path
 
-from .layout import discover_layout
+from .layout import (
+    LAYER_ID_TOKENS,
+    RepositoryLayout,
+    discover_layout,
+    normalize_layer_id_token,
+)
 from .profiles import VALID_PROFILES, required_artifacts
-from .yaml_subset import dump, load
+from .settings import load_project_settings
+from .structured_data import dump, load
 
-TRACE_LAYERS = ("META", "GOV", "TOOL", "SKILL", "OPS")
+# TRACE_LAYERS defines trace layers; this module owns the default.
+TRACE_LAYERS = tuple(LAYER_ID_TOKENS.values())
 
 
 def create_change(
@@ -22,64 +31,104 @@ def create_change(
     work_areas: Sequence[str] | None = None,
     workspace_mode: str | None = None,
 ) -> Path:
-    if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", change_id):
-        raise ValueError("change ID must be lowercase kebab-case")
-    if profile not in VALID_PROFILES:
-        raise ValueError(f"unknown profile: {profile}")
+    """Create a Change workspace from the selected repository profile."""
     layout = discover_layout(root)
-    if layout.layered and layer is None:
-        raise ValueError("schema 1.2 changes require an owning DSET layer")
-    change_target = _change_target(root, work_areas)
-    canonical_id = change_id
-    if layout.layered:
-        canonical_id = stable_id or _next_change_id(root, str(layer))
-        expected = (
-            rf"{re.escape(_project_key(root))}-CHANGE-{str(layer).upper()}-[0-9]{{3,}}"
-        )
-        if re.fullmatch(expected, canonical_id) is None:
-            raise ValueError("stable Change ID must match its project and owning layer")
+    _validate_change_request(change_id, profile, layout.layered, layer)
+    canonical_id = _canonical_change_id(root, change_id, layer, stable_id)
     destination = layout.active_change_root(layer) / change_id
     if destination.exists():
         raise FileExistsError(f"change already exists: {destination}")
     files, directories = required_artifacts(root, profile)
-    display_title = title or change_id.replace("-", " ").title()
-    project_key = _project_key(root)
-    id_layer = _id_layer(root, layer)
-    replacements = {
+    replacements = _change_replacements(
+        root, canonical_id, change_id, package_id, profile, title, layer
+    )
+    _materialize_change(
+        root,
+        destination,
+        files,
+        directories,
+        replacements,
+        package_id,
+        canonical_id,
+        change_id,
+        layer,
+        _change_target(root, work_areas),
+        workspace_mode,
+    )
+    return destination
+
+
+def _validate_change_request(
+    change_id: str, profile: str, layered: bool, layer: str | None
+) -> None:
+    """Validate the user-controlled Change identity inputs."""
+    if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", change_id):
+        raise ValueError("change ID must be lowercase kebab-case")
+    if profile not in VALID_PROFILES:
+        raise ValueError(f"unknown profile: {profile}")
+    if layered and layer is None:
+        raise ValueError("schema 1.2 changes require an owning DSET layer")
+
+
+def _canonical_change_id(
+    root: Path, change_id: str, layer: str | None, stable_id: str | None
+) -> str:
+    """Return the stable Change ID appropriate to the repository layout."""
+    if not discover_layout(root).layered:
+        return change_id
+    canonical_id = stable_id or _next_change_id(root, str(layer))
+    expected = (
+        rf"{re.escape(_project_key(root))}-CHANGE-{str(layer).upper()}-[0-9]{{3,}}"
+    )
+    if re.fullmatch(expected, canonical_id) is None:
+        raise ValueError("stable Change ID must match its project and owning layer")
+    return canonical_id
+
+
+def _change_replacements(
+    root: Path,
+    canonical_id: str,
+    change_id: str,
+    package_id: str,
+    profile: str,
+    title: str | None,
+    layer: str | None,
+) -> dict[str, str]:
+    """Build the complete placeholder map for Change templates."""
+    return {
         "{{change_id}}": canonical_id,
         "{{change_slug}}": change_id,
         "{{package_id}}": package_id,
         "{{profile}}": profile,
-        "{{title}}": display_title,
-        "{{project_key}}": project_key,
-        "{{id_layer}}": id_layer,
+        "{{title}}": title or change_id.replace("-", " ").title(),
+        "{{project_key}}": _project_key(root),
+        "{{id_layer}}": _id_layer(root, layer),
         "{{layer}}": str(layer).lower() if layer is not None else "",
         "{{repository}}": _repository(root),
     }
+
+
+def _materialize_change(
+    root: Path,
+    destination: Path,
+    files: set[str],
+    directories: set[str],
+    replacements: dict[str, str],
+    package_id: str,
+    canonical_id: str,
+    change_id: str,
+    layer: str | None,
+    change_target: dict[str, object] | None,
+    workspace_mode: str | None,
+) -> None:
+    """Copy selected templates and finish the layered manifest transaction."""
+    layout = discover_layout(root)
     destination.mkdir(parents=True)
     try:
-        for directory in sorted(directories):
-            (destination / directory).mkdir(parents=True, exist_ok=True)
-        for relative in sorted(files):
-            template_relative = Path("change") / relative
-            if relative == "change.yaml":
-                template_family = "layered" if layout.layered else "legacy"
-                template_relative = Path("change") / template_family / relative
-            source = layout.find_template(template_relative)
-            target = destination / relative
-            _copy_template(source, target, replacements)
-        if "specs" in directories:
-            source = layout.find_template("change/specs/package.md")
-            target = destination / "specs" / f"{package_id}.md"
-            _copy_template(source, target, replacements)
-        if "proofs" in directories:
-            source = layout.find_template("change/proofs/README.md")
-            target = destination / "proofs" / "README.md"
-            _copy_template(source, target, replacements)
-        if "proofs/candidate-fit" in directories:
-            source = layout.find_template("change/proofs/candidate-fit/README.md")
-            target = destination / "proofs" / "candidate-fit" / "README.md"
-            _copy_template(source, target, replacements)
+        _copy_change_templates(layout, destination, files, directories, replacements)
+        _copy_optional_change_hubs(
+            layout, destination, directories, package_id, replacements
+        )
         if layout.layered:
             _materialize_layered_manifest(
                 root,
@@ -93,12 +142,70 @@ def create_change(
     except Exception:
         _remove_tree(destination)
         raise
-    return destination
+
+
+def _copy_change_templates(
+    layout: RepositoryLayout,
+    destination: Path,
+    files: set[str],
+    directories: set[str],
+    replacements: dict[str, str],
+) -> None:
+    """Copy profile-selected directories and file templates."""
+    for directory in sorted(directories):
+        (destination / directory).mkdir(parents=True, exist_ok=True)
+    for relative in sorted(files):
+        template = Path("change") / relative
+        relative_path = Path(relative)
+        if relative_path.stem == "change" and relative_path.suffix in {
+            ".toml",
+            ".yaml",
+            ".yml",
+        }:
+            family = "layered" if layout.layered else "legacy"
+            template = Path("change") / family / relative_path
+        _copy_template(
+            layout.find_template(template),
+            destination / relative,
+            replacements,
+        )
+
+
+def _copy_optional_change_hubs(
+    layout: RepositoryLayout,
+    destination: Path,
+    directories: set[str],
+    package_id: str,
+    replacements: dict[str, str],
+) -> None:
+    """Copy package and proof hubs selected by the profile."""
+    selected = {
+        "specs": ("change/specs/package.md", f"specs/{package_id}.md"),
+        "proofs": ("change/proofs/README.md", "proofs/README.md"),
+        "proofs/candidate-fit": (
+            "change/proofs/candidate-fit/README.md",
+            "proofs/candidate-fit/README.md",
+        ),
+    }
+    for directory, (source, target) in selected.items():
+        if directory in directories:
+            _copy_template(
+                layout.find_template(source),
+                destination / target,
+                replacements,
+            )
 
 
 def _copy_template(source: Path, target: Path, replacements: dict[str, str]) -> None:
+    """Handle template using the declared repository contract."""
     if not source.is_file():
         raise FileNotFoundError(f"template is missing: {source}")
+    structured = {".toml", ".yaml", ".yml"}
+    if target.suffix in structured and source.suffix in structured:
+        data = _replace_values(load(source), replacements)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(dump(data, target), encoding="utf-8")
+        return
     text = source.read_text(encoding="utf-8")
     for old, new in replacements.items():
         text = text.replace(old, new)
@@ -106,7 +213,20 @@ def _copy_template(source: Path, target: Path, replacements: dict[str, str]) -> 
     target.write_text(text, encoding="utf-8")
 
 
+def _replace_values(value: object, replacements: dict[str, str]) -> object:
+    """Handle values using the declared repository contract."""
+    if isinstance(value, dict):
+        return {key: _replace_values(item, replacements) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_replace_values(item, replacements) for item in value]
+    if isinstance(value, str):
+        for old, new in replacements.items():
+            value = value.replace(old, new)
+    return value
+
+
 def _project_key(root: Path) -> str:
+    """Handle key using the declared repository contract."""
     data = load(discover_layout(root).manifest_path)
     project = data.get("project", {}) if isinstance(data, dict) else {}
     key = project.get("key") if isinstance(project, dict) else None
@@ -116,11 +236,10 @@ def _project_key(root: Path) -> str:
 
 
 def _id_layer(root: Path, layer: str | None) -> str:
+    """Handle layer using the declared repository contract."""
     if layer is None:
         return ""
-    normalized = layer.upper()
-    if normalized not in TRACE_LAYERS:
-        raise ValueError(f"unknown ID layer: {layer}")
+    normalized = normalize_layer_id_token(layer)
     layout = discover_layout(root)
     if layout.layered:
         return f"-{normalized}"
@@ -144,6 +263,7 @@ def _repository(root: Path) -> str:
 def _change_target(
     root: Path, work_areas: Sequence[str] | None
 ) -> dict[str, object] | None:
+    """Handle target using the declared repository contract."""
     layout = discover_layout(root)
     requested = list(work_areas or ())
     if not layout.layered:
@@ -175,16 +295,18 @@ def _change_target(
 
 
 def _next_change_id(root: Path, layer: str) -> str:
+    """Handle change id using the declared repository contract."""
     layout = discover_layout(root)
-    normalized = layer.upper()
-    if normalized not in TRACE_LAYERS:
-        raise ValueError(f"unknown ID layer: {layer}")
+    normalized = normalize_layer_id_token(layer)
     prefix = f"{_project_key(root)}-CHANGE-{normalized}-"
     highest = 0
     for change_root in (*layout.active_change_roots, *layout.archive_change_roots):
         if not change_root.is_dir():
             continue
-        for manifest in change_root.glob("*/change.yaml"):
+        for directory in change_root.iterdir():
+            manifest = layout.structured_file(directory, "change.toml")
+            if not directory.is_dir() or not manifest.is_file():
+                continue
             data = load(manifest)
             identifier = data.get("id") if isinstance(data, dict) else None
             if isinstance(identifier, str) and identifier.startswith(prefix):
@@ -203,7 +325,8 @@ def _materialize_layered_manifest(
     target: dict[str, object] | None,
     workspace_mode: str | None,
 ) -> None:
-    path = destination / "change.yaml"
+    """Handle layered manifest using the declared repository contract."""
+    path = discover_layout(root).structured_file(destination, "change.toml")
     data = load(path)
     if not isinstance(data, dict):
         raise ValueError("change template root must be a mapping")
@@ -224,25 +347,23 @@ def _materialize_layered_manifest(
     release = data.get("release")
     if isinstance(release, dict):
         if "policy" in release:
-            release["policy"] = "dset/scopes/ops/governance/release.md"
+            release["policy"] = ".dset/000_dset_methodology/06_ops/procedure-release.md"
         if "owner_change" in release:
             release["owner_change"] = stable_id
-    path.write_text(dump(data), encoding="utf-8")
+    path.write_text(dump(data, path), encoding="utf-8")
 
 
 def _workspace_for_change(
     root: Path, slug: str, requested_mode: str | None
 ) -> dict[str, str]:
+    """Handle for change using the declared repository contract."""
     manifest = load(discover_layout(root).manifest_path)
     if not isinstance(manifest, dict):
         raise ValueError("project manifest must be a mapping")
-    change_contract = manifest.get("change_contract", {})
-    configured_mode = (
-        change_contract.get("workspace_default")
-        if isinstance(change_contract, dict)
-        else None
-    )
-    mode = requested_mode or configured_mode
+    settings, settings_issues = load_project_settings(root)
+    if settings_issues:
+        raise ValueError("; ".join(settings_issues))
+    mode = requested_mode or settings.change_workspace_mode
     if mode not in {"integration-branch", "branch-worktree"}:
         raise ValueError("workspace mode must be integration-branch or branch-worktree")
     release = manifest.get("release", {})

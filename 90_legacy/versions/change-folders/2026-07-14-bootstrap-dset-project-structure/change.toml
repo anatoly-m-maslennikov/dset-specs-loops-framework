@@ -1,0 +1,45 @@
+schema_version = "1.2"
+id = "DSET-CHANGE-GOV-001"
+slug = "bootstrap-dset-project-structure"
+profile = "standard"
+status = "archived"
+primary_layer = "gov"
+affected_layers = ["meta", "gov", "ops"]
+dependencies = []
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+packages = ["methodology"]
+intake = []
+decisions = []
+contracts = []
+stories = []
+outcomes = []
+requirements = ["DSET-REQUIREMENT-GOV-001", "DSET-REQUIREMENT-GOV-002", "DSET-REQUIREMENT-META-001", "DSET-REQUIREMENT-OPS-001", "DSET-REQUIREMENT-GOV-003"]
+tests = ["DSET-TEST-PLAN-GOV-001", "DSET-TEST-PLAN-GOV-002", "DSET-TEST-PLAN-META-001", "DSET-TEST-PLAN-OPS-001", "DSET-TEST-PLAN-GOV-003", "DSET-TEST-PLAN-GOV-004"]
+evals = ["DSET-EVAL-PLAN-GOV-001", "DSET-EVAL-PLAN-GOV-002", "DSET-EVAL-PLAN-GOV-003", "DSET-EVAL-PLAN-GOV-004"]
+
+[workspace]
+isolation = "branch-worktree"
+branch = "codex/dset-project-structure"
+base_ref = "main"
+base_commit = "67fd0dd124fab3309e70790cc62d803ee7718159"
+head_commit = "92340e57e508bf896a00dc75a2efb46b6ad680e3"
+
+[target]
+repository = true
+work_areas = []
+
+[pull_request]
+repository = "anatoly-m-maslennikov/dset-specs-loops-framework"
+number = 2
+url = "https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/2"
+
+[release]
+owner_change = "DSET-CHANGE-SKILL-001"
+
+[archive]
+date = "2026-07-14"
+path = "dset/scopes/gov/changes/archive/2026-07-14-bootstrap-dset-project-structure"
+
+[[related_pull_requests]]
+number = 3
+role = "acceptance-and-merge"

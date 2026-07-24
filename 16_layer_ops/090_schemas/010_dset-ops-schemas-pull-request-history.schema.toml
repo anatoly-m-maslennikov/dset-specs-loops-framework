@@ -1,0 +1,58 @@
+"$schema" = "https://json-schema.org/draft/2020-12/schema"
+"$id" = "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/.dset/000_dset_methodology/06_ops/schemas/pull-request-history.schema.toml"
+title = "DSET GitHub PR history snapshot"
+type = "object"
+required = ["schema_version", "repository", "authoritative_source", "observed_on", "pull_requests"]
+additionalProperties = false
+
+[properties]
+
+[properties.schema_version]
+const = 1.0
+
+[properties.repository]
+type = "string"
+
+[properties.authoritative_source]
+const = "github"
+
+[properties.observed_on]
+type = "string"
+format = "date"
+
+[properties.pull_requests]
+type = "array"
+
+[properties.pull_requests.items]
+type = "object"
+required = ["number", "title", "state", "base", "head", "url"]
+additionalProperties = false
+
+[properties.pull_requests.items.properties]
+
+[properties.pull_requests.items.properties.number]
+type = "integer"
+minimum = 1
+
+[properties.pull_requests.items.properties.title]
+type = "string"
+
+[properties.pull_requests.items.properties.state]
+enum = ["open", "merged", "closed"]
+
+[properties.pull_requests.items.properties.draft]
+type = "boolean"
+
+[properties.pull_requests.items.properties.base]
+type = "string"
+
+[properties.pull_requests.items.properties.head]
+type = "string"
+
+[properties.pull_requests.items.properties.merge_commit]
+type = ["string", "null"]
+pattern = "^[0-9a-f]{40}$"
+
+[properties.pull_requests.items.properties.url]
+type = "string"
+format = "uri"

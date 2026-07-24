@@ -1,0 +1,9 @@
+schema_version = "1.0"
+artifact_type = "lifecycle_event"
+artifact_id = "DSET-LIFECYCLE-EVENT-074"
+atom_id = "DSET-DECISION-SKILL-002"
+event = "absorbed"
+occurred_at = "2026-07-21T06:00:00+04:00"
+related = ["DSET-DECISION-SKILL-003"]
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+rationale = "The successor retains all sixteen lifecycle entrypoints and adds one supplemental read-only Overview entrypoint without changing lifecycle routing."

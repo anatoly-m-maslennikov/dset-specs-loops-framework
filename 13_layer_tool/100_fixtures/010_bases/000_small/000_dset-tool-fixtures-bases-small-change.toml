@@ -1,0 +1,32 @@
+schema_version = 1.1
+id = "fixture-small"
+profile = "small"
+status = "proposed"
+priority = "medium"
+packages = ["example"]
+llm_session_ids = []
+intake = []
+requirements = ["DSET-REQUIREMENT-001"]
+tests = ["DSET-TEST-PLAN-001"]
+evals = []
+decisions = []
+contracts = []
+stories = []
+outcomes = []
+
+[pull_request]
+repository = "example/project"
+number = "pending"
+url = "pending"
+
+[release]
+policy = "dset/governance/release.md"
+class = "pending"
+target = "pending"
+readiness = "TEST-READINESS-RECORD-001-release.md"
+candidate_commit = "pending"
+
+[release.base]
+ref = "pending"
+commit = "pending"
+version = "pending"

@@ -1,3 +1,10 @@
+"""Verify DSET cli behavior.
+
+Assurance scope: deterministic behavior owned by this module.
+Non-obvious fixtures: documented by the fixture that owns them.
+Host requirements: an isolated supported Python environment.
+"""
+
 from __future__ import annotations
 
 import contextlib
@@ -6,11 +13,15 @@ import unittest
 from pathlib import Path
 
 from dset_toolchain.cli import main
+from tests import repository_root
 
-ROOT = Path(__file__).resolve().parents[1]
+# ROOT locates the repository fixture; repository layout is authoritative.
+ROOT = repository_root(Path(__file__))
 
 
 class CliTests(unittest.TestCase):
+    """Verify cli behavior."""
+
     def test_trace_prints_without_writing(self) -> None:
         stream = io.StringIO()
         with contextlib.redirect_stdout(stream):

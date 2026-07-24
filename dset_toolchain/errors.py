@@ -1,3 +1,5 @@
+"""Provide DSET errors behavior."""
+
 from __future__ import annotations
 
 import contextlib
@@ -7,11 +9,14 @@ from pathlib import Path
 
 @dataclass
 class DsetCommandError(ValueError):
+    """Represent dset command error failures."""
+
     code: str
     path: Path
     message: str
 
     def render(self, root: Path | None = None) -> str:
+        """Render render using the declared repository contract."""
         path = self.path
         if root is not None:
             with contextlib.suppress(ValueError):

@@ -1,21 +1,35 @@
+"""Verify DSET fixtures behavior.
+
+Assurance scope: deterministic behavior owned by this module.
+Non-obvious fixtures: documented by the fixture that owns them.
+Host requirements: an isolated supported Python environment.
+"""
+
 from __future__ import annotations
 
 import shutil
-import tempfile
 import unittest
 from pathlib import Path
 from typing import Any, TypedDict, cast
 
 from dset_toolchain.adopter import create_adopter
 from dset_toolchain.layout import discover_layout
+from dset_toolchain.temp_paths import temporary_directory
 from dset_toolchain.validation import validate_change
-from dset_toolchain.yaml_subset import dump, load
+from dset_toolchain.structured_data import dump, load
+from tests import repository_root
 
-ROOT = Path(__file__).resolve().parents[1]
-FIXTURES = discover_layout(ROOT).fixtures_root
+# ROOT locates the repository fixture; repository layout is authoritative.
+ROOT = repository_root(Path(__file__))
+# LAYOUT defines layout; this module owns the default.
+LAYOUT = discover_layout(ROOT)
+# FIXTURES defines fixtures; this module owns the default.
+FIXTURES = LAYOUT.fixtures_root
 
 
 class FixtureCase(TypedDict, total=False):
+    """Represent fixture case behavior and state."""
+
     id: str
     base: str
     expected: str
@@ -27,12 +41,16 @@ class FixtureCase(TypedDict, total=False):
 
 
 class FixtureTests(unittest.TestCase):
+    """Verify fixture behavior."""
+
     def test_fixture_matrix(self) -> None:
-        matrix = cast(dict[str, Any], load(FIXTURES / "cases.yaml"))
+        matrix = cast(
+            dict[str, Any], load(LAYOUT.structured_file(FIXTURES, "cases.toml"))
+        )
         cases = cast(list[FixtureCase], matrix["cases"])
         for case in cases:
-            with self.subTest(case=case["id"]), tempfile.TemporaryDirectory() as raw:
-                project = Path(raw) / "legacy-adopter"
+            with self.subTest(case=case["id"]), temporary_directory() as raw:
+                project = (Path(raw) / "legacy-adopter").resolve()
                 create_adopter(ROOT, project)
                 change = self._materialize(case, project / "cases")
                 archived = case.get("status") == "archived"
@@ -53,27 +71,27 @@ class FixtureTests(unittest.TestCase):
                     self.assertEqual(codes[0], case["expected"])
 
     def test_legacy_adrs_field_is_accepted_only_for_schema_1_0(self) -> None:
-        with tempfile.TemporaryDirectory() as raw:
-            project = Path(raw) / "legacy-adopter"
+        with temporary_directory() as raw:
+            project = (Path(raw) / "legacy-adopter").resolve()
             create_adopter(ROOT, project)
             target = project / "cases"
             target.mkdir()
             source = FIXTURES / "bases" / "small"
             change = target / "fixture-small"
             shutil.copytree(source, change)
-            manifest = change / "change.yaml"
+            manifest = discover_layout(project).structured_file(change, "change.toml")
             data = cast(dict[str, Any], load(manifest))
             data["schema_version"] = 1.0
             for field in ("release", "intake", "decisions", "contracts"):
                 data.pop(field, None)
             data["adrs"] = []
-            manifest.write_text(dump(data), encoding="utf-8")
+            manifest.write_text(dump(data, manifest), encoding="utf-8")
             self.assertEqual(validate_change(project, change, archived=False), [])
 
             data["schema_version"] = 1.1
             data["decisions"] = []
             data["contracts"] = []
-            manifest.write_text(dump(data), encoding="utf-8")
+            manifest.write_text(dump(data, manifest), encoding="utf-8")
             self.assertIn(
                 "DSET-E106",
                 {
@@ -83,11 +101,12 @@ class FixtureTests(unittest.TestCase):
             )
 
     def _materialize(self, case: FixtureCase, target: Path) -> Path:
+        """Handle materialize using the declared repository contract."""
         source = FIXTURES / "bases" / case["base"]
-        data = cast(dict[str, Any], load(source / "change.yaml"))
+        data = cast(dict[str, Any], load(LAYOUT.structured_file(source, "change.toml")))
         change = target / cast(str, data["id"])
         shutil.copytree(source, change)
-        manifest = change / "change.yaml"
+        manifest = LAYOUT.structured_file(change, "change.toml")
         data = cast(dict[str, Any], load(manifest))
         if "status" in case:
             data["status"] = case["status"]
@@ -102,7 +121,7 @@ class FixtureTests(unittest.TestCase):
                 "date": date,
                 "path": f"dset/changes/archive/{date}-{data['id']}",
             }
-        manifest.write_text(dump(data), encoding="utf-8")
+        manifest.write_text(dump(data, manifest), encoding="utf-8")
         for relative in case.get("remove", []):
             path = change / relative
             if path.is_dir():

@@ -1,0 +1,6 @@
+schema_version = "1.0"
+artifact_type = "reference"
+target = "020_dset-implementation-local-python-tools-profile-v1.toml"
+expected_role = "configuration"
+scope = "implementation"
+reason = "This project selects the installed Local Python Tools machine profile for its declared Python work areas; the sibling specification explains its intent and edge cases."

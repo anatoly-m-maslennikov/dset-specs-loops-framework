@@ -1,0 +1,41 @@
+schema_version = "1.2"
+id = "DSET-CHANGE-TOOL-001"
+slug = "operationalize-dset-v1"
+profile = "standard"
+status = "archived"
+primary_layer = "tool"
+affected_layers = ["gov", "tool", "skill", "ops"]
+dependencies = []
+llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
+packages = ["methodology"]
+intake = []
+decisions = []
+contracts = []
+stories = []
+outcomes = []
+requirements = ["DSET-REQUIREMENT-TOOL-001", "DSET-REQUIREMENT-TOOL-002", "DSET-REQUIREMENT-TOOL-003", "DSET-REQUIREMENT-TOOL-004", "DSET-REQUIREMENT-SKILL-001", "DSET-REQUIREMENT-OPS-007"]
+tests = ["DSET-TEST-PLAN-TOOL-001", "DSET-TEST-PLAN-TOOL-002", "DSET-TEST-PLAN-TOOL-003", "DSET-TEST-PLAN-TOOL-004", "DSET-TEST-PLAN-TOOL-005", "DSET-TEST-PLAN-SKILL-001", "DSET-TEST-PLAN-OPS-007", "DSET-TEST-PLAN-GOV-006"]
+evals = ["DSET-EVAL-PLAN-GOV-005", "DSET-EVAL-PLAN-OPS-005", "DSET-EVAL-PLAN-SKILL-001", "DSET-EVAL-PLAN-GOV-006"]
+
+[workspace]
+isolation = "branch-worktree"
+branch = "dev"
+base_ref = "main"
+base_commit = "f340e28316aa92341784ce8e1a853039abf5acc6"
+head_commit = "c9d29f102df2966af926af2dc9919ea17d049efb"
+
+[target]
+repository = true
+work_areas = []
+
+[pull_request]
+repository = "anatoly-m-maslennikov/dset-specs-loops-framework"
+number = 7
+url = "https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7"
+
+[release]
+owner_change = "DSET-CHANGE-SKILL-001"
+
+[archive]
+date = "2026-07-14"
+path = "dset/scopes/tool/changes/archive/2026-07-14-operationalize-dset-v1"

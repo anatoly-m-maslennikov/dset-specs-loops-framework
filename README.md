@@ -2,136 +2,208 @@
 
 **A framework for production vibecoding.**
 
-DSET expands to **Domain–Supportability–Evals–Tests**.
+DSET expands to **Domain–Supportability–Evals–Tests**. “Spec” remains in the
+name because every iteration is a governed specification loop; it is not the
+`S` in DSET.
 
-“Spec” remains in the name because every iteration is a governed spec loop; it is not the `S` in DSET.
+DSET treats natural language as a high-leverage development interface while
+keeping production work grounded in explicit domain truth, accepted atomic
+decisions, supportability, deterministic tests, qualitative or probabilistic
+evaluations, implementation plans, provenance, and verifiable evidence.
 
-The framework treats natural language as a high-leverage programming interface while keeping durable software grounded in explicit domain models, accepted behavioral specifications, production supportability, deterministic tests, qualitative or probabilistic evals, implementation plans, and machine-verifiable gates.
+## What this repository contains
 
-## Purpose
+This repository is both:
 
-This repository is the public source for the DSET framework, executable toolchain, reusable artifact contracts, and focused agent workflows. It also dogfoods DSET as an adopting project.
+- the public source of the portable DSET framework, Python toolchain, schemas,
+  templates, governing documents, and 18 agent-facing skills; and
+- a recursive DSET adopter whose own development artifacts exercise that
+  framework.
 
-## Boundaries
+The two roles are deliberately separated:
 
-Framework rules and release assets live here. Each adopting repository owns its own behavioral truth and changes under its local `dset/` root. Installed skills, cached tooling, private working notes, and external project artifacts are not independent framework authorities.
+| Surface | Role |
+|---|---|
+| `10_project` and `11_layer_meta` through `16_layer_ops` | Reusable framework source organized by project and ordered layers |
+| `50_versions` | Public framework edition and release projections |
+| `000_dset-methodology-hub.md` | Installed project-local methodology resolved by thin skills |
+| `DSET-PROJECT-HUB.md` and `DSET-META-HUB.md` through `DSET-OPS-HUB.md` | This repository's applied project and six layer artifacts, including Implementation Profiles |
+| `DSET-VERSIONS-HUB.md` | This repository's applied Version artifacts and Changes |
+| `.dset_runtime/` | Local resumable sessions and generated views; never project authority |
 
-## Core loop
+An adopter gets the same project-local separation under `.dset/`. The root
+`10`–`50` source tree exists in this repository because DSET itself is the
+product being developed; it is not copied into ordinary adopter repositories.
 
-This is an ownership and readiness view, not a mandatory execution order. Work
-may revisit, parallelize, or skip non-applicable activities while each concern
-still returns to its one authoritative artifact and proof owner.
+## Architecture
 
-```text
-Domain → Spec + Supportability + Test Plan + Eval Plan → Implement → Test + Evaluate → Review → Reconcile Spec → Next Loop
+DSET uses ordered layers in this repository. Authority flows forward and a
+layer should affect only the next layer where practical. A downstream layer
+may consume, implement, check, or evidence upstream authority, but it cannot
+govern an earlier layer.
+
+```mermaid
+flowchart LR
+    META["01 META<br/>Domain and specification semantics"]
+    GOV["02 GOV<br/>Governance and artifact contracts"]
+    TOOL["03 TOOL<br/>Executable toolchain"]
+    SKILL["04 SKILL<br/>Agent-facing orchestration"]
+    IMPL["05 IMPL<br/>Development realization profiles"]
+    OPS["06 OPS<br/>Post-implementation delivery and operations"]
+
+    META --> GOV --> TOOL --> SKILL --> IMPL --> OPS
 ```
 
-- **Domain** defines entities, language, states, invariants, and boundaries.
-- **Supportability** defines the risk-scaled production evidence, identity, diagnostics, data-safety controls, and runbook needed to investigate and fix real incidents.
-- **Spec** records accepted behavioral truth and change scope.
-- **Evals** assess probabilistic, qualitative, or LLM-mediated behavior.
-- **Tests** prove deterministic behavior.
-- **Loops** deliver small vertical slices, use fresh evidence, and reconcile accepted results into current truth.
+Features are different: features are peers joined by horizontal contracts.
+When an intended layer structure develops unavoidable backward dependencies,
+DSET should propose remodelling those owners as features instead of pretending
+the dependency direction is still layered.
 
-## Repository areas
+## Authority and carrier model
 
-| Area | Start here | Owns |
-|---|---|---|
-| Methodology | [Methodology hub](methodology/README.md) | Delivery stages, runtime/build rules, proof conventions, and external grounding |
-| Artifact governance | [Documentation architecture hub](documentation/README.md) | Artifact types, authoring rules, hubs, maintenance, and `documentation-v1` |
-| Project control plane | [DSET project hub](dset/README.md) | Accepted project truth, active/archive changes, schemas, templates, fixtures, traceability, migrations, and supportability |
-| Executable CLI | [`dset_toolchain/`](dset_toolchain/) | Dependency-light lifecycle, governance resolution/materialization, validation, traceability, archive, and bounded self-hosting |
-| Agent workflows | [Skills hub](skills/README.md) | Focused domain-clarification, diagnosis, and disposable-prototype workflows |
-| Delivery and provenance | [Delivery policy](.github/DELIVERY.md) and [third-party notices](THIRD_PARTY_NOTICES.md) | Protected publication path and external-source/license boundaries |
+DSET keeps three active carrier roles separate:
 
-## What is already here
+1. **Atomic artifacts** are immutable accepted claims or transactional events,
+   such as Decisions, Questions, Problems, QA definitions, and lifecycle
+   records. A newer atom may replace or override an older atom through an
+   explicit relation; the older carrier is never edited.
+2. **Evergreen artifacts** are mutable current specifications and plans. They
+   are semantic syntheses of applicable atoms, not mechanically concatenated
+   ledgers.
+3. **Implementation artifacts** are code, documentation, configuration,
+   migrations, test implementations, evaluation implementations, and other
+   material that realizes accepted truth.
 
-DSET is now a public, self-hosted framework repository rather than only a
-methodology document set. The current `0.3.1` state includes:
+Settings and registries share the unique `dset_settings.toml` carrier inside
+the selected project control plane. Aggregate artifact, intake, atom,
+lifecycle, provenance, and version registries are not parallel active
+authorities. Historical aggregates, completed migrations, and compatibility
+snapshots live only in the inert root `90_legacy` archive, outside `.dset` and
+outside skill discovery or current compilation.
 
-- published methodology and documentation governance for Domain,
-  Supportability, Evals, Tests, specs, Decisions, contracts, stories, outcomes,
-  and risk-scaled proof;
-- a repository-local DSET control plane split into the META, GOV, TOOL, SKILL,
-  and OPS scopes under [`dset/scopes/`](dset/scopes/);
-- schema `1.2` layered project metadata, Work Areas for monorepos and mixed
-  repositories, scoped Changes, and stable project-prefixed artifact IDs;
-- a dependency-light Python toolchain with `check`, `verify`, `new`, `trace`,
-  `archive`, `rules`, `self-host`, and `version` workflows;
-- schemas, templates, fixtures, migration guidance, generated traceability, and
-  provenance records;
-- initial Codex/agent workflow wrappers for clarify, diagnose, and prototype
-  loops, plus governing contracts for thin wrappers, skill-run logs, session
-  checkpoints, and delegation budgets;
-- GitHub delivery policy, CI validation, supportability runbooks, third-party
-  notices, and PR-linked proof history.
+Semantic compilation is **on demand**. A new atom does not force every
+evergreen document to be rewritten. `dset-compile` updates only affected owners
+when the operator requests compilation or a downstream entry gate requires
+current evergreen truth.
 
-## Run DSET
+## Core development loop
 
-Read-only validation requires only Python 3.10 or newer:
+```mermaid
+flowchart LR
+    O["Operator input"] --> A["Accepted atomic Decisions"]
+    A --> C["Evergreen specs and plans"]
+    C --> I["Implementation"]
+    A --> QA["Tests and Evaluations"]
+    I --> X["Execution"]
+    QA --> X
+    X --> E["Evidence"]
+    E --> V["Verification"]
+    X --> P["Problems"]
+    P --> Q["Questions"]
+    Q --> O
+```
+
+- A **Decision** is accepted project authority. Requirement, Constraint,
+  Contract, User Story, Outcome, Scenario, and Invariant are direct Decision
+  subtypes; a general Decision has no subtype.
+- A **Question** records unresolved knowledge or choice. Conflict, Risk, and
+  Opportunity are direct Question subtypes.
+- A **Problem** records something currently wrong, missing, or insufficient.
+  Defect, Gap, and Debt are direct Problem subtypes.
+- **QA** keeps deterministic Tests separate from qualitative, probabilistic,
+  statistical, or model-judged Evaluations.
+- **Evidence** records an observation. **Verification** states what applicable
+  evidence supports at one exact revision; neither overrides accepted atoms.
+
+Supportability crosses all stages: production work must leave enough logs,
+traces, provenance, state, and runbook context to investigate, reproduce, and
+fix real failures. Durability mechanisms remain risk- and topology-specific.
+
+## Relations
+
+Authored relations are forward and single-purpose:
+
+- `child_of` narrows or specializes a parent claim;
+- `analysis_of` interprets a subject without authorizing it;
+- `projection_of` binds an evergreen frontier to the latest applicable atom in
+  its declared type/scope range;
+- `implementation_of`, `check_of`, and `evidence_for` connect realization and
+  assurance;
+- `resolution_of` closes a Question or Problem;
+- `override_of` replaces inherited authority only within a narrower scope;
+- `replacement_of` completely succeeds an older immutable atom; and
+- `relates_to` is the non-semantic fallback.
+
+Reverse indexes are derived. Every child stores its own relation; parents are
+never mutated to list children.
+
+## Start here
+
+| Area | Hub |
+|---|---|
+| Reusable framework overview | `000_dset-project-hub.md` |
+| Reusable META method | `000_dset-meta-hub.md` |
+| Reusable artifact governance | `000_dset-gov-hub.md` |
+| Installed project-local methodology | `000_dset-methodology-hub.md` |
+| Self-hosting project artifacts | `DSET-PROJECT-HUB.md` |
+| Toolchain implementation | [`dset_toolchain/`](dset_toolchain/) |
+| Agent workflows | [Skills](skills/README.md) |
+| Applied Version lifecycle | `DSET-VERSIONS-HUB.md` |
+| Delivery boundary | [GitHub delivery policy](.github/DELIVERY.md) |
+
+## Commands
+
+Read-only repository validation requires Python 3.10 or newer:
 
 ```bash
 python -m dset_toolchain check .
 ```
 
-For this repository's complete locked Python profile:
+Initialize an empty or existing repository with a preview first:
 
 ```bash
-uv sync --locked --dev
-uv run dset verify .
+dset init /path/to/project \
+  --project-key APP \
+  --project-id example-app \
+  --name "Example App" \
+  --license MIT
+
+# Repeat with --execute only after reviewing the preview.
 ```
 
-The CLI also provides `rules check`, `rules resolve`, `rules materialize`, `rules refresh`, `rules diff`, `self-host`, `version`, `new`, `trace`, and guarded `archive` workflows. See the [project-root guide](dset/README.md) for lifecycle and command details.
+Install the portable skill catalog with a dry run before applying it:
 
-## Source-of-truth model
+```bash
+dset skills install --host codex
+dset skills install --host codex --apply
 
-This public repository is the canonical source for DSET Spec Loops and every released framework-owned methodology document, schema, template, validator, utility, skill, fixture, and migration guide. Installed or workspace-local copies are distributions of this repository, not independent editable sources.
+dset skills install --host claude
+dset skills install --host claude --apply
+```
 
-Each project that adopts DSET owns its project truth separately under its own
-`dset/` root. In the current schema 1.2 layout,
-`dset/scopes/<layer>/specs/` contains accepted layer-owned truth and
-`dset/scopes/<primary-layer>/changes/` contains bounded work in progress. The
-central `dset/specs/` and `dset/changes/` paths remain compatibility surfaces for
-legacy schema 1.0/1.1 projects only. Framework truth never replaces project
-truth, and project artifacts do not become framework rules unless they are
-deliberately contributed here.
+Framework maintainers can preview and then synchronize the reusable source into
+the installed project-local methodology:
 
-Schema 1.2 supports simple repositories and monorepos through neutral Work
-Areas: declared repository-relative folders containing any code, deployable,
-local, documentation, methodology, data, test, automation, or mixed content.
-Every Change and workflow may target the whole repository or one or more Work
-Areas without treating those folders as features, modules, or services.
+```bash
+python -m dset_toolchain methodology check .
+python -m dset_toolchain methodology sync .
+python -m dset_toolchain methodology sync . --execute
+```
 
-## Status
+Synchronization is explicit and one-way: ordinary root-source edits never
+rewrite `.dset/000_dset_methodology/`, and installed files are never copied
+back into the root source. Run the execute form only when the operator requests
+the refresh.
 
-The methodology is published, the repository dogfoods its own project contract,
-and the executable schema/toolchain v1 contract was implemented through PR
-[#7](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7).
-The coordinated DSET `0.3.1` product/Python-package release was merged through
-PR [#10](https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/10).
-It is a framework-foundation release: it validates this repository, publishes
-the scoped schema/control-plane shape, and records remaining gaps explicitly.
-It is not yet an end-user adoption-readiness claim.
+The main operator surface is `dset`. Direct entries
+include decisions, semantic compilation, proof planning, implementation
+planning, implementation, verification, overview, diagnosis, clarification,
+landscape analysis, prototyping, triage, release, and completion.
 
-## What is next
+## Current status
 
-The next work should turn the foundation into an installable, repeatable
-toolchain that works outside this repository:
-
-- publish a schema `1.2` compatible validator release so self-hosting no longer
-  relies on the migration-baseline bootstrap;
-- add a generated schema `1.2` adopter that exercises Work Areas, the default
-  local `dev` to remote `dev` to PR `main` flow, and optional worktree
-  isolation;
-- finish the primary `dset` skill/runtime path: run writer, session checkpoint,
-  resume behavior after compaction, release wrapper, and next-action
-  recommendation;
-- package and test the thin skills for Codex and Claude against repository-local
-  governing rules rather than duplicated skill prose;
-- add the JavaScript/TypeScript applied profile while keeping documentation and
-  methodology as first-class artifact types;
-- pilot the framework on external repositories such as Obsidian Your Harness and
-  record the resulting Problems, Opportunities, Questions, Decisions, proofs,
-  and release evidence;
-- harden release automation, pinned distribution, hosted exact-head proofs, and
-  recovery diagnostics before claiming `1.0` adoption readiness.
+The coordinated public baseline is `0.3.1`. This working repository now uses
+schema `1.5` and the separated-methodology layout intended for the next
+version. Historical migrations remain in the inert root archive and are not
+current framework inputs. Release-readiness claims continue to require the
+separate configured verification and hosted-delivery gates.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "DSET Overview"
+  short_description: "Show current DSET project health and coverage"
+  default_prompt: "Use $dset-overview to summarize this project's current artifacts, coverage, freshness, and actionable gaps."

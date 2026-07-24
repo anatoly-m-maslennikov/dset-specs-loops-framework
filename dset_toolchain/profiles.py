@@ -1,15 +1,19 @@
+"""Provide DSET profiles behavior."""
+
 from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
 
 from .layout import discover_layout
-from .yaml_subset import load
+from .structured_data import load
 
+# VALID_PROFILES defines valid profiles; this module owns the default.
 VALID_PROFILES = {"small", "standard", "large", "defect", "adoption"}
 
 
 def required_artifacts(root: Path, profile: str) -> tuple[set[str], set[str]]:
+    """Handle artifacts using the declared repository contract."""
     data = load(discover_layout(root).find_template("profiles.yaml"))
     profiles: dict[str, dict[str, Any]] = data["profiles"]
     documents: set[str] = set()
@@ -18,6 +22,7 @@ def required_artifacts(root: Path, profile: str) -> tuple[set[str], set[str]]:
     seen: set[str] = set()
 
     def collect(name: str) -> None:
+        """Collect collect using the declared repository contract."""
         if name in seen:
             raise ValueError(f"cyclic profile inheritance: {name}")
         seen.add(name)
@@ -30,4 +35,13 @@ def required_artifacts(root: Path, profile: str) -> tuple[set[str], set[str]]:
         files.update(current.get("files", []))
 
     collect(profile)
-    return documents | files | {"change.yaml"}, directories
+    suffix = (
+        ".toml" if discover_layout(root).manifest_path.suffix == ".toml" else ".yaml"
+    )
+    canonical_files = {
+        str(Path(value).with_suffix(suffix))
+        if Path(value).suffix.lower() in {".yaml", ".yml"}
+        else value
+        for value in files
+    }
+    return documents | canonical_files | {f"change{suffix}"}, directories

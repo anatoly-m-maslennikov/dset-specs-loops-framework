@@ -1,0 +1,83 @@
+schema_version = 1.0
+repository = "anatoly-m-maslennikov/dset-specs-loops-framework"
+authoritative_source = "github"
+observed_on = "2026-07-14"
+
+[[pull_requests]]
+number = 1
+title = "Extend methodology traceability and repair loops"
+state = "merged"
+draft = false
+base = "main"
+head = "codex/methodology-traceability"
+merge_commit = "67fd0dd124fab3309e70790cc62d803ee7718159"
+url = "https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/1"
+
+[[pull_requests]]
+number = 2
+title = "Align methodology and dogfood DSET structure"
+state = "merged"
+draft = true
+base = "main"
+head = "codex/dset-project-structure"
+merge_commit = "32772d12e519a06ff1e5f47d54cc4f9896bf5cf5"
+url = "https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/2"
+
+[[pull_requests]]
+number = 3
+title = "Adopt DSET Spec Loops and supportability contract"
+state = "merged"
+draft = false
+base = "main"
+head = "dev"
+merge_commit = "995bc06840dbe783a11204874511710a1cb66863"
+url = "https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/3"
+
+[[pull_requests]]
+number = 4
+title = "Record merged DSET lifecycle"
+state = "merged"
+draft = false
+base = "main"
+head = "dev"
+merge_commit = "e757a0a831a7780fc1bffea210b63153976d96b4"
+url = "https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/4"
+
+[[pull_requests]]
+number = 5
+title = "Publish repository delivery policy"
+state = "merged"
+draft = false
+base = "main"
+head = "dev"
+merge_commit = "32772d12e519a06ff1e5f47d54cc4f9896bf5cf5"
+url = "https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/5"
+
+[[pull_requests]]
+number = 6
+title = "Separate repository delivery policy"
+state = "merged"
+draft = false
+base = "main"
+head = "dev"
+merge_commit = "f340e28316aa92341784ce8e1a853039abf5acc6"
+url = "https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/6"
+
+[[pull_requests]]
+number = 7
+title = "Operationalize the executable DSET v1 toolchain"
+state = "merged"
+draft = false
+base = "main"
+head = "dev"
+merge_commit = "b874504c25e42329eae19ed14f2b50a3d922d64e"
+url = "https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/7"
+
+[[pull_requests]]
+number = 8
+title = "Add artifact governance profiles"
+state = "open"
+draft = true
+base = "main"
+head = "dev"
+url = "https://github.com/anatoly-m-maslennikov/dset-specs-loops-framework/pull/8"

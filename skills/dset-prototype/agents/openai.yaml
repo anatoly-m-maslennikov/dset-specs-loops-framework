@@ -1,4 +1,4 @@
 interface:
   display_name: "DSET Prototype"
   short_description: "Run disposable design experiments safely"
-  default_prompt: "Use $dset-prototype to answer this design question with disposable evidence."
+  default_prompt: "Use $dset-prototype to answer this design question with disposable evidence and stop before production promotion."

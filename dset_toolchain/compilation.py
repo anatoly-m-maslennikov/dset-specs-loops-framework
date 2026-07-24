@@ -1,0 +1,309 @@
+"""Provide DSET compilation behavior."""
+
+from __future__ import annotations
+
+import hashlib
+import re
+from pathlib import Path
+from typing import Any
+
+from .identity import iter_control_files, logical_part
+from .layout import LAYERS, discover_layout
+from .project_data import lifecycle_events
+from .semantic_atoms import collect_semantic_atoms
+from .structured_data import StructuredDataError, dump, load
+
+# DECISION_FIELDS defines decision fields; this module owns the default.
+DECISION_FIELDS = ("requirements", "contracts", "stories", "outcomes")
+# INACTIVE_EVENTS defines inactive events; this module owns the default.
+INACTIVE_EVENTS = frozenset({"absorbed", "rejected", "retired", "withdrawn"})
+# IGNORED_PARTS defines ignored parts; this module owns the default.
+IGNORED_PARTS = frozenset(
+    {
+        ".git",
+        ".cache",
+        ".venv",
+        "__pycache__",
+        "dist",
+        "generated",
+        "templates",
+    }
+)
+
+
+def build_compilation_index(root: Path) -> dict[str, Any]:
+    """Build compilation index using the declared repository contract."""
+    root = root.resolve()
+    sources = _authority_sources(root)
+    projections = _projection_paths(root)
+    records: list[dict[str, Any]] = []
+    missing: list[str] = []
+    for identifier, source in sorted(sources.items()):
+        owners = [
+            (path, _projection_fragments(path, identifier)) for path in projections
+        ]
+        owners = [(path, fragments) for path, fragments in owners if fragments]
+        if not owners:
+            missing.append(identifier)
+            continue
+        records.append(
+            {
+                "id": identifier,
+                "source": {
+                    "carrier": source.name,
+                    "sha256": _digest(source),
+                },
+                "projections": [
+                    {
+                        "carrier": path.name,
+                        "sha256": _digest(path),
+                        "fragments": fragments,
+                    }
+                    for path, fragments in owners
+                ],
+            }
+        )
+    if missing:
+        raise ValueError(
+            "active Decision authority lacks an evergreen projection: "
+            + ", ".join(missing)
+        )
+    return {
+        "schema_version": "1.0",
+        "records": records,
+    }
+
+
+def compilation_path(root: Path) -> Path:
+    """Handle path using the declared repository contract."""
+    layout = discover_layout(root.resolve())
+    generated = (
+        layout.traceability_path.parent
+        if layout.layered
+        else layout.dset_root / "generated"
+    )
+    suffix = ".toml" if layout.manifest_path.suffix == ".toml" else ".yaml"
+    return layout.structured_file(generated, f"compilation{suffix}")
+
+
+def rendered_compilation(root: Path) -> str:
+    """Handle compilation using the declared repository contract."""
+    return dump(build_compilation_index(root), compilation_path(root))
+
+
+def compilation_is_fresh(root: Path) -> bool:
+    """Handle is fresh using the declared repository contract."""
+    path = compilation_path(root)
+    try:
+        rendered = rendered_compilation(root)
+    except ValueError:
+        return False
+    return path.is_file() and path.read_text(encoding="utf-8") == rendered
+
+
+def write_compilation(root: Path) -> Path:
+    """Write compilation using the declared repository contract."""
+    path = compilation_path(root)
+    content = rendered_compilation(root)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    temporary.write_text(content, encoding="utf-8")
+    temporary.replace(path)
+    return path
+
+
+def active_authority_ids(root: Path) -> set[str]:
+    """Handle authority ids using the declared repository contract."""
+    return set(_authority_sources(root.resolve()))
+
+
+def projected_authority_ids(root: Path) -> set[str]:
+    """Return authorities with an explicit evergreen claim fragment."""
+    root = root.resolve()
+    sources = _authority_sources(root)
+    projections = _projection_paths(root)
+    return {
+        identifier
+        for identifier in sources
+        if any(_projection_fragments(path, identifier) for path in projections)
+    }
+
+
+def _authority_sources(root: Path) -> dict[str, Path]:
+    """Collect every active Decision authority carrier."""
+    lifecycle = _lifecycle_status(root)
+    sources: dict[str, Path] = {}
+    _collect_atomic_authority(root, lifecycle, sources)
+    _collect_legacy_decisions(root, lifecycle, sources)
+    _collect_package_authority(root, lifecycle, sources)
+    return sources
+
+
+def _collect_atomic_authority(
+    root: Path, lifecycle: dict[str, str], sources: dict[str, Path]
+) -> None:
+    """Collect accepted atomic Decisions that remain active."""
+    atoms, diagnostics = collect_semantic_atoms(root)
+    if diagnostics:
+        raise ValueError(diagnostics[0].message)
+    for atom in atoms.values():
+        if (
+            atom.semantic_type == "decision"
+            and atom.emission_status == "accepted"
+            and lifecycle.get(atom.semantic_id) not in INACTIVE_EVENTS
+        ):
+            sources[atom.semantic_id] = root / atom.path
+
+
+def _collect_legacy_decisions(
+    root: Path, lifecycle: dict[str, str], sources: dict[str, Path]
+) -> None:
+    """Collect accepted pre-atom Decision documents."""
+    layout = discover_layout(root)
+    paths = iter_control_files(root, "*.md") if layout.separated else root.rglob("*.md")
+    for path in paths:
+        if _ignored(root, path) or (
+            path.parent.name != "decision"
+            and not path.name.lower().startswith("decision-")
+        ):
+            continue
+        text = _read(path)
+        match = re.search(r"\*\*Decision ID:\*\*\s*`([^`]+)`", text)
+        if not match or "**Status:** accepted" not in text:
+            continue
+        identifier = match.group(1)
+        if lifecycle.get(identifier) not in INACTIVE_EVENTS:
+            sources[identifier] = path
+
+
+def _collect_package_authority(
+    root: Path, lifecycle: dict[str, str], sources: dict[str, Path]
+) -> None:
+    """Collect compatibility Decision lists from package carriers."""
+    for path in discover_layout(root).structured_named_files(root, "package"):
+        if _ignored(root, path) or "specs" not in path.parts:
+            continue
+        try:
+            data = load(path)
+        except (OSError, UnicodeError, StructuredDataError):
+            continue
+        if not isinstance(data, dict):
+            continue
+        for field in DECISION_FIELDS:
+            values = data.get(field, [])
+            if not isinstance(values, list):
+                continue
+            for identifier in values:
+                if (
+                    isinstance(identifier, str)
+                    and lifecycle.get(identifier) not in INACTIVE_EVENTS
+                ):
+                    sources.setdefault(identifier, path)
+
+
+def _projection_paths(root: Path) -> list[Path]:
+    """Handle paths using the declared repository contract."""
+    layout = discover_layout(root)
+    if layout.recursive or layout.separated:
+        prefixes = ("specification-", "procedure-", "plan-", "navigation-")
+        owners = (
+            layout.project_root,
+            *(layout.layer_root(layer) for layer in LAYERS),
+            layout.dset_root,
+        )
+        return [
+            path
+            for owner in owners
+            for path in sorted(owner.rglob("*.md"))
+            if not _ignored(root, path) and path.name.lower().startswith(prefixes)
+        ]
+    if layout.slim:
+        prefixes = (
+            "specification-",
+            "procedure-",
+            "plan-",
+            "dset-specification-",
+        )
+        return [
+            path
+            for path in sorted(layout.dset_root.rglob("*.md"))
+            if not _ignored(root, path) and path.name.lower().startswith(prefixes)
+        ]
+    return [
+        path
+        for path in sorted(root.rglob("*.md"))
+        if not _ignored(root, path)
+        and ("specs" in path.parts or "governance" in path.parts)
+    ]
+
+
+def _lifecycle_status(root: Path) -> dict[str, str]:
+    return {
+        str(item.get("atom_id")): str(item.get("event"))
+        for item in lifecycle_events(root)
+    }
+
+
+def _ignored(root: Path, path: Path) -> bool:
+    """Handle ignored using the declared repository contract."""
+    relative = path.relative_to(root)
+    if relative.parts[:1] == (".dset_runtime",) or relative.parts[:2] == (
+        ".dset",
+        "runtime",
+    ):
+        return True
+    return any(
+        logical_part(part) in IGNORED_PARTS
+        or (part.startswith(".") and part not in {".github", ".dset"})
+        for part in relative.parts
+    )
+
+
+def _read(path: Path) -> str:
+    try:
+        return path.read_text(encoding="utf-8")
+    except (OSError, UnicodeError):
+        return ""
+
+
+def _projection_fragments(path: Path, identifier: str) -> list[dict[str, Any]]:
+    """Extract only explicit evergreen claim structures, never loose mentions."""
+    lines = _read(path).splitlines()
+    fragments: list[dict[str, Any]] = []
+    escaped = re.escape(identifier)
+    heading = re.compile(rf"^(#{{1,6}})\s+`?{escaped}`?(?:\s|$)")
+    table = re.compile(rf"^\|\s*`?{escaped}`?\s*\|")
+    labeled = re.compile(rf"^\*\*[^*\n]*\b{escaped}\b[^*\n]*:\*\*")
+    for index, line in enumerate(lines):
+        match = heading.match(line)
+        kind: str | None = None
+        end = index + 1
+        if match:
+            kind = "section"
+            level = len(match.group(1))
+            while end < len(lines):
+                next_heading = re.match(r"^(#{1,6})\s+", lines[end])
+                if next_heading and len(next_heading.group(1)) <= level:
+                    break
+                end += 1
+        elif table.match(line):
+            kind = "table-row"
+        elif labeled.match(line):
+            kind = "labeled-block"
+            while end < len(lines) and lines[end].strip():
+                end += 1
+        if kind is None:
+            continue
+        content = "\n".join(lines[index:end]).strip()
+        fragments.append(
+            {
+                "kind": kind,
+                "line": index + 1,
+                "sha256": hashlib.sha256(content.encode()).hexdigest(),
+            }
+        )
+    return fragments
+
+
+def _digest(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
