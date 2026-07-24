@@ -1,31 +1,37 @@
 "$schema" = "https://json-schema.org/draft/2020-12/schema"
-"$id" = "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/.dset/000_dset_methodology/02_gov/schemas/atom.schema.toml"
-title = "DSET routed atomic artifact frontmatter"
+"$id" = "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/12_layer_gov/120_schemas/010_dset-gov-schemas-atom.schema.toml"
+title = "DSET atomic Markdown YAML property data"
+description = "Base schema for the YAML property block of a DSET atomic Markdown artifact. Registered type routes are derived and never repeated in the carrier."
 type = "object"
-required = ["artifact_id", "semantic_id", "revision_mode", "content_role", "governance_origin", "relation_shape", "scope_path", "status", "priority", "authority", "claim", "promotion", "llm_session_ids"]
-additionalProperties = false
+required = [
+  "artifact_type",
+  "artifact_id",
+  "scope_path",
+  "priority",
+  "llm_session_ids",
+]
+additionalProperties = true
 
 [properties]
+revision_mode = false
+content_role = false
+governance_locus = false
+governance_origin = false
+relation_shape = false
+semantic_id = false
+status = false
+authority = false
+claim = false
+worktree_state = false
+
+[properties.artifact_type]
+"$ref" = "#/$defs/type_name"
+
+[properties.artifact_subtype]
+"$ref" = "#/$defs/type_name"
 
 [properties.artifact_id]
-type = "string"
-pattern = "^[A-Z][A-Z0-9]*-ATOMIC-RECORD-[0-9]{3,}$"
-
-[properties.semantic_id]
-type = "string"
-pattern = "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"
-
-[properties.revision_mode]
-const = "atomic"
-
-[properties.content_role]
-enum = ["inquiry", "definition", "rationale", "method", "implementation", "observation"]
-
-[properties.governance_origin]
-enum = ["internal", "external"]
-
-[properties.relation_shape]
-enum = ["standalone", "relational"]
+"$ref" = "#/$defs/id"
 
 [properties.scope_path]
 type = "array"
@@ -36,103 +42,8 @@ uniqueItems = true
 type = "string"
 pattern = "^[a-z][a-z0-9_-]*:[A-Za-z0-9][A-Za-z0-9._-]*$"
 
-[properties.relation_kind]
-type = "string"
-pattern = "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
-
-[properties.endpoints]
-type = "array"
-minItems = 2
-
-[properties.endpoints.items]
-type = "object"
-required = ["role", "target", "origin"]
-additionalProperties = false
-
-[properties.endpoints.items.properties]
-
-[properties.endpoints.items.properties.role]
-type = "string"
-pattern = "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
-
-[properties.endpoints.items.properties.target]
-"$ref" = "#/$defs/id"
-
-[properties.endpoints.items.properties.origin]
-enum = ["internal", "external"]
-
-[properties.status]
-enum = ["proposed", "accepted"]
-
 [properties.priority]
-type = "string"
-minLength = 1
-
-[properties.authority]
-type = "string"
-pattern = "^(operator|repository|external):[A-Za-z0-9._:-]+$"
-
-[properties.claim]
-type = "string"
-minLength = 1
-
-[properties.promotion]
-type = "object"
-required = ["parent_scope"]
-additionalProperties = false
-
-[properties.promotion.properties]
-
-[properties.promotion.properties.parent_scope]
-
-[[properties.promotion.properties.parent_scope.oneOf]]
-type = "null"
-
-[[properties.promotion.properties.parent_scope.oneOf]]
-type = "object"
-required = ["kind", "id"]
-additionalProperties = false
-
-[properties.promotion.properties.parent_scope.oneOf.properties]
-
-[properties.promotion.properties.parent_scope.oneOf.properties.kind]
-enum = ["project", "feature_group"]
-
-[properties.promotion.properties.parent_scope.oneOf.properties.id]
-type = "string"
-minLength = 1
-
-[properties.promotion.properties.applies_unchanged]
-type = "boolean"
-
-[properties.promotion.properties.local_context_required]
-type = "boolean"
-
-[properties.promotion.properties.affected_children]
-type = "array"
-uniqueItems = true
-
-[properties.promotion.properties.affected_children.items]
-type = "string"
-minLength = 1
-
-[properties.promotion.properties.disposition]
-enum = ["keep_local", "promote"]
-
-[properties.relations]
-type = "array"
-minItems = 1
-
-[properties.relations.items]
-"$ref" = "#/$defs/relation"
-
-[properties.child_of]
-type = "array"
-minItems = 1
-uniqueItems = true
-
-[properties.child_of.items]
-"$ref" = "#/$defs/id"
+enum = ["high", "medium", "low"]
 
 [properties.llm_session_ids]
 type = "array"
@@ -142,32 +53,21 @@ uniqueItems = true
 type = "string"
 pattern = "^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$"
 
-[properties.rationale]
-type = "string"
-minLength = 1
-maxLength = 4096
-
-[properties.boundary]
-type = "string"
-minLength = 1
-
-[properties.lineage]
+[properties.relations]
 type = "array"
+minItems = 1
+
+[properties.relations.items]
+"$ref" = "#/$defs/relation"
+
+[properties.source_refs]
+type = "array"
+minItems = 1
 uniqueItems = true
 
-[properties.lineage.items]
-type = "string"
-pattern = "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"
-
-[properties.conflict_state]
-enum = ["clear", "unresolved"]
-
-[properties.verification_obligation]
+[properties.source_refs.items]
 type = "string"
 minLength = 1
-
-[properties.unknowns]
-type = "array"
 
 ["$defs"]
 
@@ -175,83 +75,115 @@ type = "array"
 type = "string"
 pattern = "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"
 
+["$defs".type_name]
+type = "string"
+pattern = "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+
 ["$defs".relation_type]
-enum = ["child_of", "analysis_of", "projection_of", "implementation_of", "check_of", "evidence_for", "resolution_of", "override_of", "replacement_of", "recurrence_of", "relates_to"]
+enum = [
+  "child_of",
+  "analysis_of",
+  "projection_of",
+  "implementation_of",
+  "check_of",
+  "evidence_for",
+  "resolution_of",
+  "solution_for",
+  "override_of",
+  "replacement_of",
+  "recurrence_of",
+  "relates_to",
+]
 
 ["$defs".relation]
-
-[["$defs".relation.oneOf]]
 type = "object"
-required = ["type", "target"]
+required = ["type", "targets"]
 additionalProperties = false
 
-["$defs".relation.oneOf.properties]
+["$defs".relation.properties]
 
-["$defs".relation.oneOf.properties.type]
+["$defs".relation.properties.type]
 "$ref" = "#/$defs/relation_type"
 
-["$defs".relation.oneOf.properties.target]
-"$ref" = "#/$defs/id"
-
-[["$defs".relation.oneOf]]
-type = "object"
-required = ["type", "range"]
-additionalProperties = false
-
-["$defs".relation.oneOf.properties]
-
-["$defs".relation.oneOf.properties.type]
-const = "projection_of"
-
-["$defs".relation.oneOf.properties.range]
-"$ref" = "#/$defs/projection_range"
-
-["$defs".projection_range]
-type = "object"
-required = ["revision_mode", "content_role", "governance_origin", "relation_shape", "scope_path", "through"]
-additionalProperties = false
-
-["$defs".projection_range.properties]
-
-["$defs".projection_range.properties.revision_mode]
-enum = ["atomic", "evergreen", "maintained"]
-
-["$defs".projection_range.properties.content_role]
-enum = ["inquiry", "definition", "rationale", "method", "implementation", "observation"]
-
-["$defs".projection_range.properties.governance_origin]
-enum = ["internal", "external"]
-
-["$defs".projection_range.properties.relation_shape]
-enum = ["standalone", "relational"]
-
-["$defs".projection_range.properties.scope_path]
+["$defs".relation.properties.targets]
 type = "array"
-minItems = 0
+minItems = 1
 uniqueItems = true
 
-["$defs".projection_range.properties.scope_path.items]
-type = "string"
-pattern = "^[a-z][a-z0-9_-]*:[A-Za-z0-9][A-Za-z0-9._-]*$"
+["$defs".relation.properties.targets.items]
+"$ref" = "#/$defs/id"
 
-["$defs".projection_range.properties.through]
-type = "string"
-pattern = "^[A-Z][A-Z0-9]*-ATOMIC-RECORD-[0-9]{3,}$"
+["x-dset-type-routes".requirement]
+revision_mode = "atomic"
+content_role = "definition"
+governance_locus = "internal"
 
-[[allOf]]
+["x-dset-type-routes".constraint]
+revision_mode = "atomic"
+content_role = "definition"
+governance_locus = "external"
 
-[allOf.if]
-required = ["relation_shape"]
+["x-dset-type-routes".contract]
+revision_mode = "atomic"
+content_role = "definition"
+governance_locus = "relation"
 
-[allOf.if.properties]
+["x-dset-type-routes".implementation_decision]
+revision_mode = "atomic"
+content_role = "method"
+governance_locus = "internal"
 
-[allOf.if.properties.relation_shape]
-const = "relational"
+["x-dset-type-routes".question]
+revision_mode = "atomic"
+content_role = "inquiry"
+governance_locus = "internal"
+allowed_subtypes = ["risk", "opportunity"]
 
-[allOf.then]
-required = ["relation_kind", "endpoints"]
+["x-dset-type-routes".question.subtype_routes.conflict]
+revision_mode = "atomic"
+content_role = "inquiry"
+governance_locus = "relation"
 
-[[allOf]]
+["x-dset-type-routes".problem]
+revision_mode = "atomic"
+content_role = "observation"
+governance_locus = "internal"
+allowed_subtypes = ["defect", "gap", "debt"]
 
-[allOf.not]
-required = ["relations", "child_of"]
+["x-dset-type-routes".test_plan]
+revision_mode = "atomic"
+content_role = "method"
+governance_locus = "internal"
+
+["x-dset-type-routes".evaluation_plan]
+revision_mode = "atomic"
+content_role = "method"
+governance_locus = "internal"
+
+["x-dset-type-routes".rationale]
+revision_mode = "atomic"
+content_role = "rationale"
+governance_locus = "internal"
+
+["x-dset-type-routes".analysis_report]
+revision_mode = "atomic"
+content_role = "rationale"
+governance_locus = "internal"
+allowed_subtypes = [
+  "solution_landscape",
+  "root_cause_analysis",
+  "proposal",
+  "technical_investigation",
+  "external_audit_analysis",
+]
+
+["x-dset-type-routes".evidence_record]
+revision_mode = "atomic"
+content_role = "observation"
+governance_locus = "internal"
+allowed_subtypes = [
+  "test_result",
+  "evaluation_result",
+  "review_report",
+  "run_record",
+]

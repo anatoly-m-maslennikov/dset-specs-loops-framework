@@ -4,51 +4,84 @@
 
 ## Purpose
 
-DSET routes every persisted governed artifact through four independent fields:
-Revision Mode, Content Role, Governance Origin, and Relation Shape.
+Every governed artifact has one registered `artifact_type` and at most one
+direct `artifact_subtype`. The registered pair derives exactly one route:
 
-Every artifact also has a required structural coordinate, Scope Path, which
-selects a view over the shared matrix. DSET has no canonical artifact Type or
-subtype taxonomy.
+- Revision mode: `atomic`, `evergreen`, or `maintained`;
+- Content role: `inquiry`, `definition`, `rationale`, `method`,
+  `implementation`, or `observation`;
+- Governance locus: `internal`, `external`, or `relation`.
 
-## Revision mode
+Artifact carriers store the type pair and do not repeat the derived route
+coordinates. Unknown, disabled, or ambiguous mappings fail closed.
 
-`revision_mode` declares how the artifact changes:
+`scope_path` is an independent project-relative structural address. The current
+project is ambient, so project identity never appears in the path.
 
-| Value | Definition |
-|---|---|
-| `atomic` | Immutable identified record or native immutable snapshot; correction or changed meaning creates another artifact |
-| `evergreen` | Mutable current projection derived, compiled, generated, or synchronized from declared governed inputs and rebuildable from them |
-| `maintained` | Mutable primary artifact edited or operated directly by its governing owner |
+## Base atomic type routes
 
-The boundary between Evergreen and Maintained is derived and rebuildable versus
-directly maintained. Mutable alone does not mean Evergreen. An external
-artifact is not Evergreen merely because it changes upstream.
+The executable registry is the `x-dset-type-routes` table in
+`010_dset-gov-schemas-atom.schema.toml`.
 
-## Content role
+| Artifact type | Optional direct subtypes | Derived route |
+|---|---|---|
+| `requirement` | — | atomic / definition / internal |
+| `constraint` | — | atomic / definition / external |
+| `contract` | — | atomic / definition / relation |
+| `implementation_decision` | — | atomic / method / internal |
+| `question` | `risk`, `opportunity` | atomic / inquiry / internal |
+| `question` | `conflict` | atomic / inquiry / relation |
+| `problem` | `defect`, `gap`, `debt` | atomic / observation / internal |
+| `test_plan` | — | atomic / method / internal |
+| `evaluation_plan` | — | atomic / method / internal |
+| `rationale` | — | atomic / rationale / internal |
+| `analysis_report` | `solution_landscape`, `root_cause_analysis`, `proposal`, `technical_investigation`, `external_audit_analysis` | atomic / rationale / internal |
+| `evidence_record` | `test_result`, `evaluation_result`, `review_report`, `run_record` | atomic / observation / internal |
 
-`content_role` declares the artifact's one primary contribution:
+An `external_audit_analysis` is internal when it is the project’s interpretation
+of an external report. The report itself is an external governed artifact.
 
-| Value | Definition |
-|---|---|
-| `definition` | States intended, required, selected, or accepted conditions |
-| `inquiry` | Requests unresolved knowledge, choice, or clarification |
-| `rationale` | Explains why another claim, selection, or interpretation is justified |
-| `method` | Describes a reusable way, mechanism, procedure, or check |
-| `implementation` | Is an operative realization or asset |
-| `observation` | Records an actual-state claim, finding, measurement, or outcome in a declared time or evidence window |
+## Minimal Markdown properties
 
-File format, executability, folder, layer, workflow stage, and carrier kind do
-not select the role.
+DSET Markdown uses a GitHub-compatible YAML property block. An atomic carrier
+contains only non-derived properties:
 
-Test and Evaluation definitions are Method when they specify reusable checks.
-Their runners and harnesses may instead be Implementation. A dated execution
-is a real Work occurrence outside artifact routing; its persisted
-result, trace, or proof is Observation and references that occurrence.
+```yaml
+---
+artifact_type: requirement
+artifact_id: DSET-REQUIREMENT-GOV-094
+scope_path: ["layer:gov"]
+priority: high
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: analysis_of
+    targets:
+      - "DSET-REQUIREMENT-META-018"
+      - "DSET-REQUIREMENT-META-020"
+---
+```
 
-## Content Role loop
+`artifact_subtype`, `relations`, precise external `source_refs`, provenance,
+relation endpoints, and type-specific observation fields appear only when they
+add non-derived meaning. Repeated relations of one kind use one `targets` list.
 
-Content Roles participate in this canonical semantic loop:
+The following properties are invalid because they duplicate or infer meaning:
+`semantic_id`, `revision_mode`, `content_role`, `governance_locus`,
+`governance_origin`, `relation_shape`, `status`, generic `authority`, body-
+duplicating `claim`, and ephemeral `worktree_state`.
+
+Atomic acceptance is inherent to emission. Active versus archived state comes
+from repository placement. External origin does not imply an ambient project
+authority; record the actual issuer, source, or endpoint through its precise
+type-specific property.
+
+## Routing boundaries
+
+The route is semantic and sparse. Filenames, folders, workflow stages, tools,
+and requested next actions do not select it. Empty route cells are valid.
+
+The content-role loop is:
 
 ```text
 Inquiry
@@ -58,153 +91,29 @@ Inquiry
   -> Implementation
   -> Observation
   -> Inquiry
-  -> ...
 ```
 
-Inquiry frames an unresolved matter. Definition establishes the intended or
-accepted state. Rationale explains why. Method describes how to realize or
-check it. Implementation realizes it. Observation records actual state and can
-expose the next unresolved matter.
+The loop relates artifacts; it does not mutate one artifact through multiple
+roles. Tests and Evaluations are Method when they define checks. Their persisted
+results are Observation. Executable runners are maintained Implementation.
 
-The loop orders relationships between successor artifacts. It does not mutate
-one artifact through multiple roles. Each artifact retains one primary Content
-Role, one artifact may produce multiple successors, and a role may be omitted
-when its own entry criteria do not require a persisted artifact.
+Relations are first-class only when the governed subject is the relation
+itself. A relation declares a stable kind and explicit role-bearing endpoints.
+Ordinary citations and traceability links do not change an artifact’s
+Governance locus.
 
-## Scope path
-
-`scope_path` is an extensible project-relative structural address composed from
-enabled feature-group, feature, layer, Work Area, and future structural
-segments. The repository already identifies the current project, so project
-identity never appears in the path. An empty path means project scope. It
-identifies the narrowest common owner that can govern the whole artifact and
-selects one matrix slice.
-
-Scope Path never determines any routing field. It does not identify the Entity
-of Concern, declare claim applicability, or establish a bounded semantic
-context. If meanings or invariants differ across structural scopes, DSET names
-the semantic context or an explicit bridge rather than inferring it from the
-path.
-
-OPS is a layer in `scope_path`, not a Content Role:
-
-| OPS concern | Content role |
-|---|---|
-| Deployment, release, readiness, or SLO condition | `definition` |
-| Reason for a deployment or recovery choice | `rationale` |
-| Deployment, rollback, runbook, Test, or Evaluation procedure | `method` |
-| CI/CD code, IaC, manifest, configuration, or instrumentation | `implementation` |
-| Deployment result, log, metric, incident, or support evidence | `observation` |
-
-A deployment procedure is Method, a deployment run is a dated work occurrence,
-and the persisted result is Observation.
-
-## Qualifying properties
-
-Relation Shape and Governance Origin complete the route selected inside the
-Revision Mode by Content Role matrix at its Scope Path.
-
-### Relation shape
-
-`relation_shape` declares the artifact's inherent semantic arity:
-
-| Value | Definition |
-|---|---|
-| `standalone` | Primary meaning does not require multiple typed endpoints |
-| `relational` | Primary meaning requires a relation kind and at least two typed, role-bearing endpoints |
-
-An ordinary citation, provenance field, or traceability link does not make an
-artifact Relational. A Relational artifact declares its relation kind,
-endpoint roles, and endpoint origins. Direction follows from the Relation Kind
-and endpoint roles. Relational structures may be n-ary.
-
-Relational and Standalone artifacts use the same two intrinsic dimensions and
-structural Scope Path. Separate renderings may improve readability, but they
-do not create different routing systems.
-
-### Governance origin
-
-Every governed artifact declares:
-
-```toml
-governance_origin = "internal" # internal | external
-```
-
-Governance Origin identifies who controls the artifact's semantic content and
-currentness. It does not establish truth, project authority, authorship,
-storage location, or provenance.
-
-A Relational artifact additionally declares each endpoint's independent
-`origin = "internal"` or `origin = "external"`. Artifact origin identifies who
-governs the relation record; endpoint origins identify its participants. One
-never substitutes for the other.
-
-Origin participates directly in routing. It does not establish a separate
-taxonomy, authority claim, or duplicate artifact identity.
-
-## Deterministic route names
-
-Every complete route has exactly one canonical display name:
-
-```text
-<Governance Origin> <Revision Mode> <Content Role> <Artifact | Relation>
-```
-
-Examples include `Internal Atomic Definition Artifact` and
-`External Maintained Method Relation`. The name is derived from the routing
-fields and never used as a routing input. Aliases, Types, and subtypes are not
-admitted.
-
-## Pull-request direction
-
-A pull request demonstrates the Relational boundary:
-
-```toml
-revision_mode = "maintained"
-content_role = "method"
-relation_shape = "relational"
-governance_origin = "internal"
-```
-
-It has `source` and `target` endpoints:
-
-| Direction | Source origin | Target origin |
-|---|---|---|
-| Project PR | internal | internal |
-| Inbound contribution | external | internal |
-| Upstream contribution | internal | external |
-| External PR reference | external | external |
-
-The merge or squash commit is a separate Atomic Implementation. Immutable
-proof of final PR state, when required, is a separate Atomic Observation.
-
-This routing applies when the Entity of Concern is the reusable
-integration and review mechanism. A PR carrier may contain proposed
-Definitions, observations, and other separately governed claims; the carrier
-does not force them all into Method.
+OPS remains a layer in `scope_path`, not another Content role. A release
+condition is Definition, a deployment procedure is Method, deployable
+configuration is Implementation, and a deployment result is Observation.
 
 ## Classification order
 
-1. Recover the EntityOfConcern and one primary artifact job. Split a
-   multi-head artifact.
-2. Select `content_role` from the primary contribution.
-3. Select `revision_mode` from the change semantics.
-4. Assign `scope_path` as the structural ownership address.
-5. Select `relation_shape`. For a Relational artifact, recover the relation
-   kind, endpoint roles, and endpoint origins.
-6. Select the artifact's `governance_origin`.
-7. Derive the route key and its one deterministic display name.
-8. Add provenance, evidence, and traceability without treating them as truth
-   or authority.
+1. Identify one primary claim or job; split multi-head artifacts.
+2. Select the registered type and optional direct subtype.
+3. Resolve its route from the registry and fail closed on ambiguity.
+4. Assign the narrowest correct `scope_path`.
+5. Add only non-derived provenance, priority, applicability, endpoints,
+   relations, and type-specific facts.
+6. For an external artifact, identify its actual source precisely.
 
-No routing-field value is inferred from another. Routing never derives meaning
-from a filename, display name, workflow, host, tool, or next action. DSET does
-not require every route combination to be used.
-
-## Matrix rendering
-
-Each `scope_path` selects one structural slice of the shared two-dimensional
-matrix. The slice uses Revision Mode as rows and Content Role as columns.
-Views may qualify occupants by artifact Governance Origin. Relational views
-also show artifacts with their required Relation Kind, endpoint roles, and
-endpoint-origin combinations.
+The schema, template, writer, and validator use this same boundary.
