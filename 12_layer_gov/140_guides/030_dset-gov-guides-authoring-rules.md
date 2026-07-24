@@ -25,11 +25,11 @@ priority: medium
 7. Use GitHub-portable Markdown and resolving relative links. Avoid private paths, editor-specific links, and hidden context.
 8. Order content for top-to-bottom comprehension. Define terms before relying on them.
 9. Prefer a small table, checklist, or example only when it makes the owning rule easier to apply.
-10. Prompt every Decision for a concise rationale. Other atomic artifacts may
-    include rationale when it improves review, support, or later replacement.
-    Rationale is recommended but optional; omission alone is never invalid.
-    Keep normative claims, lifecycle state, and evidence in their canonical
-    owners rather than hiding them in explanatory prose.
+10. Prompt every Implementation Decision for a concise rationale. Other atomic
+    artifacts may include rationale when it improves review, support, or later
+    replacement. Rationale is recommended but optional; omission alone is
+    never invalid. Keep normative claims, lifecycle state, and evidence in
+    their canonical owners rather than hiding them in explanatory prose.
 11. Keep the governed atom distinct from its real-world subject, operator
     acceptance or other lifecycle act, record or file carrier, performed work,
     result, evidence, gate disposition, and derived Verification. A single

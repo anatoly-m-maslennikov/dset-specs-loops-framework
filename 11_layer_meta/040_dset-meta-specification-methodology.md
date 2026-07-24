@@ -462,10 +462,13 @@ the forward pass.
 
 Atomic source: `DSET-REQUIREMENT-META-028`.
 
-Definitions and accepted Methods may own semantic authority. Implementations
-realize it. Tests and Evaluations check it. Observations and Evidence report
-what happened. Verification judges sufficiency and currentness. Assurance may
-support or challenge reliance but cannot establish or override authority.
+Requirements, Constraints, and Contracts own accepted Definition authority.
+Implementation Decisions own accepted realization choices. Test Plans and
+Evaluation Plans own checking-method definitions without authorizing project
+behavior. Implementations realize applicable authority. Executions perform
+work; Observations and Evidence report what happened; Verification judges
+bounded sufficiency and currentness. Assurance may support or challenge
+reliance but cannot establish or override authority.
 
 ## DSET-REQUIREMENT-META-029 — Profiles and applicability
 

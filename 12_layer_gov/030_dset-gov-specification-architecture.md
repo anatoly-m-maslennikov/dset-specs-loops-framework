@@ -123,11 +123,12 @@ must keep their meanings and identifiers distinct.
 
 In particular, an operator acceptance act grants authority to applicable
 Requirement, Constraint, Contract, or Implementation Decision content; a Test
-Plan or Evaluation Plan defines a checking Method; execution performs work;
-results and logs provide evidence; and Verification derives a current bounded
-reliance statement. A carrier does none of those merely by containing readable
-text. Multi-head claims split into linked sibling atoms. Material
-classification ambiguity stays in Exploration Mode or becomes a Question.
+Plan or Evaluation Plan defines a checking Method without authorizing project
+behavior; execution performs work; results and logs provide evidence; and
+Verification derives a current bounded reliance statement. A carrier does none
+of those merely by containing readable text. Multi-head claims split into
+linked sibling atoms. Material classification ambiguity stays in Exploration
+Mode or becomes a Question.
 
 ## Revision behavior and artifact function
 

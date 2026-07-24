@@ -191,7 +191,8 @@ traceability, not another authority source.
 
 ## Rationale
 
-Every Decision should record a concise rationale for its selected option.
+Every Implementation Decision should record a concise rationale for its
+selected option.
 Rationale is also recommended for another atomic artifact when it explains why
 the atom was emitted, interpreted, prioritized, related, or scoped as written
 and that explanation will help review, support, replacement, or
