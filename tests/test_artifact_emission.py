@@ -44,8 +44,7 @@ class ArtifactEmissionTests(unittest.TestCase):
             "claim": "The tool writes one deterministic result.",
             "revision_mode": "atomic",
             "content_role": "definition",
-            "governance_origin": "internal",
-            "relation_shape": "standalone",
+            "governance_locus": "internal",
             "scope_path": [],
             "llm_session_ids": ["codex:test-session"],
             "material_links": [],
@@ -91,12 +90,11 @@ class ArtifactEmissionTests(unittest.TestCase):
         self.assertEqual(
             assessment["route"],
             {
-                "key": "atomic.definition.internal.standalone",
-                "name": "Internal Atomic Definition Artifact",
+                "key": "atomic.definition.internal",
+                "name": "Internal Atomic Definition",
                 "revision_mode": "atomic",
                 "content_role": "definition",
-                "governance_origin": "internal",
-                "relation_shape": "standalone",
+                "governance_locus": "internal",
                 "scope_path": [],
             },
         )

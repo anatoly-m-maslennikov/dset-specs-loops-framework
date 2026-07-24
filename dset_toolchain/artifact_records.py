@@ -8,7 +8,13 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from .artifact_routing import ArtifactRoute, parse_artifact_route, route_issues
+from .artifact_routing import (
+    TYPE_ROUTES,
+    ArtifactRoute,
+    parse_artifact_route,
+    route_issues,
+    type_route,
+)
 from .diagnostics import Diagnostic
 from .frontmatter import FrontmatterError
 from .frontmatter import metadata as frontmatter_metadata
@@ -21,18 +27,6 @@ from .settings import load_project_settings
 ARTIFACT_ID = re.compile(r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$")
 # SESSION_ID validates explicit provider/session provenance.
 SESSION_ID = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
-# ROUTE_FIELDS identify a carrier that opts into routed governance.
-ROUTE_FIELDS = frozenset(
-    {
-        "revision_mode",
-        "content_role",
-        "governance_origin",
-        "relation_shape",
-        "scope_path",
-    }
-)
-
-
 @dataclass(frozen=True)
 class AtomicArtifactRecord:
     """Represent one routed immutable artifact without a Type taxonomy."""
@@ -83,7 +77,7 @@ def collect_atomic_artifact_records(
         if has_logical_part(relative, {"templates", "methodology"}):
             continue
         metadata = _metadata(path)
-        if metadata is None or not _is_atomic_candidate(metadata):
+        if metadata is None or not _is_atomic_candidate(metadata, relative):
             continue
         record, issues = _parse_record(root, path, metadata, priorities)
         diagnostics.extend(issues)
@@ -139,7 +133,7 @@ def seal_atom(root: Path, path: Path) -> Path:
         raise ValueError("atomic carrier must be inside the repository") from error
     metadata = _metadata(path)
     if metadata is None:
-        raise ValueError("atomic carrier requires TOML frontmatter")
+        raise ValueError("atomic carrier requires YAML or TOML frontmatter")
     settings, setting_issues = load_project_settings(root)
     if setting_issues:
         raise ValueError("project settings must pass before sealing an atom")
@@ -154,8 +148,14 @@ def seal_atom(root: Path, path: Path) -> Path:
             diagnostics[0].message if diagnostics else "invalid atomic carrier"
         )
 
-    from .artifact_emission import assess_artifact_candidate
+    if type_route(metadata) is not None:
+        if not discover_layout(root).separated:
+            raise ValueError(
+                "type-derived atom sealing requires the separated control plane"
+            )
+        return path
 
+    from .artifact_emission import assess_artifact_candidate
     candidate = dict(metadata)
     candidate["acceptance"] = metadata.get("status")
     candidate["material_links"] = [
@@ -216,12 +216,13 @@ def _parse_record(
     diagnostics = [
         Diagnostic("DSET-E169", path, issue) for issue in route_issues(metadata)
     ]
-    semantic_id = metadata.get("semantic_id")
+    derived = type_route(metadata) is not None
     carrier_id = metadata.get("artifact_id")
-    status = metadata.get("status")
+    semantic_id = carrier_id if derived else metadata.get("semantic_id")
+    status = "accepted" if derived else metadata.get("status")
     priority = metadata.get("priority")
     sessions = metadata.get("llm_session_ids")
-    if metadata.get("revision_mode") != "atomic":
+    if not derived and metadata.get("revision_mode") != "atomic":
         diagnostics.append(
             Diagnostic("DSET-E169", path, "atomic carrier requires revision_mode atomic")
         )
@@ -274,12 +275,27 @@ def _parse_record(
     )
 
 
-def _is_atomic_candidate(metadata: dict[str, Any]) -> bool:
-    return (
+def _is_atomic_candidate(metadata: dict[str, Any], relative: Path) -> bool:
+    artifact_type = metadata.get("artifact_type")
+    subtype = metadata.get("artifact_subtype")
+    route = TYPE_ROUTES.get(
+        (
+            str(artifact_type),
+            str(subtype) if isinstance(subtype, str) else None,
+        )
+    )
+    current_atom = (
+        len(relative.parts) > 1
+        and relative.parts[0] == ".dset"
+        and "000_dset_methodology" not in relative.parts
+        and route is not None
+        and route[0] == "atomic"
+    )
+    legacy_atom = (
         metadata.get("revision_mode") == "atomic"
         or metadata.get("artifact_type") == "atomic_record"
-        or bool(ROUTE_FIELDS.intersection(metadata))
     )
+    return current_atom or legacy_atom
 
 
 def _metadata(path: Path) -> dict[str, Any] | None:

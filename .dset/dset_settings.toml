@@ -229,7 +229,7 @@ default = "medium"
 constraint = "high"
 contract = "medium"
 requirement = "medium"
-decision = "medium"
+implementation_decision = "medium"
 implementation = "low"
 other = "medium"
 

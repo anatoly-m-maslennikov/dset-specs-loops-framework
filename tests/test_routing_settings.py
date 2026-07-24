@@ -7,8 +7,7 @@ from pathlib import Path
 
 from dset_toolchain.artifact_routing import (
     CONTENT_ROLES,
-    GOVERNANCE_ORIGINS,
-    RELATION_SHAPES,
+    GOVERNANCE_LOCI,
     REVISION_MODES,
 )
 from dset_toolchain.settings import SETTINGS_FILENAME, load_project_settings
@@ -24,17 +23,18 @@ class RoutingSettingsTests(unittest.TestCase):
         settings.write_text(
             "\n".join(
                 (
-                    'schema_version = "1.5"',
+                    'schema_version = "1.8"',
                     "",
                     "[artifacts]",
                     'creation_strictness = "medium"',
+                    'enabled_types = ["requirement"]',
+                    "enabled_subtypes = []",
                     "",
-                    "[routing]",
+                    "[artifacts.routing]",
                     routing,
-                    'content_roles = ["inquiry", "definition", "rationale", '
+                    'content_roles = ["inquiry", "analysis", "definition", '
                     '"method", "implementation", "observation"]',
-                    'governance_origins = ["internal", "external"]',
-                    'relation_shapes = ["standalone", "relational"]',
+                    'governance_loci = ["internal", "external", "relation"]',
                     "",
                 )
             ),
@@ -46,15 +46,14 @@ class RoutingSettingsTests(unittest.TestCase):
             root = Path(raw)
             self._write(
                 root,
-                'revision_modes = ["atomic", "evergreen", "maintained"]',
+                'revision_modes = ["atomic", "append_only", "maintained"]',
             )
             settings, issues = load_project_settings(root)
 
         self.assertEqual(issues, ())
         self.assertEqual(settings.routing_revision_modes, REVISION_MODES)
         self.assertEqual(settings.routing_content_roles, CONTENT_ROLES)
-        self.assertEqual(settings.routing_governance_origins, GOVERNANCE_ORIGINS)
-        self.assertEqual(settings.routing_relation_shapes, RELATION_SHAPES)
+        self.assertEqual(settings.routing_governance_loci, GOVERNANCE_LOCI)
         self.assertFalse(settings.artifact_subtype_in_names)
 
     def test_alias_or_partial_axis_fails_closed(self) -> None:
@@ -65,7 +64,8 @@ class RoutingSettingsTests(unittest.TestCase):
 
         self.assertEqual(settings.routing_revision_modes, REVISION_MODES)
         self.assertIn(
-            "routing.revision_modes must be: atomic, evergreen, maintained",
+            "artifacts.routing.revision_modes must be an ordered unique subset "
+            "of: atomic, append_only, maintained",
             issues,
         )
 

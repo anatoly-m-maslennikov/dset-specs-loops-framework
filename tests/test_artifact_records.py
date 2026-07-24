@@ -23,18 +23,21 @@ class ArtifactRecordTests(unittest.TestCase):
         (control / "dset_settings.toml").write_text(
             "\n".join(
                 (
-                    'schema_version = "1.5"',
+                    'schema_version = "1.8"',
                     "[artifacts]",
                     'creation_strictness = "medium"',
-                    "[routing]",
-                    'revision_modes = ["atomic", "evergreen", "maintained"]',
-                    'content_roles = ["inquiry", "definition", "rationale", '
+                    "enabled_types = []",
+                    "enabled_subtypes = []",
+                    "[artifacts.routing]",
+                    'revision_modes = ["atomic", "append_only", "maintained"]',
+                    'content_roles = ["inquiry", "analysis", "definition", '
                     '"method", "implementation", "observation"]',
-                    'governance_origins = ["internal", "external"]',
-                    'relation_shapes = ["standalone", "relational"]',
+                    'governance_loci = ["internal", "external", "relation"]',
                     "[priority]",
                     'scale = ["high", "medium", "low"]',
                     'default = "medium"',
+                    "[structure]",
+                    'layout = "separated-methodology-v1"',
                     "",
                 )
             ),
@@ -52,8 +55,7 @@ class ArtifactRecordTests(unittest.TestCase):
                     'semantic_id = "DSET-CLAIM-001"',
                     'revision_mode = "atomic"',
                     'content_role = "definition"',
-                    'governance_origin = "internal"',
-                    'relation_shape = "standalone"',
+                    'governance_locus = "internal"',
                     "scope_path = []",
                     'status = "accepted"',
                     'priority = "high"',
@@ -78,7 +80,7 @@ class ArtifactRecordTests(unittest.TestCase):
         self.assertEqual(len(rows), 1)
         self.assertEqual(
             rows[0]["route"]["name"],
-            "Internal Atomic Definition Artifact",
+            "Internal Atomic Definition",
         )
         self.assertNotIn("type", rows[0])
         self.assertNotIn("subtype", rows[0])

@@ -24,8 +24,7 @@ MEDIUM_FIELDS = (
     "claim",
     "revision_mode",
     "content_role",
-    "governance_origin",
-    "relation_shape",
+    "governance_locus",
     "scope_path",
     "llm_session_ids",
     "material_links",
@@ -46,8 +45,10 @@ FIELD_QUESTIONS = {
     "claim": "What is the one precise primary claim to preserve?",
     "revision_mode": "How may this artifact change?",
     "content_role": "What one contribution does this artifact make?",
-    "governance_origin": "Who controls this artifact relative to the project?",
-    "relation_shape": "Does primary meaning require role-bearing endpoints?",
+    "governance_locus": (
+        "Does this artifact govern an internal subject, an external subject, "
+        "or an explicit relation?"
+    ),
     "scope_path": "What canonical structural path owns this artifact?",
     "llm_session_ids": "Which explicit LLM session IDs produced this candidate?",
     "material_links": "Which material parent or related artifact IDs apply?",

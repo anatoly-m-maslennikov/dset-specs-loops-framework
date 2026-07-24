@@ -1,4 +1,4 @@
-"""Verify type-free DSET artifact routing."""
+"""Verify three-axis DSET artifact routing."""
 
 from __future__ import annotations
 
@@ -6,8 +6,7 @@ import unittest
 
 from dset_toolchain.artifact_routing import (
     CONTENT_ROLES,
-    GOVERNANCE_ORIGINS,
-    RELATION_SHAPES,
+    GOVERNANCE_LOCI,
     REVISION_MODES,
     ArtifactRoute,
     parse_artifact_route,
@@ -18,13 +17,12 @@ from dset_toolchain.artifact_routing import (
 class ArtifactRoutingTests(unittest.TestCase):
     """Verify routing axes, names, and relational gates."""
 
-    def standalone(self) -> dict[str, object]:
-        """Return one complete standalone route candidate."""
+    def internal(self) -> dict[str, object]:
+        """Return one complete internal route candidate."""
         return {
             "revision_mode": "atomic",
             "content_role": "definition",
-            "governance_origin": "internal",
-            "relation_shape": "standalone",
+            "governance_locus": "internal",
             "scope_path": ["layer:gov"],
         }
 
@@ -33,73 +31,71 @@ class ArtifactRoutingTests(unittest.TestCase):
             CONTENT_ROLES,
             (
                 "inquiry",
+                "analysis",
                 "definition",
-                "rationale",
                 "method",
                 "implementation",
                 "observation",
             ),
         )
 
-    def test_standalone_route_has_one_deterministic_name(self) -> None:
-        route = parse_artifact_route(self.standalone())
+    def test_internal_route_has_one_deterministic_name(self) -> None:
+        route = parse_artifact_route(self.internal())
 
-        self.assertEqual(route.key, "atomic.definition.internal.standalone")
-        self.assertEqual(route.name, "Internal Atomic Definition Artifact")
+        self.assertEqual(route.key, "atomic.definition.internal")
+        self.assertEqual(route.name, "Internal Atomic Definition")
         self.assertEqual(
             route.as_dict()["scope_path"],
             ["layer:gov"],
         )
 
-        external = self.standalone()
-        external["governance_origin"] = "external"
+        external = self.internal()
+        external["governance_locus"] = "external"
         self.assertEqual(
             parse_artifact_route(external).name,
-            "External Atomic Definition Artifact",
+            "External Atomic Definition",
         )
 
     def test_each_internal_and_external_route_has_one_unique_name(self) -> None:
         names: set[str] = set()
         for revision_mode in REVISION_MODES:
             for content_role in CONTENT_ROLES:
-                for governance_origin in GOVERNANCE_ORIGINS:
-                    for relation_shape in RELATION_SHAPES:
-                        candidate = {
-                            "revision_mode": revision_mode,
-                            "content_role": content_role,
-                            "governance_origin": governance_origin,
-                            "relation_shape": relation_shape,
-                            "scope_path": [],
-                        }
-                        if relation_shape == "relational":
-                            candidate.update(
-                                {
-                                    "relation_kind": "connects",
-                                    "endpoints": [
-                                        {
-                                            "role": "source",
-                                            "target": "A",
-                                            "origin": "internal",
-                                        },
-                                        {
-                                            "role": "target",
-                                            "target": "B",
-                                            "origin": "external",
-                                        },
-                                    ],
-                                }
-                            )
-                        route = parse_artifact_route(candidate)
-                        self.assertNotIn(route.name, names)
-                        names.add(route.name)
-                        self.assertTrue(
-                            route.name.startswith(governance_origin.title())
+                for governance_locus in GOVERNANCE_LOCI:
+                    candidate = {
+                        "revision_mode": revision_mode,
+                        "content_role": content_role,
+                        "governance_locus": governance_locus,
+                        "scope_path": [],
+                    }
+                    if governance_locus == "relation":
+                        candidate.update(
+                            {
+                                "relation_kind": "connects",
+                                "endpoints": [
+                                    {
+                                        "role": "source",
+                                        "identity": "A",
+                                        "origin": "internal",
+                                    },
+                                    {
+                                        "role": "target",
+                                        "identity": "B",
+                                        "origin": "external",
+                                    },
+                                ],
+                            }
                         )
-        self.assertEqual(len(names), 72)
+                    route = parse_artifact_route(candidate)
+                    self.assertNotIn(route.name, names)
+                    names.add(route.name)
+                    self.assertTrue(
+                        route.name.startswith(governance_locus.title())
+                    )
+        self.assertEqual(len(names), 54)
 
     def test_relational_route_requires_kind_and_endpoints(self) -> None:
-        candidate = self.standalone()
-        candidate["relation_shape"] = "relational"
+        candidate = self.internal()
+        candidate["governance_locus"] = "relation"
 
         self.assertIn(
             "relational routes require a snake_case relation_kind",
@@ -112,12 +108,12 @@ class ArtifactRoutingTests(unittest.TestCase):
                 "endpoints": [
                     {
                         "role": "consumer",
-                        "target": "PROJECT-A",
+                        "identity": "PROJECT-A",
                         "origin": "internal",
                     },
                     {
                         "role": "provider",
-                        "target": "SYSTEM-B",
+                        "identity": "SYSTEM-B",
                         "origin": "external",
                     },
                 ],
@@ -126,11 +122,11 @@ class ArtifactRoutingTests(unittest.TestCase):
         route = parse_artifact_route(candidate)
 
         self.assertIsInstance(route, ArtifactRoute)
-        self.assertEqual(route.name, "Internal Atomic Definition Relation")
+        self.assertEqual(route.name, "Relation Atomic Definition")
         self.assertEqual(len(route.endpoints), 2)
 
     def test_type_and_subtype_are_rejected_as_routing_fields(self) -> None:
-        candidate = self.standalone()
+        candidate = self.internal()
         candidate["type"] = "decision"
 
         self.assertIn(
@@ -139,7 +135,7 @@ class ArtifactRoutingTests(unittest.TestCase):
         )
 
     def test_scope_path_is_extensible_but_structured(self) -> None:
-        candidate = self.standalone()
+        candidate = self.internal()
         candidate["scope_path"] = [
             "feature_group:schedulers",
             "feature:catchup",

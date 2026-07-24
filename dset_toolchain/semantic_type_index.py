@@ -13,7 +13,6 @@ from .frontmatter import metadata as frontmatter_metadata
 from .identity import iter_control_files, logical_part
 from .layout import discover_layout
 from .legacy_authority import legacy_shared_package_paths
-from .project_data import lifecycle_events, project_section
 from .semantic_type_model import (
     FIELD_CLASSIFICATION,
     LEGACY_INTAKE_CLASSIFICATION,
@@ -66,8 +65,7 @@ def build_semantic_classification_index(root: Path) -> list[dict[str, Any]]:
     records, diagnostics = _collect(root)
     if diagnostics:
         raise ValueError(diagnostics[0].message)
-    events = _lifecycle_events(root)
-    rows = [_index_row(root, record, events) for record in records.values()]
+    rows = [_index_row(root, record) for record in records.values()]
     return sorted(rows, key=lambda item: str(item["id"]))
 
 
@@ -80,14 +78,8 @@ def validate_semantic_classifications(root: Path) -> list[Diagnostic]:
 def _index_row(
     root: Path,
     record: _Classification,
-    events: list[dict[str, Any]],
 ) -> dict[str, Any]:
     """Render one aggregate as a stable index row."""
-    event_ids = [
-        str(event["id"])
-        for event in events
-        if event.get("atom_id") == record.semantic_id
-    ]
     carriers = sorted(
         Path(carrier).relative_to(root).as_posix() for carrier in record.carriers
     )
@@ -99,7 +91,7 @@ def _index_row(
         "origins": sorted(record.origins),
         "carriers": carriers,
         "carrier_statuses": sorted(record.statuses),
-        "lifecycle_events": event_ids,
+        "archived": any("archive" in Path(carrier).parts for carrier in carriers),
     }
 
 
@@ -111,7 +103,8 @@ def _collect(
     diagnostics: list[Diagnostic] = []
     layout = discover_layout(root)
     _collect_markdown(root, layout.separated, records, diagnostics)
-    _collect_packages(root, layout.separated, records, diagnostics)
+    if not layout.separated:
+        _collect_packages(root, records, diagnostics)
     _collect_legacy_packages(root, records, diagnostics)
     _collect_intake(root, layout.recursive or layout.separated, records, diagnostics)
     return records, diagnostics
@@ -173,7 +166,10 @@ def _collect_legacy_decision(
     """Register a historical Decision document when its canonical ID is present."""
     if not (
         path.name.startswith("decision-")
-        or (path.parent.name == "decision" and path.name.startswith("DSET-DECISION-"))
+        or (
+            any(logical_part(part) == "decision" for part in path.parts)
+            and path.name.startswith("DSET-DECISION-")
+        )
     ):
         return
     text = path.read_text(encoding="utf-8")
@@ -195,29 +191,16 @@ def _collect_legacy_decision(
 
 def _collect_packages(
     root: Path,
-    separated: bool,
     records: dict[str, _Classification],
     diagnostics: list[Diagnostic],
 ) -> None:
-    """Collect package-catalog claims from current project storage."""
+    """Collect package claims from pre-separated project storage."""
     layout = discover_layout(root)
     sources: list[tuple[Path, dict[str, Any]]] = []
-    if separated:
-        packages = project_section(root, "package_catalog").get("packages", [])
-        sources = (
-            [
-                (layout.settings_path, item)
-                for item in packages
-                if isinstance(item, dict)
-            ]
-            if isinstance(packages, list)
-            else []
-        )
-    else:
-        for path in layout.structured_named_files(root, "package"):
-            data = _safe_load(path, diagnostics)
-            if isinstance(data, dict):
-                sources.append((path, data))
+    for path in layout.structured_named_files(root, "package"):
+        data = _safe_load(path, diagnostics)
+        if isinstance(data, dict):
+            sources.append((path, data))
     for path, data in sources:
         if not _ignored(root, path):
             _collect_package_fields(path, data, "package", records, diagnostics)
@@ -435,11 +418,3 @@ def _safe_load(path: Path, diagnostics: list[Diagnostic]) -> Any:
             Diagnostic("DSET-E166", path, f"cannot classify carrier: {error}")
         )
         return None
-
-
-def _lifecycle_events(root: Path) -> list[dict[str, Any]]:
-    """Return lifecycle events when the project owns a compatible ledger."""
-    try:
-        return lifecycle_events(root)
-    except ValueError:
-        return []

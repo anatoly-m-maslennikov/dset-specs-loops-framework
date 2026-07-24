@@ -1,4 +1,4 @@
-"""Route governed artifacts through independent, type-free coordinates."""
+"""Resolve governed artifact routes from registered types or legacy fields."""
 
 from __future__ import annotations
 
@@ -8,20 +8,20 @@ from dataclasses import dataclass
 from typing import Any, Final
 
 # REVISION_MODES defines how a governed artifact may change.
-REVISION_MODES: Final[tuple[str, ...]] = ("atomic", "evergreen", "maintained")
+REVISION_MODES: Final[tuple[str, ...]] = ("atomic", "append_only", "maintained")
 # CONTENT_ROLES defines the artifact contribution and canonical loop order.
 CONTENT_ROLES: Final[tuple[str, ...]] = (
     "inquiry",
+    "analysis",
     "definition",
-    "rationale",
     "method",
     "implementation",
     "observation",
 )
-# GOVERNANCE_ORIGINS defines who controls semantic content and currentness.
-GOVERNANCE_ORIGINS: Final[tuple[str, ...]] = ("internal", "external")
-# RELATION_SHAPES defines whether primary meaning needs role-bearing endpoints.
-RELATION_SHAPES: Final[tuple[str, ...]] = ("standalone", "relational")
+# GOVERNANCE_LOCI define internal, external, and relational governance.
+GOVERNANCE_LOCI: Final[tuple[str, ...]] = ("internal", "external", "relation")
+# ENDPOINT_ORIGINS define independently declared relation endpoint origins.
+ENDPOINT_ORIGINS: Final[tuple[str, ...]] = ("internal", "external")
 # SCOPE_SEGMENT validates one extensible structural path segment.
 SCOPE_SEGMENT: Final[re.Pattern[str]] = re.compile(
     r"^[a-z][a-z0-9_-]*:[A-Za-z0-9][A-Za-z0-9._-]*$"
@@ -30,6 +30,69 @@ SCOPE_SEGMENT: Final[re.Pattern[str]] = re.compile(
 RELATION_TOKEN: Final[re.Pattern[str]] = re.compile(
     r"^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
 )
+# TYPE_ROUTES maps one registered type pair to one complete semantic route.
+TYPE_ROUTES: Final[
+    dict[tuple[str, str | None], tuple[str, str, str]]
+] = {
+    ("requirement", None): ("atomic", "definition", "internal"),
+    ("constraint", None): ("atomic", "definition", "external"),
+    ("contract", None): ("atomic", "definition", "relation"),
+    ("implementation_decision", None): ("atomic", "method", "internal"),
+    ("question", None): ("atomic", "inquiry", "internal"),
+    ("question", "risk"): ("atomic", "inquiry", "internal"),
+    ("question", "opportunity"): ("atomic", "inquiry", "internal"),
+    ("question", "conflict"): ("atomic", "inquiry", "relation"),
+    ("problem", None): ("atomic", "observation", "internal"),
+    ("problem", "defect"): ("atomic", "observation", "internal"),
+    ("problem", "gap"): ("atomic", "observation", "internal"),
+    ("problem", "debt"): ("atomic", "observation", "internal"),
+    ("test_plan", None): ("atomic", "method", "internal"),
+    ("evaluation_plan", None): ("atomic", "method", "internal"),
+    ("rationale", None): ("atomic", "analysis", "internal"),
+    ("analysis_report", None): ("atomic", "analysis", "internal"),
+    ("analysis_report", "solution_landscape"): (
+        "atomic",
+        "analysis",
+        "internal",
+    ),
+    ("analysis_report", "root_cause_analysis"): (
+        "atomic",
+        "analysis",
+        "internal",
+    ),
+    ("analysis_report", "proposal"): ("atomic", "analysis", "internal"),
+    ("analysis_report", "technical_investigation"): (
+        "atomic",
+        "analysis",
+        "internal",
+    ),
+    ("analysis_report", "external_audit_analysis"): (
+        "atomic",
+        "analysis",
+        "internal",
+    ),
+    ("evidence_record", None): ("atomic", "observation", "internal"),
+    ("evidence_record", "test_result"): (
+        "atomic",
+        "observation",
+        "internal",
+    ),
+    ("evidence_record", "evaluation_result"): (
+        "atomic",
+        "observation",
+        "internal",
+    ),
+    ("evidence_record", "review_report"): (
+        "atomic",
+        "observation",
+        "internal",
+    ),
+    ("evidence_record", "run_record"): (
+        "atomic",
+        "observation",
+        "internal",
+    ),
+}
 
 
 @dataclass(frozen=True)
@@ -37,7 +100,7 @@ class ArtifactEndpoint:
     """Represent one role-bearing endpoint of a relational artifact."""
 
     role: str
-    target: str
+    identity: str
     origin: str
 
 
@@ -47,11 +110,15 @@ class ArtifactRoute:
 
     revision_mode: str
     content_role: str
-    governance_origin: str
-    relation_shape: str
+    governance_locus: str
     scope_path: tuple[str, ...]
     relation_kind: str | None = None
     endpoints: tuple[ArtifactEndpoint, ...] = ()
+
+    @property
+    def relational(self) -> bool:
+        """Return whether this route governs an explicit relation."""
+        return self.governance_locus == "relation"
 
     @property
     def key(self) -> str:
@@ -60,20 +127,14 @@ class ArtifactRoute:
             (
                 self.revision_mode,
                 self.content_role,
-                self.governance_origin,
-                self.relation_shape,
+                self.governance_locus,
             )
         )
 
     @property
     def name(self) -> str:
         """Return the one canonical human name for this complete route."""
-        words = (
-            self.governance_origin,
-            self.revision_mode,
-            self.content_role,
-            "relation" if self.relation_shape == "relational" else "artifact",
-        )
+        words = (self.governance_locus, self.revision_mode, self.content_role)
         return " ".join(word.replace("_", " ").title() for word in words)
 
     def as_dict(self) -> dict[str, Any]:
@@ -83,8 +144,7 @@ class ArtifactRoute:
             "name": self.name,
             "revision_mode": self.revision_mode,
             "content_role": self.content_role,
-            "governance_origin": self.governance_origin,
-            "relation_shape": self.relation_shape,
+            "governance_locus": self.governance_locus,
             "scope_path": list(self.scope_path),
         }
         if self.relation_kind is not None:
@@ -92,7 +152,7 @@ class ArtifactRoute:
             rendered["endpoints"] = [
                 {
                     "role": endpoint.role,
-                    "target": endpoint.target,
+                    "identity": endpoint.identity,
                     "origin": endpoint.origin,
                 }
                 for endpoint in self.endpoints
@@ -101,23 +161,30 @@ class ArtifactRoute:
 
 
 def parse_artifact_route(metadata: Mapping[str, Any]) -> ArtifactRoute:
-    """Parse and validate one explicit route from artifact metadata."""
+    """Resolve a registered type route or parse a legacy explicit route."""
     issues = route_issues(metadata)
     if issues:
         raise ValueError("; ".join(issues))
-    relation_shape = str(metadata["relation_shape"])
+    resolved = type_route(metadata)
+    if resolved is None:
+        revision_mode = str(metadata["revision_mode"])
+        content_role = str(metadata["content_role"])
+        governance_locus = str(metadata["governance_locus"])
+    else:
+        revision_mode, content_role, governance_locus = resolved
     return ArtifactRoute(
-        revision_mode=str(metadata["revision_mode"]),
-        content_role=str(metadata["content_role"]),
-        governance_origin=str(metadata["governance_origin"]),
-        relation_shape=relation_shape,
+        revision_mode=revision_mode,
+        content_role=content_role,
+        governance_locus=governance_locus,
         scope_path=tuple(str(item) for item in metadata["scope_path"]),
         relation_kind=(
-            str(metadata["relation_kind"]) if relation_shape == "relational" else None
+            str(metadata["relation_kind"])
+            if governance_locus == "relation"
+            else None
         ),
         endpoints=(
             tuple(_endpoint(item) for item in metadata["endpoints"])
-            if relation_shape == "relational"
+            if governance_locus == "relation"
             else ()
         ),
     )
@@ -126,10 +193,28 @@ def parse_artifact_route(metadata: Mapping[str, Any]) -> ArtifactRoute:
 def route_issues(metadata: Mapping[str, Any]) -> list[str]:
     """Return deterministic validation issues for one route candidate."""
     issues: list[str] = []
+    resolved = type_route(metadata)
+    if resolved is not None:
+        repeated = sorted(
+            {
+                "revision_mode",
+                "content_role",
+                "governance_locus",
+                "governance_origin",
+                "relation_shape",
+            }.intersection(metadata)
+        )
+        if repeated:
+            issues.append("derived route fields must be omitted: " + ", ".join(repeated))
+        _scope_issues(metadata.get("scope_path"), issues)
+        _relation_issues_for_locus(metadata, resolved[2], issues)
+        return issues
+    if isinstance(metadata.get("artifact_type"), str):
+        issues.append("artifact_type and artifact_subtype do not map to one route")
+        return issues
     _allowed(metadata, "revision_mode", REVISION_MODES, issues)
     _allowed(metadata, "content_role", CONTENT_ROLES, issues)
-    _allowed(metadata, "governance_origin", GOVERNANCE_ORIGINS, issues)
-    _allowed(metadata, "relation_shape", RELATION_SHAPES, issues)
+    _allowed(metadata, "governance_locus", GOVERNANCE_LOCI, issues)
     _scope_issues(metadata.get("scope_path"), issues)
     _relation_issues(metadata, issues)
     retired = sorted(
@@ -140,6 +225,19 @@ def route_issues(metadata: Mapping[str, Any]) -> list[str]:
             "Type/subtype metadata is not part of routing: " + ", ".join(retired)
         )
     return issues
+
+
+def type_route(metadata: Mapping[str, Any]) -> tuple[str, str, str] | None:
+    """Return the route registered for one type pair."""
+    artifact_type = metadata.get("artifact_type")
+    subtype = metadata.get("artifact_subtype")
+    if not isinstance(artifact_type, str):
+        return None
+    key = (
+        artifact_type,
+        str(subtype) if isinstance(subtype, str) else None,
+    )
+    return TYPE_ROUTES.get(key)
 
 
 def _allowed(
@@ -171,14 +269,16 @@ def _scope_issues(value: object, issues: list[str]) -> None:
 
 
 def _relation_issues(metadata: Mapping[str, Any], issues: list[str]) -> None:
-    shape = metadata.get("relation_shape")
+    locus = metadata.get("governance_locus")
     kind = metadata.get("relation_kind")
     endpoints = metadata.get("endpoints")
-    if shape == "standalone":
+    if locus in {"internal", "external"}:
         if kind is not None or endpoints is not None:
-            issues.append("standalone routes must not declare relation_kind or endpoints")
+            issues.append(
+                "non-relational routes must not declare relation_kind or endpoints"
+            )
         return
-    if shape != "relational":
+    if locus != "relation":
         return
     if not isinstance(kind, str) or not RELATION_TOKEN.fullmatch(kind):
         issues.append("relational routes require a snake_case relation_kind")
@@ -190,22 +290,34 @@ def _relation_issues(metadata: Mapping[str, Any], issues: list[str]) -> None:
             issues.append(f"endpoints[{index}] must be a table")
             continue
         role = item.get("role")
-        target = item.get("target")
+        identity = item.get("identity")
         origin = item.get("origin")
         if not isinstance(role, str) or not RELATION_TOKEN.fullmatch(role):
             issues.append(f"endpoints[{index}].role must be a snake_case token")
-        if not isinstance(target, str) or not target.strip():
-            issues.append(f"endpoints[{index}].target must be a non-empty identity")
-        if origin not in GOVERNANCE_ORIGINS:
+        if not isinstance(identity, str) or not identity.strip():
+            issues.append(
+                f"endpoints[{index}].identity must be a non-empty identity"
+            )
+        if origin not in ENDPOINT_ORIGINS:
             issues.append(
                 f"endpoints[{index}].origin must be internal or external"
             )
+
+
+def _relation_issues_for_locus(
+    metadata: Mapping[str, Any],
+    locus: str,
+    issues: list[str],
+) -> None:
+    projected = dict(metadata)
+    projected["governance_locus"] = locus
+    _relation_issues(projected, issues)
 
 
 def _endpoint(value: object) -> ArtifactEndpoint:
     assert isinstance(value, Mapping)
     return ArtifactEndpoint(
         role=str(value["role"]),
-        target=str(value["target"]),
+        identity=str(value["identity"]),
         origin=str(value["origin"]),
     )

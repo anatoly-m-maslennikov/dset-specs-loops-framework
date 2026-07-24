@@ -329,7 +329,6 @@ def _stage_project(
         "commit_provenance": {"start_commit": "manifest-addition"},
         "verification": {"commands": ["{python} -m dset_toolchain check ."]},
         "canonical_command": "python -m dset_toolchain verify .",
-        "artifact_catalog": project_section(source, "artifact_catalog"),
         "artifact_structure": _artifact_structure(project_key),
         "governance_registry": project_section(source, "governance_registry"),
         "source_provenance": {
@@ -338,26 +337,15 @@ def _stage_project(
             "sources": [],
         },
         "version_registry": project_section(source, "version_registry"),
-        "package_catalog": {
-            "packages": [
-                {
-                    "schema_version": SEPARATED_SCHEMA_VERSION,
-                    "package_id": package_id,
-                    "layer": "meta",
-                    "requirements": [],
-                    "tests": [],
-                    "evals": [],
-                    "contracts": [],
-                    "stories": [],
-                    "outcomes": [],
-                    "artifacts": _package_artifact_names(project_key),
-                }
-            ]
-        },
     }
     manifest_path = dset_root / "dset_settings.toml"
     _write_combined_settings(
         source_layout.find_template("dset_settings.toml"), manifest_path, manifest
+    )
+    catalog_path = dset_root / "artifact_catalog.toml"
+    catalog_path.write_text(
+        dump(project_section(source, "artifact_catalog"), catalog_path),
+        encoding="utf-8",
     )
     _materialize_package(
         source_layout,

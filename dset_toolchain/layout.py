@@ -93,8 +93,12 @@ LAYERED_SCHEMA_VERSION: Final[str] = "1.2"
 SLIM_SCHEMA_VERSION: Final[str] = "1.3"
 # RECURSIVE_SCHEMA_VERSION defines recursive schema version; this module owns the default.
 RECURSIVE_SCHEMA_VERSION: Final[str] = "1.4"
-# SEPARATED_SCHEMA_VERSION defines separated schema version; this module owns the default.
-SEPARATED_SCHEMA_VERSION: Final[str] = "1.5"
+# SEPARATED_SCHEMA_VERSION defines the current separated-layout schema.
+SEPARATED_SCHEMA_VERSION: Final[str] = "1.8"
+# SEPARATED_SCHEMA_VERSIONS defines readable separated-layout schemas.
+SEPARATED_SCHEMA_VERSIONS: Final[frozenset[str]] = frozenset(
+    {"1.5", "1.6", "1.7", SEPARATED_SCHEMA_VERSION}
+)
 # CURRENT_DSET_ROOT defines current dset root; this module owns the default.
 CURRENT_DSET_ROOT: Final[str] = ".dset"
 # LEGAL_FILES_ROOT defines legal files root; this module owns the default.
@@ -189,7 +193,7 @@ class RepositoryLayout:
         return self.schema_version in {
             SLIM_SCHEMA_VERSION,
             RECURSIVE_SCHEMA_VERSION,
-            SEPARATED_SCHEMA_VERSION,
+            *SEPARATED_SCHEMA_VERSIONS,
         }
 
     @property
@@ -200,7 +204,7 @@ class RepositoryLayout:
     @property
     def separated(self) -> bool:
         """Handle separated using the declared repository contract."""
-        return self.schema_version == SEPARATED_SCHEMA_VERSION
+        return self.schema_version in SEPARATED_SCHEMA_VERSIONS
 
     @property
     def dset_root(self) -> Path:
@@ -337,6 +341,8 @@ class RepositoryLayout:
     @property
     def artifact_type_registry_path(self) -> Path:
         """Handle type registry path using the declared repository contract."""
+        if self.schema_version == SEPARATED_SCHEMA_VERSION:
+            return self.dset_root / "artifact_catalog.toml"
         if self.recursive or self.separated:
             return self.settings_path
         if self.slim:
@@ -793,10 +799,11 @@ def discover_layout(root: Path) -> RepositoryLayout:
     if is_slim and version not in {
         SLIM_SCHEMA_VERSION,
         RECURSIVE_SCHEMA_VERSION,
-        SEPARATED_SCHEMA_VERSION,
+        *SEPARATED_SCHEMA_VERSIONS,
     }:
         raise ValueError(
-            f"hidden DSET manifest must declare schema 1.3, 1.4, or 1.5: {slim}"
+            "hidden DSET manifest must declare schema 1.3, 1.4, "
+            f"or 1.5-1.8: {slim}"
         )
     allowed_hidden_layouts = {
         LEGACY_SLIM_LAYOUT,
@@ -821,15 +828,19 @@ def discover_layout(root: Path) -> RepositoryLayout:
     ):
         raise ValueError(f"recursive-framework-v1 requires schema 1.4: {slim}")
     if (
-        version == SEPARATED_SCHEMA_VERSION
+        version in SEPARATED_SCHEMA_VERSIONS
         and structure_layout != SEPARATED_METHODOLOGY_LAYOUT
     ):
-        raise ValueError(f"schema 1.5 must select separated-methodology-v1: {slim}")
+        raise ValueError(
+            f"schemas 1.5-1.8 must select separated-methodology-v1: {slim}"
+        )
     if (
-        version != SEPARATED_SCHEMA_VERSION
+        version not in SEPARATED_SCHEMA_VERSIONS
         and structure_layout == SEPARATED_METHODOLOGY_LAYOUT
     ):
-        raise ValueError(f"separated-methodology-v1 requires schema 1.5: {slim}")
+        raise ValueError(
+            f"separated-methodology-v1 requires schema 1.5-1.8: {slim}"
+        )
     if not is_slim and is_layered and version != LAYERED_SCHEMA_VERSION:
         raise ValueError(f"layered DSET manifest must declare schema 1.2: {layered}")
     if not is_layered and version is not None and version not in LEGACY_SCHEMA_VERSIONS:

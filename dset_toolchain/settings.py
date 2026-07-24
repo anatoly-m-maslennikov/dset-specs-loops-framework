@@ -8,8 +8,7 @@ from typing import Any
 
 from .artifact_routing import (
     CONTENT_ROLES,
-    GOVERNANCE_ORIGINS,
-    RELATION_SHAPES,
+    GOVERNANCE_LOCI,
     REVISION_MODES,
 )
 from .toml_codec import TomlCodecError
@@ -22,9 +21,9 @@ SETTINGS_DIRECTORY = ".dset"
 # LEGACY_SETTINGS_FILENAME defines the retired settings filename.
 LEGACY_SETTINGS_FILENAME = "dset.toml"
 # SETTINGS_SCHEMA_VERSION defines settings schema version; this module owns the default.
-SETTINGS_SCHEMA_VERSION = "1.5"
+SETTINGS_SCHEMA_VERSION = "1.8"
 # PREVIOUS_SETTINGS_SCHEMA_VERSION defines the previous settings schema.
-PREVIOUS_SETTINGS_SCHEMA_VERSION = "1.4"
+PREVIOUS_SETTINGS_SCHEMA_VERSION = "1.7"
 # HIDDEN_SETTINGS_SCHEMA_VERSION defines the first hidden-layout schema.
 HIDDEN_SETTINGS_SCHEMA_VERSION = "1.3"
 # LEGACY_SETTINGS_SCHEMA_VERSION defines the oldest readable schema.
@@ -36,6 +35,9 @@ SUPPORTED_SETTINGS_SCHEMA_VERSIONS = frozenset(
         "1.1",
         "1.2",
         HIDDEN_SETTINGS_SCHEMA_VERSION,
+        "1.4",
+        "1.5",
+        "1.6",
         PREVIOUS_SETTINGS_SCHEMA_VERSION,
         SETTINGS_SCHEMA_VERSION,
     }
@@ -48,13 +50,13 @@ IMPLEMENTATION_MODES = frozenset({"lazy", "strict"})
 CHANGE_WORKSPACE_MODES = frozenset({"integration-branch", "branch-worktree"})
 # DELEGATION_BUDGET_PROFILES defines delegation budgets.
 DELEGATION_BUDGET_PROFILES = frozenset({"low", "medium", "high"})
-# SEMANTIC_COMPILATION_MODES defines compilation timing.
-SEMANTIC_COMPILATION_MODES = frozenset({"on_demand", "eager"})
+# MAINTAINED_VIEW_REFRESH_MODES defines maintained-view refresh timing.
+MAINTAINED_VIEW_REFRESH_MODES = frozenset({"on_demand"})
 # CONFLICT_RESOLUTION_MODES defines conflict selection modes.
 CONFLICT_RESOLUTION_MODES = frozenset({"ask_always", "auto_by_effective_priority"})
 # GOVERNANCE_SURFACE_KEYS defines optional governed project surfaces.
 GOVERNANCE_SURFACE_KEYS = (
-    "evergreen_specification",
+    "maintained_specification",
     "test_plan",
     "evaluation_plan",
     "implementation_plan",
@@ -75,15 +77,16 @@ class ProjectSettings:
     implementation_mode: str = "lazy"
     change_workspace_mode: str = "integration-branch"
     delegation_budget_profile: str = "medium"
-    semantic_compilation_mode: str = "on_demand"
+    maintained_view_refresh_mode: str = "on_demand"
     priority_scale: tuple[str, ...] = DEFAULT_PRIORITY_SCALE
     default_priority: str = "medium"
     conflict_resolution_mode: str = "ask_always"
     active_governance_surfaces: tuple[str, ...] = ()
+    enabled_artifact_types: tuple[str, ...] = ()
+    enabled_artifact_subtypes: tuple[str, ...] = ()
     routing_revision_modes: tuple[str, ...] = REVISION_MODES
     routing_content_roles: tuple[str, ...] = CONTENT_ROLES
-    routing_governance_origins: tuple[str, ...] = GOVERNANCE_ORIGINS
-    routing_relation_shapes: tuple[str, ...] = RELATION_SHAPES
+    routing_governance_loci: tuple[str, ...] = GOVERNANCE_LOCI
 
 
 def selected_settings_path(root: Path) -> Path:
@@ -107,24 +110,20 @@ def selected_settings_path(root: Path) -> Path:
 def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]:
     """Read canonical settings with explicit legacy-name compatibility.
 
-    New writers use ``.dset/dset_settings.toml`` and schema 1.5. This reader
-    accepts the earlier hidden layouts plus retired root filenames and
-    1.0-1.2 field contracts only so an adopter can plan a deliberate
-    migration; it never emits them. Competing names fail closed instead of
-    selecting by precedence.
+    New writers use ``.dset/dset_settings.toml`` and schema 1.8. Earlier
+    schemas and retired root filenames are migration inputs only. Competing
+    names fail closed instead of selecting by precedence.
     """
 
     canonical = root / SETTINGS_DIRECTORY / SETTINGS_FILENAME
     interim_path = root / "dset" / SETTINGS_FILENAME
     previous_path = root / SETTINGS_FILENAME
     legacy_path = root / LEGACY_SETTINGS_FILENAME
-    existing = [canonical]
-    if not canonical.is_file():
-        existing = [
-            path
-            for path in (interim_path, previous_path, legacy_path)
-            if path.is_file()
-        ]
+    existing = [
+        path
+        for path in (canonical, interim_path, previous_path, legacy_path)
+        if path.is_file()
+    ]
     if len(existing) > 1:
         return (
             ProjectSettings(),
@@ -144,17 +143,25 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
     issues: list[str] = []
     schema_version = _string(raw.get("schema_version"), "schema_version", issues)
     if schema_version not in SUPPORTED_SETTINGS_SCHEMA_VERSIONS:
-        issues.append("settings schema_version must be 1.0, 1.1, 1.2, 1.3, 1.4, or 1.5")
+        issues.append("settings schema_version must be between 1.0 and 1.8")
 
     legacy = schema_version == LEGACY_SETTINGS_SCHEMA_VERSION
     _validate_known_keys(raw, schema_version, issues)
     artifacts_name = "optional_capabilities" if legacy else "artifacts"
     artifacts = _table(raw.get(artifacts_name), artifacts_name, issues)
-    subtype_key = "artifact_subtype_in_names" if legacy else "subtype_in_names"
     strictness_key = "artifact_creation_strictness" if legacy else "creation_strictness"
 
-    include_subtype = False
-    if schema_version != SETTINGS_SCHEMA_VERSION:
+    identity = _table(artifacts.get("identity"), "artifacts.identity", issues)
+    if schema_version == SETTINGS_SCHEMA_VERSION:
+        include_subtype = _boolean(
+            identity.get("subtype_in_names", False),
+            "artifacts.identity.subtype_in_names",
+            issues,
+        )
+    else:
+        subtype_key = (
+            "artifact_subtype_in_names" if legacy else "subtype_in_names"
+        )
         include_subtype = _boolean(
             artifacts.get(subtype_key, False),
             f"{artifacts_name}.{subtype_key}",
@@ -169,8 +176,19 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
         issues.append(f"{artifacts_name}.{strictness_key} must be medium or high")
         strictness = "medium"
 
+    enabled_artifact_types = _string_axis(
+        artifacts.get("enabled_types", []),
+        "artifacts.enabled_types",
+        issues,
+    )
+    enabled_artifact_subtypes = _string_axis(
+        artifacts.get("enabled_subtypes", []),
+        "artifacts.enabled_subtypes",
+        issues,
+    )
+
     implementation_mode = "lazy"
-    semantic_compilation_mode = "on_demand"
+    maintained_view_refresh_mode = "on_demand"
     if not legacy:
         workflows = _table(raw.get("workflows"), "workflows", issues)
         implement = _table(workflows.get("implement"), "workflows.implement", issues)
@@ -180,19 +198,40 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
         if implementation_mode not in IMPLEMENTATION_MODES:
             issues.append("workflows.implement.mode must be lazy or strict")
             implementation_mode = "lazy"
-        compilation = _table(raw.get("compilation"), "compilation", issues)
-        semantic_compilation_mode = _string(
-            compilation.get("mode", "on_demand"), "compilation.mode", issues
+        view_section_name = (
+            "maintained_views"
+            if schema_version == SETTINGS_SCHEMA_VERSION
+            else "compilation"
         )
-        if semantic_compilation_mode not in SEMANTIC_COMPILATION_MODES:
-            issues.append("compilation.mode must be on_demand or eager")
-            semantic_compilation_mode = "on_demand"
+        maintained_views = _table(
+            raw.get(view_section_name),
+            view_section_name,
+            issues,
+        )
+        refresh_key = (
+            "refresh_mode"
+            if schema_version == SETTINGS_SCHEMA_VERSION
+            else "mode"
+        )
+        maintained_view_refresh_mode = _string(
+            maintained_views.get(refresh_key, "on_demand"),
+            f"{view_section_name}.{refresh_key}",
+            issues,
+        )
+        if maintained_view_refresh_mode not in MAINTAINED_VIEW_REFRESH_MODES:
+            issues.append(
+                f"{view_section_name}.{refresh_key} must be on_demand"
+            )
+            maintained_view_refresh_mode = "on_demand"
 
     change_workspace_mode = "integration-branch"
     delegation_budget_profile = "medium"
     if schema_version in {
         "1.2",
         HIDDEN_SETTINGS_SCHEMA_VERSION,
+        "1.4",
+        "1.5",
+        "1.6",
         PREVIOUS_SETTINGS_SCHEMA_VERSION,
         SETTINGS_SCHEMA_VERSION,
     }:
@@ -263,31 +302,36 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
         )
     )
 
-    routing = _table(raw.get("routing"), "routing", issues)
+    routing_name = (
+        "artifacts.routing"
+        if schema_version == SETTINGS_SCHEMA_VERSION
+        else "routing"
+    )
+    routing = (
+        _table(artifacts.get("routing"), routing_name, issues)
+        if schema_version == SETTINGS_SCHEMA_VERSION
+        else _table(raw.get("routing"), routing_name, issues)
+    )
     routing_revision_modes = _route_axis(
         routing.get("revision_modes", REVISION_MODES),
-        "routing.revision_modes",
+        f"{routing_name}.revision_modes",
         REVISION_MODES,
         issues,
     )
     routing_content_roles = _route_axis(
         routing.get("content_roles", CONTENT_ROLES),
-        "routing.content_roles",
+        f"{routing_name}.content_roles",
         CONTENT_ROLES,
         issues,
     )
-    routing_governance_origins = _route_axis(
-        routing.get("governance_origins", GOVERNANCE_ORIGINS),
-        "routing.governance_origins",
-        GOVERNANCE_ORIGINS,
+    routing_governance_loci = _route_axis(
+        routing.get("governance_loci", GOVERNANCE_LOCI),
+        f"{routing_name}.governance_loci",
+        GOVERNANCE_LOCI,
         issues,
     )
-    routing_relation_shapes = _route_axis(
-        routing.get("relation_shapes", RELATION_SHAPES),
-        "routing.relation_shapes",
-        RELATION_SHAPES,
-        issues,
-    )
+    if "internal" not in routing_governance_loci:
+        issues.append(f"{routing_name}.governance_loci must include internal")
 
     return (
         ProjectSettings(
@@ -301,15 +345,16 @@ def load_project_settings(root: Path) -> tuple[ProjectSettings, tuple[str, ...]]
             implementation_mode=implementation_mode,
             change_workspace_mode=change_workspace_mode,
             delegation_budget_profile=delegation_budget_profile,
-            semantic_compilation_mode=semantic_compilation_mode,
+            maintained_view_refresh_mode=maintained_view_refresh_mode,
             priority_scale=priority_scale,
             default_priority=default_priority,
             conflict_resolution_mode=conflict_resolution_mode,
             active_governance_surfaces=active_governance_surfaces,
+            enabled_artifact_types=enabled_artifact_types,
+            enabled_artifact_subtypes=enabled_artifact_subtypes,
             routing_revision_modes=routing_revision_modes,
             routing_content_roles=routing_content_roles,
-            routing_governance_origins=routing_governance_origins,
-            routing_relation_shapes=routing_relation_shapes,
+            routing_governance_loci=routing_governance_loci,
         ),
         tuple(issues),
     )
@@ -320,22 +365,28 @@ def _validate_known_keys(
 ) -> None:
     """Validate known keys using the declared repository contract."""
     legacy = schema_version == LEGACY_SETTINGS_SCHEMA_VERSION
-    current = schema_version in {
-        "1.2",
-        HIDDEN_SETTINGS_SCHEMA_VERSION,
-        PREVIOUS_SETTINGS_SCHEMA_VERSION,
-        SETTINGS_SCHEMA_VERSION,
-    }
+    current = schema_version == SETTINGS_SCHEMA_VERSION
     allowed_top = {
         "schema_version",
         "optional_capabilities" if legacy else "artifacts",
         "priority",
     }
     if not legacy:
-        allowed_top.update({"workflows", "compilation"})
-    if current:
-        allowed_top.update({"changes", "delegation"})
-    if schema_version in {PREVIOUS_SETTINGS_SCHEMA_VERSION, SETTINGS_SCHEMA_VERSION}:
+        allowed_top.update(
+            {
+                "workflows",
+                "maintained_views" if current else "compilation",
+                "changes",
+                "delegation",
+            }
+        )
+    if schema_version in {
+        "1.4",
+        "1.5",
+        "1.6",
+        PREVIOUS_SETTINGS_SCHEMA_VERSION,
+        SETTINGS_SCHEMA_VERSION,
+    }:
         allowed_top.update(
             {
                 "canonical_command",
@@ -350,17 +401,18 @@ def _validate_known_keys(
                 "verification",
                 "work_areas",
                 "packages",
-                "artifact_catalog",
                 "artifact_structure",
                 "governance_registry",
                 "source_provenance",
                 "version_registry",
-                "package_catalog",
                 "conflict_resolution",
                 "governance_surfaces",
-                "routing",
             }
         )
+    if current:
+        allowed_top.update({"paths", "git", "interaction"})
+    else:
+        allowed_top.update({"artifact_catalog", "package_catalog", "routing"})
     _unknown_keys(raw, allowed_top, "settings", issues)
 
     artifacts_name = "optional_capabilities" if legacy else "artifacts"
@@ -369,7 +421,11 @@ def _validate_known_keys(
         artifact_keys = {
             ("artifact_creation_strictness" if legacy else "creation_strictness"),
         }
-        if schema_version != SETTINGS_SCHEMA_VERSION:
+        if current:
+            artifact_keys.update(
+                {"enabled_types", "enabled_subtypes", "identity", "routing"}
+            )
+        else:
             artifact_keys.add(
                 "artifact_subtype_in_names" if legacy else "subtype_in_names"
             )
@@ -379,6 +435,27 @@ def _validate_known_keys(
             artifacts_name,
             issues,
         )
+        identity = artifacts.get("identity")
+        if isinstance(identity, dict):
+            _unknown_keys(
+                identity,
+                {
+                    "project_prefix_enabled",
+                    "project_prefix",
+                    "scope_path_in_ids",
+                    "subtype_in_names",
+                },
+                "artifacts.identity",
+                issues,
+            )
+        artifact_routing = artifacts.get("routing")
+        if isinstance(artifact_routing, dict):
+            _unknown_keys(
+                artifact_routing,
+                {"revision_modes", "content_roles", "governance_loci"},
+                "artifacts.routing",
+                issues,
+            )
     priority = raw.get("priority")
     if isinstance(priority, dict):
         _unknown_keys(
@@ -395,7 +472,7 @@ def _validate_known_keys(
                     "constraint",
                     "contract",
                     "requirement",
-                    "decision",
+                    "implementation_decision",
                     "implementation",
                     "other",
                 },
@@ -420,10 +497,23 @@ def _validate_known_keys(
             )
     workflows = raw.get("workflows")
     if isinstance(workflows, dict):
-        _unknown_keys(workflows, {"implement"}, "workflows", issues)
+        _unknown_keys(
+            workflows,
+            {"default_mode", "release_mode", "implement"} if current else {"implement"},
+            "workflows",
+            issues,
+        )
         implement = workflows.get("implement")
         if isinstance(implement, dict):
             _unknown_keys(implement, {"mode"}, "workflows.implement", issues)
+    maintained_views = raw.get("maintained_views")
+    if isinstance(maintained_views, dict):
+        _unknown_keys(
+            maintained_views,
+            {"refresh_mode", "skill"},
+            "maintained_views",
+            issues,
+        )
     compilation = raw.get("compilation")
     if isinstance(compilation, dict):
         _unknown_keys(
@@ -474,6 +564,30 @@ def _validate_known_keys(
             "routing",
             issues,
         )
+    paths = raw.get("paths")
+    if isinstance(paths, dict):
+        _unknown_keys(
+            paths,
+            {"control_root", "journal_root", "runtime_root"},
+            "paths",
+            issues,
+        )
+    git = raw.get("git")
+    if isinstance(git, dict):
+        _unknown_keys(
+            git,
+            {"required", "initialize_if_missing", "commit_each_governed_change"},
+            "git",
+            issues,
+        )
+    interaction = raw.get("interaction")
+    if isinstance(interaction, dict):
+        _unknown_keys(
+            interaction,
+            {"reporting_mode"},
+            "interaction",
+            issues,
+        )
 
 
 def _unknown_keys(
@@ -507,21 +621,44 @@ def _boolean(value: object, name: str, issues: list[str]) -> bool:
     return False
 
 
+def _string_axis(
+    value: object,
+    name: str,
+    issues: list[str],
+) -> tuple[str, ...]:
+    if not isinstance(value, list) or any(
+        not isinstance(item, str) or not item for item in value
+    ):
+        issues.append(f"{name} must be a list of non-empty strings")
+        return ()
+    normalized = tuple(str(item) for item in value)
+    if len(normalized) != len(set(normalized)):
+        issues.append(f"{name} must not contain duplicates")
+    return normalized
+
+
 def _route_axis(
     value: object,
     name: str,
     canonical: tuple[str, ...],
     issues: list[str],
 ) -> tuple[str, ...]:
-    """Require the complete ordered routing vocabulary for one axis."""
+    """Require a non-empty ordered subset of one routing vocabulary."""
     if not isinstance(value, (list, tuple)) or not all(
         isinstance(item, str) for item in value
     ):
         issues.append(f"{name} must be a TOML array of strings")
         return canonical
     selected = tuple(value)
-    if selected != canonical:
-        issues.append(f"{name} must be: {', '.join(canonical)}")
+    if (
+        not selected
+        or len(selected) != len(set(selected))
+        or any(item not in canonical for item in selected)
+        or selected != tuple(item for item in canonical if item in selected)
+    ):
+        issues.append(
+            f"{name} must be an ordered unique subset of: {', '.join(canonical)}"
+        )
         return canonical
     return selected
 

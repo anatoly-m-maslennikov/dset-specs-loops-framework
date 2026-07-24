@@ -14,7 +14,6 @@ from .frontmatter import metadata as frontmatter_metadata
 from .identity import iter_control_files, logical_part
 from .layout import ID_TOKEN_LAYERS, LAYERS, discover_layout
 from .legacy_authority import legacy_authority_ids
-from .project_data import lifecycle_events, project_section
 from .semantic_types import SEMANTIC_SUBTYPES, build_semantic_classification_index
 from .structured_data import StructuredDataError, load
 
@@ -24,8 +23,6 @@ ID_PATTERN = re.compile(r"^[A-Z0-9]+(?:-[A-Z0-9]+)+$")
 SESSION_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
 # ATOM_PATTERN validates atom pattern; this module owns the accepted syntax.
 ATOM_PATTERN = re.compile(r"-ATOMIC-RECORD-([0-9]+)$")
-# INACTIVE_EVENTS defines inactive events; this module owns the default.
-INACTIVE_EVENTS = frozenset({"absorbed", "rejected", "retired", "withdrawn"})
 # RELATION_TYPES defines relation types; this module owns the default.
 RELATION_TYPES = frozenset(
     {
@@ -38,11 +35,14 @@ RELATION_TYPES = frozenset(
         "resolution_of",
         "override_of",
         "replacement_of",
+        "recurrence_of",
         "relates_to",
     }
 )
 # ACYCLIC_RELATION_TYPES defines acyclic relation types; this module owns the default.
-ACYCLIC_RELATION_TYPES = frozenset({"child_of", "override_of", "replacement_of"})
+ACYCLIC_RELATION_TYPES = frozenset(
+    {"child_of", "override_of", "replacement_of", "recurrence_of"}
+)
 # PROJECTION_SOURCE_TYPES defines projection source types; this module owns the default.
 PROJECTION_SOURCE_TYPES = frozenset(
     {"specification", "procedure", "plan", "derived_view", "navigation"}
@@ -63,6 +63,7 @@ REVERSE_FIELDS = frozenset(
         "resolved_by",
         "overridden_by",
         "replaced_by",
+        "recurs_as",
     }
 )
 # IGNORED_PARTS defines ignored parts; this module owns the default.
@@ -199,7 +200,8 @@ def collect_artifact_relations(
     nodes = _resolve_nodes(root, raw_nodes, aliases, known, inactive, diagnostics)
     diagnostics.extend(_cycle_diagnostics(root, nodes, inactive))
     diagnostics.extend(_range_diagnostics(root, nodes, inactive))
-    diagnostics.extend(_replacement_diagnostics(root, nodes))
+    diagnostics.extend(_replacement_diagnostics(root, nodes, inactive))
+    diagnostics.extend(_recurrence_diagnostics(root, nodes, inactive))
     diagnostics.extend(_source_diagnostics(root, nodes))
     return nodes, sorted(set(diagnostics))
 
@@ -596,19 +598,71 @@ def _range_matches(node: RelationNode, selector: ProjectionRange) -> bool:
 def _replacement_diagnostics(
     root: Path,
     nodes: dict[str, RelationNode],
+    inactive: set[str],
 ) -> list[Diagnostic]:
-    """Handle diagnostics using the declared repository contract."""
-    absorbed = _absorption_edges(root)
+    """Require one replacement successor and an archived predecessor."""
     diagnostics: list[Diagnostic] = []
+    successors: dict[str, str] = {}
     for node in nodes.values():
         for relation in node.relations:
             if relation.type != "replacement_of" or relation.target is None:
                 continue
-            if absorbed.get(relation.target) != node.id:
+            previous = successors.get(relation.target)
+            if previous is not None and previous != node.id:
                 diagnostics.append(
                     _diag(
                         root / node.path,
-                        "replacement_of requires matching append-only absorption",
+                        f"replacement target already has successor: {previous}",
+                    )
+                )
+            successors[relation.target] = node.id
+            if relation.target not in inactive:
+                diagnostics.append(
+                    _diag(
+                        root / node.path,
+                        "replacement_of target must be archived",
+                    )
+                )
+    return diagnostics
+
+
+def _recurrence_diagnostics(
+    root: Path,
+    nodes: dict[str, RelationNode],
+    inactive: set[str],
+) -> list[Diagnostic]:
+    """Validate new occurrences without reactivating archived atoms."""
+    diagnostics: list[Diagnostic] = []
+    for node in nodes.values():
+        for relation in node.relations:
+            if relation.type != "recurrence_of" or relation.target is None:
+                continue
+            target = nodes.get(relation.target)
+            if node.artifact_type != "atomic_record" or node.semantic_type not in {
+                "problem",
+                "question",
+            }:
+                diagnostics.append(
+                    _diag(
+                        root / node.path,
+                        "recurrence_of must originate from a Question or Problem atom",
+                    )
+                )
+                continue
+            if target is None:
+                continue
+            if target.semantic_type != node.semantic_type:
+                diagnostics.append(
+                    _diag(
+                        root / node.path,
+                        "recurrence_of requires the same semantic Type",
+                    )
+                )
+            if relation.target not in inactive:
+                diagnostics.append(
+                    _diag(
+                        root / node.path,
+                        "recurrence_of target must be archived",
                     )
                 )
     return diagnostics
@@ -640,8 +694,7 @@ def _source_error(node: RelationNode, relation_type: str) -> str | None:
     ):
         return "projection_of must originate from an evergreen artifact"
     if relation_type == "check_of" and not (
-        node.semantic_type == "qa"
-        and node.subtype in {"test_plan", "evaluation_plan"}
+        node.semantic_type == "qa" and node.subtype in {"test_plan", "evaluation_plan"}
     ):
         return "check_of must originate from a Test Plan or Evaluation Plan atom"
     if relation_type == "evidence_for" and node.artifact_type != "evidence_record":
@@ -650,6 +703,11 @@ def _source_error(node: RelationNode, relation_type: str) -> str | None:
         return "override_of must originate from Decision authority"
     if relation_type == "replacement_of" and node.artifact_type != "atomic_record":
         return "replacement_of must originate from an atomic artifact"
+    if relation_type == "recurrence_of" and not (
+        node.artifact_type == "atomic_record"
+        and node.semantic_type in {"problem", "question"}
+    ):
+        return "recurrence_of must originate from a Question or Problem atom"
     if relation_type == "implementation_of" and node.artifact_type != "implementation":
         return "implementation_of must originate from implementation or a commit"
     return None
@@ -779,17 +837,6 @@ def _known_relation_ids(root: Path) -> set[str]:
             for item in build_semantic_classification_index(root)
             if isinstance(item, dict) and isinstance(item.get("id"), str)
         )
-        for event in lifecycle_events(root):
-            atom_id = event.get("atom_id")
-            if isinstance(atom_id, str):
-                identifiers.add(atom_id)
-            related = event.get("related", [])
-            if isinstance(related, list):
-                identifiers.update(
-                    str(item)
-                    for item in related
-                    if isinstance(item, str) and ID_PATTERN.fullmatch(item)
-                )
     if not current and layout.intake_path.is_file():
         data = load(layout.intake_path)
         items = data.get("items", []) if isinstance(data, dict) else []
@@ -798,20 +845,7 @@ def _known_relation_ids(root: Path) -> set[str]:
             for item in items
             if isinstance(item, dict) and isinstance(item.get("id"), str)
         )
-    if layout.separated:
-        catalog = project_section(root, "package_catalog")
-        packages = catalog.get("packages", []) if isinstance(catalog, dict) else []
-        for package in packages if isinstance(packages, list) else []:
-            if not isinstance(package, dict):
-                continue
-            for value in package.values():
-                if isinstance(value, list):
-                    identifiers.update(
-                        str(item)
-                        for item in value
-                        if isinstance(item, str) and ID_PATTERN.fullmatch(item)
-                    )
-    else:
+    if not layout.separated:
         for path in layout.structured_named_files(root, "package"):
             identifiers.update(_package_ids(path))
     return identifiers
@@ -845,39 +879,12 @@ def _frontmatter(path: Path) -> dict[str, Any] | None:
 
 
 def _inactive_semantic_ids(root: Path) -> set[str]:
-    """Handle semantic ids using the declared repository contract."""
-    current: dict[str, str] = {}
-    for event in _lifecycle_events(root):
-        atom_id = event.get("atom_id")
-        kind = event.get("event")
-        if (
-            isinstance(atom_id, str)
-            and isinstance(kind, str)
-            and kind != "priority_changed"
-        ):
-            current[atom_id] = kind
+    """Return semantic identities whose only carriers are archived."""
     return {
-        identifier for identifier, kind in current.items() if kind in INACTIVE_EVENTS
+        str(item["id"])
+        for item in build_semantic_classification_index(root)
+        if item.get("archived") is True
     }
-
-
-def _absorption_edges(root: Path) -> dict[str, str]:
-    """Handle edges using the declared repository contract."""
-    edges: dict[str, str] = {}
-    for event in _lifecycle_events(root):
-        related = event.get("related")
-        if event.get("event") != "absorbed" or not isinstance(related, list):
-            continue
-        if len(related) == 1:
-            edges[str(event.get("atom_id"))] = str(related[0])
-    return edges
-
-
-def _lifecycle_events(root: Path) -> list[dict[str, Any]]:
-    try:
-        return lifecycle_events(root)
-    except (OSError, UnicodeError, ValueError, StructuredDataError):
-        return []
 
 
 def _layer_from_id(identifier: str) -> str | None:

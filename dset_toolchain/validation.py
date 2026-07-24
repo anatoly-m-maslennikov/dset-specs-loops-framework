@@ -1071,7 +1071,7 @@ def _validate_layered_packages(
 ) -> list[Diagnostic]:
     """Validate layered packages using the declared repository contract."""
     if layout.separated:
-        return _validate_catalog_packages(root, layout, manifest)
+        return []
     diagnostics: list[Diagnostic] = []
     project_key = _manifest_project_key(manifest)
     if project_key is None:
@@ -1259,80 +1259,6 @@ def _validate_layered_packages(
         )
         diagnostics.append(
             _diag("DSET-E144", missing_path, "declared package fragment is missing")
-        )
-    return diagnostics
-
-
-def _validate_catalog_packages(
-    root: Path, layout: RepositoryLayout, manifest: dict[str, Any]
-) -> list[Diagnostic]:
-    """Validate catalog packages using the declared repository contract."""
-    diagnostics: list[Diagnostic] = []
-    declared = {
-        (str(item.get("id")), str(layer))
-        for item in manifest.get("packages", [])
-        if isinstance(item, dict) and isinstance(item.get("layers"), list)
-        for layer in item["layers"]
-        if isinstance(layer, str)
-    }
-    catalog = project_section(root, "package_catalog")
-    packages = catalog.get("packages", [])
-    if not isinstance(packages, list):
-        return [_diag("DSET-E144", layout.settings_path, "packages must be a list")]
-    found: set[tuple[str, str]] = set()
-    for package in packages:
-        if not isinstance(package, dict):
-            diagnostics.append(
-                _diag("DSET-E144", layout.settings_path, "package must be a table")
-            )
-            continue
-        identity = (str(package.get("package_id")), str(package.get("layer")))
-        if identity not in declared or identity in found:
-            diagnostics.append(
-                _diag(
-                    "DSET-E145",
-                    layout.settings_path,
-                    f"package identity is undeclared or duplicated: {identity}",
-                )
-            )
-        found.add(identity)
-        artifacts = package.get("artifacts")
-        if not isinstance(artifacts, dict):
-            diagnostics.append(
-                _diag(
-                    "DSET-E144",
-                    layout.settings_path,
-                    f"package artifacts are missing: {identity}",
-                )
-            )
-            continue
-        for role, carrier in artifacts.items():
-            if not isinstance(carrier, str):
-                diagnostics.append(
-                    _diag(
-                        "DSET-E144",
-                        layout.settings_path,
-                        f"package carrier name is invalid: {identity}/{role}",
-                    )
-                )
-                continue
-            try:
-                find_unique_name(root, carrier)
-            except (FileNotFoundError, ValueError):
-                diagnostics.append(
-                    _diag(
-                        "DSET-E144",
-                        layout.settings_path,
-                        f"package carrier is missing or ambiguous: {carrier}",
-                    )
-                )
-    for identity in sorted(declared - found):
-        diagnostics.append(
-            _diag(
-                "DSET-E144",
-                layout.settings_path,
-                f"declared package layer is missing: {identity}",
-            )
         )
     return diagnostics
 
