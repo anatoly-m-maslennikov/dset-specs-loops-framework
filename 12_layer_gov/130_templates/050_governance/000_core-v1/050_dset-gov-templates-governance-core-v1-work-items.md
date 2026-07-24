@@ -5,192 +5,167 @@ priority: medium
 artifact_subtype: governance
 ---
 
-# Semantic Type and routing rules
+# Atomic artifact meanings and routing
 
 **Rule ID:** `DSET-RULE-WORK-ITEMS`
 
-## Canonical Types
+## Direct registered types
 
-DSET has exactly four core semantic Types. Type is determined by meaning, not
-workflow, queue, skill, host, tool, status, filename, path, or next action.
+DSET classifies an atom directly by `artifact_type` and, when useful, one
+registered `artifact_subtype`. It has no separate parent semantic-Type field.
+The catalog derives route and identity kind from that pair.
 
-| Type | Empty subtype | Allowed subtypes |
+| Type | Optional direct subtypes | Primary meaning |
 |---|---|---|
-| `decision` | General accepted directive | `requirement`, `constraint`, `contract`, `implementation_decision` |
-| `question` | General missing knowledge, interpretation, or choice | `conflict`, `risk`, `opportunity` |
-| `problem` | General current insufficiency | `defect`, `gap`, `debt` |
-| `qa` | Invalid for an emitted QA atom | `test_plan`, `evaluation_plan` |
+| `requirement` | — | Required observable project result or obligation |
+| `constraint` | — | Outside-imposed limitation on acceptable project choices |
+| `contract` | — | Obligations between explicit providers, consumers, or boundaries |
+| `implementation_decision` | — | Material selected architecture, design, algorithm, data, tooling, or operating approach |
+| `question` | `conflict`, `risk`, `opportunity` | Missing knowledge, unresolved choice, incompatible authority, uncertain harm, or optional value |
+| `problem` | `defect`, `gap`, `debt` | Present evidence-backed insufficiency |
+| `test_plan` | — | Deterministic check definition with reproducible pass/fail semantics |
+| `evaluation_plan` | — | Judgment-, sampling-, calibration-, probability-, statistics-, or model-dependent assessment definition |
+| `rationale` | — | Preserved explanation of why a Definition or Method was selected |
+| `analysis_report` | `solution_landscape`, `root_cause_analysis`, `proposal`, `technical_investigation`, `external_audit_analysis` | Bounded interpretation of named inputs that does not authorize its conclusion |
+| `evidence_record` | `test_result`, `evaluation_result`, `review_report`, `run_record` | Immutable observation bound to subject, method, revision, provenance, and limits |
+| `verification` | — | Bounded conclusion about what named evidence supports |
 
-Omit an empty subtype. Never repeat the Type as its own subtype. Every emitted
-atom has one Type and at most one direct subtype; QA always has one of its two
-subtypes. Subtypes never contain subtypes. Type and subtype are immutable after
-emission.
+Additional native atomic types, including `git_commit` and
+`external_git_commit`, are registered by the catalog when enabled. Maintained
+and append-only types use the same catalog but are not atomic claims.
 
-When subtype-bearing names are enabled, a Requirement, Constraint, Contract,
-or Implementation Decision uses `REQUIREMENT`, `CONSTRAINT`, `CONTRACT`, or `IMPL` as its
-external ID kind. An empty-subtype Decision uses `DECISION`. Type-only naming
-uses the Type token while keeping the subtype in atom metadata.
+## Definition authority
 
-## Canonical identity migration
+A Requirement states what the project must provide or prevent. A Constraint
+records an obligation imposed by an external source such as law, platform,
+existing schema, environment, or operator-declared external boundary. A
+Contract governs an explicit relation and therefore declares role-bearing
+endpoints. An Implementation Decision selects how accepted Definition
+authority will be realized.
 
-All current and historical project identities use the same canonical
-vocabulary. A naming change is a complete governed migration of IDs, carrier
-names, relations, maintained views, settings, code,
-proof references, and generated views. Short aliases are rejected after the
-migration; they do not remain as a second compatibility vocabulary. One
-recognized ID-kind token and the carrier's semantic role must agree on one
-Type and at most one direct subtype.
+These types are peers, not subtypes of Decision. Routine code detail stays in
+implementation; emit an Implementation Decision only when the choice is
+material enough to govern later work. Record rationale inline when concise or
+as a linked Rationale atom when it deserves independent history.
 
-`dset check` fails with `DSET-E166` when an ID kind and carrier classification
-disagree or a carrier cannot resolve to the flat model. Traceability publishes
-the canonical ID, normalized Type/subtype, carrier identity, relations, and
-active/archive state. Project health reports the same population by Type and subtype. Skill
-context exposes the four-Type routing identity and
-counts from the current repository; wrappers never infer a Type from the skill
-that happened to run.
+Atomic sources: `DSET-REQUIREMENT-GOV-057`,
+`DSET-REQUIREMENT-GOV-101`, and `DSET-IMPL-GOV-003`.
 
-## Atom boundary
+## Inquiry and observation feedback
 
-Types classify durable project claims and directives for DSET routing, not
-real-world objects, conditions, performed work, or files. Classify the smallest
-independently reviewable primary claim. Split statements with several
-independently enforceable or verifiable heads into linked sibling atoms. If an
-irreducible claim remains plausible under several subtypes, use the empty
-subtype of its Type and raise a Question when the ambiguity matters. Never
-guess from a carrier, path, workflow, or intended next action.
+A Question records missing knowledge or an unresolved choice and authorizes no
+implementation by itself.
 
-The operator's acceptance is a lifecycle act that grants authority to a
-Decision; the act and accepted content are distinct even when
-one record stores both. Markdown, TOML, database, and hosted records are
-carriers.
-Implementation, investigation, acceptance, and QA execution are work. Results
-and logs are evidence. Gate dispositions and Verification are derived. None
-inherits a Type merely because it is stored beside a typed atom.
-
-## Decision routing
-
-A Decision is an immutable directive explicitly accepted as project authority
-by the operator. External material is provenance until the operator accepts its
-content through an explicit lifecycle act. Active Decisions are reflected in
-maintained specifications, plans, runbooks, or governing rules and win when a
-view is stale.
-
-- A **Requirement** states a required observable result, behavior, capability,
-  quality, prevention condition, or obligation.
-- A **Constraint** records an externally imposed limitation on acceptable
-  technologies, dependencies, environments, resources, formats, or operating
-  limits when no boundary participant relies on the restriction as a Contract.
-- A **Contract** states provider, consumer, interface, schema, protocol,
-  compatibility, or failure obligations across a boundary.
-- An **Implementation Decision** records a material selected architecture,
-  design, algorithm, data, tooling, or operating approach.
-- An empty-subtype **Decision** is the fallback for accepted directives that no
-  more precise Decision subtype owns.
-
-Routine code-level detail remains implementation rather than an Implementation
-Decision. User Story, Outcome, Scenario, and Invariant are useful requirement
-forms in prose and compatibility history, but they are not current semantic
-subtypes; split their independently enforceable claims into Requirement atoms.
-
-## Question routing
-
-A Question records unresolved knowledge, interpretation, or choice and does
-not authorize implementation merely by existing.
-
-- A **Conflict** is verified incompatible active and applicable authority over
-  the same scope, concern, and effective time. It is spec-level uncertainty,
-  not a runtime failure.
-- A **Risk** is an uncertain future harmful condition. Record likelihood,
-  impact, trigger, and mitigation when useful.
-- An **Opportunity** is a possible beneficial improvement when no current
+- `conflict` requires exact incompatible active authority over the same
+  concern, scope, applicability, and effective time;
+- `risk` records uncertain future harmful conditions; and
+- `opportunity` records possible beneficial improvement when no current
   obligation is unmet.
-- An empty-subtype **Question** owns any other uncertainty.
 
-Different wording, stale projections, failed proof, implementation
-nonconformance, and contradictory evidence are not automatically Conflicts.
-Identify the exact incompatible authority claims before using that subtype.
+A Problem records a presently true, evidence-backed insufficiency:
 
-Evidence may answer a factual Question. A consequential choice resolves
-through a Decision with `resolution_of`; the resolved Question moves
-byte-for-byte to its Type-local `archive/`. An accepted
-Opportunity becomes authority only through a new Decision.
+- `defect` means something present behaves contrary to applicable authority;
+- `gap` means a required capability, artifact, proof, or obligation is absent;
+  and
+- `debt` means a known compromise works now but creates continuing or future
+  cost.
 
-## Problem routing
+Debt never conceals a current Defect or Gap. A wording difference, stale view,
+failed check, implementation mismatch, or contrary observation is not a
+Conflict unless incompatible authority is established.
 
-A Problem records a presently true, evidence-backed insufficiency. It does not
-choose or authorize its correction.
+A Question or Problem may lead directly to work only when existing authority
+already defines the answer. Otherwise analysis informs a new Requirement,
+Constraint, Contract, or Implementation Decision. The canonical feedback loop
+is Inquiry → Definition → Rationale → Method → Implementation → Observation →
+Inquiry. Sources: `DSET-REQUIREMENT-GOV-087` and
+`DSET-REQUIREMENT-GOV-089`.
 
-- A **Defect** is current behavior or implementation that contradicts active
-  authority or its current maintained view.
-- A **Gap** is a required capability, artifact, proof, or obligation that is
-  absent now.
-- **Debt** is a knowingly accepted compromise that works sufficiently now but
-  creates continuing or future cost.
-- An empty-subtype **Problem** owns any other current insufficiency.
+## Assurance meanings
 
-Use: wrong now → Defect; missing now → Gap; works through a known costly
-compromise → Debt; might harm later → Risk; could add optional value →
-Opportunity. Select one primary subtype and link causes or related atoms rather
-than duplicating a condition.
+Test Plan and Evaluation Plan are direct atomic Method types.
 
-Debt must not conceal a Defect or Gap. When a compromise also violates active
-authority or leaves a required item absent, link separate Defect or Gap atoms
-or emit a Decision that changes the applicable authority.
+- Test Plans define deterministic checks under controlled conditions.
+- Evaluation Plans define judgment-dependent or uncertainty-bearing
+  assessments with a method, rubric or metric, threshold, and treatment of
+  uncertainty.
 
-A Problem returns directly to implementation when existing Requirements or
-Decisions already define the correction. If knowledge or a new choice is
-missing, create a linked Question first.
+Executable tests, evaluation prompts, datasets, fixtures, and harnesses are
+Maintained Implementation artifacts. Their runs produce Evidence Records.
+Verification interprets named evidence for one bounded reliance claim.
+Definition authority, checking method, execution, evidence, and Verification
+remain distinct.
 
-## QA routing
+## Identity
 
-QA defines how accepted claims are checked and changes assurance, not
-authority.
+The canonical identity shape is:
 
-- A **Test Plan** defines deterministic proof under declared conditions with an exact,
-  reproducible pass/fail result.
-- An **Evaluation Plan** defines qualitative, probabilistic, statistical, or
-  model-judged assessment with an explicit method, rubric or metric, threshold,
-  and uncertainty treatment where applicable. It remains an Evaluation Plan when
-  deterministic code executes the method but the conclusion depends on
-  judgment, sampling, calibration, probability, statistics, or a model.
+```text
+<PROJECT?>-<SCOPE_PATH?>-<ARTIFACT_KIND>-<NNN>-<summary>
+```
 
-QA atoms define Test Plans or Evaluation Plans. Test code, Evaluation prompts,
-datasets, fixtures, and harnesses are implementation artifacts. Execution results are evidence for
-derived Verification and never rewrite Requirements or Decisions.
+Settings may omit the project prefix for a small isolated namespace and may
+include an ordered extensible scope path. The visible registered type or
+enabled subtype owns one project-wide number sequence. The registered
+type/subtype determines identity kind; there is no family-level fallback
+sequence. Native Git and host entities retain repository-qualified native
+identities.
 
-## Atom state and authority
+A naming-policy migration recodes the complete identity graph in one
+collision-free transaction and removes old aliases after cutover. It may change
+representation, not governed atomic meaning. Sources:
+`DSET-REQUIREMENT-GOV-060`, `DSET-REQUIREMENT-GOV-064`,
+`DSET-REQUIREMENT-GOV-071`, and `DSET-IMPL-GOV-003`.
 
-All emitted Decision, Question, Problem, and QA atoms are immutable. Editable
-drafts are not atoms. Later semantic correction requires a successor atom.
-Complete replacement uses `replacement_of`; resolution uses `resolution_of`;
-withdrawal archives the atom and routes future intent to a Version Roadmap.
-Reopening is forbidden. A repeated Question or Problem is a new atom using
-`recurrence_of` to its archived predecessor.
+## Lifecycle and relations
 
-Problems and Questions route work but do not authorize implementation. Active
-Decisions own authority. QA owns assurance definitions.
-Maintained specs and plans are mutable semantic views; implementation realizes
-them;
-Verification and project-health views are derived.
+Atomic meaning is immutable. The repository has only active and archived
+Atomic-artifact storage states.
 
-Commits changing maintained views or implementation cite their governing
-Decision IDs. A correction under existing authority may
-additionally link its Problem. A workflow, GitHub Issue, Jira/support ticket,
-task, Change,
-or Release is a route, representation, step, or optional container rather than
-another semantic Type.
+- `replacement_of` completely replaces an older atom;
+- `resolution_of` resolves a Question or Problem;
+- `override_of` creates an explicit narrower exception;
+- `recurrence_of` links a new Question or Problem to a closed predecessor;
+- `child_of` narrows, decomposes, or specializes a claim;
+- `implementation_of`, `check_of`, and `evidence_for` connect realization and
+  assurance;
+- `analysis_of`, `projection_of`, and `solution_for` own their precise
+  semantics; and
+- `relates_to` is a non-semantic fallback with no coverage value.
 
-## Complete identity migration
+Reverse links are derived. Reopening is forbidden. After a successor or
+resolver is committed, the predecessor moves byte-for-byte to its type-local
+`archive/`. Withdrawal archives the atom; future intent is recorded in a
+Version Roadmap. Archive commits use `Archives`, `Archive-Reason`,
+`Archive-Reference` when applicable, and `Session` trailers. Source:
+`DSET-DECISION-GOV-035` and `DSET-REQUIREMENT-GOV-096`.
 
-Payloads and provenance remain attributable, but a naming-policy change
-migrates the complete current and historical identity graph in one governed
-transaction. IDs, carrier names, relations, compiled
-projections, settings, implementations, proof references, and generated views
-must agree before the migration is accepted. Short aliases are rejected after
-cutover rather than retained as compatibility identities.
+## Git and provenance
 
-The canonical projection is implemented across validation, traceability,
-project health, and skill routing. Every migrated atom resolves through its
-original seal plus any validated current-
-carrier transition chain. Any immutability claim must distinguish semantic
-immutability from carrier representation.
+Git is mandatory. Every implemented authority has at least one commit with an
+`Implements:` trailer; every resolved Problem has a commit with `Resolves:`.
+Every governed commit has one host-prefixed `Session:` trailer. One commit may
+name several artifacts only when the technical change is indivisible.
+
+Every new atomic Markdown carrier records `llm_session_ids`; an explicit empty
+list denotes human-only creation. Provenance enables investigation but does
+not confer authority. Internal Git commits use `git_commit`; outside-owned
+commits use `external_git_commit`. Pull requests are maintained relational
+Method artifacts with independent source and target endpoint origins. Sources:
+`DSET-REQUIREMENT-GOV-065`, `DSET-REQUIREMENT-GOV-080`, and
+`DSET-REQUIREMENT-GOV-103`.
+
+## Classification procedure
+
+1. End Exploration Mode only after the operator accepts a durable conclusion.
+2. Split independent primary claims.
+3. Select one enabled direct type and at most one direct subtype.
+4. Resolve its route and identity kind from the artifact catalog.
+5. Assign the narrowest correct structural scope.
+6. Add only non-derived provenance, priority, endpoints, relations, and
+   type-specific facts.
+7. Fail closed when classification, authority, scope, applicability, or
+   relation meaning remains materially ambiguous.
+
+Workflow, queue, ticket, skill, tool, host, filename, folder, and desired next
+action never determine artifact meaning.

@@ -148,6 +148,7 @@ commit_on_create = true
 [[types]]
 name = "specification"
 identity_kind = "SPECIFICATION"
+subtypes = ["domain_model", "behavior", "architecture", "design", "governance"]
 revision_mode = "maintained"
 content_role = "definition"
 governance_locus = "internal"
@@ -168,6 +169,7 @@ commit_on_update = true
 [[types]]
 name = "procedure"
 identity_kind = "PROCEDURE"
+subtypes = ["playbook", "runbook"]
 revision_mode = "maintained"
 content_role = "method"
 governance_locus = "internal"
@@ -178,6 +180,7 @@ commit_on_update = true
 [[types]]
 name = "plan"
 identity_kind = "PLAN"
+subtypes = ["implementation_plan", "test_plan", "evaluation_plan"]
 revision_mode = "maintained"
 content_role = "method"
 governance_locus = "internal"
@@ -188,6 +191,7 @@ commit_on_update = true
 [[types]]
 name = "navigation"
 identity_kind = "NAVIGATION"
+subtypes = ["readme", "hub", "index"]
 revision_mode = "maintained"
 content_role = "definition"
 governance_locus = "internal"

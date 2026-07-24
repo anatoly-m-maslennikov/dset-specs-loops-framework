@@ -8,120 +8,110 @@ priority: medium
 
 # Artifact architecture
 
-## Rule
+## Separate semantic routing from project structure
 
-DSET uses independent profile axes for runtime behavior, durable authority, code enforcement, and knowledge artifacts. Documentation is not a programming language, and its structural rules must not inherit Python or TypeScript tools and thresholds.
-
-## Orthogonal selections
-
-| Axis | Governing question | Example selections |
-|---|---|---|
-| Runtime risk | Which recovery, safety, and supportability semantics are required? | transient/local, stateful/retryable, distributed/high-risk |
-| Durability topology | Which system owns persistent state? | local files, local database, external backing service/platform |
-| Implementation language | Which code tools, scopes, and thresholds enforce the build? | `python-v1`, future `typescript-v1`, not applicable |
-| Artifact governance | Which document types, ownership rules, hubs, and authoring gates apply? | `documentation-v1`, future domain-specific artifact profiles |
-
-A project selects each applicable axis explicitly. Selecting `documentation-v1` does not imply that the project is documentation-only; selecting `python-v1` does not govern prose.
-
-## Artifact classification and navigation
-
-Every governed carrier has one primary artifact type from the project-local
-MECE registry. Atomic Record, Analysis Report, Specification, Procedure, Plan,
-Version, Implementation, Evidence Record, Verification, Derived View, and
-Navigation cover the development lifecycle without changing the four semantic
-Types—Decision, Question, Problem, and QA. Version's direct
-subtypes are
-Roadmap, Version Scope, Change, Release Plan, Readiness Record, and Release
-Record.
-
-Artifact type answers what job the carrier performs. Semantic Type answers what
-an Atomic Record means. Workflow, queue, skill, tool, host, filename, folder,
-and intended next action determine neither axis. Direct metadata or exactly one
-registered path rule supplies artifact classification; ambiguity fails closed.
-
-Base artifact IDs and filenames expose the primary artifact Type. Projects may
-enable subtype-bearing names; whichever classification is visible owns one
-project-wide number sequence. The subtype always remains direct metadata.
-`.dset/dset_settings.toml` exposes independent behavior settings; setting
-`artifacts.subtype_in_names = true` opts only newly emitted artifacts into
-subtype-bearing names and never rewrites stable history.
-
-An active applicable source atom wins when its maintained Specification,
-Procedure, or Plan is stale.
-The drift must be routed for semantic refresh; implementation and evidence cannot
-silently redefine either authority.
-
-Navigation remains hierarchical:
+Each governed artifact has one catalog-derived route:
 
 ```text
-repository root hub
-└── governed area hub
-    └── classified owning artifact
-        ├── linked rationale or Decision
-        ├── linked playbook/runbook
-        └── linked proof/evidence
+revision_mode × content_role × governance_locus
 ```
 
-- The root hub answers which stable public areas exist.
-- An area hub answers what the area owns, excludes, and where a reader starts.
-- An owning artifact answers one primary question and declares its type and
-  authority boundary.
-- Rationale, procedures, and evidence link to the owner; they do not copy its
-  rule. Decisions are atomic sources whose consequences are reflected in their
-  owning maintained views.
+`scope_path` is structural, not a fourth semantic axis. It may represent
+layers, features, feature groups, layers inside features, features inside
+layers, or future registered dimensions. The current project is ambient and is
+not repeated in the path.
 
-Every governed area declares one root, owner, purpose, hub, and parent. A child may have many semantic links but one structural parent. Cycles and missing parents are invalid.
+The catalog derives route and identity kind from one registered
+`artifact_type` plus at most one direct `artifact_subtype`. The carrier never
+repeats route coordinates. Workflow, queue, skill, tool, host, filename,
+folder, and intended next action determine neither type nor route.
 
-Each enabled structural level also owns one one-level-down Mermaid view. A
-project hub shows feature groups when present, otherwise its immediate features
-and/or layers. A feature-group hub shows its features. A feature or layer hub
-shows its main functions, capabilities, or components. Disabled optional levels
-need no placeholder. These views provide the helicopter view at the reader's
-current scale and link canonical owners without replacing them.
+## Keep other selections orthogonal
 
-The project-level artifact set is not a summary copy of every child. Place each
-claim at the narrowest common structural ancestor that contains all affected
-owners and subjects. This makes a feature group the owner of concerns spanning
-only its features, and the project the owner of concerns spanning groups or
-layers. Abstraction, importance, or reuse does not promote a child-owned claim.
+Runtime risk, durability topology, implementation profile, and artifact
+governance are independent selections:
 
-Project-level truth owns genuinely cross-child outcomes and requirements,
-Contracts and dependency rules, shared API/data/event semantics, end-to-end
-Tests and Evaluations, cross-cutting Invariants and Constraints, integration
-architecture, whole-project release/readiness history, and cross-owner
-Decisions, Questions, Problems, and Analysis Reports. Parent artifacts link to
-child detail instead of duplicating it.
+| Selection | Governing question |
+|---|---|
+| Runtime risk | Which recovery, safety, and supportability semantics apply? |
+| Durability topology | Which local or external system owns persistent state? |
+| Implementation profile | Which language/runtime coding and proof rules apply? |
+| Artifact governance | Which artifact types, structures, carriers, and authoring rules apply? |
 
-Consequential traceability uses `child_of`, `analysis_of`, `projection_of`,
-`implementation_of`, `check_of`, `evidence_for`, `resolution_of`,
-`override_of`, `replacement_of`, or fallback `relates_to`. One source-target
-pair has one primary relation; reverse edges are derived and never authored.
-`child_of` keeps both claims active, `override_of` changes only a narrower
-scope, and `replacement_of` completely replaces an older atom.
+Documentation does not inherit Python or TypeScript thresholds merely because
+the repository also contains code.
 
-Maintained semantic views normally record `projection_of` ranges: one semantic Type
-and exact scope through one globally ordered immutable `ATOMIC-RECORD`
-frontier. A newer applicable atom makes the projection stale. `relates_to`
-carries no authority, assurance, dependency, precedence, lifecycle, or
-coverage meaning. Sealed legacy `child_of` fields remain compatibility input.
+## Own artifacts at the narrowest scope
 
-## Current truth and history
+Features are horizontal peer capabilities connected by Contracts at their
+narrowest common owner. Layers are ordered authority refinements:
 
-Active source atoms authorize current rules or accepted behavior.
-Specifications, Procedures, and Plans present maintained views. DSET Change
-folders hold proposed deltas and Verification. Archived Changes and Release
-Records preserve what happened; changelogs are Derived Views. Evidence may
-support current truth, but it is not another authority for that truth.
+```text
+META → GOV → TOOL → SKILL → IMPL → OPS
+```
 
-## Artifact lifecycle
+Layer authority moves only forward. A downstream artifact may implement,
+check, analyze, or provide evidence for upstream authority without reversing
+the dependency. If irreducible backward authority remains, propose
+reclassifying the coupled owners as features rather than hiding the cycle.
 
-1. Classify the intended artifact by its owning question.
-2. Locate the existing owner and area hub before writing.
-3. Use a bounded DSET change when authority, public behavior, structure, or reusable rules change.
-4. Refresh affected maintained views. Emit a successor with
-   `replacement_of` when atomic authority changes completely, then archive the
-   predecessor; never edit an emitted atom.
-5. Validate configuration, hierarchy, hubs, links, and applicable semantic evals.
-6. Reconcile accepted truth and archive through the implementing PR.
+Place every claim at the narrowest structural ancestor containing all affected
+owners and subjects. Project-level artifacts own genuinely cross-child
+requirements, contracts, shared semantics, integration architecture, end-to-end
+assurance, release history, and cross-owner inquiry or observation. They link
+to child detail instead of duplicating it.
 
-Folder layout helps navigation but does not replace ownership. If two files claim the same normative concern, fix the authority boundary rather than adding cross-links between duplicates.
+## Navigate one level at a time
+
+```text
+repository hub
+└── immediate feature groups, features, or layers
+    └── immediate capabilities or components
+```
+
+Every enabled structural level has one current Mermaid view of itself and the
+level immediately below. Hubs link stable folders, maintained files, settings,
+and other long-lived owners; they do not list every atomic artifact or anything
+inside `.dset_runtime/`.
+Sources: `DSET-REQUIREMENT-GOV-031` and
+`DSET-REQUIREMENT-GOV-053`.
+
+## Connect artifacts with precise relations
+
+Use the narrowest registered forward relation. Derive reverse edges.
+
+- `child_of` narrows or decomposes;
+- `analysis_of` interprets;
+- `projection_of` states a maintained-view frontier;
+- `implementation_of` realizes;
+- `check_of` defines assurance;
+- `evidence_for` supports a run or conclusion;
+- `resolution_of` closes inquiry or observation;
+- `solution_for` supplies a conflict solution;
+- `override_of` creates a narrower exception;
+- `replacement_of` completely replaces;
+- `recurrence_of` links a new occurrence to an archived predecessor; and
+- `relates_to` is a fallback with no semantic or coverage force.
+
+Relational artifact types declare stable kinds and explicit role-bearing
+endpoints. Ordinary links and citations do not make an artifact relational.
+
+## Separate current views from atomic authority
+
+An active atomic authority source wins over a stale maintained semantic view.
+Refresh the affected view on demand or before a relying gate. A view records
+precise `projection_of` frontiers and source links; it does not copy every atom
+or become an independent authority.
+
+## Lifecycle
+
+1. Explore without artifact creation until a durable conclusion is accepted.
+2. Classify the smallest primary claim by direct type/subtype.
+3. Assign the narrowest scope and precise relations.
+4. Emit atomically and commit with provenance.
+5. Refresh enabled maintained views when required.
+6. Implement, check, observe, and verify through distinct artifacts.
+7. Resolve or replace with a new atom, then archive the predecessor with
+   explicit commit trailers.
+
+Folder layout supports discovery but never substitutes for ownership.

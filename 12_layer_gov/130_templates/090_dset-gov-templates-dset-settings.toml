@@ -35,8 +35,9 @@ commit_each_governed_change = true
 # Set the gate used before a new immutable atomic artifact is emitted.
 #
 # Accepted:
-# - "medium" (default): require clear authority, one primary claim, semantic
-#   Type, owning scope, provenance, material links, priority, and acceptance.
+# - "medium" (default): require clear authority, one primary claim, registered
+#   type/subtype, owning scope, provenance, material links, priority, and
+#   acceptance.
 #   Optional non-authoritative context may remain explicitly unknown.
 # - "high": also require every material boundary, lineage, conflict, and proof
 #   question to be precise. DSET asks focused questions or stops without writing
@@ -109,15 +110,15 @@ release_mode = "release_readiness"
 # Choose what dset-implement may do before implementation begins.
 #
 # Accepted:
-# - "lazy" (default): reconcile missing session Decisions, then create or update
-#   separate Test/Evaluation plans and the implementation plan as needed before
-#   implementing. Completed prerequisites are skipped.
+# - "lazy" (default): reconcile missing accepted authority from the session,
+#   then create or update separate Test/Evaluation plans and the implementation
+#   plan as needed before implementing. Completed prerequisites are skipped.
 # - "strict": perform implementation only from already sufficient accepted
 #   artifacts. Missing or ambiguous inputs stop; DSET does not create or repair
-#   Decisions or plans and never falls back to lazy mode.
+#   authority artifacts or plans and never falls back to lazy mode.
 #
 # Example lazy chain:
-# decisions -> refresh views when required -> plan-proof -> plan-implementation -> implement
+# authority -> refresh views when required -> plan-proof -> plan-implementation -> implement
 mode = "lazy"
 
 [interaction]
@@ -196,7 +197,7 @@ default = "medium"
 constraint = "high"
 contract = "medium"
 requirement = "medium"
-decision = "medium"
+implementation_decision = "medium"
 implementation = "low"
 other = "medium"
 

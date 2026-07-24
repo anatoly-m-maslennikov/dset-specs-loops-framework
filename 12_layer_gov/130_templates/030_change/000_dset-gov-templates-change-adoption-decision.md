@@ -6,9 +6,9 @@ artifact_id: "{{semantic_artifact_id}}"
 llm_session_ids: []
 ---
 
-# Adoption Decision — {{title}}
+# Adoption Implementation Decision — {{title}}
 
-- **Decision ID:** `{{project_key}}-DECISION{{id_layer}}-001`
+- **Implementation Decision ID:** `{{project_key}}-IMPL{{id_layer}}-001`
 - **Status:** proposed
 - **Decision date:** pending
 - **Resolves Question:** pending
@@ -20,7 +20,7 @@ llm_session_ids: []
 ## Rationale (recommended, optional)
 
 Explain why this candidate is selected in this context. Omission alone does
-not invalidate the Decision; do not add placeholder prose when the reason is
+not invalidate the Implementation Decision; do not add placeholder prose when the reason is
 genuinely self-evident.
 
 ## Evidence and consequences
@@ -35,15 +35,15 @@ when a genuine consequential choice exists; do not manufacture alternatives for
 an externally fixed Contract or ordinary implementation detail. Keep observable
 edge cases in Requirements/Scenarios and internal detail in Design.
 
-Reflect the Decision's normative consequences in maintained specs, Design, and
+Reflect the Implementation Decision's normative consequences in maintained specs, Design, and
 proof plans; link those views and the resolved Question here. The
-accepted active Decision remains the atomic authority source and wins if a
+accepted active Implementation Decision remains the atomic authority source and wins if a
 view is stale.
 
-The emitted Decision is immutable. Semantic change requires a successor. A
+The emitted Implementation Decision is immutable. Semantic change requires a successor. A
 complete successor points backward with `replacement_of`; reverse
 `replaced_by` links are derived, and the predecessor moves byte-for-byte to
 `archive/`. Withdrawal archives the atom and routes future intent to a Version
 Roadmap. Reopening is forbidden. This adoption specialization uses the same
-atom-state rules as the neutral Decision template; it adds candidate version, license,
+atom-state rules as the neutral atomic template; it adds candidate version, license,
 lock-in, replacement, and upgrade concerns.

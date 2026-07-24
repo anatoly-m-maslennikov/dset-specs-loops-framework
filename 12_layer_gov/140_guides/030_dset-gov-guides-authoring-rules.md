@@ -12,16 +12,13 @@ priority: medium
 
 1. Start with the answer, rule, contract, or decision; context follows only when it helps application.
 2. Give each governed carrier one primary `artifact_type`, at most one allowed
-   direct `artifact_subtype`, owner, and owning question. Give each atomic
-   artifact a separate semantic Type, optional allowed semantic subtype, and
-   authority boundary.
+   direct `artifact_subtype`, owner, scope, and authority boundary.
    Classify the smallest independently reviewable primary claim. Split
-   multi-head statements into linked sibling atoms; if an irreducible claim
-   remains subtype-ambiguous, use its general Type and raise a Question when
-   the ambiguity matters.
-3. Determine Type and subtype from semantic content—not from a workflow,
+   multi-head statements into linked sibling atoms; if classification remains
+   materially ambiguous, stay in Exploration Mode or raise a Question.
+3. Determine type and subtype from semantic content—not from a workflow,
    queue, skill, tool, host, filename, folder, or intended next action. Keep
-   Type separate from document and lifecycle role.
+   route, scope, provenance, priority, and lifecycle as separate metadata.
 4. State scope, non-goals, applicability, and failure behavior where ambiguity would change implementation or operations.
 5. Link to another owner instead of copying its rule. Summaries are navigation aids and must identify the authoritative source.
 6. Keep current truth separate from proposed changes, rationale, procedures, and historical evidence.
@@ -57,7 +54,8 @@ priority: medium
 - Keep source observations in Evidence Records. Link them rather than
   laundering interpretation into evidence.
 - Do not treat a recommendation as accepted authority. Emit the accepted
-  conclusion separately as a Decision, Question, Problem, or QA atom.
+  conclusion separately as the applicable Requirement, Constraint, Contract,
+  Implementation Decision, Question, Problem, Test Plan, or Evaluation Plan.
 - Omit `artifact_subtype` when no direct subtype fits; never nest subtypes.
 
 ## Specifications
@@ -67,7 +65,7 @@ priority: medium
 - Give every owned entity with transitions a lifecycle state machine. For an owned entity with no meaningful transition, state its single stable state or record why lifecycle is not applicable.
 - Order sections so each entity is **defined using only entities above it**. A forward section reference is a connection, not a definition.
 - Define ownership and authority for state, inputs, outputs, effects, retries, idempotency boundaries, and recovery when applicable.
-- Give every Requirement Decision a stable ID and scenario or acceptance
+- Give every Requirement a stable ID and scenario or acceptance
   check.
 - Keep implementation mechanisms out unless they constrain observable behavior, compatibility, safety, ownership, or operations.
 - Design deterministic tests and applicable qualitative/probabilistic evals in separate artifacts before implementation.
@@ -106,8 +104,9 @@ When two entities are mutually related, define each independently first using sh
   complete replacement. Derive reverse edges; never author them. Use
   `relates_to` only when machine traceability needs an association and no
   precise relation applies; ordinary citations remain links.
-- For a maintained semantic view, store one `projection_of` frontier per semantic
-  Type and exact scope through the latest included immutable `ATOMIC-RECORD`.
+- For a maintained semantic view, store one `projection_of` frontier per
+  registered atomic type and exact scope through the latest included immutable
+  source.
   Do not list every compiled atom individually.
 - Apply the project artifact-creation strictness before emitting an immutable
   atom. At high strictness, resolve every material ambiguity through focused
@@ -118,21 +117,20 @@ When two entities are mutually related, define each independently first using sh
   disposition blocks emission; `keep_local` permits the assessed local
   candidate, while `promote` requires a newly assessed broader-scope candidate.
 
-## Rationale and Decisions
+## Rationale and authority
 
 - Rationale explains forces and trade-offs behind active normative truth; it links back without restating the full rule.
-- A Requirement records a required result or obligation and may use a direct
-  subtype for Constraint, Contract, User Story, Outcome, Scenario, or Invariant.
-- A Decision records a material selected implementation, architecture,
-  governance, or operating approach and has no subtype. Rationale is strongly
-  recommended but remains optional in validation.
-- Never edit an emitted Decision atom. Emit an explicit successor with
+- A Requirement records a required result or obligation. Constraint and
+  Contract are separate direct types; an Implementation Decision records a
+  material selected realization approach.
+- Never edit an emitted atom. Emit an explicit successor with
   `replacement_of` for complete replacement, then archive the predecessor.
   Resolution uses `resolution_of`; recurrence creates a new Question or Problem
   with `recurrence_of`. Reopening is forbidden.
-- Every active applicable Decision is an atomic authority source. Reflect its
-  consequences in the owning maintained spec or plan; when they differ, the
-  Decision wins and the view is stale until refreshed.
+- Every active applicable Requirement, Constraint, Contract, or Implementation
+  Decision may be an atomic authority source. Reflect its consequences in the
+  owning maintained view; when they differ, atomic authority wins and the view
+  is stale until refreshed.
 
 ## Hubs
 

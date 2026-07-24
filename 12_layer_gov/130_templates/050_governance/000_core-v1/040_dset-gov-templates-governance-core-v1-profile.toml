@@ -88,7 +88,7 @@ layer = "GOV"
 template = "artifact-classification.md"
 target = "artifact-classification.md"
 applicability = "applicable"
-reason = "Every governed carrier requires one MECE artifact classification independent from semantic Type"
+reason = "Every governed carrier requires one unambiguous registered artifact type/subtype"
 depends_on = ["DSET-RULE-ARCHITECTURE"]
 precedence_over = []
 

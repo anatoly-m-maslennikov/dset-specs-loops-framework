@@ -47,14 +47,15 @@ every rule declares both fields even when the lists are empty. Registry order
 is not precedence. If selected rules conflict and no declared precedence path
 resolves the conflict, governed work stops rather than choosing implicitly.
 
-Active Decisions authorize and
-explain change. Provenance identifies origin but does not
-authorize. QA/Test and QA/Evaluation results, reviews, and other evidence
+Active Requirements, Constraints, Contracts, and Implementation Decisions may
+authorize change. Provenance identifies origin but does not authorize. Test and
+Evaluation results, reviews, and other evidence
 assess reliance claims. None becomes rule authority merely by existing or
 passing. Missing or stale assurance leaves the affected claim
 pending or stale and blocks the relying gate; it does not silently erase an
 otherwise valid rule. `DSET-RULE-ARTIFACT-MAINTENANCE` governs transactional
 discharge and risk-proportionate proof with explicit reopen conditions.
+Atomic source: `DSET-DECISION-GOV-002`.
 
 ## Bootstrap
 
@@ -120,20 +121,21 @@ record carrier, performed work, result, evidence, gate disposition, or derived
 view connected to it. One stored record may link several of those roles but
 must keep their meanings and identifiers distinct.
 
-In particular, an operator acceptance act grants authority to Decision
-directive content; a QA atom defines a Test Plan or Evaluation Plan; execution performs work; results
-and logs provide evidence; and Verification derives a current bounded reliance
-statement. A carrier does none of those merely by containing readable text.
-Multi-head claims split into linked sibling atoms. Irreducible subtype
-ambiguity falls back to the empty subtype of the selected Type and raises a
-Question when the ambiguity affects work.
+In particular, an operator acceptance act grants authority to applicable
+Requirement, Constraint, Contract, or Implementation Decision content; a Test
+Plan or Evaluation Plan defines a checking Method; execution performs work;
+results and logs provide evidence; and Verification derives a current bounded
+reliance statement. A carrier does none of those merely by containing readable
+text. Multi-head claims split into linked sibling atoms. Material
+classification ambiguity stays in Exploration Mode or becomes a Question.
 
 ## Revision behavior and artifact function
 
 DSET separates Revision mode from artifact meaning and Content role:
 
-- **Atomic authority sources** are accepted, active, applicable Decisions.
-  Atoms are immutable. Complete replacement is a successor atom with an
+- **Atomic authority sources** are accepted, active, applicable Requirements,
+  Constraints, Contracts, and Implementation Decisions. Atoms are immutable.
+  Complete replacement is a successor atom with an
   explicit acyclic `replacement_of` relation, followed by byte-stable archive
   relocation of the predecessor.
 - **Append-only record sequences** include NDJSON running logs and event
@@ -154,6 +156,10 @@ DSET separates Revision mode from artifact meaning and Content role:
   workflows, scripts, generated runtime assets, and configuration examples.
   They implement atomic sources through maintained semantic views when those
   views are enabled.
+
+This separation preserves distinct atomic authority, append-only records,
+maintained views, implementation, commit provenance, and session provenance.
+Atomic source: `DSET-DECISION-GOV-001`.
 
 An active atom wins over a stale maintained view. A replacement successor
 wins over its archived predecessor by explicit `replacement_of`, never by age.
@@ -192,6 +198,7 @@ truth. It never links individual atoms or `.dset_runtime` descendants. It is
 Navigation or compiled Specification/Architecture, never independent
 authority. Cross-level details belong in the child view rather than expanding
 one whole-project diagram until it becomes unreadable.
+Atomic source: `DSET-REQUIREMENT-GOV-031`.
 
 ## Features versus layers
 
@@ -254,7 +261,7 @@ artifacts link child-owned detail and never duplicate it as parallel truth.
 
 New artifacts store consequential forward edges in `relations` using exactly
 one of `child_of`, `analysis_of`, `projection_of`, `implementation_of`,
-`check_of`, `evidence_for`, `resolution_of`, `override_of`,
+`check_of`, `evidence_for`, `resolution_of`, `solution_for`, `override_of`,
 `replacement_of`, `recurrence_of`, or `relates_to`. Reverse edges are derived and never
 authored. One source-target pair has one primary relation.
 
@@ -264,7 +271,7 @@ Test Plan or Evaluation Plan definition. `evidence_for` owns observed support.
 `resolution_of` closes a Question, Conflict, or Problem. `override_of` changes
 authority only in a narrower scope. `replacement_of` completely replaces an
 atom and requires the predecessor to be archived. `recurrence_of` links a new
-Question or Problem to an archived predecessor of the same Type without
+Question or Problem to an archived predecessor of the same registered type without
 reactivating it. These structural, replacement, and recurrence meanings never
 overlap for one pair.
 
@@ -274,14 +281,16 @@ implementation or QA coverage. Ordinary citations and shared subject matter
 remain Markdown links. `depends_on` and `precedence_over` remain specialized
 rule-registry controls rather than general artifact relations.
 
-`projection_of` normally stores a range with one semantic Type, one exact
-structural scope, and a `through` boundary naming the latest included globally
-ordered `ATOMIC-RECORD`. Archive placement selects applicable active atoms
+`projection_of` normally stores a range with one registered atomic type, one
+exact structural scope, and a `through` boundary naming the latest included
+artifact identity in that type/scope sequence. Archive placement selects
+applicable active atoms
 through that frontier. A newer applicable atom makes the projection stale;
 individual targets are for explicit exceptions only.
 
 Deterministic validation checks relation vocabulary, shape, direction, target
 resolution, uniqueness, source suitability, range frontiers, incompatible
 combinations, and applicable cycles. It never infers semantic truth from an
-edge. Historical sealed `child_of` remains readable compatibility input and is
-projected as typed `child_of`; new artifacts use `relations`.
+edge.
+Atomic sources: `DSET-DECISION-GOV-013` and
+`DSET-DECISION-GOV-035`.

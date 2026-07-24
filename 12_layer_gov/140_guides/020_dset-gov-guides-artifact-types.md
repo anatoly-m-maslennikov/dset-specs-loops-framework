@@ -6,256 +6,87 @@ scope_path:
 priority: medium
 ---
 
-# Semantic Types, subtypes, and artifact types
+# Artifact type selection
 
-## Authority
+The project-local `artifact_catalog.toml` is the executable type registry.
+`dset_settings.toml` enables a project whitelist. This guide explains the
+selection boundary; it does not duplicate the full catalog.
 
-This document is the public framework definition of DSET semantic Types and
-subtypes. The DSET repository applies it through
-`specification-work-items.md`, compiled from the active Decision authority set.
+## Select one primary meaning
 
-## Type rule
-
-DSET has exactly four core semantic Types:
-
-1. **Decision**
-2. **Question**
-3. **Problem**
-4. **QA**
-
-A Type identifies what an atomic project claim or directive means for DSET
-governance and routing. It does not classify every real-world condition, work
-occurrence, or file. A subtype adds precision without creating a second
-top-level Type. An empty subtype is represented by omitting `subtype`; it is
-never represented by repeating the Type name.
-
-```toml
-# Requirement: valid
-type = "decision"
-subtype = "requirement"
-
-# Contract: valid
-type = "decision"
-subtype = "contract"
-
-# Synthetic self-subtype: invalid
-type = "decision"
-subtype = "decision"
-```
-
-Every emitted atom has one primary Type and at most one direct subtype. There
-are no sub-subtypes. Type and subtype follow semantic content, never workflow,
-queue, skill, host, tool, status, filename, folder, or intended next action.
-They are immutable after emission. Changed semantics require a new linked atom,
-not an in-place retype.
-
-Classify the smallest independently reviewable primary claim. Split several
-independently enforceable or verifiable claims into linked sibling atoms. If an
-irreducible claim fits several subtypes, use the empty subtype of its Type and
-record a Question when the ambiguity matters.
-
-When subtype-bearing names are enabled, the direct Decision subtype is the
-external kind: `REQUIREMENT`, `CONSTRAINT`, `CONTRACT`, or `IMPL`. An empty-subtype Decision
-uses `DECISION`. Type-only naming uses the Type token and retains the subtype in
-metadata. The canonical vocabulary is applied through a complete repository
-migration; short identity aliases are rejected rather than retained as a
-second live naming scheme. The migration changes how an immutable atom is
-addressed; it does not rewrite the atom's claim, rationale, provenance, or
-relation meaning.
-
-## Decision
-
-**Definition:** An immutable directive that the operator has explicitly
-accepted as project authority.
-
-The operator's acceptance is an act that grants
-authority to the directive; it is not the directive itself. A Markdown, TOML,
-database, or hosted record is only its carrier or representation.
-
-| Decision subtype | Canonical definition | New kind |
-|---|---|---|
-| `requirement` | Required observable result, behavior, capability, quality, prevention condition, or obligation | `REQUIREMENT` |
-| `constraint` | Externally imposed limitation on acceptable technologies, dependencies, environments, resources, formats, or operating limits | `CONSTRAINT` |
-| `contract` | Provider/consumer and compatibility obligation across a boundary | `CONTRACT` |
-| `implementation_decision` | Material selected architecture, design, algorithm, data, tooling, or operating approach | `IMPL` |
-
-An empty subtype is the general fallback. Routine code detail remains
-implementation. User Story, Outcome, Scenario, and Invariant may appear in
-prose or compatibility history but are not current semantic subtypes.
-
-## Question
-
-**Definition:** An immutable record of missing knowledge, interpretation, or
-choice. A Question does not authorize implementation merely by existing.
-
-An empty subtype means a general uncertainty that is not more precisely a
-Conflict, Risk, or Opportunity. Evidence may answer a factual Question; an
-authoritative choice is resolved through a Decision using `resolution_of`;
-the immutable Question then moves to its Type-local archive.
-
-| Subtype | Canonical definition | Classification test | Must not represent |
-|---|---|---|---|
-| `conflict` | Verified incompatible active and applicable authority claims over the same scope, concern, and effective time | Can the exact governing claims be identified, and is it impossible to satisfy all of them as written? | Runtime failure, stale compilation, wording differences, or contradictory evidence alone |
-| `risk` | An uncertain future harmful condition | Is the harm not currently true, with likelihood, impact, trigger, or mitigation relevant to handling it? | An observed current insufficiency |
-| `opportunity` | A possible beneficial improvement when no current obligation is unmet | Could value be created without correcting a violation or missing requirement? | Required work or a current gap |
-
-A Conflict is a spec-level unresolved Question, not a runtime issue and not a
-separate Type. Risk is future uncertainty; once the harmful condition is true,
-record a Problem. Opportunity remains optional until the operator accepts a
-Requirement or another Decision that makes it authoritative.
-
-## Problem
-
-**Definition:** An immutable record of a presently true, evidence-backed
-insufficiency. A Problem states what is wrong or insufficient; it does not
-choose or authorize its correction.
-
-An empty subtype means a current insufficiency that is not more precisely a
-Defect, Gap, or Debt.
-
-| Subtype | Canonical definition | Classification test | Must not represent |
-|---|---|---|---|
-| `defect` | Current behavior or implementation contradicts an active Decision or its current maintained view | Is something present but behaving incorrectly? | A required capability that does not exist |
-| `gap` | A required capability, artifact, proof, or other obligation is currently absent | Is something required missing now? | Optional improvement or uncertain future harm |
-| `debt` | A knowingly accepted compromise works sufficiently now but creates continuing or future cost | Does the current solution work while increasing maintenance, supportability, delivery, or correction cost? | Any missing item regardless of cause |
-
-Use this compact test:
-
-- wrong now → **Defect**;
-- missing now → **Gap**;
-- working through a known costly compromise → **Debt**;
-- might cause harm later → **Risk**;
-- could create optional value → **Opportunity**.
-
-A Gap may be caused by Debt, and Debt may later produce a Defect. Debt must not
-hide an active Defect or Gap: link separate atoms or emit a Decision that
-changes the applicable authority. Record one
-primary subtype for the condition being governed and link causes or related
-atoms rather than duplicating the same condition under multiple subtypes.
-
-## QA
-
-**Definition:** An immutable definition of how an accepted claim must be
-checked. QA changes assurance, not authority.
-
-An emitted QA atom must declare a subtype. Empty-subtype QA is invalid because
-it does not say whether deterministic or judgment-based proof semantics apply.
-
-| Subtype | Canonical definition | Classification test | Must not represent |
-|---|---|---|---|
-| `test_plan` | A deterministic check definition with declared conditions and an exact reproducible pass/fail result | Should the same controlled inputs and environment always produce the same verdict? | Executable Test code or rubric-based judgment disguised as exact proof |
-| `evaluation_plan` | A qualitative, probabilistic, statistical, or model-judged assessment definition with an explicit method, rubric or metric, threshold, and uncertainty treatment where applicable | Does the conclusion require judgment, sampling, calibration, statistics, probability, or an evaluator/model, even if deterministic code executes the method? | An executable Evaluation or exact deterministic predicate that should be a Test Plan |
-
-A QA atom is a Test Plan or Evaluation Plan defining what must be checked.
-Test code, Evaluation prompts,
-datasets, harnesses, and fixtures are implementation artifacts. Execution
-results are evidence used by derived Verification. Neither a passing Test nor
-Evaluation result becomes project authority.
-
-## Classification order
-
-Classify an atomic artifact in this order:
-
-1. Does it state accepted project authority? Use **Decision**, then choose
-   Requirement, Constraint, Contract, Implementation Decision, or no subtype.
-2. Does it state missing knowledge, incompatible authority, possible future
-   harm, or optional value? Use **Question**, then choose Conflict, Risk,
-   Opportunity, or no subtype.
-3. Does it state a currently true insufficiency? Use **Problem**, then choose
-   Defect, Gap, Debt, or no subtype.
-4. Does it define how to check a claim? Use **QA**, then choose Test Plan or
-   Evaluation Plan.
-
-If none applies, the artifact is probably a document role, lifecycle record,
-implementation artifact, derived view, or optional workflow container rather
-than another semantic Type.
-
-## Artifact types are a separate axis
-
-`artifact_type` classifies the primary job performed by a carrier.
-`artifact_subtype` adds at most one direct specialization. These fields are
-independent from the semantic `type` and `subtype` of an Atomic Record.
-
-The machine-readable catalog is
-the `artifact_catalog` section of
-`dset_settings.toml`.
-It defines eleven artifact types:
-
-| Artifact type | Direct artifact subtypes |
+| If the artifact primarily... | Select |
 |---|---|
-| `atomic_record` | None; use semantic Type fields for its atom |
-| `analysis_report` | `solution_landscape`, `root_cause_analysis`, `proposal`, `technical_investigation`, `external_audit_analysis` |
-| `specification` | `domain_model`, `behavior`, `architecture`, `design`, `governance` |
-| `procedure` | `playbook`, `runbook` |
-| `plan` | `implementation_plan`, `test_plan`, `evaluation_plan` |
-| `version` | `roadmap`, `version_scope`, `change`, `release_plan`, `readiness_record`, `release_record` |
-| `implementation` | `source_code`, `documentation`, `configuration`, `migration`, `test_implementation`, `evaluation_implementation` |
-| `evidence_record` | `test_result`, `evaluation_result`, `review_report`, `run_record` |
-| `verification` | None |
-| `derived_view` | `project_overview`, `health_dashboard`, `traceability_index`, `changelog` |
-| `navigation` | `readme`, `hub`, `index` |
+| requires an observable result or obligation | `requirement` |
+| records an outside-imposed limitation | `constraint` |
+| defines obligations between explicit endpoints | `contract` |
+| selects a material realization approach | `implementation_decision` |
+| records missing knowledge or choice | `question` |
+| asserts a present insufficiency | `problem` |
+| defines a deterministic check | `test_plan` |
+| defines a judgment- or uncertainty-bearing assessment | `evaluation_plan` |
+| preserves why a Definition or Method was selected | `rationale` |
+| interprets named inputs without authorizing a conclusion | `analysis_report` |
+| records what was observed in a bounded run or review | `evidence_record` |
+| concludes what named evidence supports | `verification` |
 
-Omit an optional artifact subtype when none fits precisely. Never repeat the
-artifact type as its subtype, nest artifact subtypes, or infer semantic Type
-from artifact classification. Every governed artifact has one primary artifact
-type, recorded directly or resolved through one unambiguous registered path
-rule.
+Split independently reviewable claims. Do not select a type from the workflow
+that will use it or the action expected next.
 
-New artifact IDs and filenames use the primary artifact type token by default;
-the optional subtype remains metadata. For example, Version Scope may use
-`APP-VERSION-001-0-4-core.md`, and Roadmap uses the same `VERSION` sequence.
-Projects may opt newly emitted artifacts into
-subtype tokens with
-`artifacts.subtype_in_names = true` in `.dset/dset_settings.toml`.
-Changing this capability requires one complete governed identity migration; a
-repository never operates with two canonical naming vocabularies. Identity
-fields and references migrate; immutable claim content does not.
+## Use direct subtypes only
 
-An Analysis Report interprets information without authorizing its conclusion.
-A Solution Landscape compares live options; Root-Cause Analysis supports a
-cause for an observed Problem; Proposal recommends one candidate; Technical
-Investigation establishes facts, mechanisms, or feasibility; External Audit
-Analysis interprets an external audit while the audit remains evidence. An
-accepted conclusion is emitted separately as a Decision, Question, Problem, or
-QA atom.
+- `question`: `conflict`, `risk`, or `opportunity`;
+- `problem`: `defect`, `gap`, or `debt`;
+- `analysis_report`: `solution_landscape`, `root_cause_analysis`, `proposal`,
+  `technical_investigation`, or `external_audit_analysis`; and
+- `evidence_record`: `test_result`, `evaluation_result`, `review_report`, or
+  `run_record`.
 
-Critical boundaries are: Specification versus intended Plan; reusable
-Procedure versus one enactment Plan; Plan versus bounded Version;
-Implementation versus observed Evidence Record; Evidence Record versus derived
-Verification; Verification versus an explicit Readiness Record gate decision;
-and release readiness versus immutable Release Record publication history.
-Derived View and Navigation never become authority.
+Omit the subtype when the base registered type is precise enough. Never nest
+subtypes or store a separate family/parent classification.
 
-The flat Release lifecycle uses the primary `version` type with direct
-subtypes `roadmap`, `version_scope`, `change`, `release_plan`,
-`readiness_record`, and `release_record`. All six share one project-wide
-`VERSION` identity sequence. Milestones are Roadmap entries. Release Notes and
-changelogs are rendered or derived from Release Records.
+## Resolve common ambiguities
 
-## Lifecycle and authority
+| Distinction | Rule |
+|---|---|
+| Requirement vs Constraint | Project-required result is Requirement; outside-imposed limitation is Constraint |
+| Requirement vs Contract | One project obligation is Requirement; reciprocal or boundary obligations with explicit endpoints are Contract |
+| Requirement vs Implementation Decision | Required outcome is Requirement; selected realization is Implementation Decision |
+| Question vs Problem | Missing knowledge/choice is Question; currently true insufficiency is Problem |
+| Conflict vs Defect | Incompatible authority is Conflict; implementation contradicting authority is Defect |
+| Risk vs Problem | Possible future harm is Risk; present harm or insufficiency is Problem |
+| Gap vs Debt | Required absence is Gap; known workable compromise with ongoing cost is Debt |
+| Test Plan vs Evaluation Plan | Exact reproducible predicate is Test Plan; judgment or uncertainty is Evaluation Plan |
+| Analysis vs Evidence | Interpretation is Analysis Report; bounded observation is Evidence Record |
+| Evidence vs Verification | Evidence records what happened; Verification states what that evidence supports |
 
-The mandatory base flow is:
+Debt never hides a Defect or Gap. An external audit remains external evidence;
+the project's interpretation of it is an internal
+`analysis_report/external_audit_analysis`.
+
+## Route and carrier are derived
+
+After selecting one enabled type/subtype:
+
+1. resolve Revision mode, Content role, Governance locus, identity kind,
+   carrier, and commit behavior from the catalog;
+2. assign the narrowest structural `scope_path`;
+3. add only non-derived provenance, priority, relations, endpoints, and
+   type-specific properties; and
+4. fail closed on unknown, disabled, or ambiguous classification.
+
+Atomic narrative artifacts use Markdown with YAML frontmatter. Configuration
+uses TOML, schemas and machine boundaries use JSON, running logs use NDJSON,
+and implementation uses its native format.
+
+## Identity
+
+Use:
 
 ```text
-Operator input → acceptance act → Decision directive → Maintained views
-Decision + Implementation + QA definitions → execution → evidence → Verification
+<PROJECT?>-<SCOPE_PATH?>-<ARTIFACT_KIND>-<NNN>-<summary>
 ```
 
-Problems and Questions form feedback paths. A Problem returns directly to
-implementation when an active Decision already defines the correction. If the
-correction requires missing knowledge or a new choice, it raises a Question;
-the operator's answer becomes a Decision and refreshes maintained views.
-
-All emitted Type atoms are immutable. Resolution and complete replacement use
-typed relations and Type-local archive placement. Withdrawal archives the atom
-and routes future intent to a Version Roadmap. Reopening is forbidden; a
-recurring Question or Problem is a new atom with `recurrence_of`. Maintained
-views remain editable and must be refreshed when active authority
-changes.
-
-## Rationale
-
-Every Decision representation should prompt for concise rationale. Any other
-atomic Type may carry rationale when it helps review, investigation,
-prioritization, recurrence, or replacement. Rationale remains optional and
-cannot hide authority, archive state, or evidence owned elsewhere.
+The project prefix and visible scope are settings choices. The registered type
+or enabled subtype owns one project-wide number sequence. Native Git/host
+entities use repository-qualified native identities. A vocabulary change is a
+complete governed identity migration, not a compatibility alias.
