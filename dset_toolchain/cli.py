@@ -20,6 +20,13 @@ from .compilation import (
     rendered_compilation,
     write_compilation,
 )
+from .configuration import (
+    SURFACE_IDS,
+    execute_surface_change,
+    plan_surface_change,
+    surface_recommendations,
+    surface_states,
+)
 from .conflicts import (
     conflict_result_is_fresh,
     emit_conflict_atom,
@@ -262,6 +269,46 @@ def build_parser() -> argparse.ArgumentParser:
     health_mode = health.add_mutually_exclusive_group()
     health_mode.add_argument("--write", action="store_true")
     health_mode.add_argument("--check", action="store_true")
+
+    configure = commands.add_parser(
+        "configure",
+        help="inspect or change optional governance surfaces",
+    )
+    configure.add_argument("root", type=Path)
+    configure_commands = configure.add_subparsers(
+        dest="configure_command",
+        required=True,
+    )
+    configure_status = configure_commands.add_parser(
+        "status",
+        help="show every registered surface state",
+    )
+    configure_status.add_argument(
+        "--format",
+        choices=["text", "json"],
+        default="text",
+    )
+    configure_recommend = configure_commands.add_parser(
+        "recommend",
+        help="show evidence-backed advisory activations",
+    )
+    configure_recommend.add_argument(
+        "--format",
+        choices=["text", "json"],
+        default="text",
+    )
+    for action in ("activate", "deactivate"):
+        action_parser = configure_commands.add_parser(
+            action,
+            help=f"preview or execute surface {action}",
+        )
+        action_parser.add_argument("surface", choices=tuple(SURFACE_IDS))
+        action_parser.add_argument("--execute", action="store_true")
+        action_parser.add_argument(
+            "--format",
+            choices=["text", "json"],
+            default="text",
+        )
 
     compilation = commands.add_parser(
         "compile",
@@ -637,6 +684,49 @@ def main(argv: list[str] | None = None) -> int:
                 print(path.relative_to(root).as_posix())
                 return 0
             sys.stdout.write(render_health(root))
+            return 0
+        if args.command == "configure":
+            root = _repository_root(args.root)
+            if args.configure_command == "status":
+                states = surface_states(root)
+                if args.format == "json":
+                    print(json.dumps(states, indent=2, sort_keys=True))
+                else:
+                    for surface_id, active in states.items():
+                        state = "active" if active else "inactive"
+                        print(f"{surface_id}: {state}")
+                return 0
+            if args.configure_command == "recommend":
+                recommendations = surface_recommendations(root)
+                if args.format == "json":
+                    print(json.dumps(recommendations, indent=2, sort_keys=True))
+                elif not recommendations:
+                    print("No evidence-backed surface activation recommended")
+                else:
+                    for item in recommendations:
+                        print(
+                            f"{item['surface']}: {item['reason']} "
+                            f"({item['evidence']})"
+                        )
+                return 0
+            change = plan_surface_change(
+                root,
+                args.surface,
+                active=args.configure_command == "activate",
+            )
+            if args.execute:
+                execute_surface_change(change)
+            if args.format == "json":
+                output = {
+                    **change.as_dict(),
+                    "executed": bool(args.execute and change.changed),
+                }
+                print(json.dumps(output, indent=2, sort_keys=True))
+            else:
+                label = "EXECUTED" if args.execute else "DRY RUN"
+                before = "active" if change.before else "inactive"
+                after = "active" if change.after else "inactive"
+                print(f"{label} {change.surface_id}: {before} -> {after}")
             return 0
         if args.command == "compile":
             root = _repository_root(args.root)
