@@ -129,6 +129,7 @@ class SkillWrapperTests(unittest.TestCase):
             "dset-plan-implementation": "stop before implementation",
             "dset-implement": "before claiming verification",
             "dset-verify": "stop before repair or release",
+            "dset-configure": "stop after the configuration result",
             "dset-overview": "Stay read-only",
             "dset-triage": "stop before solving the work",
             "dset-release": "Publication requires separate explicit authority",

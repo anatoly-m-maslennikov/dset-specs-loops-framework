@@ -750,6 +750,10 @@ rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFA
 id = "overview"
 rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-WORK-ITEMS", "DSET-RULE-LIFECYCLE"]
 
+[[governance_registry.workflows]]
+id = "configure"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-SKILL-RUNS", "DSET-RULE-LIFECYCLE"]
+
 [[governance_registry.wrappers]]
 workflow = "lifecycle-orchestration"
 skill = "dset"
@@ -829,6 +833,11 @@ sha256 = "bee23f861776c3da06a3f72db8074b951b9b8494fc51c3c8ed6f63e4e07c3992"
 workflow = "overview"
 skill = "dset-overview"
 sha256 = "ad3f814c61d51d5aaf3c7eda9b546f25333ddb498a9559d89848f4784a97ca1f"
+
+[[governance_registry.wrappers]]
+workflow = "configure"
+skill = "dset-configure"
+sha256 = "5d187009228f771d30858668e084bc59a936cdab0b589fb01c8bf6ae8215abab"
 
 # Migrated canonical settings; this section is not an artifact ledger.
 [source_provenance]

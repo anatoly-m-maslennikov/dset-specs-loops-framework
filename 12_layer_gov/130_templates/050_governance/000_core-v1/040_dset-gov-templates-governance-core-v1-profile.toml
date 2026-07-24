@@ -216,6 +216,10 @@ rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFA
 id = "overview"
 rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-SUPPORTABILITY", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-ARTIFACT-CLASSIFICATION", "DSET-RULE-DELEGATION-BUDGET", "DSET-RULE-SKILL-RUNS", "DSET-RULE-WORK-ITEMS", "DSET-RULE-LIFECYCLE"]
 
+[[workflows]]
+id = "configure"
+rules = ["DSET-RULE-ARCHITECTURE", "DSET-RULE-ARTIFACT-MAINTENANCE", "DSET-RULE-SKILL-RUNS", "DSET-RULE-LIFECYCLE"]
+
 [[wrappers]]
 workflow = "lifecycle-orchestration"
 skill = "dset"
@@ -279,3 +283,7 @@ skill = "dset-complete"
 [[wrappers]]
 workflow = "overview"
 skill = "dset-overview"
+
+[[wrappers]]
+workflow = "configure"
+skill = "dset-configure"

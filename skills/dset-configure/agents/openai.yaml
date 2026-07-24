@@ -1,0 +1,4 @@
+interface:
+  display_name: "DSET Configure"
+  short_description: "Configure optional DSET governance surfaces"
+  default_prompt: "Use $dset-configure to inspect or change this project's optional governance surfaces."

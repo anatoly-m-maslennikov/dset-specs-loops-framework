@@ -29,6 +29,7 @@ project policy is retained or copied across that boundary.
 - [`dset-init`](dset-init/SKILL.md) — preview and, only when authorized, initialize a repository or monorepo Work Area.
 - [`dset-implement`](dset-implement/SKILL.md) — follows the repository's documented `workflows.implement.mode`: lazy preparation closes only governed missing criteria, while strict is implementation-only and stops on insufficient inputs.
 - [`dset-verify`](dset-verify/SKILL.md) — check implementation and governance against accepted truth and proof plans.
+- [`dset-configure`](dset-configure/SKILL.md) — inspect or change optional governance surfaces while preserving retained carriers and history.
 - [`dset-overview`](dset-overview/SKILL.md) — show current artifacts, coverage, freshness, and open obligations without changing the repository.
 - [`dset-release`](dset-release/SKILL.md) — prepare or verify a release and publish only under separate explicit authority.
 
@@ -50,8 +51,8 @@ project policy is retained or copied across that boundary.
 The base skills accept desired outcomes. `dset` routes an uncertain request to
 one next mode and handoff; it does not execute the selected specialist.
 Specialist entrypoints may traverse only their registered prerequisite closure,
-notably the lazy `dset-implement` workflow. These 18 folders are the exact
-implemented source catalog. Sixteen wrappers
+notably the lazy `dset-implement` workflow. These 19 folders are the exact
+implemented source catalog. Seventeen wrappers
 resolve repository-local workflows; `dset-init` and
 `dset-repair-governance` are the only bounded pre-resolution exceptions. The
 primary router owns the shared session checkpoint/resume boundary; there
@@ -72,7 +73,7 @@ or distribution:
 python -m dset_toolchain skills audit --source skills
 ```
 
-The gate validates all 18 package shapes and the 54-case minimum trigger,
+The gate validates all 19 package shapes and the 57-case minimum trigger,
 non-trigger, and ambiguous-routing catalog. Provider/host/model execution
 remains a separate qualitative Evaluation; a clean static audit is not host
 invocation proof.

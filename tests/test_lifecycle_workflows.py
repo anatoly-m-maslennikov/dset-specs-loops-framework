@@ -50,7 +50,7 @@ MODE_WORKFLOWS = {
 # PUBLIC_WRAPPER_WORKFLOWS defines public wrapper workflows; this module owns the default.
 PUBLIC_WRAPPER_WORKFLOWS = set(REGISTERED_SKILL_WORKFLOWS.values())
 # SUPPLEMENTAL_WORKFLOWS defines supplemental workflows; this module owns the default.
-SUPPLEMENTAL_WORKFLOWS = {"overview"}
+SUPPLEMENTAL_WORKFLOWS = {"configure", "overview"}
 
 
 def _workflow_ids(data: dict[str, Any]) -> set[str]:
