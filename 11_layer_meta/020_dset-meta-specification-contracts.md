@@ -42,7 +42,7 @@ priority: high
 DSET routes every governed artifact through three independent axes:
 `revision_mode`, `content_role`, and `governance_locus`. The complete values are:
 
-- `revision_mode`: `atomic`, `evergreen`, or `maintained`;
+- `revision_mode`: `atomic`, `append_only`, or `maintained`;
 - `content_role`: `inquiry`, `definition`, `rationale`, `method`,
   `implementation`, or `observation`;
 - `governance_locus`: `internal`, `external`, or `relation`.
@@ -55,6 +55,12 @@ Each registered `artifact_type` plus optional direct `artifact_subtype` maps to
 exactly one route. Carriers store that type pair and derive the route; they do
 not repeat the three route coordinates. Unknown, disabled, or ambiguous
 mappings fail closed.
+
+`atomic` artifacts are independently governed immutable units. `append_only`
+artifacts preserve accepted records and permit only complete new records.
+`maintained` artifacts may revise existing content through their applicable
+update procedure. `evergreen` is a freshness policy for maintained artifacts,
+not a Revision-mode value. Atomic source: `DSET-REQUIREMENT-META-040`.
 
 Requirement maps to atomic Definition/internal, Constraint to atomic
 Definition/external, Contract to atomic Definition/relation, and Implementation
@@ -91,7 +97,8 @@ Evergreen-to-evergreen and hub links are navigation and cannot establish
 semantic provenance. Refresh occurs on demand after accepted atomic change and
 before a downstream gate requires a current view.
 
-Evergreen and maintained governance surfaces are inactive by default.
+Maintained governance surfaces, including those with evergreen freshness
+obligations, are inactive by default.
 Activation is explicit and adds only the selected surface's currentness and
 gate obligations. Deactivation preserves its carrier and history and never
 changes atomic authority. Atomic source: `DSET-REQUIREMENT-META-033`.

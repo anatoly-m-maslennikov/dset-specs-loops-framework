@@ -154,6 +154,27 @@ its root. DSET scopes both projects without inventing services, modules,
 features, or deployment semantics, and a resumed session follows the current
 declaration rather than a stale checkpoint hint.
 
+## DSET-REQUIREMENT-META-040 — Three Revision modes
+
+Atomic source: `DSET-REQUIREMENT-META-040`.
+
+DSET recognizes exactly three permitted change patterns:
+
+| Revision mode | Permitted change |
+|---|---|
+| `atomic` | Preserve one independently governed immutable semantic unit; changed meaning creates a linked successor |
+| `append_only` | Preserve accepted records and their order; append only complete new records |
+| `maintained` | Revise existing content through the artifact's applicable update procedure |
+
+Evergreen freshness, semantic refresh, synchronization, direct authoring, and
+generation are policies or update mechanisms for maintained artifacts rather
+than additional Revision modes.
+
+**Scenario DSET-SCENARIO-META-018:** A Requirement resolves to `atomic`, an
+NDJSON running log resolves to `append_only`, and a Specification or generated
+TOON view resolves to `maintained`. Regenerating the TOON view cannot rewrite
+the NDJSON source.
+
 ## DSET-REQUIREMENT-META-035 — Registered types derive artifact routes
 
 Atomic source: `DSET-REQUIREMENT-META-035`.
@@ -164,7 +185,7 @@ needed, one direct `artifact_subtype`. The registered pair resolves exactly one
 
 | Axis | Values | Question answered |
 |---|---|---|
-| Revision mode | `atomic`, `evergreen`, `maintained` | How may it change? |
+| Revision mode | `atomic`, `append_only`, `maintained` | How may it change? |
 | Content role | `inquiry`, `definition`, `rationale`, `method`, `implementation`, `observation` | What does it contribute? |
 | Governance locus | `internal`, `external`, `relation` | What does it primarily govern? |
 
@@ -190,7 +211,7 @@ registered name at each enabled governance locus. An empty cell is valid.
 | Revision mode \ Content role | Inquiry | Definition | Rationale | Method | Implementation | Observation |
 |---|---|---|---|---|---|---|
 | Atomic | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R |
-| Evergreen | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R |
+| Append-only | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R |
 | Maintained | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R |
 
 `I`, `E`, and `R` mean internal, external, and relation. They mark available
@@ -252,20 +273,6 @@ artifact identity, revision mode, governance locus, or authority.
 **Scenario DSET-SCENARIO-META-017:** A production observation raises a new
 Question; its route is selected from its own semantics, not copied from the
 preceding implementation.
-
-## DSET-REQUIREMENT-META-017 — Generated and maintained implementations remain distinct
-
-Atomic source: `DSET-REQUIREMENT-META-017`.
-
-Generated Code is an internal evergreen Implementation when it is a reproducible
-current projection with generator and source provenance. Hand-maintained
-executable truth is an internal maintained Implementation. A Commit is an
-atomic Implementation; a Merge Commit is an atomic relational Implementation.
-
-**Scenario DSET-SCENARIO-META-018:** Regenerating a dashboard updates one
-evergreen Implementation, while editing a source module updates one maintained
-Implementation and committing that edit creates a separate atomic
-Implementation record.
 
 ## FPF alignment
 
@@ -479,10 +486,10 @@ concrete storage, adapter, lookup, redaction, and enforcement mechanisms.
 
 Atomic source: `DSET-REQUIREMENT-META-033`.
 
-DSET begins with atomic authority and requires no evergreen or maintained
-governance surface merely because the project is initialized. Requirements
-carry clear accepted obligations; Questions and Problems remain available when
-uncertainty or discrepancy exists.
+DSET begins with atomic authority and requires no maintained governance surface
+merely because the project is initialized. Requirements carry clear accepted
+obligations; Questions and Problems remain available when uncertainty or
+discrepancy exists.
 
 A named surface may be activated when its coordination value becomes useful.
 Activation adds that surface's currentness and gate obligations. Deactivation
@@ -490,8 +497,8 @@ removes those obligations while preserving its carrier and Git history. A
 later reactivation reconciles the retained surface against current atoms before
 calling it current.
 
-Activation applies to named governance surfaces, not globally to the
-`evergreen` or `maintained` revision modes.
+Activation applies to named maintained governance surfaces, not globally to a
+Revision mode or to the evergreen freshness policy.
 
 ### Governance-surface lifecycle
 

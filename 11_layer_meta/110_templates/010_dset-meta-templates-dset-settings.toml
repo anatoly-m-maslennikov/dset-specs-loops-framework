@@ -41,7 +41,7 @@ creation_strictness = "medium"
 # Add `relation` when the project governs explicit boundaries or interactions.
 # Empty matrix cells are valid; these lists do not require placeholder names or
 # artifacts.
-revision_modes = ["atomic", "evergreen", "maintained"]
+revision_modes = ["atomic", "append_only", "maintained"]
 content_roles = [
   "inquiry",
   "definition",

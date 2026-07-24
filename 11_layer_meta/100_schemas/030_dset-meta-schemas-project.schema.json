@@ -71,7 +71,7 @@
               "items": {
                 "enum": [
                   "atomic",
-                  "evergreen",
+                  "append_only",
                   "maintained"
                 ]
               }
