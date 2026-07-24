@@ -41,12 +41,14 @@ declared separately below.
 | **Work Area** | A declared repository-relative folder that bounds Scope path resolution without implying code, deployability, or a particular architecture | `DSET-REQUIREMENT-META-011` |
 | **Maintained semantic view** | A thin, reasoned, maintained Governed artifact that presents current meaning while returning every summarized claim directly to Atomic records | `DSET-REQUIREMENT-META-042` |
 | **Governance surface** | A named optional maintained Governed artifact whose activation creates currentness or gate obligations | `DSET-REQUIREMENT-META-033`, `DSET-REQUIREMENT-META-041` |
-| **Project truth** | Active authoritative Atomic records and applicable maintained Governed artifacts | `DSET-REQUIREMENT-META-042`, `DSET-REQUIREMENT-META-026`, `DSET-REQUIREMENT-META-028`, `DSET-REQUIREMENT-META-033` |
+| **Project truth** | Active authoritative Atomic records plus applicable maintained Methods, Implementations, and other operative owners; a Maintained semantic view presents but does not override atomic authority | `DSET-REQUIREMENT-META-042`, `DSET-REQUIREMENT-META-026`, `DSET-REQUIREMENT-META-028`, `DSET-REQUIREMENT-META-033` |
 | **Exploration Mode** | A session state that permits candidate reasoning without creating a Governed artifact until explicit operator acceptance; question and idea intent enter it silently unless the same input explicitly authorizes a governed change | `DSET-REQUIREMENT-META-021`, `DSET-REQUIREMENT-META-032`, `DSET-REQUIREMENT-META-036`, `DSET-REQUIREMENT-META-037` |
 | **Design** | Internal structure and logic selected to satisfy accepted Requirements and Contracts | `DSET-REQUIREMENT-META-008` |
 | **Implementation plan** | An ordered Method for realizing accepted Project truth and Design | `DSET-REQUIREMENT-META-001` |
-| **Test plan** | A maintained Method that organizes deterministic check obligations and their Atomic records | `DSET-REQUIREMENT-META-001`, `DSET-REQUIREMENT-META-002`, `DSET-REQUIREMENT-META-007`, `DSET-REQUIREMENT-META-041` |
-| **Evaluation plan** | A maintained Method that organizes qualitative, probabilistic, statistical, or model-judged obligations and their Atomic records | `DSET-REQUIREMENT-META-001`, `DSET-REQUIREMENT-META-002`, `DSET-REQUIREMENT-META-007`, `DSET-REQUIREMENT-META-041` |
+| **Test Plan** | An atomic Method that defines one deterministic check obligation, its exact conditions, and its pass/fail disposition | `DSET-REQUIREMENT-META-001`, `DSET-REQUIREMENT-META-002`, `DSET-REQUIREMENT-META-007`, `DSET-REQUIREMENT-META-041` |
+| **Evaluation Plan** | An atomic Method that defines one qualitative, probabilistic, statistical, or model-judged assessment obligation, its criteria, and its disposition rule | `DSET-REQUIREMENT-META-001`, `DSET-REQUIREMENT-META-002`, `DSET-REQUIREMENT-META-007`, `DSET-REQUIREMENT-META-041` |
+| **Test-plan view** | A maintained Method that organizes applicable Test Plans without changing their check definitions | `DSET-REQUIREMENT-META-002`, `DSET-REQUIREMENT-META-041`, `DSET-REQUIREMENT-META-042` |
+| **Evaluation-plan view** | A maintained Method that organizes applicable Evaluation Plans without changing their assessment definitions | `DSET-REQUIREMENT-META-002`, `DSET-REQUIREMENT-META-041`, `DSET-REQUIREMENT-META-042` |
 | **Runtime risk profile** | A selection of recovery and operational semantics triggered by persistence, retry, concurrency, or external effects | `DSET-REQUIREMENT-META-003`, `DSET-REQUIREMENT-META-006`, `DSET-REQUIREMENT-META-029` |
 | **Durability topology** | A selection of authoritative files, a local database, or external backing services based on deployment, write volume, and concurrency | `DSET-REQUIREMENT-META-003`, `DSET-REQUIREMENT-META-006`, `DSET-REQUIREMENT-META-029` |
 
@@ -60,8 +62,69 @@ declared separately below.
 | `scopes` | Work Area | Governed artifact | `DSET-REQUIREMENT-META-011` |
 | `summarizes` | Maintained semantic view | Atomic record | `DSET-REQUIREMENT-META-042` |
 | `constrains` | Contract | Design | `DSET-REQUIREMENT-META-008` |
-| `realizes` | Implementation plan | Design | `DSET-REQUIREMENT-META-001` |
-| `organizes` | Test plan or Evaluation plan | Atomic record | `DSET-REQUIREMENT-META-002`, `DSET-REQUIREMENT-META-007` |
+| `plans_realization_of` | Implementation plan | Design | `DSET-REQUIREMENT-META-001`, `DSET-REQUIREMENT-META-028` |
+| `organizes` | Test-plan view | Test Plan | `DSET-REQUIREMENT-META-002`, `DSET-REQUIREMENT-META-007`, `DSET-REQUIREMENT-META-042` |
+| `organizes` | Evaluation-plan view | Evaluation Plan | `DSET-REQUIREMENT-META-002`, `DSET-REQUIREMENT-META-007`, `DSET-REQUIREMENT-META-042` |
+
+## Stateful entity lifecycles
+
+These tables own META status meanings. Methodology procedures may trigger the
+transitions but do not redefine the states.
+
+### Atomic record
+
+Identity is the stable artifact ID. Emission authority belongs to the operator
+or configured project authority; archive authority belongs to the operator or
+the governed lifecycle procedure.
+
+| Status | Entry criteria | Exit criteria | Allowed next status | Required evidence | Atomic sources |
+|---|---|---|---|---|---|
+| Active | One accepted immutable unit is emitted with valid identity, scope, provenance, and type-derived route | A governed replacement, resolution, or withdrawal authorizes archive relocation | Archived | Emission commit and valid carrier | `DSET-REQUIREMENT-META-035`, `DSET-REQUIREMENT-META-041` |
+| Archived | Byte-stable relocation preserves identity and history while removing the record from the active set | Terminal; recurrence or changed meaning creates a new Atomic record | — | Archive instruction, relation or Version reference when applicable, and Git history | `DSET-REQUIREMENT-META-027`, `DSET-REQUIREMENT-META-041` |
+
+Reopening and in-place semantic correction are forbidden. Archive failure keeps
+the record Active and reports the failed transition.
+
+### Maintained semantic view
+
+Identity is its unique project-local carrier name and Scope path. Semantic
+refresh authority belongs to the configured view owner.
+
+| Status | Entry criteria | Exit criteria | Allowed next status | Required evidence | Atomic sources |
+|---|---|---|---|---|---|
+| Current | A reasoned refresh represents the applicable active atomic frontier and every semantic source resolves | The frontier changes or a missing, incorrect, or unresolved representation is found | Stale | Reviewed refresh plus structured source/fragment traceability | `DSET-REQUIREMENT-META-042` |
+| Stale | The view no longer truthfully represents its applicable atomic frontier | A reasoned refresh restores complete representation | Current | Staleness reason and affected atomic identities | `DSET-REQUIREMENT-META-027`, `DSET-REQUIREMENT-META-042` |
+
+A failed refresh leaves the view Stale. A source mention without an identified
+semantic fragment is navigation, not evidence that the source is represented.
+
+### Governance surface
+
+Identity is the configured surface key plus Scope path. Activation,
+deactivation, and restoration to Current require the configured owner.
+
+| Status | Entry criteria | Exit criteria | Allowed next status | Required evidence | Atomic sources |
+|---|---|---|---|---|---|
+| Inactive | The surface creates no currentness or gate obligation | Activation is authorized and reconciliation begins | Reconciling | Surface identity and activation instruction | `DSET-REQUIREMENT-META-033` |
+| Reconciling | The applicable atomic frontier is identified for a new or retained carrier | Reconciliation succeeds, finds a blocker, or authorized deactivation occurs | Current, Blocked, Inactive | Frontier, coverage result, and provenance | `DSET-REQUIREMENT-META-033`, `DSET-REQUIREMENT-META-042` |
+| Current | Reconciliation establishes truthful representation and the surface's gates apply | The frontier changes, representation fails, or deactivation is authorized | Stale, Inactive | Reviewed reconciliation with structured atomic traceability | `DSET-REQUIREMENT-META-033`, `DSET-REQUIREMENT-META-042` |
+| Stale | An active surface no longer represents its applicable frontier | Reconciliation starts or deactivation is authorized | Reconciling, Inactive | Staleness reason and affected atomic identities | `DSET-REQUIREMENT-META-027`, `DSET-REQUIREMENT-META-033` |
+| Blocked | Reconciliation cannot truthfully establish Current | The blocker is resolved and reconciliation restarts, or deactivation is authorized | Reconciling, Inactive | Blocker and affected atomic identities | `DSET-REQUIREMENT-META-033`, `DSET-REQUIREMENT-META-042` |
+
+Failed reconciliation never preserves or restores Current. Deactivation
+preserves the carrier and history.
+
+### Exploration Mode
+
+Identity is the current bounded session interaction. The operator alone
+authorizes exit into governed change.
+
+| Status | Entry criteria | Exit criteria | Allowed next status | Required evidence | Atomic sources |
+|---|---|---|---|---|---|
+| Inactive | No exploratory intent is active | Question, idea, comparison, critique, or explicit exploration intent is established | Active | Operator/session input | `DSET-REQUIREMENT-META-021`, `DSET-REQUIREMENT-META-036`, `DSET-REQUIREMENT-META-037` |
+| Active | Exploratory intent is established | Explicit acceptance, record, apply, implement, fix, or end-exploration instruction | Inactive | Operator instruction scoped to the accepted change | `DSET-REQUIREMENT-META-021`, `DSET-REQUIREMENT-META-036`, `DSET-REQUIREMENT-META-037` |
+
+Exploration failure or abandonment leaves governed truth unchanged.
 
 ## Canonical layer responsibilities
 

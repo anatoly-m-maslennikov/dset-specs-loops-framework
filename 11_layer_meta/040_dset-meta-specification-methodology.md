@@ -25,11 +25,17 @@ connect it to the other roles without duplicating ownership.
 
 Atomic source: `DSET-REQUIREMENT-META-002`.
 
-The methodology must keep deterministic tests in `test-plan.md` and
-probabilistic or qualitative evaluation in `eval-plan.md`. Both are Methods;
-their execution results remain distinct Observations.
+The methodology must keep deterministic Test Plans separate from
+probabilistic or qualitative Evaluation Plans. Each atomic plan defines one
+check obligation. Optional maintained test-plan and evaluation-plan views may
+organize applicable atoms without changing them. Both forms are Methods; their
+execution results remain distinct Observations.
 
-**Scenario DSET-SCENARIO-META-002:** Given behavior with one exact expected output, it is routed to the test plan even when the check is automated. Given multiple acceptable outputs judged by criteria or a rubric, it is routed to the eval plan.
+**Scenario DSET-SCENARIO-META-002:** Given behavior with one exact expected
+output, emit a Test Plan even when the check is automated. Given multiple
+acceptable outputs judged by criteria or a rubric, emit an Evaluation Plan.
+When a maintained planning surface is enabled, it organizes those atoms rather
+than replacing their immutable definitions.
 
 ## DSET-REQUIREMENT-META-003 — Runtime rules are selected by independent concerns
 
@@ -309,10 +315,9 @@ accept, apply, implement, or fix instruction remains authorization for only the
 stated change. Atomic sources: `DSET-REQUIREMENT-META-036` and
 `DSET-REQUIREMENT-META-037`.
 
-| Status | Entry criteria | Exit criteria | Allowed next status | Required evidence | Atomic sources |
-|---|---|---|---|---|---|
-| Inactive | No active exploration request | Clear exploratory intent, question intent, idea intent, or explicit Exploration Mode request | Active | Operator/session instruction | `DSET-REQUIREMENT-META-021`, `DSET-REQUIREMENT-META-036`, `DSET-REQUIREMENT-META-037` |
-| Active | Exploratory intent is established | Explicit accept, finalize, record, apply, implement, fix, or end-exploration instruction | Inactive | Operator acceptance instruction | `DSET-REQUIREMENT-META-021`, `DSET-REQUIREMENT-META-036`, `DSET-REQUIREMENT-META-037` |
+The Exploration Mode lifecycle is defined once in
+`030_dset-meta-specification-domain.md`. This section owns only its interaction
+and authorization behavior.
 
 **Scenario DSET-SCENARIO-META-019:** “What is the difference?” and “I have
 another idea” produce discussion without an artifact or governance commit.
@@ -351,10 +356,10 @@ A maintained domain specification contains:
 Entity definitions use only previously defined entities. A forward reference is
 a connection, not part of the definition.
 
-| View status | Entry criteria | Exit criteria | Allowed next status | Required evidence | Atomic sources |
-|---|---|---|---|---|---|
-| Current | Reasoned refresh reflects all applicable active atoms and every semantic source resolves | An applicable atomic record is added, replaced, archived, or found unrepresented | Stale | Resolved atomic links and reviewed refresh | `DSET-REQUIREMENT-META-042` |
-| Stale | The current view no longer represents its applicable atomic frontier | A reasoned refresh restores complete atomic coverage | Current | Staleness reason and affected atomic IDs | `DSET-REQUIREMENT-META-042` |
+The Maintained semantic-view lifecycle is defined once in
+`030_dset-meta-specification-domain.md`. A source mention alone does not prove
+semantic representation; structured traceability identifies the source and the
+claim fragment that carries it.
 
 Each stateful entity lifecycle records identity, uniqueness, invariants,
 transition authority, status meaning, entry criteria, exit criteria, allowed
@@ -519,13 +524,9 @@ Revision mode or globally to all maintained artifacts.
 
 ### Governance-surface lifecycle
 
-A Governance surface is uniquely identified by its configured surface key and
-project-relative scope path. Activation and deactivation require the
-operator or a project-configured owner. An applicable atomic-frontier change
-makes an active Current surface Stale; a tool may detect that consequence but
-cannot authorize the surface's return to Current.
-
-The lifecycle preserves four invariants:
+The Governance-surface states and transitions are defined once in
+`030_dset-meta-specification-domain.md`. The operating lifecycle preserves four
+invariants:
 
 1. activation, state transitions, and deactivation never establish, edit, or
    weaken atomic authority;
@@ -533,14 +534,6 @@ The lifecycle preserves four invariants:
 3. Current means that every applicable atomic source is represented or
    explicitly excluded by an accepted applicability rule; and
 4. deactivation preserves the carrier, provenance, and Git history.
-
-| Status | Meaning | Entry criteria | Exit criteria | Allowed next status | Required evidence |
-|---|---|---|---|---|---|
-| Inactive | The surface creates no currentness or gate obligations | The surface has never been activated, or authorized deactivation completed | Authorized activation starts reconciliation | Reconciling | Surface identity and, after deactivation, the deactivation instruction |
-| Reconciling | The retained or new carrier is being checked against its applicable atomic frontier | Activation or reactivation is authorized and the frontier is identified | Reconciliation proves complete coverage, finds a blocker, or is cancelled by authorized deactivation | Current, Blocked, Inactive | Frontier manifest, coverage result, and reconciliation provenance |
-| Current | The active surface represents its applicable atomic frontier and its gates apply | Reconciliation completed without unresolved omissions or conflicts | The frontier changes, an invalid representation is found, or deactivation is authorized | Stale, Inactive | Reviewed reconciliation result and resolved atomic-source references |
-| Stale | The active surface no longer represents its applicable atomic frontier | An applicable atom changes or missing/incorrect representation is confirmed | Reconciliation starts or deactivation is authorized | Reconciling, Inactive | Staleness reason and affected atomic IDs |
-| Blocked | Reconciliation cannot establish a truthful Current surface | Reconciliation finds an unresolved omission, conflict, ambiguity, or invalid carrier | The blocker is resolved and reconciliation restarts, or deactivation is authorized | Reconciling, Inactive | Blocker record and affected atomic IDs |
 
 Failed reconciliation never preserves or restores a Current claim. The surface
 remains Blocked until recovery begins, while its currentness and downstream
