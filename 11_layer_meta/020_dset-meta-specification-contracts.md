@@ -24,7 +24,7 @@ priority: high
 - A stable distinction among reusable methodology, project-installed
   methodology, and applied project authority without prescribing downstream
   storage or command mechanisms.
-- Thin evergreen semantic views with ordered entities, lifecycle models, and
+- Thin maintained semantic views with ordered entities, lifecycle models, and
   direct atomic provenance, plus progressive activation semantics for optional
   governance surfaces.
 - Independent profile-selection semantics for implementation ecosystems and
@@ -59,8 +59,8 @@ mappings fail closed.
 `atomic` artifacts are independently governed immutable units. `append_only`
 artifacts preserve accepted records and permit only complete new records.
 `maintained` artifacts may revise existing content through their applicable
-update procedure. `evergreen` is a freshness policy for maintained artifacts,
-not a Revision-mode value. Atomic source: `DSET-REQUIREMENT-META-040`.
+update procedure. DSET defines no additional currentness or freshness class.
+Atomic source: `DSET-REQUIREMENT-META-041`.
 
 Requirement maps to atomic Definition/internal, Constraint to atomic
 Definition/external, Contract to atomic Definition/relation, and Implementation
@@ -89,16 +89,16 @@ Atomic sources: `DSET-REQUIREMENT-META-022`,
 `DSET-REQUIREMENT-META-023`, `DSET-REQUIREMENT-META-024`, and
 `DSET-REQUIREMENT-META-025`.
 
-## Evergreen document boundary
+## Maintained semantic-view boundary
 
-Evergreen documents are reasoned current views rather than compiled
-restatements. Their semantic source links target atomic records only.
-Evergreen-to-evergreen and hub links are navigation and cannot establish
+Maintained semantic views are reasoned current views rather than compiled
+restatements. Their semantic source links target atomic records only. Links
+between maintained views and links to hubs are navigation and cannot establish
 semantic provenance. Refresh occurs on demand after accepted atomic change and
-before a downstream gate requires a current view.
+before a downstream gate requires a current view. Atomic source:
+`DSET-REQUIREMENT-META-042`.
 
-Maintained governance surfaces, including those with evergreen freshness
-obligations, are inactive by default.
+Optional maintained governance surfaces are inactive by default.
 Activation is explicit and adds only the selected surface's currentness and
 gate obligations. Deactivation preserves its carrier and history and never
 changes atomic authority. Atomic source: `DSET-REQUIREMENT-META-033`.

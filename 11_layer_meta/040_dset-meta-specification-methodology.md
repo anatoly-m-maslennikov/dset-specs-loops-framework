@@ -154,9 +154,9 @@ its root. DSET scopes both projects without inventing services, modules,
 features, or deployment semantics, and a resumed session follows the current
 declaration rather than a stale checkpoint hint.
 
-## DSET-REQUIREMENT-META-040 — Three Revision modes
+## DSET-REQUIREMENT-META-041 — Complete Revision mode set
 
-Atomic source: `DSET-REQUIREMENT-META-040`.
+Atomic source: `DSET-REQUIREMENT-META-041`.
 
 DSET recognizes exactly three permitted change patterns:
 
@@ -166,9 +166,9 @@ DSET recognizes exactly three permitted change patterns:
 | `append_only` | Preserve accepted records and their order; append only complete new records |
 | `maintained` | Revise existing content through the artifact's applicable update procedure |
 
-Evergreen freshness, semantic refresh, synchronization, direct authoring, and
-generation are policies or update mechanisms for maintained artifacts rather
-than additional Revision modes.
+Semantic refresh, synchronization, direct authoring, and generation are
+artifact-specific update mechanisms for maintained artifacts rather than
+additional Revision modes.
 
 **Scenario DSET-SCENARIO-META-018:** A Requirement resolves to `atomic`, an
 NDJSON running log resolves to `append_only`, and a Specification or generated
@@ -302,18 +302,18 @@ acceptance is the only exit that authorizes durable emission.
 | Inactive | No active exploration request | Clear exploratory intent or explicit Exploration Mode request | Active | Operator/session instruction | `DSET-REQUIREMENT-META-021` |
 | Active | Exploratory intent is established | Explicit accept, finalize, apply, or end-exploration instruction | Inactive | Operator acceptance instruction | `DSET-REQUIREMENT-META-021` |
 
-## DSET-REQUIREMENT-META-020 — Evergreen documents are thin semantic views
+## DSET-REQUIREMENT-META-042 — Maintained semantic views are thin current views
 
-Atomic source: `DSET-REQUIREMENT-META-020`.
+Atomic source: `DSET-REQUIREMENT-META-042`.
 
 ```mermaid
 flowchart LR
     EXPLORE["Exploration Mode<br/>DSET-REQUIREMENT-META-021"]
     ACCEPT["Explicit acceptance<br/>DSET-REQUIREMENT-META-021"]
-    ATOMS["Atomic records<br/>DSET-REQUIREMENT-META-020"]
-    REFACTOR["Optional atomic refactoring<br/>DSET-REQUIREMENT-META-020"]
-    VIEW["Thin evergreen view<br/>DSET-REQUIREMENT-META-020"]
-    GATE["Downstream gate<br/>DSET-REQUIREMENT-META-020"]
+    ATOMS["Atomic records<br/>DSET-REQUIREMENT-META-042"]
+    REFACTOR["Optional atomic refactoring<br/>DSET-REQUIREMENT-META-042"]
+    VIEW["Thin maintained view<br/>DSET-REQUIREMENT-META-042"]
+    GATE["Downstream gate<br/>DSET-REQUIREMENT-META-042"]
 
     EXPLORE --> ACCEPT
     ACCEPT --> ATOMS
@@ -323,7 +323,7 @@ flowchart LR
     VIEW --> GATE
 ```
 
-An evergreen domain specification contains:
+A maintained domain specification contains:
 
 1. a domain-flow Mermaid diagram;
 2. topologically ordered entity definitions;
@@ -334,18 +334,18 @@ An evergreen domain specification contains:
 Entity definitions use only previously defined entities. A forward reference is
 a connection, not part of the definition.
 
-| Evergreen status | Entry criteria | Exit criteria | Allowed next status | Required evidence | Atomic sources |
+| View status | Entry criteria | Exit criteria | Allowed next status | Required evidence | Atomic sources |
 |---|---|---|---|---|---|
-| Current | Reasoned refresh reflects all applicable active atoms and every semantic source resolves | An applicable atomic record is added, replaced, archived, or found unrepresented | Stale | Resolved atomic links and reviewed refresh | `DSET-REQUIREMENT-META-020` |
-| Stale | The current view no longer represents its applicable atomic frontier | A reasoned refresh restores complete atomic coverage | Current | Staleness reason and affected atomic IDs | `DSET-REQUIREMENT-META-020` |
+| Current | Reasoned refresh reflects all applicable active atoms and every semantic source resolves | An applicable atomic record is added, replaced, archived, or found unrepresented | Stale | Resolved atomic links and reviewed refresh | `DSET-REQUIREMENT-META-042` |
+| Stale | The current view no longer represents its applicable atomic frontier | A reasoned refresh restores complete atomic coverage | Current | Staleness reason and affected atomic IDs | `DSET-REQUIREMENT-META-042` |
 
 Each stateful entity lifecycle records identity, uniqueness, invariants,
 transition authority, status meaning, entry criteria, exit criteria, allowed
 and forbidden transitions, required evidence, and applicable failure/recovery
 behavior.
 
-Semantic links target atomic records only. Links to hubs or other evergreen
-documents are navigation and carry no semantic authority.
+Semantic links target atomic records only. Links to hubs or other maintained
+views are navigation and carry no semantic authority.
 
 ## DSET-REQUIREMENT-META-022 — META eligibility rule
 
@@ -433,7 +433,7 @@ flowchart LR
 
 Propagation preserves historical atoms, identifies affected views, Methods,
 Implementations, Observations, and assurance, then restores currentness through
-their owning gates. Refreshing an evergreen view does not by itself complete
+their owning gates. Refreshing a maintained view does not by itself complete
 the forward pass.
 
 ## DSET-REQUIREMENT-META-028 — Authority and assurance
@@ -498,7 +498,7 @@ later reactivation reconciles the retained surface against current atoms before
 calling it current.
 
 Activation applies to named maintained governance surfaces, not globally to a
-Revision mode or to the evergreen freshness policy.
+Revision mode or globally to all maintained artifacts.
 
 ### Governance-surface lifecycle
 
@@ -559,7 +559,7 @@ The protocol has the following gates:
 | Atomic acceptance | The operator accepts one primary semantic claim | New atomic META Requirement and its rationale | Atom is valid, uniquely identified, and directly attributable to the acceptance | Ambiguity returns to Exploration; no atom is emitted |
 | Impact mapping | The accepted atom exists | Affected invariants, entities, layers, handoffs, profiles, surfaces, implementations, and assurance | Every affected owner and active surface is identified | Unknown ownership or reach blocks propagation |
 | Eligibility and topology | The impact map is complete | META-eligibility, single-owner, definition-order, and acyclic-dependency findings | The claim is technology-independent, correctly owned, topologically expressible, and creates no backward governance | Split or move ineligible content; unresolved conflicts block the amendment |
-| Root refresh | Eligibility and topology pass | Reasoned root META update with direct atomic-source references | Every changed semantic location resolves to the new atom or an explicit predecessor/sibling | The affected evergreen view remains Stale |
+| Root refresh | Eligibility and topology pass | Reasoned root META update with direct atomic-source references | Every changed semantic location resolves to the new atom or an explicit predecessor/sibling | The affected maintained view remains Stale |
 | Forward propagation | The root refresh is complete | Explicit staleness or reconciliation state for every affected active descendant | No affected active descendant is silently presumed Current | Unresolved descendants remain Stale or Blocked |
 | Verification | All effects and state changes are visible | META self-application result and affected handoff, profile, implementation, Test, and Evaluation results | Applicable checks pass and evidence resolves to the exact governed state | Failed proof blocks fixed-point declaration |
 | Fixed point | Verification passes | One currentness declaration for the amended constitutional state | Every affected active surface is Current or explicitly deactivated, and no conflict is concealed | The amendment remains incomplete; accepted atomic authority is not edited |

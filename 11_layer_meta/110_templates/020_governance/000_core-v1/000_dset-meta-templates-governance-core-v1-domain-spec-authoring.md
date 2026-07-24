@@ -11,7 +11,7 @@ artifact_subtype: playbook
 
 ## Workflow
 
-1. Read applicable active atomic authority, the current thin evergreen view,
+1. Read applicable active atomic authority, the current thin maintained view,
    maintained artifacts, and current assurance. Separate accepted truth,
    observations, assumptions, unknowns, and solution guesses.
 2. Establish ubiquitous language: actors, entities, value objects, commands, events, ownership boundaries, states, transitions, and invariants. Model a lifecycle for every owned entity with meaningful transitions.
@@ -24,7 +24,7 @@ artifact_subtype: playbook
    rationale explicit when it materially improves interpretation, but do not
    hide another normative claim inside it.
 7. Route exact proof to the deterministic test plan and variable or rubric-based proof to the eval plan.
-8. After accepted atomic change, refresh the owning thin evergreen view only
+8. After accepted atomic change, refresh the owning thin maintained view only
    when requested or required by a downstream gate. Summarize current meaning
    without duplicating atomic authority, and link every semantic location
    directly to its atomic sources. Mark affected downstream state potentially
@@ -32,7 +32,7 @@ artifact_subtype: playbook
 
 ## Output
 
-Create or update only the owning atomic records, thin evergreen views, and
+Create or update only the owning atomic records, thin maintained views, and
 applicable maintained artifacts. Questions resolved for current work link to
 their accepted resolution. Future intentions remain in a named Version Roadmap
 until accepted into current atomic authority. Implementation begins only after

@@ -14,8 +14,8 @@
 # configuration carriers fail closed.
 #
 # Settings schema implemented by this file.
-# Accepted for new writers: "1.6".
-schema_version = "1.6"
+# Accepted for new writers: "1.7".
+schema_version = "1.7"
 canonical_command = "python -m dset_toolchain verify ."
 
 [artifacts]
@@ -67,8 +67,8 @@ governance_loci = ["internal"]
 # decisions -> refresh views when required -> plan-proof -> plan-implementation -> implement
 mode = "lazy"
 
-[evergreen_views]
-# Refresh thin evergreen semantic views only on explicit request or when a
+[maintained_views]
+# Refresh thin maintained semantic views only on explicit request or when a
 # downstream entry gate requires a current view. Refresh is reasoned synthesis,
 # not concatenation or mechanical compilation.
 refresh_mode = "on_demand"
@@ -83,7 +83,7 @@ skill = "dset-refresh"
 # Use `dset configure ROOT status` to inspect the effective state.
 # Use `dset configure ROOT activate SURFACE` or `deactivate SURFACE` to preview
 # a change; append `--execute` only after accepting the preview.
-evergreen_specification = false
+maintained_specification = false
 test_plan = false
 evaluation_plan = false
 implementation_plan = false
