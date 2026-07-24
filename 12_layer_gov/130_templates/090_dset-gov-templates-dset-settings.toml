@@ -84,16 +84,15 @@ subtype_in_names = false
 [artifacts.routing]
 # Enable the three independent META routing axes.
 #
-# Keep every revision mode and content role. `internal` is mandatory.
-# Add `external` when the project governs outside-owned inputs or constraints.
-# Add `relation` when the project governs explicit boundaries or interactions.
-# Empty matrix cells are valid; these lists do not require placeholder names or
-# artifacts.
+# The framework catalog defines every route. These lists select which registered
+# routes a project may use. `internal` is mandatory. Add `external` when the
+# project governs outside-owned inputs or constraints. Add `relation` when the
+# project governs explicit boundaries or interactions.
 revision_modes = ["atomic", "append_only", "maintained"]
 content_roles = [
   "inquiry",
+  "analysis",
   "definition",
-  "rationale",
   "method",
   "implementation",
   "observation",

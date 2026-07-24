@@ -15,7 +15,7 @@ Every governed artifact has one registered `artifact_type` and at most one
 direct `artifact_subtype`. The registered pair derives exactly one route:
 
 - Revision mode: `atomic`, `append_only`, or `maintained`;
-- Content role: `inquiry`, `definition`, `rationale`, `method`,
+- Content role: `inquiry`, `analysis`, `definition`, `method`,
   `implementation`, or `observation`;
 - Governance locus: `internal`, `external`, or `relation`.
 
@@ -94,9 +94,10 @@ currentness or freshness class. Their type-specific procedures own refresh,
 generation, synchronization, and direct-authoring behavior.
 
 Inquiry is the Content role for unresolved knowledge, choice, or clarification.
-The canonical loop is Inquiry → Definition → Rationale → Method →
-Implementation → Observation → Inquiry. Atomic sources:
-`DSET-REQUIREMENT-GOV-087` and `DSET-REQUIREMENT-GOV-089`.
+The canonical loop is Inquiry → Analysis → Definition → Method →
+Implementation → Observation → Inquiry. Observation is factual or reported
+input; Analysis owns interpretation and may contain rationale. Atomic sources:
+`DSET-REQUIREMENT-META-047` and `DSET-REQUIREMENT-META-048`.
 
 ## Minimal Markdown properties
 

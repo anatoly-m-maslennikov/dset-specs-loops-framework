@@ -15,18 +15,19 @@ Atomic sources remain authoritative when this view becomes stale.
 
 ```mermaid
 flowchart LR
-  I["Inquiry"] --> D["Definition"]
-  D --> R["Rationale"]
-  R --> M["Method"]
+  I["Inquiry"] --> A["Analysis"]
+  A --> D["Definition"]
+  D --> M["Method"]
   M --> X["Implementation"]
   X --> O["Observation"]
   O --> I
 ```
 
-Rationale is available around Definition and Method to improve future cycles;
-it does not authorize behavior by itself. Each node is an artifact role, not a
-lifecycle state through which one artifact mutates. Sources:
-`DSET-REQUIREMENT-GOV-087` and `DSET-REQUIREMENT-GOV-089`.
+Observation preserves what occurred, was measured, or was reported. Analysis
+interprets those facts and may provide rationale for Definition or Method.
+Each node is an artifact role, not a lifecycle state through which one artifact
+mutates. Sources: `DSET-REQUIREMENT-META-047` and
+`DSET-REQUIREMENT-META-048`.
 
 ## Project resolution
 

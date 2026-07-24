@@ -192,8 +192,8 @@
               "items": {
                 "enum": [
                   "inquiry",
+                  "analysis",
                   "definition",
-                  "rationale",
                   "method",
                   "implementation",
                   "observation"

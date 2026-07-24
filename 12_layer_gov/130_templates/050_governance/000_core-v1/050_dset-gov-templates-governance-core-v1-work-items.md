@@ -77,9 +77,9 @@ Conflict unless incompatible authority is established.
 A Question or Problem may lead directly to work only when existing authority
 already defines the answer. Otherwise analysis informs a new Requirement,
 Constraint, Contract, or Implementation Decision. The canonical feedback loop
-is Inquiry → Definition → Rationale → Method → Implementation → Observation →
-Inquiry. Sources: `DSET-REQUIREMENT-GOV-087` and
-`DSET-REQUIREMENT-GOV-089`.
+is Inquiry → Analysis → Definition → Method → Implementation → Observation →
+Inquiry. Sources: `DSET-REQUIREMENT-META-047` and
+`DSET-REQUIREMENT-META-048`.
 
 ## Assurance meanings
 

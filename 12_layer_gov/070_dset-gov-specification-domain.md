@@ -19,7 +19,7 @@ earlier definition.
 | **Project** | The current repository selected for one DSET governance context | `DSET-REQUIREMENT-GOV-100` |
 | **Structural scope** | A Project-relative owner address composed from enabled layers, features, feature groups, Work Areas, or future registered structural dimensions | `DSET-REQUIREMENT-META-015`, `DSET-REQUIREMENT-GOV-032` |
 | **Revision mode** | Exactly one permitted write behavior: `atomic`, `append_only`, or `maintained` | `DSET-REQUIREMENT-META-041` |
-| **Content role** | Exactly one contribution: `inquiry`, `definition`, `rationale`, `method`, `implementation`, or `observation` | `DSET-REQUIREMENT-META-016`, `DSET-REQUIREMENT-META-035` |
+| **Content role** | Exactly one contribution: `inquiry`, `analysis`, `definition`, `method`, `implementation`, or `observation` | `DSET-REQUIREMENT-META-035`, `DSET-REQUIREMENT-META-047`, `DSET-REQUIREMENT-META-048` |
 | **Governance locus** | Exactly one primary governance position: `internal`, `external`, or `relation` | `DSET-REQUIREMENT-META-035`, `DSET-REQUIREMENT-GOV-101` |
 | **Artifact route** | One Revision mode, Content role, and Governance locus assigned together, with exactly one canonical Artifact type | `DSET-REQUIREMENT-META-035`, `DSET-REQUIREMENT-META-045`, `DSET-REQUIREMENT-META-046` |
 | **Governed artifact** | One persisted Project item with one registered artifact type, at most one direct subtype, one derived Artifact route, and one Structural scope | `DSET-REQUIREMENT-META-035`, `DSET-REQUIREMENT-GOV-102` |

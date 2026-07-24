@@ -96,7 +96,7 @@ commit_on_create = true
 name = "rationale"
 identity_kind = "RATIONALE"
 revision_mode = "atomic"
-content_role = "rationale"
+content_role = "analysis"
 governance_locus = "internal"
 carrier = "markdown_yaml_frontmatter"
 commit_on_create = true
@@ -112,7 +112,7 @@ subtypes = [
   "external_audit_analysis",
 ]
 revision_mode = "atomic"
-content_role = "rationale"
+content_role = "analysis"
 governance_locus = "internal"
 carrier = "markdown_yaml_frontmatter"
 commit_on_create = true
