@@ -4,35 +4,54 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 
 ## Entities
 
-| Entity | Definition |
-|---|---|
-| **Project truth** | Active authoritative atomic records, their current thin evergreen semantic views, and applicable maintained project artifacts |
-| **Constitutional invariant** | A technology-independent rule that governs multiple DSET layers or defines a boundary between them |
-| **DSET layer** | One ordered responsibility boundary that owns a distinct class of project concerns |
-| **Layer authority flow** | The forward `META → GOV → TOOL → SKILL → IMPL → OPS` order in which earlier layers constrain or refine later layers |
-| **Layer dependency** | A consumption edge from a later DSET layer to its own or an earlier layer; the dependency graph is acyclic |
-| **Layer handoff** | The declared input, output, entry criteria, exit criteria, and failure behavior between adjacent DSET layers |
-| **Artifact route** | The independent `revision_mode`, `content_role`, and `governance_locus` values assigned to one governed artifact |
-| **Revision mode** | How an artifact may change: `atomic` is an immutable accepted record; `evergreen` is a mutable thin current view; `maintained` is a mutable operative artifact |
-| **Content role** | What the artifact contributes to the development cycle: `inquiry`, `definition`, `rationale`, `method`, `implementation`, or `observation` |
-| **Governance locus** | What the artifact primarily governs: an `internal` project-owned non-relational subject, an `external` outside-owned non-relational subject, or a `relation` among explicit endpoints; it classifies the subject, not the project-owned carrier |
-| **Scope path** | The project-relative structural coordinate of an artifact, such as layer, feature, feature group, Work Area, or a configured composition; the current project is ambient and a project-level artifact uses an empty path |
-| **Registered name** | The optional human-facing name assigned one-to-one to an occupied route; it does not define the route or create a semantic name hierarchy |
-| **Relation record** | An artifact whose governance locus is `relation` and whose primary subject is a typed relation among two or more explicit endpoints |
-| **Relation endpoint** | A referenced participant in a Relation record, including its role and independently declared `internal` or `external` origin |
-| **Requirement** | The registered name for an internal atomic Definition that states a required observable, verifiable result, capability, quality, prevention condition, or obligation |
-| **Constraint** | The registered name for an external atomic Definition that records an imposed limitation on acceptable technologies, dependencies, environments, resources, formats, or operating limits |
-| **Design** | The internal structure and logic chosen to satisfy accepted Requirements, Scenarios, and Contracts |
-| **Implementation plan** | The ordered build and rollout sequence for realizing accepted truth and Design |
-| **Test plan** | Evergreen Method view that organizes deterministic test obligations and their atomic sources |
-| **Evaluation plan** | Evergreen Method view that organizes qualitative, probabilistic, statistical, or model-judged evaluation obligations and their atomic sources |
-| **Runtime risk profile** | Selection of recovery and operational semantics triggered by persistence, retry, concurrency, or external effects |
-| **Durability topology** | Selection of authoritative files, a local database, or external backing services based on deployment, write volume, and concurrency |
-| **Contract** | The registered name for an atomic relational Definition that binds explicit participants across an internal or external boundary |
-| **Implementation Decision** | The registered name for an internal atomic Method that selects a material architecture, design, algorithm, data, tooling, or operating approach |
-| **Work Area** | A declared repository-relative folder that bounds DSET scope without implying code, deployability, or a particular architecture; it may contain local tools, deployable services, libraries, documentation, methodology, data, or mixed content |
-| **Exploration Mode** | A session workflow state that permits brainstorming, discussion, research, analysis, comparison, and structural modeling without governed artifact creation until explicit operator acceptance |
-| **Evergreen document** | A thin, reasoned, mutable semantic view that makes the current domain or plan readable while linking every summarized claim directly to authoritative atomic records |
+Definitions are ordered. Each row uses only ordinary language and entities
+defined above it. Cross-entity connections that require later entities are
+declared separately below.
+
+| Entity | Definition | Atomic sources |
+|---|---|---|
+| **Revision mode** | How a persisted project item may change: `atomic` is accepted and immutable; `evergreen` is a mutable current view; `maintained` is a mutable operative item | `DSET-REQUIREMENT-META-012`, `DSET-REQUIREMENT-META-018` |
+| **Content role** | What a persisted project item contributes: `inquiry`, `definition`, `rationale`, `method`, `implementation`, or `observation` | `DSET-REQUIREMENT-META-001`, `DSET-REQUIREMENT-META-016`, `DSET-REQUIREMENT-META-018` |
+| **Governance locus** | What a persisted project item primarily governs: an `internal` project-owned non-relational subject, an `external` outside-owned non-relational subject, or a `relation` among participants | `DSET-REQUIREMENT-META-012`, `DSET-REQUIREMENT-META-018` |
+| **Scope path** | A project-relative structural coordinate, such as layer, feature, feature group, declared repository folder, or a configured composition; the current project is ambient and project scope is an empty path | `DSET-REQUIREMENT-META-011`, `DSET-REQUIREMENT-META-015` |
+| **Artifact route** | One explicit Revision mode, Content role, and Governance locus assigned together | `DSET-REQUIREMENT-META-012`, `DSET-REQUIREMENT-META-018` |
+| **Governed artifact** | One persisted project record, current view, or operative asset with an explicit Artifact route and Scope path | `DSET-REQUIREMENT-META-012`, `DSET-REQUIREMENT-META-018` |
+| **Atomic record** | A Governed artifact whose accepted semantic content is immutable; correction or changed meaning creates another Atomic record | `DSET-REQUIREMENT-META-020`, `DSET-REQUIREMENT-META-027`, `DSET-REQUIREMENT-META-028` |
+| **Registered name** | An optional human-facing label assigned one-to-one to an occupied Artifact route without defining or changing that route | `DSET-REQUIREMENT-META-013`, `DSET-REQUIREMENT-META-018` |
+| **Relation endpoint** | One referenced participant with an explicit role and independently declared `internal` or `external` origin | `DSET-REQUIREMENT-META-014`, `DSET-REQUIREMENT-META-018` |
+| **Relation record** | A Governed artifact with `relation` Governance locus, one typed relation kind, and at least two Relation endpoints | `DSET-REQUIREMENT-META-014`, `DSET-REQUIREMENT-META-018` |
+| **Requirement** | The Registered name for an internal atomic Definition that states a required observable, verifiable result, capability, quality, prevention condition, or obligation | `DSET-REQUIREMENT-META-008`, `DSET-REQUIREMENT-META-009`, `DSET-REQUIREMENT-META-012` |
+| **Constraint** | The Registered name for an external atomic Definition that records an imposed limit on acceptable technologies, dependencies, environments, resources, formats, or operation | `DSET-REQUIREMENT-META-008`, `DSET-REQUIREMENT-META-012` |
+| **Contract** | The Registered name for an atomic relational Definition whose Relation record binds explicit participants across a boundary | `DSET-REQUIREMENT-META-008`, `DSET-REQUIREMENT-META-014` |
+| **Implementation Decision** | The Registered name for an internal atomic Method that selects a material architecture, design, algorithm, data, tooling, or operating approach | `DSET-REQUIREMENT-META-008`, `DSET-REQUIREMENT-META-012` |
+| **Constitutional invariant** | A technology-independent rule that governs multiple responsibility boundaries or defines a boundary between them | `DSET-REQUIREMENT-META-022` |
+| **DSET layer** | One ordered responsibility boundary that owns a distinct class of project concerns | `DSET-REQUIREMENT-META-023`, `DSET-REQUIREMENT-META-030` |
+| **Layer authority flow** | The forward order in which an earlier DSET layer constrains or refines a later DSET layer | `DSET-REQUIREMENT-META-023`, `DSET-REQUIREMENT-META-025` |
+| **Layer dependency** | A consumption edge from one DSET layer to itself or an earlier DSET layer | `DSET-REQUIREMENT-META-025` |
+| **Layer handoff** | The declared input, output, entry criteria, exit criteria, and failure behavior between two adjacent DSET layers | `DSET-REQUIREMENT-META-024` |
+| **Work Area** | A declared repository-relative folder that bounds Scope path resolution without implying code, deployability, or a particular architecture | `DSET-REQUIREMENT-META-011` |
+| **Evergreen document** | A thin, reasoned, mutable Governed artifact that presents current meaning while returning every summarized claim directly to Atomic records | `DSET-REQUIREMENT-META-020`, `DSET-REQUIREMENT-META-033` |
+| **Project truth** | Active authoritative Atomic records, current applicable Evergreen documents, and applicable maintained Governed artifacts | `DSET-REQUIREMENT-META-020`, `DSET-REQUIREMENT-META-026`, `DSET-REQUIREMENT-META-028`, `DSET-REQUIREMENT-META-033` |
+| **Exploration Mode** | A session state that permits candidate reasoning without creating a Governed artifact until explicit operator acceptance | `DSET-REQUIREMENT-META-021`, `DSET-REQUIREMENT-META-032` |
+| **Design** | Internal structure and logic selected to satisfy accepted Requirements and Contracts | `DSET-REQUIREMENT-META-008`, `DSET-REQUIREMENT-META-017` |
+| **Implementation plan** | An ordered Method for realizing accepted Project truth and Design | `DSET-REQUIREMENT-META-001` |
+| **Test plan** | An evergreen Method that organizes deterministic check obligations and their Atomic records | `DSET-REQUIREMENT-META-001`, `DSET-REQUIREMENT-META-002`, `DSET-REQUIREMENT-META-007` |
+| **Evaluation plan** | An evergreen Method that organizes qualitative, probabilistic, statistical, or model-judged obligations and their Atomic records | `DSET-REQUIREMENT-META-001`, `DSET-REQUIREMENT-META-002`, `DSET-REQUIREMENT-META-007` |
+| **Runtime risk profile** | A selection of recovery and operational semantics triggered by persistence, retry, concurrency, or external effects | `DSET-REQUIREMENT-META-003`, `DSET-REQUIREMENT-META-006`, `DSET-REQUIREMENT-META-029` |
+| **Durability topology** | A selection of authoritative files, a local database, or external backing services based on deployment, write volume, and concurrency | `DSET-REQUIREMENT-META-003`, `DSET-REQUIREMENT-META-006`, `DSET-REQUIREMENT-META-029` |
+
+## Cross-entity relations
+
+| Relation | Source | Target | Atomic sources |
+|---|---|---|---|
+| `orders` | Layer authority flow | DSET layer | `DSET-REQUIREMENT-META-023`, `DSET-REQUIREMENT-META-025` |
+| `consumes` | Layer dependency | DSET layer | `DSET-REQUIREMENT-META-025` |
+| `connects` | Layer handoff | DSET layer | `DSET-REQUIREMENT-META-024` |
+| `scopes` | Work Area | Governed artifact | `DSET-REQUIREMENT-META-011` |
+| `summarizes` | Evergreen document | Atomic record | `DSET-REQUIREMENT-META-020` |
+| `constrains` | Contract | Design | `DSET-REQUIREMENT-META-008` |
+| `realizes` | Implementation plan | Design | `DSET-REQUIREMENT-META-001` |
+| `organizes` | Test plan or Evaluation plan | Atomic record | `DSET-REQUIREMENT-META-002`, `DSET-REQUIREMENT-META-007` |
 
 ## Canonical layer responsibilities
 
