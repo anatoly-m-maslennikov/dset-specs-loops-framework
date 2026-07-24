@@ -10,6 +10,8 @@ relations:
   - type: "resolution_of"
     targets:
       - "DSET-QUESTION-GOV-004"
+      - "DSET-DEFECT-TOOL-002"
+      - "DSET-DEFECT-TOOL-003"
   - type: "replacement_of"
     targets:
       - "DSET-REQUIREMENT-GOV-033"

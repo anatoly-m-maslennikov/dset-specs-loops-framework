@@ -292,5 +292,5 @@ Deterministic validation checks relation vocabulary, shape, direction, target
 resolution, uniqueness, source suitability, range frontiers, incompatible
 combinations, and applicable cycles. It never infers semantic truth from an
 edge.
-Atomic sources: `DSET-DECISION-GOV-013` and
+Atomic sources: `DSET-IMPL-GOV-004` and
 `DSET-DECISION-GOV-035`.
