@@ -1,0 +1,238 @@
+# DSET artifact route catalog.
+#
+# One installed project-local copy owns artifact routes and identity kinds.
+# dset_settings.toml selects an enabled whitelist; it does not repeat these
+# mappings. Unknown or ambiguous entries fail closed.
+schema_version = "1.0"
+maximum_subtype_depth = 1
+unknown_classification = "reject"
+ambiguous_classification = "reject"
+
+[[types]]
+name = "requirement"
+identity_kind = "REQUIREMENT"
+revision_mode = "atomic"
+content_role = "definition"
+governance_locus = "internal"
+carrier = "markdown_yaml_frontmatter"
+commit_on_create = true
+
+[[types]]
+name = "constraint"
+identity_kind = "CONSTRAINT"
+revision_mode = "atomic"
+content_role = "definition"
+governance_locus = "external"
+carrier = "markdown_yaml_frontmatter"
+commit_on_create = true
+
+[[types]]
+name = "contract"
+identity_kind = "CONTRACT"
+revision_mode = "atomic"
+content_role = "definition"
+governance_locus = "relation"
+carrier = "markdown_yaml_frontmatter"
+commit_on_create = true
+
+[[types]]
+name = "implementation_decision"
+identity_kind = "IMPL"
+revision_mode = "atomic"
+content_role = "method"
+governance_locus = "internal"
+carrier = "markdown_yaml_frontmatter"
+commit_on_create = true
+
+[[types]]
+name = "question"
+identity_kind = "QUESTION"
+subtypes = ["risk", "opportunity", "conflict"]
+revision_mode = "atomic"
+content_role = "inquiry"
+governance_locus = "internal"
+carrier = "markdown_yaml_frontmatter"
+commit_on_create = true
+
+[[types.route_overrides]]
+subtype = "conflict"
+identity_kind = "CONFLICT"
+governance_locus = "relation"
+
+[[types]]
+name = "problem"
+identity_kind = "PROBLEM"
+subtypes = ["defect", "gap", "debt"]
+revision_mode = "atomic"
+content_role = "observation"
+governance_locus = "internal"
+carrier = "markdown_yaml_frontmatter"
+commit_on_create = true
+
+[[types]]
+name = "test_plan"
+identity_kind = "TEST-PLAN"
+revision_mode = "atomic"
+content_role = "method"
+governance_locus = "internal"
+carrier = "markdown_yaml_frontmatter"
+commit_on_create = true
+
+[[types]]
+name = "evaluation_plan"
+identity_kind = "EVAL-PLAN"
+revision_mode = "atomic"
+content_role = "method"
+governance_locus = "internal"
+carrier = "markdown_yaml_frontmatter"
+commit_on_create = true
+
+[[types]]
+name = "rationale"
+identity_kind = "RATIONALE"
+revision_mode = "atomic"
+content_role = "rationale"
+governance_locus = "internal"
+carrier = "markdown_yaml_frontmatter"
+commit_on_create = true
+
+[[types]]
+name = "analysis_report"
+identity_kind = "ANALYSIS-REPORT"
+subtypes = [
+  "solution_landscape",
+  "root_cause_analysis",
+  "proposal",
+  "technical_investigation",
+  "external_audit_analysis",
+]
+revision_mode = "atomic"
+content_role = "rationale"
+governance_locus = "internal"
+carrier = "markdown_yaml_frontmatter"
+commit_on_create = true
+
+[[types]]
+name = "evidence_record"
+identity_kind = "EVIDENCE-RECORD"
+subtypes = [
+  "test_result",
+  "evaluation_result",
+  "review_report",
+  "run_record",
+]
+revision_mode = "atomic"
+content_role = "observation"
+governance_locus = "internal"
+carrier = "markdown_yaml_frontmatter"
+commit_on_create = true
+
+[[types]]
+name = "atomic_record"
+identity_kind = "ATOMIC-RECORD"
+revision_mode = "atomic"
+content_role = "observation"
+governance_locus = "internal"
+carrier = "markdown_yaml_frontmatter"
+commit_on_create = true
+
+[[types]]
+name = "verification"
+identity_kind = "VERIFICATION"
+revision_mode = "atomic"
+content_role = "observation"
+governance_locus = "internal"
+carrier = "markdown_yaml_frontmatter"
+commit_on_create = true
+
+[[types]]
+name = "specification"
+identity_kind = "SPECIFICATION"
+revision_mode = "maintained"
+content_role = "definition"
+governance_locus = "internal"
+carrier = "markdown_yaml_frontmatter"
+commit_on_create = true
+commit_on_update = true
+
+[[types]]
+name = "release_plan"
+identity_kind = "RELEASE-PLAN"
+revision_mode = "maintained"
+content_role = "definition"
+governance_locus = "internal"
+carrier = "markdown_yaml_frontmatter"
+commit_on_create = true
+commit_on_update = true
+
+[[types]]
+name = "procedure"
+identity_kind = "PROCEDURE"
+revision_mode = "maintained"
+content_role = "method"
+governance_locus = "internal"
+carrier = "markdown_yaml_frontmatter"
+commit_on_create = true
+commit_on_update = true
+
+[[types]]
+name = "plan"
+identity_kind = "PLAN"
+revision_mode = "maintained"
+content_role = "method"
+governance_locus = "internal"
+carrier = "markdown_yaml_frontmatter"
+commit_on_create = true
+commit_on_update = true
+
+[[types]]
+name = "navigation"
+identity_kind = "NAVIGATION"
+revision_mode = "maintained"
+content_role = "definition"
+governance_locus = "internal"
+carrier = "markdown_yaml_frontmatter"
+commit_on_create = true
+commit_on_update = true
+
+[[types]]
+name = "git_commit"
+identity_kind = "native_sha"
+revision_mode = "atomic"
+content_role = "implementation"
+governance_locus = "internal"
+carrier = "native_git"
+
+[[types]]
+name = "external_git_commit"
+identity_kind = "repository_qualified_native_sha"
+revision_mode = "atomic"
+content_role = "implementation"
+governance_locus = "external"
+carrier = "native_git"
+
+[[types]]
+name = "pull_request"
+identity_kind = "repository_qualified_pr_number"
+revision_mode = "maintained"
+content_role = "method"
+governance_locus = "relation"
+carrier = "native_host"
+
+[[types]]
+name = "runtime_log"
+identity_kind = "journal_stream"
+revision_mode = "append_only"
+content_role = "observation"
+governance_locus = "internal"
+carrier = "ndjson"
+
+[[types]]
+name = "toon_log_view"
+identity_kind = "generated_view"
+revision_mode = "maintained"
+content_role = "observation"
+governance_locus = "internal"
+carrier = "toon"
+commit_on_create = false
+commit_on_update = false

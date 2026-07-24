@@ -21,5 +21,6 @@ Repository-governance schemas owned by GOV:
 - `090_dset-gov-schemas-review-packet.schema.json`
 - `100_dset-gov-schemas-review-reconciliation.schema.json`
 - `110_dset-gov-schemas-review-report.schema.json`
+- `120_dset-gov-schemas-project-settings.schema.json`
 
 Other schema families live with their META, TOOL, SKILL, IMPL, or OPS owner.

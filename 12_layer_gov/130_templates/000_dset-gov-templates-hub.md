@@ -1,7 +1,8 @@
 ---
 artifact_type: navigation
 artifact_subtype: hub
-scope_path: []
+scope_path:
+  - layer:gov
 priority: medium
 ---
 
@@ -15,8 +16,9 @@ priority: medium
   manifest family from the discovered repository layout; neither seed is a
   schema-neutral current manifest.
 - Governance profile and GOV rule templates
-- `artifact-types.toml`
+- `artifact_catalog.toml`
 - `atom.md`
+- `dset_settings.toml`
 - `review-packet.md`
 - `review-report.md`
 - `intake.toml`

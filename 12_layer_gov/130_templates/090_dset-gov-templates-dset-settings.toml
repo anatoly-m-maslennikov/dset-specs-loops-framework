@@ -14,9 +14,22 @@
 # configuration carriers fail closed.
 #
 # Settings schema implemented by this file.
-# Accepted for new writers: "1.7".
-schema_version = "1.7"
+# Accepted for new writers: "1.8".
+schema_version = "1.8"
 canonical_command = "python -m dset_toolchain verify ."
+
+[paths]
+# Canonical project-local roots.
+control_root = ".dset"
+journal_root = ".dset_journal"
+runtime_root = ".dset_runtime"
+
+[git]
+# Every DSET-managed project uses Git. Initialization may create a repository
+# only when no enclosing repository exists.
+required = true
+initialize_if_missing = true
+commit_each_governed_change = true
 
 [artifacts]
 # Set the gate used before a new immutable atomic artifact is emitted.
@@ -32,6 +45,40 @@ canonical_command = "python -m dset_toolchain verify ."
 # Both values check whether the claim may belong one enabled scope higher and
 # propose eligible promotion. Promotion always requires operator acceptance.
 creation_strictness = "medium"
+
+# Enable only catalog entries used by this project. Unknown or disabled types
+# and subtypes fail closed. External and relational types additionally require
+# their Governance locus below.
+enabled_types = [
+  "requirement",
+  "implementation_decision",
+  "question",
+  "problem",
+  "test_plan",
+  "evaluation_plan",
+  "rationale",
+  "analysis_report",
+  "evidence_record",
+  "specification",
+  "procedure",
+  "navigation",
+  "verification",
+]
+enabled_subtypes = [
+  "question:risk",
+  "question:opportunity",
+  "problem:defect",
+  "problem:gap",
+  "problem:debt",
+]
+
+[artifacts.identity]
+# Project prefixes are optional. Disable for one small isolated namespace;
+# enable for monorepos, multiple DSET projects, or shared artifact namespaces.
+project_prefix_enabled = true
+project_prefix = "DSET"
+scope_path_in_ids = true
+subtype_in_names = false
 
 [artifacts.routing]
 # Enable the three independent META routing axes.
@@ -52,6 +99,12 @@ content_roles = [
 ]
 governance_loci = ["internal"]
 
+[workflows]
+# Development is the ordinary loop. Release readiness is mandatory before a
+# Version may be declared ready.
+default_mode = "development"
+release_mode = "release_readiness"
+
 [workflows.implement]
 # Choose what dset-implement may do before implementation begins.
 #
@@ -66,6 +119,12 @@ governance_loci = ["internal"]
 # Example lazy chain:
 # decisions -> refresh views when required -> plan-proof -> plan-implementation -> implement
 mode = "lazy"
+
+[interaction]
+# "silent" reports durable changes, blockers, approvals, and material
+# deviations. "verbose" additionally reports mode selection, skill chains, and
+# gate transitions. Presentation never changes authorization or validation.
+reporting_mode = "silent"
 
 [maintained_views]
 # Refresh thin maintained semantic views only on explicit request or when a

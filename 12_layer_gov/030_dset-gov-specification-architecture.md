@@ -12,11 +12,11 @@ priority: high
 
 ## Authority
 
-The adopting repository's discovered project manifest selects a local governance
-profile. Schema 1.7 owns settings, manifest, and governance-registry authority
-at `.dset/dset_settings.toml`; schema 1.3 and 1.4 use earlier hidden layouts,
-schema 1.2 uses its layered predecessor, and legacy schema 1.0/1.1 owns the
-compatible central carriers. The discovered registry maps workflow and
+The adopting repository's discovered project settings select a local governance
+profile. Schema 1.8 owns operator settings and the enabled artifact whitelist
+at `.dset/dset_settings.toml`; `.dset/artifact_catalog.toml` separately owns
+the executable type/subtype route catalog. Earlier schemas are migration input,
+not current authority. The discovered registry maps workflow and
 rule IDs to exactly one maintained governing document and its active atomic
 sources inside the target project's `.dset`. An active source atom is authority; the
 materialized document is its current view only while its semantic refresh is
@@ -27,7 +27,8 @@ maintained governing document, then an explicitly selected local profile, then
 failure. A source/projection mismatch selects the source, marks the projection
 stale, and blocks reliance until semantic refresh. Never fall back to wrapper
 prose, agent memory, a generated cache, an installed copy, or remote framework
-text.
+text. Atomic sources: `DSET-REQUIREMENT-GOV-102` and
+`DSET-REQUIREMENT-GOV-070`.
 
 ## Rule authority and assurance
 
@@ -77,7 +78,9 @@ Explicit justified non-applicability is valid. Missing or invalid selected owner
 
 ## State boundaries
 
-The project manifest selects the profile; the registry owns resolution
+Project settings select the profile and enabled whitelist; the artifact catalog
+owns type/subtype routes, identity kinds, carriers, and persistence behavior;
+the registry owns resolution
 metadata; active atoms own normative claims; governing documents own maintained
 presentation; wrappers own invocation only; generated indexes and caches are
 derived. Writes that change customization status are explicit and never mutate
@@ -88,6 +91,26 @@ paths. A resolver may derive a transient location after selecting `.dset`, but
 must not expose that location as identity or use files outside `.dset` as
 fallback governance. Repository and Work Area paths remain execution inputs for
 implementation targeting only.
+
+## Storage roots
+
+Governed project state, materialized methodology, project settings, artifact
+catalogs, tools, and skill instructions live in `.dset/`. Durable running
+records live in `.dset_journal/` as append-only NDJSON. Disposable caches,
+locks, scratch state, and process-local output live in `.dset_runtime/`.
+No reader treats the journal or runtime root as a governance fallback.
+Atomic source: `DSET-REQUIREMENT-GOV-100`.
+
+## Methodology materialization
+
+The repository-root methodology is the reusable authoring source. Installation
+materializes the selected released methodology into
+`.dset/000_dset_methodology/` as ordinary project-local files. Skills resolve
+only the installed `.dset` copy during governed work; they do not follow
+symlinks, file pointers, or live references back to the framework repository.
+Refreshing the installed copy is an explicit one-way operation with provenance,
+comparison, and no implicit overwrite. Atomic sources:
+`DSET-IMPL-GOV-002` and `DSET-REQUIREMENT-GOV-052`.
 
 ## Semantic boundaries
 
