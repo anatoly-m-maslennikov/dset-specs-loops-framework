@@ -18,21 +18,21 @@ entirely under `generated/` directories, because a generated mirror cannot be
 an input to the semantic graph that generates it. Commits that change any
 non-generated governed path remain relation inputs.
 
-This evergreen GOV projection compiles the active consequences of these
-general Decisions. Their immutable carriers retain rationale and history; this
+This maintained GOV view presents the active consequences of these general
+Decisions. Their immutable carriers retain rationale and history; this
 specification and the registered governing rules own the current executable
 presentation.
 
 | Decision | Compiled consequence |
 |---|---|
-| `DSET-DECISION-GOV-001` | Separate atomic authority, evergreen projections, transactional context/evidence, implementation, commit provenance, and session provenance |
+| `DSET-DECISION-GOV-001` | Separate atomic authority, append-only sequences, maintained views, context/evidence, implementation, commit provenance, and session provenance |
 | `DSET-DECISION-GOV-002` | Use one constitutional governance root; separate dependency from precedence and authority from assurance |
 | `DSET-DECISION-GOV-003` | Keep semantic atoms immutable and resolve conflicts by role and lifecycle before priority |
 | `DSET-DECISION-GOV-032` | Use peer Requirement and Decision Types: required obligations are Requirements; material selected approaches are Decisions |
 | `DSET-REQUIREMENT-GOV-058` | Assign `high`, `medium`, or `low` base priority and derive capped virtual priority from scope and upstream-layer bonuses during comparison |
 | `DSET-REQUIREMENT-GOV-059` | Default conflict selection to `ask_always`; permit opt-in automatic selection only for one unique effective-priority winner |
 | `DSET-DECISION-GOV-019` | Use Version as the shared primary artifact type for six flat release-lifecycle roles |
-| `DSET-DECISION-GOV-013` | Use ten typed forward artifact relations, derived inverses, and range-based evergreen projection frontiers |
+| `DSET-DECISION-GOV-013` | Use ten typed forward artifact relations, derived inverses, and range-based maintained-view frontiers |
 | `DSET-DECISION-GOV-014` | Normalize explicit null to omission only for governed optional-unset TOML fields; block every other null |
 | `DSET-DECISION-GOV-015` | Keep standards-compliant JSON Schema files as canonical external-format contract carriers without editable TOML duplicates |
 | `DSET-DECISION-GOV-016` | Preserve selector-sealed package YAML as historical authority and use one sibling package TOML as the current editable registry |
@@ -89,7 +89,7 @@ does not mistake root framework source for project-local authority.
 ## DSET-DECISION-GOV-025 — Discover DSET authority by identity
 
 Every skill first selects exactly one project control plane and searches only
-that project's `.dset` tree for settings, installed methodology, evergreen
+that project's `.dset` tree for settings, installed methodology, maintained
 artifacts, atoms, evidence, and Version records. Durable references store a stable ID or
 globally unique carrier name, never a physical path. Zero or multiple matches
 fail closed. Resolved filesystem locations exist only in memory while the
@@ -109,7 +109,7 @@ source-to-destination path registry.
 ## DSET-DECISION-GOV-028 — Keep the control plane current
 
 The selected project's `.dset` tree contains only current settings, installed
-methodology, applied project/layer/Version artifacts, evergreen specifications
+methodology, applied project/layer/Version artifacts, maintained specifications
 and plans, and current evidence and verification records.
 
 Historical aggregate registries, completed migration records, compatibility
@@ -191,7 +191,7 @@ action never determine Type or subtype.
 
 **Scenario DSET-SCENARIO-GOV-011:** A required user-facing behavior is a
 Decision/Requirement atom linked from one specification; the specification is
-its evergreen document role rather than another Type. A design explanation
+its maintained document role rather than another Type. A design explanation
 moves to rationale and a repeatable sequence to a playbook without retyping
 either as an atom.
 
@@ -295,15 +295,16 @@ and `subtype: test_plan`. None carries a nested subtype in its ID or metadata.
 
 ## DSET-REQUIREMENT-GOV-020 — Artifacts declare authority and lifecycle roles
 
-DSET must distinguish atomic authority sources, evergreen compiled projections,
-transactional context/evidence, and implementation-layer artifacts. A typed
+DSET must distinguish atomic authority sources, append-only sequences,
+maintained semantic views, context/evidence atoms, and implementation-layer
+artifacts. A typed
 atom owns one primary claim or directive rather than its real-world subject,
 operator acceptance act, file or record carrier, performed work, result,
 evidence, gate disposition, or derived Verification. Accepted,
 active, applicable Decision atoms and their direct subtypes are authority
-sources. Evergreen specs, implementation plans, Test plans, Evaluation plans,
-runbooks, and governing rules are updatable projections compiled from those
-sources. Problems, Questions and their direct subtypes, QA executions/results,
+sources. Maintained specs, implementation plans, Test plans, Evaluation plans,
+runbooks, and governing rules are updatable views reasoned from those sources.
+Problems, Questions and their direct subtypes, QA executions/results,
 proofs, optional Changes/releases,
 sessions, and runs preserve work history or evidence
 without becoming authority merely by existing. Implementation artifacts are
@@ -312,25 +313,26 @@ runtime assets, and configuration examples.
 
 **Scenario DSET-SCENARIO-GOV-021:** An operator acceptance event grants
 authority to a Decision directive carried in a Markdown record. The directive
-changes behavior, the
-compiled spec and proof plans expose its current consequences, and code, Test
+changes behavior, the maintained spec and proof plans expose its current
+consequences, and code, Test
 code, and Evaluation prompts implement those sources. Later QA execution
 produces evidence and Verification without any act, carrier, work occurrence,
 or result becoming competing authority. If
-the Decision and compiled spec differ, the Decision wins and the spec is stale.
+the Decision and maintained spec differ, the Decision wins and the spec is
+stale.
 
-## DSET-REQUIREMENT-GOV-021 — Atomic authority compiles into evergreen projections
+## DSET-REQUIREMENT-GOV-021 — Atomic authority refreshes maintained views
 
-Accepted, active, applicable Decision atoms and direct subtypes must compile their current
-behavioral consequences into the owning evergreen specs, plans, runbooks, or
-governing rules. A compiled projection never outranks an active source atom. If
-they differ, the source atom governs, the projection is stale, and its relying
-release gate fails until deterministic recompilation succeeds. Transactional
-context and evidence can motivate or assess a source but cannot replace one;
-generated traceability shows the relationship without becoming authority.
+Accepted, active, applicable Decision atoms and direct subtypes must be
+reflected in the owning maintained specs, plans, runbooks, or governing rules
+when those views are active. A maintained view never outranks an active source
+atom. If they differ, the source atom governs, the view is stale, and its
+relying release gate fails until semantic refresh succeeds. Context and
+evidence can motivate or assess a source but cannot replace one; generated
+traceability shows the relationship without becoming authority.
 
-The deterministic compilation gate accepts only an explicit ID-owned heading
-section, table row, or labeled block as a projection fragment; a loose ID
+The deterministic traceability gate accepts only an explicit ID-owned heading
+section, table row, or labeled block as a maintained-view fragment; a loose ID
 mention provides no coverage. It binds source, full projection, fragment kind,
 location, and fragment digests. This proves declared structure and freshness,
 not semantic equivalence. Review or Evaluation separately judges whether the
@@ -404,8 +406,8 @@ does not qualify as `replacement_of`. Archived atoms remain immutable history
 and are not deleted.
 
 **Scenario DSET-SCENARIO-GOV-022:** A resolved Question produces a Decision, the
-Decision compiles into the relevant spec and proof plans, and review rejects a
-code-only change that leaves the evergreen projection stale. A later Decision
+Decision is reflected in the relevant spec and proof plans, and review rejects
+a code-only change that leaves the maintained view stale. A later Decision
 replaces the earlier one explicitly; the original remains immutable provenance,
 while only the successor participates in the active compilation set. After all
 reliance closes, the original moves to `archive/` through a lossless registered
@@ -413,7 +415,7 @@ carrier transition and remains resolvable by ID and source return address.
 
 ## DSET-REQUIREMENT-GOV-022 — Commits and atomic artifacts retain provenance
 
-Every commit that changes an evergreen projection or implementation artifact
+Every commit that changes a maintained view or implementation artifact
 must name the Decision or Decisions it implements in its commit message body.
 A linked Problem may explain the need for correction, but does not replace
 Decision authority. Each newly emitted atomic artifact has an explicit
@@ -445,10 +447,10 @@ passes the same rules as a current commit. It is not an exemption mechanism.
 
 `DSET-RULE-ARCHITECTURE` must remain the dependency-free constitutional root
 for repository governance. Every registered normative rule must resolve to one
-accepted, active, applicable atomic source set and one repository-local compiled
+accepted, active, applicable atomic source set and one repository-local maintained
 governing document in the current profile edition and declare separate
 `depends_on` and `precedence_over` relations. A source/document mismatch selects
-the source, marks the document stale, and blocks reliance until recompilation.
+the source, marks the document stale, and blocks reliance until semantic refresh.
 Both graphs must be acyclic; registry order must not imply precedence; missing
 precedence targets or unresolved conflicts must fail closed.
 
@@ -459,7 +461,7 @@ reliance claims. None becomes rule
 authority by existing or passing. Missing or stale assurance must leave only
 the affected claim pending or stale and block its relying gate according to
 risk; it must not silently erase an otherwise valid rule. Transactional
-consequences must still compile into the evergreen governing artifact.
+consequences must still be reflected in the maintained governing artifact.
 
 **Scenario DSET-SCENARIO-GOV-024:** An adopter rejects a precedence cycle and a
 precedence target without a registered owner. A separate review keeps an
@@ -473,7 +475,7 @@ authority. It reports artifact counts by role, Type, subtype, layer, status,
 priority, and applicable Work Area; unresolved and automatically resolved
 Question/Conflict subtypes; unresolved Problems and Questions with their
 subtypes; proof freshness; and traceability coverage for Requirement and Decision atoms
-compiled into evergreen owners, applicable authority connected to
+compiled into maintained owners, applicable authority connected to
 implementation and QA/Test or QA/Evaluation, implementation commits connected
 to their authorizing Decision, and proof plans connected to current evidence.
 
@@ -487,7 +489,7 @@ interactive renderers may consume the same derived model later.
 **Scenario DSET-SCENARIO-GOV-025:** A repository reports 18 of 20 applicable
 Requirements with current deterministic Test coverage, one justified
 not-applicable Requirement, and one uncovered Requirement. The dashboard links
-the uncovered row to its authority and evergreen owners and does not inflate
+the uncovered row to its authority and maintained owners and does not inflate
 the score by creating irrelevant Decisions, code, or Evaluations.
 
 ## DSET-REQUIREMENT-GOV-025 — External reviews are portable transactional evidence
@@ -503,7 +505,7 @@ priority; the findings body may be free-form.
 Every finding records evidence, confidence, impact, and proposed disposition.
 Import or reconciliation must explicitly reject it with rationale, defer it,
 or route it to an existing or new Problem or Question and direct subtype,
-Requirement, Decision, optional Change, evergreen owner, or proof
+Requirement, Decision, optional Change, maintained owner, or proof
 obligation. Accepted consequences compile
 into current truth and reopen the smallest affected proof closure. Neither the
 report nor the reviewer may silently edit or authorize implementation.
@@ -517,7 +519,7 @@ truth for the accepted findings, and reruns only affected proof.
 ## DSET-REQUIREMENT-GOV-026 — Every governed artifact has one priority
 
 DSET must use `priority` as its only generic ordered rank across atomic
-authority, evergreen projection, transactional context/evidence, and
+authority, append-only sequences, maintained artifacts, context/evidence, and
 implementation artifacts. Every governed artifact declares priority directly
 or inherits it through one visible canonical relation.
 Implementation files may inherit from their owning Decision or QA atom, or an
@@ -557,7 +559,7 @@ conflict class, context, mode, selected claim, and governing profile edition.
 
 Every governed artifact pair is classifiable even when it is not a selectable
 normative conflict. An accepted, active, applicable atomic source governs over
-its stale evergreen projection and routes recompilation. An explicit
+its stale maintained view and routes semantic refresh. An explicit
 `replacement_of` relation selects the replacement atom over archived
 predecessors before priority.
 QA/Test, QA/Evaluation, review, and proof evidence change assurance and the relying gate instead
@@ -637,7 +639,7 @@ When a structured rationale is supplied, its schema must require a non-empty,
 bounded value. Rationale is explanatory context, not an alternate authority;
 it cannot hide a Decision or direct subtype, state transition, or evidence claim
 that is absent from the canonical owner for that concern. Templates should
-prompt useful reasoning without encouraging placeholder prose. Evergreen
+prompt useful reasoning without encouraging placeholder prose. Maintained
 implementation references remain focused on current executable truth and link
 out when the rationale is substantial.
 
@@ -868,7 +870,7 @@ One concern has one canonical carrier selected by its job:
 | Native format | Source code, CI workflows, lockfiles, and host manifests |
 
 Markdown with restricted, GitHub-compatible YAML frontmatter is the default for
-atomic, evergreen, analysis, evidence, verification, navigation, plan, and
+atomic, maintained, analysis, evidence, verification, navigation, plan, and
 other human-governed narrative artifacts. TOML is not a generic structured-data
 default; it owns settings and configuration that tools execute directly.
 Standards-compliant JSON Schema remains canonical JSON. JSONL/NDJSON is reserved
@@ -885,6 +887,23 @@ touched file on failure. A second run is a no-op.
 and reports its exact operation. Apply leaves every narrative Markdown artifact
 with YAML frontmatter, every JSON Schema as JSON, every executable human-edited
 configuration as TOML, and no competing editable representation of one concern.
+
+## DSET-REQUIREMENT-GOV-099 — Running logs use append-only NDJSON
+
+Running logs use NDJSON as their canonical append-only carrier. Each accepted
+line is one complete UTF-8 JSON record. Writers append new records without
+editing, reordering, or deleting accepted records; malformed or incomplete
+records stop governed consumption.
+
+A programmatically derived TOON rendering is a maintained, non-authoritative
+Observation view. It records its NDJSON source identity, consumed frontier,
+generator version, and digest. Regeneration replaces the derived view and never
+rewrites the source log.
+
+**Scenario DSET-SCENARIO-GOV-039:** A skill run appends one NDJSON record under
+`.dset_runtime`. A deterministic projector renders the accepted frontier as
+TOON for compact inspection. Rebuilding the TOON output changes neither the
+NDJSON bytes nor its record order.
 
 `DSET-REQUIREMENT-GOV-036` and the universal-TOML clause formerly compiled
 under `DSET-REQUIREMENT-GOV-040` are historical. The verbose-settings clause of
@@ -916,7 +935,7 @@ When a package YAML contains selector-sealed legacy Decision fragments, DSET
 preserves that YAML byte-for-byte as historical compatibility authority. The
 migration emits one sibling `package.toml` as the current editable registry,
 initializes it from the preserved semantic values, and reconciles it with active
-native atoms and current evergreen artifact paths.
+native atoms and current maintained artifact paths.
 
 Readers prefer `package.toml` after cutover. New package IDs and paths are
 written only to TOML. YAML remains finite read-only input for its registered
@@ -982,7 +1001,7 @@ lookup.
 
 A current DSET project has one writable settings and project-manifest carrier
 at `.dset/dset_settings.toml`. Installed methodology lives exclusively under
-`.dset/000_dset_methodology/`. Current project-wide evergreen artifacts,
+`.dset/000_dset_methodology/`. Current project-wide maintained artifacts,
 atomic records, analysis, evidence, and verification live under
 `.dset/100_project/`; current Version lifecycle artifacts and Changes live
 under `.dset/150_versions/`; and layer-owned applied
@@ -1052,7 +1071,7 @@ than silently mixing source and installed files.
 
 ## DSET-REQUIREMENT-GOV-053 — Navigate atoms at folder level
 
-Hubs directly list only stable child areas, atomic-artifact folders, evergreen
+Hubs directly list only stable child areas, atomic-artifact folders, maintained
 specifications and plans, settings, and other long-lived non-atomic owners. A
 hub never enumerates or links individual atomic carriers. Adding an atom does
 not require a hub edit.
@@ -1076,6 +1095,6 @@ carrier and Git history. Reactivation reconciles retained content against
 current atomic authority before the surface is current. Surface activation is
 independent from the semantic revision-mode catalog.
 
-The registered surface set is `evergreen-specification`, `test-plan`,
+The registered surface set is `maintained-specification`, `test-plan`,
 `evaluation-plan`, `implementation-plan`, `project-overview`, and
 `architecture-view`.

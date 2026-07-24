@@ -115,7 +115,7 @@ Defect, Gap, or Debt.
 
 | Subtype | Canonical definition | Classification test | Must not represent |
 |---|---|---|---|
-| `defect` | Current behavior or implementation contradicts an active Decision or its current evergreen projection | Is something present but behaving incorrectly? | A required capability that does not exist |
+| `defect` | Current behavior or implementation contradicts an active Decision or its current maintained view | Is something present but behaving incorrectly? | A required capability that does not exist |
 | `gap` | A required capability, artifact, proof, or other obligation is currently absent | Is something required missing now? | Optional improvement or uncertain future harm |
 | `debt` | A knowingly accepted compromise works sufficiently now but creates continuing or future cost | Does the current solution work while increasing maintenance, supportability, delivery, or correction cost? | Any missing item regardless of cause |
 
@@ -237,20 +237,20 @@ changelogs are rendered or derived from Release Records.
 The mandatory base flow is:
 
 ```text
-Operator input → acceptance act → Decision directive → Evergreen truth
+Operator input → acceptance act → Decision directive → Maintained views
 Decision + Implementation + QA definitions → execution → evidence → Verification
 ```
 
 Problems and Questions form feedback paths. A Problem returns directly to
 implementation when an active Decision already defines the correction. If the
 correction requires missing knowledge or a new choice, it raises a Question;
-the operator's answer becomes a Decision and recompiles evergreen truth.
+the operator's answer becomes a Decision and refreshes maintained views.
 
 All emitted Type atoms are immutable. Resolution and complete replacement use
 typed relations and Type-local archive placement. Withdrawal archives the atom
 and routes future intent to a Version Roadmap. Reopening is forbidden; a
-recurring Question or Problem is a new atom with `recurrence_of`. Evergreen
-projections remain editable and must be recompiled when active authority
+recurring Question or Problem is a new atom with `recurrence_of`. Maintained
+views remain editable and must be refreshed when active authority
 changes.
 
 ## Rationale

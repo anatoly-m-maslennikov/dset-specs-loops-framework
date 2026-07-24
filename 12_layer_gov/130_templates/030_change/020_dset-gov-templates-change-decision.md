@@ -44,8 +44,8 @@ replacement seam, and the canonical Requirements, Contracts, Design, proof
 plans, and operating rules updated by the Decision. Those owners carry
 normative truth; this record retains rationale.
 
-Name the evergreen projections compiled from this Decision. The accepted,
-active Decision remains the atomic authority source; a projection that differs
+Name the maintained views that reflect this Decision. The accepted, active
+Decision remains the atomic authority source; a view that differs
 from it is stale.
 
 ## Successor and archive policy

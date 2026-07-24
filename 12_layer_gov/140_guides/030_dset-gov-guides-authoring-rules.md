@@ -106,7 +106,7 @@ When two entities are mutually related, define each independently first using sh
   complete replacement. Derive reverse edges; never author them. Use
   `relates_to` only when machine traceability needs an association and no
   precise relation applies; ordinary citations remain links.
-- For an evergreen projection, store one `projection_of` frontier per semantic
+- For a maintained semantic view, store one `projection_of` frontier per semantic
   Type and exact scope through the latest included immutable `ATOMIC-RECORD`.
   Do not list every compiled atom individually.
 - Apply the project artifact-creation strictness before emitting an immutable
@@ -130,15 +130,14 @@ When two entities are mutually related, define each independently first using sh
   `replacement_of` for complete replacement, then archive the predecessor.
   Resolution uses `resolution_of`; recurrence creates a new Question or Problem
   with `recurrence_of`. Reopening is forbidden.
-- Every active applicable Decision is an atomic
-  authority source. Compile its consequences into the owning evergreen spec or
-  plan; when they differ, the Decision wins and the projection is stale until
-  recompiled.
+- Every active applicable Decision is an atomic authority source. Reflect its
+  consequences in the owning maintained spec or plan; when they differ, the
+  Decision wins and the view is stale until refreshed.
 
 ## Hubs
 
 - Keep purpose, boundaries, and start routes concise.
-- Link stable child areas, atomic-artifact folders, evergreen files, settings,
+- Link stable child areas, atomic-artifact folders, maintained files, settings,
   and other long-lived non-atomic owners.
 - Never list individual atomic artifacts or anything below `.dset_runtime/`.
 - Do not hide normative rules or long explanations in a navigation page.

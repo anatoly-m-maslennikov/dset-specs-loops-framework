@@ -13,19 +13,19 @@ priority: high
 ## Authority
 
 The adopting repository's discovered project manifest selects a local governance
-profile. Schema 1.5 owns settings, manifest, and governance-registry authority
+profile. Schema 1.7 owns settings, manifest, and governance-registry authority
 at `.dset/dset_settings.toml`; schema 1.3 and 1.4 use earlier hidden layouts,
 schema 1.2 uses its layered predecessor, and legacy schema 1.0/1.1 owns the
 compatible central carriers. The discovered registry maps workflow and
-rule IDs to exactly one compiled governing document and its active atomic
+rule IDs to exactly one maintained governing document and its active atomic
 sources inside the target project's `.dset`. An active source atom is authority; the
-materialized document is its current projection only while compilation is
+materialized document is its current view only while its semantic refresh is
 current. Framework template and version remain provenance only.
 
 Resolution precedence is project-local active source atom, then its current
-compiled governing document, then an explicitly selected local profile, then
+maintained governing document, then an explicitly selected local profile, then
 failure. A source/projection mismatch selects the source, marks the projection
-stale, and blocks reliance until recompilation. Never fall back to wrapper
+stale, and blocks reliance until semantic refresh. Never fall back to wrapper
 prose, agent memory, a generated cache, an installed copy, or remote framework
 text.
 
@@ -33,11 +33,11 @@ text.
 
 Governance separates authority from assurance. A normative rule governs only
 when the current repository-local registry resolves its accepted, active,
-applicable atomic sources and one compiled governing document and validates the
+applicable atomic sources and one maintained governing document and validates the
 dependency and precedence closure. The registered layer and scope bound its
 scope; the selected profile version and customization state identify its
 current edition. An atomic source/document mismatch makes the document stale;
-the atom remains authoritative while the relying gate stops for recompilation.
+the atom remains authoritative while the relying gate stops for semantic refresh.
 
 `depends_on` declares prerequisites required to interpret or execute a rule.
 `precedence_over` declares only how an explicit conflict between rules is
@@ -67,7 +67,7 @@ not the pre-root bootstrap command.
 1. Walk upward from the working location until exactly one project containing the unique settings carrier `dset_settings.toml` inside `.dset` is found. Nested competing project roots fail closed.
 2. Read the selected `repository_governance` profile.
 3. Search only the selected `.dset` for settings, governing documents, atoms,
-   evergreen artifacts, evidence, and Version records; resolve each carrier by
+   maintained artifacts, evidence, and Version records; resolve each carrier by
    stable ID or globally unique name.
 4. Validate local ownership, dependencies, documents, applicability, customization, and wrapper identity.
 5. Resolve the requested workflow in registry order.
@@ -78,7 +78,7 @@ Explicit justified non-applicability is valid. Missing or invalid selected owner
 ## State boundaries
 
 The project manifest selects the profile; the registry owns resolution
-metadata; active atoms own normative claims; governing documents own compiled
+metadata; active atoms own normative claims; governing documents own maintained
 presentation; wrappers own invocation only; generated indexes and caches are
 derived. Writes that change customization status are explicit and never mutate
 atoms.
@@ -105,20 +105,22 @@ Multi-head claims split into linked sibling atoms. Irreducible subtype
 ambiguity falls back to the empty subtype of the selected Type and raises a
 Question when the ambiguity affects work.
 
-## Artifact roles
+## Revision behavior and artifact function
 
-DSET separates four artifact roles from the four semantic Types—Decision,
-Question, Problem, and QA:
+DSET separates Revision mode from artifact meaning and Content role:
 
 - **Atomic authority sources** are accepted, active, applicable Decisions.
   Atoms are immutable. Complete replacement is a successor atom with an
   explicit acyclic `replacement_of` relation, followed by byte-stable archive
   relocation of the predecessor.
-- **Evergreen compiled projections** are updatable current views such as specs,
+- **Append-only record sequences** include NDJSON running logs and event
+  ledgers. Accepted records remain ordered and immutable; readers may derive
+  maintained catalogs or TOON views without changing the source sequence.
+- **Maintained semantic views** are updatable current views such as specs,
   implementation plans, deterministic test plans, eval plans, architecture,
-  runbooks, and governing rules. They are compiled from active source atoms and
+  runbooks, and governing rules. They are reasoned from active source atoms and
   become stale when they disagree with one.
-- **Transactional context and evidence** record Questions and their Conflict,
+- **Context and evidence atoms** record Questions and their Conflict,
   Risk, and Opportunity subtypes; Problems and their Defect, Gap, and Debt
   subtypes; QA executions and results; proofs; sessions/runs; and optional
   Version records.
@@ -127,9 +129,10 @@ Question, Problem, and QA:
 - **Implementation artifacts** are code, Test code, Evaluation prompts or
   datasets, CI
   workflows, scripts, generated runtime assets, and configuration examples.
-  They implement atomic sources through their compiled projections.
+  They implement atomic sources through maintained semantic views when those
+  views are enabled.
 
-An active atom wins over a stale compiled projection. A replacement successor
+An active atom wins over a stale maintained view. A replacement successor
 wins over its archived predecessor by explicit `replacement_of`, never by age.
 Resolution uses `resolution_of`; a repeated archived Question or Problem uses
 `recurrence_of`; reopening is forbidden. Archive relocation keeps semantic ID,

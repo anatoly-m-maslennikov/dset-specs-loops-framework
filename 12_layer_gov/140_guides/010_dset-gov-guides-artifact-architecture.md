@@ -46,9 +46,9 @@ project-wide number sequence. The subtype always remains direct metadata.
 `artifacts.subtype_in_names = true` opts only newly emitted artifacts into
 subtype-bearing names and never rewrites stable history.
 
-An active applicable source atom wins when its compiled Specification,
+An active applicable source atom wins when its maintained Specification,
 Procedure, or Plan is stale.
-The drift must be routed for recompilation; implementation and evidence cannot
+The drift must be routed for semantic refresh; implementation and evidence cannot
 silently redefine either authority.
 
 Navigation remains hierarchical:
@@ -67,8 +67,8 @@ repository root hub
 - An owning artifact answers one primary question and declares its type and
   authority boundary.
 - Rationale, procedures, and evidence link to the owner; they do not copy its
-  rule. Decisions are atomic sources whose consequences compile into their
-  owning evergreen projections.
+  rule. Decisions are atomic sources whose consequences are reflected in their
+  owning maintained views.
 
 Every governed area declares one root, owner, purpose, hub, and parent. A child may have many semantic links but one structural parent. Cycles and missing parents are invalid.
 
@@ -99,7 +99,7 @@ pair has one primary relation; reverse edges are derived and never authored.
 `child_of` keeps both claims active, `override_of` changes only a narrower
 scope, and `replacement_of` completely replaces an older atom.
 
-Evergreen artifacts normally record `projection_of` ranges: one semantic Type
+Maintained semantic views normally record `projection_of` ranges: one semantic Type
 and exact scope through one globally ordered immutable `ATOMIC-RECORD`
 frontier. A newer applicable atom makes the projection stale. `relates_to`
 carries no authority, assurance, dependency, precedence, lifecycle, or
@@ -108,7 +108,7 @@ coverage meaning. Sealed legacy `child_of` fields remain compatibility input.
 ## Current truth and history
 
 Active source atoms authorize current rules or accepted behavior.
-Specifications, Procedures, and Plans present compiled views. DSET Change
+Specifications, Procedures, and Plans present maintained views. DSET Change
 folders hold proposed deltas and Verification. Archived Changes and Release
 Records preserve what happened; changelogs are Derived Views. Evidence may
 support current truth, but it is not another authority for that truth.
@@ -118,7 +118,7 @@ support current truth, but it is not another authority for that truth.
 1. Classify the intended artifact by its owning question.
 2. Locate the existing owner and area hub before writing.
 3. Use a bounded DSET change when authority, public behavior, structure, or reusable rules change.
-4. Recompile affected evergreen projections. Emit a successor with
+4. Refresh affected maintained views. Emit a successor with
    `replacement_of` when atomic authority changes completely, then archive the
    predecessor; never edit an emitted atom.
 5. Validate configuration, hierarchy, hubs, links, and applicable semantic evals.

@@ -29,9 +29,10 @@ Every normative rule ID has one editable governing document. Hubs navigate, wrap
 - Confirm authorization before editing existing project artifacts.
 - Write each conclusion to its owning accepted package, active change, decision, runbook, proof plan, or evidence artifact.
 - Keep deterministic tests and qualitative/probabilistic evals separate.
-- Classify each durable artifact by role: atomic authority source, evergreen
-  compiled projection, transactional context/evidence, or implementation.
-  Status and applicability determine whether an atomic source is active.
+- Classify each durable artifact by exactly one Revision mode: `atomic`,
+  `append_only`, or `maintained`. Artifact type separately derives Content role
+  and Governance locus. Placement and applicability determine whether an
+  atomic source participates in current authority.
 - Materialized rules become project-owned immediately. Later framework releases provide an explicit comparison and proposed delta, never an invisible overwrite.
 - Author reusable methodology only in the repository-root source. Refresh the
   installed `.dset/000_dset_methodology/` snapshot only through an explicit
@@ -41,25 +42,49 @@ Every normative rule ID has one editable governing document. Hubs navigate, wrap
 - During migration, map every old rule/spec/plan/decision/runbook/evidence surface and make the old writer a concise pointer, read-only history, verified archive, or remove it only after cutover proof.
 - Refuse an existing destination and keep the previous owner writable when validation fails.
 
+## Revision-mode behavior
+
+| Revision mode | Permitted write behavior |
+|---|---|
+| `atomic` | Emit one immutable governed unit; changed meaning creates a linked successor |
+| `append_only` | Preserve accepted records and order; append only complete new records |
+| `maintained` | Revise existing content through the registered artifact procedure |
+
+Running logs use canonical NDJSON and `append_only`. Each append writes one
+complete UTF-8 JSON record; readers fail closed on malformed or incomplete
+records. Rotation seals the completed segment and opens a new sequence without
+rewriting accepted records.
+
+A persisted TOON rendering of a running log is a non-authoritative maintained
+Observation view. It records the NDJSON source identity and frontier and is
+regenerated or replaced through its registered procedure. It is never appended
+as if it were the source log.
+
+Current specifications, plans, catalogs, and generated projections are
+maintained artifacts. Their registered procedures define currentness,
+staleness, refresh, synchronization, and generation; DSET defines no additional
+currentness class.
+
 ## Transactional discharge
 
 A resolved consequential Question produces a Decision. Every accepted, active,
 applicable Decision—including any direct subtype—is an atomic authority source,
-not a parallel evergreen specification. Compile its normative consequences
-into the owning evergreen specifications, Design, proof plans, or operating
+not a parallel maintained specification. Refresh its normative consequences
+into the owning maintained specifications, Design, proof plans, or operating
 rules. Link the Decision to the resolved Question with `resolution_of`; move
 the Question to its Type-local `archive/` after resolution. Keep the Decision
 as durable authority plus its
 linked context, alternatives, rationale, trade-offs, and consequences where
 applicable.
-If the Decision and compiled projection differ, the Decision wins, the
-projection is stale, and the relying release gate fails until recompilation.
+If the Decision and maintained view differ, the Decision wins, the view is
+stale, and the relying release gate fails until semantic refresh.
 
 All active Decision atoms follow the same source-to-projection rule. Problems,
 Questions and their direct subtypes, QA results, evidence records, and other
 transactional context route work or support those sources but do not become
 authority merely by existing. Closing a transactional artifact without
-compiling its accepted normative consequences leaves the work incomplete.
+refreshing its accepted normative consequences into applicable maintained
+views leaves the work incomplete.
 
 Atomic artifacts are immutable in governed meaning. Editable drafts are working
 documents, not atoms. Emission fixes the primary claim or proof intent,
@@ -129,16 +154,17 @@ An active atom with no structural dependant may move to its adjacent `archive/`
 folder through a lossless carrier transition while canonical lookup retains its
 identity and original seal.
 
-Compilation generates a digest-bound index from every active authority source
-to one or more explicit evergreen claim fragments. A fragment must be a
+The traceability compiler generates a digest-bound index from every active
+authority source to one or more explicit maintained-view claim fragments. A
+fragment must be a
 canonical ID-owned section, table row, or labeled block; a loose ID mention is
 not a projection. The index binds both the complete projection carrier and the
 identified fragment. `dset compile ROOT --check` fails when the active source
 set, source digest, projection digest, fragment location, or fragment digest
-changes. This deterministic gate proves structured projection and freshness,
+changes. This deterministic gate proves structured linkage and byte freshness,
 not semantic equivalence. Review or Evaluation judges whether the fragment
 faithfully carries the source consequence. The index is evidence of
-compilation, not another authority source.
+traceability, not another authority source.
 
 ## Rationale
 
@@ -152,7 +178,7 @@ atom or blocks a gate.
 When present, rationale is explanatory context, not hidden authority. It must
 not carry a Decision or subtype, state transition, or evidence claim that
 is absent from that concern's canonical owner. Keep a short rationale in the
-atom or link a separate rationale artifact; keep evergreen implementation
+atom or link a separate rationale artifact; keep maintained implementation
 references focused on current executable truth. Templates prompt for rationale,
 and structured schemas permit a non-empty bounded value without requiring it.
 
@@ -206,7 +232,7 @@ assessment and refuses the immutable write when it is not allowed.
 
 ## Commit and session provenance
 
-Every commit that changes evergreen truth or implementation artifacts must name
+Every commit that changes maintained views or implementation artifacts must name
 the Decision IDs it implements in the commit body, for example
 `Implements: DSET-REQUIREMENT-IMPL-004`. A linked Problem may explain why a
 correction is needed, but only an active Decision authorizes the
@@ -291,16 +317,16 @@ limitations, and stable finding IDs; its findings body may be free-form.
 For each finding, record evidence, confidence, impact, and one explicit
 disposition: reject with rationale, defer, or route to a Problem or Question
 and applicable subtype, a Decision and applicable subtype, an optional Change,
-an evergreen owner, or a proof obligation. Review does
-not authorize repair. Compile accepted consequences into current truth and
+a maintained owner, or a proof obligation. Review does
+not authorize repair. Refresh accepted consequences into current views and
 reopen only affected proof before implementation or release relies on them.
 
 ## Priority
 
 Priority is the single generic ordered rank. Every governed atomic authority,
-evergreen projection, transactional context/evidence, and implementation
-artifact declares it directly or inherits it through one visible canonical
-relation.
+append-only sequence, maintained artifact, context/evidence atom, and
+implementation artifact declares it directly or inherits it through one
+visible canonical relation.
 Implementation files may inherit from their owning Decision or QA atom, or an
 optional Change, rather than duplicating metadata inside every file.
 
@@ -339,8 +365,8 @@ results ask.
 The resolver accepts every governed artifact pairing and uses artifact role
 before priority:
 
-- an active atomic authority source versus its evergreen projection selects the
-  atomic source, marks the projection stale, and routes recompilation;
+- an active atomic authority source versus its maintained view selects the
+  atomic source, marks the view stale, and routes semantic refresh;
 - an archived predecessor is inactive; its explicit replacement successor wins
   without consulting age or priority;
 - authority versus QA/Test, QA/Evaluation, review, or proof updates assurance and the
@@ -358,8 +384,8 @@ artifact IDs, roles, stored priorities, applied scope/layer bonuses, effective
 priorities and sources, conflict class, context, mode, disposition or selected
 claim, and profile edition. Never infer resolution from filename, list order,
 age, or layer distance. Reprioritization invalidates affected derived
-resolutions. Conflict handling never edits an atom; recompilation updates only
-the declared evergreen projection.
+resolutions. Conflict handling never edits an atom; refresh updates only the
+declared maintained view.
 
 ## Artifact threshold
 
@@ -379,7 +405,7 @@ summary without those anchors is context, not authoritative delivery evidence.
 ## Progressive governance surfaces
 
 DSET starts atomic-first. The registered optional governance surfaces are
-`evergreen-specification`, `test-plan`, `evaluation-plan`,
+`maintained-specification`, `test-plan`, `evaluation-plan`,
 `implementation-plan`, `project-overview`, and `architecture-view`.
 `.dset/dset_settings.toml` records an explicit Boolean for every registered
 surface; a missing table or key reads as inactive, and an unknown surface fails

@@ -36,7 +36,7 @@ uses the Type token while keeping the subtype in atom metadata.
 
 All current and historical project identities use the same canonical
 vocabulary. A naming change is a complete governed migration of IDs, carrier
-names, relations, compiled projections, settings, code,
+names, relations, maintained views, settings, code,
 proof references, and generated views. Short aliases are rejected after the
 migration; they do not remain as a second compatibility vocabulary. One
 recognized ID-kind token and the carrier's semantic role must agree on one
@@ -72,9 +72,9 @@ inherits a Type merely because it is stored beside a typed atom.
 
 A Decision is an immutable directive explicitly accepted as project authority
 by the operator. External material is provenance until the operator accepts its
-content through an explicit lifecycle act. Active Decisions compile into
-evergreen specifications, plans, runbooks, or governing rules and win when a
-projection is stale.
+content through an explicit lifecycle act. Active Decisions are reflected in
+maintained specifications, plans, runbooks, or governing rules and win when a
+view is stale.
 
 - A **Requirement** states a required observable result, behavior, capability,
   quality, prevention condition, or obligation.
@@ -122,7 +122,7 @@ A Problem records a presently true, evidence-backed insufficiency. It does not
 choose or authorize its correction.
 
 - A **Defect** is current behavior or implementation that contradicts active
-  authority or its current evergreen projection.
+  authority or its current maintained view.
 - A **Gap** is a required capability, artifact, proof, or obligation that is
   absent now.
 - **Debt** is a knowingly accepted compromise that works sufficiently now but
@@ -170,11 +170,11 @@ Reopening is forbidden. A repeated Question or Problem is a new atom using
 
 Problems and Questions route work but do not authorize implementation. Active
 Decisions own authority. QA owns assurance definitions.
-Evergreen specs and
-plans are mutable compiled projections; implementation realizes them;
+Maintained specs and plans are mutable semantic views; implementation realizes
+them;
 Verification and project-health views are derived.
 
-Commits changing evergreen truth or implementation cite their governing
+Commits changing maintained views or implementation cite their governing
 Decision IDs. A correction under existing authority may
 additionally link its Problem. A workflow, GitHub Issue, Jira/support ticket,
 task, Change,

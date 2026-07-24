@@ -15,7 +15,7 @@ priority: high
 Every governed artifact has one registered `artifact_type` and at most one
 direct `artifact_subtype`. The registered pair derives exactly one route:
 
-- Revision mode: `atomic`, `evergreen`, or `maintained`;
+- Revision mode: `atomic`, `append_only`, or `maintained`;
 - Content role: `inquiry`, `definition`, `rationale`, `method`,
   `implementation`, or `observation`;
 - Governance locus: `internal`, `external`, or `relation`.
@@ -48,6 +48,18 @@ The executable registry is the `x-dset-type-routes` table in
 
 An `external_audit_analysis` is internal when it is the project’s interpretation
 of an external report. The report itself is an external governed artifact.
+
+## Non-atomic route boundaries
+
+Append-only carriers preserve accepted record order and add only complete new
+records. Running NDJSON logs are append-only Observation/internal artifacts.
+Maintained artifacts include specifications, plans, settings, code, runners,
+generated dashboards, catalogs, and derived TOON views; each registered type
+still derives exactly one Content role and Governance locus.
+
+Current semantic views are maintained artifacts. DSET defines no separate
+currentness or freshness class. Their type-specific procedures own refresh,
+generation, synchronization, and direct-authoring behavior.
 
 ## Minimal Markdown properties
 

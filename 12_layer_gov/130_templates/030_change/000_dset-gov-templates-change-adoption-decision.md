@@ -35,10 +35,10 @@ when a genuine consequential choice exists; do not manufacture alternatives for
 an externally fixed Contract or ordinary implementation detail. Keep observable
 edge cases in Requirements/Scenarios and internal detail in Design.
 
-Compile the Decision's normative consequences into evergreen specs, Design,
-and proof plans; link those projections and the resolved Question here. The
+Reflect the Decision's normative consequences in maintained specs, Design, and
+proof plans; link those views and the resolved Question here. The
 accepted active Decision remains the atomic authority source and wins if a
-projection is stale.
+view is stale.
 
 The emitted Decision is immutable. Semantic change requires a successor. A
 complete successor points backward with `replacement_of`; reverse

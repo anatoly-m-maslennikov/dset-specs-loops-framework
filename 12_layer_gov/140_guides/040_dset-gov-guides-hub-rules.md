@@ -36,7 +36,7 @@ An operating area may additionally link its validation command, maintenance play
 
 - The root hub links each registered top-level area hub.
 - Each registered area declares one parent hub; the parent chain must terminate at the root hub without cycles.
-- Link stable child areas, evergreen specifications and plans, settings, and
+- Link stable child areas, maintained specifications and plans, settings, and
   other long-lived non-atomic owners directly.
 - Represent atomic artifacts only by their containing folders. Never enumerate
   or link individual atomic carriers from a hub.

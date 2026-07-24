@@ -112,7 +112,7 @@
         "role": {
           "enum": [
             "atomic_authority",
-            "evergreen_projection",
+            "maintained_projection",
             "external_authority",
             "implementation",
             "qa",

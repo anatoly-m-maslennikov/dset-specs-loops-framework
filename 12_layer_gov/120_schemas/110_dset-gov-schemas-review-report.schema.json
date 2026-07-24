@@ -175,7 +175,7 @@
             "route_question",
             "route_decision",
             "route_change",
-            "route_evergreen",
+            "route_maintained",
             "route_proof"
           ]
         }
