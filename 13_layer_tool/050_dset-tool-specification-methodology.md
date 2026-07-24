@@ -161,3 +161,26 @@ bundle but has not materialized a local TypeScript profile. Profile resolution
 stops and names the missing project-owned instance. After the adopter writes an
 applied instance with its reference origin, the same profile ID resolves
 locally and inspection reports `profile_role: applied`.
+
+## DSET-REQUIREMENT-TOOL-023 — Configure governance surfaces
+
+Atomic source: `DSET-REQUIREMENT-TOOL-023`.
+
+The deterministic CLI exposes:
+
+```text
+dset configure ROOT status
+dset configure ROOT activate SURFACE
+dset configure ROOT deactivate SURFACE
+dset configure ROOT recommend
+```
+
+`status` and `recommend` are read-only. Activation and deactivation preview by
+default and write only with explicit `--execute`. The writer preserves
+unrelated TOML values and comments, materializes missing registered defaults,
+and fails closed on unknown or non-Boolean surface state.
+
+Recommendations are conservative and advisory. They may propose reactivation
+only when they cite a retained project-owned carrier; external methodology
+carriers never count as project-surface evidence. A recommendation never
+changes configuration.
