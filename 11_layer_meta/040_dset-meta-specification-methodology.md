@@ -368,17 +368,17 @@ flowchart LR
 
 Atomic source: `DSET-REQUIREMENT-META-024`.
 
-| Boundary | Input | Output |
-|---|---|---|
-| META → GOV | Semantic invariants | Governable carriers and policies |
-| GOV → TOOL | Executable obligations | Callable enforcement and diagnostics |
-| TOOL → SKILL | Capabilities and diagnostics | Thin orchestration and entry gates |
-| SKILL → IMPL | Accepted context and satisfied gates | Governed implementation work |
-| IMPL → OPS | Verified supportable implementation | Deliverable and operable output |
+| Boundary | Entry criteria | Accepted input | Produced output | Exit criteria | Blocker behavior |
+|---|---|---|---|---|---|
+| META → GOV | Applicable META meaning, invariants, and boundary ownership are accepted and internally consistent | Technology-independent semantic authority and layer obligations | Governable identity, carrier, settings, provenance, lifecycle, applicability, and conflict policies | Every applicable obligation has one GOV owner and a governed representation or explicit non-applicability; META meaning is preserved | Ambiguous, conflicting, or incomplete semantics return as feedback to META or Exploration Mode; GOV does not invent meaning |
+| GOV → TOOL | The governed obligation, carrier, state, authority, and failure semantics are explicit | Governed policies, schemas, carriers, and executable obligations | Callable enforcement, resolution, generation, diagnostics, and repository mechanics | Every automatable obligation maps to a capability and source-aware diagnostic, while non-automatable obligations are declared explicitly | Missing or contradictory governance stops the capability; feedback returns to GOV without a guessed policy |
+| TOOL → SKILL | The capability contract and diagnostic semantics are stable enough to orchestrate | Callable capabilities and structured diagnostics | Thin provider-neutral orchestration, entry gates, workflow chaining, and session continuity | The wrapper delegates mechanisms to tools, preserves diagnostics, and embeds no independent governing rule | A missing or unsuitable capability returns to TOOL; SKILL does not implement a shadow mechanism |
+| SKILL → IMPL | Project-local truth resolves, required entry gates pass, and implementation scope is selected | Accepted context, active profiles, plans, tool capabilities, and gate results | Governed implementation work, executable checks, and implementation provenance | Work is traceable to accepted authority, follows the active profile, and has no unresolved entry-gate failure | Missing authority, context, or gate satisfaction stops implementation and returns feedback to its owning layer or Exploration Mode |
+| IMPL → OPS | The implementation is complete and its applicable Test, Evaluation, supportability, and packaging checks pass | Deliverable implementation, check results, evidence, and supportability metadata | A release-ready, publishable, operable candidate with investigation and recovery context | Applicable readiness, release, publication, and operational-support criteria are satisfied | Failed or missing proof creates feedback for the owning layer; OPS does not release or call the candidate ready |
 
-Every boundary declares entry criteria, exit criteria, and blocker behavior.
-Adjacent handoffs are preferred; a skip is valid only when intermediate layers
-have no meaningful transformation or ownership.
+Adjacent handoffs are preferred. A boundary may be skipped only when the
+intermediate layer has no applicable transformation or ownership, and the same
+entry, exit, traceability, and blocker semantics remain explicit.
 
 ## DSET-REQUIREMENT-META-025 — Acyclic layer dependencies
 
