@@ -73,6 +73,16 @@ mode = "on_demand"
 skill = "dset-compile"
 runtime_output = ".dset_runtime/generated"
 
+[governance_surfaces]
+# This established self-hosting project already uses all registered surfaces.
+# New projects receive the template defaults, where every value is false.
+evergreen_specification = true
+test_plan = true
+evaluation_plan = true
+implementation_plan = true
+project_overview = true
+architecture_view = true
+
 [changes]
 # Select the default Git workspace for a newly created Change when the caller
 # does not request a mode explicitly.
