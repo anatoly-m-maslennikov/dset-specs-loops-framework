@@ -9,28 +9,25 @@
 
 ## Outputs
 
-- GitHub-portable reusable framework source under `10_project/` and the ordered
-  `11_layer_meta/` through `16_layer_ops/` product layers.
-- One project-local installed methodology under
-  `.dset/000_dset_methodology/`, distinct from applied artifacts.
-- Independently selected implementation-language and artifact-governance
-  profiles, including project-selected artifact-routing loci in
-  `.dset/dset_settings.toml`.
-- Applied project-wide truth under `.dset/100_project/`, applied layer truth
-  under `.dset/101_layer_meta/` through `.dset/106_layer_ops/`, and Version
-  lifecycle artifacts under `.dset/150_versions/`.
-- Thin evergreen semantic views that expose current flows, ordered entities,
-  lifecycle models, and direct atomic provenance without duplicating atomic
-  authority.
-- Versioned schemas, templates, fixtures, migration guidance, provenance, and
-  generated traceability in their configured methodology, applied, or runtime
-  owners.
-- The `dset` CLI through `python -m dset_toolchain` and an installable console entry point.
-- Five implemented repository-native source wrappers under `skills/`; runtime,
-  host-distribution, cross-platform, and publication claims remain separately
-  gated.
-- A coordinated DSET product/CLI-package release contract, with project-configured delivery and independent schema/profile/template compatibility versions.
-- Active authoritative-boundary Contract records with explicit ownership, direction, conformance, compatibility, and lifecycle.
+- Technology-independent constitutional invariants and the ordered layer
+  constitution with explicit adjacent handoffs.
+- Artifact-routing, project-relative scope, authority, provenance, lifecycle,
+  applicability, and recursive self-hosting semantics.
+- A stable distinction among reusable methodology, project-installed
+  methodology, and applied project authority without prescribing downstream
+  storage or command mechanisms.
+- Thin evergreen semantic views with ordered entities, lifecycle models, and
+  direct atomic provenance, plus progressive activation semantics for optional
+  governance surfaces.
+- Independent profile-selection semantics for implementation ecosystems and
+  artifact governance without imposing non-applicable placeholders.
+- Separate Test and Evaluation meanings and an assurance boundary that keeps
+  authority, methods, implementation, observations, evidence, and Verification
+  distinct.
+- Active authoritative-boundary Contract semantics with explicit ownership,
+  direction, conformance, compatibility, and lifecycle.
+- Fixed-point and durable-control-plane invariants that downstream layers must
+  realize without creating backward governance.
 
 ## Specification boundary surface
 
