@@ -1,23 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-206"
-semantic_id = "DSET-REQUIREMENT-GOV-060"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "A governed identity migration must update an atomic artifact's canonical identifier and all identifier references without changing the artifact's immutable governed claim."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "An identifier is the governed name of an artifact, not the claim asserted by that artifact. Renaming an identifier is therefore a graph-wide identity migration, while rewriting the claim would be an impermissible mutation."
-promotion = {}
-
-[[relations]]
-type = "child_of"
-target = "DSET-DECISION-GOV-034"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-060"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-DECISION-GOV-034"
+---
 
 # Requirement — Identity migration preserves atomic content
 
@@ -31,3 +24,11 @@ Historical terminology inside an immutable claim may remain as the content the
 artifact originally asserted. Current execution follows active successor and
 lifecycle authority; it does not rewrite the predecessor's claim to make the
 predecessor appear current.
+
+## Primary claim
+
+A governed identity migration must update an atomic artifact's canonical identifier and all identifier references without changing the artifact's immutable governed claim.
+
+## Rationale
+
+An identifier is the governed name of an artifact, not the claim asserted by that artifact. Renaming an identifier is therefore a graph-wide identity migration, while rewriting the claim would be an impermissible mutation.

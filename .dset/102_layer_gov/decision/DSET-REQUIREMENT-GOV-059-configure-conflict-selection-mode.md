@@ -1,27 +1,25 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-203"
-semantic_id = "DSET-REQUIREMENT-GOV-059"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Each project selects ask_always or auto_by_effective_priority conflict handling, defaults to ask_always, and automatic mode asks whenever structural comparison does not produce one unique eligible winner."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Operator confirmation is the safest general default, while an explicit project opt-in can remove routine structural conflicts without guessing through ties, incomparable scopes, or unsatisfiable authority."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "ops"]
-applies_unchanged = false
-local_context_required = true
-
-[[relations]]
-type = "child_of"
-target = "DSET-REQUIREMENT-GOV-058"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-059"
+scope_path:
+  - "layer:gov"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "ops"
+  applies_unchanged: false
+  local_context_required: true
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-058"
+---
 
 # Requirement — Configure conflict selection mode
 
@@ -42,3 +40,11 @@ stale projection routing, evidence affecting assurance, or implementation
 drift creating a Problem—continue without pretending they are operator choices.
 Mutually unsatisfiable external obligations always stop for operator or
 external resolution; automatic mode cannot report false compliance.
+
+## Primary claim
+
+Each project selects ask_always or auto_by_effective_priority conflict handling, defaults to ask_always, and automatic mode asks whenever structural comparison does not produce one unique eligible winner.
+
+## Rationale
+
+Operator confirmation is the safest general default, while an explicit project opt-in can remove routine structural conflicts without guessing through ties, incomparable scopes, or unsatisfiable authority.

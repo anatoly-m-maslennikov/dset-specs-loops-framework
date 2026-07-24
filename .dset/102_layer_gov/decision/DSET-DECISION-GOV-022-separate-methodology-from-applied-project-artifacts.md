@@ -1,22 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-157"
-semantic_id = "DSET-DECISION-GOV-022"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "DSET stores the installed project-local methodology only under .dset/000_dset_methodology, stores applied project artifacts only under .dset/100_project through .dset/150_versions, and keeps the reusable framework source in the repository root's 10_project through 50_versions product structure."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-051"
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-022"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-051"
+---
 
 # Decision — Separate methodology from applied project artifacts
 
@@ -57,3 +51,7 @@ project decides, plans, checks, and observes. Keeping those carriers in
 separate numbered namespaces prevents framework rules from being mistaken for
 project state while preserving deterministic local rule resolution for thin
 skills.
+
+## Primary claim
+
+DSET stores the installed project-local methodology only under .dset/000_dset_methodology, stores applied project artifacts only under .dset/100_project through .dset/150_versions, and keeps the reusable framework source in the repository root's 10_project through 50_versions product structure.

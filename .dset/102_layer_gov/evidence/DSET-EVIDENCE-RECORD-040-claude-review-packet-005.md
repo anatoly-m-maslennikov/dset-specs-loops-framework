@@ -1,34 +1,41 @@
-+++
-schema_version = "1.0"
-artifact_type = "evidence_record"
-artifact_subtype = "evaluation_result"
-artifact_id = "DSET-EVIDENCE-RECORD-040"
-priority = "high"
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d", "claude:f7c5b086-779c-4169-80c9-7b565abff121"]
-context = ["packet=DSET-REVIEW-PACKET-005", "packet_commit=9b8c411c2bbd0dade2a66c5ceff29e20afddef17", "packet_carrier_commit=e93ee1cdb85698ef924fd91046102392b8637395", "environment=codex-desktop-macos", "claude-code=2.1.205", "permission_mode=plan", "allowed_tools=Read,Glob,Grep"]
-observed_at = "2026-07-21T08:00:00+04:00"
-evidence_location = "dset/scopes/skill/changes/make-dset-self-hosting-and-skills-thin/proofs/DSET-EVIDENCE-RECORD-040-claude-review-packet-005.md"
-polarity = "inconclusive"
-currentness = "current"
-reopen_when = "Claude Code can authenticate through an allowed API domain, or any packet commit, reviewed input, resolved rule, scope, criterion, or host version changes."
-
-[subject]
-id = "DSET-DECISION-GOV-002"
-revision = "9b8c411c2bbd0dade2a66c5ceff29e20afddef17"
-intended_use = "Record whether the fresh exact DSET review packet received an independent qualitative governance audit without promoting unobserved findings."
-
-[producer]
-identity = "claude:f7c5b086-779c-4169-80c9-7b565abff121"
-performed_work = "Accepted the bounded read-only audit request but stopped during authentication before inference, input consumption, tool use, or judgment."
-
-[method]
-description = "Requested a high-effort read-only audit against only packet 005's exact commit, ten reviewed inputs, resolved rules, bounded scope, and four criteria; required PASS or stable critical/high finding IDs and prohibited edits or repair authorization."
-setup = "Claude Code 2.1.205 invoked non-interactively with plan permissions and only Read, Glob, and Grep allowed."
-
-[[relations]]
-type = "evidence_for"
-target = "DSET-DECISION-GOV-002"
-+++
+---
+artifact_type: "evidence_record"
+artifact_subtype: "evaluation_result"
+artifact_id: "DSET-EVIDENCE-RECORD-040"
+scope_path:
+  - "layer:gov"
+priority: "high"
+schema_version: "1.0"
+context:
+  - "packet=DSET-REVIEW-PACKET-005"
+  - "packet_commit=9b8c411c2bbd0dade2a66c5ceff29e20afddef17"
+  - "packet_carrier_commit=e93ee1cdb85698ef924fd91046102392b8637395"
+  - "environment=codex-desktop-macos"
+  - "claude-code=2.1.205"
+  - "permission_mode=plan"
+  - "allowed_tools=Read,Glob,Grep"
+observed_at: "2026-07-21T08:00:00+04:00"
+polarity: "inconclusive"
+currentness: "current"
+reopen_when: "Claude Code can authenticate through an allowed API domain, or any packet commit, reviewed input, resolved rule, scope, criterion, or host version changes."
+subject:
+  id: "DSET-DECISION-GOV-002"
+  revision: "9b8c411c2bbd0dade2a66c5ceff29e20afddef17"
+  intended_use: "Record whether the fresh exact DSET review packet received an independent qualitative governance audit without promoting unobserved findings."
+producer:
+  identity: "claude:f7c5b086-779c-4169-80c9-7b565abff121"
+  performed_work: "Accepted the bounded read-only audit request but stopped during authentication before inference, input consumption, tool use, or judgment."
+method:
+  description: "Requested a high-effort read-only audit against only packet 005's exact commit, ten reviewed inputs, resolved rules, bounded scope, and four criteria; required PASS or stable critical/high finding IDs and prohibited edits or repair authorization."
+  setup: "Claude Code 2.1.205 invoked non-interactively with plan permissions and only Read, Glob, and Grep allowed."
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+  - "claude:f7c5b086-779c-4169-80c9-7b565abff121"
+relations:
+  - type: "evidence_for"
+    targets:
+      - "DSET-DECISION-GOV-002"
+---
 
 # Evaluation result — Claude review packet 005
 

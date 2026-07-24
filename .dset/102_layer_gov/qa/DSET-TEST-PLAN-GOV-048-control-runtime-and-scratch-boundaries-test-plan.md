@@ -1,26 +1,19 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-108"
-semantic_id = "DSET-TEST-PLAN-GOV-048"
-revision_mode = "atomic"
-content_role = "method"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Deterministic tests prove distinct control, runtime, scratch, and atomic-publication boundaries without repository scratch leakage."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-
-[[relations]]
-type = "check_of"
-target = "DSET-REQUIREMENT-GOV-043"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-TEST-PLAN-GOV-047"
-+++
+---
+artifact_type: "test_plan"
+artifact_id: "DSET-TEST-PLAN-GOV-048"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "check_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-043"
+  - type: "replacement_of"
+    targets:
+      - "DSET-TEST-PLAN-GOV-047"
+---
 
 # Test Plan — Verify control, runtime, and scratch boundaries
 
@@ -42,3 +35,7 @@ self-host, cross-platform, and full repository tests. Prove that:
 The complete recursive verifier must pass after bootstrap and generated views
 are refreshed. This Test atom is immutable; later correction requires a
 successor Test and append-only lifecycle event.
+
+## Primary claim
+
+Deterministic tests prove distinct control, runtime, scratch, and atomic-publication boundaries without repository scratch leakage.

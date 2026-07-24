@@ -1,22 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-114"
-semantic_id = "DSET-TEST-PLAN-GOV-050"
-revision_mode = "atomic"
-content_role = "method"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Deterministic validation rejects rule dependencies and precedence that create backward authority across the ordered DSET layers."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-
-[[relations]]
-type = "check_of"
-target = "DSET-REQUIREMENT-GOV-045"
-+++
+---
+artifact_type: "test_plan"
+artifact_id: "DSET-TEST-PLAN-GOV-050"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "check_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-045"
+---
 
 # Test Plan — Reject backward layer authority
 
@@ -34,3 +28,7 @@ horizontal Contracts; the validator must not transform structure itself.
 
 This Test atom is immutable. Later correction requires a successor Test and
 append-only lifecycle event.
+
+## Primary claim
+
+Deterministic validation rejects rule dependencies and precedence that create backward authority across the ordered DSET layers.

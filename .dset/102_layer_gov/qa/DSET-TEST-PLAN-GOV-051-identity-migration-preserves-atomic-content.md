@@ -1,26 +1,17 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-207"
-semantic_id = "DSET-TEST-PLAN-GOV-051"
-revision_mode = "atomic"
-content_role = "method"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "A deterministic migration check proves canonical identity closure while preserving every atomic artifact's non-identity governed content."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-
-[[relations]]
-type = "check_of"
-target = "DSET-DECISION-GOV-034"
-
-[[relations]]
-type = "check_of"
-target = "DSET-REQUIREMENT-GOV-060"
-+++
+---
+artifact_type: "test_plan"
+artifact_id: "DSET-TEST-PLAN-GOV-051"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "check_of"
+    targets:
+      - "DSET-DECISION-GOV-034"
+      - "DSET-REQUIREMENT-GOV-060"
+---
 
 # Test Plan — Preserve atomic content during identity migration
 
@@ -36,3 +27,7 @@ carriers after normalizing only:
 The normalized carriers must be equal. The migrated repository must contain no
 identifier using a retired short kind, no alias lookup for one, no duplicate
 canonical identity, and no unresolved relation or lifecycle target.
+
+## Primary claim
+
+A deterministic migration check proves canonical identity closure while preserving every atomic artifact's non-identity governed content.

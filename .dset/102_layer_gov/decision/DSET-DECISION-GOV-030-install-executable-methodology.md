@@ -1,23 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-165"
-semantic_id = "DSET-DECISION-GOV-030"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Installed methodology includes its executable Python toolchain, deterministic Test implementations, and qualitative Evaluation prompt implementations under the TOOL layer; applied QA definitions, plans, evidence, and verification remain project artifacts outside methodology, while deterministic materialization keeps installed executors equal to their repository sources."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Project-local methodology is not operational when it contains rules but omits the tools and proof implementations that enact those rules. Keeping implementations in TOOL while retaining applied QA state in project layers preserves both executability and ownership separation."
-promotion = {}
-
-[[relations]]
-type = "child_of"
-target = "DSET-DECISION-GOV-022"
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-030"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-DECISION-GOV-022"
+---
 
 # Decision — Install executable methodology
 
@@ -50,3 +43,11 @@ create unnumbered methodology ownership areas.
 Rules without their executors cannot provide a self-contained project-local
 methodology. Separating reusable executors from applied QA authority keeps the
 methodology operational without mixing it with this project's proof state.
+
+## Primary claim
+
+Installed methodology includes its executable Python toolchain, deterministic Test implementations, and qualitative Evaluation prompt implementations under the TOOL layer; applied QA definitions, plans, evidence, and verification remain project artifacts outside methodology, while deterministic materialization keeps installed executors equal to their repository sources.
+
+## Rationale
+
+Project-local methodology is not operational when it contains rules but omits the tools and proof implementations that enact those rules. Keeping implementations in TOOL while retaining applied QA state in project layers preserves both executability and ownership separation.

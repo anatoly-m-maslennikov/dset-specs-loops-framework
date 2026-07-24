@@ -1,35 +1,31 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-078"
-semantic_id = "DSET-DECISION-GOV-019"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "The artifact registry classifies the six release-lifecycle roles under the primary Version artifact Type, never Delivery."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Version identifies the governed artifact subject without requiring readers to distinguish DSET's prior use of Delivery from deployment or workflow delivery."
-
-[promotion]
-affected_children = ["meta", "gov", "tool", "skill", "ops"]
-applies_unchanged = false
-local_context_required = true
-
-[promotion.parent_scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-DECISION-GOV-012"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-DECISION-OPS-007"
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-019"
+scope_path:
+  - "layer:gov"
+priority: "high"
+promotion:
+  affected_children:
+    - "meta"
+    - "gov"
+    - "tool"
+    - "skill"
+    - "ops"
+  applies_unchanged: false
+  local_context_required: true
+  parent_scope:
+    kind: "project"
+    id: "dset-specs-loops-framework"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-DECISION-GOV-012"
+  - type: "relates_to"
+    targets:
+      - "DSET-DECISION-OPS-007"
+---
 
 # Decision — Classify release lifecycle artifacts as Version
 
@@ -50,3 +46,11 @@ release-lifecycle behavior.
 
 This emitted Decision atom is immutable. Later correction requires a successor
 Decision and append-only lifecycle event.
+
+## Primary claim
+
+The artifact registry classifies the six release-lifecycle roles under the primary Version artifact Type, never Delivery.
+
+## Rationale
+
+Version identifies the governed artifact subject without requiring readers to distinguish DSET's prior use of Delivery from deployment or workflow delivery.

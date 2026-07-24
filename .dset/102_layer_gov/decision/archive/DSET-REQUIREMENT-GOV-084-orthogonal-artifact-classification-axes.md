@@ -1,51 +1,33 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-242"
-semantic_id = "DSET-REQUIREMENT-GOV-084"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "DSET classifies every governed artifact through independent revision_mode, content_role, relation_shape, and governance_origin axes; scope_path remains structural addressing, OPS remains a layer rather than a content role, and relational artifacts express internal and external participation through typed endpoint origins."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "FPF strict-distinction, method-work, provenance, relational-precision, and anti-explosion principles require change semantics, semantic contribution, relational arity, governance origin, and structural scope to remain separate rather than being encoded in Type names or workflow stages."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "ops"]
-applies_unchanged = true
-local_context_required = false
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-076"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-081"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-082"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-083"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-GOV-079"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-GOV-080"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-DECISION-OPS-013"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-084"
+scope_path:
+  - "layer:gov"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "ops"
+  applies_unchanged: true
+  local_context_required: false
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-076"
+      - "DSET-REQUIREMENT-GOV-081"
+      - "DSET-REQUIREMENT-GOV-082"
+      - "DSET-REQUIREMENT-GOV-083"
+  - type: "relates_to"
+    targets:
+      - "DSET-REQUIREMENT-GOV-079"
+      - "DSET-REQUIREMENT-GOV-080"
+      - "DSET-DECISION-OPS-013"
+---
 
 # Requirement — Orthogonal artifact-classification axes
 
@@ -185,3 +167,11 @@ No axis value is inferred from another. DSET does not force every Cartesian
 cell to contain a Type. Concrete Type names, subtype definitions, and cell
 occupancy are governed separately and are intentionally deferred from this
 requirement.
+
+## Primary claim
+
+DSET classifies every governed artifact through independent revision_mode, content_role, relation_shape, and governance_origin axes; scope_path remains structural addressing, OPS remains a layer rather than a content role, and relational artifacts express internal and external participation through typed endpoint origins.
+
+## Rationale
+
+FPF strict-distinction, method-work, provenance, relational-precision, and anti-explosion principles require change semantics, semantic contribution, relational arity, governance origin, and structural scope to remain separate rather than being encoded in Type names or workflow stages.

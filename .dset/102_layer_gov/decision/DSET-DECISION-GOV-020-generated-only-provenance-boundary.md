@@ -1,27 +1,19 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-087"
-semantic_id = "DSET-DECISION-GOV-020"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Commit provenance remains mandatory for every governed commit, while generated-only commits are excluded from derived implementation relations and coverage inputs."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "A generated mirror may carry provenance for auditability, but it cannot be an input to the semantic graph that generated the mirror."
-promotion = {}
-
-[[relations]]
-type = "resolution_of"
-target = "DSET-DEFECT-GOV-007"
-
-[[relations]]
-type = "child_of"
-target = "DSET-REQUIREMENT-GOV-024"
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-020"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "resolution_of"
+    targets:
+      - "DSET-DEFECT-GOV-007"
+  - type: "child_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-024"
+---
 
 # Decision — Exclude generated-only commits from derived relations
 
@@ -36,3 +28,11 @@ still participates because it contains substantive governed changes.
 
 This emitted Decision atom is immutable. Later correction requires a successor
 Decision and append-only lifecycle event.
+
+## Primary claim
+
+Commit provenance remains mandatory for every governed commit, while generated-only commits are excluded from derived implementation relations and coverage inputs.
+
+## Rationale
+
+A generated mirror may carry provenance for auditability, but it cannot be an input to the semantic graph that generated the mirror.

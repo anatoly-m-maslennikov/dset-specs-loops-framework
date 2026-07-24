@@ -1,27 +1,19 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-186"
-semantic_id = "DSET-DECISION-GOV-033"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Decision has four direct subtypes: requirement, constraint, contract, and implementation_decision, using the canonical new ID tokens REQ, CONSTR, CONTR, and IMPDEC respectively."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "All four artifacts are accepted directives but own different questions: required result, allowed-solution restriction, boundary obligation, or selected implementation approach. The compact tokens keep subtype-bearing atomic filenames readable."
-promotion = {}
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-DECISION-GOV-032"
-
-[[relations]]
-type = "resolution_of"
-target = "DSET-QUESTION-GOV-009"
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-033"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-DECISION-GOV-032"
+  - type: "resolution_of"
+    targets:
+      - "DSET-QUESTION-GOV-009"
+---
 
 # Decision — Four direct Decision subtypes
 
@@ -45,3 +37,11 @@ IDs are never rewritten. New atoms use only the four subtype tokens above.
 
 This Decision completely replaces `DSET-DECISION-GOV-032`; the predecessor is
 removed from active authority by a separate append-only absorption event.
+
+## Primary claim
+
+Decision has four direct subtypes: requirement, constraint, contract, and implementation_decision, using the canonical new ID tokens REQ, CONSTR, CONTR, and IMPDEC respectively.
+
+## Rationale
+
+All four artifacts are accepted directives but own different questions: required result, allowed-solution restriction, boundary obligation, or selected implementation approach. The compact tokens keep subtype-bearing atomic filenames readable.

@@ -1,26 +1,19 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-162"
-semantic_id = "DSET-DECISION-GOV-027"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "A DSET carrier representation transition is one immutable atomic record identified by old and new globally unique carrier names and digests; directory placement is never identity, aggregate path-transition ledgers are legacy only, and current DSET lookup never consumes stored paths."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-DECISION-GOV-018"
-
-[[relations]]
-type = "child_of"
-target = "DSET-DECISION-GOV-025"
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-027"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-DECISION-GOV-018"
+  - type: "child_of"
+    targets:
+      - "DSET-DECISION-GOV-025"
+---
 
 # Decision — Atomize carrier transitions
 
@@ -42,3 +35,7 @@ and the applicable lifecycle relation.
 Atomized transition evidence preserves auditability without recreating the
 path coupling or multi-artifact aggregate files removed by the current control
 model.
+
+## Primary claim
+
+A DSET carrier representation transition is one immutable atomic record identified by old and new globally unique carrier names and digests; directory placement is never identity, aggregate path-transition ledgers are legacy only, and current DSET lookup never consumes stored paths.

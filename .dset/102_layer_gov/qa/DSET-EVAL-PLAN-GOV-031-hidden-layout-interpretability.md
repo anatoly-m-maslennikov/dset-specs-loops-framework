@@ -1,26 +1,19 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-106"
-semantic_id = "DSET-EVAL-PLAN-GOV-031"
-revision_mode = "atomic"
-content_role = "method"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "medium"
-authority = "operator:anatoly-m-maslennikov"
-claim = "A reviewer can identify DSET as a distinct project control plane, find its sole configuration owner, and distinguish repository-root-relative stored paths from file-relative Markdown links."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-
-[[relations]]
-type = "check_of"
-target = "DSET-REQUIREMENT-GOV-042"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-EVAL-PLAN-GOV-030"
-+++
+---
+artifact_type: "evaluation_plan"
+artifact_id: "DSET-EVAL-PLAN-GOV-031"
+scope_path:
+  - "layer:gov"
+priority: "medium"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "check_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-042"
+  - type: "replacement_of"
+    targets:
+      - "DSET-EVAL-PLAN-GOV-030"
+---
 
 # Evaluation Plan — Interpret the hidden project control layout
 
@@ -43,3 +36,7 @@ inconclusive.
 
 This Evaluation atom is immutable. Later correction requires a successor
 Evaluation and append-only lifecycle event.
+
+## Primary claim
+
+A reviewer can identify DSET as a distinct project control plane, find its sole configuration owner, and distinguish repository-root-relative stored paths from file-relative Markdown links.

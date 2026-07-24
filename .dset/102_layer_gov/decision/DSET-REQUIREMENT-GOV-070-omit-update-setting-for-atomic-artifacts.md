@@ -1,31 +1,28 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-218"
-semantic_id = "DSET-REQUIREMENT-GOV-070"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "medium"
-authority = "operator:anatoly-m-maslennikov"
-claim = "The canonical artifact catalog uses commit_on_create for persisted artifacts, uses commit_on_update only for artifact entries whose governed content may be updated in place, and omits commit_on_update entirely for immutable Atomic Artifacts."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Atomic immutability is an invariant, not a configurable false value, and an inapplicable setting should be absent rather than encoded as an option."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "ops"]
-applies_unchanged = false
-local_context_required = true
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-069"
-
-[[relations]]
-type = "child_of"
-target = "DSET-REQUIREMENT-GOV-049"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-070"
+scope_path:
+  - "layer:gov"
+priority: "medium"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "ops"
+  applies_unchanged: false
+  local_context_required: true
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-069"
+  - type: "child_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-049"
+---
 
 # Requirement — Omit update settings from Atomic Artifacts
 
@@ -74,3 +71,11 @@ committed migration.
 Any permitted removal is also a Git change. Atomic Artifacts are archived or
 replaced through explicit relations and are not deleted as ordinary mutable
 files.
+
+## Primary claim
+
+The canonical artifact catalog uses commit_on_create for persisted artifacts, uses commit_on_update only for artifact entries whose governed content may be updated in place, and omits commit_on_update entirely for immutable Atomic Artifacts.
+
+## Rationale
+
+Atomic immutability is an invariant, not a configurable false value, and an inapplicable setting should be absent rather than encoded as an option.

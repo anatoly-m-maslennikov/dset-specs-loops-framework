@@ -1,27 +1,25 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-202"
-semantic_id = "DSET-REQUIREMENT-GOV-058"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "DSET assigns high, medium, or low base priority by artifact role and derives a capped virtual effective priority from structural-scope and upstream-layer bonuses only while comparing applicable artifacts."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Role defaults express normal authority weight, while bounded comparison bonuses let broader project authority and earlier-layer authority govern narrower or downstream realizations without permanently inflating stored priority or adding separate precedence fields."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "ops"]
-applies_unchanged = false
-local_context_required = true
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-DECISION-GOV-010"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-058"
+scope_path:
+  - "layer:gov"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "ops"
+  applies_unchanged: false
+  local_context_required: true
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-DECISION-GOV-010"
+---
 
 # Requirement — Derive effective priority during comparison
 
@@ -57,3 +55,11 @@ conflict-class rules are applied before effective priority.
 Immutable legacy values remain readable without rewriting their atoms:
 `critical` normalizes to base `high`, and `deferred` normalizes to base `low`.
 New writers never emit either legacy value.
+
+## Primary claim
+
+DSET assigns high, medium, or low base priority by artifact role and derives a capped virtual effective priority from structural-scope and upstream-layer bonuses only while comparing applicable artifacts.
+
+## Rationale
+
+Role defaults express normal authority weight, while bounded comparison bonuses let broader project authority and earlier-layer authority govern narrower or downstream realizations without permanently inflating stored priority or adding separate precedence fields.

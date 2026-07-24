@@ -1,39 +1,34 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-241"
-semantic_id = "DSET-REQUIREMENT-GOV-083"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Evergreen artifacts are mutable current projections and may have internal or external authority origin; the external Evergreen Types are Constraint Set, External Rationale Synthesis, External Methodology, Reference Implementation, and External Overview."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "A current projection may be governed by the project or by an upstream authority. Treating every Evergreen artifact as internal loses the authority of evolving external constraint sets, methodologies, implementation references, and overviews."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "ops"]
-applies_unchanged = true
-local_context_required = false
-
-[[relations]]
-type = "child_of"
-target = "DSET-REQUIREMENT-GOV-076"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-077"
-
-[[relations]]
-type = "override_of"
-target = "DSET-REQUIREMENT-GOV-081"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-GOV-082"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-083"
+scope_path:
+  - "layer:gov"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "ops"
+  applies_unchanged: true
+  local_context_required: false
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-076"
+  - type: "replacement_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-077"
+  - type: "override_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-081"
+  - type: "relates_to"
+    targets:
+      - "DSET-REQUIREMENT-GOV-082"
+---
 
 # Requirement — Evergreen projections may have external authority
 
@@ -74,3 +69,11 @@ The following boundaries keep the classification MECE:
 - an external current projection governed upstream is Evergreen;
 - a project-generated dashboard or other executable projection is an internal
   Generated Implementation.
+
+## Primary claim
+
+Evergreen artifacts are mutable current projections and may have internal or external authority origin; the external Evergreen Types are Constraint Set, External Rationale Synthesis, External Methodology, Reference Implementation, and External Overview.
+
+## Rationale
+
+A current projection may be governed by the project or by an upstream authority. Treating every Evergreen artifact as internal loses the authority of evolving external constraint sets, methodologies, implementation references, and overviews.

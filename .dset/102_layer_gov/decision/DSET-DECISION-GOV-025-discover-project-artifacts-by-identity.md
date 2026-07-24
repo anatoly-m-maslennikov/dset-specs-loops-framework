@@ -1,22 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-160"
-semantic_id = "DSET-DECISION-GOV-025"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "DSET-to-DSET references use unique identities only, and every skill discovers settings, methodology documents, evergreen artifacts, atomic artifacts, and lifecycle events by identity within the target repository's .dset control root without storing their physical carrier paths."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-DECISION-GOV-023"
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-025"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-DECISION-GOV-023"
+---
 
 # Decision — Discover project artifacts by identity
 
@@ -40,3 +34,7 @@ Identity-only discovery makes numbered reorganization and artifact archival
 safe, keeps skills independent of repository topology details, and guarantees
 that the project-local `.dset` edition—not a global installation, remote copy,
 or root framework source—governs every run.
+
+## Primary claim
+
+DSET-to-DSET references use unique identities only, and every skill discovers settings, methodology documents, evergreen artifacts, atomic artifacts, and lifecycle events by identity within the target repository's .dset control root without storing their physical carrier paths.

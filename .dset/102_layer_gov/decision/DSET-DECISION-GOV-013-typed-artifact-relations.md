@@ -1,30 +1,20 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-035"
-semantic_id = "DSET-DECISION-GOV-013"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "DSET artifact traceability uses ten mutually exclusive typed relations, derived inverses, and range-based evergreen projection frontiers."
-promotion = {}
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-
-[[relations]]
-type = "resolution_of"
-target = "DSET-QUESTION-GOV-004"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-033"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-034"
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-013"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "resolution_of"
+    targets:
+      - "DSET-QUESTION-GOV-004"
+  - type: "replacement_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-033"
+      - "DSET-REQUIREMENT-GOV-034"
+---
 
 # Decision — Use typed artifact relations
 
@@ -81,3 +71,7 @@ deterministic without forcing every contextual link into governance.
 
 This emitted Decision atom is immutable. Later correction requires a successor
 Decision and append-only lifecycle event.
+
+## Primary claim
+
+DSET artifact traceability uses ten mutually exclusive typed relations, derived inverses, and range-based evergreen projection frontiers.

@@ -1,35 +1,19 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-205"
-semantic_id = "DSET-DECISION-GOV-034"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "DSET uses the canonical semantic ID kinds REQUIREMENT, CONSTRAINT, CONTRACT, IMPL, TEST-PLAN, and EVAL-PLAN; QA atoms are plans rather than executable checks, and adopting this vocabulary requires a complete historical identity migration without retained short aliases."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Verbose identity kinds are understandable from a file list, while Test Plan and Evaluation Plan preserve the boundary between a QA definition and its executable implementation or evidence. IMPL remains short to keep the implementation kind readable and distinct from the longer authority kinds."
-promotion = {}
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-DECISION-GOV-033"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-038"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-054"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-055"
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-034"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-DECISION-GOV-033"
+      - "DSET-REQUIREMENT-GOV-038"
+      - "DSET-REQUIREMENT-GOV-054"
+      - "DSET-REQUIREMENT-GOV-055"
+---
 
 # Decision — Verbose semantic identities
 
@@ -50,3 +34,11 @@ compiled documents, settings, implementation references, proof references,
 and generated views together. The previous short tokens do not remain accepted
 aliases after cutover. Numeric suffixes are preserved when the migrated
 project-wide sequences do not collide.
+
+## Primary claim
+
+DSET uses the canonical semantic ID kinds REQUIREMENT, CONSTRAINT, CONTRACT, IMPL, TEST-PLAN, and EVAL-PLAN; QA atoms are plans rather than executable checks, and adopting this vocabulary requires a complete historical identity migration without retained short aliases.
+
+## Rationale
+
+Verbose identity kinds are understandable from a file list, while Test Plan and Evaluation Plan preserve the boundary between a QA definition and its executable implementation or evidence. IMPL remains short to keep the implementation kind readable and distinct from the longer authority kinds.

@@ -1,31 +1,22 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-073"
-semantic_id = "DSET-REQUIREMENT-GOV-040"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "DSET exposes operator-selectable behavior through one verbose dset_settings.toml and uses TOML for every DSET-owned structured artifact and Markdown frontmatter, including historical carriers migrated through governed transitions."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "One readable current encoding removes the historical YAML exception while the transition ledger preserves provenance and return paths separately from current authority."
-promotion = {}
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-037"
-
-[[relations]]
-type = "child_of"
-target = "DSET-DECISION-GOV-018"
-
-[[relations]]
-type = "resolution_of"
-target = "DSET-DEFECT-TOOL-007"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-040"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-037"
+  - type: "child_of"
+    targets:
+      - "DSET-DECISION-GOV-018"
+  - type: "resolution_of"
+    targets:
+      - "DSET-DEFECT-TOOL-007"
+---
 
 # Requirement — Use TOML for every DSET artifact carrier
 
@@ -52,3 +43,11 @@ encodings.
 
 This Requirement atom is immutable. Later correction requires a successor and
 append-only lifecycle event.
+
+## Primary claim
+
+DSET exposes operator-selectable behavior through one verbose dset_settings.toml and uses TOML for every DSET-owned structured artifact and Markdown frontmatter, including historical carriers migrated through governed transitions.
+
+## Rationale
+
+One readable current encoding removes the historical YAML exception while the transition ledger preserves provenance and return paths separately from current authority.

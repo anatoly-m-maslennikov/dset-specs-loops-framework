@@ -1,22 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-158"
-semantic_id = "DSET-DECISION-GOV-023"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Semantic references to atomic and evergreen artifacts use their unique identity rather than a physical path; paths remain only in resolver registries, carrier-transition records, and navigational links that must locate a file."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-
-[[relations]]
-type = "child_of"
-target = "DSET-DECISION-GOV-013"
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-023"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-DECISION-GOV-013"
+---
 
 # Decision — Reference artifacts by identity
 
@@ -33,3 +27,7 @@ a move, and a Markdown navigation link lets a reader open the carrier.
 Artifact identity survives reorganization; paths do not. Keeping location in
 the small set of location-owning carriers makes structural migration bounded
 without sacrificing deterministic resolution or GitHub navigation.
+
+## Primary claim
+
+Semantic references to atomic and evergreen artifacts use their unique identity rather than a physical path; paths remain only in resolver registries, carrier-transition records, and navigational links that must locate a file.

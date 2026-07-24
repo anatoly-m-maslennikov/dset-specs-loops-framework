@@ -1,14 +1,17 @@
-+++
-artifact_type = "evidence_record"
-artifact_subtype = "test_result"
-artifact_id = "DSET-EVIDENCE-RECORD-023"
-priority = "high"
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-
-[[relations]]
-type = "evidence_for"
-target = "DSET-TEST-PLAN-GOV-036"
-+++
+---
+artifact_type: "evidence_record"
+artifact_subtype: "test_result"
+artifact_id: "DSET-EVIDENCE-RECORD-023"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "evidence_for"
+    targets:
+      - "DSET-TEST-PLAN-GOV-036"
+---
 
 # Test result — typed artifact relations
 

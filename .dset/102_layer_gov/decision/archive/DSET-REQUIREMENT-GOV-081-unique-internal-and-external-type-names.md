@@ -1,31 +1,26 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-239"
-semantic_id = "DSET-REQUIREMENT-GOV-081"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Each occupied internal and external position in the standalone artifact matrix uses a distinct canonical Type name; Atomic + Implementation is represented by Commit for internal repositories and External Commit for externally governed repositories."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Distinct Type names make the matrix readable without requiring the authority-origin label to disambiguate two otherwise identical names, while Commit preserves the native Git concept for immutable implementation states."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "ops"]
-applies_unchanged = true
-local_context_required = false
-
-[[relations]]
-type = "child_of"
-target = "DSET-REQUIREMENT-GOV-076"
-
-[[relations]]
-type = "child_of"
-target = "DSET-REQUIREMENT-GOV-079"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-081"
+scope_path:
+  - "layer:gov"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "ops"
+  applies_unchanged: true
+  local_context_required: false
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-076"
+      - "DSET-REQUIREMENT-GOV-079"
+---
 
 # Requirement — Unique internal and external Type names
 
@@ -60,3 +55,11 @@ by Atomic or Maintained artifacts.
 `Commit` and `External Commit` are Git commits. Their repository-qualified
 SHAs are their canonical identities. They are not duplicated as Markdown
 Atomic Artifacts and do not receive DSET sequence numbers.
+
+## Primary claim
+
+Each occupied internal and external position in the standalone artifact matrix uses a distinct canonical Type name; Atomic + Implementation is represented by Commit for internal repositories and External Commit for externally governed repositories.
+
+## Rationale
+
+Distinct Type names make the matrix readable without requiring the authority-origin label to disambiguate two otherwise identical names, while Commit preserves the native Git concept for immutable implementation states.

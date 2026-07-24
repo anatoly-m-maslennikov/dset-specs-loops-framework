@@ -1,22 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-159"
-semantic_id = "DSET-DECISION-GOV-024"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Every committed file and directory below .dset/000_dset_methodology uses a stable numeric prefix within its parent, including hubs, schemas, templates, fixtures, guides, and supportability material."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-
-[[relations]]
-type = "child_of"
-target = "DSET-DECISION-GOV-022"
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-024"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-DECISION-GOV-022"
+---
 
 # Decision — Number installed methodology descendants
 
@@ -34,3 +28,7 @@ the source-to-installed path map.
 Visible ordering makes a large local methodology navigable without mixing it
 with applied project state. Generating the installed names avoids forcing
 authoring-oriented source paths into adopter repositories.
+
+## Primary claim
+
+Every committed file and directory below .dset/000_dset_methodology uses a stable numeric prefix within its parent, including hubs, schemas, templates, fixtures, guides, and supportability material.

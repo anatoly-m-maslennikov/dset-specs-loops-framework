@@ -1,18 +1,12 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-144"
-semantic_id = "DSET-PROBLEM-GOV-003"
-revision_mode = "atomic"
-content_role = "observation"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "medium"
-authority = "operator:anatoly-m-maslennikov"
-claim = "The verification matrix continued to present the pre-layer invariant proof and the 0.3.0 Work Area proof as current after IDs, schemas, version, validation, and tests changed. Both records are now explicitly historical, and current use requires replacement exact-commit evidence."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-+++
+---
+artifact_type: "problem"
+artifact_id: "DSET-PROBLEM-GOV-003"
+scope_path:
+  - "layer:gov"
+priority: "medium"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+---
 
 # Problem — Verification promoted proofs after their reopen conditions fired
 

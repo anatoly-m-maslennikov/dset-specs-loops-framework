@@ -1,30 +1,18 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-054"
-semantic_id = "DSET-TEST-PLAN-GOV-039"
-revision_mode = "atomic"
-content_role = "method"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Deterministic tests prove that canonical settings keys select artifact naming, atom-creation strictness, and implementation preparation without legacy write paths."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-
-[[relations]]
-type = "check_of"
-target = "DSET-REQUIREMENT-GOV-038"
-
-[[relations]]
-type = "check_of"
-target = "DSET-REQUIREMENT-GOV-039"
-
-[[relations]]
-type = "check_of"
-target = "DSET-REQUIREMENT-SKILL-013"
-+++
+---
+artifact_type: "test_plan"
+artifact_id: "DSET-TEST-PLAN-GOV-039"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "check_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-038"
+      - "DSET-REQUIREMENT-GOV-039"
+      - "DSET-REQUIREMENT-SKILL-013"
+---
 
 # Test Plan — Validate canonical settings selections
 
@@ -38,3 +26,7 @@ legacy root `dset.toml` remains read compatibility only, dual roots fail, and
 no writer extends the legacy surface.
 
 This Test definition is immutable. Runs and evidence are separate.
+
+## Primary claim
+
+Deterministic tests prove that canonical settings keys select artifact naming, atom-creation strictness, and implementation preparation without legacy write paths.

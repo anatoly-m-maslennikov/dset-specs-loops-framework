@@ -1,19 +1,12 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-040"
-semantic_id = "DSET-REQUIREMENT-GOV-036"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "TOML is the canonical encoding for DSET-owned structured artifacts and DSET Markdown frontmatter, with explicit generated or host-mandated format boundaries."
-promotion = {}
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "TOML makes configuration and artifact metadata easier to scan and removes indentation-dependent authority from DSET-owned structured files."
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-036"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+---
 
 # Requirement — Use canonical TOML artifacts
 
@@ -45,3 +38,11 @@ source of truth.
 
 This emitted Requirement atom is immutable. Later correction requires a
 successor and append-only lifecycle event.
+
+## Primary claim
+
+TOML is the canonical encoding for DSET-owned structured artifacts and DSET Markdown frontmatter, with explicit generated or host-mandated format boundaries.
+
+## Rationale
+
+TOML makes configuration and artifact metadata easier to scan and removes indentation-dependent authority from DSET-owned structured files.

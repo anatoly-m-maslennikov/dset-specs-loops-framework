@@ -1,22 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-103"
-semantic_id = "DSET-EVAL-PLAN-GOV-030"
-revision_mode = "atomic"
-content_role = "method"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "medium"
-authority = "operator:anatoly-m-maslennikov"
-claim = "A reviewer can identify project-wide, Version-wide, and layer-owned authority plus the sole configuration owner from the schema 1.3 tree without explanatory prose."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-
-[[relations]]
-type = "check_of"
-target = "DSET-REQUIREMENT-GOV-041"
-+++
+---
+artifact_type: "evaluation_plan"
+artifact_id: "DSET-EVAL-PLAN-GOV-030"
+scope_path:
+  - "layer:gov"
+priority: "medium"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "check_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-041"
+---
 
 # Evaluation Plan — Interpret the slim project control layout
 
@@ -31,3 +25,7 @@ different authority interpretation keeps this Evaluation inconclusive.
 
 This Evaluation atom is immutable. Later correction requires a successor
 Evaluation and append-only lifecycle event.
+
+## Primary claim
+
+A reviewer can identify project-wide, Version-wide, and layer-owned authority plus the sole configuration owner from the schema 1.3 tree without explanatory prose.

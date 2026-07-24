@@ -1,23 +1,17 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-057"
-semantic_id = "DSET-DEFECT-GOV-005"
-revision_mode = "atomic"
-content_role = "observation"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "repository:fpf-review"
-claim = "Governed files without direct metadata or a matching path rule can bypass the mandatory exactly-one artifact classification gate."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "A MECE catalog is not complete when unclassified carriers silently disappear from validation and health."
-promotion = {}
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-GOV-029"
-+++
+---
+artifact_type: "problem"
+artifact_subtype: "defect"
+artifact_id: "DSET-DEFECT-GOV-005"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "relates_to"
+    targets:
+      - "DSET-REQUIREMENT-GOV-029"
+---
 
 # Defect — Missing artifact classifications are skipped
 
@@ -30,3 +24,11 @@ also lacks practical playbook/runbook path coverage.
 Every governed file resolves to exactly one classification or an explicit
 registered exclusion. Missing, conflicting, nested, or invalid classification
 fails closed, and health reports the complete governed inventory.
+
+## Primary claim
+
+Governed files without direct metadata or a matching path rule can bypass the mandatory exactly-one artifact classification gate.
+
+## Rationale
+
+A MECE catalog is not complete when unclassified carriers silently disappear from validation and health.

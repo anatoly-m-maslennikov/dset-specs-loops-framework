@@ -1,26 +1,19 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-049"
-semantic_id = "DSET-TEST-PLAN-GOV-038"
-revision_mode = "atomic"
-content_role = "method"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Deterministic tests prove the verbose settings filename, settings-manifest boundary, compatibility rules, selected behavior, bootstrap output, and immutable historical exceptions."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-
-[[relations]]
-type = "check_of"
-target = "DSET-REQUIREMENT-GOV-037"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-TEST-PLAN-GOV-037"
-+++
+---
+artifact_type: "test_plan"
+artifact_id: "DSET-TEST-PLAN-GOV-038"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "check_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-037"
+  - type: "replacement_of"
+    targets:
+      - "DSET-TEST-PLAN-GOV-037"
+---
 
 # Test Plan — Validate verbose project settings
 
@@ -41,3 +34,7 @@ historical references to the retired filename. Existing sealed atoms and
 legacy Decision carriers must retain their recorded digests.
 
 This emitted Test definition is immutable. Runs and evidence are separate.
+
+## Primary claim
+
+Deterministic tests prove the verbose settings filename, settings-manifest boundary, compatibility rules, selected behavior, bootstrap output, and immutable historical exceptions.

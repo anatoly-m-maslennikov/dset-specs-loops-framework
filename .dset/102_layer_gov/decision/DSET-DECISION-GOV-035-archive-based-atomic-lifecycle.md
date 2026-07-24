@@ -1,31 +1,28 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-220"
-semantic_id = "DSET-DECISION-GOV-035"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "DSET removes lifecycle_event artifacts and models an Atomic Artifact as either active or archived; typed successor relations explain resolution and replacement, withdrawn future work moves into a Version Roadmap, and a closed matter can return only as a new atom related to its archived predecessor by recurrence_of."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Standalone lifecycle-event carriers duplicate typed relations and add a second atomic state model when active/archive placement, successor atoms, Version artifacts, provenance, and Git already preserve the required history."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "ops"]
-applies_unchanged = false
-local_context_required = true
-
-[[relations]]
-type = "resolution_of"
-target = "DSET-QUESTION-GOV-010"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-050"
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-035"
+scope_path:
+  - "layer:gov"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "ops"
+  applies_unchanged: false
+  local_context_required: true
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "resolution_of"
+    targets:
+      - "DSET-QUESTION-GOV-010"
+  - type: "replacement_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-050"
+---
 
 # Decision — Use an archive-based Atomic Artifact lifecycle
 
@@ -82,3 +79,11 @@ provenance. Git records the committed introduction and archival transition.
 Derived views infer the current set from active folders and infer historical
 connections from typed relations. No separate event carrier duplicates that
 information.
+
+## Primary claim
+
+DSET removes lifecycle_event artifacts and models an Atomic Artifact as either active or archived; typed successor relations explain resolution and replacement, withdrawn future work moves into a Version Roadmap, and a closed matter can return only as a new atom related to its archived predecessor by recurrence_of.
+
+## Rationale
+
+Standalone lifecycle-event carriers duplicate typed relations and add a second atomic state model when active/archive placement, successor atoms, Version artifacts, provenance, and Git already preserve the required history.

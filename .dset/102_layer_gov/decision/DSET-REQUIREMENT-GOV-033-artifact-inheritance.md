@@ -1,15 +1,12 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-004"
-semantic_id = "DSET-REQUIREMENT-GOV-033"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "unknown"
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-033"
+scope_path:
+  - "layer:gov"
+priority: "medium"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+---
 
 # Requirement — Inherit parent artifacts through child artifacts
 

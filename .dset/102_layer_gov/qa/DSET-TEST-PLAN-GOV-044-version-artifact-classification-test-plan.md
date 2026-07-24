@@ -1,34 +1,27 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-079"
-semantic_id = "DSET-TEST-PLAN-GOV-044"
-revision_mode = "atomic"
-content_role = "method"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Deterministic validation requires Version and its six exact direct subtypes across current authority, registries, templates, active carriers, generated views, settings examples, and release behavior, while rejecting Delivery as a current artifact Type."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-
-[promotion]
-affected_children = ["gov", "tool", "ops"]
-applies_unchanged = false
-local_context_required = true
-
-[promotion.parent_scope]
-kind = "project"
-id = "dset-specs-loops-framework"
-
-[[relations]]
-type = "check_of"
-target = "DSET-DECISION-GOV-019"
-
-[[relations]]
-type = "check_of"
-target = "DSET-DECISION-OPS-007"
-+++
+---
+artifact_type: "test_plan"
+artifact_id: "DSET-TEST-PLAN-GOV-044"
+scope_path:
+  - "layer:gov"
+priority: "high"
+promotion:
+  affected_children:
+    - "gov"
+    - "tool"
+    - "ops"
+  applies_unchanged: false
+  local_context_required: true
+  parent_scope:
+    kind: "project"
+    id: "dset-specs-loops-framework"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "check_of"
+    targets:
+      - "DSET-DECISION-GOV-019"
+      - "DSET-DECISION-OPS-007"
+---
 
 # Test Plan — Enforce the Version artifact classification
 
@@ -46,3 +39,7 @@ bootstrap, recursive validation, and generated-view freshness checks.
 
 This emitted Test atom is immutable. Later correction requires a successor
 Test and append-only lifecycle event.
+
+## Primary claim
+
+Deterministic validation requires Version and its six exact direct subtypes across current authority, registries, templates, active carriers, generated views, settings examples, and release behavior, while rejecting Delivery as a current artifact Type.

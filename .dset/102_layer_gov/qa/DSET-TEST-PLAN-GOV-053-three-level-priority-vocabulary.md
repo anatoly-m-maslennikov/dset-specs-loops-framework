@@ -1,23 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-211"
-semantic_id = "DSET-TEST-PLAN-GOV-053"
-revision_mode = "atomic"
-content_role = "method"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Verify that DSET stores and accepts only high, medium, or low priority, preserves highest as virtual-only, and routes future work to a Version Roadmap rather than deferred priority."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "The vocabulary migration is complete only when settings, atoms, lifecycle events, writers, readers, fixtures, and current projections reject the removed labels consistently."
-promotion = {}
-
-[[relations]]
-type = "check_of"
-target = "DSET-REQUIREMENT-GOV-063"
-+++
+---
+artifact_type: "test_plan"
+artifact_id: "DSET-TEST-PLAN-GOV-053"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "check_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-063"
+---
 
 # Test Plan — Enforce the three-level priority vocabulary
 
@@ -31,3 +24,11 @@ Verify that:
 - a meaning-preserving migration maps stored `critical` to `high`; and
 - non-current work is represented in a named Version Roadmap rather than by a
   `deferred` priority.
+
+## Primary claim
+
+Verify that DSET stores and accepts only high, medium, or low priority, preserves highest as virtual-only, and routes future work to a Version Roadmap rather than deferred priority.
+
+## Rationale
+
+The vocabulary migration is complete only when settings, atoms, lifecycle events, writers, readers, fixtures, and current projections reject the removed labels consistently.

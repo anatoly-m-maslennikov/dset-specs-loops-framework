@@ -1,27 +1,19 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-183"
-semantic_id = "DSET-DECISION-GOV-032"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "DSET uses peer Requirement and Decision Types: Requirements state required results or obligations, while Decisions record material selected implementation, architecture, governance, or operating approaches."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "The previous Decision-parent model obscures the practical WHAT-versus-selected-HOW boundary. Peer Types preserve both required truth and the rationale for consequential choices without classifying routine code as authority."
-promotion = {}
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-DECISION-GOV-008"
-
-[[relations]]
-type = "resolution_of"
-target = "DSET-QUESTION-GOV-008"
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-032"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-DECISION-GOV-008"
+  - type: "resolution_of"
+    targets:
+      - "DSET-QUESTION-GOV-008"
+---
 
 # Decision — Separate Requirements from Decisions
 
@@ -47,3 +39,11 @@ atom merely because code contains a choice.
 This Decision completely replaces `DSET-DECISION-GOV-008`. The predecessor
 remains immutable history and is removed from the active authority set through
 its append-only absorption event.
+
+## Primary claim
+
+DSET uses peer Requirement and Decision Types: Requirements state required results or obligations, while Decisions record material selected implementation, architecture, governance, or operating approaches.
+
+## Rationale
+
+The previous Decision-parent model obscures the practical WHAT-versus-selected-HOW boundary. Peer Types preserve both required truth and the rationale for consequential choices without classifying routine code as authority.

@@ -1,26 +1,19 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-109"
-semantic_id = "DSET-EVAL-PLAN-GOV-032"
-revision_mode = "atomic"
-content_role = "method"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "medium"
-authority = "operator:anatoly-m-maslennikov"
-claim = "A reviewer can distinguish committed DSET control truth, ignored resumable runtime state, and disposable process scratch from the repository tree and governing text."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-
-[[relations]]
-type = "check_of"
-target = "DSET-REQUIREMENT-GOV-043"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-EVAL-PLAN-GOV-031"
-+++
+---
+artifact_type: "evaluation_plan"
+artifact_id: "DSET-EVAL-PLAN-GOV-032"
+scope_path:
+  - "layer:gov"
+priority: "medium"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "check_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-043"
+  - type: "replacement_of"
+    targets:
+      - "DSET-EVAL-PLAN-GOV-031"
+---
 
 # Evaluation Plan — Interpret the three state boundaries
 
@@ -37,3 +30,7 @@ governing description. Pass when they consistently identify:
 Record ambiguity instead of resolving it by majority vote. This Evaluation
 atom is immutable; later correction requires a successor Evaluation and an
 append-only lifecycle event.
+
+## Primary claim
+
+A reviewer can distinguish committed DSET control truth, ignored resumable runtime state, and disposable process scratch from the repository tree and governing text.

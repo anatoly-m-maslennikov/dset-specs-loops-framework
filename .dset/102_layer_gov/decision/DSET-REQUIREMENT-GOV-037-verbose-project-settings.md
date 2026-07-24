@@ -1,23 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-048"
-semantic_id = "DSET-REQUIREMENT-GOV-037"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "DSET exposes operator-selectable behavior through one verbose dset_settings.toml file while project identity, topology, contracts, and verification remain manifest truth."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "A descriptive filename and in-file explanations make settings discoverable without mixing preferences with facts about the project being governed."
-promotion = {}
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-036"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-037"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-036"
+---
 
 # Requirement — Publish verbose project settings
 
@@ -63,3 +56,11 @@ boundary, not a second write path.
 
 This emitted Requirement atom is immutable. Later correction requires a
 successor and append-only lifecycle evidence.
+
+## Primary claim
+
+DSET exposes operator-selectable behavior through one verbose dset_settings.toml file while project identity, topology, contracts, and verification remain manifest truth.
+
+## Rationale
+
+A descriptive filename and in-file explanations make settings discoverable without mixing preferences with facts about the project being governed.

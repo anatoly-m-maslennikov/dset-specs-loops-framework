@@ -1,31 +1,28 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-229"
-semantic_id = "DSET-REQUIREMENT-GOV-072"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "DSET supports optional atomic refactoring between atomic-artifact intake and evergreen compilation; DSET proposes it when active atoms substantially overlap, repeatedly update the same claims, or obscure the current authority frontier, and refactoring emits immutable successors while archiving only fully replaced predecessors."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Semantic-density signals identify when consolidation improves clarity without making every compilation pay the cost or treating a large but well-partitioned atom set as defective."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "ops"]
-applies_unchanged = true
-local_context_required = false
-
-[[relations]]
-type = "resolution_of"
-target = "DSET-QUESTION-GOV-011"
-
-[[relations]]
-type = "child_of"
-target = "DSET-REQUIREMENT-GOV-048"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-072"
+scope_path:
+  - "layer:gov"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "ops"
+  applies_unchanged: true
+  local_context_required: false
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "resolution_of"
+    targets:
+      - "DSET-QUESTION-GOV-011"
+  - type: "child_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-048"
+---
 
 # Requirement — Allow atomic refactoring before compilation
 
@@ -74,3 +71,11 @@ violates atomicity.
 Evergreen compilation consumes only the resulting active atomic frontier.
 Generated indexes may describe the refactoring, but they do not establish
 governing truth.
+
+## Primary claim
+
+DSET supports optional atomic refactoring between atomic-artifact intake and evergreen compilation; DSET proposes it when active atoms substantially overlap, repeatedly update the same claims, or obscure the current authority frontier, and refactoring emits immutable successors while archiving only fully replaced predecessors.
+
+## Rationale
+
+Semantic-density signals identify when consolidation improves clarity without making every compilation pay the cost or treating a large but well-partitioned atom set as defective.

@@ -1,27 +1,19 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-167"
-semantic_id = "DSET-DECISION-GOV-031"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Installed methodology separates the DSET executable contract in TOOL from development environments and implementations in IMPL, while OPS owns only post-implementation operation and delivery."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Executable behavior, implementation technique, and post-implementation operation are different owners; separating them removes backward OPS-to-IMPL authority and makes recursive self-hosting inspectable."
-promotion = {}
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-DECISION-GOV-030"
-
-[[relations]]
-type = "child_of"
-target = "DSET-DECISION-GOV-022"
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-031"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-DECISION-GOV-030"
+  - type: "child_of"
+    targets:
+      - "DSET-DECISION-GOV-022"
+---
 
 # Decision — Place executable methodology by semantic role
 
@@ -51,3 +43,11 @@ project results or assurance.
 
 This Decision completely replaces `DSET-DECISION-GOV-030`. The prior atom
 remains immutable history; current evergreen truth compiles this separation.
+
+## Primary claim
+
+Installed methodology separates the DSET executable contract in TOOL from development environments and implementations in IMPL, while OPS owns only post-implementation operation and delivery.
+
+## Rationale
+
+Executable behavior, implementation technique, and post-implementation operation are different owners; separating them removes backward OPS-to-IMPL authority and makes recursive self-hosting inspectable.

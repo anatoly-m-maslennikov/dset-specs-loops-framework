@@ -1,22 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-036"
-semantic_id = "DSET-TEST-PLAN-GOV-036"
-revision_mode = "atomic"
-content_role = "method"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Deterministic validation proves the typed-relation vocabulary, direction, integrity, compatibility, projection ranges, and generated traceability contract."
-promotion = {}
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-
-[[relations]]
-type = "check_of"
-target = "DSET-DECISION-GOV-013"
-+++
+---
+artifact_type: "test_plan"
+artifact_id: "DSET-TEST-PLAN-GOV-036"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "check_of"
+    targets:
+      - "DSET-DECISION-GOV-013"
+---
 
 # Test Plan — Validate typed artifact relations
 
@@ -32,3 +26,7 @@ legacy `child_of` compatibility input, derive commit `implementation_of` edges,
 and store neither authored nor generated inverse relation names.
 
 This emitted Test definition is immutable. Runs and evidence are separate.
+
+## Primary claim
+
+Deterministic validation proves the typed-relation vocabulary, direction, integrity, compatibility, projection ranges, and generated traceability contract.

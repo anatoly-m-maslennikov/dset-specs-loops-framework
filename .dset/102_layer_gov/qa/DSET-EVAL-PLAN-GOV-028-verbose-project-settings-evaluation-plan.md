@@ -1,26 +1,19 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-050"
-semantic_id = "DSET-EVAL-PLAN-GOV-028"
-revision_mode = "atomic"
-content_role = "method"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "medium"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Cold readers can configure DSET from dset_settings.toml and correctly distinguish selectable behavior from project truth and governing definitions."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-
-[[relations]]
-type = "check_of"
-target = "DSET-REQUIREMENT-GOV-037"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-EVAL-PLAN-GOV-027"
-+++
+---
+artifact_type: "evaluation_plan"
+artifact_id: "DSET-EVAL-PLAN-GOV-028"
+scope_path:
+  - "layer:gov"
+priority: "medium"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "check_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-037"
+  - type: "replacement_of"
+    targets:
+      - "DSET-EVAL-PLAN-GOV-027"
+---
 
 # Evaluation Plan — Judge settings discoverability
 
@@ -37,3 +30,7 @@ source.
 
 This emitted Evaluation definition is immutable. Execution and evidence are
 separate.
+
+## Primary claim
+
+Cold readers can configure DSET from dset_settings.toml and correctly distinguish selectable behavior from project truth and governing definitions.

@@ -1,22 +1,21 @@
-+++
-artifact_type = "evidence_record"
-artifact_subtype = "test_result"
-artifact_id = "DSET-EVIDENCE-RECORD-024"
-priority = "high"
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-
-[[relations]]
-type = "evidence_for"
-target = "DSET-TEST-PLAN-GOV-036"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-DEFECT-TOOL-002"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-EVIDENCE-RECORD-023"
-+++
+---
+artifact_type: "evidence_record"
+artifact_subtype: "test_result"
+artifact_id: "DSET-EVIDENCE-RECORD-024"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "evidence_for"
+    targets:
+      - "DSET-TEST-PLAN-GOV-036"
+  - type: "relates_to"
+    targets:
+      - "DSET-DEFECT-TOOL-002"
+      - "DSET-EVIDENCE-RECORD-023"
+---
 
 # Test result — Legacy relation sealing boundary
 

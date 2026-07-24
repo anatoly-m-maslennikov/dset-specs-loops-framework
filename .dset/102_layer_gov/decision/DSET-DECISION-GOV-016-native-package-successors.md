@@ -1,27 +1,19 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-060"
-semantic_id = "DSET-DECISION-GOV-016"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "A selector-sealed legacy package YAML remains immutable historical authority for its registered fragments while one native package TOML succeeds it as the current editable package registry."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Whole-file conversion would mutate sealed history, while freezing the shared carrier without a successor would prevent current package registration."
-promotion = {}
-
-[[relations]]
-type = "child_of"
-target = "DSET-REQUIREMENT-GOV-037"
-
-[[relations]]
-type = "resolution_of"
-target = "DSET-DEFECT-TOOL-004"
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-016"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-037"
+  - type: "resolution_of"
+    targets:
+      - "DSET-DEFECT-TOOL-004"
+---
 
 # Decision — Cut over shared package registries through native successors
 
@@ -48,3 +40,11 @@ package truth a format-compliant owner that can evolve.
 
 This emitted Decision atom is immutable. Later correction requires a successor
 and append-only lifecycle evidence.
+
+## Primary claim
+
+A selector-sealed legacy package YAML remains immutable historical authority for its registered fragments while one native package TOML succeeds it as the current editable package registry.
+
+## Rationale
+
+Whole-file conversion would mutate sealed history, while freezing the shared carrier without a successor would prevent current package registration.

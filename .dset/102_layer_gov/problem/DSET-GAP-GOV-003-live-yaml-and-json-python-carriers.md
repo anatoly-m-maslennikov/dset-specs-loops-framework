@@ -1,23 +1,17 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-191"
-semantic_id = "DSET-GAP-GOV-003"
-revision_mode = "atomic"
-content_role = "observation"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "The current Python-owned DSET implementation still ships a live YAML compatibility parser, JSON schema carriers, and a JSON bootstrap bundle despite the TOML-only project constraint."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "The repository cannot claim a TOML-only Python artifact boundary while production code and distributed resources continue to depend on YAML and JSON carriers."
-promotion = {}
-
-[[relations]]
-type = "child_of"
-target = "DSET-CONSTRAINT-GOV-001"
-+++
+---
+artifact_type: "problem"
+artifact_subtype: "gap"
+artifact_id: "DSET-GAP-GOV-003"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-CONSTRAINT-GOV-001"
+---
 
 # Gap — Live YAML and JSON remain in Python-owned DSET carriers
 
@@ -30,3 +24,11 @@ retiring the live YAML parser, converting the bootstrap bundle, and retaining
 only externally mandated YAML files. Migration fixtures may contain YAML or
 JSON text as inert test input, but current project truth and runtime state may
 not use them.
+
+## Primary claim
+
+The current Python-owned DSET implementation still ships a live YAML compatibility parser, JSON schema carriers, and a JSON bootstrap bundle despite the TOML-only project constraint.
+
+## Rationale
+
+The repository cannot claim a TOML-only Python artifact boundary while production code and distributed resources continue to depend on YAML and JSON carriers.

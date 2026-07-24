@@ -1,38 +1,26 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-070"
-semantic_id = "DSET-CONFLICT-GOV-001"
-revision_mode = "atomic"
-content_role = "inquiry"
-governance_origin = "internal"
-relation_shape = "relational"
-scope_path = ["layer:gov"]
-relation_kind = "conflict_between"
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "The requirement that every DSET-owned artifact carrier use TOML is incompatible with the active rule that historical and atomic carriers remain byte-stable YAML."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Both directives apply now to the same repository and carrier set, so implementation cannot satisfy both without an explicit authority change."
-promotion = {}
-
-[[endpoints]]
-role = "party"
-target = "DSET-DECISION-GOV-003"
-origin = "internal"
-
-[[endpoints]]
-role = "party"
-target = "DSET-REQUIREMENT-GOV-037"
-origin = "internal"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-DECISION-GOV-003"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-GOV-037"
-+++
+---
+artifact_type: "question"
+artifact_subtype: "conflict"
+artifact_id: "DSET-CONFLICT-GOV-001"
+scope_path:
+  - "layer:gov"
+priority: "high"
+relation_kind: "conflict_between"
+endpoints:
+  - role: "party"
+    target: "DSET-DECISION-GOV-003"
+    origin: "internal"
+  - role: "party"
+    target: "DSET-REQUIREMENT-GOV-037"
+    origin: "internal"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "relates_to"
+    targets:
+      - "DSET-DECISION-GOV-003"
+      - "DSET-REQUIREMENT-GOV-037"
+---
 
 # Conflict — All-TOML carriers versus byte-stable YAML history
 
@@ -49,3 +37,11 @@ claim, provenance, body, lifecycle, or authority of any artifact.
 Resolution requires a Decision that defines whether carrier bytes are part of
 atomic identity, names the historical TOML target convention, and requires a
 lossless, transactional old-digest to new-digest transition record.
+
+## Primary claim
+
+The requirement that every DSET-owned artifact carrier use TOML is incompatible with the active rule that historical and atomic carriers remain byte-stable YAML.
+
+## Rationale
+
+Both directives apply now to the same repository and carrier set, so implementation cannot satisfy both without an explicit authority change.

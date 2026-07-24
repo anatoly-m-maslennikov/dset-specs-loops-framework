@@ -1,22 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-115"
-semantic_id = "DSET-EVAL-PLAN-GOV-034"
-revision_mode = "atomic"
-content_role = "method"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "medium"
-authority = "operator:anatoly-m-maslennikov"
-claim = "A reviewer can distinguish horizontal feature Contracts from forward-only layer authority and recognize adjacent layer influence as the preferred design."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-
-[[relations]]
-type = "check_of"
-target = "DSET-REQUIREMENT-GOV-045"
-+++
+---
+artifact_type: "evaluation_plan"
+artifact_id: "DSET-EVAL-PLAN-GOV-034"
+scope_path:
+  - "layer:gov"
+priority: "medium"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "check_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-045"
+---
 
 # Evaluation Plan — Distinguish features from layers
 
@@ -36,3 +30,7 @@ Record confusion between call direction, delivery order, dependency edges,
 feature ownership, and layer authority. This Evaluation atom is immutable;
 later correction requires a successor Evaluation and append-only lifecycle
 event.
+
+## Primary claim
+
+A reviewer can distinguish horizontal feature Contracts from forward-only layer authority and recognize adjacent layer influence as the preferred design.

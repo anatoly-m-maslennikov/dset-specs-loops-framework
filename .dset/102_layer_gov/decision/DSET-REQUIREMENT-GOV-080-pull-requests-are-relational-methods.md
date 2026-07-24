@@ -1,31 +1,28 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-238"
-semantic_id = "DSET-REQUIREMENT-GOV-080"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "A pull request is classified as maintained + method + relational, retains its native repository and PR-number identity, and represents internal or external participation through its source and target endpoint origins rather than one authority-origin value."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "A pull request is a mutable review and integration mechanism connecting two branches or repositories; merging it produces an immutable commit but does not transform the mutable PR record into an Atomic Implementation."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "ops"]
-applies_unchanged = true
-local_context_required = false
-
-[[relations]]
-type = "child_of"
-target = "DSET-REQUIREMENT-GOV-076"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-GOV-079"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-080"
+scope_path:
+  - "layer:gov"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "ops"
+  applies_unchanged: true
+  local_context_required: false
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-076"
+  - type: "relates_to"
+    targets:
+      - "DSET-REQUIREMENT-GOV-079"
+---
 
 # Requirement — Pull requests are relational Methods
 
@@ -68,3 +65,11 @@ labels, discussion, and other metadata may remain editable. The merge commit
 or squash commit is the resulting Atomic Implementation. When immutable proof
 of the final PR state is required, DSET captures a separate Atomic Observation
 that references both the PR and resulting commit.
+
+## Primary claim
+
+A pull request is classified as maintained + method + relational, retains its native repository and PR-number identity, and represents internal or external participation through its source and target endpoint origins rather than one authority-origin value.
+
+## Rationale
+
+A pull request is a mutable review and integration mechanism connecting two branches or repositories; merging it produces an immutable commit but does not transform the mutable PR record into an Atomic Implementation.

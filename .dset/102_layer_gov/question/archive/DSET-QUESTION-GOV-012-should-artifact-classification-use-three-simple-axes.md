@@ -1,27 +1,25 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-230"
-semantic_id = "DSET-QUESTION-GOV-012"
-revision_mode = "atomic"
-content_role = "inquiry"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Should DSET replace the current artifact-classification axes with artifact_type = atomic | evergreen | maintained, content_role = to_be | why | how | as_is, and authority_origin = internal | external, treating actual code as maintained + as_is + internal and selected third-party libraries as maintained + how + external?"
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "The proposed axes directly separate revision semantics, lifecycle meaning, and authority origin while eliminating overlapping phase-role and answer-to classifications and the special Implementation artifact class."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "ops"]
-applies_unchanged = false
-local_context_required = true
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-GOV-047"
-+++
+---
+artifact_type: "question"
+artifact_id: "DSET-QUESTION-GOV-012"
+scope_path:
+  - "layer:gov"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "ops"
+  applies_unchanged: false
+  local_context_required: true
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "relates_to"
+    targets:
+      - "DSET-REQUIREMENT-GOV-047"
+---
 
 # Question — Should artifact classification use three simple axes?
 
@@ -64,3 +62,11 @@ Representative classifications:
 
 `relation_shape = standalone | relational` remains optional orthogonal
 metadata rather than another matrix dimension.
+
+## Primary claim
+
+Should DSET replace the current artifact-classification axes with artifact_type = atomic | evergreen | maintained, content_role = to_be | why | how | as_is, and authority_origin = internal | external, treating actual code as maintained + as_is + internal and selected third-party libraries as maintained + how + external?
+
+## Rationale
+
+The proposed axes directly separate revision semantics, lifecycle meaning, and authority origin while eliminating overlapping phase-role and answer-to classifications and the special Implementation artifact class.

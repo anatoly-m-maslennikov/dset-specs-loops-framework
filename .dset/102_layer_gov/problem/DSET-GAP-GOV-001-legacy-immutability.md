@@ -1,15 +1,13 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-022"
-semantic_id = "DSET-GAP-GOV-001"
-revision_mode = "atomic"
-content_role = "observation"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-+++
+---
+artifact_type: "problem"
+artifact_subtype: "gap"
+artifact_id: "DSET-GAP-GOV-001"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+---
 
 # Gap — Legacy authority lacks immutable-content protection
 

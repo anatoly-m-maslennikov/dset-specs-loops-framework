@@ -1,39 +1,30 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-244"
-semantic_id = "DSET-REQUIREMENT-GOV-086"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "DSET classifies persisted artifacts through exactly two intrinsic dimensions, revision_mode and content_role; scope_path is a required structural ownership address and matrix-slice key, not a semantic classification dimension."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "FPF strict distinction separates intrinsic artifact characteristics from structural location, applicability, and views. A hierarchical scope path indexes the shared matrix but neither identifies the Entity of Concern nor establishes a bounded semantic context."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "ops"]
-applies_unchanged = true
-local_context_required = false
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-085"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-GOV-079"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-GOV-080"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-DECISION-OPS-013"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-086"
+scope_path:
+  - "layer:gov"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "ops"
+  applies_unchanged: true
+  local_context_required: false
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-085"
+  - type: "relates_to"
+    targets:
+      - "DSET-REQUIREMENT-GOV-079"
+      - "DSET-REQUIREMENT-GOV-080"
+      - "DSET-DECISION-OPS-013"
+---
 
 # Requirement — Two classification dimensions and structural scope
 
@@ -71,3 +62,11 @@ MatrixCell(revision_mode, content_role)
 ```
 
 Each Scope Path renders a filtered matrix slice, not a separate ontology.
+
+## Primary claim
+
+DSET classifies persisted artifacts through exactly two intrinsic dimensions, revision_mode and content_role; scope_path is a required structural ownership address and matrix-slice key, not a semantic classification dimension.
+
+## Rationale
+
+FPF strict distinction separates intrinsic artifact characteristics from structural location, applicability, and views. A hierarchical scope path indexes the shared matrix but neither identifies the Entity of Concern nor establishes a bounded semantic context.

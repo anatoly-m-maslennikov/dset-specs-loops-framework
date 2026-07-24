@@ -1,23 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-164"
-semantic_id = "DSET-DECISION-GOV-029"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Repository and third-party legal files live in the repository-root LICENSES distribution surface rather than .dset; provenance stores only each globally unique legal carrier name, and legal validation resolves that name exclusively within LICENSES without widening DSET artifact or skill discovery beyond .dset."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Licenses govern repository distribution, while .dset governs current project development state. Keeping legal carriers outside the control plane preserves that boundary and gives standard repository readers a predictable location."
-promotion = {}
-
-[[relations]]
-type = "child_of"
-target = "DSET-DECISION-GOV-028"
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-029"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-DECISION-GOV-028"
+---
 
 # Decision — Keep legal files outside the control plane
 
@@ -38,3 +31,11 @@ not perform a repository-wide search or treat the legal file as DSET authority.
 Legal notices must ship with the repository but answer a different governance
 question from project-local DSET truth. A separate conventional distribution
 surface keeps both responsibilities clear.
+
+## Primary claim
+
+Repository and third-party legal files live in the repository-root LICENSES distribution surface rather than .dset; provenance stores only each globally unique legal carrier name, and legal validation resolves that name exclusively within LICENSES without widening DSET artifact or skill discovery beyond .dset.
+
+## Rationale
+
+Licenses govern repository distribution, while .dset governs current project development state. Keeping legal carriers outside the control plane preserves that boundary and gives standard repository readers a predictable location.

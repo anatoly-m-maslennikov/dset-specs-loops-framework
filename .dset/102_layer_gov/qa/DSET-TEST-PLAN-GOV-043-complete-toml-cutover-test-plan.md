@@ -1,35 +1,21 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-075"
-semantic_id = "DSET-TEST-PLAN-GOV-043"
-revision_mode = "atomic"
-content_role = "method"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Deterministic tests prove complete lossless TOML cutover of every DSET-owned YAML artifact and Markdown YAML-frontmatter carrier with reference closure, rollback parity, and second-run idempotency."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "A zero-YAML claim is valid only when every historical edition, link, seal, and normalized value is preserved in the new representation."
-promotion = {}
-
-[[relations]]
-type = "check_of"
-target = "DSET-REQUIREMENT-GOV-040"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-TEST-PLAN-GOV-038"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-TEST-PLAN-GOV-040"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-TEST-PLAN-GOV-041"
-+++
+---
+artifact_type: "test_plan"
+artifact_id: "DSET-TEST-PLAN-GOV-043"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "check_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-040"
+  - type: "replacement_of"
+    targets:
+      - "DSET-TEST-PLAN-GOV-038"
+      - "DSET-TEST-PLAN-GOV-040"
+      - "DSET-TEST-PLAN-GOV-041"
+---
 
 # Test Plan — Complete the all-TOML artifact cutover
 
@@ -47,3 +33,11 @@ Preview and apply are both no-ops after cutover.
 
 JSON Schema and other externally prescribed formats remain outside this Test.
 This Test definition is immutable; runs and Evidence Records are separate.
+
+## Primary claim
+
+Deterministic tests prove complete lossless TOML cutover of every DSET-owned YAML artifact and Markdown YAML-frontmatter carrier with reference closure, rollback parity, and second-run idempotency.
+
+## Rationale
+
+A zero-YAML claim is valid only when every historical edition, link, seal, and normalized value is preserved in the new representation.

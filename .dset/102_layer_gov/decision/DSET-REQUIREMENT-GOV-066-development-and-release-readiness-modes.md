@@ -1,27 +1,25 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-214"
-semantic_id = "DSET-REQUIREMENT-GOV-066"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "DSET defines a development mode that moves accepted Atomic Artifacts through Test and Evaluation planning, implementation, execution, and evidence, plus a mandatory release-readiness mode that first compiles active Atomic Artifacts into evergreen specifications, resolves conflicts to a fixed point, and then refreshes implementation and assurance evidence at the exact release head."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Compiling every accepted atom immediately creates avoidable churn during development, while releasing without a full authority-to-specification reconciliation risks shipping implementation and evidence against stale current truth."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "ops"]
-applies_unchanged = false
-local_context_required = true
-
-[[relations]]
-type = "child_of"
-target = "DSET-REQUIREMENT-GOV-048"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-066"
+scope_path:
+  - "layer:gov"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "ops"
+  applies_unchanged: false
+  local_context_required: true
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-048"
+---
 
 # Requirement — Separate development and release-readiness modes
 
@@ -77,3 +75,11 @@ assurance runs against the exact candidate head.
 `release_readiness` as the required pre-release mode. `dset-init` materializes
 these defaults. `dset release` selects release-readiness behavior without
 silently rewriting the project's configured development default.
+
+## Primary claim
+
+DSET defines a development mode that moves accepted Atomic Artifacts through Test and Evaluation planning, implementation, execution, and evidence, plus a mandatory release-readiness mode that first compiles active Atomic Artifacts into evergreen specifications, resolves conflicts to a fixed point, and then refreshes implementation and assurance evidence at the exact release head.
+
+## Rationale
+
+Compiling every accepted atom immediately creates avoidable churn during development, while releasing without a full authority-to-specification reconciliation risks shipping implementation and evidence against stale current truth.

@@ -1,31 +1,28 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-246"
-semantic_id = "DSET-REQUIREMENT-GOV-088"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Every governed artifact declares its own governance_origin relative to the project boundary; relational artifacts additionally declare the independent origin of each typed endpoint."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "The governor of a relational record and the origins of its participants answer different questions. Omitting artifact-level origin from relational records collapses governance of the relation with the provenance of its endpoints."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "ops"]
-applies_unchanged = true
-local_context_required = false
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-076"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-GOV-086"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-088"
+scope_path:
+  - "layer:gov"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "ops"
+  applies_unchanged: true
+  local_context_required: false
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-076"
+  - type: "relates_to"
+    targets:
+      - "DSET-REQUIREMENT-GOV-086"
+---
 
 # Requirement — Artifact and endpoint governance origins
 
@@ -62,3 +59,11 @@ Direction follows from Relation Kind and endpoint roles. Relational structures
 may be n-ary; they are not restricted to exactly two endpoints.
 
 Artifact origin and endpoint origins never substitute for each other.
+
+## Primary claim
+
+Every governed artifact declares its own governance_origin relative to the project boundary; relational artifacts additionally declare the independent origin of each typed endpoint.
+
+## Rationale
+
+The governor of a relational record and the origins of its participants answer different questions. Omitting artifact-level origin from relational records collapses governance of the relation with the provenance of its endpoints.

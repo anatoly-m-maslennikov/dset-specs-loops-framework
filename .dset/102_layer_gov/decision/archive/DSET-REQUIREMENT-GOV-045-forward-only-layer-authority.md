@@ -1,23 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-113"
-semantic_id = "DSET-REQUIREMENT-GOV-045"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Features are horizontal peers joined by Contracts, while DSET layers form a forward-only META to GOV to TOOL to SKILL to OPS authority chain with adjacent influence preferred and irreducible backward coupling proposed for feature reclassification."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Separating horizontal feature collaboration from ordered layer refinement prevents later implementation and operational concerns from silently governing earlier semantic or governance truth."
-promotion = {}
-
-[[relations]]
-type = "child_of"
-target = "DSET-REQUIREMENT-GOV-044"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-045"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-044"
+---
 
 # Requirement — Keep layer authority forward-only
 
@@ -45,3 +38,11 @@ acceptance.
 
 This Requirement atom is immutable. Later correction requires a successor and
 append-only lifecycle event.
+
+## Primary claim
+
+Features are horizontal peers joined by Contracts, while DSET layers form a forward-only META to GOV to TOOL to SKILL to OPS authority chain with adjacent influence preferred and irreducible backward coupling proposed for feature reclassification.
+
+## Rationale
+
+Separating horizontal feature collaboration from ordered layer refinement prevents later implementation and operational concerns from silently governing earlier semantic or governance truth.

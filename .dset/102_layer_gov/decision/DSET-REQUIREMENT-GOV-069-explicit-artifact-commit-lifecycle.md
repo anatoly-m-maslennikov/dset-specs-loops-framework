@@ -1,31 +1,28 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-217"
-semantic_id = "DSET-REQUIREMENT-GOV-069"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "medium"
-authority = "operator:anatoly-m-maslennikov"
-claim = "The canonical artifact catalog begins with a field legend, uses source_of_truth for truth ownership, and replaces changed_through_git with explicit commit_on_create and commit_on_update lifecycle flags."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Creation and in-place update are different lifecycle operations, while the former changed_through_git field obscures the difference between immutable and mutable artifacts."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "ops"]
-applies_unchanged = false
-local_context_required = true
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-068"
-
-[[relations]]
-type = "child_of"
-target = "DSET-REQUIREMENT-GOV-049"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-069"
+scope_path:
+  - "layer:gov"
+priority: "medium"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "ops"
+  applies_unchanged: false
+  local_context_required: true
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-068"
+  - type: "child_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-049"
+---
 
 # Requirement — Make artifact commit lifecycle explicit
 
@@ -72,3 +69,11 @@ Mutable evergreen artifacts, settings, implementation, and reusable assets use
 Deletion does not need a separate catalog flag. Any permitted removal is a Git
 change. Atomic Artifacts are archived or replaced through explicit relations
 and are not deleted as ordinary mutable files.
+
+## Primary claim
+
+The canonical artifact catalog begins with a field legend, uses source_of_truth for truth ownership, and replaces changed_through_git with explicit commit_on_create and commit_on_update lifecycle flags.
+
+## Rationale
+
+Creation and in-place update are different lifecycle operations, while the former changed_through_git field obscures the difference between immutable and mutable artifacts.

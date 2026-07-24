@@ -1,23 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-163"
-semantic_id = "DSET-DECISION-GOV-028"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "The project .dset tree contains only current settings, installed methodology, applied artifacts, and Version truth; historical aggregates, completed migration records, and compatibility snapshots live in the repository's inert legacy archive outside .dset and are never skill-discovery or current-compilation inputs."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "The project-local DSET tree is an active data-governance plane. Mixing historical transport records with current authority makes discovery ambiguous and obscures the state that skills must use."
-promotion = {}
-
-[[relations]]
-type = "child_of"
-target = "DSET-DECISION-GOV-022"
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-028"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-DECISION-GOV-022"
+---
 
 # Decision — Keep the control plane current
 
@@ -43,3 +36,11 @@ return paths when an operator deliberately investigates the past.
 The active control plane should answer what governs the project now. Historical
 transport and compatibility material answers a different question and must not
 compete with current data governance.
+
+## Primary claim
+
+The project .dset tree contains only current settings, installed methodology, applied artifacts, and Version truth; historical aggregates, completed migration records, and compatibility snapshots live in the repository's inert legacy archive outside .dset and are never skill-discovery or current-compilation inputs.
+
+## Rationale
+
+The project-local DSET tree is an active data-governance plane. Mixing historical transport records with current authority makes discovery ambiguous and obscures the state that skills must use.

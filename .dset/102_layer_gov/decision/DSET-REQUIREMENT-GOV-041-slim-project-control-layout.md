@@ -1,23 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-101"
-semantic_id = "DSET-REQUIREMENT-GOV-041"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "A current DSET project uses one documented dset/dset_settings.toml for settings and manifest facts, dset/project for project-wide truth and records, dset/versions for Version lifecycle artifacts, and direct dset/<layer> roots for layer-owned truth."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Removing the redundant scopes segment and split manifest makes ownership visible from the filesystem while preserving project, Version, and layer boundaries."
-promotion = {}
-
-[[relations]]
-type = "child_of"
-target = "DSET-REQUIREMENT-GOV-040"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-041"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-040"
+---
 
 # Requirement — Use the slim project control layout
 
@@ -41,3 +34,11 @@ aliases; mutable references and generated views are rewritten to current paths.
 
 This Requirement atom is immutable. Later correction requires a successor and
 append-only lifecycle event.
+
+## Primary claim
+
+A current DSET project uses one documented dset/dset_settings.toml for settings and manifest facts, dset/project for project-wide truth and records, dset/versions for Version lifecycle artifacts, and direct dset/<layer> roots for layer-owned truth.
+
+## Rationale
+
+Removing the redundant scopes segment and split manifest makes ownership visible from the filesystem while preserving project, Version, and layer boundaries.

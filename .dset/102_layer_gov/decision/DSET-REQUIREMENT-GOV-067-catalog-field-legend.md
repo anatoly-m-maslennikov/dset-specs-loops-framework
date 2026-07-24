@@ -1,27 +1,25 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-215"
-semantic_id = "DSET-REQUIREMENT-GOV-067"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "medium"
-authority = "operator:anatoly-m-maslennikov"
-claim = "The canonical artifact catalog begins with an in-file legend that defines every shared field and explicitly distinguishes semantic authority from Git-managed carrier changes."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Without a local legend, Boolean fields such as authoritative and changed_through_git are easy to interpret as overlapping authority rules even though they govern different concerns."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "ops"]
-applies_unchanged = false
-local_context_required = true
-
-[[relations]]
-type = "child_of"
-target = "DSET-REQUIREMENT-GOV-049"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-067"
+scope_path:
+  - "layer:gov"
+priority: "medium"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "ops"
+  applies_unchanged: false
+  local_context_required: true
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-049"
+---
 
 # Requirement — Explain catalog fields in the catalog
 
@@ -43,3 +41,11 @@ The two current Boolean fields are independent:
   immutability: a changed atomic claim still requires a successor artifact.
 
 The catalog must not rely on readers inferring these meanings from field names.
+
+## Primary claim
+
+The canonical artifact catalog begins with an in-file legend that defines every shared field and explicitly distinguishes semantic authority from Git-managed carrier changes.
+
+## Rationale
+
+Without a local legend, Boolean fields such as authoritative and changed_through_git are easy to interpret as overlapping authority rules even though they govern different concerns.

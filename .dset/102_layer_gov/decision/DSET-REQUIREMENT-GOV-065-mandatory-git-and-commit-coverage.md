@@ -1,23 +1,21 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-213"
-semantic_id = "DSET-REQUIREMENT-GOV-065"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Every DSET-managed project uses Git, dset-init requires an existing enclosing repository or initializes one, and every implemented Decision or resolved Problem has at least one committed change that names the governed artifact."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Development without versioned history makes rollback, review, provenance, bisecting, and support investigation unreliable. Commit coverage connects each delivered behavior or correction to its governing reason without forcing unrelated work into one commit."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "ops"]
-applies_unchanged = false
-local_context_required = true
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-065"
+scope_path:
+  - "layer:gov"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "ops"
+  applies_unchanged: false
+  local_context_required: true
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+---
 
 # Requirement — Require Git and commit coverage
 
@@ -50,3 +48,11 @@ One commit may cover multiple Decisions or Problems only when the delivered
 change is technically indivisible and names every covered artifact. The
 coverage rule does not require empty or artificial commits and does not permit
 one unrelated catch-all commit.
+
+## Primary claim
+
+Every DSET-managed project uses Git, dset-init requires an existing enclosing repository or initializes one, and every implemented Decision or resolved Problem has at least one committed change that names the governed artifact.
+
+## Rationale
+
+Development without versioned history makes rollback, review, provenance, bisecting, and support investigation unreliable. Commit coverage connects each delivered behavior or correction to its governing reason without forcing unrelated work into one commit.

@@ -1,35 +1,21 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-071"
-semantic_id = "DSET-DECISION-GOV-018"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Atomic semantics and identity are immutable, but an explicitly authorized lossless carrier migration may convert every DSET-owned YAML artifact carrier to TOML under one transactional old-to-new digest ledger."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Carrier encoding is not the project claim itself; preserving semantic values, stable IDs, provenance, relations, body content, and a verifiable transition map retains history without keeping YAML in the current repository."
-promotion = {}
-
-[[relations]]
-type = "resolution_of"
-target = "DSET-CONFLICT-GOV-001"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-DECISION-GOV-003"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-DECISION-GOV-016"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-DECISION-GOV-017"
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-018"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "resolution_of"
+    targets:
+      - "DSET-CONFLICT-GOV-001"
+  - type: "replacement_of"
+    targets:
+      - "DSET-DECISION-GOV-003"
+      - "DSET-DECISION-GOV-016"
+      - "DSET-DECISION-GOV-017"
+---
 
 # Decision — Preserve immutable semantics through TOML carrier migration
 
@@ -80,3 +66,11 @@ preserved through TOML envelopes and the transition ledger.
 
 This emitted Decision atom is immutable. Later correction requires a successor
 Decision and append-only lifecycle event.
+
+## Primary claim
+
+Atomic semantics and identity are immutable, but an explicitly authorized lossless carrier migration may convert every DSET-owned YAML artifact carrier to TOML under one transactional old-to-new digest ledger.
+
+## Rationale
+
+Carrier encoding is not the project claim itself; preserving semantic values, stable IDs, provenance, relations, body content, and a verifiable transition map retains history without keeping YAML in the current repository.

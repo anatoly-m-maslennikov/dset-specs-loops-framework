@@ -1,27 +1,19 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-052"
-semantic_id = "DSET-REQUIREMENT-GOV-039"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Atomic-artifact admission uses medium or high strictness selected by artifacts.creation_strictness in dset_settings.toml."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "The admission behavior remains accepted, but the active authority must name the canonical settings carrier and key."
-promotion = {}
-
-[[relations]]
-type = "child_of"
-target = "DSET-REQUIREMENT-GOV-037"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-035"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-039"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-037"
+  - type: "replacement_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-035"
+---
 
 # Requirement — Select artifact-creation strictness in canonical settings
 
@@ -48,3 +40,11 @@ the retired settings carrier in active authority.
 
 This emitted Requirement atom is immutable. Later correction requires a
 successor and append-only lifecycle evidence.
+
+## Primary claim
+
+Atomic-artifact admission uses medium or high strictness selected by artifacts.creation_strictness in dset_settings.toml.
+
+## Rationale
+
+The admission behavior remains accepted, but the active authority must name the canonical settings carrier and key.

@@ -1,23 +1,17 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-086"
-semantic_id = "DSET-DEFECT-GOV-007"
-revision_mode = "atomic"
-content_role = "observation"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "repository:dset-verify"
-claim = "A commit containing only generated derived views becomes a new commit-trailer relation input, making the committed views stale again and preventing a clean fixed point."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "The derived relation index currently scans every provenance-bearing commit, including commits whose only changed paths are the outputs generated from that same index."
-promotion = {}
-
-[[relations]]
-type = "child_of"
-target = "DSET-REQUIREMENT-GOV-024"
-+++
+---
+artifact_type: "problem"
+artifact_subtype: "defect"
+artifact_id: "DSET-DEFECT-GOV-007"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-024"
+---
 
 # Defect — Generated refresh commits self-reference
 
@@ -32,3 +26,11 @@ does not change project truth or implementation coverage.
 
 This emitted Defect atom is immutable. Resolution requires a Decision, Test,
 implementation, and proof.
+
+## Primary claim
+
+A commit containing only generated derived views becomes a new commit-trailer relation input, making the committed views stale again and preventing a clean fixed point.
+
+## Rationale
+
+The derived relation index currently scans every provenance-bearing commit, including commits whose only changed paths are the outputs generated from that same index.

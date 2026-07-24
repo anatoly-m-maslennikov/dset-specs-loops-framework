@@ -1,31 +1,26 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-227"
-semantic_id = "DSET-REQUIREMENT-GOV-071"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Governed artifact IDs and filenames use <PROJECT>-<SCOPE_PATH>-<ARTIFACT_TYPE>-<NNN>-<summary>, where SCOPE_PATH is an optional, registered, ordered, and extensible sequence that may represent layers, features, layers nested inside features, features nested inside layers, or future project-defined scope axes."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "A single ordered scope path preserves readable identities without hard-coding the framework to only layers or features, while keeping future structural axes extensible."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "ops"]
-applies_unchanged = true
-local_context_required = false
-
-[[relations]]
-type = "relates_to"
-target = "DSET-DECISION-GOV-034"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-GOV-064"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-071"
+scope_path:
+  - "layer:gov"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "ops"
+  applies_unchanged: true
+  local_context_required: false
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "relates_to"
+    targets:
+      - "DSET-DECISION-GOV-034"
+      - "DSET-REQUIREMENT-GOV-064"
+---
 
 # Requirement — Use expandable scope paths in artifact identities
 
@@ -65,3 +60,11 @@ governed identity migration. It updates active and archived IDs, filenames,
 relations, evergreen references, settings, implementation references,
 evidence, and commit provenance together. The project must not retain the
 previous identity order as a second accepted naming vocabulary.
+
+## Primary claim
+
+Governed artifact IDs and filenames use <PROJECT>-<SCOPE_PATH>-<ARTIFACT_TYPE>-<NNN>-<summary>, where SCOPE_PATH is an optional, registered, ordered, and extensible sequence that may represent layers, features, layers nested inside features, features nested inside layers, or future project-defined scope axes.
+
+## Rationale
+
+A single ordered scope path preserves readable identities without hard-coding the framework to only layers or features, while keeping future structural axes extensible.

@@ -1,23 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-107"
-semantic_id = "DSET-REQUIREMENT-GOV-043"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "A DSET project separates committed control state under .dset, ignored resumable runtime state under .dset_runtime, and disposable scratch workspaces under the host temporary root."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Control truth, resumable operational state, and disposable process scratch have different authority, retention, and cleanup semantics and therefore require visibly distinct roots."
-promotion = {}
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-042"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-043"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-042"
+---
 
 # Requirement — Separate control, runtime, and scratch state
 
@@ -50,3 +43,11 @@ current initialization and writes use `.dset_runtime/`.
 
 This Requirement atom is immutable. Later correction requires a successor and
 an append-only lifecycle event.
+
+## Primary claim
+
+A DSET project separates committed control state under .dset, ignored resumable runtime state under .dset_runtime, and disposable scratch workspaces under the host temporary root.
+
+## Rationale
+
+Control truth, resumable operational state, and disposable process scratch have different authority, retention, and cleanup semantics and therefore require visibly distinct roots.

@@ -1,27 +1,19 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-051"
-semantic_id = "DSET-REQUIREMENT-GOV-038"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "New artifact names use the primary artifact type by default and the optional subtype only when artifacts.subtype_in_names is enabled in dset_settings.toml."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "The behavior is unchanged, but its active source must name the canonical settings carrier and key without relying on a contradictory compiled rewrite."
-promotion = {}
-
-[[relations]]
-type = "child_of"
-target = "DSET-REQUIREMENT-GOV-037"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-030"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-038"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-037"
+  - type: "replacement_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-030"
+---
 
 # Requirement — Select artifact naming in canonical settings
 
@@ -41,3 +33,11 @@ retired settings filename and key in the active authority graph.
 
 This emitted Requirement atom is immutable. Later correction requires a
 successor and append-only lifecycle evidence.
+
+## Primary claim
+
+New artifact names use the primary artifact type by default and the optional subtype only when artifacts.subtype_in_names is enabled in dset_settings.toml.
+
+## Rationale
+
+The behavior is unchanged, but its active source must name the canonical settings carrier and key without relying on a contradictory compiled rewrite.

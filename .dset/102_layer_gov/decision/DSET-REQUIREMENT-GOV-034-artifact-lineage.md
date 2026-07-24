@@ -1,16 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-005"
-semantic_id = "DSET-REQUIREMENT-GOV-034"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "unknown"
-child_of = ["DSET-REQUIREMENT-GOV-033"]
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-034"
+scope_path:
+  - "layer:gov"
+priority: "medium"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-033"
+---
 
 # Requirement — Trace every child through its immediate parents
 

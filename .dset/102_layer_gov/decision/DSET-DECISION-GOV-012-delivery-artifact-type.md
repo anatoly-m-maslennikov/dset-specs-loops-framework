@@ -1,18 +1,12 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-033"
-semantic_id = "DSET-DECISION-GOV-012"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Delivery is the canonical artifact type for the six release-lifecycle roles."
-promotion = {}
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-012"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+---
 
 # Decision — Use Delivery for the release lifecycle
 
@@ -77,3 +71,7 @@ subtypes prevent lifecycle order from becoming semantic hierarchy.
 
 This emitted Decision atom is immutable. Later correction requires a successor
 Decision and append-only lifecycle event.
+
+## Primary claim
+
+Delivery is the canonical artifact type for the six release-lifecycle roles.

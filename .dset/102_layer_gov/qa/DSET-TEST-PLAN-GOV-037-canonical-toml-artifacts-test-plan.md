@@ -1,22 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-042"
-semantic_id = "DSET-TEST-PLAN-GOV-037"
-revision_mode = "atomic"
-content_role = "method"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Deterministic migration and validation prove canonical TOML artifact equivalence, reference closure, freshness, and external-format boundaries."
-promotion = {}
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-
-[[relations]]
-type = "check_of"
-target = "DSET-REQUIREMENT-GOV-036"
-+++
+---
+artifact_type: "test_plan"
+artifact_id: "DSET-TEST-PLAN-GOV-037"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "check_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-036"
+---
 
 # Test Plan — Validate canonical TOML migration
 
@@ -32,3 +26,7 @@ YAML/JSON authority while accepting only registered host/ecosystem/wire/runtime
 exceptions and fresh generated compatibility adapters.
 
 This emitted Test definition is immutable. Runs and evidence are separate.
+
+## Primary claim
+
+Deterministic migration and validation prove canonical TOML artifact equivalence, reference closure, freshness, and external-format boundaries.

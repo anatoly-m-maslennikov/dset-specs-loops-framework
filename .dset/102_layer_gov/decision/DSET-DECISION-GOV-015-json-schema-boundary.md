@@ -1,22 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-047"
-semantic_id = "DSET-DECISION-GOV-015"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Standards-compliant JSON Schema files are externally prescribed contract carriers and remain canonical JSON exceptions rather than generated copies of a private TOML schema dialect."
-promotion = {}
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-
-[[relations]]
-type = "child_of"
-target = "DSET-REQUIREMENT-GOV-036"
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-015"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-036"
+---
 
 # Decision — Keep JSON Schema at its standard boundary
 
@@ -39,3 +33,7 @@ project artifacts where it materially improves authoring.
 
 This emitted Decision atom is immutable. Later correction requires a successor
 Decision and append-only lifecycle evidence.
+
+## Primary claim
+
+Standards-compliant JSON Schema files are externally prescribed contract carriers and remain canonical JSON exceptions rather than generated copies of a private TOML schema dialect.

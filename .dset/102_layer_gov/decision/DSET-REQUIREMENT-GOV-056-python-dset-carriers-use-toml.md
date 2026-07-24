@@ -1,31 +1,22 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-192"
-semantic_id = "DSET-REQUIREMENT-GOV-056"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "The Python-owned DSET framework uses TOML for every DSET-owned structured carrier and schema; YAML remains only where an external host contract mandates YAML, and JSON remains only in genuinely JavaScript or TypeScript-owned areas."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "This is a required project result selected by the operator, not an externally imposed limitation, so Requirement is the correct direct Decision subtype."
-promotion = {}
-
-[[relations]]
-type = "child_of"
-target = "DSET-REQUIREMENT-GOV-040"
-
-[[relations]]
-type = "override_of"
-target = "DSET-DECISION-GOV-015"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-CONSTRAINT-GOV-001"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-056"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-040"
+  - type: "override_of"
+    targets:
+      - "DSET-DECISION-GOV-015"
+  - type: "replacement_of"
+    targets:
+      - "DSET-CONSTRAINT-GOV-001"
+---
 
 # Requirement — Python-owned DSET carriers use TOML
 
@@ -43,3 +34,11 @@ This Requirement overrides the former project Decision that kept JSON Schema
 files as a canonical exception and replaces the misclassified Constraint. The
 semantic validation contracts remain, but their project-owned carriers move
 to TOML.
+
+## Primary claim
+
+The Python-owned DSET framework uses TOML for every DSET-owned structured carrier and schema; YAML remains only where an external host contract mandates YAML, and JSON remains only in genuinely JavaScript or TypeScript-owned areas.
+
+## Rationale
+
+This is a required project result selected by the operator, not an externally imposed limitation, so Requirement is the correct direct Decision subtype.

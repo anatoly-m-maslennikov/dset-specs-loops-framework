@@ -1,27 +1,19 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-062"
-semantic_id = "DSET-DECISION-GOV-017"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "A YAML carrier required by immutable historical links or selector-sealed authority remains byte-stable only as an exactly registered historical snapshot while its TOML sibling is the sole current owner."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Physical byte-stable snapshots preserve GitHub links and historical identity without making pointer stubs, symlinks, virtual resolution, or YAML fallback part of the current authority model."
-promotion = {}
-
-[[relations]]
-type = "child_of"
-target = "DSET-REQUIREMENT-GOV-037"
-
-[[relations]]
-type = "resolution_of"
-target = "DSET-DEFECT-TOOL-004"
-+++
+---
+artifact_type: "implementation_decision"
+artifact_id: "DSET-DECISION-GOV-017"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "child_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-037"
+  - type: "resolution_of"
+    targets:
+      - "DSET-DEFECT-TOOL-004"
+---
 
 # Decision — Retain exact legacy structured snapshots
 
@@ -42,3 +34,11 @@ separate checks with separate purposes.
 
 This emitted Decision atom is immutable. Later correction requires a successor
 and append-only lifecycle evidence.
+
+## Primary claim
+
+A YAML carrier required by immutable historical links or selector-sealed authority remains byte-stable only as an exactly registered historical snapshot while its TOML sibling is the sole current owner.
+
+## Rationale
+
+Physical byte-stable snapshots preserve GitHub links and historical identity without making pointer stubs, symlinks, virtual resolution, or YAML fallback part of the current authority model.

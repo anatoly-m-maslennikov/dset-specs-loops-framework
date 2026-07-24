@@ -1,22 +1,16 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-061"
-semantic_id = "DSET-TEST-PLAN-GOV-040"
-revision_mode = "atomic"
-content_role = "method"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Deterministic tests prove byte-stable legacy package carriers, one TOML current successor, current-ID reconciliation, reader precedence, and fail-closed package cutover."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-
-[[relations]]
-type = "check_of"
-target = "DSET-DECISION-GOV-016"
-+++
+---
+artifact_type: "test_plan"
+artifact_id: "DSET-TEST-PLAN-GOV-040"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "check_of"
+    targets:
+      - "DSET-DECISION-GOV-016"
+---
 
 # Test Plan — Validate native package-registry successors
 
@@ -31,3 +25,7 @@ or readiness evidence whose preserved-input or final-output digest is stale.
 A second apply is a no-op.
 
 This Test definition is immutable. Runs and evidence are separate.
+
+## Primary claim
+
+Deterministic tests prove byte-stable legacy package carriers, one TOML current successor, current-ID reconciliation, reader precedence, and fail-closed package cutover.

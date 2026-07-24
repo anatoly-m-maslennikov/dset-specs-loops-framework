@@ -1,18 +1,12 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-116"
-semantic_id = "DSET-REQUIREMENT-GOV-046"
-revision_mode = "atomic"
-content_role = "definition"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:gov"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "A DSET framework repository separates the distributable framework surface under .dset from the repository's recursive self-hosting project artifacts at the repository root."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-GOV-046"
+scope_path:
+  - "layer:gov"
+priority: "high"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+---
 
 # Requirement — Separate framework and recursive project truth
 
@@ -29,3 +23,7 @@ plans created while developing the framework itself.
 
 DSET must prove recursive use without making its distributable framework files
 and its self-hosting project records compete for the same paths or ownership.
+
+## Primary claim
+
+A DSET framework repository separates the distributable framework surface under .dset from the repository's recursive self-hosting project artifacts at the repository root.
