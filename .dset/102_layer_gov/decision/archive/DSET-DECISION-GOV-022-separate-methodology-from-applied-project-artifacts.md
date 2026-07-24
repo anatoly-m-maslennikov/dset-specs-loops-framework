@@ -10,6 +10,7 @@ relations:
   - type: "replacement_of"
     targets:
       - "DSET-REQUIREMENT-GOV-051"
+      - "DSET-REQUIREMENT-GOV-046"
 ---
 
 # Decision — Separate methodology from applied project artifacts
