@@ -31,6 +31,7 @@ declared separately below.
 | **Layer handoff** | The declared input, output, entry criteria, exit criteria, and failure behavior between two adjacent DSET layers | `DSET-REQUIREMENT-META-024` |
 | **Work Area** | A declared repository-relative folder that bounds Scope path resolution without implying code, deployability, or a particular architecture | `DSET-REQUIREMENT-META-011` |
 | **Evergreen document** | A thin, reasoned, mutable Governed artifact that presents current meaning while returning every summarized claim directly to Atomic records | `DSET-REQUIREMENT-META-020`, `DSET-REQUIREMENT-META-033` |
+| **Governance surface** | A named optional Governed artifact with `evergreen` or `maintained` Revision mode whose activation creates currentness or gate obligations | `DSET-REQUIREMENT-META-033` |
 | **Project truth** | Active authoritative Atomic records, current applicable Evergreen documents, and applicable maintained Governed artifacts | `DSET-REQUIREMENT-META-020`, `DSET-REQUIREMENT-META-026`, `DSET-REQUIREMENT-META-028`, `DSET-REQUIREMENT-META-033` |
 | **Exploration Mode** | A session state that permits candidate reasoning without creating a Governed artifact until explicit operator acceptance | `DSET-REQUIREMENT-META-021`, `DSET-REQUIREMENT-META-032` |
 | **Design** | Internal structure and logic selected to satisfy accepted Requirements and Contracts | `DSET-REQUIREMENT-META-008`, `DSET-REQUIREMENT-META-017` |

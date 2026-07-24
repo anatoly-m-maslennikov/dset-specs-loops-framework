@@ -482,3 +482,33 @@ calling it current.
 
 Activation applies to named governance surfaces, not globally to the
 `evergreen` or `maintained` revision modes.
+
+### Governance-surface lifecycle
+
+A Governance surface is uniquely identified by its configured surface key and
+project-relative scope path. Activation and deactivation require the
+operator or a project-configured owner. An applicable atomic-frontier change
+makes an active Current surface Stale; a tool may detect that consequence but
+cannot authorize the surface's return to Current.
+
+The lifecycle preserves four invariants:
+
+1. activation, state transitions, and deactivation never establish, edit, or
+   weaken atomic authority;
+2. one surface identity has exactly one current lifecycle status;
+3. Current means that every applicable atomic source is represented or
+   explicitly excluded by an accepted applicability rule; and
+4. deactivation preserves the carrier, provenance, and Git history.
+
+| Status | Meaning | Entry criteria | Exit criteria | Allowed next status | Required evidence |
+|---|---|---|---|---|---|
+| Inactive | The surface creates no currentness or gate obligations | The surface has never been activated, or authorized deactivation completed | Authorized activation starts reconciliation | Reconciling | Surface identity and, after deactivation, the deactivation instruction |
+| Reconciling | The retained or new carrier is being checked against its applicable atomic frontier | Activation or reactivation is authorized and the frontier is identified | Reconciliation proves complete coverage, finds a blocker, or is cancelled by authorized deactivation | Current, Blocked, Inactive | Frontier manifest, coverage result, and reconciliation provenance |
+| Current | The active surface represents its applicable atomic frontier and its gates apply | Reconciliation completed without unresolved omissions or conflicts | The frontier changes, an invalid representation is found, or deactivation is authorized | Stale, Inactive | Reviewed reconciliation result and resolved atomic-source references |
+| Stale | The active surface no longer represents its applicable atomic frontier | An applicable atom changes or missing/incorrect representation is confirmed | Reconciliation starts or deactivation is authorized | Reconciling, Inactive | Staleness reason and affected atomic IDs |
+| Blocked | Reconciliation cannot establish a truthful Current surface | Reconciliation finds an unresolved omission, conflict, ambiguity, or invalid carrier | The blocker is resolved and reconciliation restarts, or deactivation is authorized | Reconciling, Inactive | Blocker record and affected atomic IDs |
+
+Failed reconciliation never preserves or restores a Current claim. The surface
+remains Blocked until recovery begins, while its currentness and downstream
+gates remain unsatisfied. Deactivation is allowed from any non-Inactive status
+and returns the surface to Inactive without deleting its carrier or history.
