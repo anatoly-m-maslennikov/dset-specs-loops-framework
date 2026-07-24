@@ -82,6 +82,38 @@ const = "on_demand"
 [properties.evergreen_views.properties.skill]
 const = "dset-refresh"
 
+[properties.governance_surfaces]
+type = "object"
+required = [
+  "evergreen_specification",
+  "test_plan",
+  "evaluation_plan",
+  "implementation_plan",
+  "project_overview",
+  "architecture_view",
+]
+additionalProperties = false
+
+[properties.governance_surfaces.properties]
+
+[properties.governance_surfaces.properties.evergreen_specification]
+type = "boolean"
+
+[properties.governance_surfaces.properties.test_plan]
+type = "boolean"
+
+[properties.governance_surfaces.properties.evaluation_plan]
+type = "boolean"
+
+[properties.governance_surfaces.properties.implementation_plan]
+type = "boolean"
+
+[properties.governance_surfaces.properties.project_overview]
+type = "boolean"
+
+[properties.governance_surfaces.properties.architecture_view]
+type = "boolean"
+
 [properties.changes]
 type = "object"
 

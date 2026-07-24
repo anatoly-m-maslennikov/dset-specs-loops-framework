@@ -74,6 +74,22 @@ mode = "lazy"
 refresh_mode = "on_demand"
 skill = "dset-refresh"
 
+[governance_surfaces]
+# DSET starts atomic-first. These named, optional surfaces become governed only
+# when explicitly activated. Activation adds currentness and entry-gate
+# obligations for that surface; deactivation preserves its carrier and Git
+# history but removes those obligations.
+#
+# Use `dset configure ROOT status` to inspect the effective state.
+# Use `dset configure ROOT activate SURFACE` or `deactivate SURFACE` to preview
+# a change; append `--execute` only after accepting the preview.
+evergreen_specification = false
+test_plan = false
+evaluation_plan = false
+implementation_plan = false
+project_overview = false
+architecture_view = false
+
 [changes]
 # Select the default Git workspace for a newly created Change when the caller
 # does not request a mode explicitly.
