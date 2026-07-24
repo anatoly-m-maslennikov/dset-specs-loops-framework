@@ -44,7 +44,7 @@ priority: medium
 
 ## Analysis reports
 
-- State the exact question, reviewed inputs, revision/currentness, assumptions,
+- State the exact question, reviewed inputs, revisions and freshness, assumptions,
   method, limitations, and conclusion or unresolved return.
 - Use Solution Landscape to compare live options without selecting one;
   Root-Cause Analysis for a supported causal conclusion about an observed

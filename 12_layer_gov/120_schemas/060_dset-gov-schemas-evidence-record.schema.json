@@ -8,6 +8,7 @@
     "artifact_type",
     "artifact_subtype",
     "artifact_id",
+    "scope_path",
     "priority",
     "llm_session_ids",
     "subject",
@@ -16,7 +17,6 @@
     "context",
     "evidence_location",
     "polarity",
-    "currentness",
     "reopen_when",
     "relations"
   ],
@@ -38,6 +38,15 @@
     },
     "artifact_id": {
       "$ref": "#/$defs/id"
+    },
+    "scope_path": {
+      "type": "array",
+      "minItems": 0,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9][A-Za-z0-9._-]*$"
+      }
     },
     "priority": {
       "type": "string",
@@ -87,13 +96,6 @@
         "inconclusive"
       ]
     },
-    "currentness": {
-      "enum": [
-        "current",
-        "stale",
-        "superseded"
-      ]
-    },
     "reopen_when": {
       "type": "string",
       "minLength": 1
@@ -105,14 +107,18 @@
         "type": "object",
         "required": [
           "type",
-          "target"
+          "targets"
         ],
         "properties": {
           "type": {
             "const": "evidence_for"
           },
-          "target": {
-            "$ref": "#/$defs/id"
+          "targets": {
+            "type": "array",
+            "minItems": 1,
+            "contains": {
+              "$ref": "#/$defs/id"
+            }
           }
         }
       },
@@ -232,7 +238,7 @@
       "type": "object",
       "required": [
         "type",
-        "target"
+        "targets"
       ],
       "additionalProperties": false,
       "properties": {
@@ -245,13 +251,20 @@
             "check_of",
             "evidence_for",
             "resolution_of",
+            "solution_for",
             "override_of",
             "replacement_of",
+            "recurrence_of",
             "relates_to"
           ]
         },
-        "target": {
-          "$ref": "#/$defs/id"
+        "targets": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
         }
       }
     }

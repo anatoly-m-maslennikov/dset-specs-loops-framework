@@ -128,15 +128,6 @@ carrier = "markdown_yaml_frontmatter"
 commit_on_create = true
 
 [[types]]
-name = "atomic_record"
-identity_kind = "ATOMIC-RECORD"
-revision_mode = "atomic"
-content_role = "observation"
-governance_locus = "internal"
-carrier = "markdown_yaml_frontmatter"
-commit_on_create = true
-
-[[types]]
 name = "verification"
 identity_kind = "VERIFICATION"
 revision_mode = "atomic"

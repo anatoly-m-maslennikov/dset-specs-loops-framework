@@ -51,6 +51,7 @@ classifications fail closed. Atomic sources: `DSET-REQUIREMENT-GOV-070` and
 | `rationale` | — | atomic / rationale / internal |
 | `analysis_report` | `solution_landscape`, `root_cause_analysis`, `proposal`, `technical_investigation`, `external_audit_analysis` | atomic / rationale / internal |
 | `evidence_record` | `test_result`, `evaluation_result`, `review_report`, `run_record` | atomic / observation / internal |
+| `verification` | — | atomic / observation / internal |
 
 An `external_audit_analysis` is internal when it is the project’s interpretation
 of an external report. The report itself is an external governed artifact.

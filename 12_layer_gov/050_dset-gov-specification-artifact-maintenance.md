@@ -301,9 +301,11 @@ Source: `DSET-REQUIREMENT-GOV-065`.
 Promoted proof supports one named claim for one intended use. It records the
 producer or performed work, method and setup, applicable repository/version/
 environment/assumption context, observation time or validity window, exact
-commit or artifact version, evidence location and polarity, currentness status,
-and reopen trigger. An attempted use that the evidence cannot support remains
-`uncertain` or `pending`; it is not converted into a positive conclusion.
+commit or artifact version, evidence location and polarity, and reopen trigger.
+Evidence currentness is derived against the current subject, method, and
+context; it is never a mutable status stored in an immutable Evidence Record.
+An attempted use that the evidence cannot support remains `uncertain` or
+`pending`; it is not converted into a positive conclusion.
 Contrary evidence or a changed input is a defeater that makes only the affected
 claim closure stale. Refresh that smallest closure; do not rerun unrelated proof
 merely because it shares a repository.
