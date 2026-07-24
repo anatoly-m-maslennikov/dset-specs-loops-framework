@@ -1,19 +1,22 @@
+---
+artifact_type: implementation_decision
+artifact_id: DSET-DECISION-GOV-004
+scope_path: ["layer:gov"]
+priority: high
+decided_at: 2026-07-16
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+---
+
 # Decision — Problems, Questions, and Conflicts are distinct
 
-- **Decision ID:** `DSET-DECISION-GOV-004`
-- **Status:** accepted
-- **Decision date:** 2026-07-16
 - **Resolves Question:** direct operator clarification of whether an open
   conflict is only a Question or a distinct entity
-- **Absorbs:** none
 - **Replaces claims:** the conflict-record portion of
   `DSET-DECISION-GOV-003`; its role-aware disposition, priority, authority,
   immutability, and absorption rules remain active
-- **Priority:** unknown pending the registered core-v1 scale
 - **Selected option:** distinguish observed bad states, missing knowledge, and
   verified incompatible claims as Problem, Question, and Conflict
-- **LLM session IDs:**
-  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
 
 ## Context and scope
 

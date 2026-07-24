@@ -1,18 +1,25 @@
+---
+artifact_type: implementation_decision
+artifact_id: DSET-DECISION-GOV-005
+scope_path: ["layer:gov"]
+priority: high
+decided_at: 2026-07-16
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: replacement_of
+    targets:
+      - "DSET-DECISION-GOV-004"
+---
+
 # Decision — Semantic artifact types and open Conflicts
 
-- **Decision ID:** `DSET-DECISION-GOV-005`
-- **Status:** accepted
-- **Decision date:** 2026-07-16
 - **Resolves Question:** direct operator clarification of Problem, Question,
   Conflict, and workflow-independent artifact typing
-- **Absorbs:** `DSET-DECISION-GOV-004` in full
 - **Replaces claims:** all claims of `DSET-DECISION-GOV-004`, carried forward
   below with the added rule that workflow never defines artifact type
-- **Priority:** unknown pending the registered core-v1 scale
 - **Selected option:** classify artifacts by semantic condition, owning question,
   authority role, and lifecycle; never by workflow, queue, skill, tool, or path
-- **LLM session IDs:**
-  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
 
 ## Context and scope
 

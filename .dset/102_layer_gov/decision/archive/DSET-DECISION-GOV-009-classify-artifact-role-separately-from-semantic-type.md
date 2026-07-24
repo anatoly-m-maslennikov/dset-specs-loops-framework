@@ -1,13 +1,17 @@
+---
+artifact_type: implementation_decision
+artifact_id: DSET-DECISION-GOV-009
+scope_path: ["layer:gov"]
+priority: high
+decided_at: 2026-07-20
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+---
+
 # Decision — Classify artifact role separately from semantic Type
 
-- **Decision ID:** `DSET-DECISION-GOV-009`
-- **Status:** accepted
-- **Decision date:** 2026-07-20
 - **Selected option:** add one independent `artifact_type` and optional direct
   `artifact_subtype` axis while retaining the four semantic Types unchanged
-- **Priority:** unknown pending the registered core-v1 scale
-- **LLM session IDs:**
-  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
 
 ## Classification axes
 

@@ -1,22 +1,24 @@
+---
+artifact_type: implementation_decision
+artifact_id: DSET-DECISION-GOV-003
+scope_path: ["layer:gov"]
+priority: high
+decided_at: 2026-07-16
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+---
+
 # Decision — Immutable atoms and role-aware conflict handling
 
-- **Decision ID:** `DSET-DECISION-GOV-003`
-- **Status:** accepted
-- **Decision date:** 2026-07-16
 - **Resolves Question:** direct operator requirements for universal priority,
   conflict handling, source compilation, and atomic lifecycle
-- **Absorbs:** none
 - **Replaces claims:** the `DSET-DECISION-GOV-001` claim that evergreen files
   own current truth and the `DSET-DECISION-GOV-002` claim that governing
   documents remain the sole project authority after bootstrap; all unaffected
   claims in both Decisions remain active
-- **Priority:** unknown pending the registered core-v1 scale; this explicit gap
-  blocks priority-based selection involving this atom
 - **Selected option:** use one priority rank for every governed artifact,
   classify every conflict by role and lifecycle before priority, and make every
   emitted atomic artifact immutable
-- **LLM session IDs:**
-  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
 
 ## Context and scope
 

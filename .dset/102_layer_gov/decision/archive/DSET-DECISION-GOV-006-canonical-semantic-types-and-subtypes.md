@@ -1,19 +1,26 @@
+---
+artifact_type: implementation_decision
+artifact_id: DSET-DECISION-GOV-006
+scope_path: ["layer:gov"]
+priority: high
+decided_at: 2026-07-20
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: replacement_of
+    targets:
+      - "DSET-DECISION-GOV-005"
+---
+
 # Decision — Canonical semantic Types and subtypes
 
-- **Decision ID:** `DSET-DECISION-GOV-006`
-- **Status:** accepted
-- **Decision date:** 2026-07-20
 - **Resolves Question:** direct operator definition of the canonical DSET Type
   and subtype model
-- **Absorbs:** `DSET-DECISION-GOV-005` in full
 - **Replaces claims:** the standalone Conflict-Type claim and the classification
   of Risk as a Problem in `DSET-DECISION-GOV-003`; its immutability, priority,
   absorption, and role-aware conflict-handling claims remain active
-- **Priority:** unknown pending the registered core-v1 scale
 - **Selected option:** use exactly four core semantic Types—Decision, Question,
   Problem, and QA—with bounded subtypes and no synthetic family layer
-- **LLM session IDs:**
-  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
 
 ## Context and scope
 

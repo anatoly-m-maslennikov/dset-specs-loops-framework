@@ -1,3 +1,10 @@
+---
+artifact_type: plan
+artifact_subtype: evaluation_plan
+scope_path: ["layer:gov"]
+priority: high
+---
+
 # Methodology GOV qualitative eval plan
 
 Applicable qualitative and probabilistic proof is layer-owned. The representative scenario set is maintained by META; each row below owns its criterion and threshold.

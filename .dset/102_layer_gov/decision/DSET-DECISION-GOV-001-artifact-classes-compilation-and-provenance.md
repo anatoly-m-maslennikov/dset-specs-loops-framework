@@ -1,14 +1,17 @@
+---
+artifact_type: implementation_decision
+artifact_id: DSET-DECISION-GOV-001
+scope_path: ["layer:gov"]
+priority: high
+decided_at: 2026-07-16
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+---
+
 # Decision — Artifact classes, compilation, and provenance
 
-- **Decision ID:** `DSET-DECISION-GOV-001`
-- **Status:** accepted
-- **Decision date:** 2026-07-16
 - **Resolves Question:** direct operator requirement, no prior Question ID
-- **Supersedes:** none
-- **Superseded by:** none
 - **Selected option:** classify DSET artifacts by authority class and require compile-down plus commit/session provenance
-- **LLM session IDs:**
-  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
 
 ## Context and scope
 

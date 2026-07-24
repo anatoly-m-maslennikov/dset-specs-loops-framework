@@ -1,3 +1,10 @@
+---
+artifact_type: plan
+artifact_subtype: test_plan
+scope_path: ["layer:meta"]
+priority: high
+---
+
 # Methodology META deterministic test plan
 
 This fragment owns exact deterministic proof for its listed IDs. Shared package behavior is connected by stable IDs, not duplicated plans.

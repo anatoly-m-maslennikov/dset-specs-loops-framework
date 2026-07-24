@@ -1,20 +1,27 @@
+---
+artifact_type: implementation_decision
+artifact_id: DSET-DECISION-GOV-007
+scope_path: ["layer:gov"]
+priority: high
+decided_at: 2026-07-20
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: replacement_of
+    targets:
+      - "DSET-DECISION-GOV-006"
+---
+
 # Decision — Flat canonical Type and subtype model
 
-- **Decision ID:** `DSET-DECISION-GOV-007`
-- **Status:** accepted
-- **Decision date:** 2026-07-20
 - **Resolves Question:** direct operator correction prohibiting sub-subtypes and
   classifying User Story directly under Decision
-- **Absorbs:** `DSET-DECISION-GOV-006` in full
 - **Replaces claims:** the incomplete Decision-subtype list in
   `DSET-DECISION-GOV-006`; every other Type, lifecycle, authority, compilation,
   and migration claim is carried forward below
-- **Priority:** unknown pending the registered core-v1 scale
 - **Selected option:** use exactly four Types and one optional flat subtype
   level; User Story, Outcome, Scenario, and Invariant are direct Decision
   subtypes rather than Requirement subtypes or representation forms
-- **LLM session IDs:**
-  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
 
 ## Context and scope
 

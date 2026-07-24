@@ -1,22 +1,29 @@
+---
+artifact_type: implementation_decision
+artifact_id: DSET-DECISION-GOV-008
+scope_path: ["layer:gov"]
+priority: high
+decided_at: 2026-07-20
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: replacement_of
+    targets:
+      - "DSET-DECISION-GOV-007"
+---
+
 # Decision — FPF-aligned boundaries for the flat Type model
 
-- **Decision ID:** `DSET-DECISION-GOV-008`
-- **Status:** accepted
-- **Decision date:** 2026-07-20
 - **Resolves Question:** operator request to revise the new DSET Type/subtype
   system against FPF
-- **Absorbs:** `DSET-DECISION-GOV-007` in full
 - **Replaces claims:** the four-Type list and direct subtype list remain
   unchanged; this successor sharpens what an atom is, how one subtype is
   recognized, and how authority, acceptance, carriers, work, and evidence stay
   separate
-- **Priority:** unknown pending the registered core-v1 scale
 - **Selected option:** retain exactly four application-level semantic Types and
   one optional flat subtype level, but require one primary governed claim,
   explicit act/content/carrier/work/result boundaries, split multi-head atoms,
   and fail-closed classification when a direct subtype is ambiguous
-- **LLM session IDs:**
-  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
 
 ## Context and reviewed source
 

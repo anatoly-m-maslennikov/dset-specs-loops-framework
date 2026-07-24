@@ -1,14 +1,17 @@
+---
+artifact_type: implementation_decision
+artifact_id: DSET-DECISION-GOV-002
+scope_path: ["layer:gov"]
+priority: high
+decided_at: 2026-07-16
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+---
+
 # Decision — Governance constitution and rule assurance
 
-- **Decision ID:** `DSET-DECISION-GOV-002`
-- **Status:** accepted
-- **Decision date:** 2026-07-16
 - **Resolves Question:** direct operator requirement following bounded FPF review
-- **Supersedes:** none
-- **Superseded by:** none
 - **Selected option:** strengthen `DSET-RULE-ARCHITECTURE` as the sole governance constitution and separate rule authority, dependency, precedence, and assurance
-- **LLM session IDs:**
-  - `codex:019f591f-04f6-70f2-8de7-828b7cccc69d`
 
 ## Context and scope
 
