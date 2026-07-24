@@ -8,14 +8,15 @@ priority: high
 
 # Methodology META specification
 
-## DSET-REQUIREMENT-META-001 — One governed feedback cycle
+## DSET-REQUIREMENT-META-047 — Streamlined content-role cycle
 
-Atomic source: `DSET-REQUIREMENT-META-001`.
+Atomic source: `DSET-REQUIREMENT-META-047`.
 
-The methodology must define one six-role feedback cycle: Inquiry; Definition;
-Rationale; Method; Implementation; and Observation. Test plans, evaluation
+The methodology defines one six-role feedback cycle: Inquiry; Analysis;
+Definition; Method; Implementation; and Observation. Test plans, evaluation
 plans, and implementation plans are Methods. Code and generated operative
 outputs are Implementations. Test and evaluation results are Observations.
+Rationale is Analysis content rather than a separate Content role.
 
 **Scenario DSET-SCENARIO-META-001:** Given a contributor deciding what an
 artifact contributes, its primary content maps to exactly one role while links
@@ -194,7 +195,7 @@ needed, one direct `artifact_subtype`. The registered pair resolves exactly one
 | Axis | Values | Question answered |
 |---|---|---|
 | Revision mode | `atomic`, `append_only`, `maintained` | How may it change? |
-| Content role | `inquiry`, `definition`, `rationale`, `method`, `implementation`, `observation` | What does it contribute? |
+| Content role | `inquiry`, `analysis`, `definition`, `method`, `implementation`, `observation` | What does it contribute? |
 | Governance locus | `internal`, `external`, `relation` | What does it primarily govern? |
 
 The carrier stores the type pair and does not repeat the derived route fields.
@@ -218,7 +219,7 @@ matrix, and every coordinate identifies exactly one canonical artifact type.
 Finer meanings are direct subtypes of that type. A subtype inherits all three
 route coordinates and cannot override one.
 
-| Revision mode \ Content role | Inquiry | Definition | Rationale | Method | Implementation | Observation |
+| Revision mode \ Content role | Inquiry | Analysis | Definition | Method | Implementation | Observation |
 |---|---|---|---|---|---|---|
 | Atomic | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R |
 | Append-only | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R | I / E / R |
@@ -276,17 +277,18 @@ but it does not alter the three-axis semantic route.
 project-level Requirement share atomic/definition/internal while retaining
 different scope paths.
 
-## DSET-REQUIREMENT-META-016 — Content roles form a feedback cycle
+## DSET-REQUIREMENT-META-048 — Analysis and Observation remain distinct
 
-Atomic source: `DSET-REQUIREMENT-META-016`.
+Atomic sources: `DSET-REQUIREMENT-META-047` and
+`DSET-REQUIREMENT-META-048`.
 
 DSET uses this development cycle:
 
 ```mermaid
 flowchart LR
-    INQ["Inquiry"] --> DEF["Definition"]
-    DEF --> RAT["Rationale"]
-    RAT --> METHOD["Method"]
+    INQ["Inquiry"] --> ANALYSIS["Analysis"]
+    ANALYSIS --> DEF["Definition"]
+    DEF --> METHOD["Method"]
     METHOD --> IMPL["Implementation"]
     IMPL --> OBS["Observation"]
     OBS --> INQ
@@ -295,9 +297,15 @@ flowchart LR
 The flow helps navigation and entry-gate selection. It does not determine
 artifact identity, revision mode, governance locus, or authority.
 
-**Scenario DSET-SCENARIO-META-017:** A production observation raises a new
-Question; its route is selected from its own semantics, not copied from the
-preceding implementation.
+Observation records facts that occurred, were measured, or were reported,
+including logs, complaints, tickets, errors, results, and external reports. It
+does not explain causes or justify choices. Analysis interprets those facts,
+compares alternatives, investigates causes, synthesizes implications, and may
+provide rationale for a Definition or Method.
+
+**Scenario DSET-SCENARIO-META-017:** A production error is preserved as an
+Observation. A separate Analysis investigates its cause, and a new Inquiry
+opens when the available facts do not support a conclusion.
 
 ## FPF alignment
 

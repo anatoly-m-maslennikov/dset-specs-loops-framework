@@ -43,7 +43,7 @@ DSET routes every governed artifact through three independent axes:
 `revision_mode`, `content_role`, and `governance_locus`. The complete values are:
 
 - `revision_mode`: `atomic`, `append_only`, or `maintained`;
-- `content_role`: `inquiry`, `definition`, `rationale`, `method`,
+- `content_role`: `inquiry`, `analysis`, `definition`, `method`,
   `implementation`, or `observation`;
 - `governance_locus`: `internal`, `external`, or `relation`.
 
