@@ -21,6 +21,10 @@ target = "DSET-REQUIREMENT-GOV-037"
 [[relations]]
 type = "child_of"
 target = "DSET-DECISION-GOV-018"
+
+[[relations]]
+type = "resolution_of"
+target = "DSET-DEFECT-TOOL-007"
 +++
 
 # Requirement — Use TOML for every DSET artifact carrier
