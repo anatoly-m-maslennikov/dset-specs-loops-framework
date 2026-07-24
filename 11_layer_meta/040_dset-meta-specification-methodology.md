@@ -2,6 +2,8 @@
 
 ## DSET-REQUIREMENT-META-001 — One governed feedback cycle
 
+Atomic source: `DSET-REQUIREMENT-META-001`.
+
 The methodology must define one six-role feedback cycle: Inquiry; Definition;
 Rationale; Method; Implementation; and Observation. Test plans, evaluation
 plans, and implementation plans are Methods. Code and generated operative
@@ -13,6 +15,8 @@ connect it to the other roles without duplicating ownership.
 
 ## DSET-REQUIREMENT-META-002 — Tests and evals remain distinct
 
+Atomic source: `DSET-REQUIREMENT-META-002`.
+
 The methodology must keep deterministic tests in `test-plan.md` and
 probabilistic or qualitative evaluation in `eval-plan.md`. Both are Methods;
 their execution results remain distinct Observations.
@@ -20,6 +24,8 @@ their execution results remain distinct Observations.
 **Scenario DSET-SCENARIO-META-002:** Given behavior with one exact expected output, it is routed to the test plan even when the check is automated. Given multiple acceptable outputs judged by criteria or a rubric, it is routed to the eval plan.
 
 ## DSET-REQUIREMENT-META-003 — Runtime rules are selected by independent concerns
+
+Atomic source: `DSET-REQUIREMENT-META-003`.
 
 The methodology must select recovery semantics by runtime risk and durable backing by topology, write volume, and concurrency. Event sourcing, reconciliation, durable execution, and observed-progress liveness apply only when their specific semantics are required.
 
@@ -29,11 +35,15 @@ The methodology must select recovery semantics by runtime risk and durable backi
 
 ## DSET-REQUIREMENT-META-004 — Delivery semantics are bounded
 
+Atomic source: `DSET-REQUIREMENT-META-004`.
+
 The methodology must describe retries as at-least-once delivery plus receiving-side deduplication or idempotency. It may claim effectively-once effects only inside the declared key, retention, and atomicity boundary.
 
 **Scenario DSET-SCENARIO-META-005:** A retryable receiver documents its deduplication key, retention window, owner, and atomic check/write operation without claiming universal exactly-once execution.
 
 ## DSET-REQUIREMENT-META-005 — Public identity is stable
+
+Atomic source: `DSET-REQUIREMENT-META-005`.
 
 The public framework identity must use the display name **DSET Spec Loops**, the title **DSET Spec Loops: A Production Vibecoding Framework**, the expansion **Domain–Supportability–Evals–Tests**, and the repository slug `dset-specs-loops-framework`.
 
@@ -41,17 +51,23 @@ The public framework identity must use the display name **DSET Spec Loops**, the
 
 ## DSET-REQUIREMENT-META-006 — Profile axes remain orthogonal
 
+Atomic source: `DSET-REQUIREMENT-META-006`.
+
 DSET must select implementation-language enforcement and artifact-governance enforcement independently. Runtime risk selects recovery/supportability semantics; durability topology selects durable authority; a language profile selects code tools and thresholds; an artifact profile selects document architecture, ownership, navigation, and authoring gates.
 
 **Scenario DSET-SCENARIO-META-007:** A Python repository selects `python-v1` and `documentation-v1` together; a documentation-only repository selects `documentation-v1` without inheriting Python tools; a future TypeScript repository combines its own language profile with the same artifact profile.
 
 ## DSET-REQUIREMENT-META-007 — Proof categories remain separate
 
+Atomic source: `DSET-REQUIREMENT-META-007`.
+
 Exact resolver, ownership, path, identity, wrapper, and recursion behavior must be proven by deterministic tests. Agent interpretation, rule-following, navigation, and diagnostic usefulness must be proven by separate qualitative or probabilistic evals. Automation does not change the proof category.
 
 **Scenario DSET-SCENARIO-META-008:** A scripted assertion that a cycle emits one stable code remains a test; an automated agent run measuring whether the diagnostic enables a safe correction remains an eval.
 
 ## DSET-REQUIREMENT-META-008 — Contracts preserve boundaries
+
+Atomic source: `DSET-REQUIREMENT-META-008`.
 
 When the operator supplies or accepts a DDL, CSV/XLSX schema,
 OpenAPI/message/protocol, host-native package format, supported-platform
@@ -81,6 +97,8 @@ disallowed dependency is a Problem.
 
 ## DSET-REQUIREMENT-META-009 — User Stories remain Requirement forms
 
+Atomic source: `DSET-REQUIREMENT-META-009`.
+
 When actor, capability, and value framing is useful, it belongs inside or links
 to a Requirement. User Story is not a routing axis or required registered name.
 Split independently enforceable acceptance criteria into sibling atomic
@@ -92,6 +110,8 @@ artifacts own the behavior and proof.
 
 ## DSET-REQUIREMENT-META-010 — Outcomes remain definition, method, or observation content
 
+Atomic source: `DSET-REQUIREMENT-META-010`.
+
 An intended measurable state change belongs in a Definition when it is required
 or in a Method when it defines assessment. An observed result is an
 Observation. Outcome is not a routing axis or mandatory registered name, and
@@ -102,6 +122,8 @@ a linked Evaluation defines how time-to-diagnose improvement is assessed; the
 observed timestamps remain evidence.
 
 ## DSET-REQUIREMENT-META-011 — Work Areas bound repository scope without assuming implementation type
+
+Atomic source: `DSET-REQUIREMENT-META-011`.
 
 DSET must support either one repository-level scope or one or more declared Work
 Areas. A Work Area is a repository-relative folder declaration used to scope
@@ -126,6 +148,9 @@ declaration rather than a stale checkpoint hint.
 
 ## DSET-REQUIREMENT-META-012 — Three independent axes route every artifact
 
+Atomic sources: `DSET-REQUIREMENT-META-012` and its routing foundation
+`DSET-REQUIREMENT-META-018`.
+
 Every governed artifact must declare exactly one `revision_mode`, one
 `content_role`, and one `governance_locus`.
 
@@ -147,6 +172,8 @@ name hierarchy.
 
 ## DSET-REQUIREMENT-META-013 — The routing matrix remains sparse
 
+Atomic source: `DSET-REQUIREMENT-META-013`.
+
 The routing space is the matrix below. Every cell may contain zero or one
 registered name at each enabled governance locus. An empty cell is valid.
 
@@ -166,6 +193,8 @@ relations and registers only the names it actually needs.
 
 ## DSET-REQUIREMENT-META-014 — Relations remain first-class and endpoint-explicit
 
+Atomic source: `DSET-REQUIREMENT-META-014`.
+
 An artifact routed to `governance_locus = "relation"` must declare a stable
 relation kind and at least two role-bearing endpoints. Each endpoint declares
 its own internal or external origin. Endpoint origin does not add another
@@ -178,15 +207,22 @@ parents. Each remains one relational artifact with explicit participants.
 
 ## DSET-REQUIREMENT-META-015 — Scope path remains structural
 
-Project, layer, feature, feature group, and configured compositions of them form
-the artifact's `scope_path`. Scope path may affect inheritance, applicability,
-and identity, but it does not alter the three-axis semantic route.
+Atomic source: `DSET-REQUIREMENT-META-015`.
+
+Layer, feature, feature group, Work Area, and configured compositions of them
+form the artifact's project-relative `scope_path`. The current project is
+ambient and never repeated inside the path. A project-level artifact therefore
+uses an empty scope path, while a layer artifact begins with a coordinate such
+as `layer:meta`. Scope path may affect inheritance, applicability, and identity,
+but it does not alter the three-axis semantic route.
 
 **Scenario DSET-SCENARIO-META-016:** A feature-layer Requirement and a
 project-level Requirement share atomic/definition/internal while retaining
 different scope paths.
 
 ## DSET-REQUIREMENT-META-016 — Content roles form a feedback cycle
+
+Atomic source: `DSET-REQUIREMENT-META-016`.
 
 DSET uses this development cycle:
 
@@ -208,6 +244,8 @@ Question; its route is selected from its own semantics, not copied from the
 preceding implementation.
 
 ## DSET-REQUIREMENT-META-017 — Generated and maintained implementations remain distinct
+
+Atomic source: `DSET-REQUIREMENT-META-017`.
 
 Generated Code is an internal evergreen Implementation when it is a reproducible
 current projection with generator and source provenance. Hand-maintained

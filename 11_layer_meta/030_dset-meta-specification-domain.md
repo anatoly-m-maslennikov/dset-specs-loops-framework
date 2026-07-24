@@ -16,7 +16,7 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 | **Revision mode** | How an artifact may change: `atomic` is an immutable accepted record; `evergreen` is a mutable thin current view; `maintained` is a mutable operative artifact |
 | **Content role** | What the artifact contributes to the development cycle: `inquiry`, `definition`, `rationale`, `method`, `implementation`, or `observation` |
 | **Governance locus** | What the artifact primarily governs: an `internal` project-owned non-relational subject, an `external` outside-owned non-relational subject, or a `relation` among explicit endpoints; it classifies the subject, not the project-owned carrier |
-| **Scope path** | The independently resolved structural coordinate of an artifact, such as project, layer, feature, feature group, or a configured composition of them |
+| **Scope path** | The project-relative structural coordinate of an artifact, such as layer, feature, feature group, Work Area, or a configured composition; the current project is ambient and a project-level artifact uses an empty path |
 | **Registered name** | The optional human-facing name assigned one-to-one to an occupied route; it does not define the route or create a semantic name hierarchy |
 | **Relation record** | An artifact whose governance locus is `relation` and whose primary subject is a typed relation among two or more explicit endpoints |
 | **Relation endpoint** | A referenced participant in a Relation record, including its role and independently declared `internal` or `external` origin |
@@ -55,7 +55,7 @@ This is one layer-owned fragment of the logical methodology package. Use the sib
 - **DSET-INVARIANT-META-006:** The routing matrix is sparse. A route has zero or one registered name, and an empty cell is valid; DSET does not create placeholders to complete a Cartesian product.
 - **DSET-INVARIANT-META-007:** `internal` governance is mandatory. A project may enable `external` and `relation` governance independently when its boundaries require them.
 - **DSET-INVARIANT-META-008:** A Relation record declares a relation kind and at least two role-bearing endpoints. Each endpoint independently declares internal or external origin; endpoint origin is not another artifact-routing axis.
-- **DSET-INVARIANT-META-009:** Scope path is structural context, not a fourth semantic routing axis. Every scope-dependent DSET artifact or run resolves against the repository-level scope or one or more declared Work Areas.
+- **DSET-INVARIANT-META-009:** Scope path is project-relative structural context, not a fourth semantic routing axis. The current project is ambient and never repeated inside the path; every scope-dependent DSET artifact or run resolves against the repository-level scope or one or more declared Work Areas.
 - **DSET-INVARIANT-META-010:** Registered names are interface vocabulary for valid routes, not ontological parents or children. Requirement, Constraint, Contract, and Implementation Decision therefore do not require a Decision-centered name hierarchy.
 - **DSET-INVARIANT-META-011:** The development feedback cycle is Inquiry → Definition → Rationale → Method → Implementation → Observation → Inquiry. A record may enter at any justified role; the flow does not determine its identity.
 - **DSET-INVARIANT-META-012:** Generated Code is an internal evergreen Implementation only when it is a reproducible current projection with generator and source provenance. Hand-maintained executable truth is an internal maintained Implementation.
