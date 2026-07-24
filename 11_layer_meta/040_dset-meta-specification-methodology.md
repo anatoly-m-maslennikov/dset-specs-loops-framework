@@ -512,3 +512,43 @@ Failed reconciliation never preserves or restores a Current claim. The surface
 remains Blocked until recovery begins, while its currentness and downstream
 gates remain unsatisfied. Deactivation is allowed from any non-Inactive status
 and returns the surface to Inactive without deleting its carrier or history.
+
+## DSET-REQUIREMENT-META-034 — Closed constitutional amendments
+
+Atomic source: `DSET-REQUIREMENT-META-034`.
+
+A semantic META amendment crosses a closed sequence:
+
+```mermaid
+flowchart LR
+    EXPLORE["Explore candidate"]
+    ACCEPT["Accept atomic META claim<br/>with rationale"]
+    IMPACT["Map affected constitution<br/>and descendants"]
+    ELIGIBLE["Check META eligibility,<br/>ownership, order, and DAG"]
+    REFRESH["Refresh root META view<br/>with atomic provenance"]
+    STALE["Propagate staleness<br/>forward"]
+    VERIFY["Verify self-application<br/>and handoffs"]
+    FIXED["Declare fixed point"]
+
+    EXPLORE --> ACCEPT --> IMPACT --> ELIGIBLE --> REFRESH
+    REFRESH --> STALE --> VERIFY --> FIXED
+```
+
+The protocol has the following gates:
+
+| Gate | Entry criteria | Required output | Exit criteria | Failure behavior |
+|---|---|---|---|---|
+| Exploration | A candidate constitutional change is being considered | Candidate reasoning only; no governed artifact | Explicit operator acceptance or abandonment | Abandonment leaves project truth unchanged |
+| Atomic acceptance | The operator accepts one primary semantic claim | New atomic META Requirement and its rationale | Atom is valid, uniquely identified, and directly attributable to the acceptance | Ambiguity returns to Exploration; no atom is emitted |
+| Impact mapping | The accepted atom exists | Affected invariants, entities, layers, handoffs, profiles, surfaces, implementations, and assurance | Every affected owner and active surface is identified | Unknown ownership or reach blocks propagation |
+| Eligibility and topology | The impact map is complete | META-eligibility, single-owner, definition-order, and acyclic-dependency findings | The claim is technology-independent, correctly owned, topologically expressible, and creates no backward governance | Split or move ineligible content; unresolved conflicts block the amendment |
+| Root refresh | Eligibility and topology pass | Reasoned root META update with direct atomic-source references | Every changed semantic location resolves to the new atom or an explicit predecessor/sibling | The affected evergreen view remains Stale |
+| Forward propagation | The root refresh is complete | Explicit staleness or reconciliation state for every affected active descendant | No affected active descendant is silently presumed Current | Unresolved descendants remain Stale or Blocked |
+| Verification | All effects and state changes are visible | META self-application result and affected handoff, profile, implementation, Test, and Evaluation results | Applicable checks pass and evidence resolves to the exact governed state | Failed proof blocks fixed-point declaration |
+| Fixed point | Verification passes | One currentness declaration for the amended constitutional state | Every affected active surface is Current or explicitly deactivated, and no conflict is concealed | The amendment remains incomplete; accepted atomic authority is not edited |
+
+An accepted atom becomes authority when accepted, even while its affected
+views and descendants are Stale. Failure is recovered by reconciliation, an
+operator-accepted successor, or authorized withdrawal and archive relocation;
+it is never recovered by mutating the accepted claim. Feedback re-enters at the
+earliest owning layer and cannot create a backward-governance dependency.
