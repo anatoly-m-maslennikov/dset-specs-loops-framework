@@ -20,6 +20,10 @@ relations:
     targets:
       - "DSET-DECISION-GOV-019"
       - "DSET-DECISION-OPS-007"
+  - type: "replacement_of"
+    targets:
+      - "DSET-EVAL-PLAN-GOV-019"
+      - "DSET-EVAL-PLAN-OPS-010"
 ---
 
 # Evaluation Plan — Interpret the Version artifact Type

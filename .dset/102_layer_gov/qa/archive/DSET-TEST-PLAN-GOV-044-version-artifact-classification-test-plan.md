@@ -21,6 +21,10 @@ relations:
     targets:
       - "DSET-DECISION-GOV-019"
       - "DSET-DECISION-OPS-007"
+  - type: "replacement_of"
+    targets:
+      - "DSET-TEST-PLAN-GOV-029"
+      - "DSET-TEST-PLAN-OPS-016"
 ---
 
 # Test Plan — Enforce the Version artifact classification
