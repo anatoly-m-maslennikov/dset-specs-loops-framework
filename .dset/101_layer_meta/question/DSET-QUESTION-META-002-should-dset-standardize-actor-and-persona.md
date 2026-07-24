@@ -1,18 +1,12 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-127"
-semantic_id = "DSET-QUESTION-META-002"
-revision_mode = "atomic"
-content_role = "inquiry"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:meta"]
-status = "accepted"
-priority = "medium"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Should a later DSET version define Actor and Persona as separate artifact types, fields on existing entities, or optional project vocabulary?"
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-+++
+---
+artifact_type: "question"
+artifact_id: "DSET-QUESTION-META-002"
+scope_path:
+  - "layer:meta"
+priority: "medium"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+---
 
 # Question — Should DSET standardize Actor and Persona?
 

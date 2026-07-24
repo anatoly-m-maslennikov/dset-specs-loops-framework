@@ -1,26 +1,23 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-252"
-semantic_id = "DSET-REQUIREMENT-META-019"
-revision_mode = "atomic"
-content_role = "definition"
-governance_locus = "internal"
-scope_path = ["layer:meta"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "DSET Analysis Mode permits brainstorming, research, comparison, and read-only inspection without creating governed artifacts; only explicit operator acceptance ends the mode and authorizes the minimum durable artifacts for accepted conclusions."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Exploration produces overlapping and short-lived candidates. Deferring durable emission until explicit acceptance prevents artifact churn while preserving atomic immutability and clear operator authority."
-
-[promotion]
-affected_children = ["governance", "tool", "skill"]
-applies_unchanged = true
-local_context_required = false
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-META-018"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-META-019"
+scope_path:
+  - "layer:meta"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+  applies_unchanged: true
+  local_context_required: false
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "relates_to"
+    targets:
+      - "DSET-REQUIREMENT-META-018"
+---
 
 # Requirement — Analysis Mode defers artifact creation
 
@@ -50,3 +47,11 @@ analysis closes the mode. Closure separates:
   accepts them for continued tracking.
 
 Evergreen views may be refreshed only after the accepted atomic records exist.
+
+## Primary claim
+
+DSET Analysis Mode permits brainstorming, research, comparison, and read-only inspection without creating governed artifacts; only explicit operator acceptance ends the mode and authorizes the minimum durable artifacts for accepted conclusions.
+
+## Rationale
+
+Exploration produces overlapping and short-lived candidates. Deferring durable emission until explicit acceptance prevents artifact churn while preserving atomic immutability and clear operator authority.

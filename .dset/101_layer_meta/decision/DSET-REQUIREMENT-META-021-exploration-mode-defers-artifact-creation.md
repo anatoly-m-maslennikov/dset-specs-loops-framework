@@ -1,30 +1,26 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-254"
-semantic_id = "DSET-REQUIREMENT-META-021"
-revision_mode = "atomic"
-content_role = "definition"
-governance_locus = "internal"
-scope_path = ["layer:meta"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "DSET Exploration Mode permits brainstorming, discussion, research, analysis, comparison, terminology work, and structural modeling without creating governed artifacts; only explicit operator acceptance ends the mode and authorizes the minimum durable artifacts for accepted conclusions."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Exploration is broader and more provider-neutral than analysis, discussion, or brainstorming alone. It covers divergent and convergent work across every project scope and routing axis while clearly separating candidate thinking from accepted governance."
-
-[promotion]
-affected_children = ["governance", "tool", "skill"]
-applies_unchanged = true
-local_context_required = false
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-META-019"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-META-020"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-META-021"
+scope_path:
+  - "layer:meta"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+  applies_unchanged: true
+  local_context_required: false
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-REQUIREMENT-META-019"
+  - type: "relates_to"
+    targets:
+      - "DSET-REQUIREMENT-META-020"
+---
 
 # Requirement — Exploration Mode defers artifact creation
 
@@ -57,3 +53,11 @@ exploration closes the mode. Closure separates:
   accepts them for continued tracking.
 
 Evergreen views may be refreshed only after the accepted atomic records exist.
+
+## Primary claim
+
+DSET Exploration Mode permits brainstorming, discussion, research, analysis, comparison, terminology work, and structural modeling without creating governed artifacts; only explicit operator acceptance ends the mode and authorizes the minimum durable artifacts for accepted conclusions.
+
+## Rationale
+
+Exploration is broader and more provider-neutral than analysis, discussion, or brainstorming alone. It covers divergent and convergent work across every project scope and routing axis while clearly separating candidate thinking from accepted governance.

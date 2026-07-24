@@ -1,34 +1,27 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-253"
-semantic_id = "DSET-REQUIREMENT-META-020"
-revision_mode = "atomic"
-content_role = "definition"
-governance_locus = "internal"
-scope_path = ["layer:meta"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Evergreen documents are thin, reasoned semantic views over authoritative atomic records rather than compiled restatements; domain specifications contain a flow view, topologically ordered entity definitions, explicit entity lifecycle models, separated forward relations, and direct atomic provenance."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Thin views preserve a readable current model without duplicating atomic authority. Ordered definitions prevent circular meaning, lifecycle tables make behavior operational, and direct atomic links keep every summarized claim traceable."
-
-[promotion]
-affected_children = ["governance", "tool", "skill"]
-applies_unchanged = true
-local_context_required = false
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-048"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-072"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-META-019"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-META-020"
+scope_path:
+  - "layer:meta"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+  applies_unchanged: true
+  local_context_required: false
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-048"
+      - "DSET-REQUIREMENT-GOV-072"
+  - type: "relates_to"
+    targets:
+      - "DSET-REQUIREMENT-META-019"
+---
 
 # Requirement — Thin evergreen semantic views
 
@@ -68,3 +61,11 @@ Evergreen views refresh on demand after accepted atomic changes and before a
 downstream gate requires current truth. Related active atoms may first be
 refactored into immutable successors when overlap obscures the current model;
 refactoring is optional and never edits an atom in place.
+
+## Primary claim
+
+Evergreen documents are thin, reasoned semantic views over authoritative atomic records rather than compiled restatements; domain specifications contain a flow view, topologically ordered entity definitions, explicit entity lifecycle models, separated forward relations, and direct atomic provenance.
+
+## Rationale
+
+Thin views preserve a readable current model without duplicating atomic authority. Ordered definitions prevent circular meaning, lifecycle tables make behavior operational, and direct atomic links keep every summarized claim traceable.

@@ -1,26 +1,25 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-257"
-semantic_id = "DSET-REQUIREMENT-META-024"
-revision_mode = "atomic"
-content_role = "definition"
-governance_locus = "internal"
-scope_path = ["layer:meta"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Every adjacent DSET layer boundary declares the accepted input, produced output, entry criteria, exit criteria, and failure behavior of its handoff."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Explicit handoffs prevent layers from sharing vague ownership or silently importing implementation details across boundaries."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "operations"]
-applies_unchanged = true
-local_context_required = false
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-META-023"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-META-024"
+scope_path:
+  - "layer:meta"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "operations"
+  applies_unchanged: true
+  local_context_required: false
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "relates_to"
+    targets:
+      - "DSET-REQUIREMENT-META-023"
+---
 
 # Requirement — Define layer handoffs
 
@@ -39,3 +38,11 @@ Adjacent handoffs are preferred. A direct forward skip is allowed only when the
 intermediate layers have no meaningful transformation or ownership to add.
 DSET must not create placeholder artifacts merely to simulate an unnecessary
 handoff.
+
+## Primary claim
+
+Every adjacent DSET layer boundary declares the accepted input, produced output, entry criteria, exit criteria, and failure behavior of its handoff.
+
+## Rationale
+
+Explicit handoffs prevent layers from sharing vague ownership or silently importing implementation details across boundaries.

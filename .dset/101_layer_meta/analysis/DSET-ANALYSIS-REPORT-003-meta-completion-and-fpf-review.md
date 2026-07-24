@@ -1,43 +1,24 @@
-+++
-artifact_type = "analysis_report"
-artifact_subtype = "external_audit_analysis"
-artifact_id = "DSET-ANALYSIS-REPORT-003"
-revision_mode = "atomic"
-content_role = "rationale"
-governance_locus = "internal"
-scope_path = ["layer:meta"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-observed_at = "2026-07-24"
-repository_head = "01b87084767283921fd5cf7852429250a497d3ba"
-worktree_state = "dirty"
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-
-[[relations]]
-type = "analysis_of"
-target = "DSET-REQUIREMENT-META-018"
-
-[[relations]]
-type = "analysis_of"
-target = "DSET-REQUIREMENT-META-020"
-
-[[relations]]
-type = "analysis_of"
-target = "DSET-REQUIREMENT-META-022"
-
-[[relations]]
-type = "analysis_of"
-target = "DSET-REQUIREMENT-META-023"
-
-[[relations]]
-type = "analysis_of"
-target = "DSET-REQUIREMENT-META-024"
-
-[[relations]]
-type = "analysis_of"
-target = "DSET-REQUIREMENT-META-033"
-+++
+---
+artifact_type: "analysis_report"
+artifact_subtype: "external_audit_analysis"
+artifact_id: "DSET-ANALYSIS-REPORT-003"
+scope_path:
+  - "layer:meta"
+priority: "high"
+observed_at: "2026-07-24"
+repository_head: "01b87084767283921fd5cf7852429250a497d3ba"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "analysis_of"
+    targets:
+      - "DSET-REQUIREMENT-META-018"
+      - "DSET-REQUIREMENT-META-020"
+      - "DSET-REQUIREMENT-META-022"
+      - "DSET-REQUIREMENT-META-023"
+      - "DSET-REQUIREMENT-META-024"
+      - "DSET-REQUIREMENT-META-033"
+---
 
 # Analysis report — META completion and FPF review
 

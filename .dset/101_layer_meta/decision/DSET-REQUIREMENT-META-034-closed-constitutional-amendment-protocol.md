@@ -1,38 +1,28 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-287"
-semantic_id = "DSET-REQUIREMENT-META-034"
-revision_mode = "atomic"
-content_role = "definition"
-governance_locus = "internal"
-scope_path = ["layer:meta"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Every semantic change to META follows a closed amendment protocol from Exploration and explicit acceptance through impact mapping, eligibility and topology review, reasoned evergreen update, forward staleness propagation, verification, and fixed-point declaration."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "A constitution that governs its own evolution needs a replayable amendment boundary; otherwise a valid local edit can silently change downstream meaning, lose rationale, or create backward governance."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "operations"]
-applies_unchanged = true
-local_context_required = false
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-META-021"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-META-022"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-META-027"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-META-031"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-META-034"
+scope_path:
+  - "layer:meta"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "operations"
+  applies_unchanged: true
+  local_context_required: false
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "relates_to"
+    targets:
+      - "DSET-REQUIREMENT-META-021"
+      - "DSET-REQUIREMENT-META-022"
+      - "DSET-REQUIREMENT-META-027"
+      - "DSET-REQUIREMENT-META-031"
+---
 
 # Requirement — Close constitutional amendments
 
@@ -59,3 +49,11 @@ Failure never permits editing the accepted atomic claim. A correction or
 changed meaning creates a successor atomic record. An authorized withdrawal
 archives the atom, records the future intention in the applicable Version
 artifact when needed, and leaves every affected view Stale until reconciled.
+
+## Primary claim
+
+Every semantic change to META follows a closed amendment protocol from Exploration and explicit acceptance through impact mapping, eligibility and topology review, reasoned evergreen update, forward staleness propagation, verification, and fixed-point declaration.
+
+## Rationale
+
+A constitution that governs its own evolution needs a replayable amendment boundary; otherwise a valid local edit can silently change downstream meaning, lose rationale, or create backward governance.

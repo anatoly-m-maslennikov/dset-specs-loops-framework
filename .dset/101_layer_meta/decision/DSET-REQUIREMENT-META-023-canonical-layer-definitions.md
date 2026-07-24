@@ -1,30 +1,28 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-256"
-semantic_id = "DSET-REQUIREMENT-META-023"
-revision_mode = "atomic"
-content_role = "definition"
-governance_locus = "internal"
-scope_path = ["layer:meta"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "DSET uses the ordered layers META, GOV, TOOL, SKILL, IMPL, and OPS, with one canonical non-overlapping responsibility assigned to each layer."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Stable layer definitions make ownership and dependency direction understandable without relying on directory names or current implementation details."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "operations"]
-applies_unchanged = true
-local_context_required = false
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-DECISION-GOV-031"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-META-022"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-META-023"
+scope_path:
+  - "layer:meta"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "operations"
+  applies_unchanged: true
+  local_context_required: false
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-DECISION-GOV-031"
+  - type: "relates_to"
+    targets:
+      - "DSET-REQUIREMENT-META-022"
+---
 
 # Requirement — Define the canonical layers
 
@@ -41,3 +39,11 @@ DSET uses the ordered flow `META → GOV → TOOL → SKILL → IMPL → OPS`.
 
 Each responsibility has one canonical owner. Later layers may realize or refine
 earlier truth but cannot redefine an earlier layer's responsibility.
+
+## Primary claim
+
+DSET uses the ordered layers META, GOV, TOOL, SKILL, IMPL, and OPS, with one canonical non-overlapping responsibility assigned to each layer.
+
+## Rationale
+
+Stable layer definitions make ownership and dependency direction understandable without relying on directory names or current implementation details.

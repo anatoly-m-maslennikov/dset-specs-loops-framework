@@ -1,18 +1,12 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-138"
-semantic_id = "DSET-QUESTION-META-005"
-revision_mode = "atomic"
-content_role = "inquiry"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:meta"]
-status = "accepted"
-priority = "medium"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Should a later schema allow explicitly non-authoritative Work Area tags or capabilities for discovery, or should Work Areas remain only ID and path to avoid content classification drift?"
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-+++
+---
+artifact_type: "question"
+artifact_id: "DSET-QUESTION-META-005"
+scope_path:
+  - "layer:meta"
+priority: "medium"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+---
 
 # Question — Should Work Areas expose optional descriptive tags?
 

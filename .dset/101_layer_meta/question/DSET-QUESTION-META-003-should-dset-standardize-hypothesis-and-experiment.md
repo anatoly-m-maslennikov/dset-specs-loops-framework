@@ -1,18 +1,12 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-128"
-semantic_id = "DSET-QUESTION-META-003"
-revision_mode = "atomic"
-content_role = "inquiry"
-governance_origin = "internal"
-relation_shape = "standalone"
-scope_path = ["layer:meta"]
-status = "accepted"
-priority = "medium"
-authority = "operator:anatoly-m-maslennikov"
-claim = "Should a later DSET version define Hypothesis and Experiment artifacts, and how should they differ from prototypes, evals, and Decisions?"
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-promotion = {}
-+++
+---
+artifact_type: "question"
+artifact_id: "DSET-QUESTION-META-003"
+scope_path:
+  - "layer:meta"
+priority: "medium"
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+---
 
 # Question — Should DSET standardize Hypothesis and Experiment?
 

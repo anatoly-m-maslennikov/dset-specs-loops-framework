@@ -1,30 +1,26 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-264"
-semantic_id = "DSET-REQUIREMENT-META-031"
-revision_mode = "atomic"
-content_role = "definition"
-governance_locus = "internal"
-scope_path = ["layer:meta"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "DSET applies the same layer constitution to its own repository, keeps installed methodology distinct from applied project truth, and terminates recursive self-hosting at a declared fixed point."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Bounded self-application proves the framework without mixing reusable methodology, project-local authority, generated installations, or endless recursive adopters."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "operations"]
-applies_unchanged = true
-local_context_required = false
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-META-023"
-
-[[relations]]
-type = "relates_to"
-target = "DSET-REQUIREMENT-003"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-META-031"
+scope_path:
+  - "layer:meta"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "operations"
+  applies_unchanged: true
+  local_context_required: false
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "relates_to"
+    targets:
+      - "DSET-REQUIREMENT-META-023"
+      - "DSET-REQUIREMENT-003"
+---
 
 # Requirement — Bound recursive self-hosting
 
@@ -43,3 +39,11 @@ recursively.
 
 Skills and tools resolve current project-local governance. Embedded wrapper
 knowledge or a generated installation cannot become shadow authority.
+
+## Primary claim
+
+DSET applies the same layer constitution to its own repository, keeps installed methodology distinct from applied project truth, and terminates recursive self-hosting at a declared fixed point.
+
+## Rationale
+
+Bounded self-application proves the framework without mixing reusable methodology, project-local authority, generated installations, or endless recursive adopters.

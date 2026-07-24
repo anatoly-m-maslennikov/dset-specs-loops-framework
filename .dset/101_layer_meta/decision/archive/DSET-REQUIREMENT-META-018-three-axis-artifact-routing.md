@@ -1,30 +1,26 @@
-+++
-artifact_id = "DSET-ATOMIC-RECORD-250"
-semantic_id = "DSET-REQUIREMENT-META-018"
-revision_mode = "atomic"
-content_role = "definition"
-governance_locus = "internal"
-scope_path = ["layer:meta"]
-status = "accepted"
-priority = "high"
-authority = "operator:anatoly-m-maslennikov"
-claim = "DSET routes every governed artifact through exactly three independent semantic axes: revision_mode, content_role, and governance_locus; scope_path remains structural, registered names remain sparse interface vocabulary, and relational artifacts declare explicit endpoints."
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "FPF E.24 warns against names and local frames creating a shadow ontology, A.6.P requires relations to expose their participants, and A.02.01 keeps contextual roles and optional slots explicit. A sparse three-axis route preserves these boundaries without recreating a Type hierarchy."
-
-[promotion]
-affected_children = ["governance", "tool", "skill", "implementation", "ops"]
-applies_unchanged = true
-local_context_required = false
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-090"
-
-[[relations]]
-type = "replacement_of"
-target = "DSET-REQUIREMENT-GOV-091"
-+++
+---
+artifact_type: "requirement"
+artifact_id: "DSET-REQUIREMENT-META-018"
+scope_path:
+  - "layer:meta"
+priority: "high"
+promotion:
+  affected_children:
+    - "governance"
+    - "tool"
+    - "skill"
+    - "implementation"
+    - "ops"
+  applies_unchanged: true
+  local_context_required: false
+llm_session_ids:
+  - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
+relations:
+  - type: "replacement_of"
+    targets:
+      - "DSET-REQUIREMENT-GOV-090"
+      - "DSET-REQUIREMENT-GOV-091"
+---
 
 # Requirement — Three-axis artifact routing
 
@@ -58,3 +54,11 @@ not require placeholder names or artifacts.
 
 Authority, provenance, priority, lifecycle state, and applicability remain
 explicit metadata outside the route.
+
+## Primary claim
+
+DSET routes every governed artifact through exactly three independent semantic axes: revision_mode, content_role, and governance_locus; scope_path remains structural, registered names remain sparse interface vocabulary, and relational artifacts declare explicit endpoints.
+
+## Rationale
+
+FPF E.24 warns against names and local frames creating a shadow ontology, A.6.P requires relations to expose their participants, and A.02.01 keeps contextual roles and optional slots explicit. A sparse three-axis route preserves these boundaries without recreating a Type hierarchy.
