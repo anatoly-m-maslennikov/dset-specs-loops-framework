@@ -1,6 +1,6 @@
 ---
-artifact_type: evaluation_plan
-artifact_id: DSET-EVAL-PLAN-GOV-038
+artifact_type: evaluation_case
+artifact_id: DSET-EVALUATION-CASE-GOV-038
 scope_path: ["layer:gov"]
 priority: medium
 llm_session_ids:
@@ -8,14 +8,14 @@ llm_session_ids:
 relations:
   - type: replacement_of
     targets:
-      - "DSET-EVAL-PLAN-GOV-033"
+      - "DSET-EVALUATION-CASE-GOV-033"
   - type: check_of
     targets:
       - "DSET-IMPL-GOV-007"
       - "DSET-REQUIREMENT-META-023"
 ---
 
-# Evaluation Plan — Assess numbered layer-order interpretability
+# Evaluation Case — Assess numbered layer-order interpretability
 
 Show reviewers the installed, applied, and reusable numbered roots without
 additional explanation. Ask them to identify methodology versus project truth,

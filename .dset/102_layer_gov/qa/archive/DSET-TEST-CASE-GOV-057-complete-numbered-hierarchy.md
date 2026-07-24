@@ -1,6 +1,6 @@
 ---
-artifact_type: test_plan
-artifact_id: DSET-TEST-PLAN-GOV-057
+artifact_type: test_case
+artifact_id: DSET-TEST-CASE-GOV-057
 scope_path: ["layer:gov"]
 priority: high
 llm_session_ids:
@@ -8,8 +8,8 @@ llm_session_ids:
 relations:
   - type: replacement_of
     targets:
-      - "DSET-TEST-PLAN-GOV-049"
-      - "DSET-TEST-PLAN-GOV-050"
+      - "DSET-TEST-CASE-GOV-049"
+      - "DSET-TEST-CASE-GOV-050"
   - type: check_of
     targets:
       - "DSET-IMPL-GOV-007"
@@ -17,7 +17,7 @@ relations:
       - "DSET-REQUIREMENT-META-025"
 ---
 
-# Test Plan — Validate the complete numbered hierarchy
+# Test Case — Validate the complete numbered hierarchy
 
 ## Controlled checks
 
