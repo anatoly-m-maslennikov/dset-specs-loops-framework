@@ -54,13 +54,15 @@ semantic matrix.
 Each registered `artifact_type` plus optional direct `artifact_subtype` maps to
 exactly one route. Carriers store that type pair and derive the route; they do
 not repeat the three route coordinates. Unknown, disabled, or ambiguous
-mappings fail closed.
+mappings fail closed. Several semantically distinct registered names may share
+one route; the route supports dispatch but does not determine identity.
 
 `atomic` artifacts are independently governed immutable units. `append_only`
 artifacts preserve accepted records and permit only complete new records.
 `maintained` artifacts may revise existing content through their applicable
 update procedure. DSET defines no additional currentness or freshness class.
 Atomic source: `DSET-REQUIREMENT-META-041`.
+Sparse-routing source: `DSET-REQUIREMENT-META-043`.
 
 Requirement maps to atomic Definition/internal, Constraint to atomic
 Definition/external, Contract to atomic Definition/relation, and Implementation

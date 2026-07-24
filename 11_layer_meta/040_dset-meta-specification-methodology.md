@@ -201,12 +201,14 @@ atomic/definition/internal, Constraint to atomic/definition/external, Contract
 to atomic/definition/relation, and Implementation Decision to
 atomic/method/internal. None of their carriers repeats those coordinates.
 
-## DSET-REQUIREMENT-META-013 — The routing matrix remains sparse
+## DSET-REQUIREMENT-META-043 — Sparse routing without inverse uniqueness
 
-Atomic source: `DSET-REQUIREMENT-META-013`.
+Atomic source: `DSET-REQUIREMENT-META-043`.
 
-The routing space is the matrix below. Every cell may contain zero or one
-registered name at each enabled governance locus. An empty cell is valid.
+The routing space is the matrix below. Every registered type/subtype occupies
+exactly one coordinate. A coordinate may contain several semantically distinct
+registered names, and an empty coordinate is valid. Routes select dispatch and
+policy; they do not replace artifact identity.
 
 | Revision mode \ Content role | Inquiry | Definition | Rationale | Method | Implementation | Observation |
 |---|---|---|---|---|---|---|
@@ -219,8 +221,9 @@ coordinates, not required artifacts. Internal governance is always enabled;
 external and relation governance are enabled independently by project settings.
 
 **Scenario DSET-SCENARIO-META-014:** A small internal-only project creates no
-external or relational placeholders. A project with an OpenAPI boundary enables
-relations and registers only the names it actually needs.
+external or relational placeholders. Problem, Evidence Record, and
+Verification may share atomic/observation/internal while retaining distinct
+meanings and identities.
 
 ## DSET-REQUIREMENT-META-014 — Relations remain first-class and endpoint-explicit
 
