@@ -55,7 +55,7 @@ passing. Missing or stale assurance leaves the affected claim
 pending or stale and blocks the relying gate; it does not silently erase an
 otherwise valid rule. `DSET-RULE-ARTIFACT-MAINTENANCE` governs transactional
 discharge and risk-proportionate proof with explicit reopen conditions.
-Atomic source: `DSET-DECISION-GOV-002`.
+Atomic source: `DSET-IMPL-GOV-005`.
 
 ## Bootstrap
 
@@ -100,7 +100,7 @@ catalogs, tools, and skill instructions live in `.dset/`. Durable running
 records live in `.dset_journal/` as append-only NDJSON. Disposable caches,
 locks, scratch state, and process-local output live in `.dset_runtime/`.
 No reader treats the journal or runtime root as a governance fallback.
-Atomic source: `DSET-REQUIREMENT-GOV-100`.
+Atomic source: `DSET-REQUIREMENT-GOV-111`.
 
 ## Methodology materialization
 
@@ -146,12 +146,10 @@ DSET separates Revision mode from artifact meaning and Content role:
   implementation plans, deterministic test plans, eval plans, architecture,
   runbooks, and governing rules. They are reasoned from active source atoms and
   become stale when they disagree with one.
-- **Context and evidence atoms** record Questions and their Conflict,
-  Risk, and Opportunity subtypes; Problems and their Defect, Gap, and Debt
-  subtypes; QA executions and results; proofs; sessions/runs; and optional
-  Version records.
-  They route work or assess claims without becoming normative authority merely
-  by existing.
+- **Inquiry and Observation atoms** record unresolved choices, discrepancies,
+  execution facts, proof, sessions, and runs through the currently enabled
+  catalog vocabulary. They route work or assess claims without becoming
+  normative authority merely by existing.
 - **Implementation artifacts** are code, Test code, Evaluation prompts or
   datasets, CI
   workflows, scripts, generated runtime assets, and configuration examples.
@@ -160,7 +158,8 @@ DSET separates Revision mode from artifact meaning and Content role:
 
 This separation preserves distinct atomic authority, append-only records,
 maintained views, implementation, commit provenance, and session provenance.
-Atomic source: `DSET-DECISION-GOV-001`.
+Atomic sources: `DSET-REQUIREMENT-META-041`,
+`DSET-REQUIREMENT-META-054`, and `DSET-REQUIREMENT-GOV-108`.
 
 An active atom wins over a stale maintained view. A replacement successor
 wins over its archived predecessor by explicit `replacement_of`, never by age.
@@ -196,10 +195,10 @@ create empty diagrams for structural levels it has not enabled.
 Each view stays one level deep, links its owning hubs, atomic-artifact folders,
 or long-lived non-atomic owners, and remains consistent with current accepted
 truth. It never links individual atoms or `.dset_runtime` descendants. It is
-Navigation or compiled Specification/Architecture, never independent
+Navigation or a maintained Specification/Architecture, never independent
 authority. Cross-level details belong in the child view rather than expanding
 one whole-project diagram until it becomes unreadable.
-Atomic source: `DSET-REQUIREMENT-GOV-031`.
+Atomic source: `DSET-REQUIREMENT-GOV-104`.
 
 ## Features versus layers
 

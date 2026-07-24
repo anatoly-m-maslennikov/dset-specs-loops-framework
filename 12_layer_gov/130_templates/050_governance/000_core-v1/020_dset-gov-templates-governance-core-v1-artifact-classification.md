@@ -36,8 +36,8 @@ classifications fail closed. Atomic sources: `DSET-REQUIREMENT-GOV-070` and
 
 The conforming framework catalog must assign exactly one canonical top-level
 type to each of the 54 semantic routes. Direct subtypes inherit their parent's
-route and cannot override it. Atomic sources: `DSET-REQUIREMENT-META-045` and
-`DSET-REQUIREMENT-META-046`.
+route and cannot override it. Atomic source:
+`DSET-REQUIREMENT-META-060`.
 
 ## Current taxonomy migration blocker
 
@@ -107,7 +107,7 @@ contains only non-derived properties:
 ```yaml
 ---
 artifact_type: requirement
-artifact_id: DSET-REQUIREMENT-META-038
+artifact_id: APP-REQUIREMENT-042
 scope_path: ["layer:meta"]
 priority: high
 llm_session_ids:
@@ -115,10 +115,10 @@ llm_session_ids:
 relations:
   - type: replacement_of
     targets:
-      - "DSET-REQUIREMENT-GOV-094"
+      - "APP-REQUIREMENT-017"
   - type: relates_to
     targets:
-      - "DSET-REQUIREMENT-META-035"
+      - "APP-REQUIREMENT-031"
 ---
 ```
 
@@ -149,8 +149,8 @@ The project prefix is controlled by settings and is omitted when disabled.
 layers, features, or their configured nesting. The visible registered type or
 enabled direct subtype owns one project-wide number sequence. Changing prefix,
 scope grammar, or identity kind requires one complete governed migration
-without accepted aliases. Atomic sources: `DSET-REQUIREMENT-GOV-064`,
-`DSET-REQUIREMENT-GOV-071`, and `DSET-IMPL-GOV-003`.
+without accepted aliases. Atomic sources: `DSET-REQUIREMENT-GOV-113`,
+`DSET-REQUIREMENT-GOV-114`, and `DSET-IMPL-GOV-009`.
 
 ## Governance locus and endpoints
 
@@ -169,8 +169,8 @@ The content-role loop is:
 
 ```text
 Inquiry
+  -> Analysis
   -> Definition
-  -> Rationale
   -> Method
   -> Implementation
   -> Observation

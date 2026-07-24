@@ -22,9 +22,9 @@ Rationale is Analysis content rather than a separate Content role.
 artifact contributes, its primary content maps to exactly one role while links
 connect it to the other roles without duplicating ownership.
 
-## DSET-REQUIREMENT-META-002 — Tests and evals remain distinct
+## DSET-REQUIREMENT-META-049 — Keep Test and Evaluation chains distinct
 
-Atomic source: `DSET-REQUIREMENT-META-002`.
+Atomic source: `DSET-REQUIREMENT-META-049`.
 
 The methodology must keep deterministic Test Plans separate from
 probabilistic or qualitative Evaluation Plans. Each atomic plan defines one
@@ -72,69 +72,66 @@ DSET must select implementation-language enforcement and artifact-governance enf
 
 **Scenario DSET-SCENARIO-META-007:** A Python repository selects `python-v1` and `documentation-v1` together; a documentation-only repository selects `documentation-v1` without inheriting Python tools; a future TypeScript repository combines its own language profile with the same artifact profile.
 
-## DSET-REQUIREMENT-META-007 — Proof categories remain separate
+## Test and Evaluation proof routing
 
-Atomic source: `DSET-REQUIREMENT-META-007`.
+Atomic source: `DSET-REQUIREMENT-META-049`.
 
 Exact resolver, ownership, path, identity, wrapper, and recursion behavior must be proven by deterministic tests. Agent interpretation, rule-following, navigation, and diagnostic usefulness must be proven by separate qualitative or probabilistic evals. Automation does not change the proof category.
 
 **Scenario DSET-SCENARIO-META-008:** A scripted assertion that a cycle emits one stable code remains a test; an automated agent run measuring whether the diagnostic enables a safe correction remains an eval.
 
-## DSET-REQUIREMENT-META-044 — Contracts preserve boundaries without stored lifecycle state
+## DSET-REQUIREMENT-META-056 — External obligations preserve boundaries
 
-Atomic source: `DSET-REQUIREMENT-META-044`.
+Atomic source: `DSET-REQUIREMENT-META-056`.
 
 When the operator supplies or accepts a DDL, CSV/XLSX schema,
 OpenAPI/message/protocol, host-native package format, supported-platform
 interface, hosted-CI interface, dependency boundary, or comparable obligation,
-DSET must represent it as an atomic relational Definition named Contract. A
-Contract uses a stable `CONTRACT` ID. Each immutable record names the accepted
-source, relation kind, role-bearing endpoints, direction, conformance rule,
-compatibility rule, priority, and applicable replacement relations. Each
-endpoint independently declares internal or external origin. External formats
-are pinned by version or digest in applicable evidence. Acceptance is inherent
-to emission; active or archived storage state is derived from repository
-placement.
+DSET must represent it as an immutable relational Definition. GOV owns its
+concrete artifact type, subtype, identity kind, and carrier. Each record names
+the accepted source, relation kind, role-bearing endpoints, direction,
+conformance rule, compatibility rule, priority, and applicable replacement
+relations. Each endpoint independently declares internal or external origin.
+External formats are pinned by version or digest in applicable evidence.
+Acceptance is inherent to emission; active or archived storage state is
+derived from repository placement.
 
-Implementation conforms to every applicable active Contract and cannot rewrite
-the boundary. Ambiguity routes to an Inquiry; incompatible active authority
-becomes a Conflict; observed nonconformance becomes a Problem. An unrelated
-artifact does not silently override a Contract; change requires explicit
-precedence or an operator-accepted replacement Contract. A mandated dependency
-is a Constraint when an external authority imposes it and a Contract when a
-boundary participant relies on it. A project-selected dependency rule is a
-Requirement; selecting a material implementation approach is an Implementation
-Decision.
+Implementation conforms to every applicable active boundary obligation and
+cannot rewrite the boundary. Ambiguity routes to an Inquiry; incompatible active authority
+requires conflict resolution; observed nonconformance becomes a downstream
+Observation. An unrelated artifact does not silently override the obligation;
+change requires explicit precedence or an operator-accepted replacement
+relational Definition. GOV owns the concrete classification of external,
+relational, project-selected, and implementation-choice artifacts.
 
 **Scenario DSET-SCENARIO-META-009:** The operator accepts host, platform,
-dependency, and GitHub Actions boundaries as Contracts. Descriptive Markdown or
-local scripts alone cannot satisfy them. An unclear host format is an Inquiry,
-incompatible active formats form a Conflict, and a failing platform or
-disallowed dependency is a Problem.
+dependency, and GitHub Actions boundaries as relational Definitions.
+Descriptive Markdown or local scripts alone cannot satisfy them. An unclear
+host format is an Inquiry, incompatible active formats require conflict
+resolution, and a failing platform or disallowed dependency is an Observation
+that may create a Problem under the configured GOV taxonomy.
 
-## DSET-REQUIREMENT-META-009 — User Stories remain Requirement forms
+## DSET-REQUIREMENT-META-050 — User Stories remain Requirement forms
 
-Atomic source: `DSET-REQUIREMENT-META-009`.
+Atomic source: `DSET-REQUIREMENT-META-050`.
 
 When actor, capability, and value framing is useful, it belongs inside or links
-to a Requirement. User Story is not a routing axis or required registered name.
+to a Definition. User Story is not a routing axis or required registered name.
 Split independently enforceable acceptance criteria into sibling atomic
 Definitions.
 
 **Scenario DSET-SCENARIO-META-010:** A contributor story explains why a host
-integration matters, while separate Requirement, Test Plan, and Evaluation Plan
+integration matters, while separate Definition, Test Plan, and Evaluation Plan
 artifacts own the behavior and proof.
 
-## DSET-REQUIREMENT-META-010 — Outcomes remain definition, method, or observation content
-
-Atomic source: `DSET-REQUIREMENT-META-010`.
+### Outcome framing
 
 An intended measurable state change belongs in a Definition when it is required
 or in a Method when it defines assessment. An observed result is an
 Observation. Outcome is not a routing axis or mandatory registered name, and
 shipping an output alone does not prove an intended state change.
 
-**Scenario DSET-SCENARIO-META-011:** A Requirement defines the release behavior;
+**Scenario DSET-SCENARIO-META-011:** A Definition states the release behavior;
 a linked Evaluation defines how time-to-diagnose improvement is assessed; the
 observed timestamps remain evidence.
 
@@ -205,14 +202,12 @@ relation endpoints, and type-specific facts remain explicit outside the route.
 Acceptance is inherent to emitted atoms, while active versus archived state is
 derived from repository placement.
 
-**Scenario DSET-SCENARIO-META-013:** The registered Requirement type resolves to
-atomic/definition/internal, Constraint to atomic/definition/external, Contract
-to atomic/definition/relation, and Implementation Decision to
-atomic/method/internal. None of their carriers repeats those coordinates.
+**Scenario DSET-SCENARIO-META-013:** Each enabled catalog type resolves to one
+registered route, and none of its carriers repeats the route coordinates.
 
-## DSET-REQUIREMENT-META-045 — One type per semantic route
+## DSET-REQUIREMENT-META-060 — One type per semantic route
 
-Atomic source: `DSET-REQUIREMENT-META-045`.
+Atomic source: `DSET-REQUIREMENT-META-060`.
 
 Every registered artifact type occupies exactly one coordinate in the routing
 matrix, and every coordinate identifies exactly one canonical artifact type.
@@ -231,9 +226,7 @@ route coordinates and cannot override one.
 atomic/observation/internal become direct subtypes of that route's single
 canonical type.
 
-## DSET-REQUIREMENT-META-046 — Complete semantic-route coverage
-
-Atomic source: `DSET-REQUIREMENT-META-046`.
+### Complete semantic-route coverage
 
 Every coordinate in the routing matrix is occupied. The three Revision modes,
 six Content roles, and three Governance loci therefore require exactly 54
@@ -248,9 +241,9 @@ its internal vocabulary. Its framework catalog still contains the canonical
 external and relation types for all Revision-mode and Content-role
 combinations.
 
-## DSET-REQUIREMENT-META-014 — Relations remain first-class and endpoint-explicit
+## DSET-REQUIREMENT-META-051 — Relations remain first-class and endpoint-explicit
 
-Atomic source: `DSET-REQUIREMENT-META-014`.
+Atomic source: `DSET-REQUIREMENT-META-051`.
 
 An artifact routed to `governance_locus = "relation"` must declare a stable
 relation kind and at least two role-bearing endpoints. Each endpoint declares
@@ -258,13 +251,14 @@ its own internal or external origin. Endpoint origin does not add another
 routing axis, and a relational name or suffix cannot replace the endpoint
 record.
 
-**Scenario DSET-SCENARIO-META-015:** A Contract identifies provider and consumer;
-a Pull Request identifies source and target; a Merge Commit records the merged
-parents. Each remains one relational artifact with explicit participants.
+**Scenario DSET-SCENARIO-META-015:** A boundary obligation identifies provider
+and consumer; a Pull Request identifies source and target; a Merge Commit
+records the merged parents. Each remains one relational artifact with explicit
+participants.
 
-## DSET-REQUIREMENT-META-015 — Scope path remains structural
+## DSET-REQUIREMENT-META-052 — Scope path remains structural
 
-Atomic source: `DSET-REQUIREMENT-META-015`.
+Atomic source: `DSET-REQUIREMENT-META-052`.
 
 Layer, feature, feature group, Work Area, and configured compositions of them
 form the artifact's project-relative `scope_path`. The current project is
@@ -321,9 +315,9 @@ types form a total one-to-one route vocabulary, direct subtypes refine meaning
 without changing routes, and relational participants remain explicit rather
 than encoded in names.
 
-## DSET-REQUIREMENT-META-021 — Exploration Mode defers artifact creation
+## DSET-REQUIREMENT-META-058 — Exploration Mode defers artifact creation
 
-Atomic source: `DSET-REQUIREMENT-META-021`.
+Atomic source: `DSET-REQUIREMENT-META-058`.
 
 Exploration Mode sits outside the artifact-routing matrix. It permits
 brainstorming, discussion, research, analysis, comparison, terminology work,
@@ -333,12 +327,12 @@ acceptance is the only exit that authorizes durable emission.
 
 Question intent enters Exploration Mode silently when the input primarily asks
 for information, explanation, comparison, critique, alternatives, or a
-recommendation. Idea intent enters silently when the input primarily introduces
-a candidate such as “another idea,” “what if,” “maybe,” or “could we.”
+recommendation. Idea intent enters when the input primarily introduces a
+candidate such as “another idea,” “what if,” “maybe,” or “could we.”
 Detection is semantic, not punctuation- or keyword-based. An explicit record,
 accept, apply, implement, or fix instruction remains authorization for only the
-stated change. Atomic sources: `DSET-REQUIREMENT-META-036` and
-`DSET-REQUIREMENT-META-037`.
+stated change. Whether DSET announces the mode transition is a downstream
+interaction-reporting choice. Atomic source: `DSET-REQUIREMENT-META-058`.
 
 The Exploration Mode lifecycle is defined once in
 `030_dset-meta-specification-domain.md`. This section owns only its interaction
@@ -349,23 +343,20 @@ another idea” produce discussion without an artifact or governance commit.
 “Can you apply this requirement?” authorizes the stated application despite
 question punctuation.
 
-## DSET-REQUIREMENT-META-042 — Maintained semantic views are thin current views
+## DSET-REQUIREMENT-META-054 — Maintained semantic views are thin current views
 
-Atomic source: `DSET-REQUIREMENT-META-042`.
+Atomic source: `DSET-REQUIREMENT-META-054`.
 
 ```mermaid
 flowchart LR
-    EXPLORE["Exploration Mode<br/>DSET-REQUIREMENT-META-021"]
-    ACCEPT["Explicit acceptance<br/>DSET-REQUIREMENT-META-021"]
-    ATOMS["Atomic records<br/>DSET-REQUIREMENT-META-042"]
-    REFACTOR["Optional atomic refactoring<br/>DSET-REQUIREMENT-META-042"]
-    VIEW["Thin maintained view<br/>DSET-REQUIREMENT-META-042"]
-    GATE["Downstream gate<br/>DSET-REQUIREMENT-META-042"]
+    EXPLORE["Exploration Mode<br/>DSET-REQUIREMENT-META-058"]
+    ACCEPT["Explicit acceptance<br/>DSET-REQUIREMENT-META-058"]
+    ATOMS["Atomic records<br/>DSET-REQUIREMENT-META-041"]
+    VIEW["Thin maintained view<br/>DSET-REQUIREMENT-META-054"]
+    GATE["Downstream gate<br/>DSET-REQUIREMENT-META-054"]
 
     EXPLORE --> ACCEPT
     ACCEPT --> ATOMS
-    ATOMS --> REFACTOR
-    REFACTOR --> VIEW
     ATOMS --> VIEW
     VIEW --> GATE
 ```
@@ -452,7 +443,7 @@ Authority and refinement flow forward. Dependency consumption points from a
 later layer to its own or an earlier layer. Feedback may return to Exploration
 Mode, but accepted feedback re-enters at its proper owner and creates no
 backward-governance edge. Dependency, scope specialization, and horizontal
-feature Contracts remain distinct relations.
+feature boundary relations remain distinct.
 
 ## DSET-REQUIREMENT-META-026 — Single-owner placement
 
@@ -464,9 +455,9 @@ observe upstream authority. It cannot duplicate it. If an upstream statement
 needs downstream entities to be defined, split the stable invariant from its
 mechanism or move the statement downstream.
 
-## DSET-REQUIREMENT-META-027 — Forward change propagation
+## DSET-REQUIREMENT-META-059 — Forward change propagation
 
-Atomic source: `DSET-REQUIREMENT-META-027`.
+Atomic source: `DSET-REQUIREMENT-META-059`.
 
 ```mermaid
 flowchart LR
@@ -487,13 +478,13 @@ the forward pass.
 
 Atomic source: `DSET-REQUIREMENT-META-028`.
 
-Requirements, Constraints, and Contracts own accepted Definition authority.
-Implementation Decisions own accepted realization choices. Test Plans and
-Evaluation Plans own checking-method definitions without authorizing project
-behavior. Implementations realize applicable authority. Executions perform
-work; Observations and Evidence report what happened; Verification judges
-bounded sufficiency and currentness. Assurance may support or challenge
-reliance but cannot establish or override authority.
+Accepted Definitions own required-state authority. Accepted Methods own
+realization or checking choices without authorizing a different required state.
+Implementations realize applicable authority. Executions perform work;
+Observations and Evidence report what happened; Verification judges bounded
+sufficiency and currentness. Assurance may support or challenge reliance but
+cannot establish or override authority. GOV assigns concrete type and subtype
+names to these routes.
 
 ## DSET-REQUIREMENT-META-029 — Profiles and applicability
 
@@ -513,9 +504,9 @@ predecessor and successor handoffs, and preserve the dependency DAG. If a
 feature, profile, Work Area, or ordinary scope can own the concern, DSET does
 not add a layer.
 
-## DSET-REQUIREMENT-META-031 — Bounded recursive self-hosting
+## DSET-REQUIREMENT-META-057 — Bounded recursive self-hosting
 
-Atomic source: `DSET-REQUIREMENT-META-031`.
+Atomic source: `DSET-REQUIREMENT-META-057`.
 
 DSET applies the same constitution to itself while keeping reusable
 methodology, installed methodology, applied authority, implementations,
@@ -523,18 +514,18 @@ runtime state, and generated views distinct. Self-hosting terminates at a
 declared fixed point; skills and tools resolve current project-local governance
 instead of treating embedded wrapper knowledge as authority.
 
-## DSET-REQUIREMENT-META-032 — Durable control-plane safety
+## DSET-REQUIREMENT-META-053 — Durable control-plane safety
 
-Atomic source: `DSET-REQUIREMENT-META-032`.
+Atomic source: `DSET-REQUIREMENT-META-053`.
 
 The durable control plane contains accepted current project truth only. It
 stores no secrets, remains LLM-provider agnostic, keeps future intentions in
 Version Roadmaps, and excludes unaccepted Exploration. Downstream layers own
 concrete storage, adapter, lookup, redaction, and enforcement mechanisms.
 
-## DSET-REQUIREMENT-META-033 — Progressive governance surfaces
+## Governance-surface activation
 
-Atomic source: `DSET-REQUIREMENT-META-033`.
+Atomic source: `DSET-REQUIREMENT-META-054`.
 
 DSET begins with atomic authority and requires no maintained governance surface
 merely because the project is initialized. Requirements carry clear accepted
@@ -568,9 +559,9 @@ remains Blocked until recovery begins, while its currentness and downstream
 gates remain unsatisfied. Deactivation is allowed from any non-Inactive status
 and returns the surface to Inactive without deleting its carrier or history.
 
-## DSET-REQUIREMENT-META-034 — Closed constitutional amendments
+## DSET-REQUIREMENT-META-055 — Closed constitutional amendments
 
-Atomic source: `DSET-REQUIREMENT-META-034`.
+Atomic source: `DSET-REQUIREMENT-META-055`.
 
 A semantic META amendment crosses a closed sequence:
 

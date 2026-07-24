@@ -9,24 +9,21 @@ priority: medium
 
 ## Purpose
 
-Own applied META atoms, project-specific plans, and the project's accepted
-constitutional requirements.
+Own this project's active META atomic authority and its optional maintained
+assurance views.
 
 ## Boundaries
 
-Installed methodology is separate. Identity-only reference carriers declare
-which reusable evergreen view they follow. Applied atomic records remain the
-semantic authority; a project-specific thin evergreen view replaces a
-reference only when the applied project needs a distinct current view.
+Installed methodology is a separate materialized owner. Applied atomic records
+remain semantic authority. Maintained plans organize active atomic plans only
+and cannot replace or establish them.
 
-The active layer constitution is
-`META → GOV → TOOL → SKILL → IMPL → OPS`. META owns universal invariants and
-inter-layer semantics; each later layer owns its canonical realization
-responsibility.
+The layer constitution is `META → GOV → TOOL → SKILL → IMPL → OPS`.
 
 ## Start here
 
-- `DSET-META-REFERENCE-specification-methodology.toml`
 - `decision/`
+- `question/`
+- `evidence/`
 - `DSET-META-plan-tests.md`
 - `DSET-META-plan-evaluations.md`

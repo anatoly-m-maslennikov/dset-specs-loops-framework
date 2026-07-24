@@ -73,8 +73,8 @@ Every enabled structural level has one current Mermaid view of itself and the
 level immediately below. Hubs link stable folders, maintained files, settings,
 and other long-lived owners; they do not list every atomic artifact or anything
 inside `.dset_runtime/`.
-Sources: `DSET-REQUIREMENT-GOV-031` and
-`DSET-REQUIREMENT-GOV-053`.
+Sources: `DSET-REQUIREMENT-GOV-104` and
+`DSET-REQUIREMENT-GOV-106`.
 
 ## Connect artifacts with precise relations
 

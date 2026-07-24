@@ -9,16 +9,22 @@ priority: medium
 
 ## Purpose
 
-Own applied GOV Decisions, Questions, Problems, lifecycle events, and plans.
+Own this project's active GOV atomic authority and optional maintained
+assurance views.
 
 ## Boundaries
 
-Installed methodology is separate. Identity-only reference carriers declare
-exactly shared evergreen truth; semantic compilation replaces a reference only
-when applied project truth diverges.
+Installed methodology is separate. Active atomic records remain semantic
+authority. Type-local archives preserve inactive history. Maintained plans
+organize active atomic plans only.
 
 ## Start here
 
-- `DSET-GOV-REFERENCE-specification-methodology.toml`
+- `decision/`
+- `question/`
+- `problem/`
+- `analysis/`
+- `evidence/`
+- `qa/`
 - `DSET-GOV-plan-tests.md`
 - `DSET-GOV-plan-evaluations.md`

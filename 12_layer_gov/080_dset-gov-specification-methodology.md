@@ -46,8 +46,8 @@ mutates. Sources: `DSET-REQUIREMENT-META-047` and
 The installed methodology is materialized project-local data, not a symlink or
 pointer to framework source. Repository-root framework methodology is refreshed
 into `.dset/000_dset_methodology/` only by an explicit one-way synchronization
-operation. Sources: `DSET-DECISION-GOV-022`,
-`DSET-DECISION-GOV-025`, `DSET-DECISION-GOV-026`,
+operation. Sources: `DSET-IMPL-GOV-007`,
+`DSET-IMPL-GOV-008`,
 `DSET-IMPL-GOV-002`, and `DSET-REQUIREMENT-GOV-052`.
 
 ## Interaction and Exploration Mode
@@ -66,8 +66,7 @@ the accepted scope.
   transitions.
 
 Both modes preserve the same authorization, routing, validation, and safety.
-Sources: `DSET-REQUIREMENT-META-021`,
-`DSET-REQUIREMENT-META-036`, `DSET-REQUIREMENT-META-037`, and
+Sources: `DSET-REQUIREMENT-META-058` and
 `DSET-REQUIREMENT-GOV-098`.
 
 ## Atomic emission
@@ -83,7 +82,7 @@ until authority, claim, scope, provenance, lineage, conflicts, and proof
 obligations are sufficiently precise for immutable emission. Before writing,
 assess whether the unchanged claim is eligible for promotion one structural
 level upward; propose but never promote without operator acceptance. Sources:
-`DSET-REQUIREMENT-GOV-039` and `DSET-REQUIREMENT-GOV-092`.
+`DSET-REQUIREMENT-GOV-102` and `DSET-REQUIREMENT-GOV-112`.
 
 ## Maintained semantic views
 
@@ -103,8 +102,8 @@ concatenation of atoms. It contains:
 
 Refresh is on demand or when a downstream entry gate requires a current view.
 If applicable active atoms and a view disagree, atomic authority wins and the
-view is stale until refreshed. Sources: `DSET-REQUIREMENT-META-033`,
-`DSET-REQUIREMENT-META-042`, and `DSET-REQUIREMENT-GOV-092`.
+view is stale until refreshed. Sources: `DSET-REQUIREMENT-META-054` and
+`DSET-REQUIREMENT-GOV-115`.
 
 ## Development and release-readiness modes
 
@@ -139,9 +138,7 @@ all active atomic authority
 
 Any applicable view, implementation, check implementation, evaluation
 implementation, or configuration change after assurance makes the affected
-release evidence stale. This section translates the older terminology in
-`DSET-REQUIREMENT-GOV-066` to the current maintained-view model
-without altering the atom.
+release evidence stale. Source: `DSET-REQUIREMENT-GOV-109`.
 
 ## Git and commit coverage
 
@@ -155,7 +152,7 @@ Problem has a `Resolves:` trailer, and every governed commit has one `Session:`
 trailer. Archive transitions additionally use `Archives:`, `Archive-Reason:`,
 and `Archive-Reference:` when applicable. Generated-only paths do not create
 semantic implementation coverage for the graph that generated them. Sources:
-`DSET-DECISION-GOV-020`, `DSET-REQUIREMENT-GOV-065`, and
+`DSET-IMPL-GOV-006`, `DSET-REQUIREMENT-GOV-065`, and
 `DSET-REQUIREMENT-GOV-096`.
 
 ## Atomic lifecycle
@@ -176,8 +173,7 @@ leaves a reviewable diff. Unexpected structure stops without partial mutation.
 It may recode an atom's identity or carrier only when a separately accepted
 one-to-one migration preserves governed meaning and rewrites the complete
 reference graph. Sources: `DSET-IMPL-GOV-001`,
-`DSET-DECISION-GOV-027`, `DSET-REQUIREMENT-GOV-060`, and
-`DSET-REQUIREMENT-GOV-061`.
+`DSET-DECISION-GOV-027`, and `DSET-REQUIREMENT-GOV-108`.
 
 ## Carrier and preview policy
 
@@ -186,24 +182,23 @@ Flavored Markdown, repository-relative navigation, GitHub alerts,
 `<details><summary>` for collapsible sections, and fenced Mermaid diagrams.
 TOML is reserved for executed human-edited configuration, JSON for schemas and
 machine boundaries, NDJSON for append-only records, and native formats for
-code, CI, lockfiles, and host manifests. Source:
-`DSET-CONSTRAINT-GOV-002`, `DSET-DECISION-GOV-014`,
-`DSET-DECISION-GOV-015`, `DSET-REQUIREMENT-GOV-095`, and
-`DSET-REQUIREMENT-GOV-097`.
+code, CI, lockfiles, and host manifests. Sources:
+`DSET-CONSTRAINT-GOV-002` and `DSET-REQUIREMENT-GOV-116`.
 
 ## Storage and discovery boundaries
 
 - `.dset/` contains current governed state, installed methodology, settings,
   catalogs, tools, and skill instructions;
 - `.dset_journal/` contains durable append-only NDJSON running records; and
-- `.dset_runtime/` contains disposable runtime state.
+- `.dset_runtime/` contains reconstructible or resumable runtime state; and
+- the host temporary root contains disposable process scratch.
 
 Completed migrations, superseded aggregate registries, compatibility archives,
 and inactive legacy documentation stay outside `.dset` and are never a
 fallback governance source. Repository legal files stay at root `LICENSE` and
 `LICENSES`, outside all three DSET roots. Sources:
-`DSET-DECISION-GOV-028`, `DSET-DECISION-GOV-029`,
-`DSET-REQUIREMENT-GOV-043`, and `DSET-REQUIREMENT-GOV-100`.
+`DSET-IMPL-GOV-008`, `DSET-DECISION-GOV-029`, and
+`DSET-REQUIREMENT-GOV-111`.
 
 ## Priority and conflict selection
 
@@ -212,25 +207,27 @@ comparison result. Scope and earlier-layer bonuses apply only during eligible
 comparison and never alter stored values. The default conflict policy is
 `ask_always`. `auto_by_effective_priority` may select only one unique eligible
 winner; ties, uncertainty, same-level ambiguity, incomparability, or
-unsatisfiable external obligations return to the operator. Sources:
-`DSET-REQUIREMENT-GOV-059` and `DSET-REQUIREMENT-GOV-063`.
+unsatisfiable external obligations return to the operator. Source:
+`DSET-REQUIREMENT-GOV-107`.
 
 ## Independent review
 
 An external review packet binds exact inputs, rules, revision, criteria, scope,
 and permitted effects. Its report is evidence, not authority. Each finding is
-rejected with rationale, deferred to Version planning, or routed to an atomic
-Question, Problem, Requirement, Constraint, Contract, Implementation Decision,
-Analysis Report, or proof obligation. Accepted conclusions refresh only their
-affected closure.
+rejected with rationale, deferred to Version planning, or routed to a canonical
+type/subtype selected by the active route catalog or to a proof obligation.
+Accepted conclusions refresh only their affected closure.
 
-## Version artifacts
+## Release-lifecycle artifacts
 
-Version is the project-level release-lifecycle family. Roadmap, Version Scope,
-Change, Release Plan, Readiness Record, and Release Record remain flat roles.
-Milestones are Roadmap entries. Release Notes and changelogs derive from
-Release Records. A Release Plan is a maintained Definition. Pull requests are
-maintained relational Methods; internal and external commits remain distinct
-atomic Implementation types. Sources: `DSET-DECISION-GOV-019`,
+Roadmap, Version Scope, Change, Release Plan, Readiness Record, and Release
+Record remain release-lifecycle roles. Milestones are Roadmap entries. Release
+Notes and changelogs derive from Release Records. A Release Plan is a
+maintained Definition. Pull requests are maintained relational Methods;
+internal and external commits remain distinct atomic Implementations.
+
+The final top-level route type names remain unresolved by
+`DSET-QUESTION-GOV-014`, and `DSET-PROBLEM-GOV-008` blocks any claim that the
+current catalog is total and one-to-one. Current role semantics come from
 `DSET-REQUIREMENT-GOV-078`, `DSET-REQUIREMENT-GOV-080`, and
 `DSET-REQUIREMENT-GOV-103`.

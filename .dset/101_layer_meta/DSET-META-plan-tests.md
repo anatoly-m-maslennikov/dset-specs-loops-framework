@@ -5,24 +5,13 @@ scope_path: ["layer:meta"]
 priority: high
 ---
 
-# Methodology META deterministic test plan
+# Methodology META deterministic test-plan view
 
-This fragment owns exact deterministic proof for its listed IDs. Shared package behavior is connected by stable IDs, not duplicated plans.
+No active atomic META Test Plans are registered.
 
-| Test ID | Requirement or invariant | Assertion | Current automation |
-|---|---|---|---|
-| **DSET-TEST-PLAN-META-001** | DSET-REQUIREMENT-META-001 | Assert that README and document 00 link exactly one live file for each numbered methodology owner | Canonical validator pending; current local-link check is ad hoc |
-| **DSET-TEST-PLAN-META-002** | DSET-REQUIREMENT-META-002, DSET-INVARIANT-META-001 | Reject merged test/eval artifact names and universal claims that automation changes proof category | Canonical validator pending |
-| **DSET-TEST-PLAN-META-003** | DSET-REQUIREMENT-META-003, DSET-INVARIANT-META-002, DSET-INVARIANT-META-003 | Reject unconditional application WAL/event-store/reconciliation language and duplicate durable owners | Canonical validator pending |
-| **DSET-TEST-PLAN-META-004** | DSET-REQUIREMENT-META-004 | Reject `exactly-once` claims; require an explicit receiver-side boundary for effectively-once claims | `rg -n -i 'exactly[- ]once' README.md methodology` must return no normative claim |
-| **DSET-TEST-PLAN-META-005** | DSET-REQUIREMENT-META-005 | Assert the exact public display name, title, DSET expansion, repository slug, and active metadata identity | Canonical validator pending; current exact-string and remote checks are ad hoc |
-| **DSET-TEST-PLAN-META-006** | DSET-REQUIREMENT-META-006 | Project configuration and schema accept separate implementation-language and artifact-profile fields without substitution | `python -m dset_toolchain check .` plus schema parsing |
-| **DSET-TEST-PLAN-META-007** | DSET-REQUIREMENT-META-007, DSET-INVARIANT-META-004 | Validate that exact governance checks are registered as tests while qualitative criteria remain in a separate eval plan and evidence stream | `python -m dset_toolchain check .` plus change-manifest assertions |
-| **DSET-TEST-PLAN-META-008** | DSET-REQUIREMENT-META-008, DSET-INVARIANT-META-005, DSET-INVARIANT-GOV-016 | Validate Contract as `type: decision`, `subtype: contract`; stable Contract identity; source/version-or-digest/direction/provider/consumer/conformance/compatibility/priority/creation-state/absorbs fields; immutable lifecycle; explicit precedence or operator-accepted absorbing Contract for change; Constraint-versus-Contract dependency classification; and exact fixture conformance for DDL, CSV/XLSX, OpenAPI, message, protocol, host, platform, dependency, and hosted-CI boundaries | Contract Decision schema/lifecycle/conformance and boundary fixture matrix |
-| **DSET-TEST-PLAN-META-009** | DSET-REQUIREMENT-META-009, DSET-INVARIANT-META-006 | Validate User Story as `type: decision`, `subtype: user_story`; actor/stakeholder, desired capability/outcome, and value; resolvable sibling Requirement/Contract/Outcome/Scenario/Invariant/QA links; acceptance criteria as sibling atoms; acceptance with no User Story; and rejection of Decision/Requirement/User Story nesting | Flat Decision-subtype shape, claim splitting, link-integrity, optionality, and anti-nesting fixtures |
-| **DSET-TEST-PLAN-META-010** | DSET-REQUIREMENT-META-010, DSET-INVARIANT-META-007 | Validate Outcome as `type: decision`, `subtype: outcome`; baseline, target, observation method/source, and evaluation window; resolvable Problem, Question/Opportunity, sibling User Story, and QA/Evaluation links; rejection of an observed result represented as a Decision/Outcome; acceptance of no concrete Outcome for model-only work; and separate Requirement-delivery versus Outcome-effect evidence | Outcome Decision-subtype shape, intended-versus-observed boundary, link-integrity, model-only, and evidence-separation fixtures |
-| **DSET-TEST-PLAN-META-011** | DSET-REQUIREMENT-META-011, DSET-INVARIANT-META-008, DSET-CONTRACT-META-001 | Accept repository-level scope and one or many existing repository-relative Work Area folders; accept local, deployable, library, documentation, methodology, data, and mixed content; reject absolute, outside-repository, missing, or stale declarations; reject code/deployability requirements; and prove session checkpoints only reference and re-resolve the declaration rather than owning it | Work Area declaration, path-containment, content-neutrality, multi-area, root-scope, and session-reference fixtures |
+This retained maintained surface is inactive. When enabled, it may organize
+active Test Plan atoms but cannot define a check, preserve an archived plan as
+current, or create assurance authority by itself.
 
-## Regression policy
-
-Every accepted defect adds a deterministic regression test in its owning layer before the repair is archived.
+Atomic sources: `DSET-REQUIREMENT-META-049`,
+`DSET-REQUIREMENT-META-054`, and `DSET-REQUIREMENT-GOV-115`.

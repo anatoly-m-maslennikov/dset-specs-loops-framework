@@ -26,7 +26,7 @@ Every normative rule ID has one editable governing document. Hubs navigate, wrap
   native formats for source code, CI, lockfiles, and host manifests.
 - Every governed Markdown artifact begins with valid YAML frontmatter and stays
   legible and navigable in GitHub preview. Sources:
-  `DSET-CONSTRAINT-GOV-002` and `DSET-REQUIREMENT-GOV-095`.
+  `DSET-CONSTRAINT-GOV-002` and `DSET-REQUIREMENT-GOV-116`.
 - Keep standards-compliant JSON Schema files as canonical JSON. Never keep
   competing editable representations of one concern.
 - Confirm authorization before editing existing project artifacts.
@@ -364,7 +364,7 @@ defaults are Constraint `high`; Contract, Requirement, and Decision `medium`;
 and implementation carrier `low`. Other roles inherit through their owning
 atom or Change, then use the project `medium` default. `highest` is
 virtual-only. No other stored value is valid. Source:
-`DSET-REQUIREMENT-GOV-063`. The former `critical` label is
+`DSET-REQUIREMENT-GOV-107`. The former `critical` label is
 recoded to `high` by a governed meaning-preserving migration. `deferred` is not
 a priority: current low-urgency work uses `low`, while non-current work belongs
 in a named future Version Roadmap.

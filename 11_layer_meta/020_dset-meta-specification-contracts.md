@@ -32,7 +32,7 @@ priority: high
 - Separate Test and Evaluation meanings and an assurance boundary that keeps
   authority, methods, implementation, observations, evidence, and Verification
   distinct.
-- Active authoritative-boundary Contract semantics with explicit ownership,
+- Active external-boundary obligation semantics with explicit ownership,
   direction, conformance, compatibility, and lifecycle.
 - Fixed-point and durable-control-plane invariants that downstream layers must
   realize without creating backward governance.
@@ -63,8 +63,7 @@ artifacts preserve accepted records and permit only complete new records.
 `maintained` artifacts may revise existing content through their applicable
 update procedure. DSET defines no additional currentness or freshness class.
 Atomic source: `DSET-REQUIREMENT-META-041`.
-Route-uniqueness sources: `DSET-REQUIREMENT-META-045` and
-`DSET-REQUIREMENT-META-046`.
+Route-uniqueness source: `DSET-REQUIREMENT-META-060`.
 
 The framework catalog contains all 54 routes formed by the three Revision
 modes, six Content roles, and three Governance loci. A project may disable use
@@ -79,16 +78,16 @@ separate atomic records.
 ## Exploration input boundary
 
 An operator input that primarily asks a question, requests explanation,
-comparison, critique, alternatives, or recommendation enters Exploration Mode
-silently. Input that primarily introduces an idea, including “another idea,”
-“what if,” “maybe,” or “could we,” does the same. Detection follows semantic
-intent rather than punctuation or literal keywords.
+comparison, critique, alternatives, or recommendation enters Exploration Mode.
+Input that primarily introduces an idea, including “another idea,” “what if,”
+“maybe,” or “could we,” does the same. Detection follows semantic intent rather
+than punctuation or literal keywords. Reporting the transition is a downstream
+interaction choice.
 
 An explicit instruction to record, accept, apply, implement, fix, or otherwise
 change governed state remains authorization for only that stated change. Mixed
 input may be explored, but no additional candidate becomes governed truth
-without explicit acceptance. Atomic sources: `DSET-REQUIREMENT-META-036` and
-`DSET-REQUIREMENT-META-037`.
+without explicit acceptance. Atomic source: `DSET-REQUIREMENT-META-058`.
 
 ## Layer constitution boundary
 
@@ -116,35 +115,36 @@ restatements. Their semantic source links target atomic records only. Links
 between maintained views and links to hubs are navigation and cannot establish
 semantic provenance. Refresh occurs on demand after accepted atomic change and
 before a downstream gate requires a current view. Atomic source:
-`DSET-REQUIREMENT-META-042`.
+`DSET-REQUIREMENT-META-054`.
 
 Optional maintained governance surfaces are inactive by default.
 Activation is explicit and adds only the selected surface's currentness and
 gate obligations. Deactivation preserves its carrier and history and never
-changes atomic authority. Atomic source: `DSET-REQUIREMENT-META-033`.
+changes atomic authority. Atomic source: `DSET-REQUIREMENT-META-054`.
 
-## Non-contractual surfaces
+## Non-authoritative surfaces
 
 Examples, diagrams, and cited candidates may evolve without compatibility guarantees when they do not change a requirement, invariant, artifact shape, or ownership boundary.
 
-## Authoritative boundary contracts
+## Authoritative boundary obligations
 
-A Contract is an atomic relational Definition, not implementation advice. Every
-Contract names its operator-accepted source, version or digest, relation kind,
-role-bearing endpoints, direction, conformance, compatibility, priority,
-and applicable replacement relations. Each endpoint independently declares
-internal or external origin. Acceptance is inherent to emission; active or
-archived storage state is derived from placement and is not stored in the
-Contract. Implementation cannot rewrite the Contract.
+An authoritative boundary obligation is an atomic relational Definition, not
+implementation advice. It names its operator-accepted source, version or
+digest, relation kind, role-bearing endpoints, direction, conformance,
+compatibility, priority, and applicable replacement relations. Each endpoint
+independently declares internal or external origin. Acceptance is inherent to
+emission; active or archived storage state is derived from placement and is
+not stored in the artifact. Implementation cannot rewrite the obligation.
 Ambiguity creates an Inquiry, incompatible active authority creates a Conflict,
 and observed nonconformance creates a Problem. Change requires explicit
-precedence or an operator-accepted replacement Contract.
+precedence or an operator-accepted replacement relational Definition. GOV owns
+the concrete type, subtype, identity kind, and carrier.
 
 ## DSET-CONTRACT-META-001 — Repository Work Area declaration
 
 Atomic source: `DSET-CONTRACT-META-001`.
 
-| Field | Contract value |
+| Field | Declared value |
 |---|---|
 | Authority | `DSET-CONTRACT-META-001`; each adopting repository owner supplies that repository's conforming declaration |
 | Source | `DSET-REQUIREMENT-META-011` and `DSET-CONTRACT-META-001` |
@@ -156,5 +156,5 @@ Atomic source: `DSET-CONTRACT-META-001`.
 | Compatibility rule | Content changes inside a Work Area do not change the boundary; a path rename, removal, or scope split/merge requires an explicit reviewed declaration update and refresh of affected references and evidence. Legacy or simple repositories may remain one repository-level scope |
 
 Session continuity may store a bounded reference to a Work Area, but this
-Contract and the adopting repository's accepted declaration remain authoritative.
+Work Area declaration and the adopting repository's accepted declaration remain authoritative.
 A checkpoint cannot create, rename, reclassify, or supersede the boundary.

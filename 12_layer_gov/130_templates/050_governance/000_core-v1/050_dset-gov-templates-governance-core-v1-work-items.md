@@ -49,7 +49,7 @@ material enough to govern later work. Record rationale inline when concise or
 as a linked Rationale atom when it deserves independent history.
 
 Atomic sources: `DSET-REQUIREMENT-GOV-057`,
-`DSET-REQUIREMENT-GOV-101`, and `DSET-IMPL-GOV-003`.
+`DSET-REQUIREMENT-GOV-101`, and `DSET-IMPL-GOV-009`.
 
 ## Inquiry and observation feedback
 
@@ -114,8 +114,8 @@ identities.
 A naming-policy migration recodes the complete identity graph in one
 collision-free transaction and removes old aliases after cutover. It may change
 representation, not governed atomic meaning. Sources:
-`DSET-REQUIREMENT-GOV-060`, `DSET-REQUIREMENT-GOV-064`,
-`DSET-REQUIREMENT-GOV-071`, and `DSET-IMPL-GOV-003`.
+`DSET-REQUIREMENT-GOV-108`, `DSET-REQUIREMENT-GOV-113`,
+`DSET-REQUIREMENT-GOV-114`, and `DSET-IMPL-GOV-009`.
 
 ## Lifecycle and relations
 
