@@ -1,9 +1,0 @@
-schema_version = "1.0"
-artifact_type = "lifecycle_event"
-artifact_id = "DSET-LIFECYCLE-EVENT-086"
-atom_id = "DSET-DECISION-GOV-018"
-event = "absorbed"
-occurred_at = "2026-07-23T00:36:12+04:00"
-related = ["DSET-DECISION-GOV-027"]
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "The replacement keeps governed representation migration while atomizing each transition and removing stored physical paths and aggregate path ledgers from current authority."

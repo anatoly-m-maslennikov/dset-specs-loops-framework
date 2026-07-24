@@ -1,9 +1,0 @@
-schema_version = "1.0"
-artifact_type = "lifecycle_event"
-artifact_id = "DSET-LIFECYCLE-EVENT-082"
-atom_id = "DSET-REQUIREMENT-GOV-051"
-event = "absorbed"
-occurred_at = "2026-07-22T23:22:56+04:00"
-related = ["DSET-DECISION-GOV-022"]
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "The replacement separates installed methodology from applied project artifacts instead of mirroring both framework and project state across the same numbered roots."

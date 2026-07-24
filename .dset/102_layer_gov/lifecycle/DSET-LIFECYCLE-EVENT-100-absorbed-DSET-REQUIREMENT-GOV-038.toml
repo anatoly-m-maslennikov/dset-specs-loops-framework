@@ -1,9 +1,0 @@
-schema_version = "1.0"
-artifact_type = "lifecycle_event"
-artifact_id = "DSET-LIFECYCLE-EVENT-100"
-atom_id = "DSET-REQUIREMENT-GOV-038"
-event = "absorbed"
-occurred_at = "2026-07-23T06:05:21+04:00"
-related = ["DSET-DECISION-GOV-034"]
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "Naming-policy changes now require complete historical migration rather than prospective-only naming."

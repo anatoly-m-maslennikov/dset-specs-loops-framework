@@ -1,9 +1,0 @@
-schema_version = "1.0"
-artifact_type = "lifecycle_event"
-artifact_id = "DSET-LIFECYCLE-EVENT-017"
-atom_id = "DSET-PROBLEM-GOV-004"
-event = "resolved"
-occurred_at = "2026-07-20T20:00:00+04:00"
-related = ["DSET-REQUIREMENT-TOOL-021"]
-llm_session_ids = ["codex:019f591f-04f6-70f2-8de7-828b7cccc69d"]
-rationale = "The owned OYOHA pilot now has a validated repository-local schema 1.2 control plane, five layer packages, project-owned rules, a classified legacy-owner inventory, thin wrappers, and active candidate CI at local dev commit b960772; remaining readiness obligations stay open separately."
