@@ -1,6 +1,6 @@
 ---
-artifact_type: evaluation_plan
-artifact_id: DSET-EVAL-PLAN-GOV-039
+artifact_type: evaluation_case
+artifact_id: DSET-EVALUATION-CASE-GOV-039
 scope_path: ["layer:gov"]
 priority: medium
 llm_session_ids:
@@ -8,7 +8,7 @@ llm_session_ids:
 relations:
   - type: replacement_of
     targets:
-      - "DSET-EVAL-PLAN-GOV-034"
+      - "DSET-EVALUATION-CASE-GOV-034"
   - type: check_of
     targets:
       - "DSET-REQUIREMENT-META-024"
@@ -16,7 +16,7 @@ relations:
       - "DSET-REQUIREMENT-META-052"
 ---
 
-# Evaluation Plan — Assess feature and layer distinction
+# Evaluation Case — Assess feature and layer distinction
 
 Give reviewers examples with horizontal peer contracts, forward-only ordered
 authority, and unavoidable backward dependencies. Ask whether each structure
