@@ -79,9 +79,9 @@ Exact resolver, ownership, path, identity, wrapper, and recursion behavior must 
 
 **Scenario DSET-SCENARIO-META-008:** A scripted assertion that a cycle emits one stable code remains a test; an automated agent run measuring whether the diagnostic enables a safe correction remains an eval.
 
-## DSET-REQUIREMENT-META-008 — Contracts preserve boundaries
+## DSET-REQUIREMENT-META-044 — Contracts preserve boundaries without stored lifecycle state
 
-Atomic source: `DSET-REQUIREMENT-META-008`.
+Atomic source: `DSET-REQUIREMENT-META-044`.
 
 When the operator supplies or accepts a DDL, CSV/XLSX schema,
 OpenAPI/message/protocol, host-native package format, supported-platform
@@ -89,9 +89,11 @@ interface, hosted-CI interface, dependency boundary, or comparable obligation,
 DSET must represent it as an atomic relational Definition named Contract. A
 Contract uses a stable `CONTRACT` ID. Each immutable record names the accepted
 source, relation kind, role-bearing endpoints, direction, conformance rule,
-compatibility rule, priority, creation state, and any older Contract records it
-replaces. Each endpoint independently declares internal or external origin.
-External formats are pinned by version or digest in applicable evidence.
+compatibility rule, priority, and applicable replacement relations. Each
+endpoint independently declares internal or external origin. External formats
+are pinned by version or digest in applicable evidence. Acceptance is inherent
+to emission; active or archived storage state is derived from repository
+placement.
 
 Implementation conforms to every applicable active Contract and cannot rewrite
 the boundary. Ambiguity routes to an Inquiry; incompatible active authority

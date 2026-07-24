@@ -96,8 +96,8 @@ views leaves the work incomplete.
 
 Atomic artifacts are immutable in governed meaning. Editable drafts are working
 documents, not atoms. Emission fixes the primary claim or proof intent,
-rationale, accepted authority and creation state, provenance, scope, priority
-at creation, and relation meanings; a Test Plan or Evaluation Plan also fixes its conditions,
+rationale, acceptance basis, provenance, scope, priority at creation, and
+relation meanings; a Test Plan or Evaluation Plan also fixes its conditions,
 criteria, thresholds, and expected disposition. Later semantic or lifecycle
 change requires a successor atom. Storage state is only active or archived.
 

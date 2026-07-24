@@ -128,8 +128,10 @@ Examples, diagrams, and cited candidates may evolve without compatibility guaran
 A Contract is an atomic relational Definition, not implementation advice. Every
 Contract names its operator-accepted source, version or digest, relation kind,
 role-bearing endpoints, direction, conformance, compatibility, priority,
-creation state, and archived predecessors. Each endpoint independently declares
-internal or external origin. Implementation cannot rewrite the Contract.
+and applicable replacement relations. Each endpoint independently declares
+internal or external origin. Acceptance is inherent to emission; active or
+archived storage state is derived from placement and is not stored in the
+Contract. Implementation cannot rewrite the Contract.
 Ambiguity creates an Inquiry, incompatible active authority creates a Conflict,
 and observed nonconformance creates a Problem. Change requires explicit
 precedence or an operator-accepted replacement Contract.
@@ -148,7 +150,6 @@ Atomic source: `DSET-CONTRACT-META-001`.
 | Consumer | DSET lifecycle, Change, proof, supportability, and session-continuity consumers |
 | Conformance rule | Declare either repository-level scope or one or more existing repository-relative folders as Work Areas; allow local, deployable, library, documentation, methodology, data, and mixed content without requiring code or deployability; require scope-dependent consumers to resolve the current declaration |
 | Compatibility rule | Content changes inside a Work Area do not change the boundary; a path rename, removal, or scope split/merge requires an explicit reviewed declaration update and refresh of affected references and evidence. Legacy or simple repositories may remain one repository-level scope |
-| Lifecycle state | `active` |
 
 Session continuity may store a bounded reference to a Work Area, but this
 Contract and the adopting repository's accepted declaration remain authoritative.
