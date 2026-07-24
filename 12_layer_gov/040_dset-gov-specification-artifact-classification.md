@@ -57,16 +57,18 @@ contains only non-derived properties:
 ```yaml
 ---
 artifact_type: requirement
-artifact_id: DSET-REQUIREMENT-GOV-094
-scope_path: ["layer:gov"]
+artifact_id: DSET-REQUIREMENT-META-038
+scope_path: ["layer:meta"]
 priority: high
 llm_session_ids:
   - "codex:019f591f-04f6-70f2-8de7-828b7cccc69d"
 relations:
-  - type: analysis_of
+  - type: replacement_of
     targets:
-      - "DSET-REQUIREMENT-META-018"
-      - "DSET-REQUIREMENT-META-020"
+      - "DSET-REQUIREMENT-GOV-094"
+  - type: relates_to
+    targets:
+      - "DSET-REQUIREMENT-META-035"
 ---
 ```
 
