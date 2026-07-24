@@ -25,7 +25,7 @@ class ArtifactRoutingTests(unittest.TestCase):
             "content_role": "definition",
             "governance_origin": "internal",
             "relation_shape": "standalone",
-            "scope_path": ["project:dset", "layer:gov"],
+            "scope_path": ["layer:gov"],
         }
 
     def test_content_roles_follow_the_canonical_loop(self) -> None:
@@ -48,7 +48,7 @@ class ArtifactRoutingTests(unittest.TestCase):
         self.assertEqual(route.name, "Internal Atomic Definition Artifact")
         self.assertEqual(
             route.as_dict()["scope_path"],
-            ["project:dset", "layer:gov"],
+            ["layer:gov"],
         )
 
         external = self.standalone()
@@ -69,7 +69,7 @@ class ArtifactRoutingTests(unittest.TestCase):
                             "content_role": content_role,
                             "governance_origin": governance_origin,
                             "relation_shape": relation_shape,
-                            "scope_path": ["project:dset"],
+                            "scope_path": [],
                         }
                         if relation_shape == "relational":
                             candidate.update(
@@ -141,7 +141,6 @@ class ArtifactRoutingTests(unittest.TestCase):
     def test_scope_path_is_extensible_but_structured(self) -> None:
         candidate = self.standalone()
         candidate["scope_path"] = [
-            "project:dset",
             "feature_group:schedulers",
             "feature:catchup",
             "layer:tool",
@@ -151,9 +150,18 @@ class ArtifactRoutingTests(unittest.TestCase):
 
         candidate["scope_path"] = ["gov"]
         self.assertIn(
-            "scope_path must be a non-empty list of kind:id segments",
+            "scope_path must contain only kind:id segments",
             route_issues(candidate),
         )
+
+        candidate["scope_path"] = ["project:dset", "layer:gov"]
+        self.assertIn(
+            "scope_path must not repeat the ambient project identity",
+            route_issues(candidate),
+        )
+
+        candidate["scope_path"] = []
+        self.assertEqual(route_issues(candidate), [])
 
 
 if __name__ == "__main__":

@@ -54,7 +54,7 @@ class ArtifactRecordTests(unittest.TestCase):
                     'content_role = "definition"',
                     'governance_origin = "internal"',
                     'relation_shape = "standalone"',
-                    'scope_path = ["project:dset"]',
+                    "scope_path = []",
                     'status = "accepted"',
                     'priority = "high"',
                     'llm_session_ids = ["codex:session-1"]',

@@ -46,7 +46,7 @@ class ArtifactEmissionTests(unittest.TestCase):
             "content_role": "definition",
             "governance_origin": "internal",
             "relation_shape": "standalone",
-            "scope_path": ["project:dset-temporary-adopter"],
+            "scope_path": [],
             "llm_session_ids": ["codex:test-session"],
             "material_links": [],
             "priority": "medium",
@@ -97,7 +97,7 @@ class ArtifactEmissionTests(unittest.TestCase):
                 "content_role": "definition",
                 "governance_origin": "internal",
                 "relation_shape": "standalone",
-                "scope_path": ["project:dset-temporary-adopter"],
+                "scope_path": [],
             },
         )
 
@@ -185,10 +185,7 @@ class ArtifactEmissionTests(unittest.TestCase):
 
     def test_unknown_repository_scope_is_rejected(self) -> None:
         candidate = self.candidate()
-        candidate["scope_path"] = [
-            "project:dset-temporary-adopter",
-            "feature:unregistered",
-        ]
+        candidate["scope_path"] = ["feature:unregistered"]
 
         assessment = assess_artifact_candidate(self.root, candidate)
 
@@ -201,10 +198,7 @@ class ArtifactEmissionTests(unittest.TestCase):
 
     def test_eligible_promotion_is_proposed_and_never_automatic(self) -> None:
         candidate = self.candidate()
-        candidate["scope_path"] = [
-            "project:dset-specs-loops-framework",
-            "layer:tool",
-        ]
+        candidate["scope_path"] = ["layer:tool"]
         candidate["promotion"] = {
             "parent_scope": {
                 "kind": "project",

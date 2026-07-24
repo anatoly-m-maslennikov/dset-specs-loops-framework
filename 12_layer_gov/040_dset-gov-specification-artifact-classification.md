@@ -73,10 +73,12 @@ when its own entry criteria do not require a persisted artifact.
 
 ## Scope path
 
-`scope_path` is an extensible structural address composed from enabled project,
-feature-group, feature, layer, and future structural segments. It identifies
-the narrowest common owner that can govern the whole artifact and selects one
-matrix slice.
+`scope_path` is an extensible project-relative structural address composed from
+enabled feature-group, feature, layer, Work Area, and future structural
+segments. The repository already identifies the current project, so project
+identity never appears in the path. An empty path means project scope. It
+identifies the narrowest common owner that can govern the whole artifact and
+selects one matrix slice.
 
 Scope Path never determines any routing field. It does not identify the Entity
 of Concern, declare claim applicability, or establish a bounded semantic

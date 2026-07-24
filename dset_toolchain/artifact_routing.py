@@ -154,14 +154,18 @@ def _allowed(
 
 
 def _scope_issues(value: object, issues: list[str]) -> None:
-    if (
-        not isinstance(value, list)
-        or not value
-        or any(not isinstance(item, str) or not SCOPE_SEGMENT.fullmatch(item) for item in value)
+    if not isinstance(value, list):
+        issues.append("scope_path must be a list of kind:id segments")
+        return
+    if any(
+        not isinstance(item, str) or not SCOPE_SEGMENT.fullmatch(item)
+        for item in value
     ):
-        issues.append("scope_path must be a non-empty list of kind:id segments")
+        issues.append("scope_path must contain only kind:id segments")
         return
     normalized = [str(item) for item in value]
+    if any(item.startswith("project:") for item in normalized):
+        issues.append("scope_path must not repeat the ambient project identity")
     if len(normalized) != len(set(normalized)):
         issues.append("scope_path segments must be unique")
 

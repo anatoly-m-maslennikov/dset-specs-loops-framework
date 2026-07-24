@@ -29,7 +29,7 @@ enum = ["standalone", "relational"]
 
 [properties.scope_path]
 type = "array"
-minItems = 1
+minItems = 0
 uniqueItems = true
 
 [properties.scope_path.items]
@@ -227,7 +227,7 @@ enum = ["standalone", "relational"]
 
 ["$defs".projection_range.properties.scope_path]
 type = "array"
-minItems = 1
+minItems = 0
 uniqueItems = true
 
 ["$defs".projection_range.properties.scope_path.items]

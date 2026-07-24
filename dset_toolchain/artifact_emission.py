@@ -334,6 +334,12 @@ def _assess_promotion(
     if not isinstance(raw, Mapping):
         return {"status": "not-assessed", "eligible": False}
     scope = _scope_from_path(candidate.get("scope_path"))
+    if (
+        scope is None
+        and candidate.get("scope_path") == []
+        and scope_model is not None
+    ):
+        scope = dict(scope_model["project_scope"])
     if not _valid_scope(scope):
         return {"status": "invalid", "eligible": False}
     assert isinstance(scope, Mapping)
@@ -456,6 +462,7 @@ def _repository_scope_model(
         "scopes": scopes,
         "parents": parents,
         "children": children,
+        "project_scope": {"kind": "project", "id": project_id},
     }, []
 
 
