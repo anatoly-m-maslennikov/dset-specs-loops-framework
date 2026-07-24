@@ -1,4 +1,4 @@
-"""Read and render TOML frontmatter for DSET-owned Markdown carriers."""
+"""Read and render DSET Markdown property envelopes."""
 
 from __future__ import annotations
 
@@ -8,6 +8,9 @@ from typing import Any
 from .toml_codec import TomlCodecError
 from .toml_codec import dumps as dump_toml
 from .toml_codec import loads as load_toml
+from .yaml_properties import YamlPropertiesError
+from .yaml_properties import dumps as dump_yaml
+from .yaml_properties import loads as load_yaml
 
 
 class FrontmatterError(ValueError):
@@ -21,22 +24,30 @@ def parse(text: str) -> tuple[dict[str, Any], str, str] | None:
     if not lines:
         return None
     delimiter = lines[0].strip()
-    if delimiter != "+++":
+    if delimiter not in {"+++", "---"}:
         return None
     for index, line in enumerate(lines[1:], start=1):
         if line.strip() != delimiter:
             continue
         payload = "".join(lines[1:index])
-        try:
-            value = load_toml(payload)
-        except TomlCodecError as error:
-            raise FrontmatterError(str(error)) from error
+        if delimiter == "+++":
+            try:
+                value = load_toml(payload)
+            except TomlCodecError as error:
+                raise FrontmatterError(str(error)) from error
+            format_name = "toml"
+        else:
+            try:
+                value = load_yaml(payload)
+            except YamlPropertiesError as error:
+                raise FrontmatterError(str(error)) from error
+            format_name = "yaml"
         if not isinstance(value, dict):
             raise FrontmatterError("frontmatter root must be a mapping")
         return (
             value,
             "".join(lines[index + 1 :]),
-            "toml",
+            format_name,
         )
     raise FrontmatterError("frontmatter opening delimiter has no closing delimiter")
 
@@ -69,4 +80,7 @@ def render(metadata: dict[str, Any], body: str, *, format: str = "toml") -> str:
 
     if format == "toml":
         return f"+++\n{dump_toml(metadata)}+++\n{body}"
+    if format == "yaml":
+        payload = dump_yaml(metadata)
+        return f"---\n{payload}---\n{body}"
     raise FrontmatterError(f"unsupported frontmatter format: {format}")
