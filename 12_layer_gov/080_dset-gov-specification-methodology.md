@@ -1039,3 +1039,22 @@ not require a hub edit.
 Hubs never list or link files or directories below `.dset_runtime/`. They may
 name the runtime root only to state that transient runtime state is outside
 durable navigation.
+
+## DSET-REQUIREMENT-GOV-092 — Governance surface settings
+
+Atomic source: `DSET-REQUIREMENT-GOV-092`.
+
+The project-owned settings carrier explicitly records every registered
+optional governance surface as active or inactive. New projects default every
+surface to inactive. Missing state reads as inactive, and unknown surface names
+fail closed.
+
+Activation adds only the selected surface's currentness and entry-gate
+obligations. Deactivation removes those obligations while preserving its
+carrier and Git history. Reactivation reconciles retained content against
+current atomic authority before the surface is current. Surface activation is
+independent from the semantic revision-mode catalog.
+
+The registered surface set is `evergreen-specification`, `test-plan`,
+`evaluation-plan`, `implementation-plan`, `project-overview`, and
+`architecture-view`.

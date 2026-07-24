@@ -361,3 +361,24 @@ investigation but never replace those artifacts.
 Handoff between Changes names stable artifact IDs, exact commits or versions,
 applicable Contracts, evidence locations, currentness, and reopen triggers. A
 summary without those anchors is context, not authoritative delivery evidence.
+
+## Progressive governance surfaces
+
+DSET starts atomic-first. The registered optional governance surfaces are
+`evergreen-specification`, `test-plan`, `evaluation-plan`,
+`implementation-plan`, `project-overview`, and `architecture-view`.
+`.dset/dset_settings.toml` records an explicit Boolean for every registered
+surface; a missing table or key reads as inactive, and an unknown surface fails
+closed.
+
+Activating a surface adds only that surface's currentness and entry-gate
+obligations. Deactivating it removes those obligations without deleting or
+rewriting its carrier or Git history. Reactivation must reconcile a retained
+carrier against current atomic authority before calling the surface current.
+Activation never disables or enables an entire revision mode.
+
+`dset configure ROOT status` and `recommend` are read-only. `activate` and
+`deactivate` preview by default and write only with `--execute`. The writer
+changes only the selected Boolean, materializes missing registered defaults,
+and preserves unrelated TOML text and comments. Recommendations are advisory
+and cite repository evidence; they never mutate configuration.
