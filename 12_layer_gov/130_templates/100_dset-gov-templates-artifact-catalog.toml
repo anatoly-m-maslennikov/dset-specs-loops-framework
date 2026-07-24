@@ -3,6 +3,11 @@
 # One installed project-local copy owns artifact routes and identity kinds.
 # dset_settings.toml selects an enabled whitelist; it does not repeat these
 # mappings. Unknown or ambiguous entries fail closed.
+#
+# Migration notice: this file is currently a pre-META-045/046 inventory. It
+# has route collisions, a subtype route override, and incomplete route
+# coverage. Do not treat it as a conforming executable taxonomy until
+# DSET-PROBLEM-GOV-008 is resolved.
 schema_version = "1.0"
 maximum_subtype_depth = 1
 unknown_classification = "reject"

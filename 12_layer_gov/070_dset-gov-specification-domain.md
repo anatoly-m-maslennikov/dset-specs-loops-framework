@@ -21,7 +21,7 @@ earlier definition.
 | **Revision mode** | Exactly one permitted write behavior: `atomic`, `append_only`, or `maintained` | `DSET-REQUIREMENT-META-041` |
 | **Content role** | Exactly one contribution: `inquiry`, `definition`, `rationale`, `method`, `implementation`, or `observation` | `DSET-REQUIREMENT-META-016`, `DSET-REQUIREMENT-META-035` |
 | **Governance locus** | Exactly one primary governance position: `internal`, `external`, or `relation` | `DSET-REQUIREMENT-META-035`, `DSET-REQUIREMENT-GOV-101` |
-| **Artifact route** | One Revision mode, Content role, and Governance locus assigned together | `DSET-REQUIREMENT-META-035`, `DSET-REQUIREMENT-META-043` |
+| **Artifact route** | One Revision mode, Content role, and Governance locus assigned together, with exactly one canonical Artifact type | `DSET-REQUIREMENT-META-035`, `DSET-REQUIREMENT-META-045`, `DSET-REQUIREMENT-META-046` |
 | **Governed artifact** | One persisted Project item with one registered artifact type, at most one direct subtype, one derived Artifact route, and one Structural scope | `DSET-REQUIREMENT-META-035`, `DSET-REQUIREMENT-GOV-102` |
 | **Relation endpoint** | One role-bearing participant identity with independently declared internal or external origin | `DSET-REQUIREMENT-META-014`, `DSET-REQUIREMENT-GOV-101` |
 | **Artifact relation** | One registered directional semantic edge from a Governed artifact to one or more stable target identities, or one relational artifact whose meaning is carried by at least two Relation endpoints | `DSET-REQUIREMENT-META-014`, `DSET-IMPL-GOV-004` |
@@ -30,7 +30,7 @@ earlier definition.
 | **Maintained artifact** | A Governed artifact whose registered procedure may revise existing content | `DSET-REQUIREMENT-META-041`, `DSET-REQUIREMENT-GOV-070` |
 | **Active atom** | An Atomic artifact located in its active type folder and eligible for current routing, authority, work, or assurance according to its registered type | `DSET-DECISION-GOV-035`, `DSET-REQUIREMENT-GOV-061` |
 | **Archived atom** | The same immutable Atomic artifact relocated byte-for-byte to its type-local `archive/` and excluded from the active set | `DSET-DECISION-GOV-035`, `DSET-REQUIREMENT-GOV-096` |
-| **Artifact catalog** | The single project-local executable registry mapping each allowed type/subtype to one Artifact route, identity kind, carrier, and persistence behavior | `DSET-REQUIREMENT-GOV-102` |
+| **Artifact catalog** | The single project-local executable registry assigning exactly one canonical type to every Artifact route and mapping its direct route-inheriting subtypes to identity kinds, carriers, and persistence behavior | `DSET-REQUIREMENT-META-045`, `DSET-REQUIREMENT-META-046`, `DSET-REQUIREMENT-GOV-102` |
 | **Project settings** | The single project-local operator configuration selecting enabled catalog entries, workflow behavior, optional surfaces, and other policy choices without restating catalog mappings | `DSET-REQUIREMENT-GOV-070`, `DSET-REQUIREMENT-GOV-102` |
 | **Governing document** | The single Maintained artifact that owns the current application of one or more normative rule IDs | `DSET-DECISION-GOV-002` |
 | **Governance registry** | The project-local mapping from workflow and rule IDs to a Governing document, its prerequisites, applicability, and profile identity | `DSET-DECISION-GOV-002`, `DSET-REQUIREMENT-GOV-052` |
@@ -124,12 +124,17 @@ preserves the carrier and Git history.
 - **DSET-INVARIANT-GOV-002:** Every governed artifact has one registered
   type/subtype and derives exactly one Artifact route. No parent semantic-Type
   hierarchy, workflow name, carrier, folder, or requested next action supplies
-  a second classification. Sources: `DSET-REQUIREMENT-META-035`,
-  `DSET-IMPL-GOV-003`, and `DSET-REQUIREMENT-GOV-101`.
+  a second classification. Every route has exactly one canonical type, and a
+  direct subtype inherits its complete route. Sources:
+  `DSET-REQUIREMENT-META-035`, `DSET-REQUIREMENT-META-045`,
+  `DSET-REQUIREMENT-META-046`, `DSET-IMPL-GOV-003`, and
+  `DSET-REQUIREMENT-GOV-101`.
 - **DSET-INVARIANT-GOV-003:** The Artifact catalog owns route and identity
   mappings. Project settings own only the enabled whitelist and operator
-  choices. Unknown, disabled, duplicate, or ambiguous mappings fail closed.
-  Source: `DSET-REQUIREMENT-GOV-102`.
+  choices. The framework catalog defines all 54 routes even when a project
+  disables some types. Unknown, disabled, duplicate, empty, or ambiguous
+  mappings fail closed. Sources: `DSET-REQUIREMENT-META-045`,
+  `DSET-REQUIREMENT-META-046`, and `DSET-REQUIREMENT-GOV-102`.
 - **DSET-INVARIANT-GOV-004:** The only Revision modes are `atomic`,
   `append_only`, and `maintained`; no freshness class is a fourth mode.
   Sources: `DSET-REQUIREMENT-META-041` and

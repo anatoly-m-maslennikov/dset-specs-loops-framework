@@ -35,7 +35,21 @@ route definitions. Unknown, disabled, multiply mapped, or ambiguous
 classifications fail closed. Atomic sources: `DSET-REQUIREMENT-GOV-070` and
 `DSET-REQUIREMENT-GOV-102`.
 
-## Base atomic type routes
+The conforming framework catalog must assign exactly one canonical top-level
+type to each of the 54 semantic routes. Direct subtypes inherit their parent's
+route and cannot override it. Atomic sources: `DSET-REQUIREMENT-META-045` and
+`DSET-REQUIREMENT-META-046`.
+
+## Current taxonomy migration blocker
+
+The current catalog template contains 22 top-level names across only 14
+distinct routes. Forty routes are empty, five routes contain multiple
+top-level names, and `question/conflict` overrides its parent route. Therefore
+the tables below are a pre-migration semantic-name inventory, not a conforming
+canonical type map. No tool may claim total one-to-one route conformance until
+`DSET-PROBLEM-GOV-008` is resolved.
+
+## Pre-migration atomic semantic-name inventory
 
 | Artifact type | Optional direct subtypes | Derived route |
 |---|---|---|
@@ -147,8 +161,9 @@ external origin. Atomic source: `DSET-REQUIREMENT-GOV-101`.
 
 ## Routing boundaries
 
-The route is semantic and sparse. Filenames, folders, workflow stages, tools,
-and requested next actions do not select it. Empty route cells are valid.
+The route is semantic and total. Filenames, folders, workflow stages, tools,
+and requested next actions do not select it. Every route has exactly one
+canonical type; direct subtypes refine that type without changing its route.
 
 The content-role loop is:
 
