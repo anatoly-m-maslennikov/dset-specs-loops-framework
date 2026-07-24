@@ -3,107 +3,184 @@
   "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/.dset/000_dset_methodology/01_meta/schemas/version.schema.json",
   "title": "DSET product version contract",
   "type": "object",
-  "required": ["schema_version", "framework", "python_package", "schemas", "released_validator", "candidate_validator", "bootstrap"],
+  "required": [
+    "schema_version",
+    "framework",
+    "python_package",
+    "schemas",
+    "released_validator",
+    "candidate_validator",
+    "bootstrap"
+  ],
+  "additionalProperties": false,
   "properties": {
-    "schema_version": {"oneOf": [{"enum": [1.0, 1.1]}, {"const": "1.2"}]},
-    "framework": {"oneOf": [{"$ref": "#/$defs/legacy_framework"}, {"$ref": "#/$defs/current_framework"}]},
-    "python_package": {"oneOf": [{"$ref": "#/$defs/legacy_python_package"}, {"$ref": "#/$defs/current_python_package"}]},
+    "schema_version": {
+      "oneOf": [
+        {
+          "enum": [
+            1.0,
+            1.1
+          ]
+        },
+        {
+          "const": "1.2"
+        }
+      ]
+    },
+    "framework": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/legacy_framework"
+        },
+        {
+          "$ref": "#/$defs/current_framework"
+        }
+      ]
+    },
+    "python_package": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/legacy_python_package"
+        },
+        {
+          "$ref": "#/$defs/current_python_package"
+        }
+      ]
+    },
     "schemas": {
       "type": "object",
-      "required": ["version", "versioning"],
+      "required": [
+        "version",
+        "versioning"
+      ],
+      "additionalProperties": false,
       "properties": {
-        "version": {"type": "string"},
-        "versioning": {"const": "independent"}
-      },
-      "additionalProperties": false
+        "version": {
+          "type": "string"
+        },
+        "versioning": {
+          "const": "independent"
+        }
+      }
     },
-    "released_validator": {"$ref": "#/$defs/validator"},
+    "released_validator": {
+      "$ref": "#/$defs/validator"
+    },
     "candidate_validator": {
       "type": "object",
-      "required": ["command"],
-      "properties": {"command": {"type": "string", "minLength": 1}},
-      "additionalProperties": false
+      "required": [
+        "command"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "command": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
     },
     "bootstrap": {
       "type": "object",
-      "required": ["manifest", "governance_registry", "precedence"],
+      "required": [
+        "manifest",
+        "governance_registry",
+        "precedence"
+      ],
+      "additionalProperties": false,
       "properties": {
-        "manifest": {"type": "string", "minLength": 1},
-        "governance_registry": {"type": "string", "minLength": 1},
-        "precedence": {"const": "project-local-rule-then-selected-local-profile-then-failure"}
-      },
-      "additionalProperties": false
-    }
-  },
-  "allOf": [
-    {
-      "if": {"properties": {"schema_version": {"const": 1.0}}},
-      "then": {"properties": {"framework": {"$ref": "#/$defs/legacy_framework"}, "python_package": {"$ref": "#/$defs/legacy_python_package"}}},
-      "else": {"properties": {"framework": {"$ref": "#/$defs/current_framework"}, "python_package": {"$ref": "#/$defs/current_python_package"}}}
-    },
-    {
-      "if": {"properties": {"schema_version": {"const": "1.2"}}, "required": ["schema_version"]},
-      "then": {
-        "properties": {
-          "bootstrap": {
-            "properties": {
-              "manifest": {"enum": [".dset/dset_settings.toml", "dset/scopes/meta/dset.toml", "dset/scopes/meta/dset.yaml"]},
-              "governance_registry": {"enum": ["00_project/governance.toml", "dset/scopes/gov/governance.toml", "dset/scopes/gov/governance.yaml"]}
-            }
-          }
-        }
-      },
-      "else": {
-        "properties": {
-          "bootstrap": {
-            "properties": {
-              "manifest": {"enum": ["dset/dset.toml", "dset/dset.yaml"]},
-              "governance_registry": {"enum": ["dset/governance.toml", "dset/governance.yaml"]}
-            }
-          }
+        "manifest": {
+          "type": "string",
+          "minLength": 1
+        },
+        "governance_registry": {
+          "type": "string",
+          "minLength": 1
+        },
+        "precedence": {
+          "const": "project-local-rule-then-selected-local-profile-then-failure"
         }
       }
     }
-  ],
+  },
   "$defs": {
     "legacy_framework": {
       "type": "object",
-      "required": ["milestone", "status", "versioning"],
+      "required": [
+        "milestone",
+        "status",
+        "versioning"
+      ],
+      "additionalProperties": false,
       "properties": {
-        "milestone": {"const": "0.2"},
-        "status": {"enum": ["candidate", "released"]},
-        "versioning": {"const": "independent-framework-milestone"}
-      },
-      "additionalProperties": false
+        "milestone": {
+          "const": "0.2"
+        },
+        "status": {
+          "enum": [
+            "candidate",
+            "released"
+          ]
+        },
+        "versioning": {
+          "const": "independent-framework-milestone"
+        }
+      }
     },
     "current_framework": {
       "type": "object",
-      "required": ["version", "versioning"],
+      "required": [
+        "version",
+        "versioning"
+      ],
+      "additionalProperties": false,
       "properties": {
-        "version": {"$ref": "#/$defs/semver"},
-        "versioning": {"const": "coordinated-product-package"}
-      },
-      "additionalProperties": false
+        "version": {
+          "$ref": "#/$defs/semver"
+        },
+        "versioning": {
+          "const": "coordinated-product-package"
+        }
+      }
     },
     "legacy_python_package": {
       "type": "object",
-      "required": ["name", "version", "versioning"],
+      "required": [
+        "name",
+        "version",
+        "versioning"
+      ],
+      "additionalProperties": false,
       "properties": {
-        "name": {"const": "dset-spec-loops"},
-        "version": {"$ref": "#/$defs/pep440"},
-        "versioning": {"const": "independent"}
-      },
-      "additionalProperties": false
+        "name": {
+          "const": "dset-spec-loops"
+        },
+        "version": {
+          "$ref": "#/$defs/pep440"
+        },
+        "versioning": {
+          "const": "independent"
+        }
+      }
     },
     "current_python_package": {
       "type": "object",
-      "required": ["name", "version", "versioning"],
+      "required": [
+        "name",
+        "version",
+        "versioning"
+      ],
+      "additionalProperties": false,
       "properties": {
-        "name": {"const": "dset-spec-loops"},
-        "version": {"$ref": "#/$defs/pep440"},
-        "versioning": {"const": "coordinated-product-package"}
-      },
-      "additionalProperties": false
+        "name": {
+          "const": "dset-spec-loops"
+        },
+        "version": {
+          "$ref": "#/$defs/pep440"
+        },
+        "versioning": {
+          "const": "coordinated-product-package"
+        }
+      }
     },
     "semver": {
       "type": "string",
@@ -115,21 +192,141 @@
     },
     "validator": {
       "type": "object",
-      "required": ["identity", "commit", "command"],
+      "required": [
+        "identity",
+        "commit",
+        "command"
+      ],
+      "additionalProperties": false,
       "properties": {
-        "identity": {"type": "string", "minLength": 1},
-        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
-        "command": {"type": "string", "minLength": 1},
-        "assurance": {"enum": ["published-release", "bootstrap-transition"]}
+        "identity": {
+          "type": "string",
+          "minLength": 1
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "command": {
+          "type": "string",
+          "minLength": 1
+        },
+        "assurance": {
+          "enum": [
+            "published-release",
+            "bootstrap-transition"
+          ]
+        }
       },
       "allOf": [
         {
-          "if": {"properties": {"identity": {"pattern": "not-release$"}}, "required": ["identity"]},
-          "then": {"required": ["assurance"], "properties": {"assurance": {"const": "bootstrap-transition"}}}
+          "if": {
+            "required": [
+              "identity"
+            ],
+            "properties": {
+              "identity": {
+                "pattern": "not-release$"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "assurance"
+            ],
+            "properties": {
+              "assurance": {
+                "const": "bootstrap-transition"
+              }
+            }
+          }
         }
-      ],
-      "additionalProperties": false
+      ]
     }
   },
-  "additionalProperties": false
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": 1.0
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "framework": {
+            "$ref": "#/$defs/legacy_framework"
+          },
+          "python_package": {
+            "$ref": "#/$defs/legacy_python_package"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "framework": {
+            "$ref": "#/$defs/current_framework"
+          },
+          "python_package": {
+            "$ref": "#/$defs/current_python_package"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "schema_version"
+        ],
+        "properties": {
+          "schema_version": {
+            "const": "1.2"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "bootstrap": {
+            "properties": {
+              "manifest": {
+                "enum": [
+                  ".dset/dset_settings.toml",
+                  "dset/scopes/meta/dset.toml",
+                  "dset/scopes/meta/dset.yaml"
+                ]
+              },
+              "governance_registry": {
+                "enum": [
+                  "00_project/governance.toml",
+                  "dset/scopes/gov/governance.toml",
+                  "dset/scopes/gov/governance.yaml"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "bootstrap": {
+            "properties": {
+              "manifest": {
+                "enum": [
+                  "dset/dset.toml",
+                  "dset/dset.yaml"
+                ]
+              },
+              "governance_registry": {
+                "enum": [
+                  "dset/governance.toml",
+                  "dset/governance.yaml"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }

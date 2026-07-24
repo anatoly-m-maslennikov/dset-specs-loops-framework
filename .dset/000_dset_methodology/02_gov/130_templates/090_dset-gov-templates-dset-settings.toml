@@ -14,56 +14,30 @@
 # configuration carriers fail closed.
 #
 # Settings schema implemented by this file.
-# Accepted for new writers: "1.5".
-schema_version = "1.5"
+# Accepted for new writers: "1.8".
+schema_version = "1.8"
 canonical_command = "python -m dset_toolchain verify ."
 
-[artifacts]
-# Select the visible classification and project-wide numbering axis for
-# governed artifacts.
-#
-# Accepted:
-# - false (default): type-only structural name and one sequence per Type.
-#   Example: DSET-VERSION-001-0-4-core.md
-#   Inside the artifact: artifact_type = "version" and
-#   artifact_subtype = "version_scope".
-# - true: expose the direct subtype and use one sequence per subtype.
-#   Example: DSET-VERSION-VERSION-SCOPE-001-0-4-core.md
-#   Atomic records use the semantic subtype kind directly, such as
-#   APP-REQUIREMENT-GOV-001-readable-summary.md. Empty-subtype atoms continue to use
-#   their Type kind, such as APP-DECISION-GOV-001-readable-summary.md.
-#
-# Changing this value requires a complete governed migration of current and
-# historical IDs, filenames, relations, lifecycle targets, compiled documents,
-# settings, implementations, proof references, and generated views. Layers,
-# features, feature groups, folders, and lifecycle state never restart a
-# sequence. The repository never retains two accepted naming vocabularies.
-# This migrates identity and carrier-representation fields only. Atomic claims,
-# rationale, provenance, scope/relation meaning, and QA criteria remain
-# immutable; changing them requires a successor atom.
-#
-# Registered artifact subtype examples:
-# - analysis_report: solution_landscape, root_cause_analysis, proposal,
-#   technical_investigation, external_audit_analysis
-# - specification: domain_model, behavior, architecture, design, governance
-# - procedure: playbook, runbook
-# - plan: implementation_plan, test_plan, evaluation_plan
-# - version: roadmap, version_scope, change, release_plan, readiness_record,
-#   release_record
-# - implementation: source_code, documentation, configuration, migration,
-#   test_implementation, evaluation_implementation
-# - evidence_record: test_result, evaluation_result, review_report, run_record
-# - derived_view: project_overview, health_dashboard, traceability_index,
-#   changelog
-# - navigation: readme, hub, index
-# atomic_record and verification currently have no artifact subtypes.
-subtype_in_names = false
+[paths]
+# Canonical project-local roots.
+control_root = ".dset"
+journal_root = ".dset_journal"
+runtime_root = ".dset_runtime"
 
+[git]
+# Every DSET-managed project uses Git. Initialization may create a repository
+# only when no enclosing repository exists.
+required = true
+initialize_if_missing = true
+commit_each_governed_change = true
+
+[artifacts]
 # Set the gate used before a new immutable atomic artifact is emitted.
 #
 # Accepted:
-# - "medium" (default): require clear authority, one primary claim, semantic
-#   Type, owning scope, provenance, material links, priority, and acceptance.
+# - "medium" (default): require clear authority, one primary claim, registered
+#   type/subtype, owning scope, provenance, material links, priority, and
+#   acceptance.
 #   Optional non-authoritative context may remain explicitly unknown.
 # - "high": also require every material boundary, lineage, conflict, and proof
 #   question to be precise. DSET asks focused questions or stops without writing
@@ -73,27 +47,107 @@ subtype_in_names = false
 # propose eligible promotion. Promotion always requires operator acceptance.
 creation_strictness = "medium"
 
+# Enable only catalog entries used by this project. Unknown or disabled types
+# and subtypes fail closed. External and relational types additionally require
+# their Governance locus below.
+enabled_types = [
+  "requirement",
+  "implementation_decision",
+  "question",
+  "problem",
+  "test_plan",
+  "evaluation_plan",
+  "rationale",
+  "analysis_report",
+  "evidence_record",
+  "specification",
+  "procedure",
+  "navigation",
+  "verification",
+]
+enabled_subtypes = [
+  "question:risk",
+  "question:opportunity",
+  "problem:defect",
+  "problem:gap",
+  "problem:debt",
+]
+
+[artifacts.identity]
+# Project prefixes are optional. Disable for one small isolated namespace;
+# enable for monorepos, multiple DSET projects, or shared artifact namespaces.
+project_prefix_enabled = true
+project_prefix = "DSET"
+scope_path_in_ids = true
+subtype_in_names = false
+
+[artifacts.routing]
+# Enable the three independent META routing axes.
+#
+# The framework catalog defines every route. These lists select which registered
+# routes a project may use. `internal` is mandatory. Add `external` when the
+# project governs outside-owned inputs or constraints. Add `relation` when the
+# project governs explicit boundaries or interactions.
+revision_modes = ["atomic", "append_only", "maintained"]
+content_roles = [
+  "inquiry",
+  "analysis",
+  "definition",
+  "method",
+  "implementation",
+  "observation",
+]
+governance_loci = ["internal"]
+
+[workflows]
+# Development is the ordinary loop. Release readiness is mandatory before a
+# Version may be declared ready.
+default_mode = "development"
+release_mode = "release_readiness"
+
 [workflows.implement]
 # Choose what dset-implement may do before implementation begins.
 #
 # Accepted:
-# - "lazy" (default): reconcile missing session Decisions, then create or update
-#   separate Test/Evaluation plans and the implementation plan as needed before
-#   implementing. Completed prerequisites are skipped.
+# - "lazy" (default): reconcile missing accepted authority from the session,
+#   then create or update separate Test/Evaluation plans and the implementation
+#   plan as needed before implementing. Completed prerequisites are skipped.
 # - "strict": perform implementation only from already sufficient accepted
 #   artifacts. Missing or ambiguous inputs stop; DSET does not create or repair
-#   Decisions or plans and never falls back to lazy mode.
+#   authority artifacts or plans and never falls back to lazy mode.
 #
 # Example lazy chain:
-# decisions -> compile when required -> plan-proof -> plan-implementation -> implement
+# authority -> refresh views when required -> plan-proof -> plan-implementation -> implement
 mode = "lazy"
 
-[compilation]
-# Compile accepted atoms into affected evergreen specs/plans only on explicit
-# request or when a downstream entry gate requires current evergreen truth.
-mode = "on_demand"
-skill = "dset-compile"
-runtime_output = ".dset_runtime/generated"
+[interaction]
+# "silent" reports durable changes, blockers, approvals, and material
+# deviations. "verbose" additionally reports mode selection, skill chains, and
+# gate transitions. Presentation never changes authorization or validation.
+reporting_mode = "silent"
+
+[maintained_views]
+# Refresh thin maintained semantic views only on explicit request or when a
+# downstream entry gate requires a current view. Refresh is reasoned synthesis,
+# not concatenation or mechanical compilation.
+refresh_mode = "on_demand"
+skill = "dset-refresh"
+
+[governance_surfaces]
+# DSET starts atomic-first. These named, optional surfaces become governed only
+# when explicitly activated. Activation adds currentness and entry-gate
+# obligations for that surface; deactivation preserves its carrier and Git
+# history but removes those obligations.
+#
+# Use `dset configure ROOT status` to inspect the effective state.
+# Use `dset configure ROOT activate SURFACE` or `deactivate SURFACE` to preview
+# a change; append `--execute` only after accepting the preview.
+maintained_specification = false
+test_plan = false
+evaluation_plan = false
+implementation_plan = false
+project_overview = false
+architecture_view = false
 
 [changes]
 # Select the default Git workspace for a newly created Change when the caller
@@ -142,7 +196,7 @@ default = "medium"
 constraint = "high"
 contract = "medium"
 requirement = "medium"
-decision = "medium"
+implementation_decision = "medium"
 implementation = "low"
 other = "medium"
 

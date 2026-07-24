@@ -1,3 +1,10 @@
+---
+artifact_type: specification
+scope_path: []
+priority: medium
+artifact_subtype: behavior
+---
+
 # {{title}} specification
 
 ## {{project_key}}-REQUIREMENT{{id_layer}}-001 — Requirement title

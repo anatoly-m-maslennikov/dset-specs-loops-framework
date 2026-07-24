@@ -1,13 +1,14 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/.dset/000_dset_methodology/02_gov/schemas/evidence-record.schema.json",
-  "title": "DSET native Evidence Record TOML frontmatter",
+  "title": "DSET native Evidence Record YAML frontmatter",
   "type": "object",
   "required": [
     "schema_version",
     "artifact_type",
     "artifact_subtype",
     "artifact_id",
+    "scope_path",
     "priority",
     "llm_session_ids",
     "subject",
@@ -16,18 +17,41 @@
     "context",
     "evidence_location",
     "polarity",
-    "currentness",
     "reopen_when",
     "relations"
   ],
+  "additionalProperties": false,
   "properties": {
-    "schema_version": {"const": "1.0"},
-    "artifact_type": {"const": "evidence_record"},
-    "artifact_subtype": {
-      "enum": ["test_result", "evaluation_result", "review_report", "run_record"]
+    "schema_version": {
+      "const": "1.0"
     },
-    "artifact_id": {"$ref": "#/$defs/id"},
-    "priority": {"type": "string", "minLength": 1},
+    "artifact_type": {
+      "const": "evidence_record"
+    },
+    "artifact_subtype": {
+      "enum": [
+        "test_result",
+        "evaluation_result",
+        "review_report",
+        "run_record"
+      ]
+    },
+    "artifact_id": {
+      "$ref": "#/$defs/id"
+    },
+    "scope_path": {
+      "type": "array",
+      "minItems": 0,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9][A-Za-z0-9._-]*$"
+      }
+    },
+    "priority": {
+      "type": "string",
+      "minLength": 1
+    },
     "llm_session_ids": {
       "type": "array",
       "uniqueItems": true,
@@ -36,52 +60,96 @@
         "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$"
       }
     },
-    "subject": {"$ref": "#/$defs/subject"},
-    "producer": {"$ref": "#/$defs/producer"},
-    "method": {"$ref": "#/$defs/method"},
+    "subject": {
+      "$ref": "#/$defs/subject"
+    },
+    "producer": {
+      "$ref": "#/$defs/producer"
+    },
+    "method": {
+      "$ref": "#/$defs/method"
+    },
     "context": {
       "type": "array",
       "minItems": 1,
-      "items": {"type": "string", "minLength": 1}
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
-    "observed_at": {"type": "string", "format": "date-time"},
-    "validity_window": {"$ref": "#/$defs/validity_window"},
-    "evidence_location": {"type": "string", "minLength": 1},
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "validity_window": {
+      "$ref": "#/$defs/validity_window"
+    },
+    "evidence_location": {
+      "type": "string",
+      "minLength": 1
+    },
     "polarity": {
-      "enum": ["supports", "contradicts", "mixed", "inconclusive"]
+      "enum": [
+        "supports",
+        "contradicts",
+        "mixed",
+        "inconclusive"
+      ]
     },
-    "currentness": {"enum": ["current", "stale", "superseded"]},
-    "reopen_when": {"type": "string", "minLength": 1},
+    "reopen_when": {
+      "type": "string",
+      "minLength": 1
+    },
     "relations": {
       "type": "array",
       "minItems": 1,
       "contains": {
         "type": "object",
-        "required": ["type", "target"],
+        "required": [
+          "type",
+          "targets"
+        ],
         "properties": {
-          "type": {"const": "evidence_for"},
-          "target": {"$ref": "#/$defs/id"}
+          "type": {
+            "const": "evidence_for"
+          },
+          "targets": {
+            "type": "array",
+            "minItems": 1,
+            "contains": {
+              "$ref": "#/$defs/id"
+            }
+          }
         }
       },
-      "items": {"$ref": "#/$defs/relation"}
+      "items": {
+        "$ref": "#/$defs/relation"
+      }
     },
-    "independent_producer": {"type": "boolean"},
+    "independent_producer": {
+      "type": "boolean"
+    },
     "rival_explanations": {
       "type": "array",
       "minItems": 1,
-      "items": {"type": "string", "minLength": 1}
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "limitations": {
       "type": "array",
       "minItems": 1,
-      "items": {"type": "string", "minLength": 1}
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
-    "rationale": {"type": "string", "minLength": 1}
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    }
   },
-  "oneOf": [
-    {"required": ["observed_at"], "not": {"required": ["validity_window"]}},
-    {"required": ["validity_window"], "not": {"required": ["observed_at"]}}
-  ],
   "$defs": {
     "id": {
       "type": "string",
@@ -89,44 +157,90 @@
     },
     "subject": {
       "type": "object",
-      "required": ["id", "revision", "intended_use"],
+      "required": [
+        "id",
+        "revision",
+        "intended_use"
+      ],
+      "additionalProperties": false,
       "properties": {
-        "id": {"$ref": "#/$defs/id"},
-        "revision": {"type": "string", "minLength": 1, "not": {"const": "pending"}},
-        "intended_use": {"type": "string", "minLength": 1}
-      },
-      "additionalProperties": false
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "not": {
+            "const": "pending"
+          }
+        },
+        "intended_use": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
     },
     "producer": {
       "type": "object",
-      "required": ["identity", "performed_work"],
+      "required": [
+        "identity",
+        "performed_work"
+      ],
+      "additionalProperties": false,
       "properties": {
-        "identity": {"type": "string", "minLength": 1},
-        "performed_work": {"type": "string", "minLength": 1}
-      },
-      "additionalProperties": false
+        "identity": {
+          "type": "string",
+          "minLength": 1
+        },
+        "performed_work": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
     },
     "method": {
       "type": "object",
-      "required": ["description", "setup"],
+      "required": [
+        "description",
+        "setup"
+      ],
+      "additionalProperties": false,
       "properties": {
-        "description": {"type": "string", "minLength": 1},
-        "setup": {"type": "string", "minLength": 1}
-      },
-      "additionalProperties": false
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "setup": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
     },
     "validity_window": {
       "type": "object",
-      "required": ["from", "through"],
+      "required": [
+        "from",
+        "through"
+      ],
+      "additionalProperties": false,
       "properties": {
-        "from": {"type": "string", "format": "date-time"},
-        "through": {"type": "string", "format": "date-time"}
-      },
-      "additionalProperties": false
+        "from": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "through": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
     },
     "relation": {
       "type": "object",
-      "required": ["type", "target"],
+      "required": [
+        "type",
+        "targets"
+      ],
+      "additionalProperties": false,
       "properties": {
         "type": {
           "enum": [
@@ -137,15 +251,44 @@
             "check_of",
             "evidence_for",
             "resolution_of",
+            "solution_for",
             "override_of",
             "replacement_of",
+            "recurrence_of",
             "relates_to"
           ]
         },
-        "target": {"$ref": "#/$defs/id"}
-      },
-      "additionalProperties": false
+        "targets": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        }
+      }
     }
   },
-  "additionalProperties": false
+  "oneOf": [
+    {
+      "required": [
+        "observed_at"
+      ],
+      "not": {
+        "required": [
+          "validity_window"
+        ]
+      }
+    },
+    {
+      "required": [
+        "validity_window"
+      ],
+      "not": {
+        "required": [
+          "observed_at"
+        ]
+      }
+    }
+  ]
 }

@@ -1,3 +1,11 @@
+---
+artifact_type: procedure
+artifact_subtype: playbook
+scope_path:
+  - layer:meta
+priority: medium
+---
+
 # 01_Spec Authoring Patterns — Service Spec Conventions
 
 **Thesis:** When you write the spec for a **deployed service**—including a stateless service whose durable state lives in backing systems—don't invent ad-hoc structure; reuse the named patterns below. The spec must declare its runtime risk profile, durability ownership per concern, and risk-scaled production supportability contract before it selects event sourcing, reconciliation, or durable execution. This is **stage 1** of `00_Tool Development Playbook.md`: the spec comes first; its separate deterministic **test plan** and probabilistic/qualitative **eval plan** are authored with it per `02_Test and Eval Plan Patterns — Proof Artifact Conventions.md`; and the code-side conventions live in `04_General Build Rules — Tool Code Conventions.md`. The catalog is §1, ordered by importance; the apply-it checklist is §2.

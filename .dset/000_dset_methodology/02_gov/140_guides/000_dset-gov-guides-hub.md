@@ -1,3 +1,11 @@
+---
+artifact_type: navigation
+artifact_subtype: hub
+scope_path:
+  - layer:gov
+priority: medium
+---
+
 # Documentation architecture hub
 
 ## Purpose
@@ -13,9 +21,8 @@ This area owns artifact types, authoring boundaries, hub/navigation rules, and t
 ## Start here
 
 1. `artifact-architecture.md` — the profile axes, authority graph, and hierarchy.
-2. `artifact-types.md` — canonical Decision,
-   Question, Problem, and QA subtypes plus the independent MECE carrier-role
-   classification.
+2. `artifact-types.md` — direct registered type/subtype meanings and their
+   route-selection boundaries.
 3. `authoring-rules.md` — universal and type-specific writing rules.
 4. `hub-rules.md` — helicopter navigation without exhaustive indexes.
 5. `documentation-v1.md` — deterministic gates and qualitative review contract.

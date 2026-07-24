@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from pathlib import Path, PurePath
 from typing import Final
 
-from .yaml_subset import YamlSubsetError, load
+from .structured_data import StructuredDataError, load
 
 # LAYERS defines layers; this module owns the default.
 LAYERS: Final[tuple[str, ...]] = (
@@ -93,8 +93,12 @@ LAYERED_SCHEMA_VERSION: Final[str] = "1.2"
 SLIM_SCHEMA_VERSION: Final[str] = "1.3"
 # RECURSIVE_SCHEMA_VERSION defines recursive schema version; this module owns the default.
 RECURSIVE_SCHEMA_VERSION: Final[str] = "1.4"
-# SEPARATED_SCHEMA_VERSION defines separated schema version; this module owns the default.
-SEPARATED_SCHEMA_VERSION: Final[str] = "1.5"
+# SEPARATED_SCHEMA_VERSION defines the current separated-layout schema.
+SEPARATED_SCHEMA_VERSION: Final[str] = "1.8"
+# SEPARATED_SCHEMA_VERSIONS defines readable separated-layout schemas.
+SEPARATED_SCHEMA_VERSIONS: Final[frozenset[str]] = frozenset(
+    {"1.5", "1.6", "1.7", SEPARATED_SCHEMA_VERSION}
+)
 # CURRENT_DSET_ROOT defines current dset root; this module owns the default.
 CURRENT_DSET_ROOT: Final[str] = ".dset"
 # LEGAL_FILES_ROOT defines legal files root; this module owns the default.
@@ -185,27 +189,32 @@ class RepositoryLayout:
 
     @property
     def slim(self) -> bool:
+        """Handle slim using the declared repository contract."""
         return self.schema_version in {
             SLIM_SCHEMA_VERSION,
             RECURSIVE_SCHEMA_VERSION,
-            SEPARATED_SCHEMA_VERSION,
+            *SEPARATED_SCHEMA_VERSIONS,
         }
 
     @property
     def recursive(self) -> bool:
+        """Handle recursive using the declared repository contract."""
         return self.schema_version == RECURSIVE_SCHEMA_VERSION
 
     @property
     def separated(self) -> bool:
-        return self.schema_version == SEPARATED_SCHEMA_VERSION
+        """Handle separated using the declared repository contract."""
+        return self.schema_version in SEPARATED_SCHEMA_VERSIONS
 
     @property
     def dset_root(self) -> Path:
+        """Handle root using the declared repository contract."""
         directory = CURRENT_DSET_ROOT if self.slim else LEGACY_DSET_ROOT
         return self.root / directory
 
     @property
     def settings_path(self) -> Path:
+        """Handle path using the declared repository contract."""
         if self.slim:
             return self.dset_root / "dset_settings.toml"
         return self.root / "dset_settings.toml"
@@ -218,6 +227,7 @@ class RepositoryLayout:
 
     @property
     def project_root(self) -> Path:
+        """Handle root using the declared repository contract."""
         if self.separated:
             return self.dset_root / APPLIED_PROJECT_ROOT
         return (
@@ -226,6 +236,7 @@ class RepositoryLayout:
 
     @property
     def versions_root(self) -> Path:
+        """Handle root using the declared repository contract."""
         if self.separated:
             return self.dset_root / APPLIED_VERSIONS_ROOT
         return (
@@ -234,6 +245,7 @@ class RepositoryLayout:
 
     @property
     def scopes_root(self) -> Path:
+        """Handle root using the declared repository contract."""
         if self.separated:
             return self.dset_root
         if self.recursive:
@@ -241,6 +253,7 @@ class RepositoryLayout:
         return self.dset_root if self.slim else self.dset_root / "scopes"
 
     def layer_root(self, layer: str) -> Path:
+        """Handle root using the declared repository contract."""
         normalized = layer.lower()
         if normalized not in LAYERS:
             raise ValueError(f"unknown DSET layer: {layer}")
@@ -255,6 +268,7 @@ class RepositoryLayout:
         return self.scopes_root / directory
 
     def framework_layer_root(self, layer: str) -> Path:
+        """Handle layer root using the declared repository contract."""
         normalized = layer.lower()
         if normalized not in LAYERS:
             raise ValueError(f"unknown DSET layer: {layer}")
@@ -270,6 +284,7 @@ class RepositoryLayout:
 
     @property
     def framework_project_root(self) -> Path:
+        """Handle project root using the declared repository contract."""
         if self.separated:
             return self.dset_root / METHODOLOGY_ROOT / "00_project"
         if self.recursive:
@@ -278,10 +293,12 @@ class RepositoryLayout:
 
     @property
     def layer_roots(self) -> dict[str, Path]:
+        """Handle roots using the declared repository contract."""
         return {layer: self.layer_root(layer) for layer in LAYERS}
 
     @property
     def manifest_path(self) -> Path:
+        """Handle path using the declared repository contract."""
         if self.slim:
             return self.settings_path
         if self.layered:
@@ -290,6 +307,7 @@ class RepositoryLayout:
 
     @property
     def governance_path(self) -> Path:
+        """Handle path using the declared repository contract."""
         if self.recursive or self.separated:
             return self.settings_path
         if self.slim:
@@ -298,6 +316,7 @@ class RepositoryLayout:
 
     @property
     def governance_root(self) -> Path:
+        """Handle root using the declared repository contract."""
         if self.recursive or self.separated:
             return self.framework_layer_root("gov")
         if self.slim:
@@ -312,6 +331,7 @@ class RepositoryLayout:
 
     @property
     def artifact_registry_path(self) -> Path:
+        """Handle registry path using the declared repository contract."""
         if self.recursive or self.separated:
             return self.settings_path
         if self.slim:
@@ -320,6 +340,9 @@ class RepositoryLayout:
 
     @property
     def artifact_type_registry_path(self) -> Path:
+        """Handle type registry path using the declared repository contract."""
+        if self.schema_version == SEPARATED_SCHEMA_VERSION:
+            return self.dset_root / "artifact_catalog.toml"
         if self.recursive or self.separated:
             return self.settings_path
         if self.slim:
@@ -328,6 +351,7 @@ class RepositoryLayout:
 
     @property
     def intake_path(self) -> Path:
+        """Handle path using the declared repository contract."""
         if self.recursive or self.separated:
             return self.project_root
         if self.slim:
@@ -336,6 +360,7 @@ class RepositoryLayout:
 
     @property
     def provenance_path(self) -> Path:
+        """Handle path using the declared repository contract."""
         if self.recursive or self.separated:
             return self.settings_path
         if self.slim:
@@ -344,6 +369,7 @@ class RepositoryLayout:
 
     @property
     def traceability_path(self) -> Path:
+        """Handle path using the declared repository contract."""
         if self.recursive or self.separated:
             return self.root / ".dset_runtime/generated/traceability.toml"
         if self.slim:
@@ -362,6 +388,7 @@ class RepositoryLayout:
 
     @property
     def migrations_root(self) -> Path:
+        """Handle root using the declared repository contract."""
         if self.recursive or self.separated:
             return self.project_root / "migrations"
         if self.slim:
@@ -370,6 +397,7 @@ class RepositoryLayout:
 
     @property
     def version_path(self) -> Path:
+        """Handle path using the declared repository contract."""
         if self.recursive or self.separated:
             return self.settings_path
         if self.slim:
@@ -378,6 +406,7 @@ class RepositoryLayout:
 
     @property
     def budget_path(self) -> Path:
+        """Handle path using the declared repository contract."""
         if self.recursive or self.separated:
             return self._numbered_file(
                 self.framework_layer_root("skill"), "budget.toml"
@@ -386,6 +415,7 @@ class RepositoryLayout:
 
     @property
     def history_root(self) -> Path:
+        """Handle root using the declared repository contract."""
         if self.recursive:
             return self.versions_root / "history"
         if self.slim:
@@ -394,12 +424,14 @@ class RepositoryLayout:
 
     @property
     def history_path(self) -> Path:
+        """Handle path using the declared repository contract."""
         return self.structured_file(
             self.history_root, self._preferred_name("pull-requests")
         )
 
     @property
     def supportability_root(self) -> Path:
+        """Handle root using the declared repository contract."""
         base = (
             self.framework_layer_root("ops")
             if self.recursive or self.separated
@@ -409,6 +441,7 @@ class RepositoryLayout:
 
     @property
     def fixtures_root(self) -> Path:
+        """Handle root using the declared repository contract."""
         base = (
             self.framework_layer_root("tool")
             if self.recursive or self.separated
@@ -418,6 +451,7 @@ class RepositoryLayout:
 
     @property
     def schema_roots(self) -> tuple[Path, ...]:
+        """Handle roots using the declared repository contract."""
         if self.recursive or self.separated:
             return tuple(
                 self._numbered_directory(self.framework_layer_root(layer), "schemas")
@@ -429,6 +463,7 @@ class RepositoryLayout:
 
     @property
     def template_roots(self) -> tuple[Path, ...]:
+        """Handle roots using the declared repository contract."""
         if self.recursive or self.separated:
             return tuple(
                 self._numbered_directory(self.framework_layer_root(layer), "templates")
@@ -440,6 +475,7 @@ class RepositoryLayout:
 
     @property
     def active_change_roots(self) -> tuple[Path, ...]:
+        """Handle change roots using the declared repository contract."""
         if self.slim:
             return (self.versions_root / "changes",)
         if self.layered:
@@ -448,12 +484,14 @@ class RepositoryLayout:
 
     @property
     def archive_change_roots(self) -> tuple[Path, ...]:
+        """Archive change roots using the declared repository contract."""
         if self.slim:
             return (self.versions_root / "archive",)
         return tuple(path / "archive" for path in self.active_change_roots)
 
     @property
     def package_roots(self) -> tuple[Path, ...]:
+        """Handle roots using the declared repository contract."""
         if self.recursive or self.separated:
             return ()
         if self.slim:
@@ -465,10 +503,11 @@ class RepositoryLayout:
         return (self.dset_root / "specs" / "packages",)
 
     def schema_paths(self) -> Iterator[Path]:
+        """Handle paths using the declared repository contract."""
         seen: dict[str, Path] = {}
         for root in self.schema_roots:
             if root.is_dir():
-                for path in sorted(root.glob("*.json")):
+                for path in sorted(root.glob("*.schema.toml")):
                     previous = seen.get(path.name)
                     if previous is not None:
                         raise ValueError(
@@ -479,11 +518,13 @@ class RepositoryLayout:
                     yield path
 
     def find_template(self, relative: str | Path) -> Path:
+        """Find template using the declared repository contract."""
         if self.recursive or self.separated:
             return self._find_numbered_unique(self.template_roots, relative, "template")
         return self._find_unique(self.template_roots, relative, "template")
 
     def package_fragments(self) -> tuple[Path, ...]:
+        """Handle fragments using the declared repository contract."""
         if self.recursive or self.separated:
             return ()
         if self.slim:
@@ -537,6 +578,7 @@ class RepositoryLayout:
         return tuple(selected)
 
     def active_change_root(self, layer: str | None = None) -> Path:
+        """Handle change root using the declared repository contract."""
         if self.slim:
             return self.active_change_roots[0]
         if not self.layered:
@@ -546,11 +588,13 @@ class RepositoryLayout:
         return self.layer_root(layer) / "changes"
 
     def archive_change_root(self, layer: str | None = None) -> Path:
+        """Archive change root using the declared repository contract."""
         if self.slim:
             return self.archive_change_roots[0]
         return self.active_change_root(layer) / "archive"
 
     def find_change(self, change_id: str, *, archived: bool = False) -> Path:
+        """Find change using the declared repository contract."""
         roots = self.archive_change_roots if archived else self.active_change_roots
         matches: list[Path] = []
         for root in roots:
@@ -563,7 +607,7 @@ class RepositoryLayout:
                         continue
                     try:
                         data = load(manifest)
-                    except (OSError, ValueError, YamlSubsetError):
+                    except (OSError, ValueError, StructuredDataError):
                         continue
                     if isinstance(data, dict) and data.get("id") == change_id:
                         matches.append(path)
@@ -582,12 +626,13 @@ class RepositoryLayout:
         return matches[0]
 
     def change_layer(self, change: Path) -> str | None:
+        """Handle layer using the declared repository contract."""
         resolved = change.resolve()
         if self.slim:
             manifest = self.structured_file(resolved, "change.toml")
             try:
                 data = load(manifest)
-            except (OSError, ValueError, YamlSubsetError) as error:
+            except (OSError, ValueError, StructuredDataError) as error:
                 raise ValueError(
                     f"cannot read Change layer: {manifest}: {error}"
                 ) from error
@@ -606,6 +651,7 @@ class RepositoryLayout:
         raise ValueError(f"change is outside the DSET layout: {change}")
 
     def resolve_dset_path(self, relative: str | Path) -> Path:
+        """Resolve dset path using the declared repository contract."""
         return self.dset_root / _canonical_relative(relative)
 
     def _owned_file(self, layer: str, name: str) -> Path:
@@ -621,6 +667,7 @@ class RepositoryLayout:
 
     @staticmethod
     def _numbered_directory(parent: Path, logical_name: str) -> Path:
+        """Handle directory using the declared repository contract."""
         exact = parent / logical_name
         if exact.is_dir():
             return exact
@@ -644,6 +691,7 @@ class RepositoryLayout:
 
     @staticmethod
     def _numbered_file(parent: Path, logical_name: str) -> Path:
+        """Handle file using the declared repository contract."""
         exact = parent / logical_name
         if exact.is_file():
             return exact
@@ -665,6 +713,7 @@ class RepositoryLayout:
     def _find_numbered_unique(
         roots: tuple[Path, ...], relative: str | Path, kind: str
     ) -> Path:
+        """Find numbered unique using the declared repository contract."""
         normalized = _canonical_relative(relative)
         suffixes = [normalized]
         if normalized.suffix.lower() in {".toml", ".yaml", ".yml"}:
@@ -689,6 +738,7 @@ class RepositoryLayout:
 
     @staticmethod
     def _find_unique(roots: tuple[Path, ...], relative: str | Path, kind: str) -> Path:
+        """Find unique using the declared repository contract."""
         normalized = _canonical_relative(relative)
         candidates: list[Path] = []
         for root in roots:
@@ -714,6 +764,7 @@ def _strip_numeric_prefix(name: str) -> str:
 
 
 def _methodology_component(name: str) -> str:
+    """Handle component using the declared repository contract."""
     normalized = _strip_numeric_prefix(name)
     if normalized.lower() == "readme.md":
         return "hub.md"
@@ -748,10 +799,11 @@ def discover_layout(root: Path) -> RepositoryLayout:
     if is_slim and version not in {
         SLIM_SCHEMA_VERSION,
         RECURSIVE_SCHEMA_VERSION,
-        SEPARATED_SCHEMA_VERSION,
+        *SEPARATED_SCHEMA_VERSIONS,
     }:
         raise ValueError(
-            f"hidden DSET manifest must declare schema 1.3, 1.4, or 1.5: {slim}"
+            "hidden DSET manifest must declare schema 1.3, 1.4, "
+            f"or 1.5-1.8: {slim}"
         )
     allowed_hidden_layouts = {
         LEGACY_SLIM_LAYOUT,
@@ -776,15 +828,19 @@ def discover_layout(root: Path) -> RepositoryLayout:
     ):
         raise ValueError(f"recursive-framework-v1 requires schema 1.4: {slim}")
     if (
-        version == SEPARATED_SCHEMA_VERSION
+        version in SEPARATED_SCHEMA_VERSIONS
         and structure_layout != SEPARATED_METHODOLOGY_LAYOUT
     ):
-        raise ValueError(f"schema 1.5 must select separated-methodology-v1: {slim}")
+        raise ValueError(
+            f"schemas 1.5-1.8 must select separated-methodology-v1: {slim}"
+        )
     if (
-        version != SEPARATED_SCHEMA_VERSION
+        version not in SEPARATED_SCHEMA_VERSIONS
         and structure_layout == SEPARATED_METHODOLOGY_LAYOUT
     ):
-        raise ValueError(f"separated-methodology-v1 requires schema 1.5: {slim}")
+        raise ValueError(
+            f"separated-methodology-v1 requires schema 1.5-1.8: {slim}"
+        )
     if not is_slim and is_layered and version != LAYERED_SCHEMA_VERSION:
         raise ValueError(f"layered DSET manifest must declare schema 1.2: {layered}")
     if not is_layered and version is not None and version not in LEGACY_SCHEMA_VERSIONS:
@@ -914,6 +970,7 @@ def discover_layout(root: Path) -> RepositoryLayout:
 
 
 def has_manifest(root: Path) -> bool:
+    """Handle manifest using the declared repository contract."""
     root = root.resolve()
     return (
         (root / CURRENT_DSET_ROOT / "dset_settings.toml").is_file()
@@ -927,9 +984,10 @@ def has_manifest(root: Path) -> bool:
 
 
 def _schema_version(path: Path) -> str | None:
+    """Handle version using the declared repository contract."""
     try:
         data = load(path)
-    except (OSError, ValueError, YamlSubsetError):
+    except (OSError, ValueError, StructuredDataError):
         return None
     raw = data.get("schema_version") if isinstance(data, dict) else None
     if isinstance(raw, str):
@@ -940,9 +998,10 @@ def _schema_version(path: Path) -> str | None:
 
 
 def _structure_layout(path: Path) -> str | None:
+    """Handle layout using the declared repository contract."""
     try:
         data = load(path)
-    except (OSError, ValueError, YamlSubsetError):
+    except (OSError, ValueError, StructuredDataError):
         return None
     structure = data.get("structure") if isinstance(data, dict) else None
     raw = structure.get("layout") if isinstance(structure, dict) else None
@@ -950,6 +1009,7 @@ def _structure_layout(path: Path) -> str | None:
 
 
 def _canonical_relative(relative: str | PurePath) -> Path:
+    """Handle relative using the declared repository contract."""
     raw = relative.as_posix() if isinstance(relative, PurePath) else str(relative)
     if (
         not raw
@@ -996,7 +1056,7 @@ def _registered_snapshot_after_cutover(snapshot: Path) -> bool:
             return False
         try:
             data = load(registry)
-        except (OSError, ValueError, YamlSubsetError):
+        except (OSError, ValueError, StructuredDataError):
             return False
         entries = data.get("legacy_structured") if isinstance(data, dict) else None
         if not isinstance(entries, list):

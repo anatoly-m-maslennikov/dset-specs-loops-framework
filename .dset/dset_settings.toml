@@ -544,7 +544,7 @@ customization = "unmodified"
 profile = "core-v1"
 version = "0.3"
 template = "010_dset-gov-templates-governance-core-v1-architecture.md"
-sha256 = "3b9a09a1ce5028947f50ec6529050438c766175fee4baebf9ff853c1ca84f694"
+sha256 = "b49097ac7ea15fd38eeadd458b2bcb53bb40e772e2662a9685c820b10d93a3d2"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-BUILD"
@@ -578,7 +578,7 @@ customization = "unmodified"
 profile = "core-v1"
 version = "0.3"
 template = "000_dset-meta-templates-governance-core-v1-domain-spec-authoring.md"
-sha256 = "95726c9d5790e8a76852bb43e23c7689424d2af370038024cdb3e1edff8760b8"
+sha256 = "611fd77af03ead2d2e98343c6c09cbda8d3226b7de901aead1260fc59f650b5f"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-TEST-PLAN"
@@ -595,7 +595,7 @@ customization = "unmodified"
 profile = "core-v1"
 version = "0.3"
 template = "020_dset-meta-templates-governance-core-v1-test-planning.md"
-sha256 = "d35e335fffe73396cc29e7f3d5b268c8a44f249bb8a8426126b8ca15322884b4"
+sha256 = "b6fad830d1672a6adbf8dbbff2c891ce2c578f453c0c959bf2bb5796f66fc61c"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-EVAL-PLAN"
@@ -612,7 +612,7 @@ customization = "unmodified"
 profile = "core-v1"
 version = "0.3"
 template = "010_dset-meta-templates-governance-core-v1-eval-planning.md"
-sha256 = "569a38f5974e39dc3bd8092c108b3c14213e646c31041a84fe56d1af25956b5a"
+sha256 = "392785a8f42cb965784236e6e1b4c9e137cfad35bd0cf95c000d1fa583655fdf"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-SUPPORTABILITY"
@@ -663,7 +663,7 @@ customization = "unmodified"
 profile = "core-v1"
 version = "0.3"
 template = "050_dset-gov-templates-governance-core-v1-work-items.md"
-sha256 = "ce78b0dc5e4bc858a0e769c2c8707564491c5b2f656767a0cb8d06eb9bce32b4"
+sha256 = "356243bd3bbcc65e5ca64bb010910d2f2b89478ef6af574ce1045f6b970182b9"
 
 [[governance_registry.rules]]
 id = "DSET-RULE-ARTIFACT-CLASSIFICATION"

@@ -1,3 +1,10 @@
+---
+artifact_type: navigation
+artifact_subtype: hub
+scope_path: []
+priority: medium
+---
+
 # Candidate fit proof — {{title}}
 
 Record candidate and exact version/commit, source, license, evaluation context,

@@ -1,3 +1,10 @@
+---
+artifact_type: specification
+scope_path: []
+priority: medium
+artifact_subtype: domain_model
+---
+
 # {{title}} domain
 
 ## Entities

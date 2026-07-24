@@ -7,16 +7,11 @@ from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
+from .artifact_routing import parse_artifact_route, route_issues
 from .layout import LAYERS, discover_layout
 from .lineage import collect_artifact_relations
-from .semantic_types import (
-    SEMANTIC_SUBTYPES,
-    build_semantic_classification_index,
-    next_semantic_sequence,
-    semantic_naming_axis,
-)
 from .settings import load_project_settings
-from .yaml_subset import load
+from .structured_data import load
 
 # SESSION_PATTERN validates session pattern; this module owns the accepted syntax.
 SESSION_PATTERN = re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$")
@@ -27,8 +22,10 @@ AUTHORITY_PATTERN = re.compile(r"^(?:operator|repository|external):[A-Za-z0-9._:
 MEDIUM_FIELDS = (
     "authority",
     "claim",
-    "type",
-    "scope",
+    "revision_mode",
+    "content_role",
+    "governance_locus",
+    "scope_path",
     "llm_session_ids",
     "material_links",
     "priority",
@@ -46,8 +43,13 @@ HIGH_FIELDS = (
 FIELD_QUESTIONS = {
     "authority": "Who or what authorizes this atomic claim?",
     "claim": "What is the one precise primary claim to preserve?",
-    "type": "Which one semantic Type owns this claim?",
-    "scope": "What is the narrowest structural scope that owns this claim?",
+    "revision_mode": "How may this artifact change?",
+    "content_role": "What one contribution does this artifact make?",
+    "governance_locus": (
+        "Does this artifact govern an internal subject, an external subject, "
+        "or an explicit relation?"
+    ),
+    "scope_path": "What canonical structural path owns this artifact?",
     "llm_session_ids": "Which explicit LLM session IDs produced this candidate?",
     "material_links": "Which material parent or related artifact IDs apply?",
     "promotion": "What is the immediately broader enabled scope, if any?",
@@ -72,6 +74,7 @@ ALLOWED_PROMOTION_STEPS = frozenset(
 def assess_artifact_candidate(
     root: Path, candidate: Mapping[str, Any]
 ) -> dict[str, Any]:
+    """Assess artifact candidate using the declared repository contract."""
     settings, settings_issues = load_project_settings(root)
     if settings_issues:
         raise ValueError("; ".join(settings_issues))
@@ -91,7 +94,6 @@ def assess_artifact_candidate(
             )
             questions.append(FIELD_QUESTIONS[field])
 
-    diagnostics.extend(_semantic_diagnostics(candidate))
     diagnostics.extend(_shape_diagnostics(candidate))
     diagnostics.extend(_value_diagnostics(root, candidate, settings.priority_scale))
     unknown_diagnostics, unknown_questions = _unknown_diagnostics(candidate)
@@ -126,7 +128,7 @@ def assess_artifact_candidate(
         diagnostics.append(
             {
                 "code": "DSET-ARTIFACT-PROMOTE-FIRST",
-                "field": "scope",
+                "field": "scope_path",
                 "message": "rebuild the candidate at the accepted broader scope",
             }
         )
@@ -140,34 +142,13 @@ def assess_artifact_candidate(
         "promotion": promotion,
         "writes_performed": False,
     }
-    semantic_type = candidate.get("type")
-    raw_subtype = candidate.get("subtype")
-    subtype = str(raw_subtype) if raw_subtype is not None else None
-    if (
-        isinstance(semantic_type, str)
-        and semantic_type in SEMANTIC_SUBTYPES
-        and (subtype is None or subtype in SEMANTIC_SUBTYPES[semantic_type])
-    ):
-        include_subtype = settings.artifact_subtype_in_names
-        result["identity"] = {
-            "naming_axis": "subtype" if include_subtype else "type",
-            "kind": semantic_naming_axis(
-                semantic_type,
-                subtype,
-                include_subtype=include_subtype,
-            ),
-            "next_sequence": next_semantic_sequence(
-                root,
-                semantic_type,
-                subtype,
-                include_subtype=include_subtype,
-            ),
-            "sequence_scope": "project",
-        }
+    if not route_issues(candidate):
+        result["route"] = parse_artifact_route(candidate).as_dict()
     return result
 
 
 def _has_explicit_value(candidate: Mapping[str, Any], field: str) -> bool:
+    """Handle explicit value using the declared repository contract."""
     if field not in candidate:
         return False
     value = candidate[field]
@@ -178,40 +159,16 @@ def _has_explicit_value(candidate: Mapping[str, Any], field: str) -> bool:
     return True
 
 
-def _semantic_diagnostics(candidate: Mapping[str, Any]) -> list[dict[str, str]]:
-    semantic_type = candidate.get("type")
-    subtype = candidate.get("subtype")
-    if semantic_type not in SEMANTIC_SUBTYPES:
-        return [
-            {
-                "code": "DSET-ARTIFACT-TYPE",
-                "field": "type",
-                "message": (
-                    "type must be decision, question, problem, or qa"
-                ),
-            }
-        ]
-    if subtype is not None and subtype not in SEMANTIC_SUBTYPES[str(semantic_type)]:
-        return [
-            {
-                "code": "DSET-ARTIFACT-SUBTYPE",
-                "field": "subtype",
-                "message": f"subtype is not valid for {semantic_type}",
-            }
-        ]
-    if semantic_type == "qa" and subtype is None:
-        return [
-            {
-                "code": "DSET-ARTIFACT-SUBTYPE",
-                "field": "subtype",
-                "message": "qa requires test or evaluation subtype",
-            }
-        ]
-    return []
-
-
 def _shape_diagnostics(candidate: Mapping[str, Any]) -> list[dict[str, str]]:
-    diagnostics: list[dict[str, str]] = []
+    """Handle diagnostics using the declared repository contract."""
+    diagnostics = [
+        {
+            "code": "DSET-ARTIFACT-ROUTE",
+            "field": _route_issue_field(issue),
+            "message": issue,
+        }
+        for issue in route_issues(candidate)
+    ]
     for field in ("llm_session_ids", "material_links", "lineage"):
         if field in candidate and not _is_string_sequence(candidate[field]):
             diagnostics.append(
@@ -221,15 +178,6 @@ def _shape_diagnostics(candidate: Mapping[str, Any]) -> list[dict[str, str]]:
                     "message": f"{field} must be a list of strings",
                 }
             )
-    scope = candidate.get("scope")
-    if scope is not None and not _valid_scope(scope):
-        diagnostics.append(
-            {
-                "code": "DSET-ARTIFACT-SCOPE",
-                "field": "scope",
-                "message": "scope must contain non-empty kind and id strings",
-            }
-        )
     if "promotion" in candidate and not isinstance(candidate["promotion"], Mapping):
         diagnostics.append(
             {
@@ -244,6 +192,7 @@ def _shape_diagnostics(candidate: Mapping[str, Any]) -> list[dict[str, str]]:
 def _value_diagnostics(
     root: Path, candidate: Mapping[str, Any], priorities: Sequence[str]
 ) -> list[dict[str, str]]:
+    """Handle diagnostics using the declared repository contract."""
     diagnostics: list[dict[str, str]] = []
     authority = candidate.get("authority")
     if isinstance(authority, str) and not AUTHORITY_PATTERN.fullmatch(authority):
@@ -306,6 +255,7 @@ def _value_diagnostics(
 
 
 def _link_diagnostics(root: Path, candidate: Mapping[str, Any]) -> list[dict[str, str]]:
+    """Handle diagnostics using the declared repository contract."""
     requested: set[str] = set()
     for field in ("material_links", "lineage"):
         value = candidate.get(field)
@@ -316,9 +266,6 @@ def _link_diagnostics(root: Path, candidate: Mapping[str, Any]) -> list[dict[str
         return []
     known: set[str] = set()
     try:
-        known.update(
-            str(row["id"]) for row in build_semantic_classification_index(root)
-        )
         nodes, relation_issues = collect_artifact_relations(root)
         if not relation_issues:
             for node in nodes.values():
@@ -340,6 +287,7 @@ def _link_diagnostics(root: Path, candidate: Mapping[str, Any]) -> list[dict[str
 def _unknown_diagnostics(
     candidate: Mapping[str, Any],
 ) -> tuple[list[dict[str, str]], list[str]]:
+    """Handle diagnostics using the declared repository contract."""
     raw_unknowns = candidate.get("unknowns", [])
     if not isinstance(raw_unknowns, Sequence) or isinstance(raw_unknowns, str):
         return (
@@ -382,10 +330,17 @@ def _unknown_diagnostics(
 def _assess_promotion(
     candidate: Mapping[str, Any], scope_model: Mapping[str, Any] | None
 ) -> dict[str, Any]:
+    """Assess promotion using the declared repository contract."""
     raw = candidate.get("promotion")
     if not isinstance(raw, Mapping):
         return {"status": "not-assessed", "eligible": False}
-    scope = candidate.get("scope")
+    scope = _scope_from_path(candidate.get("scope_path"))
+    if (
+        scope is None
+        and candidate.get("scope_path") == []
+        and scope_model is not None
+    ):
+        scope = dict(scope_model["project_scope"])
     if not _valid_scope(scope):
         return {"status": "invalid", "eligible": False}
     assert isinstance(scope, Mapping)
@@ -473,6 +428,7 @@ def _assess_promotion(
 def _repository_scope_model(
     root: Path,
 ) -> tuple[dict[str, Any] | None, list[dict[str, str]]]:
+    """Handle scope model using the declared repository contract."""
     try:
         layout = discover_layout(root)
         manifest = load(layout.manifest_path)
@@ -480,7 +436,7 @@ def _repository_scope_model(
         return None, [
             {
                 "code": "DSET-ARTIFACT-REPOSITORY",
-                "field": "scope",
+                "field": "scope_path",
                 "message": f"repository scope authority is unavailable: {error}",
             }
         ]
@@ -490,7 +446,7 @@ def _repository_scope_model(
         return None, [
             {
                 "code": "DSET-ARTIFACT-REPOSITORY",
-                "field": "scope",
+                "field": "scope_path",
                 "message": "project manifest requires project.id",
             }
         ]
@@ -507,10 +463,12 @@ def _repository_scope_model(
         "scopes": scopes,
         "parents": parents,
         "children": children,
+        "project_scope": {"kind": "project", "id": project_id},
     }, []
 
 
 def _valid_scope(value: object) -> bool:
+    """Handle scope using the declared repository contract."""
     return (
         isinstance(value, Mapping)
         and isinstance(value.get("kind"), str)
@@ -518,6 +476,24 @@ def _valid_scope(value: object) -> bool:
         and isinstance(value.get("id"), str)
         and bool(str(value["id"]).strip())
     )
+
+
+def _scope_from_path(value: object) -> dict[str, str] | None:
+    """Return the leaf structural owner used by promotion checks."""
+    if not isinstance(value, list) or not value:
+        return None
+    leaf = value[-1]
+    if not isinstance(leaf, str) or ":" not in leaf:
+        return None
+    kind, identifier = leaf.split(":", 1)
+    scope = {"kind": kind, "id": identifier}
+    return scope if _valid_scope(scope) else None
+
+
+def _route_issue_field(issue: str) -> str:
+    """Recover the route field named at the start of a validation issue."""
+    field = issue.split(" ", 1)[0]
+    return field.split("[", 1)[0]
 
 
 def _is_string_sequence(value: object) -> bool:

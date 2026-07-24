@@ -22,6 +22,7 @@ from .carrier_transitions import (
     transition_aliases,
     validate_carrier_transition_ledger,
 )
+from .artifact_records import validate_atomic_artifact_routes
 from .commit_provenance import validate_commit_provenance
 from .compilation import compilation_is_fresh, compilation_path
 from .dependencies import validate_dependency_policy
@@ -45,8 +46,8 @@ from .legacy_authority import legacy_authority_ids
 from .lineage import validate_artifact_lineage
 from .profiles import VALID_PROFILES, required_artifacts
 from .project_data import project_section
-from .semantic_atoms import collect_semantic_atoms, validate_semantic_atoms
-from .semantic_types import classify_semantic_id, validate_semantic_classifications
+from .semantic_atoms import collect_semantic_atoms
+from .semantic_types import classify_semantic_id
 from .settings import load_project_settings, selected_settings_path
 from .structured_data import StructuredDataError, load
 
@@ -241,8 +242,7 @@ def validate_repository(root: Path) -> list[Diagnostic]:
             _diag("DSET-E168", transition_ledger, issue)
             for issue in validate_carrier_transition_ledger(root)
         )
-    diagnostics.extend(validate_semantic_atoms(root))
-    diagnostics.extend(validate_semantic_classifications(root))
+    diagnostics.extend(validate_atomic_artifact_routes(root))
     diagnostics.extend(validate_artifact_lineage(root))
     diagnostics.extend(validate_dependency_policy(root))
     diagnostics.extend(validate_commit_provenance(root))
@@ -442,13 +442,16 @@ def _validate_project_manifest(
             _diag("DSET-E115", path, "package IDs must be non-empty and unique")
         )
     manifest_schema = str(data.get("schema_version"))
-    if manifest_schema in {"1.2", "1.3", "1.4", "1.5"}:
+    if manifest_schema in {"1.2", "1.3", "1.4", "1.5", "1.6", "1.7", "1.8"}:
         structure = data.get("structure")
         expected_layouts = {
             "1.2": {"layered-v1"},
             "1.3": {"slim-v1", "numbered-layers-v1"},
             "1.4": {"recursive-framework-v1"},
             "1.5": {"separated-methodology-v1"},
+            "1.6": {"separated-methodology-v1"},
+            "1.7": {"separated-methodology-v1"},
+            "1.8": {"separated-methodology-v1"},
         }[manifest_schema]
         valid_structure = (
             isinstance(structure, dict)
@@ -539,7 +542,7 @@ def _validate_project_manifest(
                 )
             )
         return diagnostics
-    if manifest_schema in {"1.4", "1.5"}:
+    if manifest_schema in {"1.4", "1.5", "1.6", "1.7", "1.8"}:
         return diagnostics
     contracts = data.get("contracts")
     if not isinstance(project_key, str):
@@ -1071,7 +1074,7 @@ def _validate_layered_packages(
 ) -> list[Diagnostic]:
     """Validate layered packages using the declared repository contract."""
     if layout.separated:
-        return _validate_catalog_packages(root, layout, manifest)
+        return []
     diagnostics: list[Diagnostic] = []
     project_key = _manifest_project_key(manifest)
     if project_key is None:
@@ -1263,80 +1266,6 @@ def _validate_layered_packages(
     return diagnostics
 
 
-def _validate_catalog_packages(
-    root: Path, layout: RepositoryLayout, manifest: dict[str, Any]
-) -> list[Diagnostic]:
-    """Validate catalog packages using the declared repository contract."""
-    diagnostics: list[Diagnostic] = []
-    declared = {
-        (str(item.get("id")), str(layer))
-        for item in manifest.get("packages", [])
-        if isinstance(item, dict) and isinstance(item.get("layers"), list)
-        for layer in item["layers"]
-        if isinstance(layer, str)
-    }
-    catalog = project_section(root, "package_catalog")
-    packages = catalog.get("packages", [])
-    if not isinstance(packages, list):
-        return [_diag("DSET-E144", layout.settings_path, "packages must be a list")]
-    found: set[tuple[str, str]] = set()
-    for package in packages:
-        if not isinstance(package, dict):
-            diagnostics.append(
-                _diag("DSET-E144", layout.settings_path, "package must be a table")
-            )
-            continue
-        identity = (str(package.get("package_id")), str(package.get("layer")))
-        if identity not in declared or identity in found:
-            diagnostics.append(
-                _diag(
-                    "DSET-E145",
-                    layout.settings_path,
-                    f"package identity is undeclared or duplicated: {identity}",
-                )
-            )
-        found.add(identity)
-        artifacts = package.get("artifacts")
-        if not isinstance(artifacts, dict):
-            diagnostics.append(
-                _diag(
-                    "DSET-E144",
-                    layout.settings_path,
-                    f"package artifacts are missing: {identity}",
-                )
-            )
-            continue
-        for role, carrier in artifacts.items():
-            if not isinstance(carrier, str):
-                diagnostics.append(
-                    _diag(
-                        "DSET-E144",
-                        layout.settings_path,
-                        f"package carrier name is invalid: {identity}/{role}",
-                    )
-                )
-                continue
-            try:
-                find_unique_name(root, carrier)
-            except (FileNotFoundError, ValueError):
-                diagnostics.append(
-                    _diag(
-                        "DSET-E144",
-                        layout.settings_path,
-                        f"package carrier is missing or ambiguous: {carrier}",
-                    )
-                )
-    for identity in sorted(declared - found):
-        diagnostics.append(
-            _diag(
-                "DSET-E144",
-                layout.settings_path,
-                f"declared package layer is missing: {identity}",
-            )
-        )
-    return diagnostics
-
-
 def _validate_artifacts(
     root: Path,
     manifest_path: Path,
@@ -1387,34 +1316,6 @@ def _validate_artifacts(
         )
         return diagnostics
     diagnostics.extend(validate_artifact_registry(root, registry_path, registry))
-    type_registry_path = layout.artifact_type_registry_path
-    if not type_registry_path.is_file():
-        diagnostics.append(
-            _diag(
-                "DSET-E156",
-                type_registry_path,
-                "documentation-v1 requires an artifact-type registry",
-            )
-        )
-        return diagnostics
-    try:
-        type_registry = project_section(root, "artifact_catalog")
-    except (OSError, ValueError, StructuredDataError) as error:
-        diagnostics.append(_diag("DSET-E156", type_registry_path, str(error)))
-        type_registry = {}
-    if type_registry:
-        project = manifest.get("project", {})
-        project_key = project.get("key") if isinstance(project, dict) else None
-        diagnostics.extend(
-            validate_artifact_type_registry(
-                root,
-                type_registry_path,
-                type_registry,
-                project_key=str(project_key) if project_key else None,
-                include_subtype_in_names=include_subtype_in_names,
-                separated=layout.separated,
-            )
-        )
     return diagnostics
 
 

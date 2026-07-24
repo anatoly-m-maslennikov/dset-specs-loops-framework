@@ -3,81 +3,207 @@
   "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/.dset/000_dset_methodology/02_gov/schemas/governance.schema.json",
   "title": "DSET repository-governance registry",
   "type": "object",
-  "required": ["schema_version", "profile", "rules", "workflows", "wrappers"],
+  "required": [
+    "schema_version",
+    "profile",
+    "rules",
+    "workflows",
+    "wrappers"
+  ],
+  "additionalProperties": false,
   "properties": {
-    "schema_version": {"const": 1.1},
+    "schema_version": {
+      "const": 1.1
+    },
     "profile": {
       "type": "object",
-      "required": ["id", "version", "customization"],
+      "required": [
+        "id",
+        "version",
+        "customization"
+      ],
+      "additionalProperties": false,
       "properties": {
-        "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
-        "version": {"type": "string", "minLength": 1},
-        "customization": {"enum": ["unmodified", "custom"]}
-      },
-      "additionalProperties": false
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "customization": {
+          "enum": [
+            "unmodified",
+            "custom"
+          ]
+        }
+      }
     },
     "rules": {
       "type": "array",
       "minItems": 1,
-      "items": {"$ref": "#/$defs/rule"}
+      "items": {
+        "$ref": "#/$defs/rule"
+      }
     },
     "workflows": {
       "type": "array",
       "minItems": 1,
-      "items": {"$ref": "#/$defs/workflow"}
+      "items": {
+        "$ref": "#/$defs/workflow"
+      }
     },
     "wrappers": {
       "type": "array",
-      "items": {"$ref": "#/$defs/wrapper"}
+      "items": {
+        "$ref": "#/$defs/wrapper"
+      }
     }
   },
   "$defs": {
     "rule": {
       "type": "object",
-      "required": ["id", "layer", "document", "owner", "applicability", "reason", "depends_on", "precedence_over", "customization", "source"],
+      "required": [
+        "id",
+        "layer",
+        "document",
+        "owner",
+        "applicability",
+        "reason",
+        "depends_on",
+        "precedence_over",
+        "customization",
+        "source"
+      ],
+      "additionalProperties": false,
       "properties": {
-        "id": {"type": "string", "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)+$"},
-        "layer": {"enum": ["META", "GOV", "TOOL", "SKILL", "IMPL", "OPS"]},
-        "document": {"type": "string", "pattern": "^[^/\\\\]+$"},
-        "owner": {"type": "string", "minLength": 1},
-        "applicability": {"enum": ["applicable", "not-applicable"]},
-        "reason": {"type": "string", "minLength": 1},
-        "depends_on": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
-        "precedence_over": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
-        "customization": {"enum": ["unmodified", "custom"]},
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+        },
+        "layer": {
+          "enum": [
+            "META",
+            "GOV",
+            "TOOL",
+            "SKILL",
+            "IMPL",
+            "OPS"
+          ]
+        },
+        "document": {
+          "type": "string",
+          "pattern": "^[^/\\\\]+$"
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "applicability": {
+          "enum": [
+            "applicable",
+            "not-applicable"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "depends_on": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "precedence_over": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "customization": {
+          "enum": [
+            "unmodified",
+            "custom"
+          ]
+        },
         "source": {
           "type": "object",
-          "required": ["profile", "version", "template", "sha256"],
+          "required": [
+            "profile",
+            "version",
+            "template",
+            "sha256"
+          ],
+          "additionalProperties": false,
           "properties": {
-            "profile": {"type": "string", "minLength": 1},
-            "version": {"type": "string", "minLength": 1},
-            "template": {"type": "string", "minLength": 1},
-            "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
-          },
-          "additionalProperties": false
+            "profile": {
+              "type": "string",
+              "minLength": 1
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1
+            },
+            "template": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
         }
-      },
-      "additionalProperties": false
+      }
     },
     "workflow": {
       "type": "object",
-      "required": ["id", "rules"],
+      "required": [
+        "id",
+        "rules"
+      ],
+      "additionalProperties": false,
       "properties": {
-        "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
-        "rules": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}
-      },
-      "additionalProperties": false
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "rules": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
     },
     "wrapper": {
       "type": "object",
-      "required": ["workflow", "skill", "sha256"],
+      "required": [
+        "workflow",
+        "skill",
+        "sha256"
+      ],
+      "additionalProperties": false,
       "properties": {
-        "workflow": {"type": "string", "minLength": 1},
-        "skill": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
-        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
-      },
-      "additionalProperties": false
+        "workflow": {
+          "type": "string",
+          "minLength": 1
+        },
+        "skill": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
     }
-  },
-  "additionalProperties": false
+  }
 }

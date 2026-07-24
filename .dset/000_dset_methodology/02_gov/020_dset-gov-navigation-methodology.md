@@ -1,3 +1,11 @@
+---
+artifact_type: navigation
+artifact_subtype: index
+scope_path:
+  - layer:gov
+priority: medium
+---
+
 # Methodology GOV package fragment
 
 ## Purpose
@@ -13,8 +21,5 @@ The fragment owns only IDs listed in `package.toml`. Cross-layer connections use
 - `DSET-SPECIFICATION-001-methodology-projection-set.md`
 - `specification-domain.md`
 - `specification-methodology.md`
-- `specification-contracts.md`
-- `specification-user-stories.md`
-- `specification-outcomes.md`
 - `plan-tests.md`
 - `plan-evaluations.md`

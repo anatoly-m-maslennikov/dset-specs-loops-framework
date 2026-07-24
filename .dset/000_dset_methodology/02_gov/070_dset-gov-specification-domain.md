@@ -1,75 +1,191 @@
-# Methodology GOV domain
+---
+artifact_type: specification
+artifact_subtype: domain_model
+scope_path:
+  - layer:gov
+priority: high
+---
 
-This is one layer-owned fragment of the logical methodology package. Use the sibling layer hubs for connected definitions; this file owns only the entities and invariants below.
+# Governance domain model
+
+This model defines GOV entities in dependency order. A definition uses only
+entities defined above it; later sections add relations without changing an
+earlier definition.
 
 ## Entities
 
-| Entity | Definition |
-|---|---|
-| **Framework truth** | Released DSET methodology and framework-owned assets in this public repository |
-| **Package** | A cohesive capability with one vocabulary, specification, public contract, deterministic test plan, and applicable eval plan |
-| **Change** | One bounded unit of unaccepted intent and evidence under `dset/<primary-layer>/changes/<change-slug>/`, identified independently by `DSET-CHANGE-<LAYER>-<NNN>` |
-| **Language profile** | Versioned mapping from the six neutral gate categories to language-native tools, scopes, thresholds, and exclusions |
-| **Artifact governance profile** | Versioned mapping from artifact architecture and authoring rules to machine-checkable ownership, hierarchy, hub, navigation, and portability gates; it is selected independently from an implementation-language profile |
-| **Governed artifact area** | A stable public knowledge boundary with one purpose, owner, root, hub, and structural parent |
-| **Semantic Type** | Exactly one of Decision, Question, Problem, or QA; it is determined by an atom's meaning rather than workflow, document role, queue, skill, tool, host, path, or next action |
-| **Artifact type** | Exactly one registered primary carrier role, independent from semantic Type, that states which development question an artifact owns and permits at most one direct registered artifact subtype |
-| **Analysis Report** | A non-authoritative interpretation of named inputs and assumptions that owns one analysis question and routes any accepted conclusion to a separate Decision, Question, Problem, or QA atom |
-| **Subtype** | At most one direct specialization of a semantic Type; subtype nesting and a subtype that repeats its Type are invalid |
-| **Hub** | A thin navigation surface that identifies an area's purpose, boundaries, and stable owning documents without becoming an exhaustive index or a second normative owner |
-| **Project health view** | A generated non-authoritative projection of artifact inventory, traceability coverage, proof freshness, and unresolved work that returns every result to its canonical owner |
-| **External review report** | Transactional evidence from an independent human or agent review, bound to exact inputs and provenance, whose findings require explicit triage and never authorize repair by themselves |
-| **Atomic artifact** | An emitted record whose semantic identity, payload, provenance, and relations are immutable; directory placement is discovered from its identity or globally unique carrier name, and any representation migration is a separate immutable transition record rather than a path registry or semantic edit |
-| **Atomic authority source** | An accepted, active, applicable Decision atom that is compiled into evergreen projections and wins if that projection is stale |
-| **Absorption** | An explicit acyclic new-atom-to-old-atom relation that replaces the older atom in the active authority set without deleting history or inferring precedence from age |
-| **Artifact relation graph** | A typed forward graph over canonical artifact IDs using structure, analysis, projection, implementation, QA, evidence, resolution, scoped override, complete replacement, or non-semantic fallback edges; reverse views are derived without editing sources or targets |
-| **Fully retired atom** | An atom with no active claim, open reliance, or lifecycle work that may move to its type's `archive/` subfolder through a registered carrier transition while retaining its semantic ID, transition chain, and lookup |
-| **Priority** | The stored `high`, `medium`, or `low` rank for a governed artifact, augmented only during an eligible comparison by bounded structural-scope and upstream-layer steps to the virtual `highest` rank |
-| **Governance registry** | Repository-local machine-readable mapping from workflow and normative rule IDs to their editable governing documents, dependencies, applicability, and profile/customization identity; it points to rules without restating them |
-| **Governing document** | The single editable repository-local owner of one or more normative rule IDs selected by the governance registry |
-| **Requirement** | A direct Decision subtype stating a required observable result, behavior, capability, quality, prevention condition, or obligation |
-| **Constraint** | A direct Decision subtype for an externally imposed limitation on acceptable technologies, dependencies, environments, resources, formats, or operating limits when no boundary participant relies on the restriction as a Contract |
-| **Contract** | A direct Decision subtype defining provider/consumer, interface, compatibility, and failure obligations across a project boundary |
-| **Decision** | An immutable directive accepted as project authority; its empty subtype is the general fallback |
-| **Implementation Decision** | A direct Decision subtype for a material selected architecture, design, algorithm, data, tooling, or operating approach |
-| **Question** | Missing knowledge, interpretation, or choice; an empty subtype represents general uncertainty |
-| **Conflict** | A direct Question subtype for verified incompatible active applicable authority over the same scope, concern, and effective time |
-| **Risk** | A direct Question subtype for an uncertain future harmful condition |
-| **Opportunity** | A direct Question subtype for possible beneficial improvement when no current obligation is unmet |
-| **Problem** | A presently true, evidence-backed insufficiency that does not imply or authorize its repair |
-| **Defect** | A direct Problem subtype for current behavior or implementation that contradicts active authority or its current projection |
-| **Gap** | A direct Problem subtype for a required capability, artifact, proof, or obligation that is absent now |
-| **Debt** | A direct Problem subtype for a knowingly accepted compromise that works sufficiently now but creates continuing or future cost |
-| **QA** | An immutable definition of how accepted authority is checked, distinct from execution, result, evidence, and Verification; every emitted QA atom has a Test Plan or Evaluation Plan subtype |
-| **Test Plan** | A direct QA subtype defining deterministic proof with declared conditions and an exact reproducible pass/fail result |
-| **Evaluation Plan** | A direct QA subtype defining an assessment whose conclusion depends on judgment, sampling, calibration, probability, statistics, or a model, even when deterministic code executes the method |
-| **Layer** | An optional stable semantic owner for accepted IDs: `META`, `GOV`, `TOOL`, `SKILL`, `IMPL`, or `OPS`; it is independent of directory layout |
-| **Ruleset identity** | Stable declaration of selected profile/version provenance and whether the materialized local rules remain equivalent or have become a valid custom project profile |
+| Entity | Definition | Atomic sources |
+|---|---|---|
+| **Project** | The current repository selected for one DSET governance context | `DSET-REQUIREMENT-GOV-111` |
+| **Structural scope** | A Project-relative owner address composed from enabled layers, features, feature groups, Work Areas, or future registered structural dimensions | `DSET-REQUIREMENT-META-052`, `DSET-REQUIREMENT-GOV-105` |
+| **Revision mode** | Exactly one permitted write behavior: `atomic`, `append_only`, or `maintained` | `DSET-REQUIREMENT-META-041` |
+| **Content role** | Exactly one contribution: `inquiry`, `analysis`, `definition`, `method`, `implementation`, or `observation` | `DSET-REQUIREMENT-META-035`, `DSET-REQUIREMENT-META-047`, `DSET-REQUIREMENT-META-048` |
+| **Governance locus** | Exactly one primary governance position: `internal`, `external`, or `relation` | `DSET-REQUIREMENT-META-035`, `DSET-REQUIREMENT-GOV-101` |
+| **Artifact route** | One Revision mode, Content role, and Governance locus assigned together, with exactly one canonical Artifact type | `DSET-REQUIREMENT-META-035`, `DSET-REQUIREMENT-META-060` |
+| **Governed artifact** | One persisted Project item with one registered artifact type, at most one direct subtype, one derived Artifact route, and one Structural scope | `DSET-REQUIREMENT-META-035`, `DSET-REQUIREMENT-GOV-102` |
+| **Relation endpoint** | One role-bearing participant identity with independently declared internal or external origin | `DSET-REQUIREMENT-META-051`, `DSET-REQUIREMENT-GOV-101` |
+| **Artifact relation** | One registered directional semantic edge from a Governed artifact to one or more stable target identities, or one relational artifact whose meaning is carried by at least two Relation endpoints | `DSET-REQUIREMENT-META-051`, `DSET-IMPL-GOV-004` |
+| **Atomic artifact** | A Governed artifact whose accepted meaning is immutable after emission | `DSET-REQUIREMENT-META-041`, `DSET-REQUIREMENT-GOV-108` |
+| **Append-only artifact** | A Governed artifact whose accepted records and order are immutable and that accepts only complete new records | `DSET-REQUIREMENT-META-041`, `DSET-REQUIREMENT-GOV-111` |
+| **Maintained artifact** | A Governed artifact whose registered procedure may revise existing content | `DSET-REQUIREMENT-META-041`, `DSET-REQUIREMENT-GOV-070` |
+| **Active atom** | An Atomic artifact located in its active type folder and eligible for current routing, authority, work, or assurance according to its registered type | `DSET-DECISION-GOV-035`, `DSET-REQUIREMENT-GOV-108` |
+| **Archived atom** | The same immutable Atomic artifact relocated byte-for-byte to its type-local `archive/` and excluded from the active set | `DSET-DECISION-GOV-035`, `DSET-REQUIREMENT-GOV-096` |
+| **Artifact catalog** | The single project-local executable registry assigning exactly one canonical type to every Artifact route and mapping its direct route-inheriting subtypes to identity kinds, carriers, and persistence behavior | `DSET-REQUIREMENT-META-060`, `DSET-REQUIREMENT-GOV-102` |
+| **Project settings** | The single project-local operator configuration selecting enabled catalog entries, workflow behavior, optional surfaces, and other policy choices without restating catalog mappings | `DSET-REQUIREMENT-GOV-070`, `DSET-REQUIREMENT-GOV-102` |
+| **Governing document** | The single Maintained artifact that owns the current application of one or more normative rule IDs | `DSET-IMPL-GOV-005` |
+| **Governance registry** | The project-local mapping from workflow and rule IDs to a Governing document, its prerequisites, applicability, and profile identity | `DSET-IMPL-GOV-005`, `DSET-REQUIREMENT-GOV-052` |
+| **Maintained semantic view** | A thin Maintained artifact synthesized from applicable Active atoms, with domain flow, dependency-ordered definitions, lifecycle criteria, and structured atomic traceability | `DSET-REQUIREMENT-META-054`, `DSET-REQUIREMENT-GOV-115` |
+| **Governance surface** | A named optional Maintained artifact whose activation adds its registered currentness and entry-gate obligations | `DSET-REQUIREMENT-META-054`, `DSET-REQUIREMENT-GOV-115` |
+| **Hub** | A thin Maintained navigation artifact linking stable folders and long-lived owners without listing every atom or owning normative truth | `DSET-REQUIREMENT-GOV-106` |
+| **Framework source** | The repository-root reusable DSET methodology from which released methodology packages are produced | `DSET-IMPL-GOV-007`, `DSET-REQUIREMENT-GOV-052` |
+| **Installed methodology** | A materialized project-local copy of selected Framework source under `.dset/000_dset_methodology/` | `DSET-IMPL-GOV-002`, `DSET-REQUIREMENT-GOV-052` |
+| **Applied project artifact** | A project-owned Governed artifact outside Installed methodology that records the current Project's requirements, work, implementation, assurance, or history | `DSET-IMPL-GOV-007` |
+| **Journal** | Durable Append-only artifacts stored as NDJSON under `.dset_journal/` | `DSET-REQUIREMENT-GOV-111` |
+| **Runtime state** | Ignored reconstructible or resumable run state, checkpoints, caches, recovery material, and temporary materializations under `.dset_runtime/` | `DSET-REQUIREMENT-GOV-111` |
+| **Process scratch** | Disposable process and test workspaces under the host operating system's temporary root | `DSET-REQUIREMENT-GOV-111` |
+| **Priority** | The stored `high`, `medium`, or `low` rank, with `highest` available only as a virtual capped comparison result | `DSET-REQUIREMENT-GOV-107` |
+| **Ruleset identity** | The selected profile/version provenance plus whether Installed methodology remains equivalent or forms an explicitly custom Project ruleset | `DSET-IMPL-GOV-005` |
 
-## Invariants
+## Cross-entity relations
 
-- **DSET-INVARIANT-GOV-001:** Framework truth and project truth never share a writable owner.
-- **DSET-INVARIANT-GOV-002:** Public methodology renders and navigates on GitHub without Obsidian-only links or callouts.
-- **DSET-INVARIANT-GOV-003:** A Change may reconcile candidate evergreen projections before archival, but those projections cannot be released or treated as accepted truth until applicable proof is fresh and the Change is archived through its implementing PR.
-- **DSET-INVARIANT-GOV-004:** Each emitted atom owns the smallest independently reviewable primary claim, has exactly one semantic Type and at most one allowed direct subtype determined by meaning, and remains distinct from its subject, acceptance/lifecycle act, carrier, work, result, evidence, gate disposition, and derived view. Workflow, document role, queue, skill, tool, host, filename, path, or next action never determines classification; multi-head claims split into linked sibling atoms, and irreducible subtype ambiguity falls back to the Type's empty subtype instead of guessing or nesting.
-- **DSET-INVARIANT-GOV-005:** Hubs own navigation and boundaries, while atomic documents own rules, rationale, procedures, decisions, proof, and history.
-- **DSET-INVARIANT-GOV-006:** Every selected normative rule resolves to one editable governing document inside the adopting repository; a source template remains provenance rather than a live authority after materialization.
-- **DSET-INVARIANT-GOV-007:** Invalid or incompatible selected rule ownership fails closed with a stable diagnostic, while explicitly justified non-applicability remains valid.
-- **DSET-INVARIANT-GOV-008:** A locally changed ruleset remains valid project truth only under an explicit custom identity that retains its source profile/version provenance.
-- **DSET-INVARIANT-GOV-009:** Every normative rule ID has exactly one editable governing document; skills, agent guidance, templates, generated installations, indexes, summaries, and caches never become parallel writable rule stores.
-- **DSET-INVARIANT-GOV-010:** DSET has exactly four semantic Types—Decision, Question, Problem, and QA. Decision permits Requirement, Constraint, Contract, and Implementation Decision; its empty subtype is the general fallback. Question permits Conflict, Risk, and Opportunity; Problem permits Defect, Gap, and Debt; QA requires Test Plan or Evaluation Plan. No subtype contains another subtype. Workflows, tasks, tickets, document roles, Changes, and releases are not semantic Types.
-- **DSET-INVARIANT-GOV-011:** All accepted IDs use the project prefix. Type-only names share one project-wide sequence per semantic Type. Subtype-bearing names share one project-wide sequence per direct subtype, while an empty subtype uses the Type's own sequence. Layers, features, feature groups, folders, and lifecycle state may appear in identity or placement but never restart numbering.
-- **DSET-INVARIANT-GOV-012:** Rule authority and assurance remain distinct. Dependency and precedence are separate acyclic relations; invalid authority or unresolved conflict fails closed, while missing or stale assurance affects only the relying claim or gate.
-- **DSET-INVARIANT-GOV-013:** A health percentage is valid only with an explicit numerator, denominator, excluded/not-applicable/unknown/stale counts, and canonical return links; it never creates authority or rewards unnecessary artifacts.
-- **DSET-INVARIANT-GOV-014:** External review findings remain transactional evidence until each finding is explicitly rejected, deferred, or routed to a Problem, Opportunity, Question, Decision, Change, or evergreen owner; review never silently authorizes a fix.
-- **DSET-INVARIANT-GOV-015:** Every governed artifact has one explicit or traceably inherited stored priority. New writers emit only `high`, `medium`, or `low`; `highest` exists only as a capped effective comparison result. Artifact role, lifecycle, explicit override, authority, and applicability govern before priority. An eligible comparison adds one step for a strict structural-scope ancestor and one for an earlier owning layer, once per axis and capped at `highest`. The project defaults to `ask_always`; opt-in `auto_by_effective_priority` selects only one unique eligible winner and asks on every tie, same-level comparison, uncertainty, or incomparability. Filename, list order, age, and layer distance never determine the result.
-- **Historical DSET-INVARIANT-GOV-016:** Permanent carrier-byte identity was superseded by the atom now addressed as `DSET-REQUIREMENT-GOV-062`; append-only lifecycle semantics are retained by `DSET-REQUIREMENT-GOV-061`.
-- **Historical `DSET-REQUIREMENT-GOV-062`:** The claim that semantic ID spelling itself never changes is absorbed by `DSET-REQUIREMENT-GOV-061`. Its protection of governed payload, provenance, and relation meaning remains active through the successor, which permits only proven one-to-one identity or carrier recoding.
-- **DSET-INVARIANT-GOV-017:** A Problem records a current insufficiency, a Question records uncertainty, and Conflict is a direct Question subtype for verified incompatible applicable authority. Risk and Opportunity are also Question subtypes; Defect, Gap, and Debt are Problem subtypes. Debt never conceals a current Defect or Gap. Workflow never changes those meanings. Drift, failed proof, implementation nonconformance, and contradictory evidence follow their own dispositions and do not become Conflicts merely because two artifacts differ. Every atom is immutable and resolves only through linked successor atoms or append-only lifecycle events.
-- **DSET-INVARIANT-GOV-018:** Every Decision is prompted for rationale, and every other atomic artifact may carry it when useful; rationale is recommended but optional, so omission alone never invalidates an atom, while supplied rationale never becomes a hidden owner of normative behavior, lifecycle state, or evidence.
-- **DSET-INVARIANT-GOV-019:** Every governed artifact has exactly one primary artifact type and at most one allowed direct artifact subtype, independently from semantic Type. Analysis, specification, procedure, plan, version, implementation, evidence, verification, derived-view, and navigation roles remain distinct; Version directly owns Roadmap, Version Scope, Change, Release Plan, Readiness Record, and Release Record; unknown, missing, nested, mismatched, or multiply resolved classifications fail closed.
-- **DSET-INVARIANT-GOV-020:** New artifact IDs and filenames use their primary artifact type token by default; optional subtypes remain direct metadata unless the project explicitly enables subtype-bearing names. A setting edit alone never renames artifacts; adopting a new naming vocabulary requires one complete governed migration that preserves immutable meaning and leaves no old alias accepted.
-- **DSET-INVARIANT-GOV-021:** Every enabled structural level has one current Mermaid view of itself and its immediate children: project to feature groups/features/layers, feature group to features, and feature or layer to its main functions, capabilities, or components. Absent optional levels require no placeholders, and diagrams remain navigation or compiled architecture rather than authority.
-- **DSET-INVARIANT-GOV-022:** Every claim and compiled artifact is owned by the narrowest structural scope that contains all affected owners and subjects. Project-level truth owns only genuinely cross-child or whole-project concerns; abstraction, importance, or reuse alone never promotes a child-owned claim, and parent artifacts reference rather than duplicate child detail.
-- **DSET-INVARIANT-GOV-025:** Every consequential artifact edge uses exactly one canonical forward relation type; reverse edges are always derived. `child_of`, `override_of`, and `replacement_of` are mutually exclusive for one source-target pair; `relates_to` has no stronger semantics or coverage value; projection ranges use exact Type/scope frontiers; unresolved, malformed, duplicate, self-referential, incompatible, or cyclic edges fail closed where applicable. Sealed legacy `child_of` fields remain compatibility input only.
-- **DSET-INVARIANT-GOV-026:** Every DSET-owned structured artifact has one canonical TOML encoding. Markdown uses TOML frontmatter. Generated adapters and host/ecosystem/wire/runtime formats are explicit non-authoritative boundaries, never parallel writable sources. Migration preserves values, IDs, references, and provenance or fails before cutover.
+| Relation | Source | Target | Atomic sources |
+|---|---|---|---|
+| `derives_route_for` | Artifact catalog | Governed artifact | `DSET-REQUIREMENT-GOV-102` |
+| `selects` | Project settings | Artifact catalog | `DSET-REQUIREMENT-GOV-102` |
+| `resolves` | Governance registry | Governing document | `DSET-IMPL-GOV-005` |
+| `materialization_of` | Installed methodology | Framework source | `DSET-IMPL-GOV-002`, `DSET-REQUIREMENT-GOV-052` |
+| `represents` | Maintained semantic view | Active atom | `DSET-REQUIREMENT-META-054` |
+| `stores` | Journal | Append-only artifact | `DSET-REQUIREMENT-GOV-111` |
+
+## Stateful entity lifecycles
+
+These tables own GOV status meanings. Procedures and tools may perform or check
+the transitions but do not redefine them.
+
+### Atomic artifact
+
+Identity is its stable artifact ID. Archive relocation is the only state
+transition.
+
+| Status | Entry criteria | Exit criteria | Allowed next status | Required evidence | Atomic sources |
+|---|---|---|---|---|---|
+| Active | A valid immutable artifact is emitted and committed in its active type folder | Replacement, resolution, or withdrawal authorizes byte-stable archive relocation | Archived | Valid carrier, seal or identity registration, and emission commit | `DSET-REQUIREMENT-GOV-108`, `DSET-REQUIREMENT-GOV-065` |
+| Archived | The same bytes and identity are relocated to the type-local archive and excluded from the active set | Terminal; recurrence or changed meaning creates a new artifact | — | Archive trailers, relation or Version reference when applicable, and Git return path | `DSET-DECISION-GOV-035`, `DSET-REQUIREMENT-GOV-096` |
+
+Failed validation or relocation leaves the artifact Active. Reopening and
+in-place semantic correction are forbidden.
+
+### Append-only artifact
+
+Identity is the registered stream or segment identity.
+
+| Status | Entry criteria | Exit criteria | Allowed next status | Required evidence | Atomic sources |
+|---|---|---|---|---|---|
+| Open | A valid sequence exists and can accept one complete next record | Rotation or terminal closure seals the sequence | Sealed | Sequence identity and validated record boundary | `DSET-REQUIREMENT-META-041`, `DSET-REQUIREMENT-GOV-111` |
+| Sealed | Accepted records and order are fixed | Terminal; continued recording opens a new sequence | — | Final frontier and integrity check | `DSET-REQUIREMENT-META-041`, `DSET-REQUIREMENT-GOV-111` |
+
+A malformed or incomplete append is rejected without changing the accepted
+frontier.
+
+### Maintained semantic view
+
+Identity is its unique carrier name and Structural scope.
+
+| Status | Entry criteria | Exit criteria | Allowed next status | Required evidence | Atomic sources |
+|---|---|---|---|---|---|
+| Current | Reasoned content represents the applicable active atomic frontier | The frontier changes or an omission, mismatch, or unresolved source is found | Stale | Structured source-to-fragment traceability plus reviewed refresh | `DSET-REQUIREMENT-META-054`, `DSET-REQUIREMENT-GOV-115` |
+| Stale | The view no longer truthfully represents its applicable frontier | A reasoned refresh restores truthful representation | Current | Staleness reason and affected atomic identities | `DSET-REQUIREMENT-META-059`, `DSET-REQUIREMENT-META-054` |
+
+A loose source mention is navigation, not proof of representation. Failed
+refresh leaves the view Stale.
+
+### Governance surface
+
+Identity is its configured surface key plus Structural scope.
+
+| Status | Entry criteria | Exit criteria | Allowed next status | Required evidence | Atomic sources |
+|---|---|---|---|---|---|
+| Inactive | The surface creates no currentness or gate obligation | Activation is authorized and reconciliation starts | Reconciling | Surface identity and authorization | `DSET-REQUIREMENT-META-054`, `DSET-REQUIREMENT-GOV-115` |
+| Reconciling | Its applicable frontier is identified | Reconciliation succeeds, finds a blocker, or deactivation is authorized | Current, Blocked, Inactive | Frontier, coverage result, and provenance | `DSET-REQUIREMENT-META-054`, `DSET-REQUIREMENT-GOV-115` |
+| Current | Reconciliation establishes truthful representation and its gates apply | The frontier changes, representation fails, or deactivation is authorized | Stale, Inactive | Reviewed reconciliation with structured traceability | `DSET-REQUIREMENT-META-054`, `DSET-REQUIREMENT-GOV-115` |
+| Stale | The active surface no longer represents its frontier | Reconciliation starts or deactivation is authorized | Reconciling, Inactive | Staleness reason and affected identities | `DSET-REQUIREMENT-META-059`, `DSET-REQUIREMENT-GOV-115` |
+| Blocked | Reconciliation cannot establish Current | The blocker is resolved and reconciliation restarts, or deactivation is authorized | Reconciling, Inactive | Blocker and affected identities | `DSET-REQUIREMENT-META-054`, `DSET-REQUIREMENT-GOV-115` |
+
+Failed reconciliation never preserves or restores Current. Deactivation
+preserves the carrier and Git history.
+
+## Core invariants
+
+- **DSET-INVARIANT-GOV-001:** Framework source, installed methodology, and
+  applied project artifacts never share a writable owner. Installation
+  materializes ordinary files; governed execution never follows a live
+  reference back to framework source. Sources:
+  `DSET-IMPL-GOV-007`, `DSET-IMPL-GOV-002`, and
+  `DSET-REQUIREMENT-GOV-052`.
+- **DSET-INVARIANT-GOV-002:** Every governed artifact has one registered
+  type/subtype and derives exactly one Artifact route. No parent semantic-Type
+  hierarchy, workflow name, carrier, folder, or requested next action supplies
+  a second classification. Every route has exactly one canonical type, and a
+  direct subtype inherits its complete route. Sources:
+  `DSET-REQUIREMENT-META-035`, `DSET-REQUIREMENT-META-060`,
+  `DSET-IMPL-GOV-009`, and
+  `DSET-REQUIREMENT-GOV-101`.
+- **DSET-INVARIANT-GOV-003:** The Artifact catalog owns route and identity
+  mappings. Project settings own only the enabled whitelist and operator
+  choices. The framework catalog defines all 54 routes even when a project
+  disables some types. Unknown, disabled, duplicate, empty, or ambiguous
+  mappings fail closed. Sources: `DSET-REQUIREMENT-META-060` and
+  `DSET-REQUIREMENT-GOV-102`.
+- **DSET-INVARIANT-GOV-004:** The only Revision modes are `atomic`,
+  `append_only`, and `maintained`; no freshness class is a fourth mode.
+  Sources: `DSET-REQUIREMENT-META-041` and
+  `DSET-REQUIREMENT-META-054`.
+- **DSET-INVARIANT-GOV-005:** An Atomic artifact's accepted meaning is
+  immutable. Complete semantic correction emits a successor. A proven
+  one-to-one identity or carrier migration may recode representation without
+  changing the atom. Source: `DSET-REQUIREMENT-GOV-108`.
+- **DSET-INVARIANT-GOV-006:** Active and archived are the only Atomic-artifact
+  storage states. Replacement, resolution, withdrawal, and recurrence use
+  typed relations, archive placement, Version planning, and Git history; DSET
+  has no lifecycle-event artifact type. Source: `DSET-DECISION-GOV-035`.
+- **DSET-INVARIANT-GOV-007:** Every Markdown artifact has valid YAML
+  frontmatter and remains GitHub-preview compatible. Derived route coordinates,
+  status, generic authority, and ephemeral worktree state are not duplicated
+  in the property block. Sources: `DSET-CONSTRAINT-GOV-002`,
+  `DSET-REQUIREMENT-GOV-116`, and `DSET-REQUIREMENT-META-038`.
+- **DSET-INVARIANT-GOV-008:** Carrier choice follows job: Markdown with YAML
+  frontmatter for human-governed narrative artifacts; TOML for directly
+  executed human-edited configuration; JSON for schemas, contracts, wire data,
+  or generated machine data; NDJSON for append-only logs; and native formats
+  for code, CI, lockfiles, and host manifests. Source:
+  `DSET-REQUIREMENT-GOV-116`.
+- **DSET-INVARIANT-GOV-009:** Git is mandatory. Every implemented authority or
+  resolved Problem has a committed change naming the governed artifact and one
+  Session trailer. Source: `DSET-REQUIREMENT-GOV-065`.
+- **DSET-INVARIANT-GOV-010:** Stored priority is exactly `high`, `medium`, or
+  `low`; `highest` is virtual and future-version work belongs in a Version
+  Roadmap rather than a deferred priority. Source:
+  `DSET-REQUIREMENT-GOV-107`.
+- **DSET-INVARIANT-GOV-011:** `.dset/` owns governed state,
+  `.dset_journal/` owns durable append-only running records,
+  `.dset_runtime/` owns reconstructible or resumable runtime state, and the
+  host temporary root owns disposable process scratch. Source:
+  `DSET-REQUIREMENT-GOV-111`.
+- **DSET-INVARIANT-GOV-012:** Features are horizontal peers joined by
+  explicit boundary relations. Layers are ordered
+  `META → GOV → TOOL → SKILL → IMPL → OPS`;
+  authority moves only forward, preferably one layer at a time. Sources:
+  `DSET-REQUIREMENT-META-023` and `DSET-REQUIREMENT-META-025`.
+- **DSET-INVARIANT-GOV-013:** Every claim belongs to the narrowest structural
+  scope containing all affected owners and subjects. A project-level artifact
+  owns only genuinely cross-child or whole-project concerns. Source:
+  `DSET-REQUIREMENT-GOV-105`.
+- **DSET-INVARIANT-GOV-014:** Authority and assurance remain distinct.
+  Definitions and realization choices may authorize; plans define checks;
+  executions create Observations; Verification derives a bounded reliance
+  statement. Concrete type names remain GOV catalog decisions. Source:
+  `DSET-REQUIREMENT-META-028`.
+- **DSET-INVARIANT-GOV-015:** Rules resolve locally to one maintained governing
+  document and its active atomic sources. Invalid ownership, dependency,
+  precedence, applicability, or customization identity fails closed. Sources:
+  `DSET-IMPL-GOV-005` and `DSET-REQUIREMENT-GOV-070`.

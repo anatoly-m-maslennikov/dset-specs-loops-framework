@@ -1,3 +1,11 @@
+---
+artifact_type: procedure
+artifact_subtype: playbook
+scope_path:
+  - layer:gov
+priority: medium
+---
+
 # Artifact governance rationale
 
 ## Why artifact profiles are separate

@@ -1,3 +1,11 @@
+---
+artifact_type: navigation
+artifact_subtype: index
+scope_path:
+  - layer:meta
+priority: medium
+---
+
 # Methodology META package fragment
 
 ## Purpose
@@ -13,7 +21,5 @@ The fragment owns only IDs listed in `package.toml`. Cross-layer connections use
 - `specification-domain.md`
 - `specification-methodology.md`
 - `specification-contracts.md`
-- `specification-user-stories.md`
-- `specification-outcomes.md`
 - `plan-tests.md`
 - `plan-evaluations.md`

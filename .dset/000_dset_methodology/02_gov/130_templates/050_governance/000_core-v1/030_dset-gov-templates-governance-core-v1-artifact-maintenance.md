@@ -1,3 +1,10 @@
+---
+artifact_type: specification
+scope_path: []
+priority: medium
+artifact_subtype: governance
+---
+
 # Artifact maintenance
 
 **Rule ID:** `DSET-RULE-ARTIFACT-MAINTENANCE`
@@ -8,22 +15,27 @@ Every normative rule ID has one editable governing document. Hubs navigate, wrap
 
 ## Writes and cutover
 
-- Treat every operator input in a governed project as intake. Classify and emit
-  one or more immutable semantic atoms before implementing its consequences;
-  split independent claims and never derive Type from the workflow.
-- Use TOML for DSET-owned structured artifacts and TOML frontmatter for DSET
-  Markdown. Keep host/ecosystem/wire/runtime formats and generated compatibility
-  adapters explicit and non-authoritative. Never keep editable YAML/JSON and
-  TOML copies of the same claim.
-- Keep standards-compliant JSON Schema files as canonical external contract
-  carriers. Validate and retain them as JSON; do not create an editable TOML
-  duplicate or call them generated without a governed source and freshness map.
+- Treat every operator input in a governed project as intake. Exploration input
+  creates no artifacts until a durable conclusion is accepted. Then classify
+  and emit one or more immutable atoms before implementing their consequences;
+  split independent claims and never derive type from the workflow.
+- Select one canonical carrier by job: Markdown with YAML frontmatter for
+  human-governed narrative artifacts; TOML for directly executed human-edited
+  configuration; JSON for external contracts, standardized schemas, wire data,
+  and generated machine data; JSONL/NDJSON for append-only runtime records; and
+  native formats for source code, CI, lockfiles, and host manifests.
+- Every governed Markdown artifact begins with valid YAML frontmatter and stays
+  legible and navigable in GitHub preview. Sources:
+  `DSET-CONSTRAINT-GOV-002` and `DSET-REQUIREMENT-GOV-116`.
+- Keep standards-compliant JSON Schema files as canonical JSON. Never keep
+  competing editable representations of one concern.
 - Confirm authorization before editing existing project artifacts.
 - Write each conclusion to its owning accepted package, active change, decision, runbook, proof plan, or evidence artifact.
 - Keep deterministic tests and qualitative/probabilistic evals separate.
-- Classify each durable artifact by role: atomic authority source, evergreen
-  compiled projection, transactional context/evidence, or implementation.
-  Status and applicability determine whether an atomic source is active.
+- Classify each durable artifact by exactly one Revision mode: `atomic`,
+  `append_only`, or `maintained`. Artifact type separately derives Content role
+  and Governance locus. Placement and applicability determine whether an
+  atomic source participates in current authority.
 - Materialized rules become project-owned immediately. Later framework releases provide an explicit comparison and proposed delta, never an invisible overwrite.
 - Author reusable methodology only in the repository-root source. Refresh the
   installed `.dset/000_dset_methodology/` snapshot only through an explicit
@@ -31,68 +43,115 @@ Every normative rule ID has one editable governing document. Hubs navigate, wrap
   copy installed files back into the source.
 - Record intentional local customization with `dset rules refresh`, retaining the source profile, version, unique template carrier name, and digest as provenance.
 - During migration, map every old rule/spec/plan/decision/runbook/evidence surface and make the old writer a concise pointer, read-only history, verified archive, or remove it only after cutover proof.
+- Perform multi-carrier mechanical migrations with bounded deterministic Python
+  scripts that validate all expected source shapes before writing and stop
+  without partial mutation on unexpected structure. Source:
+  `DSET-IMPL-GOV-001`.
 - Refuse an existing destination and keep the previous owner writable when validation fails.
+
+## Revision-mode behavior
+
+| Revision mode | Permitted write behavior |
+|---|---|
+| `atomic` | Emit one immutable governed unit; changed meaning creates a linked successor |
+| `append_only` | Preserve accepted records and order; append only complete new records |
+| `maintained` | Revise existing content through the registered artifact procedure |
+
+Running logs use canonical NDJSON and `append_only`. Each append writes one
+complete UTF-8 JSON record; readers fail closed on malformed or incomplete
+records. Rotation seals the completed segment and opens a new sequence without
+rewriting accepted records.
+
+A persisted TOON rendering of a running log is a non-authoritative maintained
+Observation view. It records the NDJSON source identity and frontier and is
+regenerated or replaced through its registered procedure. It is never appended
+as if it were the source log.
+
+Current specifications, plans, catalogs, and generated projections are
+maintained artifacts. Their registered procedures define currentness,
+staleness, refresh, synchronization, and generation; DSET defines no additional
+currentness class.
 
 ## Transactional discharge
 
-A resolved consequential Question produces a Decision. Every accepted, active,
-applicable Decision—including any direct subtype—is an atomic authority source,
-not a parallel evergreen specification. Compile its normative consequences
-into the owning evergreen specifications, Design, proof plans, or operating
-rules; emit a lifecycle event linking those projections and the resolved
-Question to the Decision. Keep the Decision as durable authority plus its
+A resolved consequential Question produces the applicable Requirement,
+Constraint, Contract, or Implementation Decision. Every accepted, active,
+applicable authority atom is a source, not a parallel maintained
+specification. Refresh its normative consequences
+into the owning maintained specifications, Design, proof plans, or operating
+rules. Link the resolver to the Question with `resolution_of`; move
+the Question to its type-local `archive/` after resolution. Keep the resolver
+as durable authority plus its
 linked context, alternatives, rationale, trade-offs, and consequences where
 applicable.
-If the Decision and compiled projection differ, the Decision wins, the
-projection is stale, and the relying release gate fails until recompilation.
+If atomic authority and a maintained view differ, the atom wins, the view is
+stale, and the relying release gate fails until semantic refresh.
 
-All active Decision atoms follow the same source-to-projection rule. Problems,
-Questions and their direct subtypes, QA results, evidence records, and other
+All active authority atoms follow the same source-to-projection rule. Problems,
+Questions and their direct subtypes, check results, evidence records, and other
 transactional context route work or support those sources but do not become
 authority merely by existing. Closing a transactional artifact without
-compiling its accepted normative consequences leaves the work incomplete.
+refreshing its accepted normative consequences into applicable maintained
+views leaves the work incomplete.
 
-Atomic artifacts are immutable in their semantic records. Editable drafts are working documents,
-not atoms. Emitting an atom fixes its ID, semantic payload, provenance,
-creation status, and links. Later semantic or lifecycle change is a new
-append-only event or successor atom; current status is derived.
+Atomic artifacts are immutable in governed meaning. Editable drafts are working
+documents, not atoms. Emission fixes the primary claim or proof intent,
+rationale, acceptance basis, provenance, scope, priority at creation, and
+relation meanings; a Test Plan or Evaluation Plan also fixes its conditions,
+criteria, thresholds, and expected disposition. Later semantic or lifecycle
+change requires a successor atom. Storage state is only active or archived.
 
-Atomic semantic content never changes. A directory move preserves the carrier
-name and bytes; identity-based discovery therefore needs no durable path
-mapping or relocation ledger. A carrier-name or representation migration emits
-one immutable transition record containing the old and new unique carrier
-names, digests, semantic-equivalence proof, and Git return identity. A semantic
-change requires a successor atom. Aggregate path-transition ledgers and direct
-resealing are invalid.
+An ID, filename, path, classification-label spelling, heading label, carrier
+encoding, seal, or reference spelling is representation, not the atom's
+governed meaning. A governed migration may change those fields only through a
+complete collision-free mapping that preserves the referenced artifacts and
+relation semantics, records equivalence and Git return evidence, and removes
+old aliases from accepted lookup after cutover. A claim, rationale,
+authority, provenance fact, scope meaning, relation meaning, or check-criterion
+change requires a successor atom. Aggregate mutable transition ledgers and
+unproved resealing are invalid.
 
-A successor atom declares `replacement_of` relations to older atoms. Matching
-append-only lifecycle events mark the predecessors `absorbed`. Replacement is
-explicit, acyclic, validated, and never inferred from a timestamp, ID, or file
-order. Absorption removes the older atom from the active compilation set without
-editing or deleting it. The successor carries forward or explicitly replaces
-every still-applicable consequence. A partial replacement links the affected
-claims and leaves all other older claims active; it does not absorb the entire
-atom. Reverse `absorbed_by` links, current status, confirmation/violation state,
-and the active compilation set are derived views, never edits to an atom.
+A successor atom declares `replacement_of` relations to completely replaced
+older atoms. Replacement is explicit, acyclic, validated, and never inferred
+from a timestamp, ID, or file order. Each predecessor has at most one complete
+replacement successor. The successor carries forward or explicitly replaces
+every still-applicable consequence, and each replaced predecessor moves
+byte-for-byte to its type-local `archive/`. A partial change uses narrower
+linked claims and leaves the older atom active; it is not `replacement_of`.
+Reverse `replaced_by` links and the active compilation set are derived views.
 
-When an atom has no active claims, open reliance, or unresolved lifecycle work,
-it is fully retired and may move into its artifact type's `archive` subfolder.
-The move preserves bytes, carrier name, semantic identity, and stable
-identity-based lookup.
-Partial absorption never qualifies. Archived atoms remain immutable history
-and are never deleted merely because they are inactive.
+Resolution uses `resolution_of` from the resolving authority or outcome to the
+Question, Conflict, or Problem, then archives the resolved atom. Withdrawal
+archives the atom without a semantic successor; any future intent belongs in a
+Version Roadmap. Reopening is forbidden. A new Question or Problem that repeats
+an archived concern is a new atom with `recurrence_of` to the archived
+predecessor. `recurrence_of` requires the same registered artifact type and never
+reactivates the predecessor.
 
-Lifecycle absorption is also the repair mechanism when a sealed atom contains
-an invalid relationship that cannot be edited. The absorbing successor must
-pass the complete current-lineage gate. The inactive predecessor retains its
-authored relationship as historical data, but that relationship no longer
-participates in active unresolved-parent, self-link, or cycle gates.
+Archive relocation is the only atom state transition. It preserves bytes,
+carrier name, semantic identity, and stable identity-based lookup. An atom with
+an active `child_of` or `override_of` dependant cannot be archived. Archived
+atoms remain immutable history and do not participate in active compilation,
+unresolved-parent, self-link, or cycle gates.
+
+Every commit that archives atoms records:
+
+```text
+Archives: <artifact-id>
+Archive-Reason: replaced|resolved|withdrawn
+Archive-Reference: <successor-resolver-or-version-id>
+Session: <host-prefixed-session-id>
+```
+
+Repeat `Archives:` for every moved atom. Use separate commits when reasons or
+references differ. `Archive-Reference` may be omitted only for terminal
+withdrawal whose commit body explains why no successor or future intent exists.
+Source: `DSET-DECISION-GOV-035` and `DSET-REQUIREMENT-GOV-096`.
 
 The executable boundary is explicit:
 
 ```text
 dset atom seal ROOT --file ATOM.md
-dset atom event ROOT --candidate EVENT.json
 dset atom archive ROOT --id SEMANTIC-ID
 dset conflict ROOT --candidate CONFLICT.json --emit CONFLICT.md
 dset conflict ROOT --candidate CONFLICT.json --check-result RESULT.json
@@ -101,44 +160,48 @@ dset compile ROOT --write
 
 Sealing refuses an already registered semantic ID and records the carrier's
 content digest. Validation fails after content, semantic classification, or
-registered location drift. Lifecycle writes append unique events and reject
-unresolved targets or absorption cycles. Conflict resolution classifies role
+registered location drift. Relation validation rejects unresolved targets,
+replacement or recurrence cycles, multiple replacement successors, active
+replacement predecessors, and invalid recurrence Types. Conflict resolution
+classifies role
 and applicability before consulting explicit precedence or effective priority;
-it reports whether a first-class open Conflict atom and later resolution event
+it reports whether a first-class open Conflict atom and later resolution artifact
 are required, but never edits an atom. Explicit emission creates and seals one
 `question/conflict` atom whose `relates_to` edges name both incompatible
-parties; the Conflict claim owns the incompatibility semantics. A separate
-append-only lifecycle event records its later resolution.
+parties; the Conflict claim owns the incompatibility semantics. A resolving
+artifact uses `resolution_of`, then the Conflict moves to `archive/`.
 Recorded dispositions bind the effective priority values and sources, context,
 precedence, and profile scale; check mode rejects them when that basis changes.
-An explicitly retired atom with no active child reliance may move to its
-adjacent `archive/` folder only through a lossless carrier transition while the
-canonical registry updates current lookup and retains the original seal.
+An active atom with no structural dependant may move to its adjacent `archive/`
+folder through a lossless carrier transition while canonical lookup retains its
+identity and original seal.
 
-Compilation generates a digest-bound index from every active authority source
-to one or more explicit evergreen claim fragments. A fragment must be a
+The traceability compiler generates a digest-bound index from every active
+authority source to one or more explicit maintained-view claim fragments. A
+fragment must be a
 canonical ID-owned section, table row, or labeled block; a loose ID mention is
 not a projection. The index binds both the complete projection carrier and the
 identified fragment. `dset compile ROOT --check` fails when the active source
 set, source digest, projection digest, fragment location, or fragment digest
-changes. This deterministic gate proves structured projection and freshness,
+changes. This deterministic gate proves structured linkage and byte freshness,
 not semantic equivalence. Review or Evaluation judges whether the fragment
 faithfully carries the source consequence. The index is evidence of
-compilation, not another authority source.
+traceability, not another authority source.
 
 ## Rationale
 
-Every Decision should record a concise rationale for its selected option.
+Every Implementation Decision should record a concise rationale for its
+selected option.
 Rationale is also recommended for another atomic artifact when it explains why
 the atom was emitted, interpreted, prioritized, related, or scoped as written
-and that explanation will help review, support, absorption, replacement, or
+and that explanation will help review, support, replacement, or
 conflict resolution. It remains optional: absence alone never invalidates an
 atom or blocks a gate.
 
 When present, rationale is explanatory context, not hidden authority. It must
-not carry a Decision or subtype, lifecycle transition, or evidence claim that
+not carry a Decision or subtype, state transition, or evidence claim that
 is absent from that concern's canonical owner. Keep a short rationale in the
-atom or link a separate rationale artifact; keep evergreen implementation
+atom or link a separate rationale artifact; keep maintained implementation
 references focused on current executable truth. Templates prompt for rationale,
 and structured schemas permit a non-empty bounded value without requiring it.
 
@@ -192,10 +255,10 @@ assessment and refuses the immutable write when it is not allowed.
 
 ## Commit and session provenance
 
-Every commit that changes evergreen truth or implementation artifacts must name
-the Decision IDs it implements in the commit body, for example
+Every commit that changes maintained views or implementation artifacts must name
+the authority IDs it implements in the commit body, for example
 `Implements: DSET-REQUIREMENT-IMPL-004`. A linked Problem may explain why a
-correction is needed, but only an active Decision authorizes the
+correction is needed, but only active applicable authority authorizes the
 resulting behavior.
 
 The repository manifest activates deterministic commit validation from an
@@ -204,20 +267,20 @@ non-merge commit uses exactly one provenance mode: implementation has one or
 more authority `Implements:` IDs; evidence has both authority `Decision:` IDs
 and known `Verifies:` IDs. Both modes require exactly one valid
 `Session:` trailer. Optional `Resolves:` IDs must identify Problems. Unknown
-IDs, non-Decision implementation authority, mixed modes, and missing provenance
+IDs, invalid implementation authority, mixed modes, and missing provenance
 fail the repository check.
 
 Immutable historical commits are never rewritten or exempted. When an older
 commit in the validated range cannot satisfy the current trailer grammar, the
 project manifest may append one correction bound to its full commit SHA and
 exact original-message digest. The correction declares the ordinary provenance
-mode, canonical Decision and applicable Verification/Problem IDs, exactly one
+mode, canonical authority and applicable Verification/Problem IDs, exactly one
 Session ID, and a rationale. The original must be invalid, the corrected view
 must pass the same rules as a current commit, and correction entries are unique
 and append-only.
 
-Every newly emitted atomic artifact or append-only lifecycle event has explicit
-LLM session provenance. Use unique `llm_session_ids` with stable host-prefixed
+Every newly emitted atomic artifact has explicit LLM session provenance. Use
+unique `llm_session_ids` with stable host-prefixed
 IDs such as `codex:<session-id>` when an LLM produced the record; use an
 explicit empty list or `none` for human-only work. A review or correction emits
 another linked record rather than revising the original provenance. Missing
@@ -225,21 +288,23 @@ provenance is not equivalent to human-only work. Session provenance is not
 authority by itself; it lets a reviewer find the working context that created
 or assessed the atom.
 
-Only emitted Decision, Question, Problem, and QA claims are semantic atoms.
-Change manifests, intake queues, skill-run records, and session checkpoints are
-mutable transactional or execution-state carriers; they may contain or point
-to atoms but do not become atoms because a workflow uses them. Promoted proof
-is immutable evidence, not a semantic atom. Every supported carrier still
-enforces explicit provenance appropriate to its role.
+Atomic status comes from the catalog's Revision mode, not from belonging to a
+family hierarchy. Change manifests, intake queues, skill-run records, and
+session checkpoints follow their registered Revision mode; none becomes atomic
+merely because a workflow uses it. Every supported carrier enforces explicit
+provenance appropriate to its role. Git and commit coverage are mandatory.
+Source: `DSET-REQUIREMENT-GOV-065`.
 
 ## Proof and derived-view maintenance
 
 Promoted proof supports one named claim for one intended use. It records the
 producer or performed work, method and setup, applicable repository/version/
 environment/assumption context, observation time or validity window, exact
-commit or artifact version, evidence location and polarity, currentness status,
-and reopen trigger. An attempted use that the evidence cannot support remains
-`uncertain` or `pending`; it is not converted into a positive conclusion.
+commit or artifact version, evidence location and polarity, and reopen trigger.
+Evidence currentness is derived against the current subject, method, and
+context; it is never a mutable status stored in an immutable Evidence Record.
+An attempted use that the evidence cannot support remains `uncertain` or
+`pending`; it is not converted into a positive conclusion.
 Contrary evidence or a changed input is a defeater that makes only the affected
 claim closure stale. Refresh that smallest closure; do not rerun unrelated proof
 merely because it shares a repository.
@@ -277,49 +342,59 @@ limitations, and stable finding IDs; its findings body may be free-form.
 For each finding, record evidence, confidence, impact, and one explicit
 disposition: reject with rationale, defer, or route to a Problem or Question
 and applicable subtype, a Decision and applicable subtype, an optional Change,
-an evergreen owner, or a proof obligation. Review does
-not authorize repair. Compile accepted consequences into current truth and
+a maintained owner, or a proof obligation. Review does
+not authorize repair. Refresh accepted consequences into current views and
 reopen only affected proof before implementation or release relies on them.
 
 ## Priority
 
 Priority is the single generic ordered rank. Every governed atomic authority,
-evergreen projection, transactional context/evidence, and implementation
-artifact declares it directly or inherits it through one visible canonical
-relation.
-Implementation files may inherit from their owning Decision or QA atom, or an
+append-only sequence, maintained artifact, context/evidence atom, and
+implementation artifact declares it directly or inherits it through one
+visible canonical relation.
+Implementation files may inherit from their owning authority or check-plan atom, or an
 optional Change, rather than duplicating metadata inside every file.
 
 Actionable work uses priority as one execution-order input; dependencies,
 authorization, gates, and resources may still determine the next action.
 Impact, severity, likelihood, expected value, obligations, and Outcome value
 stay in their owning semantics as priority evidence, not a second universal
-rank. DSET stores only `high`, `medium`, and `low`; lower list position means
-lower current execution priority. `highest` is virtual-only. The former
-`critical` label is recoded to `high`. `deferred` is not a priority: current
-low-urgency work uses `low`, while non-current work belongs in a named future
-Version Roadmap. `.dset/dset_settings.toml` publishes the ordered scale and its
-default. An artifact without a direct priority inherits through its owning atom
-or Change, then the project default. An explicit historical `unknown` remains
-unknown until an append-only priority event supplies a value; it never silently
-falls back.
+rank. New writers use the stored scale `high`, `medium`, `low`. Creation
+defaults are Constraint `high`; Contract, Requirement, and Decision `medium`;
+and implementation carrier `low`. Other roles inherit through their owning
+atom or Change, then use the project `medium` default. `highest` is
+virtual-only. No other stored value is valid. Source:
+`DSET-REQUIREMENT-GOV-107`. The former `critical` label is
+recoded to `high` by a governed meaning-preserving migration. `deferred` is not
+a priority: current low-urgency work uses `low`, while non-current work belongs
+in a named future Version Roadmap.
+
+For an eligible comparison, add one effective-priority step to a strict
+structural-scope ancestor and one step to an earlier owning layer. Apply each
+axis once, add the bonuses, and cap at `highest` on
+`low → medium → high → highest`. A project Contract therefore outranks an
+otherwise-equal child Requirement; an earlier-layer artifact outranks an
+otherwise-equal later-layer artifact. Peer features, same-level artifacts, and
+unrelated scopes receive no bonus.
 
 Classify each conflict before resolving it. Immutable external authority wins
 over mutable project truth. If two immutable obligations cannot both be
 satisfied, priority orders remediation or escalation but cannot claim
 compliance; stop for an exception, boundary change, or external resolution.
 For a declared comparable and resolvable policy conflict, apply explicit
-specific precedence first; otherwise, higher effective priority wins the
-conflicting claim. Equal, unknown, cyclically inherited, or incomparable
-priority stops for a Decision or explicit precedence.
+applicable lifecycle and override relations first. The default `ask_always`
+mode explains the result and asks before claim selection. Opt-in
+`auto_by_effective_priority` selects only one unique higher effective priority;
+equal, same-level, unknown, cyclically inherited, uncertain, or incomparable
+results ask.
 
 The resolver accepts every governed artifact pairing and uses artifact role
 before priority:
 
-- an active atomic authority source versus its evergreen projection selects the
-  atomic source, marks the projection stale, and routes recompilation;
-- an absorbed atom is inactive where the absorption applies; the explicit
-  absorbing successor wins without consulting age or priority;
+- an active atomic authority source versus its maintained view selects the
+  atomic source, marks the view stale, and routes semantic refresh;
+- an archived predecessor is inactive; its explicit replacement successor wins
+  without consulting age or priority;
 - authority versus QA/Test, QA/Evaluation, review, or proof updates assurance and the
   relying gate; evidence never rewrites authority;
 - implementation versus authority creates a conformance Problem;
@@ -330,12 +405,13 @@ before priority:
   owner or applicable rule exists.
 
 Priority orders remediation for every conflict class, but selects a normative
-claim only where the governing profile permits selection. Record both artifact
-IDs, roles, effective priority values and sources, conflict class, context,
-disposition or selected claim, and profile edition. Never infer resolution from
-filename, list order, or age. Reprioritization invalidates affected derived
-resolutions. Conflict handling never edits an atom; recompilation updates only
-the declared evergreen projection.
+claim only where the governing profile and selected mode permit it. Record both
+artifact IDs, roles, stored priorities, applied scope/layer bonuses, effective
+priorities and sources, conflict class, context, mode, disposition or selected
+claim, and profile edition. Never infer resolution from filename, list order,
+age, or layer distance. Reprioritization invalidates affected derived
+resolutions. Conflict handling never edits an atom; refresh updates only the
+declared maintained view.
 
 ## Artifact threshold
 
@@ -351,3 +427,24 @@ investigation but never replace those artifacts.
 Handoff between Changes names stable artifact IDs, exact commits or versions,
 applicable Contracts, evidence locations, currentness, and reopen triggers. A
 summary without those anchors is context, not authoritative delivery evidence.
+
+## Progressive governance surfaces
+
+DSET starts atomic-first. The registered optional governance surfaces are
+`maintained-specification`, `test-plan`, `evaluation-plan`,
+`implementation-plan`, `project-overview`, and `architecture-view`.
+`.dset/dset_settings.toml` records an explicit Boolean for every registered
+surface; a missing table or key reads as inactive, and an unknown surface fails
+closed.
+
+Activating a surface adds only that surface's currentness and entry-gate
+obligations. Deactivating it removes those obligations without deleting or
+rewriting its carrier or Git history. Reactivation must reconcile a retained
+carrier against current atomic authority before calling the surface current.
+Activation never disables or enables an entire revision mode.
+
+`dset configure ROOT status` and `recommend` are read-only. `activate` and
+`deactivate` preview by default and write only with `--execute`. The writer
+changes only the selected Boolean, materializes missing registered defaults,
+and preserves unrelated TOML text and comments. Recommendations are advisory
+and cite repository evidence; they never mutate configuration.

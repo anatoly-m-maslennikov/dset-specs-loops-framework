@@ -1,3 +1,10 @@
+---
+artifact_type: specification
+scope_path: []
+priority: medium
+artifact_subtype: behavior
+---
+
 # {{title}} outcomes
 
 Outcomes are optional measurable changes in user, business, operational, or

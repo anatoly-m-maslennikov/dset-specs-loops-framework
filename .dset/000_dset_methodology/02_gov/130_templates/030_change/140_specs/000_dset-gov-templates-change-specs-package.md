@@ -1,3 +1,10 @@
+---
+artifact_type: specification
+scope_path: []
+priority: medium
+artifact_subtype: behavior
+---
+
 # {{package_id}} delta specification
 
 ## ADDED — {{project_key}}-REQUIREMENT{{id_layer}}-001 Requirement title

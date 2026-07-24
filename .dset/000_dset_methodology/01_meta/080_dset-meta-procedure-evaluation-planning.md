@@ -1,3 +1,11 @@
+---
+artifact_type: procedure
+artifact_subtype: playbook
+scope_path:
+  - layer:meta
+priority: medium
+---
+
 # Qualitative and probabilistic eval planning
 
 **Rule ID:** `DSET-RULE-EVAL-PLAN`

@@ -1,0 +1,1057 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/anatoly-m-maslennikov/dset-specs-loops-framework/main/.dset/000_dset_methodology/02_gov/schemas/project-settings.schema.json",
+  "title": "DSET project settings",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "canonical_command",
+    "paths",
+    "git",
+    "artifacts",
+    "workflows",
+    "interaction",
+    "maintained_views",
+    "governance_surfaces",
+    "changes",
+    "delegation",
+    "priority",
+    "conflict_resolution"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "oneOf": [
+        {
+          "enum": [
+            1.0,
+            1.1
+          ]
+        },
+        {
+          "type": "string",
+          "pattern": "^1\\.(?:0|1)-draft$"
+        },
+        {
+          "enum": [
+            "1.2",
+            "1.3",
+            "1.4",
+            "1.5",
+            "1.6",
+            "1.7",
+            "1.8"
+          ]
+        }
+      ]
+    },
+    "paths": {
+      "type": "object",
+      "required": [
+        "control_root",
+        "journal_root",
+        "runtime_root"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "control_root": {
+          "const": ".dset"
+        },
+        "journal_root": {
+          "const": ".dset_journal"
+        },
+        "runtime_root": {
+          "const": ".dset_runtime"
+        }
+      }
+    },
+    "git": {
+      "type": "object",
+      "required": [
+        "required",
+        "initialize_if_missing",
+        "commit_each_governed_change"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "required": {
+          "const": true
+        },
+        "initialize_if_missing": {
+          "type": "boolean"
+        },
+        "commit_each_governed_change": {
+          "const": true
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "required": [
+        "creation_strictness",
+        "enabled_types",
+        "enabled_subtypes",
+        "identity",
+        "routing"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "creation_strictness": {
+          "enum": [
+            "medium",
+            "high"
+          ]
+        },
+        "enabled_types": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          }
+        },
+        "enabled_subtypes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*:[a-z][a-z0-9_]*$"
+          }
+        },
+        "identity": {
+          "type": "object",
+          "required": [
+            "project_prefix_enabled",
+            "scope_path_in_ids",
+            "subtype_in_names"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "project_prefix_enabled": {
+              "type": "boolean"
+            },
+            "project_prefix": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9]*$"
+            },
+            "scope_path_in_ids": {
+              "const": true
+            },
+            "subtype_in_names": {
+              "type": "boolean"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "project_prefix_enabled": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "project_prefix_enabled"
+                ]
+              },
+              "then": {
+                "required": [
+                  "project_prefix"
+                ]
+              }
+            }
+          ]
+        },
+        "routing": {
+          "type": "object",
+          "required": [
+            "revision_modes",
+            "content_roles",
+            "governance_loci"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "revision_modes": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "atomic",
+                  "append_only",
+                  "maintained"
+                ]
+              }
+            },
+            "content_roles": {
+              "type": "array",
+              "minItems": 6,
+              "maxItems": 6,
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "inquiry",
+                  "analysis",
+                  "definition",
+                  "method",
+                  "implementation",
+                  "observation"
+                ]
+              }
+            },
+            "governance_loci": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 3,
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "internal",
+                  "external",
+                  "relation"
+                ]
+              },
+              "contains": {
+                "const": "internal"
+              }
+            }
+          }
+        }
+      }
+    },
+    "workflows": {
+      "type": "object",
+      "required": [
+        "default_mode",
+        "release_mode",
+        "implement"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "default_mode": {
+          "const": "development"
+        },
+        "release_mode": {
+          "const": "release_readiness"
+        },
+        "implement": {
+          "type": "object",
+          "required": [
+            "mode"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "mode": {
+              "enum": [
+                "lazy",
+                "strict"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "interaction": {
+      "type": "object",
+      "required": [
+        "reporting_mode"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "reporting_mode": {
+          "enum": [
+            "silent",
+            "verbose"
+          ]
+        }
+      }
+    },
+    "maintained_views": {
+      "type": "object",
+      "required": [
+        "refresh_mode",
+        "skill"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "refresh_mode": {
+          "const": "on_demand"
+        },
+        "skill": {
+          "const": "dset-refresh"
+        }
+      }
+    },
+    "governance_surfaces": {
+      "type": "object",
+      "required": [
+        "maintained_specification",
+        "test_plan",
+        "evaluation_plan",
+        "implementation_plan",
+        "project_overview",
+        "architecture_view"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "maintained_specification": {
+          "type": "boolean"
+        },
+        "test_plan": {
+          "type": "boolean"
+        },
+        "evaluation_plan": {
+          "type": "boolean"
+        },
+        "implementation_plan": {
+          "type": "boolean"
+        },
+        "project_overview": {
+          "type": "boolean"
+        },
+        "architecture_view": {
+          "type": "boolean"
+        }
+      }
+    },
+    "changes": {
+      "type": "object"
+    },
+    "delegation": {
+      "type": "object"
+    },
+    "priority": {
+      "type": "object"
+    },
+    "project": {
+      "type": "object",
+      "required": [
+        "key",
+        "id",
+        "name",
+        "repository_slug",
+        "repository_role"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9]*$"
+        },
+        "id": {
+          "$ref": "#/$defs/kebab"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "repository_slug": {
+          "$ref": "#/$defs/kebab"
+        },
+        "repository_role": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "supportability": {
+      "type": "object",
+      "required": [
+        "status",
+        "reason",
+        "authority",
+        "runbook"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "not-applicable",
+            "applicable"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "authority": {
+          "type": "string",
+          "minLength": 1
+        },
+        "runbook": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "release": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "not-applicable",
+            "applicable"
+          ]
+        },
+        "integration_branch": {
+          "type": "string",
+          "minLength": 1
+        },
+        "protected_branch": {
+          "type": "string",
+          "minLength": 1
+        },
+        "publisher": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tag_pattern": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9._/-]*\\{product_version\\}[A-Za-z0-9._/-]*$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "applicable"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "integration_branch",
+              "protected_branch",
+              "publisher",
+              "tag_pattern"
+            ]
+          },
+          "else": {
+            "required": [
+              "reason"
+            ]
+          }
+        }
+      ]
+    },
+    "work_items": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "registry": {
+          "type": "string",
+          "minLength": 1
+        },
+        "atomic_scopes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "registry"
+          ]
+        },
+        {
+          "required": [
+            "atomic_scopes"
+          ]
+        }
+      ]
+    },
+    "contracts": {
+      "$ref": "#/$defs/contract_ids"
+    },
+    "stories": {
+      "$ref": "#/$defs/story_ids"
+    },
+    "outcomes": {
+      "$ref": "#/$defs/outcome_ids"
+    },
+    "work_areas": {
+      "$ref": "#/$defs/work_areas"
+    },
+    "structure": {
+      "type": "object"
+    },
+    "packages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object"
+      }
+    },
+    "profiles": {
+      "type": "object",
+      "required": [
+        "runtime_risk",
+        "durability_topology",
+        "enforcement"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "runtime_risk": {
+          "type": "string",
+          "minLength": 1
+        },
+        "durability_topology": {
+          "type": "string",
+          "minLength": 1
+        },
+        "enforcement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "artifact": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "repository_governance": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "implementation": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/implementation_profile_selection"
+          }
+        }
+      }
+    },
+    "change_contract": {
+      "type": "object"
+    },
+    "commit_provenance": {
+      "type": "object",
+      "required": [
+        "start_commit"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "start_commit": {
+          "oneOf": [
+            {
+              "enum": [
+                "root",
+                "manifest-addition"
+              ]
+            },
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            }
+          ]
+        },
+        "corrections": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/commit_provenance_correction"
+          }
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "required": [
+        "commands"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "commands": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "canonical_command": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "$defs": {
+    "kebab": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "layer": {
+      "enum": [
+        "meta",
+        "gov",
+        "tool",
+        "skill",
+        "implementation",
+        "ops"
+      ]
+    },
+    "implementation_profile_selection": {
+      "type": "object",
+      "required": [
+        "id",
+        "version",
+        "work_areas"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebab"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "work_areas": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/kebab"
+          }
+        }
+      }
+    },
+    "legacy_structure": {
+      "type": "object",
+      "required": [
+        "mode",
+        "accepted_truth_root",
+        "active_changes_root",
+        "archive_root",
+        "global_truth_root"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "enum": [
+            "single-package",
+            "multi-package"
+          ]
+        },
+        "accepted_truth_root": {
+          "type": "string"
+        },
+        "active_changes_root": {
+          "type": "string"
+        },
+        "archive_root": {
+          "type": "string"
+        },
+        "global_truth_root": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "layered_structure": {
+      "type": "object",
+      "required": [
+        "layout"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "layout": {
+          "enum": [
+            "layered-v1",
+            "slim-v1",
+            "numbered-layers-v1",
+            "recursive-framework-v1",
+            "separated-methodology-v1"
+          ]
+        }
+      }
+    },
+    "legacy_package": {
+      "type": "object",
+      "required": [
+        "id",
+        "path",
+        "status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebab"
+        },
+        "path": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "active",
+            "retired"
+          ]
+        }
+      }
+    },
+    "layered_package": {
+      "type": "object",
+      "required": [
+        "id",
+        "status",
+        "layers"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebab"
+        },
+        "status": {
+          "enum": [
+            "active",
+            "retired"
+          ]
+        },
+        "layers": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/layer"
+          }
+        }
+      }
+    },
+    "legacy_change_contract": {
+      "type": "object",
+      "required": [
+        "change_id_format",
+        "pull_request_required_before_archive",
+        "archive_requires_fresh_verification",
+        "keep_pull_request_draft_until_archive_ready"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "change_id_format": {
+          "const": "kebab-case"
+        },
+        "pull_request_required_before_archive": {
+          "const": true
+        },
+        "archive_requires_fresh_verification": {
+          "const": true
+        },
+        "keep_pull_request_draft_until_archive_ready": {
+          "const": true
+        }
+      }
+    },
+    "layered_change_contract": {
+      "type": "object",
+      "required": [
+        "change_id_format",
+        "change_slug_format",
+        "pull_request_required_before_archive",
+        "archive_requires_fresh_verification",
+        "keep_pull_request_draft_until_archive_ready"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "change_id_format": {
+          "const": "project-type-layer-sequence"
+        },
+        "change_slug_format": {
+          "const": "kebab-case"
+        },
+        "pull_request_required_before_archive": {
+          "const": true
+        },
+        "archive_requires_fresh_verification": {
+          "const": true
+        },
+        "keep_pull_request_draft_until_archive_ready": {
+          "const": true
+        }
+      }
+    },
+    "work_areas": {
+      "$comment": "Each id and path must also be unique across the array; repository validation enforces property-level uniqueness.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/work_area"
+      }
+    },
+    "work_area": {
+      "type": "object",
+      "required": [
+        "id",
+        "path"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebab"
+        },
+        "path": {
+          "$ref": "#/$defs/repository_relative_path"
+        }
+      }
+    },
+    "repository_relative_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?![A-Za-z]:)(?!.*\\\\)(?!.*//)(?!\\.{1,2}(?:/|$))(?!.*[/]\\.{1,2}(?:/|$))[^/]+(?:/[^/]+)*$"
+    },
+    "commit_provenance_correction": {
+      "type": "object",
+      "required": [
+        "commit",
+        "original_message_sha256",
+        "mode",
+        "decision_ids",
+        "verifies",
+        "resolves",
+        "session",
+        "rationale"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "original_message_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "mode": {
+          "enum": [
+            "implementation",
+            "evidence"
+          ]
+        },
+        "decision_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"
+          }
+        },
+        "verifies": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"
+          }
+        },
+        "resolves": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"
+          }
+        },
+        "session": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9._:-]+$"
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "mode"
+            ],
+            "properties": {
+              "mode": {
+                "const": "implementation"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "verifies": {
+                "maxItems": 0
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "verifies": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "contract_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9]*-CONTRACT(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"
+      }
+    },
+    "story_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9]*-STORY(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"
+      }
+    },
+    "outcome_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9]*-OUTCOME(?:-(?:META|GOV|TOOL|SKILL|IMPL|OPS))?-[0-9]{3,}$"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "schema_version"
+        ],
+        "properties": {
+          "schema_version": {
+            "enum": [
+              "1.2",
+              "1.3",
+              "1.4",
+              "1.5"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "release",
+          "work_items",
+          "work_areas"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "contracts"
+              ]
+            },
+            {
+              "required": [
+                "stories"
+              ]
+            },
+            {
+              "required": [
+                "outcomes"
+              ]
+            }
+          ]
+        },
+        "properties": {
+          "structure": {
+            "$ref": "#/$defs/layered_structure"
+          },
+          "packages": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/layered_package"
+            }
+          },
+          "work_items": {
+            "type": "object"
+          },
+          "change_contract": {
+            "$ref": "#/$defs/layered_change_contract"
+          }
+        }
+      },
+      "else": {
+        "not": {
+          "required": [
+            "work_areas"
+          ]
+        },
+        "properties": {
+          "structure": {
+            "$ref": "#/$defs/legacy_structure"
+          },
+          "packages": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/legacy_package"
+            }
+          },
+          "change_contract": {
+            "$ref": "#/$defs/legacy_change_contract"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "enum": [
+              "1.1",
+              "1.1-draft"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "release",
+          "work_items",
+          "contracts"
+        ],
+        "properties": {
+          "work_items": {
+            "properties": {
+              "registry": {
+                "enum": [
+                  "dset/intake.toml",
+                  "dset/intake.yaml"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

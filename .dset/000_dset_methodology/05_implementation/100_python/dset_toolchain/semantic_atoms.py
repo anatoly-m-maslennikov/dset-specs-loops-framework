@@ -18,7 +18,6 @@ from .layout import LAYERS, discover_layout
 from .legacy_authority import legacy_authority_ids, validate_legacy_authority_ledger
 from .lineage import ArtifactRelation, parse_authored_relations
 from .project_data import lifecycle_events as load_lifecycle_events
-from .project_data import project_section
 from .semantic_types import (
     SEMANTIC_ID_KINDS,
     SEMANTIC_SUBTYPES,
@@ -679,24 +678,6 @@ def _known_semantic_ids(root: Path, atoms: dict[str, SemanticAtom]) -> set[str]:
         if match:
             identifiers.add(match.group(1))
     if layout.separated:
-        catalog = project_section(root, "package_catalog")
-        packages = catalog.get("packages", [])
-        for package in packages if isinstance(packages, list) else []:
-            if not isinstance(package, dict):
-                continue
-            for field in (
-                "requirements",
-                "tests",
-                "evals",
-                "contracts",
-                "stories",
-                "outcomes",
-            ):
-                values = package.get(field, [])
-                if isinstance(values, list):
-                    identifiers.update(
-                        str(item) for item in values if isinstance(item, str)
-                    )
         return identifiers
     for path in layout.structured_named_files(root, "package"):
         try:
