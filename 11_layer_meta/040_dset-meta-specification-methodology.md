@@ -297,10 +297,24 @@ scope and axis design, structural modeling, and read-only inspection, but
 creates no governed artifacts or governance commits. Explicit operator
 acceptance is the only exit that authorizes durable emission.
 
+Question intent enters Exploration Mode silently when the input primarily asks
+for information, explanation, comparison, critique, alternatives, or a
+recommendation. Idea intent enters silently when the input primarily introduces
+a candidate such as “another idea,” “what if,” “maybe,” or “could we.”
+Detection is semantic, not punctuation- or keyword-based. An explicit record,
+accept, apply, implement, or fix instruction remains authorization for only the
+stated change. Atomic sources: `DSET-REQUIREMENT-META-036` and
+`DSET-REQUIREMENT-META-037`.
+
 | Status | Entry criteria | Exit criteria | Allowed next status | Required evidence | Atomic sources |
 |---|---|---|---|---|---|
-| Inactive | No active exploration request | Clear exploratory intent or explicit Exploration Mode request | Active | Operator/session instruction | `DSET-REQUIREMENT-META-021` |
-| Active | Exploratory intent is established | Explicit accept, finalize, apply, or end-exploration instruction | Inactive | Operator acceptance instruction | `DSET-REQUIREMENT-META-021` |
+| Inactive | No active exploration request | Clear exploratory intent, question intent, idea intent, or explicit Exploration Mode request | Active | Operator/session instruction | `DSET-REQUIREMENT-META-021`, `DSET-REQUIREMENT-META-036`, `DSET-REQUIREMENT-META-037` |
+| Active | Exploratory intent is established | Explicit accept, finalize, record, apply, implement, fix, or end-exploration instruction | Inactive | Operator acceptance instruction | `DSET-REQUIREMENT-META-021`, `DSET-REQUIREMENT-META-036`, `DSET-REQUIREMENT-META-037` |
+
+**Scenario DSET-SCENARIO-META-019:** “What is the difference?” and “I have
+another idea” produce discussion without an artifact or governance commit.
+“Can you apply this requirement?” authorizes the stated application despite
+question punctuation.
 
 ## DSET-REQUIREMENT-META-042 — Maintained semantic views are thin current views
 

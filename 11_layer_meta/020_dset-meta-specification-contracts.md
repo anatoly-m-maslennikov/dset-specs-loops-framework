@@ -70,6 +70,20 @@ User Stories, Outcomes, Scenarios, and Invariants may structure artifact prose,
 analysis, or compatibility history. Independently enforceable claims remain
 separate atomic records.
 
+## Exploration input boundary
+
+An operator input that primarily asks a question, requests explanation,
+comparison, critique, alternatives, or recommendation enters Exploration Mode
+silently. Input that primarily introduces an idea, including “another idea,”
+“what if,” “maybe,” or “could we,” does the same. Detection follows semantic
+intent rather than punctuation or literal keywords.
+
+An explicit instruction to record, accept, apply, implement, fix, or otherwise
+change governed state remains authorization for only that stated change. Mixed
+input may be explored, but no additional candidate becomes governed truth
+without explicit acceptance. Atomic sources: `DSET-REQUIREMENT-META-036` and
+`DSET-REQUIREMENT-META-037`.
+
 ## Layer constitution boundary
 
 DSET exposes one ordered layer constitution:
