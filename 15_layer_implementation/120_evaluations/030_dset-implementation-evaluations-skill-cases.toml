@@ -87,6 +87,12 @@ should_not_trigger = "Repair every failure you find and release the result."
 ambiguous_routing = "Make the tests pass and confirm the implementation is compliant."
 ambiguous_expected = "Implementation authority belongs to dset-implement; invoke dset-verify afterward as a distinct proof workflow."
 
+[skills."dset-configure"]
+should_trigger = "Show which optional DSET governance surfaces are active and preview enabling the project overview."
+should_not_trigger = "Summarize the current project health, coverage, and open obligations."
+ambiguous_routing = "We may need an architecture view now that the project is larger."
+ambiguous_expected = "Use dset-configure to inspect state and recommendations, preview activation, and require separate authorization before writing."
+
 [skills."dset-overview"]
 should_trigger = "Show project artifact counts, coverage, freshness, open Problems, and open Questions without changing anything."
 should_not_trigger = "Classify and prioritize these unowned Problems and Questions."

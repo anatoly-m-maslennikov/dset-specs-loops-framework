@@ -77,6 +77,7 @@ session.
 | `dset-implement` | A bounded implementation outcome is requested; the chain first reconciles Decisions, then requires complete separate proof plans, an executable implementation plan, and implementation authorization | Returns bounded implementation plus test/eval assets and provenance; stops before claiming verification or release readiness |
 | `dset-verify` | Implementation or governing artifacts changed after applicable proof; returns deterministic test results, eval evidence where applicable, and conformance status | Stops before repairing failures or releasing |
 | `dset-overview` | Explicit read-only project-health request; returns current artifact/scope counts, coverage, freshness, open obligations, and a recommended handoff | Stops before refreshing stale derived state or performing the recommended workflow; it is not a lifecycle mode |
+| `dset-configure` | Explicit governance-surface status, recommendation, activation, or deactivation request; returns current state or one exact preview/result | Status and recommendations stay read-only; writes require separate `--execute` authorization; stops after the configuration result and is not a lifecycle mode |
 | `dset-triage` | A Decision, Question, Problem, or QA atom lacks semantic classification, ownership, priority, or Change/tracker linkage; returns Type/subtype routing and priority state | Stops before diagnosis, decision, proof planning, or implementation |
 | `dset-release` | Explicit release request or verified release-ready change; returns prepared/verified release state and, only with release authority, publication result | Stops on any mismatch, missing gate, collision, or new authorization boundary |
 | `dset-complete` | No earlier mode applies; returns terminal Change/session status and any residual open obligations | Stops without creating work solely to keep the workflow active |
@@ -210,6 +211,8 @@ The governed direct-entry map is `decompose` → `dset-decompose`, `diagnose` �
 `dset-triage`, `release` → `dset-release`, and `complete` → `dset-complete`.
 Each wrapper resolves the registered workflow shown by the mode. `dset-init`
 and `dset-repair-governance` are the two pre-resolution exceptions below.
+`dset-overview` and `dset-configure` are supplemental governed workflows, not
+lifecycle modes.
 
 ## Rootless initialization exception
 

@@ -1,6 +1,6 @@
 # DSET skill host distribution
 
-The 18 folders listed in the [skills hub](README.md) and the repository's
+The 19 folders listed in the [skills hub](README.md) and the repository's
 `dset_toolchain` package are canonical source artifacts. A host installation
 copies the thin wrappers and one shared runtime package. Installed copies do
 not become editable rule owners.
@@ -63,11 +63,12 @@ wrapper therefore does not depend on a global `dset` command or a mutable
 the planned digest and stops an unreviewed replacement.
 
 The installer rejects symlinked source content and creates real copied skill
-folders. It requires the exact 18-skill catalog: `dset`, `dset-init`,
+folders. It requires the exact 19-skill catalog: `dset`, `dset-init`,
 `dset-repair-governance`, `dset-decompose`, `dset-diagnose`, `dset-clarify`,
 `dset-landscape`, `dset-prototype`, `dset-decisions`, `dset-plan-proof`,
 `dset-compile`, `dset-plan-implementation`, `dset-implement`, `dset-verify`,
-`dset-overview`, `dset-triage`, `dset-release`, and `dset-complete`.
+`dset-configure`, `dset-overview`, `dset-triage`, `dset-release`, and
+`dset-complete`.
 
 ## Verify discovery
 

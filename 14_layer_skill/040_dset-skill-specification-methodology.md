@@ -185,3 +185,17 @@ wrapper is invoked from nested paths in two repositories. One shared runtime
 resolves different project roots and rule digests from the explicit targets,
 rejects a mismatched workflow, and records both invocations without scripts or
 governance copied into either skill folder.
+
+## DSET-REQUIREMENT-SKILL-016 — Configure governance surfaces wrapper
+
+Atomic source: `DSET-REQUIREMENT-SKILL-016`.
+
+DSET publishes one supplemental `dset-configure` skill rather than separate
+enable and disable skills. It resolves the target project's `configure`
+workflow through the installed shared runtime, reads only returned
+project-owned rules, and invokes the deterministic configuration command.
+
+The wrapper supports `status`, `recommend`, `activate`, and `deactivate`.
+Status and recommendations remain read-only. A state change is previewed first
+and requires separate operator authorization before `--execute`. The wrapper
+stops after reporting the configuration result and never chains lifecycle work.
